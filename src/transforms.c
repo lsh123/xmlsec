@@ -743,7 +743,7 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
 
-    for(;size > 0; size -= chunkSize) {
+    for(;size > 0; size -= chunkSize, buf += chunkSize) {
 	xmlSecAssert2(buf != NULL, -1);
 	
 	/* add next chunk */

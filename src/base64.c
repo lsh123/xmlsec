@@ -147,13 +147,13 @@ static xmlSecTransformKlass xmlSecBase64DecodeId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecBase64Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
-    xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
-    xmlSecTransformDefaultReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefaultWriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefaultFlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    NULL,				/* xmlSecTransformExecuteBinMethod executeBin; */
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
 
     /* xml/c14n methods */
     NULL,
@@ -652,26 +652,29 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
  */
 int
 xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
-		     const unsigned char *in, size_t inLen, 
-		     unsigned char *out, size_t outLen) {
-    size_t inPos, outPos;
+		     const unsigned char *in, size_t inSize, 
+		     unsigned char *out, size_t outSize) {
+    int res = 0;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    
-    for(inPos = outPos = 0; (inPos < inLen) && (outPos < outLen); ) {
-	ret = xmlSecBase64CtxPush(ctx, in + inPos, inLen - inPos);
+
+
+    while((inSize > 0) && (outSize > 0)) {	    
+	ret = xmlSecBase64CtxPush(ctx, in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecBase64CtxPush");
 	    return(-1);
 	}
-	inPos += ret;
+	xmlSecAssert2((size_t)ret <= inSize, -1);
+	in += ret;
+	inSize -= ret;
 
-	ret = xmlSecBase64CtxPop(ctx, out + outPos, outLen - outPos, 0);
+	ret = xmlSecBase64CtxPop(ctx, out, outSize, 0);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -680,10 +683,13 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 	} else if(ret == 0) {
 	    break;
 	}
-	outPos += ret;
+	xmlSecAssert2((size_t)ret <= outSize, -1);
+	out += ret;
+	outSize -= ret;
+	res += ret;
     }
 
-    return(outPos);
+    return(res);
 }
 
 /**

@@ -1,3 +1,8 @@
+Fri Jan 23 16:30:38 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/xmlsec-man.html man/xmlsec1-config.1 man/xmlsec1.1 
+	xmlsec-config.in: make xmlsec1-config man page generic
+
 Fri Jan 23 09:34:10 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: and one more config bug from John

@@ -12,16 +12,15 @@ Usage: $package-config [OPTION]...
 
 Known values for OPTION are:
 
-  --prefix=DIR		change XMLSEC prefix [default $prefix]
-  --exec-prefix=DIR	change XMLSEC executable prefix [default $exec_prefix]
+  --prefix=DIR		change XMLSEC prefix
+  --exec-prefix=DIR	change XMLSEC executable prefix
   --libs		print library linking information
   --cflags		print pre-processor and compiler flags
   --crypto		print the default crypto library name
   --help		display this help and exit
   --version		output version information
   --crypto=LIB		configure with XMLSEC crypto library (one of the
-			following: none default @XMLSEC_CRYPTO_LIST@) 
-			[default "@XMLSEC_CRYPTO@"]
+			following: none default openssl gnutls nss) 
 EOF
 
     exit $1

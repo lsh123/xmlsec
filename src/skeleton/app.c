@@ -75,7 +75,7 @@ xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     /* TODO: load key */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecSkeletonAppPemLoad",
+		"xmlSecSkeletonAppKeyLoad",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(NULL);
@@ -103,7 +103,7 @@ xmlSecSkeletonAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
     /* TODO: load key */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecSkeletonAppPemLoad",
+		"xmlSecSkeletonAppKeyLoad",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(NULL);
@@ -133,6 +133,33 @@ xmlSecSkeletonAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
 		"xmlSecSkeletonAppKeyCertLoad",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+}
+
+/**
+ * xmlSecSkeletonAppKeyCertLoadMemory:
+ * @key:		the pointer to key.
+ * @data:		the certificate binary data.
+ * @dataSize:		the certificate binary data size.
+ * @format:		the certificate file format.
+ *
+ * Reads the certificate from memory buffer and adds it to key.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
+int		
+xmlSecSkeletonAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, 
+				xmlSecKeyDataFormat format) {
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+    
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecSkeletonAppKeyCertLoadMemory",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(-1);

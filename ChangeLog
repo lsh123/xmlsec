@@ -1,4 +1,10 @@
 2004-06-21 Aleksey Sanin <aleksey@aleksey.com>
+
+	* include/xmlsec/app.h include/xmlsec/gnutls/app.h 
+        src/app.c src/gnutls/app.c src/skeleton/app.c: added functions
+	to load keys and certificates from memory (Bernd Becker)
+
+2004-06-21 Aleksey Sanin <aleksey@aleksey.com>
 	
 	* src/bn.c: keep a '0' character when we remove '0' from the beggining		
 

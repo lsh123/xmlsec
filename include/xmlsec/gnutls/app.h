@@ -40,6 +40,11 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecGnuTLSAppKeysMngrCertLoad		(xmlSecKeysMngrPtr mng
 									 const char *filename, 
 									 xmlSecKeyDataFormat format, 
 									 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int	xmlSecGnuTLSAppKeysMngrCertLoadMemory	(xmlSecKeysMngrPtr mngr,
+									 const xmlSecByte* data,
+									 xmlSecSize dataSize,
+									 xmlSecKeyDataFormat format,
+									 xmlSecKeyDataType type);
 #endif /* XMLSEC_NO_X509 */
 
 
@@ -51,13 +56,28 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoad		(const char *filename,
 									 const char *pwd,
 									 void *pwdCallback,
 									 void* pwdCallbackCtx);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadMemory		(const xmlSecByte* data,
+									 xmlSecSize dataSize,
+									 xmlSecKeyDataFormat format,
+									 const char *pwd,
+									 void* pwdCallback,
+									 void* pwdCallbackCtx);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppPkcs12Load		(const char *filename, 
 									 const char *pwd,
 		    							 void* pwdCallback, 
 									 void* pwdCallbackCtx);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppPkcs12LoadMemory	(const xmlSecByte* data,
+									 xmlSecSize dataSize,
+									 const char *pwd,
+									 void* pwdCallback,
+									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT int	xmlSecGnuTLSAppKeyCertLoad		(xmlSecKeyPtr key,
 									 const char* filename,
+									 xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int	xmlSecGnuTLSAppKeyCertLoadMemory	(xmlSecKeyPtr key,
+									 const xmlSecByte* data,
+									 xmlSecSize dataSize,
 									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 XMLSEC_CRYPTO_EXPORT void*	xmlSecGnuTLSAppGetDefaultPwdCallback	(void);

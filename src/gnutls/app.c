@@ -90,7 +90,41 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecGnuTLSAppPemLoad",
+		"xmlSecGnuTLSAppKeyLoad",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(NULL);
+}
+
+/**
+ * xmlSecGnuTLSAppKeyLoadMemory:
+ * @data:		the binary key data.
+ * @dataSize:		the size of binary key.
+ * @format:		the key file format.
+ * @pwd:		the key file password.
+ * @pwdCallback:	the key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from the memory buffer (not implemented yet).
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
+			xmlSecKeyDataFormat format, const char *pwd, 
+			void* pwdCallback, void* pwdCallbackCtx) {
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    if (format == xmlSecKeyDataFormatPkcs12) {
+	return (xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd, 
+					pwdCallback, pwdCallbackCtx));
+    }
+
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecGnuTLSAppKeyLoadMemory",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(NULL);
@@ -119,6 +153,33 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
 		"xmlSecGnuTLSAppKeyCertLoad",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+}
+
+/**
+ * xmlSecGnuTLSAppKeyCertLoadMemory:
+ * @key:		the pointer to key.
+ * @data:		the certificate binary data.
+ * @dataSize:		the certificate binary data size.
+ * @format:		the certificate file format.
+ *
+ * Reads the certificate from memory buffer and adds it to key (not implemented yet).
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
+int		
+xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, 
+				xmlSecKeyDataFormat format) {
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecGnuTLSAppKeyCertLoadMemory",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(-1);
@@ -155,6 +216,34 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
 }
 
 /**
+ * xmlSecGnuTLSAppPkcs12LoadMemory:
+ * @data:		the PKCS12 binary data.
+ * @dataSize:		the PKCS12 binary data size.
+ * @pwd:		the PKCS12 file password.
+ * @pwdCallback:	the password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 data in memory buffer.
+ * For uniformity, call xmlSecGnuTLSAppKeyLoadMemory instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr	
+xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
+			   const char *pwd, void* pwdCallback, 
+			   void* pwdCallbackCtx) {
+    xmlSecAssert2(data != NULL, NULL);
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecGnuTLSAppPkcs12LoadMemory",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(NULL); 
+}
+
+/**
  * xmlSecGnuTLSAppKeysMngrCertLoad:
  * @mngr: 		the keys manager.
  * @filename: 		the certificate file.
@@ -179,6 +268,36 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
 		"xmlSecGnuTLSAppKeysMngrCertLoad",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+}
+
+/**
+ * xmlSecGnuTLSAppKeysMngrCertLoadMemory:
+ * @mngr: 		the keys manager.
+ * @data:		the certificate binary data.
+ * @dataSize:		the certificate binary data size.
+ * @format:		the certificate file format.
+ * @type: 		the flag that indicates is the certificate trusted or not.
+ * 
+ * Reads cert from binary buffer @data and adds to the list of trusted or known
+ * untrusted certs in @store (not implemented yet).
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
+				    xmlSecSize dataSize, xmlSecKeyDataFormat format, 
+				    xmlSecKeyDataType type) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecGnuTLSAppKeysMngrCertLoadMemory",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(-1);

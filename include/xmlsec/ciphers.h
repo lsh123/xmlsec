@@ -22,15 +22,15 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 
-typedef struct _xmlSecCipherTransform 		*xmlSecCipherTransformPtr; 
-typedef const struct _xmlSecCipherTransformId	*xmlSecCipherTransformId;
+typedef struct _xmlSecCipherTransform 			*xmlSecCipherTransformPtr; 
+typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
 
 typedef int (*xmlSecCipherUpdateMethod)		(xmlSecCipherTransformPtr transform,
 						 const unsigned char *buffer,
 						 size_t size);
 typedef int (*xmlSecCipherFinalMethod)		(xmlSecCipherTransformPtr transform);
 
-struct _xmlSecCipherTransformId {
+struct _xmlSecCipherTransformIdStruct {
     /* same as xmlSecTransformId */    
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;

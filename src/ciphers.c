@@ -454,7 +454,7 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 		cipher->bufOut, &res);    		 		 
     } else {
 	int b;
-	/**
+	/*
 	 * The padding used in XML Enc does not follow RFC 1423
 	 * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
 	 * it is possible to disable padding and do it by yourself
@@ -496,9 +496,11 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 }
 
 
-/**
- * Low-level methods
- */
+/***************************************************************************
+ *
+ *  Low-level methods
+ *
+ ****************************************************************************/
 /**
  * xmlSecCipherUpdate
  *

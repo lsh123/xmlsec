@@ -1064,7 +1064,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 	return(-1);
     }
 
-    /**
+    /*
      * verify all crls in the X509Data (if any) and remove
      * all not verified
      */
@@ -1365,9 +1365,19 @@ xmlSecX509StoreVerifyCRL(xmlSecX509StorePtr store, X509_CRL *crl ) {
 }
 
 
-/**
+/*****************************************************************************
  *
  * Low-level x509 functions
+ *
+ *****************************************************************************/
+
+/**
+ * xmlSecX509Find
+ * @certs:
+ * @subjectName:
+ * @issuerName:
+ * @issuerSerial:
+ * @ski:
  *
  */
 static X509*		
@@ -1544,9 +1554,9 @@ xmlSecX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
 }
 
 /**
- *
- *
- *
+ * xmlSec509VerifyCertAgainstCrls:
+ * @crls:
+ * @cert:
  *
  */
 static int
@@ -1817,6 +1827,10 @@ int xmlSecX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
 
 
 /** 
+ * xmlSecX509NamesCompare:
+ * @a:
+ * @b:
+ *
  * we have to sort X509_NAME entries to get correct results.
  * This is ugly but OpenSSL does not support it
  */

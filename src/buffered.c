@@ -25,16 +25,21 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/buffered.h>
 
-/**
- * BinTransform methods to be used in the Id structure
- */
+/****************************************************************************
+ *
+ *   BinTransform methods to be used in the Id structure
+ *
+ ****************************************************************************/
 /**
  * xmlSecBufferedTransformRead
+ * @transform: the buffered transform
+ * @buf: the buffer
+ * @size: the buffer size
  *
+ * Reads the all data from previous transform and returns 
+ * to the caller.
  *
- *
- *
- *
+ * Returns the number of bytes in the buffer or negative value.
  */
 int  	
 xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform, 
@@ -64,7 +69,7 @@ xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform,
     }
 
     if(buffered->buffer == NULL) {
-	/**
+	/*
 	 * create the buffer, read everything from previous transform
 	 * and call process method
 	 */
@@ -120,12 +125,14 @@ xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecBufferedTransformWrite
+ * xmlSecBufferedTransformWrite:
+ * @transform: the buffered transform 
+ * @buf: the data buffer
+ * @size: the data size
  *
- *
- *
- *
- *
+ * Adds the data to the internal buffer.
+ * 
+ * Returns 0 if success or a negative value otherwise.
  */
 int  	
 xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform, 
@@ -168,12 +175,12 @@ xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecBufferedTransformFlush
- *
- *
- *
- *
- *
+ * xmlSecBufferedTransformFlush:
+ * @transform: the buffered transform
+ * 
+ * Writes internal data to previos transform.
+ * 
+ * Returns 0 if success or negative value otherwise.
  */
 int
 xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
@@ -237,6 +244,12 @@ xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
     return(0);
 }
 
+/** 
+ * xmlSecBufferedDestroy
+ * @transform: the buffered transform
+ *
+ * Destroys the buffered transform.
+ */
 void 	
 xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedDestroy";
@@ -255,6 +268,16 @@ xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
     }
 }
 
+/** 
+ * xmlSecBufferedProcess:
+ * @transform: the buffered transform
+ * @buffer: the buffered transform result
+ *
+ * Executes buffered transform.
+ *
+ * Returns number of bytes processed or a negative value
+ * if an error occurs.
+ */
 int 	
 xmlSecBufferedProcess(xmlSecBinTransformPtr transform, xmlBufferPtr buffer) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedProcess";

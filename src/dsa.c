@@ -60,7 +60,7 @@ static int		xmlSecDsaKeyWrite	(xmlSecKeyPtr key,
 						 xmlSecKeyType type,
 						 xmlNodePtr parent);
 
-struct _xmlSecKeyId xmlSecDsaKeyId = {
+struct _xmlSecKeyIdStruct xmlSecDsaKeyId = {
     /* xlmlSecKeyId data  */
     BAD_CAST "DSAKeyValue",		/* const xmlChar *keyValueNodeName; */
     xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
@@ -76,7 +76,7 @@ struct _xmlSecKeyId xmlSecDsaKeyId = {
 };
 xmlSecKeyId xmlSecDsaKey = &xmlSecDsaKeyId;
 
-struct _xmlSecDigestTransformId xmlSecSignDsaSha1Id = {
+struct _xmlSecDigestTransformIdStruct xmlSecSignDsaSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
@@ -109,9 +109,11 @@ xmlSecTransformId xmlSecSignDsaSha1 = (xmlSecTransformId)&xmlSecSignDsaSha1Id;
 
 #define xmlSecGetDsaKey( k ) 			((DSA*)(( k )->keyData))
 
-/**
- * DSA transform
- */
+/****************************************************************************
+ *
+ *    DSA transform
+ *
+ ****************************************************************************/
 #define XMLSEC_DSASHA1_TRANSFORM_SIZE \
     (sizeof(xmlSecDigestTransform) + sizeof(SHA_CTX) + \
     2 * sizeof(unsigned char) * XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE)
@@ -122,10 +124,11 @@ xmlSecTransformId xmlSecSignDsaSha1 = (xmlSecTransformId)&xmlSecSignDsaSha1Id;
 
 /**
  * xmlSecSignDsaSha1Create:
- * @id:
+ * @id: the DSA-SHA1 transform id
+ * 
+ * Creates new DSA-SHA1 transform.
  *
- *
- *
+ * Returns new DSA-SHA1 transform or NULL if an error occurs.
  */
 static xmlSecTransformPtr 
 xmlSecSignDsaSha1Create(xmlSecTransformId id) {
@@ -166,10 +169,9 @@ xmlSecSignDsaSha1Create(xmlSecTransformId id) {
 
 /**
  * xmlSecSignDsaSha1Destroy
- * @transform
- * 
- *
- *
+ * @transform: the DSA-SHA1 transfomr
+ *  
+ * Destroys DSA-SHA1 transform.
  */
 static void 
 xmlSecSignDsaSha1Destroy(xmlSecTransformPtr transform) {
@@ -196,10 +198,13 @@ xmlSecSignDsaSha1Destroy(xmlSecTransformPtr transform) {
 
 /**
  * xmlSecSignDsaSha1Update
- * @digest:
- * @buffer:
- * @size:
+ * @digest: the DSA-SHA1 transform
+ * @buffer: the data buffer
+ * @size: the data size
  *
+ * Digests new portion of data.
+ *
+ * Returns 0 if success or a negative value otherwise.
  */
 static int
 xmlSecSignDsaSha1Update(xmlSecDigestTransformPtr digest,
@@ -226,10 +231,15 @@ xmlSecSignDsaSha1Update(xmlSecDigestTransformPtr digest,
 
 /**
  * xmlSecSignDsaSha1Sign
- * @digest:
- * @buffer:
- * @size
+ * @digest: the DSA-SHA1 transform
+ * @buffer: the result buffer
+ * @size: the result buffer size
  *
+ * Signs the digested data and returns result in the newly allocated
+ * buffer. The caller is responsible for deleting returned buffer
+ * using xmlFree() function.
+ * 
+ * Returns 0 if success or -1 if an error occurs.
  */
 static int
 xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
@@ -295,10 +305,15 @@ xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
 
 /**
  * xmlSecSignDsaSha1Verify
- * @digest:
- * @buffer:
- * @size:
+ * @digest: the DSA-SHA1 transform
+ * @buffer: the signature
+ * @size: the signature size
  *
+ * Verifies the signature and sets @digest->status variable.
+ *
+ * Returns 0 if there is no error (the signature may be 
+ * invalid: check @digest->status!) or a negative value if an error
+ * occurs.
  */
 static int
 xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
@@ -475,8 +490,11 @@ DSA* xmlSecDsaDup(DSA *dsa) {
 
 /**
  * xmlSecDsaKeyCreate
- * @id:
+ * @id: the DSA key id
  *
+ * Creates DSA key.
+ * 
+ * Returns new DSA key or NULL if an error occurs.
  */
 static xmlSecKeyPtr	
 xmlSecDsaKeyCreate(xmlSecKeyId id) {
@@ -509,8 +527,9 @@ xmlSecDsaKeyCreate(xmlSecKeyId id) {
 
 /**
  * xmlSecDsaKeyDestroy
- * @key
+ * @key: the DSA key
  *
+ * Destroys DSA key
  */
 static void
 xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
@@ -878,10 +897,13 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
 /**
  * xmlSecDsaKeyWrite
- * @key
- * @type
- * @parent
+ * @key: the DSA key
+ * @type: the key type to write
+ * @parent: the <DSAKeyValue> node
  *
+ * Writes DSA key into XML node.
+ *
+ * Returns 0 if success or a negative value if an error occurs.
  */
 static int
 xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {

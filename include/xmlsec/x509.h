@@ -10,12 +10,11 @@
 #ifndef __XMLSEC_X509_H__
 #define __XMLSEC_X509_H__    
 
-#ifndef XMLSEC_NO_X509
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
 
+#ifndef XMLSEC_NO_X509
 
 #include <libxml/tree.h>
 
@@ -70,11 +69,17 @@ XMLSEC_EXPORT int		xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store,
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
 								 const char *pwd);
 
+
+#else /*  XMLSEC_NO_X509 */
+
+typedef void* 	xmlSecX509DataPtr;
+typedef void* 	xmlSecX509StorePtr;
+
+#endif /* XMLSEC_NO_X509 */
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-
-#endif /* XMLSEC_NO_X509 */
 
 #endif /* __XMLSEC_X509_H__ */
 

@@ -73,7 +73,7 @@ typedef struct _xmlSecDSigResult {
 /**
  * DSig Reference
  */
-typedef enum _xmlSecReferenceType {
+typedef enum  {
     xmlSecSignedInfoReference,
     xmlSecManifestReference
 } xmlSecReferenceType;

@@ -457,11 +457,13 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 
 
 /**
- *
- *
- *
- *
- *
+ * xmlSecKeyInfoNodeRead:
+ * @keyInfoNode:
+ * @keysMngr:
+ * @context:
+ * @keyId:
+ * @keyType:
+ * @keyUsage:
  *
  */
 xmlSecKeyPtr	
@@ -495,11 +497,12 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
 }
 
 /**
- *
- *
- *
- *
- *
+ * xmlSecKeyInfoNodeWrite
+ * @keyInfoNode:
+ * @keysMngr:
+ * @context:
+ * @key:
+ * @type:
  *
  */
 int

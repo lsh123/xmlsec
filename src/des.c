@@ -60,7 +60,7 @@ static  int		xmlSecDesKeyWriteBinary		(xmlSecKeyPtr key,
 							 xmlSecKeyType type,
 							 unsigned char **buf,
 							 size_t *size);
-struct _xmlSecKeyId xmlSecDesKeyId = {
+struct _xmlSecKeyIdStruct xmlSecDesKeyId = {
     /* xlmlSecKeyId data  */
     BAD_CAST "DESKeyValue",		/* const xmlChar *keyValueNodeName; */
     xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
@@ -86,7 +86,7 @@ static int  	xmlSecDesAddKey			(xmlSecBinTransformPtr transform,
 /**
  * DES transforms
  */
-static const struct _xmlSecCipherTransformId xmlSecEncDes3CbcId = {
+static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
@@ -144,7 +144,7 @@ static int	xmlSecDes3CbcEnc		(const unsigned char *key,
 static int 	xmlSecBufferReverse		(unsigned char *buf, 
 						 size_t size);
 
-static const struct _xmlSecBufferedTransformId xmlSecKWDes3CbcId = {
+static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
@@ -817,8 +817,9 @@ xmlSecDesKeyCreate(xmlSecKeyId id) {
 
 /**
  * xmlSecDesKeyDestroy
- * @key
+ * @key: the DES key
  *
+ * Destroys DES key.
  */
 static void
 xmlSecDesKeyDestroy(xmlSecKeyPtr key) {
@@ -1008,10 +1009,13 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
 /**
  * xmlSecDesKeyWrite
- * @key
- * @type
- * @parent
+ * @key: the DES key
+ * @type: the key type (should be xmlSecKeyTypePrivate or xmlSecKeyTypeAny)
+ * @parent: the DESKeyValue node
  *
+ * Writes DES key value to the XML node.
+ *
+ * Returns 0 if success or a negative value otherwise.
  */
 static int
 xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
@@ -1054,11 +1058,14 @@ xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 }
 
 /**
+ * xmlSecDesKeyReadBinary:
+ * @key: the DES key
+ * @buf: the key data
+ * @size: the data size
  *
+ * Reads DES key data from binary format.
  *
- *
- *
- *
+ * Returns 0 if success or a negative value otherwise.
  */
 static  int
 xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -1094,11 +1101,15 @@ xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
 }
 
 /**
+ * xmlSecDesKeyWriteBinary:
+ * @key: the DES key
+ * @buf: the pointer to key data
+ * @size: the pointer data size
  *
+ * Writes DES key data to allocated binary buffer. The caller
+ * is responsible for deleting the returned buffer using xmlFree().
  *
- *
- *
- *
+ * Returns 0 if success or a negative value otherwise.
  */
 static  int
 xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
@@ -1143,13 +1154,19 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 }
 
 
-/**
- * DES Key Data
- */
+/**************************************************************************
+ *
+ *    DES Key Data
+ *
+ *************************************************************************/
 /**
  * xmlSecDesKeyDataCreate
+ * @key: the DES key data
+ * @keySize: the DES key data size
  *
+ * Creates new DES key data object.
  *
+ * Returns new DES key data object or NULL if an error occurs.
  */
 static xmlSecDesKeyDataPtr	
 xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
@@ -1179,9 +1196,10 @@ xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
 }
 
 /**
+ * xmlSecDesKeyDataDestroy
+ * @data: the DES key data
  *
- *
- *
+ * Destroys DES key data.
  */
 static void
 xmlSecDesKeyDataDestroy(xmlSecDesKeyDataPtr data) {

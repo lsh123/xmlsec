@@ -39,13 +39,13 @@ typedef struct _xmlSecC14NTransform	*xmlSecC14NTransformPtr;
 typedef struct _xmlSecTransformState	*xmlSecTransformStatePtr;
 
 
-typedef enum _xmlSecTransformType {
+typedef enum  {
     xmlSecTransformTypeBinary,
     xmlSecTransformTypeXml,
     xmlSecTransformTypeC14N
 } xmlSecTransformType;
 
-typedef enum _xmlSecBinTransformSubType {
+typedef enum  {
     xmlSecBinTransformSubTypeNone = 0,
     xmlSecBinTransformSubTypeDigest,
     xmlSecBinTransformSubTypeCipher,
@@ -53,7 +53,7 @@ typedef enum _xmlSecBinTransformSubType {
 } xmlSecBinTransformSubType;
 
 
-typedef enum _xmlSecTransformResult {
+typedef enum  {
     xmlSecTransformResultBinary,
     xmlSecTransformResultXml
 } xmlSecTransformResult;
@@ -66,7 +66,7 @@ typedef void 	(*xmlSecTransformDestroyMethod)		  (xmlSecTransformPtr transform);
 typedef int 	(*xmlSecTransformReadNodeMethod)	  (xmlSecTransformPtr transform,
 							   xmlNodePtr transformNode);
 
-struct _xmlSecTransformId {
+struct _xmlSecTransformIdStruct {
     /* data */
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
@@ -104,8 +104,8 @@ typedef int  	(*xmlSecBinTransformWriteMethod)	(xmlSecBinTransformPtr transform,
 							 size_t size);
 typedef int  	(*xmlSecBinTransformFlushMethod)	(xmlSecBinTransformPtr transform);
 
-typedef const struct _xmlSecBinTransformId	*xmlSecBinTransformId;
-struct _xmlSecBinTransformId {
+typedef const struct _xmlSecBinTransformIdStruct *xmlSecBinTransformId;
+struct _xmlSecBinTransformIdStruct {
     /* same as xmlSecTransformId */    
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
@@ -148,8 +148,8 @@ typedef int 	(*xmlSecXmlTransformExecuteMethod)	(xmlSecXmlTransformPtr transform
 							 xmlDocPtr ctxDoc,
 							 xmlDocPtr *doc,
 							 xmlNodeSetPtr *nodes);
-typedef const struct _xmlSecXmlTransformId *xmlSecXmlTransformId;
-struct _xmlSecXmlTransformId {
+typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;
+struct _xmlSecXmlTransformIdStruct {
     /* same as xmlSecTransformId */ 
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
@@ -182,8 +182,8 @@ typedef int 	(*xmlSecC14NTransformExecuteMethod)	(xmlSecC14NTransformPtr transfo
 							 xmlDocPtr doc,
 							 xmlNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
-typedef const struct _xmlSecC14NTransformId	*xmlSecC14NTransformId;
-struct _xmlSecC14NTransformId {
+typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;
+struct _xmlSecC14NTransformIdStruct {
     /* same as xmlSecTransformId */ 
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;

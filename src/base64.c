@@ -90,7 +90,7 @@ static int  		xmlSecBase64Update		(xmlSecCipherTransformPtr transform,
 							 size_t size);
 static int  		xmlSecBase64Final		(xmlSecCipherTransformPtr transform);
 							 
-static const struct _xmlSecCipherTransformId xmlSecBase64EncodeId = {
+static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
@@ -120,7 +120,7 @@ static const struct _xmlSecCipherTransformId xmlSecBase64EncodeId = {
 };
 xmlSecTransformId xmlSecEncBase64Encode = (xmlSecTransformId)&xmlSecBase64EncodeId;
 
-static const struct _xmlSecCipherTransformId xmlSecBase64DecodeId = {
+static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */

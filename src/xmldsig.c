@@ -942,15 +942,21 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     return(0);
 }
 
-/**
- * DSig result methods
- */
+/****************************************************************************
+ *
+ *   DSig result methods
+ *
+ ****************************************************************************/
 /**
  * xmlSecDSigResultCreate
- * @ctx
- * @signNode:
- * @sign
+ * @ctx: the DSig context
+ * @context: the application context
+ * @signNode: the <Signature> node
+ * @sign: the sign or verify flag
+ * 
+ * Creates new DSig result.
  *
+ * Returns new DSig result or NULL if an error occurs.
  */
 xmlSecDSigResultPtr	
 xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context, 
@@ -990,10 +996,10 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
 
 
 /**
- * xmlSecDSigResultDestroy:
- * @result
+ * xmlSecDSigResultDestroy
+ * @result: the DSig result
  *
- *
+ * Destroys DSig result
  */
 void
 xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
@@ -1031,7 +1037,7 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
 }
 
 /** 
- * xmlSecDSigResultDebugDump:
+ * xmlSecDSigResultDebugDump
  * @output:
  * @result:
  *
@@ -1083,9 +1089,9 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
 
 
 /**
- * xmlSecDSigResultAddSignedInfoRef:
- * @result
- * @ref
+ * xmlSecDSigResultAddSignedInfoRef
+ * @result:
+ * @ref:
  *
  *
  */
@@ -1117,8 +1123,8 @@ xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, xmlSecReferenceResu
 
 /**
  * xmlSecDSigResultAddManifestRef:
- * @result
- * @ref
+ * @result:
+ * @ref:
  *
  *
  */
@@ -1149,12 +1155,14 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
 }
 
 							 
-/**
+/**************************************************************************
+ *
  * DSig context methods
- */
+ *
+ **************************************************************************/
 /**
  * xmlSecDSigCtxCreate
- *
+ * @keysMngr:
  *
  *
  *
@@ -1189,7 +1197,7 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecDSigCtxDestroy:
- * @ctx
+ * @ctx:
  *
  *
  *
@@ -1986,8 +1994,8 @@ done:
 
 /**
  * xmlSecReferenceCreate
- * @ctx
- * @self
+ * @ctx:
+ * @self:
  *
  *
  */
@@ -2026,8 +2034,8 @@ xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr
 }
 
 /**
- * xmlSecReferenceDestroy:
- * @ref
+ * xmlSecReferenceDestroy
+ * @ref:
  *
  *
  *

@@ -17,22 +17,19 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-typedef const struct _xmlSecKeyId	*xmlSecKeyId; 
+typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
 typedef struct _xmlSecKey 		*xmlSecKeyPtr; 
 typedef struct _xmlSecKeysMngr  	*xmlSecKeysMngrPtr; 
 
 XMLSEC_EXPORT_VAR xmlSecKeyId xmlSecAllKeyIds[];
 
-/** 
- * Key Types
- */
-typedef enum _xmlSecKeyType {
+typedef enum  {
     xmlSecKeyTypePublic = 0,
     xmlSecKeyTypePrivate,
     xmlSecKeyTypeAny
 } xmlSecKeyType;
 
-typedef enum _xmlSecKeyUsage {
+typedef enum  {
     xmlSecKeyUsageAny = 0,
     xmlSecKeyUsageSign,
     xmlSecKeyUsageVerify,
@@ -68,6 +65,7 @@ typedef long				xmlSecKeyOrigin;
 
 #include <xmlsec/x509.h>
 
+
 /**
  * XML Sec Key
  */
@@ -77,9 +75,7 @@ struct _xmlSecKey {
     xmlChar				*name;
     xmlSecKeyOrigin			origin;
 
-#ifndef XMLSEC_NO_X509
     xmlSecX509DataPtr			x509Data;
-#endif /* XMLSEC_NO_X509 */
     
     /* key specific data */
     void				*keyData;
@@ -121,7 +117,6 @@ typedef xmlSecKeyPtr 	(*xmlSecFindKeyCallback)	(xmlSecKeysMngrPtr mngr,
 							 xmlSecKeyType type,
 							 xmlSecKeyUsage usage);
 
-#ifndef XMLSEC_NO_X509
 /**
  * xmlSecX509FindCallback:
  * @mngr: the keys manager
@@ -154,8 +149,6 @@ typedef int		(*xmlSecX509VerifyCallback)	(xmlSecKeysMngrPtr mngr,
 							 void *context,
     							 xmlSecX509DataPtr cert);  
 
-#endif /* XMLSEC_NO_X509 */
-
 typedef struct _xmlSecKeysMngr {
     /* top level function */    
     xmlSecGetKeyCallback		getKey;
@@ -167,13 +160,11 @@ typedef struct _xmlSecKeysMngr {
     xmlSecFindKeyCallback		findKey;
     void 				*keysData;
 
-#ifndef XMLSEC_NO_X509
     /* x509 certs */
     int					failIfCertNotFound;
     xmlSecX509FindCallback		findX509;
     xmlSecX509VerifyCallback		verifyX509;   
     void				*x509Data;     
-#endif /* XMLSEC_NO_X509 */    
 } xmlSecKeysMngr;
 
 

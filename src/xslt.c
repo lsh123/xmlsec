@@ -66,7 +66,7 @@ static int  		xmlSecTransformXsltFlush	(xmlSecBinTransformPtr transform);
 static int		xmlSecTransformXsltExecute	(xmlBufferPtr buffer,
 							 xmlBufferPtr xslt);
 
-static const struct _xmlSecBinTransformId xmlSecTransformXsltId = {
+static const struct _xmlSecBinTransformIdStruct xmlSecTransformXsltId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
@@ -129,7 +129,7 @@ xmlSecTransformXsltCreate(xmlSecTransformId id) {
 
 /**
  * xmlSecTransformXsltDestroy:
- * @transform
+ * @transform:
  *
  * Destroys the current object
  */
@@ -460,7 +460,7 @@ xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
 
 /**
  * xmlSecTransformXsltExecute:
- * @buffer
+ * @buffer:
  * @xslt:
  *
  */

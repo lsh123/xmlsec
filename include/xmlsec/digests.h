@@ -21,8 +21,8 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 
-typedef struct _xmlSecDigestTransform 		*xmlSecDigestTransformPtr; 
-typedef const struct _xmlSecDigestTransformId	*xmlSecDigestTransformId;
+typedef struct _xmlSecDigestTransform 			*xmlSecDigestTransformPtr; 
+typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;
 
 typedef int (*xmlSecDigestUpdateMethod)		(xmlSecDigestTransformPtr transform,
 						 const unsigned char *buffer,
@@ -34,7 +34,7 @@ typedef int (*xmlSecDigestVerifyMethod)		(xmlSecDigestTransformPtr transform,
 						 const unsigned char *buffer,
 						 size_t size);
 
-struct _xmlSecDigestTransformId {
+struct _xmlSecDigestTransformIdStruct {
     /* same as xmlSecTransformId */    
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;

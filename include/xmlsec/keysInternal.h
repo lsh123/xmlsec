@@ -48,7 +48,7 @@ typedef int		(*xmlSecKeyWriteBinaryMethod)	(xmlSecKeyPtr key,
 							 size_t *size);
 
 
-struct _xmlSecKeyId {
+struct _xmlSecKeyIdStruct {
     /* xlmlSecKeyId data */
     const xmlChar 			*keyValueNodeName;
     const xmlChar			*keyValueNodeNs;

@@ -1,3 +1,6 @@
+Wed Jul 10 21:24:43 2002  Aleksey Sanin  <aleksey@aleksey.com> 
+	* include/xmlsec/*.h src/*.c: some comments added
+
 Wed Jul 10 18:06:12 2002  Aleksey Sanin  <aleksey@aleksey.com> 
 	* Makefile.am config.h.in configure.in man/* xmlsec.spec.in:
         man pages for xmlsec and xmlsec-config were added

@@ -35,7 +35,7 @@ static int 		xmlSecC14NTransformExec		(xmlSecC14NTransformPtr transform,
 							 xmlNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
 
-static const struct _xmlSecC14NTransformId xmlSecC14NInclusiveTransformId = {
+static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
@@ -50,7 +50,7 @@ static const struct _xmlSecC14NTransformId xmlSecC14NInclusiveTransformId = {
 };
 xmlSecTransformId xmlSecC14NInclusive = (xmlSecTransformId)&xmlSecC14NInclusiveTransformId;
 
-static const struct _xmlSecC14NTransformId xmlSecC14NInclusiveWithCommentsTransformId = {
+static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveWithCommentsTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
@@ -65,7 +65,7 @@ static const struct _xmlSecC14NTransformId xmlSecC14NInclusiveWithCommentsTransf
 };
 xmlSecTransformId xmlSecC14NInclusiveWithComments = (xmlSecTransformId)&xmlSecC14NInclusiveWithCommentsTransformId;
 
-static const struct _xmlSecC14NTransformId xmlSecC14NExclusiveTransformId = {
+static const struct _xmlSecC14NTransformIdStruct xmlSecC14NExclusiveTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
@@ -80,7 +80,7 @@ static const struct _xmlSecC14NTransformId xmlSecC14NExclusiveTransformId = {
 };
 xmlSecTransformId xmlSecC14NExclusive = (xmlSecTransformId)&xmlSecC14NExclusiveTransformId;
 
-static const struct _xmlSecC14NTransformId xmlSecC14NExclusiveWithCommentsTransformId = {
+static const struct _xmlSecC14NTransformIdStruct xmlSecC14NExclusiveWithCommentsTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
@@ -97,9 +97,11 @@ xmlSecTransformId xmlSecC14NExclusiveWithComments = (xmlSecTransformId)&xmlSecC1
 
 /**
  * xmlSecC14NTransformCreate:
- * @id:
+ * @id: the c14n transform id
  *
- * Creates new c14n trasnform
+ * Creates new c14n trasnform.
+ *
+ * Returns created transform or NULL of an error occurs.
  */
 static xmlSecTransformPtr 
 xmlSecC14NTransformCreate(xmlSecTransformId id) {
@@ -133,9 +135,9 @@ xmlSecC14NTransformCreate(xmlSecTransformId id) {
 
 /** 
  * xmlSecC14NTransformDestroy
- * @transform
+ * @transform: the C14N transform
  * 
- *
+ * Destroys the C14N transform.
  */
 static void
 xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
@@ -169,9 +171,12 @@ xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
 
 /** 
  * xmlSecC14NTransformReadNode
+ * @transform: the C14N transform 
+ * @transformNode: the transform node
  *
+ * Reads C14N transform node.
  *
- *
+ * Returns 0 if success or a negative values if an error occurs.
  */
 static int
 xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
@@ -278,7 +283,9 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
  * @prefixList: 	the white space delimited  list of namespace prefixes, 
  *			where "#default" indicates the default namespace
  *
+ * Adds "inclusive" namespaces to the ExcC14N transform node
  *
+ * Returns 0 if success or a negative value otherwise.
  */
 int		
 xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
@@ -320,7 +327,7 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
 
 /** 
  * xmlSecC14NTransformExec
- * @transform:
+ * @transform: 
  * @doc:
  * @nodes:
  * @buffer:

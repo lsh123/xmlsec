@@ -34,7 +34,7 @@ static int 		xmlSecTransformEnvelopedExecute	(xmlSecXmlTransformPtr transform,
 							 xmlNodeSetPtr *nodes);
 
 
-struct _xmlSecXmlTransformId xmlSecTransformEnvelopedId = {
+struct _xmlSecXmlTransformIdStruct xmlSecTransformEnvelopedId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
@@ -57,14 +57,18 @@ static const xmlChar envelopedXPath[] =
 				"here()/ancestor::dsig:Signature[1]) > "
 				"count(ancestor-or-self::dsig:Signature)]";
 
-/**
+/****************************************************************************
+ *
  * Enveloped transform 
- */
+ *
+ ****************************************************************************/
 /**
  * xmlSecTransformEnvelopedCreate
- * @id
+ * @id: the enveloped transform id
+ * 
+ * Creates new enveloped transform.
  *
- *
+ * Returns enveloped transform or NULL if an error occurs.
  */
 static xmlSecTransformPtr 
 xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
@@ -96,9 +100,9 @@ xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
 
 /**
  * xmlSecTransformEnvelopedDestroy
- * @transform:
+ * @transform: the enveloped transform.  
  *
- *
+ * Destroys the enveloped trasnform.
  */
 static void
 xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {

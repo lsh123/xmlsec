@@ -31,7 +31,7 @@ static int  		xmlSecMemBufTransformWrite	(xmlSecBinTransformPtr transform,
 							 size_t size);
 static int  		xmlSecMemBufTransformFlush	(xmlSecBinTransformPtr transform);
 
-static const struct _xmlSecBinTransformId xmlSecMemBufTransformId = {
+static const struct _xmlSecBinTransformIdStruct xmlSecMemBufTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
@@ -122,7 +122,7 @@ xmlSecMemBufTransformCreate(xmlSecTransformId id) {
 
 /**
  * xmlSecMemBufTransformDestroy:
- * @transform
+ * @transform:
  *
  * Destroys the current object
  */

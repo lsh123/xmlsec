@@ -69,7 +69,7 @@ static xmlNodeSetPtr	xmlSecXPath2AddSubtrees		(xmlNodeSetPtr nodes);
 static void		xmlSecNodeSetDebugDump		(xmlNodeSetPtr nodes,
 							 FILE *output);
 
-struct _xmlSecXmlTransformId xmlSecTransformXPathId = {
+struct _xmlSecXmlTransformIdStruct xmlSecTransformXPathId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
@@ -84,7 +84,7 @@ struct _xmlSecXmlTransformId xmlSecTransformXPathId = {
 };
 xmlSecTransformId xmlSecTransformXPath = (xmlSecTransformId)(&xmlSecTransformXPathId);
 
-struct _xmlSecXmlTransformId xmlSecTransformXPath2Id = {
+struct _xmlSecXmlTransformIdStruct xmlSecTransformXPath2Id = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
@@ -103,6 +103,10 @@ xmlSecTransformId xmlSecTransformXPath2 = (xmlSecTransformId)(&xmlSecTransformXP
 static const xmlChar xpathPattern[] = "(//. | //@* | //namespace::*)[%s]";
 
 /** 
+ * xmlSecXPathHereFunction:
+ * @ctxt:
+ * @nargs:
+ *
  * see xmlXPtrHereFunction() in xpointer.c. the only change is that 
  * we return NodeSet instead of NodeInterval
  */
@@ -118,12 +122,14 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 
 
 
-/**
- * XPath transform 
- */
+/***************************************************************************
+ *
+ *         XPath transform 
+ *
+ **************************************************************************/
 /**
  * xmlSecTransformXPathCreate
- * @id
+ * @id:
  *
  *
  */
@@ -759,9 +765,11 @@ xmlSecXPath2SubtractFromDoc(xmlNodePtr cur, xmlNodeSetPtr nodes, xmlNodeSetPtr e
 }
 
 
-/**
- * XPath Transform Data
- */ 
+/***************************************************************************
+ *
+ *   XPath Transform Data
+ *
+ ***************************************************************************/ 
 /**
  * xmlSecXPathDataCreate:
  *
@@ -789,9 +797,8 @@ xmlSecXPathDataCreate(int xpath2) {
 }
 
 /**
- * @xmlSecXPathDataDestroy:
- * @data
- *
+ * xmlSecXPathDataDestroy
+ * @data:
  *
  */
 void				
@@ -826,7 +833,7 @@ xmlSecXPathDataDestroy(xmlSecXPathDataPtr data) {
 
 /**
  * xmlSecXPathDataRead
- * @node
+ * @node:
  *
  *
  */

@@ -22,13 +22,13 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 
-typedef struct _xmlSecBufferedTransform 	*xmlSecBufferedTransformPtr; 
-typedef const struct _xmlSecBufferedTransformId	*xmlSecBufferedTransformId;
+typedef struct _xmlSecBufferedTransform 		*xmlSecBufferedTransformPtr; 
+typedef const struct _xmlSecBufferedTransformIdStruct	*xmlSecBufferedTransformId;
 
 typedef int (*xmlSecBufferedProcessMethod)	(xmlSecBufferedTransformPtr transform,
 						 xmlBufferPtr buffer);
 
-struct _xmlSecBufferedTransformId {
+struct _xmlSecBufferedTransformIdStruct {
     /* same as xmlSecTransformId */    
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;

@@ -64,7 +64,7 @@ static int		xmlSecRsaKeyWrite	(xmlSecKeyPtr key,
 						 xmlSecKeyType type,
 						 xmlNodePtr parent);
 
-struct _xmlSecKeyId xmlSecRsaKeyId = {
+struct _xmlSecKeyIdStruct xmlSecRsaKeyId = {
     /* xlmlSecKeyId data  */
     BAD_CAST "RSAKeyValue",		/* const xmlChar *keyValueNodeName; */
     xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
@@ -82,7 +82,7 @@ xmlSecKeyId xmlSecRsaKey = &xmlSecRsaKeyId;
 
 
 
-struct _xmlSecDigestTransformId xmlSecSignRsaSha1Id = {
+struct _xmlSecDigestTransformIdStruct xmlSecSignRsaSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
@@ -120,7 +120,7 @@ static int  	xmlSecRsaPkcs1AddKey		(xmlSecBinTransformPtr transform,
 static int  	xmlSecRsaPkcs1Process		(xmlSecBufferedTransformPtr buffered, 
 						 xmlBufferPtr buffer);
 
-static const struct _xmlSecBufferedTransformId xmlSecEncRsaPkcs1Id = {
+static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaPkcs1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
@@ -157,7 +157,7 @@ static int 	xmlSecRsaOaepReadNode	 	(xmlSecTransformPtr transform,
 static int  	xmlSecRsaOaepProcess		(xmlSecBufferedTransformPtr buffered, 
 						 xmlBufferPtr buffer);
 
-static const struct _xmlSecBufferedTransformId xmlSecEncRsaOaepId = {
+static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaOaepId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
@@ -241,7 +241,7 @@ xmlSecSignRsaSha1Create(xmlSecTransformId id) {
 
 /**
  * xmlSecSignRsaSha1Destroy
- * @transform
+ * @transform:
  * 
  *
  *
@@ -560,7 +560,7 @@ xmlSecRsaKeyCreate(xmlSecKeyId id) {
 
 /**
  * xmlSecRsaKeyDestroy
- * @key
+ * @key:
  *
  */
 static void
@@ -832,9 +832,9 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
 /**
  * xmlSecRsaKeyWrite
- * @key
- * @type
- * @parent
+ * @key:
+ * @type:
+ * @parent:
  *
  */
 static int
@@ -1353,7 +1353,7 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 		return(-1);	
 	    }
 	
-	    /** 
+	    /* 
     	     * the private decrypt w/o padding adds '0's at the begginning.
 	     * it's not clear for me can I simply skip all '0's from the
 	     * beggining so I have to do decode it back to BIGNUM and dump

@@ -25,12 +25,13 @@ extern "C" {
 #include <xmlsec/keys.h>
 
 
-typedef struct _xmlSecTransform 	*xmlSecTransformPtr; 
-typedef const struct _xmlSecTransformId *xmlSecTransformId;
+typedef struct _xmlSecTransform 	      *xmlSecTransformPtr; 
+typedef const struct _xmlSecTransformIdStruct *xmlSecTransformId;
+
 /* invalid/unknown */
 #define xmlSecTransformUnknown			NULL
 
-typedef enum _xmlSecTransformStatus {
+typedef enum  {
     xmlSecTransformStatusNone = 0,
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
@@ -156,7 +157,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecDigestSha1;
 /**
  * XPath transform 
  */
-typedef enum _xmlSecXPath2TransformType {
+typedef enum {
     xmlSecXPathTransformUnknown = 0,
     xmlSecXPathTransformIntersect,
     xmlSecXPathTransformSubtract,

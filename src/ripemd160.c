@@ -37,7 +37,7 @@ static int 	xmlSecDigestRipemd160Verify	(xmlSecDigestTransformPtr transform,
 
 
 
-struct _xmlSecDigestTransformId xmlSecDigestRipemd160Id = {
+struct _xmlSecDigestTransformIdStruct xmlSecDigestRipemd160Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */

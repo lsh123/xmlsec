@@ -37,7 +37,7 @@ static int 	xmlSecDigestSha1Verify		(xmlSecDigestTransformPtr transform,
 
 
 
-struct _xmlSecDigestTransformId xmlSecDigestSha1Id = {
+struct _xmlSecDigestTransformIdStruct xmlSecDigestSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */

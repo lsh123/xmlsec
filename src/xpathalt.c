@@ -38,7 +38,7 @@ static int 		xmlSecXPathAltExecute		(xmlSecXmlTransformPtr transform,
 							 xmlDocPtr *doc,
 							 xmlNodeSetPtr *nodes);
 
-struct _xmlSecXmlTransformId xmlSecXPathAltId = {
+struct _xmlSecXmlTransformIdStruct xmlSecXPathAltId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
@@ -81,7 +81,7 @@ static const xmlChar xmlSecXPathAltNs[] = "http://www.nue.et-inf.uni-siegen.de/~
  */
 /**
  * xmlSecXPathAltCreate
- * @id
+ * @id:
  *
  *
  */
@@ -383,7 +383,7 @@ xmlSecXPathAltAddNodes(xmlNodeSetPtr nodes, xmlNodePtr cur,
 	return(NULL);
     }    
 
-    /**
+    /*
      * Create XPath context
      */
     ctx = xmlXPathNewContext(doc);

@@ -57,7 +57,7 @@ static int  		xmlSecInputUriTransformRead	(xmlSecBinTransformPtr transform,
 							 unsigned char *buf, 
 							 size_t size);
 
-static const struct _xmlSecBinTransformId xmlSecInputUriTransformId = {
+static const struct _xmlSecBinTransformIdStruct xmlSecInputUriTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
@@ -130,7 +130,7 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
 
 /** 
  * xmlSecInputUriTransformDestroy:
- * @transform
+ * @transform:
  *
  * Destroys the object
  */

@@ -141,39 +141,39 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <div class="REFSECT2">
 <a name="AEN1345"></a><h3>
 <a name="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS"></a>XMLSEC_ERRORS_R_XMLSEC_FAILED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2</pre></td></tr></table>
-<p>An XMLSec function failed.</p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 3</pre></td></tr></table>
+<p>An XMLSec function failed (error subject is the failed function).</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="AEN1351"></a><h3>
 <a name="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS"></a>XMLSEC_ERRORS_R_CRYPTO_FAILED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3</pre></td></tr></table>
-<p>Crypto (OpenSSL) function failed.</p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 4</pre></td></tr></table>
+<p>Crypto (OpenSSL) function failed (error subject is the failed function).</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="AEN1357"></a><h3>
 <a name="XMLSEC-ERRORS-R-XML-FAILED-CAPS"></a>XMLSEC_ERRORS_R_XML_FAILED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XML_FAILED		 4</pre></td></tr></table>
-<p>LibXML function failed.</p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XML_FAILED		 5</pre></td></tr></table>
+<p>LibXML function failed (error subject is the failed function).</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="AEN1363"></a><h3>
 <a name="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS"></a>XMLSEC_ERRORS_R_XSLT_FAILED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XSLT_FAILED		 5</pre></td></tr></table>
-<p>LibXSLT function failed.</p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XSLT_FAILED		 6</pre></td></tr></table>
+<p>LibXSLT function failed (error subject is the failed function).</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="AEN1369"></a><h3>
 <a name="XMLSEC-ERRORS-R-IO-FAILED-CAPS"></a>XMLSEC_ERRORS_R_IO_FAILED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_IO_FAILED		 6</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_IO_FAILED		 7</pre></td></tr></table>
 <p>IO operation failed.</p>
 <p></p>
 </div>
@@ -182,7 +182,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1375"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS"></a>XMLSEC_ERRORS_R_INVALID_TRANSFORM</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10</pre></td></tr></table>
-<p>Invlaid transform.</p>
+<p>This transform is invlaid here.</p>
 <p></p>
 </div>
 <hr>
@@ -278,7 +278,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1447"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-NODE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_NODE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23</pre></td></tr></table>
-<p>Invalid node,</p>
+<p>Invalid node (error subject is the node name).</p>
 <p></p>
 </div>
 <hr>
@@ -294,7 +294,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1459"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS"></a>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25</pre></td></tr></table>
-<p>Invalid node content.</p>
+<p>Invalid node content (error subject is the node name).</p>
 <p></p>
 </div>
 <hr>
@@ -302,7 +302,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1465"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26</pre></td></tr></table>
-<p>Invalid node attribute.</p>
+<p>Invalid node attribute (error subject is the node name).</p>
 <p></p>
 </div>
 <hr>
@@ -318,7 +318,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1477"></a><h3>
 <a name="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS"></a>XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28</pre></td></tr></table>
-<p>The transform requires the same document.</p>
+<p>The transform requires the input document to be the same as context.</p>
 <p></p>
 </div>
 <hr>
@@ -326,7 +326,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1483"></a><h3>
 <a name="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS"></a>XMLSEC_ERRORS_R_NODE_NOT_FOUND</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29</pre></td></tr></table>
-<p>Node not found.</p>
+<p>Node not found (error subject is the required node name).</p>
 <p></p>
 </div>
 <hr>
@@ -397,7 +397,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <div class="REFSECT2">
 <a name="AEN1537"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS"></a>XMLSEC_ERRORS_R_INVALID_STATUS</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_STATUS		 52</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_STATUS 52</pre></td></tr></table>
 <p>Invalid status.</p>
 <p></p>
 </div>
@@ -414,7 +414,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <a name="AEN1549"></a><h3>
 <a name="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS"></a>XMLSEC_ERRORS_R_UNEXPECTED_NODE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54</pre></td></tr></table>
-<p>Unexpected node.</p>
+<p>Unexpected node (error subject is the node name).</p>
 <p></p>
 </div>
 <hr>
@@ -429,7 +429,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <div class="REFSECT2">
 <a name="AEN1561"></a><h3>
 <a name="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS"></a>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 56</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</pre></td></tr></table>
 <p>Max EncryptedKey level reached.</p>
 <p></p>
 </div>
@@ -445,7 +445,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 <div class="REFSECT2">
 <a name="AEN1573"></a><h3>
 <a name="XMLSEC-ERRORS-R-DISABLED-CAPS"></a>XMLSEC_ERRORS_R_DISABLED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DISABLED		 101</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DISABLED		 8</pre></td></tr></table>
 <p>The feature is disabled during compilation.
 Check './configure --help' for details on how to
 enable it.</p>
@@ -455,7 +455,7 @@ enable it.</p>
 <div class="REFSECT2">
 <a name="AEN1579"></a><h3>
 <a name="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS"></a>XMLSEC_ERRORS_R_NOT_IMPLEMENTED</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 102</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 9</pre></td></tr></table>
 <p>Feature is not implemented.</p>
 <p></p>
 </div>

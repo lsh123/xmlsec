@@ -14,10 +14,10 @@
 
 
 
-void        <link linkend="xmlSecIOInit">xmlSecIOInit</link>                    (void);
+int         <link linkend="xmlSecIOInit">xmlSecIOInit</link>                    (void);
 void        <link linkend="xmlSecIOShutdown">xmlSecIOShutdown</link>                (void);
 void        <link linkend="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks</link>        (void);
-void        <link linkend="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</link>
+int         <link linkend="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</link>
                                             (void);
 int         <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks</link>       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
                                              <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
@@ -48,13 +48,16 @@ int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIO
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecIOInit">xmlSecIOInit ()</title>
-<programlisting>void        xmlSecIOInit                    (void);</programlisting>
+<programlisting>int         xmlSecIOInit                    (void);</programlisting>
 <para>
 The IO initialization (called from <link linkend="xmlSecInit">xmlSecInit</link> function).
 Applications should not call this function directly.</para>
 <para>
 
-</para></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIOShutdown">xmlSecIOShutdown ()</title>
 <programlisting>void        xmlSecIOShutdown                (void);</programlisting>
@@ -75,13 +78,16 @@ compiled-in I/O.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks ()</title>
-<programlisting>void        xmlSecIORegisterDefaultCallbacks
+<programlisting>int         xmlSecIORegisterDefaultCallbacks
                                             (void);</programlisting>
 <para>
 Registers the default compiled-in I/O handlers.</para>
 <para>
 
-</para></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks ()</title>
 <programlisting>int         xmlSecIORegisterCallbacks       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
@@ -105,8 +111,7 @@ Register a new set of I/O callback for handling parser input.</para>
 <varlistentry><term><parameter>closeFunc</parameter>&nbsp;:</term>
 <listitem><simpara>  	the close stream callback.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the registered handler number or a negative value if 
-an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

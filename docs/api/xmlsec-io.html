@@ -47,10 +47,10 @@
 <a name="AEN1871"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-void        <a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                    (void);
+int         <a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                    (void);
 void        <a href="xmlsec-io.html#XMLSECIOSHUTDOWN">xmlSecIOShutdown</a>                (void);
 void        <a href="xmlsec-io.html#XMLSECIOCLEANUPCALLBACKS">xmlSecIOCleanupCallbacks</a>        (void);
-void        <a href="xmlsec-io.html#XMLSECIOREGISTERDEFAULTCALLBACKS">xmlSecIORegisterDefaultCallbacks</a>
+int         <a href="xmlsec-io.html#XMLSECIOREGISTERDEFAULTCALLBACKS">xmlSecIORegisterDefaultCallbacks</a>
                                             (void);
 int         <a href="xmlsec-io.html#XMLSECIOREGISTERCALLBACKS">xmlSecIORegisterCallbacks</a>       (<font>xmlInputMatchCallback</font> matchFunc,
                                              <font>xmlInputOpenCallback</font> openFunc,
@@ -71,14 +71,19 @@ int         <a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIOPEN">xmlSecTransform
 <div class="REFSECT2">
 <a name="AEN1894"></a><h3>
 <a name="XMLSECIOINIT"></a>xmlSecIOInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOInit                    (void);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIOInit                    (void);</pre></td></tr></table>
 <p>The IO initialization (called from <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a> function).
 Applications should not call this function directly.</p>
 <p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1902"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1901"></a><h3>
+<a name="AEN1907"></a><h3>
 <a name="XMLSECIOSHUTDOWN"></a>xmlSecIOShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOShutdown                (void);</pre></td></tr></table>
 <p>The IO clenaup (called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a> function).
@@ -87,7 +92,7 @@ Applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1908"></a><h3>
+<a name="AEN1914"></a><h3>
 <a name="XMLSECIOCLEANUPCALLBACKS"></a>xmlSecIOCleanupCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOCleanupCallbacks        (void);</pre></td></tr></table>
 <p>Clears the entire input callback table. this includes the
@@ -96,16 +101,21 @@ compiled-in I/O.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1914"></a><h3>
+<a name="AEN1920"></a><h3>
 <a name="XMLSECIOREGISTERDEFAULTCALLBACKS"></a>xmlSecIORegisterDefaultCallbacks ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIORegisterDefaultCallbacks
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIORegisterDefaultCallbacks
                                             (void);</pre></td></tr></table>
 <p>Registers the default compiled-in I/O handlers.</p>
 <p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1927"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1920"></a><h3>
+<a name="AEN1932"></a><h3>
 <a name="XMLSECIOREGISTERCALLBACKS"></a>xmlSecIORegisterCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIORegisterCallbacks       (<font>xmlInputMatchCallback</font> matchFunc,
                                              <font>xmlInputOpenCallback</font> openFunc,
@@ -116,31 +126,30 @@ compiled-in I/O.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1931"><span style="white-space: nowrap"><tt class="PARAMETER"><i>matchFunc</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1943"><span style="white-space: nowrap"><tt class="PARAMETER"><i>matchFunc</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>  	the protocol match callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1936"><span style="white-space: nowrap"><tt class="PARAMETER"><i>openFunc</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1948"><span style="white-space: nowrap"><tt class="PARAMETER"><i>openFunc</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>  		the open stream callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1941"><span style="white-space: nowrap"><tt class="PARAMETER"><i>readFunc</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1953"><span style="white-space: nowrap"><tt class="PARAMETER"><i>readFunc</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>  		the read from stream callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1946"><span style="white-space: nowrap"><tt class="PARAMETER"><i>closeFunc</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1958"><span style="white-space: nowrap"><tt class="PARAMETER"><i>closeFunc</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>  	the close stream callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1951"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the registered handler number or a negative value if 
-an error occurs.</p></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1963"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1956"></a><h3>
+<a name="AEN1968"></a><h3>
 <a name="XMLSECTRANSFORMINPUTURIID"></a>xmlSecTransformInputURIId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformInputURIId</pre></td></tr></table>
 <p>The Input URI transform id.</p>
@@ -148,7 +157,7 @@ an error occurs.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1962"></a><h3>
+<a name="AEN1974"></a><h3>
 <a name="XMLSECTRANSFORMINPUTURIGETKLASS"></a>xmlSecTransformInputURIGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformInputURIGetKlass
                                             (void);</pre></td></tr></table>
@@ -156,13 +165,13 @@ an error occurs.</p></td>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1970"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1982"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>input URI transform id.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1975"></a><h3>
+<a name="AEN1987"></a><h3>
 <a name="XMLSECTRANSFORMINPUTURIOPEN"></a>xmlSecTransformInputURIOpen ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformInputURIOpen     (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              const <font>xmlChar</font> *uri);</pre></td></tr></table>
@@ -171,15 +180,15 @@ an error occurs.</p></td>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1985"><span style="white-space: nowrap"><tt class="PARAMETER"><i>transform</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1997"><span style="white-space: nowrap"><tt class="PARAMETER"><i>transform</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to IO transform.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1990"><span style="white-space: nowrap"><tt class="PARAMETER"><i>uri</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2002"><span style="white-space: nowrap"><tt class="PARAMETER"><i>uri</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the URL to open.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1995"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2007"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>

@@ -114,3 +114,61 @@ xmlSecShutdown(void) {
     return(res);
 }
 
+/** 
+ * xmlSecCheckVersionExt:
+ * @major:		the major version number.
+ * @minor:		the minor version number.
+ * @subminor:		the subminor version number.
+ * @mode:		the version check mode.
+ *
+ * Checks if the loaded version of xmlsec library could be used.
+ *
+ * Returns 1 if the loaded xmlsec library version is OK to use
+ * 0 if it is not or a negative value if an error occurs.
+ */
+int 
+xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode mode) {
+    /* we always want to have a match for major version number */
+    if(major != XMLSEC_VERSION_MAJOR) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "expected major version=%d;real major version=%d",
+		    XMLSEC_VERSION_MAJOR, major);
+	return(0);
+    }
+    
+    switch(mode) {
+    case xmlSecCheckVersionExact:
+	if((minor != XMLSEC_VERSION_MINOR) || (subminor != XMLSEC_VERSION_SUBMINOR)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			NULL,
+			NULL,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"mode=exact;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
+			XMLSEC_VERSION_MINOR, minor,
+			XMLSEC_VERSION_SUBMINOR, subminor);
+	    return(0);
+	}
+	break;
+    case xmlSecCheckVersionABICompatible:
+	if((minor < XMLSEC_VERSION_MINOR) ||
+	   ((minor == XMLSEC_VERSION_MINOR) && 
+	    (subminor < XMLSEC_VERSION_SUBMINOR))) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			NULL,
+			NULL,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"mode=abi compatible;expected minor version=%d;real minor version=%d;expected subminor version=%d;real subminor version=%d",
+			XMLSEC_VERSION_MINOR, minor,
+			XMLSEC_VERSION_SUBMINOR, subminor);
+	    return(0);
+	}
+	break;
+    }
+    
+    return(1);
+}
+
+

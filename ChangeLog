@@ -1,3 +1,14 @@
+Wed Sep 10 13:19:10 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/version.h include/xmlsec/version.h.in 
+	include/xmlsec/xmlsec.h src/xmlsec.c
+	src/gnutls/crypto.c src/nss/crypto.c 
+	src/openssl/crypto.c src/skeleton/crypto.c:
+	apps/xmlsec.c examples/*.c 
+	docs/api/chapters/init-and-shutdown.sgml: implemented new
+	function and macroses to check loaded xmlsec library
+	version from xmlsec-crypto libraries and apps
+
 Wed Sep 10 12:36:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/dl.c win32/Makefile.msvc win32/mycfg.bat: implemented

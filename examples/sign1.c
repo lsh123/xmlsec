@@ -61,6 +61,12 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
+    /* Check loaded library version */
+    if(xmlSecCheckVersion() != 1) {
+	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+	return(-1);
+    }
+
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
      * name ("openssl", "nss", etc.) to load corresponding 

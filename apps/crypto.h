@@ -40,10 +40,10 @@ extern "C" {
 #endif /* XMLSEC_CRYPTO_NSS */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 
-XMLSEC_EXPORT int	xmlSecAppCryptoInit			(void);
-XMLSEC_EXPORT int	xmlSecAppCryptoShutdown			(void);
+int	xmlSecAppCryptoInit			(void);
+int	xmlSecAppCryptoShutdown			(void);
 
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecAppCryptoKeyGenerate		(char* keyKlassAndSize,
+xmlSecKeyPtr xmlSecAppCryptoKeyGenerate		(char* keyKlassAndSize,
 								 const char* name);
 
 /*****************************************************************************
@@ -51,29 +51,29 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecAppCryptoKeyGenerate		(char* keyKlassAndSize,
  * Simple keys manager
  *
  ****************************************************************************/
-XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrInit	(xmlSecKeysMngrPtr mngr);
-XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrLoad	(xmlSecKeysMngrPtr mngr, 
+int	xmlSecAppCryptoSimpleKeysMngrInit	(xmlSecKeysMngrPtr mngr);
+int	xmlSecAppCryptoSimpleKeysMngrLoad	(xmlSecKeysMngrPtr mngr, 
 								 const char *filename);
-XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrSave	(xmlSecKeysMngrPtr mngr, 
+int	xmlSecAppCryptoSimpleKeysMngrSave	(xmlSecKeysMngrPtr mngr, 
 								 const char *filename,
 								 xmlSecKeyDataType type);
-XMLSEC_EXPORT int 	xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, 
 								 const char *filename, 
 								 int trusted);
-XMLSEC_EXPORT int 	xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
 								 char *params, 
 								 const char* pwd, 
 								 const char* name,
 								 int privateKey);
-XMLSEC_EXPORT int 	xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, 
 								 const char *filename, 
 								 const char* pwd, 
 								 const char *name);
-XMLSEC_EXPORT int 	xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, 
 								 const char* keyKlass, 
 								 const char* filename, 
 								 const char *name);
-XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, 
+int	xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, 
 								 char* keyKlassAndSize,
 								 const char* name);
 

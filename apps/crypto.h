@@ -62,7 +62,7 @@ int 	xmlSecAppCryptoSimpleKeysMngrPemCertLoad		(xmlSecKeysMngrPtr mngr,
 								 const char *filename, 
 								 int trusted);
 int 	xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad		(xmlSecKeysMngrPtr mngr, 
-								 char *params, 
+								 const char *files, 
 								 const char* pwd, 
 								 const char* name,
 								 int privateKey);
@@ -75,7 +75,7 @@ int 	xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad		(xmlSecKeysMngrPtr mngr,
 								 const char* filename, 
 								 const char *name);
 int	xmlSecAppCryptoSimpleKeysMngrKeyGenerate		(xmlSecKeysMngrPtr mngr, 
-								 char* keyKlassAndSize,
+								 const char* keyKlassAndSize,
 								 const char* name);
 
 

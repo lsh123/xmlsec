@@ -101,24 +101,24 @@ xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *fil
 
 
 int 
-xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, char *params, const char* pwd, 
+xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
+						const char* files, const char* pwd, 
 						const char* name, int privateKey) {
     xmlSecKeyPtr key;
-    char *p;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
-    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(files != NULL, -1);
 
-    p = strtok(params, ","); 
-    key = xmlSecCryptoAppPemKeyLoad(p, pwd, NULL, privateKey);
+    /* first is the key file */
+    key = xmlSecCryptoAppPemKeyLoad(files, pwd, NULL, privateKey);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecCryptoAppPemKeyLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=%s", 
-		    xmlSecErrorsSafeString(p));
+		    xmlSecErrorsSafeString(files));
 	return(-1);
     }
     
@@ -136,24 +136,23 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, char *pa
 	}
     }
 
-    p = strtok(NULL, ",");
 #ifndef XMLSEC_NO_X509     
-    while((p != NULL) && (privateKey)) {
-	ret = xmlSecCryptoAppKeyPemCertLoad(key, p);
+    for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
+	ret = xmlSecCryptoAppKeyPemCertLoad(key, files);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecCryptoAppKeyPemCertLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"uri=%s", 
-			xmlSecErrorsSafeString(p));
+			xmlSecErrorsSafeString(files));
 	    xmlSecKeyDestroy(key);
 	    return(-1);
 	}
-	p = strtok(NULL, ","); 
     }
 #else /* XMLSEC_NO_X509 */
-    if(p != NULL) {
+    files += strlen(files) + 1;
+    if(files[0] != '\0') {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "x509",
@@ -380,14 +379,26 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 
 
 int 
-xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, char* keyKlassAndSize, const char* name) {
+xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* keyKlassAndSize, const char* name) {
     xmlSecKeyPtr key;
+    char* dup;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(keyKlassAndSize != NULL, -1);
     
-    key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
+    dup = strdup(keyKlassAndSize);
+    if(dup == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "strdup",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(name));
+	return(-1);    
+    }
+    
+    key = xmlSecAppCryptoKeyGenerate(dup, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -395,8 +406,10 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, char* keyKlassA
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(name));
+	free(dup);
 	return(-1);    
     }    
+    free(dup);
 
     ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {

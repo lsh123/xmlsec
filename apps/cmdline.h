@@ -29,6 +29,7 @@ typedef unsigned int 				xmlSecAppCmdLineParamTopic;
 typedef enum {
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamTypeNumber,
     xmlSecAppCmdLineParamTypeTime
 } xmlSecAppCmdLineParamType;
@@ -44,10 +45,12 @@ struct _xmlSecAppCmdLineParam {
 };
 
 int		xmlSecAppCmdLineParamIsSet		(xmlSecAppCmdLineParamPtr param);
+const char*	xmlSecAppCmdLineParamGetString		(xmlSecAppCmdLineParamPtr param);
+const char*	xmlSecAppCmdLineParamGetStringList	(xmlSecAppCmdLineParamPtr param);
 int		xmlSecAppCmdLineParamGetInt		(xmlSecAppCmdLineParamPtr param,
 							 int def);
-const char*	xmlSecAppCmdLineParamGetString		(xmlSecAppCmdLineParamPtr param,
-							 const char* def);
+time_t		xmlSecAppCmdLineParamGetTime		(xmlSecAppCmdLineParamPtr param,
+							 time_t def);
 
 int		xmlSecAppCmdLineParamsListParse		(xmlSecAppCmdLineParamPtr* params,
 							 xmlSecAppCmdLineParamTopic topcis,
@@ -64,6 +67,7 @@ struct _xmlSecAppCmdLineValue {
     int				pos;
     const char*			paramNameValue;
     const char*			strValue;
+    const char*			strListValue;
     int				intValue;
     time_t			timeValue;
     xmlSecAppCmdLineValuePtr	next;

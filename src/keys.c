@@ -26,6 +26,294 @@
 
 /**************************************************************************
  *
+ * xmlSecKeyUseWith
+ *
+ *************************************************************************/
+/** 
+ * xmlSecKeyUseWithInitialize:
+ * @keyUseWith:         the pointer to information about key application/user.
+ * 
+ * Initializes @keyUseWith object.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecKeyUseWithInitialize(xmlSecKeyUseWithPtr keyUseWith) {
+    xmlSecAssert2(keyUseWith != NULL, -1);
+
+    memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));
+    return(0);
+}
+
+/** 
+ * xmlSecKeyUseWithFinalize:
+ * @keyUseWith:         the pointer to information about key application/user.
+ *
+ * Finalizes @keyUseWith object.
+ */
+void 
+xmlSecKeyUseWithFinalize(xmlSecKeyUseWithPtr keyUseWith) {
+    xmlSecAssert(keyUseWith != NULL);
+    
+    xmlSecKeyUseWithReset(keyUseWith);
+    memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));
+}
+
+/** 
+ * xmlSecKeyUseWithReset:
+ * @keyUseWith:         the pointer to information about key application/user.
+ * 
+ * Resets the @keyUseWith to its state after initialization.
+ */
+void 
+xmlSecKeyUseWithReset(xmlSecKeyUseWithPtr keyUseWith) {
+    xmlSecAssert(keyUseWith != NULL);
+
+    xmlSecKeyUseWithSet(keyUseWith, NULL, NULL);
+}
+
+/** 
+ * xmlSecKeyUseWithCopy:
+ * @dst:         the pointer to destination object.
+ * @src:         the pointer to source object.
+ *
+ * Copies information from @dst to @src.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecKeyUseWithCopy(xmlSecKeyUseWithPtr dst, xmlSecKeyUseWithPtr src) {
+    xmlSecAssert2(dst != NULL, -1);
+    xmlSecAssert2(src != NULL, -1);
+    
+    return(xmlSecKeyUseWithSet(dst, src->application, src->identifier));
+}
+
+/** 
+ * xmlSecKeyUseWithCreate:
+ * @keyUseWith:         the pointer to information about key application/user.
+ * @application:        the application value.
+ * @identifier:         the identifier value.
+ *
+ * Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
+ * returned object with @xmlSecKeyUseWithDestroy function.
+ *
+ * Returns pointer to newly created object or NULL if an error occurs.
+ */
+xmlSecKeyUseWithPtr 
+xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
+    xmlSecKeyUseWithPtr keyUseWith;
+    int ret;
+
+    /* Allocate a new xmlSecKeyUseWith and fill the fields. */
+    keyUseWith = (xmlSecKeyUseWithPtr)xmlMalloc(sizeof(xmlSecKeyUseWith));
+    if(keyUseWith == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecKeyUseWith)=%d", 
+		    sizeof(xmlSecKeyUseWith));
+	return(NULL);
+    }
+    memset(keyUseWith, 0, sizeof(xmlSecKeyUseWith));    
+
+    ret = xmlSecKeyUseWithInitialize(keyUseWith);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyUseWithInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyUseWithDestroy(keyUseWith);
+        return(NULL);        
+    }
+
+    ret = xmlSecKeyUseWithSet(keyUseWith, application, identifier);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyUseWithSet",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyUseWithDestroy(keyUseWith);
+        return(NULL);        
+    }
+
+    return(keyUseWith);
+}
+
+/** 
+ * xmlSecKeyUseWithDuplicate:
+ * @keyUseWith:         the pointer to information about key application/user.
+ *
+ * Duplicates @keyUseWith object. The caller is responsible for destroying
+ * returned object with @xmlSecKeyUseWithDestroy function.
+ *
+ * Returns pointer to newly created object or NULL if an error occurs.
+ */
+xmlSecKeyUseWithPtr 
+xmlSecKeyUseWithDuplicate(xmlSecKeyUseWithPtr keyUseWith) {
+    int ret;
+
+    xmlSecKeyUseWithPtr newKeyUseWith;
+
+    xmlSecAssert2(keyUseWith != NULL, NULL);
+
+    newKeyUseWith = xmlSecKeyUseWithCreate(NULL, NULL);
+    if(newKeyUseWith == NULL) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyUseWithCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);        
+    }
+
+    ret = xmlSecKeyUseWithCopy(newKeyUseWith, keyUseWith);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyUseWithCopy",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyUseWithDestroy(keyUseWith);
+        return(NULL);        
+    }
+
+    return(newKeyUseWith);
+}
+
+/** 
+ * xmlSecKeyUseWithDestroy:
+ * @keyUseWith:         the pointer to information about key application/user.
+ *
+ * Destroys @keyUseWith created with @xmlSecKeyUseWithCreate or @xmlSecKeyUseWithDuplicate
+ * functions.
+ */
+void 
+xmlSecKeyUseWithDestroy(xmlSecKeyUseWithPtr keyUseWith) {
+    xmlSecAssert(keyUseWith != NULL);
+
+    xmlSecKeyUseWithFinalize(keyUseWith);
+    xmlFree(keyUseWith);
+}
+
+/** 
+ * xmlSecKeyUseWithSet:
+ * @keyUseWith:         the pointer to information about key application/user.
+ * @application:        the new application value.
+ * @identifier:         the new identifier value.
+ * 
+ * Sets @application and @identifier in the @keyUseWith.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, const xmlChar* identifier) {
+    xmlSecAssert2(keyUseWith != NULL, -1);
+    
+    if(keyUseWith->application != NULL) {
+	xmlFree(keyUseWith->application); 
+	keyUseWith->application = NULL;
+    }
+    if(keyUseWith->identifier != NULL) {
+	xmlFree(keyUseWith->identifier); 
+	keyUseWith->identifier = NULL;
+    }
+    
+    if(application != NULL) {
+	keyUseWith->application = xmlStrdup(application);
+	if(keyUseWith->application == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			NULL,
+		        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"xmlStrlen(application)=%d", 
+			xmlStrlen(application));
+	    return(-1);
+	}
+    }
+    if(identifier != NULL) {
+	keyUseWith->identifier = xmlStrdup(identifier);
+	if(keyUseWith->identifier == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			NULL,
+		        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"xmlStrlen(identifier)=%d", 
+			xmlStrlen(identifier));
+	    return(-1);
+	}
+    }
+    
+    return(0);
+}
+
+/** 
+ * xmlSecKeyUseWithDebugDump:
+ * @keyUseWith:         the pointer to information about key application/user.
+ * @output:             the pointer to output FILE.
+ *
+ * Prints xmlSecKeyUseWith debug information to a file @output.
+ */
+void 
+xmlSecKeyUseWithDebugDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
+    xmlSecAssert(keyUseWith != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== KeyUseWith: application=\"%s\",identifier=\"%s\"\n", 
+                (keyUseWith->application) ? keyUseWith->application : BAD_CAST "",
+                (keyUseWith->identifier) ? keyUseWith->identifier : BAD_CAST "");    
+}
+
+/** 
+ * xmlSecKeyUseWithDebugXmlDump:
+ * @keyUseWith:         the pointer to information about key application/user.
+ * @output:             the pointer to output FILE.
+ *
+ * Prints xmlSecKeyUseWith debug information to a file @output in XML format.
+ */
+void 
+xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
+    xmlSecAssert(keyUseWith != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<KeyUseWith>\n");
+    fprintf(output, "<Application>%s</Application>", 
+        (keyUseWith->application) ? keyUseWith->application : BAD_CAST "");
+    fprintf(output, "<Identifier>%s</Identifier>", 
+        (keyUseWith->identifier) ? keyUseWith->identifier : BAD_CAST "");
+    fprintf(output, "</KeyUseWith>\n");
+}
+
+/***********************************************************************
+ *
+ * KeyUseWith list
+ *
+ **********************************************************************/
+static xmlSecPtrListKlass xmlSecKeyUseWithPtrListKlass = {
+    BAD_CAST "key-use-with-list",
+    (xmlSecPtrDuplicateItemMethod)xmlSecKeyUseWithDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    (xmlSecPtrDestroyItemMethod)xmlSecKeyUseWithDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyUseWithDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyUseWithDebugXmlDump,	/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+/**
+ * xmlSecKeyUseWithPtrListGetKlass:
+ * 
+ * The key data list klass.
+ *
+ * Returns pointer to the key data list klass.
+ */
+xmlSecPtrListId 
+xmlSecKeyUseWithPtrListGetKlass(void) {
+    return(&xmlSecKeyUseWithPtrListKlass);
+}
+
+/**************************************************************************
+ *
  * xmlSecKeyReq - what key are we looking for?
  *
  *************************************************************************/
@@ -40,11 +328,24 @@
  */
 int 
 xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
+    int ret;
+    
     xmlSecAssert2(keyReq != NULL, -1);
     
     memset(keyReq, 0, sizeof(xmlSecKeyReq));
     
     keyReq->keyUsage	= xmlSecKeyUsageAny;	/* by default you can do whatever you want with the key */
+    ret = xmlSecPtrListInitialize(&keyReq->keyUseWithList, xmlSecKeyUseWithPtrListId);    
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    
     return(0);
 }
 
@@ -58,8 +359,9 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
 void
 xmlSecKeyReqFinalize(xmlSecKeyReqPtr keyReq) {
     xmlSecAssert(keyReq != NULL);
-    
-    xmlSecKeyReqReset(keyReq);
+
+    xmlSecPtrListFinalize(&keyReq->keyUseWithList);    
+    memset(keyReq, 0, sizeof(xmlSecKeyReq));
 }
 
 /** 
@@ -72,7 +374,11 @@ void
 xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
     xmlSecAssert(keyReq != NULL);
 
-    memset(keyReq, 0, sizeof(xmlSecKeyReq));
+    xmlSecPtrListEmpty(&keyReq->keyUseWithList);
+    keyReq->keyId	= NULL;
+    keyReq->keyType	= 0;
+    keyReq->keyUsage	= xmlSecKeyUsageAny;
+    keyReq->keyBitsSize	= 0;
 }
 
 /**
@@ -86,10 +392,26 @@ xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
  */
 int 
 xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
+    int ret;
+    
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(src != NULL, -1);
 
-    memcpy(dst, src, sizeof(xmlSecKeyReq));
+    dst->keyId		= src->keyId;
+    dst->keyType	= src->keyType;
+    dst->keyUsage	= src->keyUsage;
+    dst->keyBitsSize	= src->keyBitsSize;
+
+    ret = xmlSecPtrListCopy(&dst->keyUseWithList, &src->keyUseWithList);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListCopy",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
     return(0);
 }
 
@@ -147,6 +469,59 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
     return(1);
 }
 
+/** 
+ * xmlSecKeyReqDebugDump:
+ * @keyReq:		the pointer to key requirements object.
+ * @output: 		the pointer to output FILE.
+ *
+ * Prints debug information about @keyReq into @output.
+ */ 
+void 
+xmlSecKeyReqDebugDump(xmlSecKeyReqPtr keyReq, FILE* output) {
+    xmlSecAssert(keyReq != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== KeyReq:\n");
+    fprintf(output, "==== keyId: %s\n", 
+	    (xmlSecKeyDataKlassGetName(keyReq->keyId)) ? 
+		xmlSecKeyDataKlassGetName(keyReq->keyId) : 
+		BAD_CAST "NULL");
+    fprintf(output, "==== keyType: 0x%08x\n", keyReq->keyType);
+    fprintf(output, "==== keyUsage: 0x%08x\n", keyReq->keyUsage);
+    fprintf(output, "==== keyBitsSize: %d\n", keyReq->keyBitsSize);
+    xmlSecPtrListDebugDump(&(keyReq->keyUseWithList), output);
+}
+
+/** 
+ * xmlSecKeyReqDebugXmlDump:
+ * @keyReq:		the pointer to key requirements object.
+ * @output: 		the pointer to output FILE.
+ *
+ * Prints debug information about @keyReq into @output in XML format.
+ */ 
+void 
+xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
+    xmlSecAssert(keyReq != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<KeyReq>\n");
+    fprintf(output, "<KeyId>%s</KeyId>\n", 
+	    (xmlSecKeyDataKlassGetName(keyReq->keyId)) ? 
+		xmlSecKeyDataKlassGetName(keyReq->keyId) : 
+		BAD_CAST "NULL");
+    fprintf(output, "<KeyType>0x%08x</KeyType>\n", keyReq->keyType);
+    fprintf(output, "<KeyUsage>0x%08x</KeyUsage>\n", keyReq->keyUsage);
+    fprintf(output, "<KeyBitsSize>%d</KeyBitsSize>\n", keyReq->keyBitsSize);
+    xmlSecPtrListDebugXmlDump(&(keyReq->keyUseWithList), output);
+    fprintf(output, "</KeyReq>\n");
+}
+
+
+/**************************************************************************
+ *
+ * xmlSecKey
+ *
+ *************************************************************************/
 /**
  * xmlSecKeyCreate:
  *

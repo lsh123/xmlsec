@@ -562,6 +562,8 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 	xmlSecEncCtxDebugDump(keyInfoCtx->encCtx, output);
     }
 #endif /* XMLSEC_NO_XMLENC */
+
+    xmlSecKeyReqDebugDump(&(keyInfoCtx->keyReq), output);
 }
 
 /** 
@@ -608,7 +610,8 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 	xmlSecEncCtxDebugXmlDump(keyInfoCtx->encCtx, output);
     }
 #endif /* XMLSEC_NO_XMLENC */
-
+    
+    xmlSecKeyReqDebugXmlDump(&(keyInfoCtx->keyReq), output);
     switch(keyInfoCtx->mode) {
 	case xmlSecKeyInfoModeRead:
 	    fprintf(output, "</KeyInfoReadContext>\n");

@@ -713,3 +713,546 @@ xmlSecIsEmptyString(const xmlChar* str) {
     return(1);
 }
 
+
+/*************************************************************************
+ *
+ * String <-> Integer mapping
+ *
+ ************************************************************************/
+/** 
+ * xmlSecString2IntegerGetString:
+ * @info:               the string<->integer mapping information.
+ * @intValue:           the integer value.
+ *
+ * Maps integer @intValue to a string.
+ * 
+ * Returns the string that is mapped to @intValue or NULL if such value
+ * is not found.
+ */
+const xmlChar* 
+xmlSecString2IntegerGetString(xmlSecString2IntegerInfoConstPtr info, int intValue) {
+    unsigned int ii;
+
+    xmlSecAssert2(info != NULL, NULL);
+
+    for(ii = 0; info[ii].strValue != NULL; ii++) {
+        if(info[ii].intValue == intValue) {
+            return(info[ii].strValue);
+        }
+    }
+
+    return(NULL);
+}
+
+/** 
+ * xmlSecString2IntegerGetInteger:
+ * @info:               the string<->integer mapping information.
+ * @strValue:           the string value.
+ * @intValue:           the pointer to result integer value.
+ * 
+ * Maps string @strValue to an integer and returns it in @intValue.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2IntegerGetInteger(xmlSecString2IntegerInfoConstPtr info, const xmlChar* strValue, int* intValue) {
+    unsigned int ii;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(strValue != NULL, -1);
+    xmlSecAssert2(intValue != NULL, -1);
+
+    for(ii = 0; info[ii].strValue != NULL; ii++) {
+        if(xmlStrcmp(info[ii].strValue, strValue) == 0) {
+            (*intValue) = info[ii].intValue;
+            return(0);
+        }
+    }
+
+    return(-1);
+}
+
+/** 
+ * xmlSecString2IntegerNodeRead:
+ * @info:               the string<->integer mapping information.
+ * @node:               the pointer to node.
+ * @intValue:           the pointer to result integer value.
+ * 
+ * Reads the content of @node and converts it to an integer using mapping 
+ * from @info.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2IntegerNodeRead(xmlSecString2IntegerInfoConstPtr info, xmlNodePtr node, int* intValue) {
+    xmlChar* content;
+    int ret;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(intValue != NULL, -1);
+
+    content = xmlNodeGetContent(node);
+    if(content == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNodeGetContent",
+	    	    XMLSEC_ERRORS_R_XML_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(node->name));
+	return(-1);	
+    }
+
+    ret = xmlSecString2IntegerGetInteger(info, content, intValue);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecString2IntegerGetInteger",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s,content=%s",
+		    xmlSecErrorsSafeString(node->name),
+                    xmlSecErrorsSafeString(content));
+        xmlFree(content);
+	return(-1);	
+    }
+
+    xmlFree(content);
+    return(0);
+}
+
+/** 
+ * xmlSecString2IntegerNodeWrite:
+ * @info:               the string<->integer mapping information.
+ * @parent:             the parent node.
+ * @nodeName:           the child node name.
+ * @nodeNs:             the child node namespace.
+ * @intValue:           the integer value.
+ * 
+ * Creates new child node in @parent and sets its value to @intValue.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2IntegerNodeWrite(xmlSecString2IntegerInfoConstPtr info, xmlNodePtr parent,
+			    const xmlChar* nodeName, const xmlChar* nodeNs, int intValue) {
+    const xmlChar* strValue;
+    xmlNodePtr cur;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+    xmlSecAssert2(nodeName != NULL, -1);
+
+    strValue = xmlSecString2IntegerGetString(info, intValue);
+    if(strValue == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecString2IntegerGetString",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s,intValue=%d",
+		    xmlSecErrorsSafeString(nodeName),
+                    intValue);
+        return(-1);
+    }
+
+    cur = xmlSecAddChild(parent, nodeName, nodeNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s,intValue=%d",
+		    xmlSecErrorsSafeString(nodeName),
+                    intValue);
+        return(-1);
+    }
+
+    xmlNodeSetContent(cur, strValue);
+    return(0);
+}
+
+/** 
+ * xmlSecString2IntegerAttributeRead:
+ * @info:               the string<->integer mapping information.
+ * @node:               the element node. 
+ * @attrName:           the attribute name.
+ * @intValue:           the pointer to result integer value.
+ * 
+ * Gets the value of @attrName atrtibute from @node and converts it to integer
+ * according to @info.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2IntegerAttributeRead(xmlSecString2IntegerInfoConstPtr info, xmlNodePtr node,
+			    const xmlChar* attrName, int* intValue) {
+    xmlChar* attrValue;
+    int ret;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(attrName != NULL, -1);
+    xmlSecAssert2(intValue != NULL, -1);
+
+    attrValue = xmlGetProp(node, attrName);
+    if(attrValue == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlGetProp",
+	    	    XMLSEC_ERRORS_R_XML_FAILED,
+		    "node=%s,attrValue=%s",
+		    xmlSecErrorsSafeString(node->name),
+                    xmlSecErrorsSafeString(attrName));
+	return(-1);	
+    }
+
+    ret = xmlSecString2IntegerGetInteger(info, attrValue, intValue);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecString2IntegerGetInteger",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s,attrName=%s,attrValue=%s",
+		    xmlSecErrorsSafeString(node->name),
+                    xmlSecErrorsSafeString(attrName),
+                    xmlSecErrorsSafeString(attrValue));
+        xmlFree(attrValue);
+	return(-1);	
+    }
+
+    xmlFree(attrValue);
+    return(0);
+}
+
+/** 
+ * xmlSecString2IntegerAttributeWrite:
+ * @info:               the string<->integer mapping information.
+ * @parent:             the parent node.
+ * @attrName:           the name of attribute.
+ * @intValue:           the integer value.
+ * 
+ * Converts @intValue to a string and sets it to the value of 
+ * attribute @attrName in @parent.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int
+xmlSecString2IntegerAttributeWrite(xmlSecString2IntegerInfoConstPtr info, xmlNodePtr parent,
+                            const xmlChar* attrName, int intValue) {
+    const xmlChar* strValue;
+    xmlAttrPtr attr;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+    xmlSecAssert2(attrName != NULL, -1);
+
+    strValue = xmlSecString2IntegerGetString(info, intValue);
+    if(strValue == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecString2IntegerGetString",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s,attrName=%s,intValue=%d",
+		    xmlSecErrorsSafeString(parent->name),
+		    xmlSecErrorsSafeString(attrName),
+                    intValue);
+        return(-1);
+    }
+
+    attr = xmlSetProp(parent, attrName, strValue);
+    if(attr == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChildNode",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s,attrName=%s,intValue=%d",
+		    xmlSecErrorsSafeString(parent->name),
+		    xmlSecErrorsSafeString(attrName),
+                    intValue);
+        return(-1);
+    }
+
+    return(0);
+}
+
+/** 
+ * xmlSecString2IntegerDebugDump:
+ * @info:               the string<->integer mapping information.
+ * @intValue:           the integer value.
+ * @output:             the pointer to output FILE.
+ * 
+ * Prints @intValue into @output.
+ */
+void 
+xmlSecString2IntegerDebugDump(xmlSecString2IntegerInfoConstPtr info, int intValue,
+                            const xmlChar* name, FILE* output) {
+    const xmlChar* strValue;
+
+    xmlSecAssert(info != NULL);
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(output != NULL);
+
+    strValue = xmlSecString2IntegerGetString(info, intValue);
+    if(strValue != NULL) {
+        fprintf(output, "== %s: %d (\"%s\")\n", name, intValue, strValue);
+    }    
+}
+
+/** 
+ * xmlSecString2IntegerDebugXmlDump:
+ * @info:               the string<->integer mapping information.
+ * @intValue:           the integer value.
+ * @output:             the pointer to output FILE.
+ * 
+ * Prints @intValue into @output in XML format. 
+ */
+void 
+xmlSecString2IntegerDebugXmlDump(xmlSecString2IntegerInfoConstPtr info, int intValue,
+			    const xmlChar* name, FILE* output) {
+    const xmlChar* strValue;
+
+    xmlSecAssert(info != NULL);
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(output != NULL);
+
+    strValue = xmlSecString2IntegerGetString(info, intValue);
+    if(strValue != NULL) {
+        fprintf(output, "<%s value=\"%d\">%s</%s>\n", name, intValue, strValue, name);
+    }    
+}
+								 
+
+/*************************************************************************
+ *
+ * String <-> Bits mask mapping
+ *
+ ************************************************************************/
+/** 
+ * xmlSecString2BitMaskGetString:
+ * @info:               the string<->bit mask mapping information.
+ * @mask:               the bit mask.
+ * 
+ * Converts @mask to string.
+ *
+ * Returns the string that is mapped to @mask.
+ */
+const xmlChar*	
+xmlSecString2BitMaskGetString(xmlSecString2BitMaskInfoConstPtr info, xmlSecBitMask mask) {
+    unsigned int ii;
+
+    xmlSecAssert2(info != NULL, NULL);
+
+    for(ii = 0; info[ii].strValue != NULL; ii++) {
+        xmlSecAssert2(info[ii].mask != 0, NULL);
+        if(info[ii].mask == mask) {
+            return(info[ii].strValue);
+        }
+    }
+
+    return(NULL);
+}
+
+/** 
+ * xmlSecString2BitMaskGetBitMask:
+ * @info:               the string<->bit mask mapping information.
+ * @strValue:           the string value.
+ * @mask:               the pointer to result mask.
+ * 
+ * Converts @strValue to @mask.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2BitMaskGetBitMask(xmlSecString2BitMaskInfoConstPtr info, const xmlChar* strValue,
+			    xmlSecBitMask* mask) {
+    unsigned int ii;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(strValue != NULL, -1);
+    xmlSecAssert2(mask != NULL, -1);
+
+    for(ii = 0; info[ii].strValue != NULL; ii++) {
+        xmlSecAssert2(info[ii].mask != 0, -1);
+        if(xmlStrcmp(info[ii].strValue, strValue) == 0) {
+            (*mask) = info[ii].mask;
+            return(0);
+        }
+    }
+
+    return(-1);
+}
+
+/** 
+ * xmlSecString2BitMaskNodesRead:
+ * @info:               the string<->bit mask mapping information.
+ * @node:               the start.
+ * @nodeName:           the mask nodes name.
+ * @nodeNs:             the mask nodes namespace.
+ * @mask:               the pointer to result mask.
+ * 
+ * Reads <@nodeNs:@nodeName> elements and puts the result bit mask
+ * into @mask. When function exits, @node points to the first element node
+ * after all the <@nodeNs:@nodeName> elements.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2BitMaskNodesRead(xmlSecString2BitMaskInfoConstPtr info, xmlNodePtr* node,
+			    const xmlChar* nodeName, const xmlChar* nodeNs, 
+                            xmlSecBitMask* mask) {
+    xmlNodePtr cur;
+    xmlChar* content;
+    xmlSecBitMask tmp;
+    int ret;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(mask != NULL, -1);
+
+    (*mask) = 0;
+    cur = (*node);
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, nodeName, nodeNs))) {
+        content = xmlNodeGetContent(cur);
+        if(content == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlNodeGetContent",
+	    	        XMLSEC_ERRORS_R_XML_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(cur->name));
+	    return(-1);	
+        }
+        
+        ret = xmlSecString2BitMaskGetBitMask(info, content, &tmp);
+        if(tmp == 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecString2BitMaskGetBitMask",
+	    	        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "value=%s",
+		        xmlSecErrorsSafeString(content));
+            xmlFree(content);
+	    return(-1);	
+        }
+        xmlFree(content);
+
+        xmlSecAssert2(tmp != 0, -1);
+        (*mask) |= tmp;
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    (*node) = cur;    
+    return(0); 
+}
+
+/** 
+ * xmlSecString2BitMaskNodesWrite:
+ * @info:               the string<->bit mask mapping information.
+ * @parent:             the parent element for mask nodes.
+ * @nodeName:           the mask nodes name.
+ * @nodeNs:             the mask nodes namespace.
+ * @mask:               the bit mask.
+ * 
+ * Writes <@nodeNs:@nodeName> elemnts with values from @mask to @parent.
+ * 
+ * Returns 0 on success or a negative value if an error occurs,
+ */
+int 
+xmlSecString2BitMaskNodesWrite(xmlSecString2BitMaskInfoConstPtr info, xmlNodePtr parent,
+			    const xmlChar* nodeName, const xmlChar* nodeNs, 
+                            xmlSecBitMask mask) {
+    unsigned int ii;
+
+    xmlSecAssert2(info != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+    xmlSecAssert2(nodeName != NULL, -1);
+
+    for(ii = 0; (mask != 0) && (info[ii].strValue != NULL); ii++) {
+        xmlSecAssert2(info[ii].mask != 0, -1);
+
+        if((mask & info[ii].mask) != 0) {
+            xmlNodePtr cur;
+            
+            cur = xmlSecAddChild(parent, nodeName, nodeNs);
+            if(cur == NULL) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecAddChild",
+	    	            XMLSEC_ERRORS_R_XML_FAILED,
+		            "node=%s",
+		            xmlSecErrorsSafeString(nodeName));
+	        return(-1);	
+            }
+            
+            xmlNodeSetContent(cur, info[ii].strValue);
+        }
+    }
+    return(0);
+}
+
+/** 
+ * xmlSecString2BitMaskDebugDump:
+ * @info:               the string<->bit mask mapping information.
+ * @mask:               the bit mask.
+ * @output:             the pointer to output FILE.
+ * 
+ * Prints debug information about @mask to @output.
+ */
+void 
+xmlSecString2BitMaskDebugDump(xmlSecString2BitMaskInfoConstPtr info, xmlSecBitMask mask,
+			    const xmlChar* name, FILE* output) {
+    unsigned int ii;
+
+    xmlSecAssert(info != NULL);
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(output != NULL);
+
+    if(mask == 0) {
+        return;
+    }
+
+    fprintf(output, "== %s: ", name);
+    for(ii = 0; (mask != 0) && (info[ii].strValue != NULL); ii++) {
+        xmlSecAssert(info[ii].mask != 0);
+
+        if((mask & info[ii].mask) != 0) {
+            fprintf(output, "%s,", info[ii].strValue);
+        }
+    }
+    fprintf(output, "\n");
+}
+
+/** 
+ * xmlSecString2BitMaskDebugXmlDump:
+ * @info:               the string<->bit mask mapping information.
+ * @mask:               the bit mask.
+ * @output:             the pointer to output FILE.
+ * 
+ * Prints debug information about @mask to @output in XML format.
+ */
+void 
+xmlSecString2BitMaskDebugXmlDump(xmlSecString2BitMaskInfoConstPtr info, xmlSecBitMask mask,
+			    const xmlChar* name, FILE* output) {
+    unsigned int ii;
+
+    xmlSecAssert(info != NULL);
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(output != NULL);
+
+    if(mask == 0) {
+        return;
+    }
+
+    fprintf(output, "<%sList>\n", name);
+    for(ii = 0; (mask != 0) && (info[ii].strValue != NULL); ii++) {
+        xmlSecAssert(info[ii].mask != 0);
+
+        if((mask & info[ii].mask) != 0) {
+            fprintf(output, "<%s>%s</%s>\n", name, info[ii].strValue, name);
+        }
+    }
+    fprintf(output, "</%sList>\n", name);
+}
+								 
+
+
+

@@ -104,9 +104,9 @@ const xmlChar xmlSecAttrNotBefore[]		= "NotBefore";
 const xmlChar xmlSecAttrNotOnOrAfter[]		= "NotOnOrAfter";
 const xmlChar xmlSecAttrTime[]			= "Time";
 
-const xmlChar xmlSecResponsePending[]		= "Pending";
-const xmlChar xmlSecResponseRepresent[]		= "Represent";
-const xmlChar xmlSecResponseRequestSignatureValue[] = "RequestSignatureValue";
+const xmlChar xmlSecResponseMechanismPending[]	= "Pending";
+const xmlChar xmlSecResponseMechanismRepresent[]= "Represent";
+const xmlChar xmlSecResponseMechanismRequestSignatureValue[] = "RequestSignatureValue";
 
 const xmlChar xmlSecRespondWithKeyName[]	= "KeyName";
 const xmlChar xmlSecRespondWithKeyValue[]	= "KeyValue";

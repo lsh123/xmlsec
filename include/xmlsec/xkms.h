@@ -1,4 +1,4 @@
-/** 
+	/** 
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Key Management Specification v 2.0" implementation
@@ -36,139 +36,6 @@ typedef struct _xmlSecXkmsRespondWithKlass	xmlSecXkmsRespondWithKlass,
 
 /************************************************************************
  *
- * XKMS error codes
- *
- ************************************************************************/ 
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_SUCCESS:
- *
- *  The operation succeeded.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_SUCCESS			0		
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH:
- *
- * The service does not support the protocol version specified in the request.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH	1	
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_SENDER:
- *
- * An error occurred that was due to the message sent by the sender.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_SENDER			2			
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_RECEIVER:
- *
- * An error occurred at the receiver.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_RECEIVER		3			
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_REPRESENT:
- *
- * The service has not acted on the request. In order for 
- * the request to be acted upon the request MUST be represented 
- * with the specified nonce in accordance with the two phase protocol.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_REPRESENT		4			
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_PENDING:
- *
- * The request has been accepted for processing and the service 
- * will return the result asynchronously.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_PENDING			5			
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NONE:
- *
- * No minor error code.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NONE			0		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NO_MATCH:
- *
- *  No match was found for the search prototype provided.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NO_MATCH		1		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES:
- *
- * The request resulted in the number of responses that 
- * exceeded either  the ResponseLimit value specified in 
- * the request or some other limit determined by the service. 
- * The service MAY either return a subset of the possible 
- * responses or none at all.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES	2		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE:
- *
- * Only part of the information requested could be provided.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE		3
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_FAILURE:
- *
- * The service attempted to perform the request but 
- * the operation failed for unspecified reasons.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_FAILURE			4		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_REFUSED:
- *
- * The operation was refused. The service did not attempt to 
- * perform the request.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_REFUSED			5		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION:
- *
- * The operation was refused because the necessary authentication 
- * information was incorrect or missing.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION	6		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED:
- *	
- * The receiver does not implement the specified operation.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED	7		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID:
- *
- * The ResponseId for which pending status was requested is unknown 
- * to the service.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID	8		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS:
- *
- * The receiver does not support synchronous processing of this type of 
- * request
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS		9		
-
-XMLSEC_EXPORT const xmlChar*	xmlSecXkmsGetMajorErrorString	(int errorCode);
-XMLSEC_EXPORT const xmlChar*	xmlSecXkmsGetMinorErrorString	(int errorCode);
-
-
-/************************************************************************
- *
  * XKMS requests server side processing klass
  *
  ************************************************************************/ 
@@ -178,6 +45,7 @@ XMLSEC_EXPORT const xmlChar*	xmlSecXkmsGetMinorErrorString	(int errorCode);
  * The responseLimit value.
  */
 #define XMLSEC_XKMS_NO_RESPONSE_LIMIT				-1
+
 
 /**
  * xmlXkmsServerCtxMode:
@@ -220,15 +88,17 @@ struct _xmlSecXkmsServerCtx {
     int				minorError;
     xmlChar*			requestId;    
     xmlChar*			service;
-    xmlChar*			originalRequestId;
     xmlChar*			nonce;
+    xmlChar*			originalRequestId;
+    xmlChar*                    pendingNotificationMechanism;
+    xmlChar*                    pendingNotificationIdentifier;
     int 			responseLimit;
+    unsigned int		responseMechanismMask;
 
     /* these are internal data, nobody should change that except us */
     xmlXkmsServerCtxMode	mode;
     xmlNodePtr			opaqueClientDataNode;
     xmlNodePtr 			firtsMsgExtNode;
-    xmlNodePtr 			firtsRespMechNode;
     xmlNodePtr 			keyInfoNode;
     xmlSecPtrList		respWithList;
     
@@ -258,22 +128,201 @@ XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
 
 
-/**********************************************************************
+/************************************************************************
  *
- * Hi-level functions
+ * XKMS ResultMajor attribute values.
  *
- *********************************************************************/
-XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecXkmsRespondWithIdsGet	(void);
-XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsInit	(void);
-XMLSEC_EXPORT void 		xmlSecXkmsRespondWithIdsShutdown(void);
-XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsRegisterDefault(void);
-XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_SUCCESS:
+ *
+ * XKMS ResultMajor attribute value. The operation succeeded.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_SUCCESS			0		
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH:
+ *
+ * XKMS ResultMajor attribute value. The service does not support 
+ * the protocol version specified in the request.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH	1	
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_SENDER:
+ *
+ * XKMS ResultMajor attribute value. An error occurred that was due to 
+ * the message sent by the sender.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_SENDER			2			
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_RECEIVER:
+ *
+ * XKMS ResultMajor attribute value. An error occurred at the receiver.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_RECEIVER		3			
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_REPRESENT:
+ *
+ * XKMS ResultMajor attribute value. The service has not acted on 
+ * the request. In order for the request to be acted upon the request MUST 
+ * be represented with the specified nonce in accordance with the two phase 
+ * protocol.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_REPRESENT		4			
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_PENDING:
+ *
+ * XKMS ResultMajor attribute value. The request has been accepted 
+ * for processing and the service will return the result asynchronously.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_PENDING			5			
+
+/************************************************************************
+ *
+ * XKMS ResultMinor attribute values.
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NONE:
+ *
+ * XKMS ResultMinor attribute value. Not specified.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NONE			0		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NO_MATCH:
+ *
+ * XKMS ResultMinor attribute value. No match was found for the search 
+ * prototype provided.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NO_MATCH		1		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES:
+ *
+ * XKMS ResultMinor attribute value. The request resulted in the number of 
+ * responses that exceeded either  the ResponseLimit value specified in 
+ * the request or some other limit determined by the service. 
+ * The service MAY either return a subset of the possible 
+ * responses or none at all.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES	2		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE:
+ *
+ * XKMS ResultMinor attribute value. Only part of the information requested 
+ * could be provided.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE		3
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_FAILURE:
+ *
+ * XKMS ResultMinor attribute value. The service attempted to perform 
+ * the request but the operation failed for unspecified reasons.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_FAILURE			4		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_REFUSED:
+ *
+ * XKMS ResultMinor attribute value. The operation was refused. The service 
+ * did not attempt to perform the request.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_REFUSED			5		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION:
+ *
+ * XKMS ResultMinor attribute value. The operation was refused because 
+ * the necessary authentication information was incorrect or missing.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION	6		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED:
+ *	
+ * XKMS ResultMinor attribute value. The receiver does not implement 
+ * the specified operation.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED	7		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID:
+ *
+ * XKMS ResultMinor attribute value. The ResponseId for which pending 
+ * status was requested is unknown to the service.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID	8		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS:
+ *
+ * XKMS ResultMinor attribute value. The receiver does not support 
+ * synchronous processing of this type of request
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS		9		
+
+
+/************************************************************************
+ *
+ * XKMS ResponseMechanism element values.
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT:
+ *
+ * XKMS ResponseMechanism element value. The requestor is prepared to 
+ * accept a response that uses asynchronous processing, i.e. the service 
+ * MAY return the MajorResult code Pending.
+ */
+#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_PENDING			0x00000001	
+
+/**
+ * XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT:
+ *
+ * XKMS ResponseMechanism element value. The requestor is prepared to 
+ * accept a response that uses the two phase protocol, i.e. the service 
+ * MAY return the MajorResult code Represent.
+ */
+#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT			0x00000002
+
+/**
+ * XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE:
+ *
+ * XKMS ResponseMechanism element value. The requestor is prepared to 
+ * accept a response that carries a <RequestSignatureValue> element.
+ */
+#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE	0x00000004
+
+/************************************************************************
+ *
+ * XKMS ResponseLimit element values
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_NO_RESPONSE_LIMIT:
+ *
+ * The ResponseLimit is not specified.
+ */
+#define XMLSEC_XKMS_NO_RESPONSE_LIMIT			-1
 
 /************************************************************************
  *
  * XKMS RespondWith Klass
  *
  ************************************************************************/ 
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecXkmsRespondWithIdsGet	(void);
+XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsInit	(void);
+XMLSEC_EXPORT void 		xmlSecXkmsRespondWithIdsShutdown(void);
+XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsRegisterDefault(void);
+XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
+
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithReadNode	(xmlSecXkmsRespondWithId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);

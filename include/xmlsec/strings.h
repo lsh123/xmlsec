@@ -109,9 +109,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNotBefore[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNotOnOrAfter[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrTime[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecResponsePending[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseRepresent[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseRequestSignatureValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseMechanismPending[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseMechanismRepresent[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseMechanismRequestSignatureValue[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithKeyName[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithKeyValue[];

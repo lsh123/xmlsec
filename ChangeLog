@@ -1,3 +1,14 @@
+Tue Feb  3 01:40:29 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: tweaked my debug environment
+	* include/xmlsec/xmltree.h src/xmltree.c: created string2int and string2bitmap
+	helper klasses
+	* include/xmlsec/keys.h src/keyinfo.c src/keys.c: added KeyUseWith list
+	to the KeyReq object
+	* include/xmlsec/strings.h src/strings.c: added some xkms strings
+	* include/xmlsec/xkms.h src/xkms.c: LocateRequest (except signatures) 
+	and most of LocateResult 
+
 Mon Feb  2 16:55:13 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/xkms.h src/strings.c src/xkms.c: read xkms RequestAbstractType

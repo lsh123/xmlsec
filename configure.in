@@ -75,8 +75,8 @@ if test "z$enable_development" = "zyes" -o "z${LOGNAME}" = "zaleksey" ; then
     enable_xkms="yes"
     enable_debuging="yes"
     enable_pedantic="yes"
-#    enable_static_linking="yes"
-#    enable_crypto_dl="no"
+    enable_static_linking="yes"
+    enable_crypto_dl="no"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)

@@ -1,6 +1,6 @@
 Summary: Library providing support for "XML Signature" and "XML Encryption" standards
 Name: xmlsec
-Version: 0.0.13
+Version: 0.0.14
 Release: 1
 License: MIT
 Group: Development/Libraries

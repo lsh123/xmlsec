@@ -1,3 +1,7 @@
+Mon Oct 21 11:28:01 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* include/xmlsec/errors.h: fixed the __FUNCTION__ macro logic
+
 2002-10-20  Aleksey Sanin <aleksey@aleksey.com>
 
 	* config.h.in configure.in include/xmlsec/version.h 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-XML Security Library example: Signed file. 
+XML Security Library example: Signed file (dsig1 example). 
 -->
 <Envelope xmlns="urn:envelope">
   <Data>

@@ -3,7 +3,7 @@
 #
 PROGRAMS	 = \
 	dsig1 dsig2 dsig3 dsig4 \
-	enc1 enc2 enc3 enc4
+	enc1 enc2 enc3 enc4 enc5
 
 cc	 	 = gcc
 CC	 	 = gcc
@@ -34,3 +34,5 @@ check: $(PROGRAMS)
 	./enc3  enc2-res.xml   deskey.bin
 	./enc4  enc1-res.xml   deskey.bin
 	./enc4  enc2-res.xml   deskey.bin
+	./enc5  enc1-res.xml
+	./enc5  enc2-res.xml

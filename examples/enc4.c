@@ -5,11 +5,11 @@
  * DES key from a binary file
  * 
  * Usage: 
- *	enc3 <xml-enc> <des-key-file1> [<des-key-file2> [...]] 
+ *	enc4 <xml-enc> <des-key-file1> [<des-key-file2> [...]] 
  *
  * Example:
- *	./enc3 enc1-res.xml deskey.bin
- *	./enc3 enc2-res.xml deskey.bin
+ *	./enc4 enc1-res.xml deskey.bin
+ *	./enc4 enc2-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -44,7 +44,7 @@ main(int argc, char **argv) {
 
     if(argc != 3) {
 	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <enc-file> <key-file>\n", argv[0]);
+	fprintf(stderr, "Usage: %s <enc-file> <key-file1> [<key-file2> [...]]\n", argv[0]);
 	return(1);
     }
 

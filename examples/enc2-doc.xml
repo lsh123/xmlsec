@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-XML Security Library example: Original XML doc file before encryption. 
+XML Security Library example: Original XML doc file before encryption (enc2 example). 
 -->
 <Envelope xmlns="urn:envelope">
   <Data>

@@ -1,3 +1,7 @@
+Fri Aug 22 11:06:28 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* win32/Makefile.msvc: fixed linkinig problem on Windows (bug #120498)
+
 Fri Aug 22 09:54:04 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/errors.h: determine if __FUNCTION__ or 

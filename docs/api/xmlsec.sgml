@@ -170,7 +170,7 @@
     <chapter id="xmlsec-signature-klasses">
     <title>APPENDIX A. XML Security Library Signature Klasses.</title>
 	<figure>
-	    <title>XML Security Library Signature Klasses..</title>
+	    <title>XML Security Library Signature Klasses.</title>
 	    <graphic fileref="images/signature-structure.png" align="center"></graphic>
 	</figure>	 
     </chapter>
@@ -178,7 +178,7 @@
     <chapter id="xmlsec-encryption-klasses">
     <title>APPENDIX B. XML Security Library Encryption Klasses.</title>
 	<figure>
-	    <title>XML Security Library Encryption Klasses..</title>
+	    <title>XML Security Library Encryption Klasses.</title>
 	    <graphic fileref="images/encryption-structure.png" align="center"></graphic>
 	</figure>	 
     </chapter>

@@ -250,8 +250,92 @@ make
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-klasses">
 	<title>Klasses and objects.</title>
-	<para>
-	TODO
+	<para>The XML Security Library is written in C but it uses some OOP techniques:
+	the objects in the library have "klasses" and there is "klasses" inheritance.
+	(see <link linkend="xmlsec-signature-klasses">signature</link> and
+	<link linkend="xmlsec-encryption-klasses">encryption</link> klasses 
+	diagrams). The "klass" is different from C++ "class" (btw, this is 
+	one of the reasons why it is spelled differently). The idea of "klasses" 
+	used in XML Security Library are close to one in the GLIB/GTK/GNOME
+	and many other C projects. If you ever seen an OOP code written in C
+	you should find everything familiar.
+	</para>
+	<para>XML Security Library does not have a common base "klass".
+	Transforms, keys data, keys data stores, etc. have different
+	base "klasses". The "klass" defines interfaces and global
+	constant data common for all objects of the "klass" (for example, 
+	the human-readable name of the "klass").
+	<example>
+	    <title>Base transform "klass".</title>
+	    <programlisting><![CDATA[
+struct _xmlSecTransformKlass {
+    /* data */
+    size_t				klassSize;
+    size_t				objSize;
+    const xmlChar*			name;
+    const xmlChar*			href;
+    xmlSecTransformUsage		usage;
+
+    /* methods */
+    xmlSecTransformInitializeMethod	initialize;
+    xmlSecTransformFinalizeMethod	finalize;
+
+    xmlSecTransformNodeReadMethod	readNode;
+    xmlSecTransformNodeWriteMethod	writeNode;
+
+    ...
+    
+    /* reserved for future */ 
+    void* 				reserved0;
+    void* 				reserved1;
+};
+	    ]]></programlisting>
+	</example>
+	The "object" structure has a pointer to the "klass" structure (we call
+	it "id") and any data specific to the particular instance
+	of the klass.
+	<example>
+	    <title>Base transform "object".</title>
+	    <programlisting><![CDATA[
+struct _xmlSecTransform {
+    xmlSecTransformId 			id; 
+    xmlSecTransformOperation		operation;
+    xmlSecTransformStatus		status;
+    xmlNodePtr				hereNode;
+
+    /* transforms chain */
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+
+    ...
+    
+    /* reserved for the future */    
+    void*				reserved0;
+    void*				reserved1;
+};
+	    ]]></programlisting>
+	</example>
+
+	<itemizedlist>
+	<listitem><para>Base "klass".
+	</para></listitem>
+	<listitem><para>"Klass" declaration.
+	<example>
+	    <title>XPath transform "klass" declaration.</title>
+	    <programlisting><![CDATA[
+	    ]]></programlisting>
+	</example>
+	</para></listitem>
+	<listitem><para>"Klass" implementation.
+	<example>
+	    <title>XPath transform "klass" implementation.</title>
+	    <programlisting><![CDATA[
+	    ]]></programlisting>
+	</example>
+	</para></listitem>
+	</itemizedlist>
+	</para>
+	<para>The "xmlsec-&lt;crypto&gt;" library needs to implement  
 	</para>
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-transforms">

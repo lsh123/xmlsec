@@ -109,16 +109,6 @@ xmlSecNssKeysInit(void) {
     }
 #endif /* XMLSEC_NO_DSA */    
 
-#ifndef XMLSEC_NO_HMAC  
-    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataHmacId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataHmacId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_HMAC */    
 
 #ifndef XMLSEC_NO_RSA
     if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataRsaId) < 0) {

@@ -27,6 +27,34 @@ XMLSEC_EXPORT int		xmlSecNssGenerateRandom			(xmlSecBufferPtr buffer,
 
 /********************************************************************
  *
+ * HMAC transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HMAC
+/** * xmlSecNssKeyDataHmac:
+ * 
+ * The DHMAC key id.
+ */
+#define xmlSecNssKeyDataHmacId \
+	xmlSecNssKeyDataHmacGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecNssKeyDataHmacGetKlass	(void);
+XMLSEC_EXPORT int		xmlSecNssKeyDataHmacSet		(xmlSecKeyDataPtr data,
+									 const unsigned char* buf,
+									 size_t bufSize);
+/**
+ * xmlSecNssTransformHmacSha1Id:
+ * 
+ * The HMAC with SHA1 signature transform id.
+ */
+#define xmlSecNssTransformHmacSha1Id \
+	xmlSecNssTransformHmacSha1GetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass	(void);
+
+#endif /* XMLSEC_NO_HMAC */
+
+
+/********************************************************************
+ *
  * SHA1 transform
  *
  *******************************************************************/

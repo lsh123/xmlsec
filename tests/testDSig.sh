@@ -36,7 +36,9 @@ printRes() {
 execDSigTest() {    
     file=$topfolder/$1      
     echo $1
-    
+
+    rm -f $tmpfile
+        
     printf "    Verify existing signature                            "
     echo "$xmlsec_app verify $2 $file.xml" >> $logfile
     $VALGRIND $xmlsec_app verify $EXTRA_PARAMS $2 $file.xml >> $logfile 2>> $logfile

@@ -39,6 +39,13 @@ xmlSecNssAppInit(void) {
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "%d", PR_GetError());
     }
+
+    /* configure PKCS11 */
+    PK11_ConfigurePKCS11("manufacturesID", "libraryDescription",
+                         "tokenDescription", "privateTokenDescription",
+                         "slotDescription", "privateSlotDescription",
+                         "fipsSlotDescription", "fipsPrivateSlotDescription", 
+			 0, 0); 
     return(0);
 }
 

@@ -65,4 +65,5 @@ xmlsec_LDADD = \
     $(XMSLEC_CRYPTO_LIBS) \
     $(LIBXSLT_LIBS) \
     $(LIBXML_LIBS) \
+    $(XMLSEC_CRYPTO_LIB) \
     $(NULL)

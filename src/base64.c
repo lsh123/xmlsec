@@ -44,7 +44,7 @@ static const unsigned char base64[] =
 
 #define xmlSecBase64Min(a, b)		(((a) < (b)) ? (a) : (b))
 #define xmlSecBase64Encode1(a) 		(base64[((int)(a) >> 2) & 0x3F])
-#define xmlSecBase64Encode2(a, b) 	(base64[(((int)(a) << 4) & 0x30) + ((((int)(b)) >> 4) & 0x0F)])
+	#define xmlSecBase64Encode2(a, b) 	(base64[(((int)(a) << 4) & 0x30) + ((((int)(b)) >> 4) & 0x0F)])
 #define xmlSecBase64Encode3(b, c) 	(base64[(((int)(b) << 2) & 0x3c) + ((((int)(c)) >> 6) & 0x03)])
 #define xmlSecBase64Encode4(c)		(base64[((int)(c)) & 0x3F])
 
@@ -87,213 +87,6 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
 							 unsigned char* out,
 							 size_t outSize,
 							 int final);
-
-
-/**************************************************************
- *
- * Base64 Transform
- *
- * reserverd0 --> base 64 ctx (xmlSecBase64CtxPtr)
- * TODO: put ctx after xmlSecTransform
- * 
- **************************************************************/
-#define xmlSecBase64GetCtx(transform) \
-	((xmlSecBase64CtxPtr)((transform)->reserved0))
-static int		xmlSecBase64Initialize		(xmlSecTransformPtr transform);
-static void		xmlSecBase64Finalize		(xmlSecTransformPtr transform);
-static int 		xmlSecBase64Execute		(xmlSecTransformPtr transform, 
-							 int last, 
-							 xmlSecTransformCtxPtr transformCtx);
-
-static xmlSecTransformKlass xmlSecBase64Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
-
-    xmlSecNameBase64,				/* const xmlChar* name; */
-    xmlSecHrefBase64,				/* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-
-    xmlSecBase64Initialize, 			/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecBase64Finalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecBase64Execute,			/* xmlSecTransformExecuteMethod execute; */
-
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
-};
-
-xmlSecTransformId 
-xmlSecTransformBase64GetKlass(void) {
-    return(&xmlSecBase64Klass);
-}
-
-/**
- * xmlSecTransformBase64SetLineSize:
- * @transform: the pointer to BASE64 encode transform.
- * @lineSize: the new max line size.
- *
- * Sets the max line size to @lineSize.
- */
-void
-xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id));
-    xmlSecAssert(xmlSecBase64GetCtx(transform) != NULL);
-    
-    xmlSecBase64GetCtx(transform)->columns = lineSize;    
-}
-
-/**
- * xmlSecBase64Initialize:
- */
-static int
-xmlSecBase64Initialize(xmlSecTransformPtr transform) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id), -1);
-
-    transform->encode = 0;    
-    transform->reserved0 = xmlSecBase64CtxCreate(transform->encode, XMLSEC_BASE64_LINESIZE);
-    if(transform->reserved0 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecBase64CtxCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    
-    return(0);
-}
-
-/**
- * xmlSecBase64Finalize:
- */
-static void
-xmlSecBase64Finalize(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id));
-    
-    if(xmlSecBase64GetCtx(transform) != NULL) {
-	xmlSecBase64CtxDestroy(xmlSecBase64GetCtx(transform));
-	transform->reserved0 = NULL;
-    }    
-}
-
-static int 
-xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBase64CtxPtr ctx;
-    xmlSecBufferPtr in, out;
-    size_t inLen, outLen;
-    unsigned char buf[3 * XMLSEC_TRANSFORM_BINARY_CHUNK];
-    int ret;
-
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
-
-    ctx = xmlSecBase64GetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
-    
-    in = &(transform->inBuf);
-    out = &(transform->outBuf);
-
-    if(transform->status == xmlSecTransformStatusNone) {
-	ctx->encode = transform->encode;
-	transform->status = xmlSecTransformStatusWorking;
-    }
-
-    switch(transform->status) {
-	case xmlSecTransformStatusWorking:
-	    while(xmlSecBufferGetSize(in) > 0) {
-		/* find next chunk size */
-		inLen = xmlSecBufferGetSize(in);
-		if(inLen > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-		    inLen = XMLSEC_TRANSFORM_BINARY_CHUNK;
-		}
-		
-		/* encode/decode the next chunk */
-		ret = xmlSecBase64CtxUpdate(ctx, xmlSecBufferGetData(in), inLen,
-					    buf, sizeof(buf));
-		if(ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-				"xmlSecBase64CtxUpdate",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				XMLSEC_ERRORS_NO_MESSAGE);
-		    return(-1);
-		}
-		outLen = ret;
-		
-		/* add encoded chunk to output */
-		ret = xmlSecBufferAppend(out, buf, outLen);
-		if(ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-				"xmlSecBufferAppend",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"%d", outLen);
-		    return(-1);
-		}
-		
-		/* remove chunk from input */
-		ret = xmlSecBufferRemoveHead(in, inLen);
-		if(ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-				"xmlSecBufferRemoveHead",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"%d", inLen);
-		    return(-1);
-		}
-	    }
-	    
-	    if(last) {
-		/* add from ctx buffer */
-		ret = xmlSecBase64CtxFinal(ctx, buf, sizeof(buf));
-		if(ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-				"xmlSecBase64CtxFinal",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				XMLSEC_ERRORS_NO_MESSAGE);
-		    return(-1);
-		}
-		outLen = ret;
-		
-		/* add encoded chunk to output */
-		ret = xmlSecBufferAppend(out, buf, outLen);
-		if(ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-				"xmlSecBufferAppend",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"%d", outLen);
-		    return(-1);
-		}
-		transform->status = xmlSecTransformStatusFinished;
-	    }
-	    break;
-	case xmlSecTransformStatusFinished:
-	    /* the only way we can get here is if there is no input */
-	    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
-	    break;
-	default:
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			NULL,
-			XMLSEC_ERRORS_R_INVALID_STATUS,
-			"%d", transform->status);
-	    return(-1);
-    }
-    return(0);
-}
-
 /************************************************************************
  *
  * Base64 Context
@@ -485,8 +278,6 @@ xmlSecBase64CtxPop(xmlSecBase64CtxPtr ctx, unsigned char* out, size_t outSize, i
     return(outBlockSize);
 }
 
-
-
 /**
  * xmlSecBase64CtxCreate:
  * @encode: the encode/decode flag (1 - encode, 0 - decode) 
@@ -500,6 +291,7 @@ xmlSecBase64CtxPop(xmlSecBase64CtxPtr ctx, unsigned char* out, size_t outSize, i
 xmlSecBase64CtxPtr	
 xmlSecBase64CtxCreate(int encode, int columns) {
     xmlSecBase64CtxPtr ctx;
+    int ret;
     
     /*
      * Allocate a new xmlSecBase64CtxPtr and fill the fields.
@@ -514,11 +306,17 @@ xmlSecBase64CtxCreate(int encode, int columns) {
 		    sizeof(xmlSecBase64Ctx));
 	return(NULL);
     }
-    memset(ctx, 0, sizeof(xmlSecBase64Ctx));
-
-    ctx->linePos = 0;
-    ctx->encode = encode;
-    ctx->columns = columns;
+    
+    ret = xmlSecBase64CtxInitialize(ctx, encode, columns);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecBase64CtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBase64CtxDestroy(ctx);
+	return(NULL);
+    }
     return(ctx);
 }
 
@@ -530,12 +328,30 @@ xmlSecBase64CtxCreate(int encode, int columns) {
  */
 void
 xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+    
+    xmlSecBase64CtxFinalize(ctx);
+    xmlFree(ctx);
+}
 
+int 
+xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
+    xmlSecAssert2(ctx != NULL, -1);
+    memset(ctx, 0, sizeof(xmlSecBase64Ctx));
+
+    ctx->linePos = 0;
+    ctx->encode = encode;
+    ctx->columns = columns;
+
+    return(0);
+}
+
+void 
+xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
     
     memset(ctx, 0, sizeof(xmlSecBase64Ctx)); 
-    xmlFree(ctx);
-}
+}	
 
 /**
  * xmlSecBase64CtxUpdate:
@@ -582,7 +398,7 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 			"xmlSecBase64Ctx",
 			"xmlSecBase64CtxPop",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", outSize);
+			"size=%d", outSize);
 	    return(-1);
 	} else if(ret == 0) {
 	    break;
@@ -790,5 +606,226 @@ xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, size_t len) {
 
     xmlSecBase64CtxDestroy(ctx);
     return(size_update + size_final);
+}
+
+/**************************************************************
+ *
+ * Base64 Transform
+ *
+ * xmlSecBase64Ctx is located after xmlSecTransform
+ * 
+ **************************************************************/
+#define xmlSecBase64Size \
+	(sizeof(xmlSecTransform) + sizeof(xmlSecBase64Ctx))
+#define xmlSecBase64GetCtx(transform) \
+    ((xmlSecTransformCheckSize((transform), xmlSecBase64Size)) ? \
+	(xmlSecBase64CtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecBase64CtxPtr)NULL)
+
+static int		xmlSecBase64Initialize		(xmlSecTransformPtr transform);
+static void		xmlSecBase64Finalize		(xmlSecTransformPtr transform);
+static int 		xmlSecBase64Execute		(xmlSecTransformPtr transform, 
+							 int last, 
+							 xmlSecTransformCtxPtr transformCtx);
+
+static xmlSecTransformKlass xmlSecBase64Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecBase64Size,				/* size_t objSize */
+
+    xmlSecNameBase64,				/* const xmlChar* name; */
+    xmlSecHrefBase64,				/* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
+
+    xmlSecBase64Initialize, 			/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecBase64Finalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecBase64Execute,			/* xmlSecTransformExecuteMethod execute; */
+
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+xmlSecTransformId 
+xmlSecTransformBase64GetKlass(void) {
+    return(&xmlSecBase64Klass);
+}
+
+/**
+ * xmlSecTransformBase64SetLineSize:
+ * @transform: the pointer to BASE64 encode transform.
+ * @lineSize: the new max line size.
+ *
+ * Sets the max line size to @lineSize.
+ */
+void
+xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
+    xmlSecBase64CtxPtr ctx;
+    
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id));
+    
+    ctx = xmlSecBase64GetCtx(transform);
+    xmlSecAssert(ctx != NULL);
+    
+    ctx->columns = lineSize;    
+}
+
+/**
+ * xmlSecBase64Initialize:
+ */
+static int
+xmlSecBase64Initialize(xmlSecTransformPtr transform) {
+    xmlSecBase64CtxPtr ctx;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id), -1);
+
+    ctx = xmlSecBase64GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    transform->encode = 0;
+    ret = xmlSecBase64CtxInitialize(ctx, transform->encode, XMLSEC_BASE64_LINESIZE);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecBase64CtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    return(0);
+}
+
+/**
+ * xmlSecBase64Finalize:
+ */
+static void
+xmlSecBase64Finalize(xmlSecTransformPtr transform) {
+    xmlSecBase64CtxPtr ctx;
+    
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id));
+
+    ctx = xmlSecBase64GetCtx(transform);
+    xmlSecAssert(ctx != NULL);
+    
+    xmlSecBase64CtxFinalize(ctx);
+}
+
+static int 
+xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBase64CtxPtr ctx;
+    xmlSecBufferPtr in, out;
+    size_t inLen, outLen;
+    unsigned char buf[3 * XMLSEC_TRANSFORM_BINARY_CHUNK];
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    ctx = xmlSecBase64GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+
+    if(transform->status == xmlSecTransformStatusNone) {
+	ctx->encode = transform->encode;
+	transform->status = xmlSecTransformStatusWorking;
+    }
+
+    switch(transform->status) {
+	case xmlSecTransformStatusWorking:
+	    while(xmlSecBufferGetSize(in) > 0) {
+		/* find next chunk size */
+		inLen = xmlSecBufferGetSize(in);
+		if(inLen > XMLSEC_TRANSFORM_BINARY_CHUNK) {
+		    inLen = XMLSEC_TRANSFORM_BINARY_CHUNK;
+		}
+		
+		/* encode/decode the next chunk */
+		ret = xmlSecBase64CtxUpdate(ctx, xmlSecBufferGetData(in), inLen,
+					    buf, sizeof(buf));
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+				"xmlSecBase64CtxUpdate",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				XMLSEC_ERRORS_NO_MESSAGE);
+		    return(-1);
+		}
+		outLen = ret;
+		
+		/* add encoded chunk to output */
+		ret = xmlSecBufferAppend(out, buf, outLen);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+				"xmlSecBufferAppend",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"%d", outLen);
+		    return(-1);
+		}
+		
+		/* remove chunk from input */
+		ret = xmlSecBufferRemoveHead(in, inLen);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+				"xmlSecBufferRemoveHead",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"%d", inLen);
+		    return(-1);
+		}
+	    }
+	    
+	    if(last) {
+		/* add from ctx buffer */
+		ret = xmlSecBase64CtxFinal(ctx, buf, sizeof(buf));
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+				"xmlSecBase64CtxFinal",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				XMLSEC_ERRORS_NO_MESSAGE);
+		    return(-1);
+		}
+		outLen = ret;
+		
+		/* add encoded chunk to output */
+		ret = xmlSecBufferAppend(out, buf, outLen);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+				"xmlSecBufferAppend",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"%d", outLen);
+		    return(-1);
+		}
+		transform->status = xmlSecTransformStatusFinished;
+	    }
+	    break;
+	case xmlSecTransformStatusFinished:
+	    /* the only way we can get here is if there is no input */
+	    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
+	    break;
+	default:
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			NULL,
+			XMLSEC_ERRORS_R_INVALID_STATUS,
+			"%d", transform->status);
+	    return(-1);
+    }
+    return(0);
 }
 

@@ -703,7 +703,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
 	return(-1);
     }
-    ctx->result = xmlSecTransformMemBufGetBuffer(transform, 0);
+    ctx->result = xmlSecTransformMemBufGetBuffer(transform);
     if(ctx->result == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

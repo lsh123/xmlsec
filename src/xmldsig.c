@@ -174,8 +174,7 @@ xmlSecDSigCtxPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert2(dsigCtx != NULL, NULL);
     
     return((dsigCtx->preSignMemBufMethod != NULL) ? 
-	    xmlSecTransformMemBufGetBuffer(dsigCtx->preSignMemBufMethod, 0):
-	    NULL);
+	    xmlSecTransformMemBufGetBuffer(dsigCtx->preSignMemBufMethod) : NULL);
 }
 
 int 
@@ -1130,8 +1129,7 @@ xmlSecDSigReferenceCtxPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert2(dsigRefCtx != NULL, NULL);
     
     return((dsigRefCtx->preDigestMemBufMethod != NULL) ? 
-	    xmlSecTransformMemBufGetBuffer(dsigRefCtx->preDigestMemBufMethod, 0):
-	    NULL);
+	    xmlSecTransformMemBufGetBuffer(dsigRefCtx->preDigestMemBufMethod) : NULL);
 }
 
 /**

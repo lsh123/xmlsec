@@ -28,11 +28,15 @@
  *
  * Memory Buffer Transform
  * 
- * reserved0 --> the result buffer (xmlSecBufferPtr)
+ * xmlSecBuffer is located after xmlSecTransform
  * 
  ****************************************************************************/
+#define xmlSecTransformMemBufSize \
+	(sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
 #define xmlSecTransformMemBufGetBuf(transform) \
-    ((xmlSecBufferPtr)((transform)->reserved0))
+    ((xmlSecTransformCheckSize((transform), xmlSecTransformMemBufSize)) ? \
+	(xmlSecBufferPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecBufferPtr)NULL)
 
 static int		xmlSecTransformMemBufInitialize		(xmlSecTransformPtr transform);
 static void		xmlSecTransformMemBufFinalize		(xmlSecTransformPtr transform);
@@ -42,7 +46,7 @@ static int  		xmlSecTransformMemBufExecute		(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecTransformMemBufSize,			/* size_t objSize */
 
     xmlSecNameMemBuf,				/* const xmlChar* name; */
     NULL,					/* const xmlChar* href; */
@@ -74,37 +78,38 @@ xmlSecTransformMemBufGetKlass(void) {
 /**
  * xmlSecTransformMemBufGetBuffer:
  * @transform: the pointer to memory buffer transform.
- * @removeBuffer: the flag that indicates whether the buffer
- * 	will be removed from the transform.
  * 
  * Gets the memory transform buffer. 
  *
- * Returns the xmlSecBufferPtr. If @removeBuffer is set to 1 then the buffer 
- * is removed from transform and the caller is responsible for freeing it
+ * Returns pointer to the transform's xmlSecBufferPtr. 
  */
 xmlSecBufferPtr
-xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
-    xmlSecBufferPtr ptr;
+xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), NULL);
-    xmlSecAssert2(xmlSecTransformMemBufGetBuf(transform) != NULL, NULL);
     
-    ptr = xmlSecTransformMemBufGetBuf(transform);
-    if(removeBuffer) {
-	transform->reserved0 = NULL;
-    }
-    return(ptr);
+    buffer = xmlSecTransformMemBufGetBuf(transform);
+    xmlSecAssert2(buffer != NULL, NULL);
+    
+    return(buffer);
 }
 
 static int
 xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
+    xmlSecBufferPtr buffer;
+    int ret;
+    
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
 
-    transform->reserved0 = xmlSecBufferCreate(0);
-    if(transform->reserved0 == NULL) {
+    buffer = xmlSecTransformMemBufGetBuf(transform);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    ret = xmlSecBufferInitialize(buffer, 0);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecBufferCreate",
+		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -114,12 +119,14 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
+    xmlSecBufferPtr buffer;
+
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId));
+
+    buffer = xmlSecTransformMemBufGetBuf(transform);
+    xmlSecAssert(buffer != NULL);
     
-    if(xmlSecTransformMemBufGetBuf(transform) != NULL) {
-	xmlSecBufferDestroy(xmlSecTransformMemBufGetBuf(transform)); 
-    }    
-    transform->reserved0 = NULL;
+    xmlSecBufferFinalize(xmlSecTransformMemBufGetBuf(transform)); 
 }
 
 static int 
@@ -136,8 +143,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     xmlSecAssert2(buffer != NULL, -1);
     
     in = &(transform->inBuf);
-    out = &(transform->outBuf);
-    
+    out = &(transform->outBuf);    
     inSize = xmlSecBufferGetSize(in);
 
     if(transform->status == xmlSecTransformStatusNone) {

@@ -33,9 +33,7 @@ extern "C" {
 #define xmlSecTransformMemBufId \
 	xmlSecTransformMemBufGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformMemBufGetKlass		(void);
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecTransformMemBufGetBuffer		(xmlSecTransformPtr transform, 
-									 int removeBuffer);
-
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecTransformMemBufGetBuffer		(xmlSecTransformPtr transform);
 
 #ifdef __cplusplus
 }

@@ -119,6 +119,12 @@
 		</xsl:call-template>
 	    </li>
             <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+	    <li>
+		<xsl:call-template name="linkto"> 
+		    <xsl:with-param name="href">related.html</xsl:with-param> 
+		    <xsl:with-param name="text">Related</xsl:with-param> 
+		</xsl:call-template>
+	    </li>	    
 	</ul>
       	<a href="http://xmlsoft.org/">
 	    <xsl:call-template name="myimg"> 

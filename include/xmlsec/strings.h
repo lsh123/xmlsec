@@ -69,11 +69,84 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncElement[];
 
 /*************************************************************************
  *
- * XKMS Nodes
+ * XKMS nodes, attributes  and value strings
  *
  ************************************************************************/
+#ifndef XMLSEC_NO_XKMS
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeLocateRequest[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeLocateResult[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidateRequest[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidateResult[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCompoundRequest[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCompoundResult[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeMessageExtension[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOpaqueClientData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeResponseMechanism[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRespondWith[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePendingNotification[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeQueryKeyBinding[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKeyUsage[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeUseKeyWith[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeTimeInstant[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRequestSignatureValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeUnverifiedKeyBinding[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidityInterval[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrService[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNonce[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrOriginalRequestId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrResponseLimit[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrMechanism[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrIdentifier[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrApplication[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrResultMajor[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrResultMinor[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrRequestId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNotBefore[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNotOnOrAfter[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrTime[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResponsePending[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseRepresent[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseRequestSignatureValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithKeyName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithX509Cert[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithX509Chain[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithX509CRL[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithOCSP[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithRetrievalMethod[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithPGP[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithPGPWeb[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithSPKI[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRespondWithPrivateKey[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStatusResultSuccess[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStatusResultFailed[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStatusResultPending[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyUsageEncryption[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyUsageSignature[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyUsageExchange[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeSuccess[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeVersionMismatch[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeSender[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeReceiver[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeRepresent[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodePending[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNoMatch[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeTooManyResponses[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeIncomplete[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeFailure[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeRefused[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNoAuthentication[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeMessageNotSupported[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeUnknownResponseId[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNotSynchronous[];
+#endif /* XMLSEC_NO_XKMS */
 
 /*************************************************************************
  *

@@ -66,8 +66,81 @@ const xmlChar xmlSecTypeEncElement[]		= "http://www.w3.org/2001/04/xmlenc#Elemen
  * XKMS Nodes
  *
  ************************************************************************/
+#ifndef XMLSEC_NO_XKMS
 const xmlChar xmlSecNodeLocateRequest[]		= "LocateRequest";
+const xmlChar xmlSecNodeLocateResult[]		= "LocateResult";
 const xmlChar xmlSecNodeValidateRequest[]	= "ValidateRequest";
+const xmlChar xmlSecNodeValidateResult[]	= "ValidateResult";
+const xmlChar xmlSecNodeCompoundRequest[]	= "CompoundRequest";
+const xmlChar xmlSecNodeCompoundResult[]	= "CompoundResult";
+
+const xmlChar xmlSecNodeMessageExtension[]	= "MessageExtension";
+const xmlChar xmlSecNodeOpaqueClientData[]	= "OpaqueClientData";
+const xmlChar xmlSecNodeResponseMechanism[]	= "ResponseMechanism";
+const xmlChar xmlSecNodeRespondWith[]		= "RespondWith";
+const xmlChar xmlSecNodePendingNotification[]	= "PendingNotification";
+const xmlChar xmlSecNodeQueryKeyBinding[]	= "QueryKeyBinding";
+const xmlChar xmlSecNodeKeyUsage[]		= "KeyUsage";
+const xmlChar xmlSecNodeUseKeyWith[]		= "UseKeyWith";
+const xmlChar xmlSecNodeTimeInstant[]		= "TimeInstant";
+const xmlChar xmlSecNodeRequestSignatureValue[]	= "RequestSignatureValue";
+const xmlChar xmlSecNodeUnverifiedKeyBinding[]	= "UnverifiedKeyBinding";
+const xmlChar xmlSecNodeValidityInterval[]	= "ValidityInterval";
+
+const xmlChar xmlSecAttrService[]		= "Service";
+const xmlChar xmlSecAttrNonce[]			= "Nonce";
+const xmlChar xmlSecAttrOriginalRequestId[]	= "OriginalRequestId";
+const xmlChar xmlSecAttrResponseLimit[]		= "ResponseLimit";
+const xmlChar xmlSecAttrMechanism[]		= "Mechanism[";
+const xmlChar xmlSecAttrIdentifier[]		= "Identifier";
+const xmlChar xmlSecAttrApplication[]		= "Application";
+const xmlChar xmlSecAttrResultMajor[]		= "ResultMajor";
+const xmlChar xmlSecAttrResultMinor[]		= "ResultMinor";
+const xmlChar xmlSecAttrRequestId[]		= "RequestId";
+const xmlChar xmlSecAttrNotBefore[]		= "NotBefore";
+const xmlChar xmlSecAttrNotOnOrAfter[]		= "NotOnOrAfter";
+const xmlChar xmlSecAttrTime[]			= "Time";
+
+const xmlChar xmlSecResponsePending[]		= "Pending";
+const xmlChar xmlSecResponseRepresent[]		= "Represent";
+const xmlChar xmlSecResponseRequestSignatureValue[] = "RequestSignatureValue";
+
+const xmlChar xmlSecRespondWithKeyName[]	= "KeyName";
+const xmlChar xmlSecRespondWithKeyValue[]	= "KeyValue";
+const xmlChar xmlSecRespondWithX509Cert[]	= "X509Cert";
+const xmlChar xmlSecRespondWithX509Chain[]	= "X509Chain";
+const xmlChar xmlSecRespondWithX509CRL[]	= "X509CRL";
+const xmlChar xmlSecRespondWithOCSP[]		= "OCSP";
+const xmlChar xmlSecRespondWithRetrievalMethod[]= "RetrievalMethod";
+const xmlChar xmlSecRespondWithPGP[]		= "PGP";
+const xmlChar xmlSecRespondWithPGPWeb[]		= "PGPWeb";
+const xmlChar xmlSecRespondWithSPKI[]		= "SPKI";
+const xmlChar xmlSecRespondWithPrivateKey[]	= "PrivateKey";
+
+const xmlChar xmlSecStatusResultSuccess[]	= "Success";
+const xmlChar xmlSecStatusResultFailed[]	= "Failed";
+const xmlChar xmlSecStatusResultPending[]	= "Pending";
+
+const xmlChar xmlSecKeyUsageEncryption[]	= "Encryption";
+const xmlChar xmlSecKeyUsageSignature[]		= "Signature";
+const xmlChar xmlSecKeyUsageExchange[]		= "Exchange";
+
+const xmlChar xmlSecResultMajorCodeSuccess[]	= "Success";
+const xmlChar xmlSecResultMajorCodeVersionMismatch[]= "VersionMismatch";
+const xmlChar xmlSecResultMajorCodeSender[]	= "Sender";
+const xmlChar xmlSecResultMajorCodeReceiver[]	= "Receiver";
+const xmlChar xmlSecResultMajorCodeRepresent[]	= "Represent";
+const xmlChar xmlSecResultMajorCodePending[]	= "Pending";
+const xmlChar xmlSecResultMinorCodeNoMatch[]	= "NoMatch";
+const xmlChar xmlSecResultMinorCodeTooManyResponses[]	= "TooManyResponses";
+const xmlChar xmlSecResultMinorCodeIncomplete[]	= "Incomplete";
+const xmlChar xmlSecResultMinorCodeFailure[]	= "Failure";
+const xmlChar xmlSecResultMinorCodeRefused[]	= "Refused";
+const xmlChar xmlSecResultMinorCodeNoAuthentication[]	= "NoAuthentication";
+const xmlChar xmlSecResultMinorCodeMessageNotSupported[]= "MessageNotSupported";
+const xmlChar xmlSecResultMinorCodeUnknownResponseId[]	= "UnknownResponseId";
+const xmlChar xmlSecResultMinorCodeNotSynchronous[]	= "NotSynchronous";
+#endif /* XMLSEC_NO_XKMS */
 
 /*************************************************************************
  *

@@ -555,6 +555,8 @@ xmlSecGnuTLSBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(ctx->cipherCtx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->keyInitialized == 0, -1);
+    xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
     keySize = gcry_cipher_get_algo_keylen(ctx->cipher);
     xmlSecAssert2(keySize > 0, -1);

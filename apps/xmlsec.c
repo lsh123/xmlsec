@@ -49,20 +49,23 @@ static const char bugs[] =
     "To report bugs or get some help check XML Security Library home page:\n"
     "  http://www.aleksey.com/xmlsec\n";
 
-static const char helpCommands[] =     
+static const char helpCommands1[] =     
     "Usage: xmlsec <command> [<options>] [<file>]\n"
     "where <command> is one of the following:\n"
-    "  help      "	"\tdisplay this help information and exit\n"
-    "  help-<cmd>"	"\tdisplay help information for <cmd> and exit\n"
-    "  version   "	"\tprint version information and exit\n"
-    "  keys      "	"\tkeys XML file manipulation\n"
+    "  --help      "	"\tdisplay this help information and exit\n"
+    "  --help-all  "	"\tdisplay help information for all commands/options and exit\n"
+    "  --help-<cmd>"	"\tdisplay help information for command <cmd> and exit\n"
+    "  --version   "	"\tprint version information and exit\n"
+    "  --keys      "	"\tkeys XML file manipulation\n";
+
+static const char helpCommands2[] =     
 #ifndef XMLSEC_NO_XMLDSIG
-    "  sign      "	"\tsign data and output XML document\n"
-    "  verify    "	"\tverify signed document\n"
+    "  --sign      "	"\tsign data and output XML document\n"
+    "  --verify    "	"\tverify signed document\n"
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
-    "  encrypt   "	"\tencrypt data and output XML document\n"
-    "  decrypt   "	"\tdecrypt data from XML document\n"
+    "  --encrypt   "	"\tencrypt data and output XML document\n"
+    "  --decrypt   "	"\tdecrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
     ;
 
@@ -100,6 +103,7 @@ static const char helpDecrypt[] =
 #define xmlSecAppCmdLineTopicKeysMngr		0x0080
 #define xmlSecAppCmdLineTopicX509Certs		0x0100
 #define xmlSecAppCmdLineTopicVersion		0x0200
+#define xmlSecAppCmdLineTopicAll		0xFFFF
 
 /****************************************************************
  *
@@ -181,11 +185,11 @@ static xmlSecAppCmdLineParam genKeyParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam keysParam = { 
+static xmlSecAppCmdLineParam keysFileParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
-    "--keys",
+    "--keys-file",
     "-k",
-    "--keys <file>"
+    "--keys-file <file>"
     "\n\tload keys from XML file",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagMultipleValues,
@@ -343,11 +347,11 @@ static xmlSecAppCmdLineParam nodeXPathParam = {
     NULL
 };    
     
-static xmlSecAppCmdLineParam dtdfileParam = { 
+static xmlSecAppCmdLineParam dtdFileParam = { 
     xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
-    "--dtdfile",
+    "--dtd-file",
     NULL,   
-    "--dtdfile <file>"
+    "--dtd-file <file>"
     "\n\tload the specified file as the DTD",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
@@ -359,7 +363,8 @@ static xmlSecAppCmdLineParam printDebugParam = {
     "--print-debug",
     NULL,   
     "--print-debug <file>"
-    "\n\tprint debug information to <file>",
+    "\n\tprint debug information to <file> (use \"-\" as <file> to print"
+    "\n\tdebug information to stdout)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -370,7 +375,8 @@ static xmlSecAppCmdLineParam printXmlDebugParam = {
     "--print-xml-debug",
     NULL,   
     "--print-xml-debug <file>"
-    "\n\tprint debug information in xml format to <file>",
+    "\n\tprint debug information in xml format to <file> (use \"-\" as"
+    "\n\t<file> to print debug information to stdout)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -458,22 +464,22 @@ static xmlSecAppCmdLineParam storeAllParam = {
  *
  ***************************************************************/
 #ifndef XMLSEC_NO_XMLENC
-static xmlSecAppCmdLineParam binaryParam = { 
+static xmlSecAppCmdLineParam binaryDataParam = { 
     xmlSecAppCmdLineTopicEncEncrypt,
+    "--binary-data",
     "--binary",
-    NULL,
-    "--binary <file>"
+    "--binary-data <file>"
     "\n\tbinary <file> to encrypt",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
 
-static xmlSecAppCmdLineParam xmlParam = { 
+static xmlSecAppCmdLineParam xmlDataParam = { 
     xmlSecAppCmdLineTopicEncEncrypt,
-    "--xml",
+    "--xml-data",
     NULL,
-    "--xml <file>"
+    "--xml-data <file>"
     "\n\tXML <file> to encrypt",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
@@ -557,8 +563,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 
     /* enc params */
 #ifndef XMLSEC_NO_XMLENC
-    &binaryParam,
-    &xmlParam,
+    &binaryDataParam,
+    &xmlDataParam,
 #endif /* XMLSEC_NO_XMLENC */
              
     /* common dsig and enc parameters */
@@ -566,7 +572,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &outputParam,
     &printDebugParam,
     &printXmlDebugParam,    
-    &dtdfileParam,
+    &dtdFileParam,
     &nodeIdParam,
     &nodeNameParam,
     &nodeXPathParam,
@@ -574,7 +580,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     /* Keys Manager params */
     &allowedKeyDataParam,
     &genKeyParam,
-    &keysParam,
+    &keysFileParam,
     &privkeyParam,
     &pubkeyParam,
 #ifndef XMLSEC_NO_AES    
@@ -772,7 +778,7 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XMLENC
 	    case xmlSecAppCommandEncrypt:
     	        if(xmlSecAppEncryptFile(argv[i]) < 0) {
-		    fprintf(stdout, "Error: failed to encrypt file \"%s\"\n", argv[i]);
+		    fprintf(stdout, "Error: failed to encrypt file with template \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 		break;
@@ -994,21 +1000,21 @@ xmlSecAppEncryptFile(const char* filename) {
 	goto done;
     }
 
-    if(xmlSecAppCmdLineParamGetString(&binaryParam) != NULL) {
+    if(xmlSecAppCmdLineParamGetString(&binaryDataParam) != NULL) {
 	/* encrypt */
 	start_time = clock();            
-	if(xmlSecEncCtxUriEncrypt(encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryParam)) < 0) {
+	if(xmlSecEncCtxUriEncrypt(encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryDataParam)) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt file \"%s\"\n", 
-		    xmlSecAppCmdLineParamGetString(&binaryParam));
+		    xmlSecAppCmdLineParamGetString(&binaryDataParam));
 	    goto done;
 	}
 	total_time += clock() - start_time;    
-    } else if(xmlSecAppCmdLineParamGetString(&xmlParam) != NULL) {
+    } else if(xmlSecAppCmdLineParamGetString(&xmlDataParam) != NULL) {
 	/* parse file and select node for encryption */
-        data = xmlSecAppXmlDataCreate(xmlSecAppCmdLineParamGetString(&xmlParam), NULL, NULL);
+        data = xmlSecAppXmlDataCreate(xmlSecAppCmdLineParamGetString(&xmlDataParam), NULL, NULL);
 	if(data == NULL) {
 	    fprintf(stderr, "Error: failed to load file \"%s\"\n", 
-		    xmlSecAppCmdLineParamGetString(&xmlParam));
+		    xmlSecAppCmdLineParamGetString(&xmlDataParam));
 	    goto done;
 	}
 
@@ -1016,7 +1022,7 @@ xmlSecAppEncryptFile(const char* filename) {
 	start_time = clock();            
 	if(xmlSecEncCtxXmlEncrypt(encCtx, startTmplNode, data->startNode) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt xml file \"%s\"\n", 
-		    xmlSecAppCmdLineParamGetString(&xmlParam));
+		    xmlSecAppCmdLineParamGetString(&xmlDataParam));
 	    goto done;
 	}
 	total_time += clock() - start_time;    
@@ -1247,9 +1253,9 @@ xmlSecAppLoadKeys(void) {
     }
 
     /* read all xml key files */
-    for(value = keysParam.value; value != NULL; value = value->next) {
+    for(value = keysFileParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", keysParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", keysFileParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrLoad(gKeysMngr, value->strValue) < 0) {
 	    fprintf(stderr, "Error: failed to load xml keys file \"%s\".\n", value->strValue);
@@ -1459,13 +1465,13 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
     }
     
     /* load dtd and set default attrs and ids */
-    if(xmlSecAppCmdLineParamGetString(&dtdfileParam) != NULL) {
+    if(xmlSecAppCmdLineParamGetString(&dtdFileParam) != NULL) {
         xmlValidCtxt ctx;
 
-        data->dtd = xmlParseDTD(NULL, BAD_CAST xmlSecAppCmdLineParamGetString(&dtdfileParam));
+        data->dtd = xmlParseDTD(NULL, BAD_CAST xmlSecAppCmdLineParamGetString(&dtdFileParam));
 	if(data->dtd == NULL) {
 	    fprintf(stderr, "Error: failed to parse dtd file \"%s\"\n", 
-		    xmlSecAppCmdLineParamGetString(&dtdfileParam));
+		    xmlSecAppCmdLineParamGetString(&dtdFileParam));
 	    xmlSecAppXmlDataDestroy(data);
 	    return(NULL);    
 	}
@@ -1598,6 +1604,11 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 	(*cmdLineTopics) = 0;
 	return(xmlSecAppCommandHelp);
     } else 
+
+    if((strcmp(cmd, "help-all") == 0) || (strcmp(cmd, "--help-all") == 0)) {
+	(*cmdLineTopics) = xmlSecAppCmdLineTopicAll;
+	return(xmlSecAppCommandHelp);
+    } else 
     
     if((strncmp(cmd, "help-", 5) == 0) || (strncmp(cmd, "--help-", 7) == 0)) {	 
 	cmd = (cmd[0] == '-') ? cmd + 7 : cmd + 5;
@@ -1672,7 +1683,7 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     switch(command) {
     case xmlSecAppCommandUnknown:
     case xmlSecAppCommandHelp:
-	fprintf(stdout, "%s\n", helpCommands);
+	fprintf(stdout, "%s%s\n", helpCommands1, helpCommands2);
         break;
     case xmlSecAppCommandVersion:
 	fprintf(stdout, "%s\n", helpVersion);

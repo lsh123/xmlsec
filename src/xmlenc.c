@@ -658,24 +658,29 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     ctx->encMethod->encode = ctx->encrypt;
     
     /* we have encryption method, find key */
+    ret = xmlSecTransformSetKeyReq(ctx->encMethod, &(ctx->keyInfoReadCtx.keyReq));
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformSetKeyReq",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(ctx->encMethod)));
+	return(-1);
+    }	
+    	
     if((ctx->encKey == NULL) && 
        (ctx->keyInfoNode != NULL) && 
        (ctx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
 	
-	ret = xmlSecTransformSetKeyReq(ctx->encMethod, &(ctx->keyInfoReadCtx.keyReq));
-	if(ret < 0) {
-    	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecTransformSetKeyReq",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"transform=%s",
-			xmlSecErrorsSafeString(xmlSecTransformGetName(ctx->encMethod)));
-	    return(-1);
-	}		
 	ctx->encKey = (ctx->keyInfoReadCtx.keysMngr->getKey)(ctx->keyInfoNode, 
 							     &(ctx->keyInfoReadCtx));
     }
-    if(ctx->encKey == NULL) {
+    
+    /* check that we have exactly what we want */
+    if((ctx->encKey == NULL) || 
+       (!xmlSecKeyMatch(ctx->encKey, NULL, &(ctx->keyInfoReadCtx.keyReq)))) {
+
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    NULL,

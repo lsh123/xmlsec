@@ -563,7 +563,9 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
     xmlSecAssert2(ctx->keyInitialized == 0, -1);
-
+    xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
+    
     cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
     xmlSecAssert2(cipherKeyLen > 0, -1);
     xmlSecAssert2((size_t)cipherKeyLen <= sizeof(ctx->key), -1);

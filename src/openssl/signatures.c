@@ -158,6 +158,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digest != NULL, -1);
+    xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);

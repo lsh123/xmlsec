@@ -141,9 +141,9 @@ execDSigTest "merlin-xmldsig-twenty-three/signature" \
     "--trusted $topfolder/keys/cacert.pem --untrusted $topfolder/keys/ca2cert.pem"
 
 execDSigTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--session-key hmac-192 --keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml" 
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
     
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     " " \
@@ -189,9 +189,9 @@ execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
     "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509 --verification-time 2002-10-02+10:00:00" 
 
 execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
+    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
+    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
+    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
 
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     ""

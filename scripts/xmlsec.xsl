@@ -125,19 +125,21 @@
 		<xsl:with-param name="src">libxml2-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">LibXML2</xsl:with-param> 
 	    </xsl:call-template>
-	</a><br/>
-      	<a href="http://xmlsoft.org/XSLT">
+	</a>
+      	<br/>
+	<a href="http://xmlsoft.org/XSLT">
 	    <xsl:call-template name="myimg"> 
 		<xsl:with-param name="src">libxslt-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">LibXSLT</xsl:with-param> 
 	    </xsl:call-template>
-	</a><br/>
-      	<a href="http://www.openssl.org/">
+	</a>
+      	<br/>
+	<a href="http://www.openssl.org/">
 	    <xsl:call-template name="myimg"> 
 		<xsl:with-param name="src">openssl-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">OpenSSL</xsl:with-param> 
 	    </xsl:call-template>
-	</a><br/>
+	</a>
      </td>
      <!-- top navigation menu end -->
 

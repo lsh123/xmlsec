@@ -1,3 +1,11 @@
+Wed Aug 20 21:26:00 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/api/sgml/version.sgml docs/api/xmlsec-version.html
+	docs/index.html docs/news.html docs/xmlsec-man.html
+	include/xmlsec/version.h man/xmlsec1-config.1 man/xmlsec1.1: new 1.1.1
+	release preparation
+	* docs/*: re-run docs generation/formatting
+
 Fri Aug  8 22:18:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/xpath.c: register namespaces before processing XPointer

@@ -100,49 +100,49 @@ decrypt_file(const char* enc_file, const char* key_file) {
     /* load template */
     doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, enc_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, enc_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
 	goto done;	
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+        fprintf(stderr,"Error: failed to create encryption context\n");
 	goto done;
     }
 
     /* load DES key */
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
-        fprintf(stderr,&quot;Error: decryption failed\n&quot;);
+        fprintf(stderr,"Error: decryption failed\n");
 	goto done;
     }
         
     /* print decrypted data to stdout */
     if(encCtx-&gt;resultReplaced != 0) {
-	fprintf(stdout, &quot;Decrypted XML data:\n&quot;);
+	fprintf(stdout, "Decrypted XML data:\n");
 	xmlDocDump(stdout, doc);
     } else {
-	fprintf(stdout, &quot;Decrypted binary data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
+	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx-&gt;result));
 	if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
 	    fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
 	          1, 
@@ -150,7 +150,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
 	          stdout);
 	}
     }
-    fprintf(stdout, &quot;\n&quot;);
+    fprintf(stdout, "\n");
         
     /* success */
     res = 0;

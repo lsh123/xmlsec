@@ -547,7 +547,7 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <a name="AEN9920"></a><h3>
 <a name="XMLSECTRANSFORMURITYPEEMPTY"></a>xmlSecTransformUriTypeEmpty</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeEmpty		0x0001</pre></td></tr></table>
-<p>The empty URI (&quot;&quot;) type.</p>
+<p>The empty URI ("") type.</p>
 <p></p>
 </div>
 <hr>
@@ -555,7 +555,7 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <a name="AEN9926"></a><h3>
 <a name="XMLSECTRANSFORMURITYPESAMEDOCUMENT"></a>xmlSecTransformUriTypeSameDocument</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeSameDocument	0x0002		</pre></td></tr></table>
-<p>The smae document (&quot;#...&quot;) but not empty (&quot;&quot;) URI type.</p>
+<p>The smae document ("#...") but not empty ("") URI type.</p>
 <p></p>
 </div>
 <hr>
@@ -563,7 +563,7 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <a name="AEN9932"></a><h3>
 <a name="XMLSECTRANSFORMURITYPELOCAL"></a>xmlSecTransformUriTypeLocal</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeLocal		0x0004</pre></td></tr></table>
-<p>The local URI (&quot;file:///....&quot;) type.</p>
+<p>The local URI ("file:///....") type.</p>
 <p></p>
 </div>
 <hr>
@@ -935,21 +935,21 @@ The caller is responsible for cleaing up returend object by calling
 <p>The following examples demonstrate what the URI attribute identifies and
 how it is dereferenced 
 (http://www.w3.org/TR/xmldsig-core/<font>sec-ReferenceProcessingModel</font>):</p>
-<p>- URI=&quot;http://example.com/bar.xml&quot;
+<p>- URI="http://example.com/bar.xml"
 identifies the octets that represent the external resource 
 'http://example.com/bar.xml', that is probably an XML document given 
 its file extension. </p>
-<p>- URI=&quot;http://example.com/bar.xml<font>chapter1</font>&quot;
+<p>- URI="http://example.com/bar.xml<font>chapter1</font>"
 identifies the element with ID attribute value 'chapter1' of the 
 external XML resource 'http://example.com/bar.xml', provided as an 
 octet stream. Again, for the sake of interoperability, the element 
 identified as 'chapter1' should be obtained using an XPath transform 
 rather than a URI fragment (barename XPointer resolution in external 
 resources is not REQUIRED in this specification). </p>
-<p>- URI=&quot;&quot;
+<p>- URI=""
 identifies the node-set (minus any comment nodes) of the XML resource 
 containing the signature </p>
-<p>- URI=&quot;<font>chapter1</font>&quot;
+<p>- URI="<font>chapter1</font>"
 identifies a node-set containing the element with ID attribute value 
 'chapter1' of the XML resource containing the signature. XML Signature 
 (and its applications) modify this node-set to include the element plus 
@@ -967,7 +967,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN10283"><span style="white-space: nowrap"><tt class="PARAMETER"><i>hereNode</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to &quot;here&quot; node required by some 
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to "here" node required by some 
 		XML transforms (may be NULL).</p></td>
 </tr>
 <tr>
@@ -1425,7 +1425,7 @@ destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFO
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>Reads transform from the <tt class="PARAMETER"><i>node</i></tt> as follows:</p>
-<p>   1) reads &quot;Algorithm&quot; attribute;</p>
+<p>   1) reads "Algorithm" attribute;</p>
 <p>   2) checks the lists of known and allowed transforms;</p>
 <p>   3) calls transform's create method;</p>
 <p>   4) calls transform's read transform node method.</p>
@@ -1603,7 +1603,7 @@ function to verify binary results.</p>
                                             (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
-<p>Gets transform input (<tt class="PARAMETER"><i>mode</i></tt> is &quot;push&quot;) or output (<tt class="PARAMETER"><i>mode</i></tt> is &quot;pop&quot;) data 
+<p>Gets transform input (<tt class="PARAMETER"><i>mode</i></tt> is "push") or output (<tt class="PARAMETER"><i>mode</i></tt> is "pop") data 
 type (binary or XML).</p>
 <p></p>
 <p></p>
@@ -1985,7 +1985,7 @@ processing instructions. The output of this transform is an octet stream.</p>
                                             (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
-<p>Gets transform input (<tt class="PARAMETER"><i>mode</i></tt> is &quot;push&quot;) or output (<tt class="PARAMETER"><i>mode</i></tt> is &quot;pop&quot;) data 
+<p>Gets transform input (<tt class="PARAMETER"><i>mode</i></tt> is "push") or output (<tt class="PARAMETER"><i>mode</i></tt> is "pop") data 
 type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
 methods.</p>
 <p></p>
@@ -2678,19 +2678,19 @@ process the data and return result in <tt class="PARAMETER"><i>nodes</i></tt>.</
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12039"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">xmlSecTransformPushBinMethod</a> <tt class="STRUCTFIELD"><i>pushBin</i></tt></span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>			the binary data &quot;push thru chain&quot; processing method.</p></td>
+<td align="LEFT" valign="TOP" width="80%"><p>			the binary data "push thru chain" processing method.</p></td>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12045"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">xmlSecTransformPopBinMethod</a> <tt class="STRUCTFIELD"><i>popBin</i></tt></span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>			the binary data &quot;pop from chain&quot; procesing method.</p></td>
+<td align="LEFT" valign="TOP" width="80%"><p>			the binary data "pop from chain" procesing method.</p></td>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12051"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">xmlSecTransformPushXmlMethod</a> <tt class="STRUCTFIELD"><i>pushXml</i></tt></span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>			the XML data &quot;push thru chain&quot; processing method.</p></td>
+<td align="LEFT" valign="TOP" width="80%"><p>			the XML data "push thru chain" processing method.</p></td>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12057"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">xmlSecTransformPopXmlMethod</a> <tt class="STRUCTFIELD"><i>popXml</i></tt></span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>			the XML data &quot;pop from chain&quot; procesing method.</p></td>
+<td align="LEFT" valign="TOP" width="80%"><p>			the XML data "pop from chain" procesing method.</p></td>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12063"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">xmlSecTransformExecuteMethod</a> <tt class="STRUCTFIELD"><i>execute</i></tt></span></a></td>
@@ -2873,7 +2873,7 @@ value if an error occurs.</p></td>
 <a name="AEN12250"></a><h3>
 <a name="XMLSECTRANSFORMIDUNKNOWN"></a>xmlSecTransformIdUnknown</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformIdUnknown			NULL</pre></td></tr></table>
-<p>The &quot;unknown&quot; transform id (NULL).</p>
+<p>The "unknown" transform id (NULL).</p>
 <p></p>
 </div>
 <hr>
@@ -3023,7 +3023,7 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <a name="AEN12374"></a><h3>
 <a name="XMLSECTRANSFORMENVELOPEDID"></a>xmlSecTransformEnvelopedId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformEnvelopedId</pre></td></tr></table>
-<p>The &quot;enveloped&quot; transform klass.</p>
+<p>The "enveloped" transform klass.</p>
 <p></p>
 </div>
 <hr>
@@ -3040,7 +3040,7 @@ to match the Signature with the XML production element is removed.
 The output of the transform is equivalent to the output that would 
 result from replacing T with an XPath transform containing the following 
 XPath parameter element:</p>
-<p>&lt;XPath xmlns:dsig=&quot;&amp;dsig;&quot;&gt;
+<p>&lt;XPath xmlns:dsig="&amp;dsig;"&gt;
   count(ancestor-or-self::dsig:Signature |
   <font>here</font>()/ancestor::dsig:Signature[1]) &gt;
   count(ancestor-or-self::dsig:Signature)&lt;/XPath&gt;
@@ -3153,7 +3153,7 @@ http://www.w3.org/TR/xmldsig-core/<font>sec-XPath</font> for more details.</p>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12482"><span style="white-space: nowrap"><tt class="PARAMETER"><i>hereNode</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to &quot;here&quot; node.</p></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to "here" node.</p></td>
 </tr>
 <tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12487"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -3210,7 +3210,7 @@ then the result of these steps is logically equivalent [XHTML].</p>
 <a name="AEN12515"></a><h3>
 <a name="XMLSECTRANSFORMREMOVEXMLTAGSC14NID"></a>xmlSecTransformRemoveXmlTagsC14NId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformRemoveXmlTagsC14NId</pre></td></tr></table>
-<p>The &quot;remove all xml tags&quot; transform klass (used before base64 transforms).</p>
+<p>The "remove all xml tags" transform klass (used before base64 transforms).</p>
 <p></p>
 </div>
 <hr>
@@ -3219,7 +3219,7 @@ then the result of these steps is logically equivalent [XHTML].</p>
 <a name="XMLSECTRANSFORMREMOVEXMLTAGSC14NGETKLASS"></a>xmlSecTransformRemoveXmlTagsC14NGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformRemoveXmlTagsC14NGetKlass
                                             (void);</pre></td></tr></table>
-<p>The &quot;remove xml tags&quot; transform klass (http://www.w3.org/TR/xmldsig-core/<font>sec-Base-64</font>):
+<p>The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/<font>sec-Base-64</font>):
 Base64 transform requires an octet stream for input. If an XPath node-set 
 (or sufficiently functional alternative) is given as input, then it is 
 converted to an octet stream by performing operations logically equivalent 
@@ -3234,7 +3234,7 @@ processing instructions. The output of this transform is an octet stream.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
 <td align="RIGHT" valign="TOP" width="20%"><a name="AEN12531"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>&quot;remove xml tags&quot; transform id.</p></td>
+<td align="LEFT" valign="TOP" width="80%"><p>"remove xml tags" transform id.</p></td>
 </tr></tbody></table>
 </div>
 </div>

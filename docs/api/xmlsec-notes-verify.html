@@ -113,48 +113,48 @@ verify_file(const char* xml_file, const char* key_file) {
     /* load file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
 	goto done;	
     }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
 
     /* load public key */
     dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file,xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature verify\n&quot;);
+        fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
         
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, &quot;Signature is OK\n&quot;);
+	fprintf(stdout, "Signature is OK\n");
     } else {
-	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
+	fprintf(stdout, "Signature is INVALID\n");
     }    
 
     /* success */

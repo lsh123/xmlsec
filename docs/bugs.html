@@ -1,56 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>XML Security Library: Reporting Bugs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XML Security Library: Reporting Bugs</title>
 </head>
-  <body>
- 
-<table width="100%">
- <tbody>
-    <tr>
-
-    <!-- top navigation menu start -->     
-    <td valign="Top" align="Left" width="210">
-	<img src="logo.gif" alt="XML Security Library" width="200" height="100">
-        <p></p>
-        <ul>
-	    <li><a href="index.html">Home</a></li>
- 	    <li><a href="download.html">Download</a></li>
- 	    <li><a href="news.html">News</a></li>
-	    <li><a href="documentation.html">Documentation</a></li>
-	    <li><a href="faq.html">FAQ</a></li>
- 	    <li><a href="xmldsig.html">XML Digital Signature</a></li>
-    	    <ul>
- 		<li><a href="xmldsig-interop.html">Interop report</a></li>
- 		<li><a href="xmldsig-verifier.html">Online Verifier</a></li>	
-    	    </ul>
- 	    <li><a href="xmlenc.html">XML Encryption</a></li>     	
-    	    <ul>
-		<li><a href="xmlenc-interop.html">Interop report</a></li>
-    	    </ul>
-	    <li><a href="c14n.html">XML Canonicalization</a></li>
- 	    <li><a href="bugs.html">Reporting Bugs</a></li>
-            <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-	</ul>
-      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" border="0" alt="LibXML2"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/XSLT/"><img src="libxslt-logo.png" border="0" alt="LibXSLT"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.openssl.org/"><img src="openssl-logo.png" border="0" alt="OpenSSL"></a><br>
-     </td>
-     <!-- top navigation menu end -->
-
-    <td valign="top" align="left">       
-    <div align="center"><h2>Reporting Bugs and Getting Help</h2></div>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
+<li><a href="xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
+<li><a href="bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div align="center"><h2>Reporting Bugs and Getting Help</h2></div>
+<p>
 Well, any big enough program has a bug. You simply don't know where 
 exactly :) The best way to report a bug is to use the 
 <a href="http://bugzilla.gnome.org/buglist.cgi?product=xmlsec">Gnome bug 
-tracking database</a>. Please, make sure to use the "xmlsec" module name.
+tracking database</a>. Please, make sure to use the &quot;xmlsec&quot; module name.
 There is also a mailing list 
 <a href="mailto:xmlsec@aleksey.com">xmlsec@aleksey.com</a> with 
 <a href="http://www.aleksey.com/pipermail/xmlsec">online 
 archive</a>. To subscribe to this list
-please visit <a "href="http://www.aleksey.com/mailman/listinfo/xmlsec">list info</a>
+please visit <a href="http://www.aleksey.com/mailman/listinfo/xmlsec">list info</a>
 Web page and follow instructions.
 
+</p>
 <p>Before writing bug reports or questions do not
 hesitate to check <a href="faq.html">FAQ</a> and old postings in the 
 <a href="http://www.aleksey.com/pipermail/xmlsec">mailing 
@@ -59,20 +49,26 @@ If you are writing your own code based on the XMLSec library then you should
 try to reproduce your problem with <a href="xmlsec-man.html">xmlsec command 
 line utiliy</a> first. And if it works just fine then you know whom to blame,
 don't you? :). 
+</p>
 <p>If you did all the steps above and you still think that you found something
 new then send as much information as possible, please. 
 A good question or bug report <b>MUST</b> include the following:
+</p>
 <ul>
-  <li>XMLSec version number (or the snapshot date).
-  <li>The platform/compiler you are using.
-  <li>The exact xmlsec utility command line.
-  <li>All the files mentioned in this command line. 
-  <li>The xmlsec utility output.
+<li>XMLSec version number (or the snapshot date).
+  </li>
+<li>The platform/compiler you are using.
+  </li>
+<li>The exact xmlsec utility command line.
+  </li>
+<li>All the files mentioned in this command line. 
+  </li>
+<li>The xmlsec utility output.
+</li>
 </ul>
-
 <p>I'll do my best to fix reported bugs or answer questions as soon as I can. 
 And of course, any patches, bug fixes and improvements are always welcome!<br>
-
+</p>
 <p>Please note, that bug tracking database and mailing list are open to anyone.
 Any private or confidential information posted there became public.
 The author of XMLSec library assumes no responsibility for any damage caused
@@ -81,12 +77,9 @@ by any information distribution using XMLSec
 list</a>, GNOME CVS or 
 <a href="http://bugzilla.gnome.org/buglist.cgi?product=xmlsec">Gnome bug 
 tracking database</a>.
-    <p>
-    <a href="bugs.html">Aleksey Sanin</a>
-   </td>
-     </tr>
-  </tbody> 
-</table>
- 
-</body>
+</p>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
 </html>

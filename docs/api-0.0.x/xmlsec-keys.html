@@ -1,1937 +1,540 @@
-<HTML
-><HEAD
-><TITLE
->keys.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Reference"
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="keyinfo.h"
-HREF="xmlsec-keyinfo.html"><LINK
-REL="NEXT"
-TITLE="keysmngr.h"
-HREF="xmlsec-keysmngr.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-keyinfo.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-keysmngr.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-KEYS"
-></A
->keys.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN2477"
-></A
-><H2
->Name</H2
->keys.h&nbsp;--&nbsp;The keys helper functions.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN2480"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>keys.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="keyinfo.h" href="xmlsec-keyinfo.html">
+<link rel="NEXT" title="keysmngr.h" href="xmlsec-keysmngr.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keyinfo.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-KEYS"></a>keys.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN2477"></a><h2>Name</h2>keys.h -- The keys helper functions.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN2480"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-typedef     <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
->;
-enum        <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
->;
-enum        <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
->;
-typedef     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
->;
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINDEFAULT"
->xmlSecKeyOriginDefault</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINKEYMANAGER"
->xmlSecKeyOriginKeyManager</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINKEYNAME"
->xmlSecKeyOriginKeyName</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINKEYVALUE"
->xmlSecKeyOriginKeyValue</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINRETRIEVALDOCUMENT"
->xmlSecKeyOriginRetrievalDocument</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINRETRIEVALREMOTE"
->xmlSecKeyOriginRetrievalRemote</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINX509"
->xmlSecKeyOriginX509</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINPGP"
->xmlSecKeyOriginPGP</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINENCRYPTEDKEY"
->xmlSecKeyOriginEncryptedKey</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINALL"
->xmlSecKeyOriginAll</A
->
-#define     <A
-HREF="xmlsec-keys.html#XMLSECKEYIDUNKNOWN"
->xmlSecKeyIdUnknown</A
->
-struct      <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
->;
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keys.html#XMLSECKEYCREATE"
->xmlSecKeyCreate</A
->                (<A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> origin);
-void        <A
-HREF="xmlsec-keys.html#XMLSECKEYDESTROY"
->xmlSecKeyDestroy</A
->                (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keys.html#XMLSECKEYDUPLICATE"
->xmlSecKeyDuplicate</A
->             (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> origin);
-int         <A
-HREF="xmlsec-keys.html#XMLSECVERIFYKEY"
->xmlSecVerifyKey</A
->                 (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type);
-void        <A
-HREF="xmlsec-keys.html#XMLSECKEYDEBUGDUMP"
->xmlSecKeyDebugDump</A
->              (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
-int         <A
-HREF="xmlsec-keys.html#XMLSECKEYREADPEMCERT"
->xmlSecKeyReadPemCert</A
->            (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
+typedef     <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a>;
+enum        <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a>;
+enum        <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a>;
+typedef     <a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a>;
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINDEFAULT">xmlSecKeyOriginDefault</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINKEYMANAGER">xmlSecKeyOriginKeyManager</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINKEYNAME">xmlSecKeyOriginKeyName</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINKEYVALUE">xmlSecKeyOriginKeyValue</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINRETRIEVALDOCUMENT">xmlSecKeyOriginRetrievalDocument</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINRETRIEVALREMOTE">xmlSecKeyOriginRetrievalRemote</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINX509">xmlSecKeyOriginX509</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINPGP">xmlSecKeyOriginPGP</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINENCRYPTEDKEY">xmlSecKeyOriginEncryptedKey</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYORIGINALL">xmlSecKeyOriginAll</a>
+#define     <a href="xmlsec-keys.html#XMLSECKEYIDUNKNOWN">xmlSecKeyIdUnknown</a>
+struct      <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a>;
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-keys.html#XMLSECKEYCREATE">xmlSecKeyCreate</a>                (<a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> id,
+                                             <a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> origin);
+void        <a href="xmlsec-keys.html#XMLSECKEYDESTROY">xmlSecKeyDestroy</a>                (<strong>xmlSecKeyPtr</strong> key);
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-keys.html#XMLSECKEYDUPLICATE">xmlSecKeyDuplicate</a>             (<strong>xmlSecKeyPtr</strong> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> origin);
+int         <a href="xmlsec-keys.html#XMLSECVERIFYKEY">xmlSecVerifyKey</a>                 (<strong>xmlSecKeyPtr</strong> key,
+                                             const <strong>xmlChar</strong> *name,
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> id,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type);
+void        <a href="xmlsec-keys.html#XMLSECKEYDEBUGDUMP">xmlSecKeyDebugDump</a>              (<strong>xmlSecKeyPtr</strong> key,
+                                             <strong>FILE</strong> *output);
+int         <a href="xmlsec-keys.html#XMLSECKEYREADPEMCERT">xmlSecKeyReadPemCert</a>            (<strong>xmlSecKeyPtr</strong> key,
                                              const char *filename);
-struct      <A
-HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
->xmlSecKeysMngr</A
->;
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> (<A
-HREF="xmlsec-keys.html#XMLSECGETKEYCALLBACK"
->*xmlSecGetKeyCallback</A
->)        (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+struct      <a href="xmlsec-keys.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
+<strong>xmlSecKeyPtr</strong> (<a href="xmlsec-keys.html#XMLSECGETKEYCALLBACK">*xmlSecGetKeyCallback</a>)        (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> keyId,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> usage,
-                                             <GTKDOCLINK
-HREF="TIME-T"
->time_t</GTKDOCLINK
-> certsVerificationTime);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> (<A
-HREF="xmlsec-keys.html#XMLSECFINDKEYCALLBACK"
->*xmlSecFindKeyCallback</A
->)       (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> keyId,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type,
+                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> usage,
+                                             <strong>time_t</strong> certsVerificationTime);
+<strong>xmlSecKeyPtr</strong> (<a href="xmlsec-keys.html#XMLSECFINDKEYCALLBACK">*xmlSecFindKeyCallback</a>)       (<strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> usage);
-<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> (<A
-HREF="xmlsec-keys.html#XMLSECX509FINDCALLBACK"
->*xmlSecX509FindCallback</A
->) (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             const <strong>xmlChar</strong> *name,
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> id,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type,
+                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> usage);
+<strong>xmlSecX509DataPtr</strong> (<a href="xmlsec-keys.html#XMLSECX509FINDCALLBACK">*xmlSecX509FindCallback</a>) (<strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *subjectName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerSerial,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);
-int         (<A
-HREF="xmlsec-keys.html#XMLSECX509VERIFYCALLBACK"
->*xmlSecX509VerifyCallback</A
->)     (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             <strong>xmlChar</strong> *subjectName,
+                                             <strong>xmlChar</strong> *issuerName,
+                                             <strong>xmlChar</strong> *issuerSerial,
+                                             <strong>xmlChar</strong> *ski,
+                                             <strong>xmlSecX509DataPtr</strong> cert);
+int         (<a href="xmlsec-keys.html#XMLSECX509VERIFYCALLBACK">*xmlSecX509VerifyCallback</a>)     (<strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keys.html#XMLSECKEYSMNGRGETKEY"
->xmlSecKeysMngrGetKey</A
->           (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             <strong>xmlSecX509DataPtr</strong> cert);
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-keys.html#XMLSECKEYSMNGRGETKEY">xmlSecKeysMngrGetKey</a>           (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> keyId,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> keyType,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> keyUsage,
-                                             <GTKDOCLINK
-HREF="TIME-T"
->time_t</GTKDOCLINK
-> certsVerificationTime);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2554"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2557"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2559"
-></A
-><H3
-><A
-NAME="XMLSECKEYID"
-></A
->xmlSecKeyId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; </PRE
-></TD
-></TR
-></TABLE
-><P
->The key id (key type information).</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2565"
-></A
-><H3
-><A
-NAME="XMLSECKEYTYPE"
-></A
->enum xmlSecKeyType</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum  {
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> keyId,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> keyType,
+                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> keyUsage,
+                                             <strong>time_t</strong> certsVerificationTime);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN2554"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN2557"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN2559"></a><h3>
+<a name="XMLSECKEYID"></a>xmlSecKeyId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; </pre></td></tr></table>
+<p>The key id (key type information).</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2565"></a><h3>
+<a name="XMLSECKEYTYPE"></a>enum xmlSecKeyType</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
     xmlSecKeyTypePublic = 0,
     xmlSecKeyTypePrivate,
     xmlSecKeyTypeAny
-} xmlSecKeyType;</PRE
-></TD
-></TR
-></TABLE
-><P
->The key type (public/private).</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2571"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#F0F0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyTypePublic</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the public key.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyTypePrivate</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the private key.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyTypeAny</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> any key.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2588"
-></A
-><H3
-><A
-NAME="XMLSECKEYUSAGE"
-></A
->enum xmlSecKeyUsage</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum  {
+} xmlSecKeyType;</pre></td></tr></table>
+<p>The key type (public/private).</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2571"></a><p></p>
+<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyTypePublic</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the public key.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyTypePrivate</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the private key.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyTypeAny</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> any key.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2588"></a><h3>
+<a name="XMLSECKEYUSAGE"></a>enum xmlSecKeyUsage</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
     xmlSecKeyUsageAny = 0,
     xmlSecKeyUsageSign,
     xmlSecKeyUsageVerify,
     xmlSecKeyUsageEncrypt,
     xmlSecKeyUsageDecrypt
-} xmlSecKeyUsage;</PRE
-></TD
-></TR
-></TABLE
-><P
->The key usage.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2594"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#F0F0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyUsageAny</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key can be used in any way.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyUsageSign</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key for signing.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyUsageVerify</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key for signature verification.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyUsageEncrypt</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the encryption key.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><TT
-CLASS="LITERAL"
->xmlSecKeyUsageDecrypt</TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the decryption key.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2619"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGIN"
-></A
->xmlSecKeyOrigin</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef long				xmlSecKeyOrigin;</PRE
-></TD
-></TR
-></TABLE
-><P
->The key origin (keys manager, remote document, cert, etc.).</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2625"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINDEFAULT"
-></A
->xmlSecKeyOriginDefault</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginDefault			0</PRE
-></TD
-></TR
-></TABLE
-><P
->Default origin (unknown).</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2631"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINKEYMANAGER"
-></A
->xmlSecKeyOriginKeyManager</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginKeyManager		1</PRE
-></TD
-></TR
-></TABLE
-><P
->The key was found in the keys manager.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2637"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINKEYNAME"
-></A
->xmlSecKeyOriginKeyName</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginKeyName			2 </PRE
-></TD
-></TR
-></TABLE
-><P
->The key was found in the keys manager via key name
+} xmlSecKeyUsage;</pre></td></tr></table>
+<p>The key usage.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2594"></a><p></p>
+<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyUsageAny</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the key can be used in any way.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyUsageSign</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the key for signing.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyUsageVerify</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the key for signature verification.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyUsageEncrypt</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the encryption key.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecKeyUsageDecrypt</tt></td>
+<td width="80%" align="LEFT" valign="TOP"> the decryption key.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2619"></a><h3>
+<a name="XMLSECKEYORIGIN"></a>xmlSecKeyOrigin</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef long				xmlSecKeyOrigin;</pre></td></tr></table>
+<p>The key origin (keys manager, remote document, cert, etc.).</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2625"></a><h3>
+<a name="XMLSECKEYORIGINDEFAULT"></a>xmlSecKeyOriginDefault</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginDefault			0</pre></td></tr></table>
+<p>Default origin (unknown).</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2631"></a><h3>
+<a name="XMLSECKEYORIGINKEYMANAGER"></a>xmlSecKeyOriginKeyManager</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginKeyManager		1</pre></td></tr></table>
+<p>The key was found in the keys manager.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2637"></a><h3>
+<a name="XMLSECKEYORIGINKEYNAME"></a>xmlSecKeyOriginKeyName</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginKeyName			2 </pre></td></tr></table>
+<p>The key was found in the keys manager via key name
 specified in the &lt;dsig:KeyName&gt; node. (useless w/o 
-<A
-HREF="xmlsec-keys.html#XMLSECKEYORIGINKEYMANAGER"
->xmlSecKeyOriginKeyManager</A
->).</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2644"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINKEYVALUE"
-></A
->xmlSecKeyOriginKeyValue</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginKeyValue			4</PRE
-></TD
-></TR
-></TABLE
-><P
->The key was extracted from &lt;dsig:KeyValue&gt; node.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2650"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINRETRIEVALDOCUMENT"
-></A
->xmlSecKeyOriginRetrievalDocument</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginRetrievalDocument	8</PRE
-></TD
-></TR
-></TABLE
-><P
->The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
-pointing in the same document.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2656"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINRETRIEVALREMOTE"
-></A
->xmlSecKeyOriginRetrievalRemote</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginRetrievalRemote		16</PRE
-></TD
-></TR
-></TABLE
-><P
->The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
-pointing to another document.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2662"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINX509"
-></A
->xmlSecKeyOriginX509</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginX509			32</PRE
-></TD
-></TR
-></TABLE
-><P
->The key was extracted from X509 certificate
-in the &lt;dsig:X509Data&gt; node.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2668"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINPGP"
-></A
->xmlSecKeyOriginPGP</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginPGP			64</PRE
-></TD
-></TR
-></TABLE
-><P
->The PGP key from &lt;dsig:PGPData&gt; node. Not used.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2674"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINENCRYPTEDKEY"
-></A
->xmlSecKeyOriginEncryptedKey</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginEncryptedKey		128</PRE
-></TD
-></TR
-></TABLE
-><P
->The key was extracted from &lt;enc:EncryptedKey&gt; node.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2680"
-></A
-><H3
-><A
-NAME="XMLSECKEYORIGINALL"
-></A
->xmlSecKeyOriginAll</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecKeyOriginAll</PRE
-></TD
-></TR
-></TABLE
-><P
->All of the above.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2686"
-></A
-><H3
-><A
-NAME="XMLSECKEYIDUNKNOWN"
-></A
->xmlSecKeyIdUnknown</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecKeyIdUnknown 			NULL</PRE
-></TD
-></TR
-></TABLE
-><P
->The "unknown" id.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2692"
-></A
-><H3
-><A
-NAME="XMLSECKEY"
-></A
->struct xmlSecKey</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecKey {
+<a href="xmlsec-keys.html#XMLSECKEYORIGINKEYMANAGER">xmlSecKeyOriginKeyManager</a>).</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2644"></a><h3>
+<a name="XMLSECKEYORIGINKEYVALUE"></a>xmlSecKeyOriginKeyValue</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginKeyValue			4</pre></td></tr></table>
+<p>The key was extracted from &lt;dsig:KeyValue&gt; node.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2650"></a><h3>
+<a name="XMLSECKEYORIGINRETRIEVALDOCUMENT"></a>xmlSecKeyOriginRetrievalDocument</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginRetrievalDocument	8</pre></td></tr></table>
+<p>The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
+pointing in the same document.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2656"></a><h3>
+<a name="XMLSECKEYORIGINRETRIEVALREMOTE"></a>xmlSecKeyOriginRetrievalRemote</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginRetrievalRemote		16</pre></td></tr></table>
+<p>The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
+pointing to another document.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2662"></a><h3>
+<a name="XMLSECKEYORIGINX509"></a>xmlSecKeyOriginX509</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginX509			32</pre></td></tr></table>
+<p>The key was extracted from X509 certificate
+in the &lt;dsig:X509Data&gt; node.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2668"></a><h3>
+<a name="XMLSECKEYORIGINPGP"></a>xmlSecKeyOriginPGP</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginPGP			64</pre></td></tr></table>
+<p>The PGP key from &lt;dsig:PGPData&gt; node. Not used.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2674"></a><h3>
+<a name="XMLSECKEYORIGINENCRYPTEDKEY"></a>xmlSecKeyOriginEncryptedKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyOriginEncryptedKey		128</pre></td></tr></table>
+<p>The key was extracted from &lt;enc:EncryptedKey&gt; node.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2680"></a><h3>
+<a name="XMLSECKEYORIGINALL"></a>xmlSecKeyOriginAll</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyOriginAll</pre></td></tr></table>
+<p>All of the above.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2686"></a><h3>
+<a name="XMLSECKEYIDUNKNOWN"></a>xmlSecKeyIdUnknown</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyIdUnknown 			NULL</pre></td></tr></table>
+<p>The &quot;unknown&quot; id.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2692"></a><h3>
+<a name="XMLSECKEY"></a>struct xmlSecKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKey {
     xmlSecKeyId				id;
     xmlSecKeyType			type;
     xmlChar				*name;
     xmlSecKeyOrigin			origin;
     xmlSecX509DataPtr			x509Data;
     void				*keyData;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2698"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->id</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key id (<A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
->).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->type</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key type (private/public).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *<TT
-CLASS="STRUCTFIELD"
-><I
->name</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key name (may be NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->origin</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key origin.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->x509Data</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to X509 cert data (if key was extracted from a cert).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->keyData</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> key specific data.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2733"
-></A
-><H3
-><A
-NAME="XMLSECKEYCREATE"
-></A
->xmlSecKeyCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecKeyCreate                (<A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> origin);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new key of the specified type <TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2743"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key id.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->origin</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key origins.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure
-or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2761"
-></A
-><H3
-><A
-NAME="XMLSECKEYDESTROY"
-></A
->xmlSecKeyDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecKeyDestroy                (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys the key and frees all allocated memory.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2768"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2778"
-></A
-><H3
-><A
-NAME="XMLSECKEYDUPLICATE"
-></A
->xmlSecKeyDuplicate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecKeyDuplicate             (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> origin);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates a duplicate of the given <TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2788"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->origin</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key origins.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure
-or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2807"
-></A
-><H3
-><A
-NAME="XMLSECVERIFYKEY"
-></A
->xmlSecVerifyKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecVerifyKey                 (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type);</PRE
-></TD
-></TR
-></TABLE
-><P
->Checks whether the <TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
-> matches the given criteria
-(key name is equal to <TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->, key id is equal to <TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->,
-key type is <TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->).</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2821"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to key name (may be NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key id (may be "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key type to write (public/private).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if the key satisfies the given criteria or 0 otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2847"
-></A
-><H3
-><A
-NAME="XMLSECKEYDEBUGDUMP"
-></A
->xmlSecKeyDebugDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecKeyDebugDump              (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
->Prints the information about the <TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
-> to the <TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2857"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the destination <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> pointer.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2872"
-></A
-><H3
-><A
-NAME="XMLSECKEYREADPEMCERT"
-></A
->xmlSecKeyReadPemCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecKeyReadPemCert            (<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const char *filename);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the cert from a PEM file and assigns the cert
-to the key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2879"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the PEM cert file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2897"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGR"
-></A
->struct xmlSecKeysMngr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecKeysMngr {
+};</pre></td></tr></table>
+<p>The key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2698"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> <tt class="STRUCTFIELD"><i>id</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the key id (<a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a>).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> <tt class="STRUCTFIELD"><i>type</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the key type (private/public).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>name</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the key name (may be NULL).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> <tt class="STRUCTFIELD"><i>origin</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the key origin.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecX509DataPtr</strong> <tt class="STRUCTFIELD"><i>x509Data</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to X509 cert data (if key was extracted from a cert).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>keyData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> key specific data.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2733"></a><h3>
+<a name="XMLSECKEYCREATE"></a>xmlSecKeyCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecKeyCreate                (<a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> id,
+                                             <a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> origin);</pre></td></tr></table>
+<p>Creates new key of the specified type <tt class="PARAMETER"><i>id</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2743"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key id.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>origin</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key origins.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure
+or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2761"></a><h3>
+<a name="XMLSECKEYDESTROY"></a>xmlSecKeyDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDestroy                (<strong>xmlSecKeyPtr</strong> key);</pre></td></tr></table>
+<p>Destroys the key and frees all allocated memory.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2768"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2778"></a><h3>
+<a name="XMLSECKEYDUPLICATE"></a>xmlSecKeyDuplicate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecKeyDuplicate             (<strong>xmlSecKeyPtr</strong> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> origin);</pre></td></tr></table>
+<p>Creates a duplicate of the given <tt class="PARAMETER"><i>key</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2788"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>origin</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key origins.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure
+or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2807"></a><h3>
+<a name="XMLSECVERIFYKEY"></a>xmlSecVerifyKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecVerifyKey                 (<strong>xmlSecKeyPtr</strong> key,
+                                             const <strong>xmlChar</strong> *name,
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> id,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type);</pre></td></tr></table>
+<p>Checks whether the <tt class="PARAMETER"><i>key</i></tt> matches the given criteria
+(key name is equal to <tt class="PARAMETER"><i>name</i></tt>, key id is equal to <tt class="PARAMETER"><i>id</i></tt>,
+key type is <tt class="PARAMETER"><i>type</i></tt>).</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2821"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to key name (may be NULL).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key id (may be &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>type</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key type to write (public/private).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">1 if the key satisfies the given criteria or 0 otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2847"></a><h3>
+<a name="XMLSECKEYDEBUGDUMP"></a>xmlSecKeyDebugDump ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDebugDump              (<strong>xmlSecKeyPtr</strong> key,
+                                             <strong>FILE</strong> *output);</pre></td></tr></table>
+<p>Prints the information about the <tt class="PARAMETER"><i>key</i></tt> to the <tt class="PARAMETER"><i>output</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2857"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>output</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the destination <strong>FILE</strong> pointer.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2872"></a><h3>
+<a name="XMLSECKEYREADPEMCERT"></a>xmlSecKeyReadPemCert ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyReadPemCert            (<strong>xmlSecKeyPtr</strong> key,
+                                             const char *filename);</pre></td></tr></table>
+<p>Reads the cert from a PEM file and assigns the cert
+to the key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2879"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>filename</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the PEM cert file name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2897"></a><h3>
+<a name="XMLSECKEYSMNGR"></a>struct xmlSecKeysMngr</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeysMngr {
     xmlSecGetKeyCallback		getKey;
     xmlSecKeyOrigin 			allowedOrigins;
     int 				maxRetrievalsLevel;
@@ -1946,1291 +549,363 @@ CLASS="PROGRAMLISTING"
     xmlSecX509FindCallback		findX509;
     xmlSecX509VerifyCallback		verifyX509;
     void				*x509Data;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The keys manager structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2903"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECGETKEYCALLBACK"
->xmlSecGetKeyCallback</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->getKey</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the callback used to read &lt;dsig:KeyInfo&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->allowedOrigins</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the allowed origins bits mask.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->maxRetrievalsLevel</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->maxEncKeysLevel</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECFINDKEYCALLBACK"
->xmlSecFindKeyCallback</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->findKey</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the callback used to serach for key in the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->keysData</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->failIfCertNotFound</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECX509FINDCALLBACK"
->xmlSecX509FindCallback</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->findX509</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the callback used to search for a cert.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECX509VERIFYCALLBACK"
->xmlSecX509VerifyCallback</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->verifyX509</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the callback used to verify a cert.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->x509Data</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the X509 certificates manager specific data.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2953"
-></A
-><H3
-><A
-NAME="XMLSECGETKEYCALLBACK"
-></A
->xmlSecGetKeyCallback ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> (*xmlSecGetKeyCallback)        (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+};</pre></td></tr></table>
+<p>The keys manager structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2903"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECGETKEYCALLBACK">xmlSecGetKeyCallback</a> <tt class="STRUCTFIELD"><i>getKey</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the callback used to read &lt;dsig:KeyInfo&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> <tt class="STRUCTFIELD"><i>allowedOrigins</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the allowed origins bits mask.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>maxRetrievalsLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>maxEncKeysLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECFINDKEYCALLBACK">xmlSecFindKeyCallback</a> <tt class="STRUCTFIELD"><i>findKey</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the callback used to serach for key in the keys manager.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>keysData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the keys manager data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>failIfCertNotFound</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECX509FINDCALLBACK">xmlSecX509FindCallback</a> <tt class="STRUCTFIELD"><i>findX509</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the callback used to search for a cert.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECX509VERIFYCALLBACK">xmlSecX509VerifyCallback</a> <tt class="STRUCTFIELD"><i>verifyX509</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the callback used to verify a cert.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>x509Data</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the X509 certificates manager specific data.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2953"></a><h3>
+<a name="XMLSECGETKEYCALLBACK"></a>xmlSecGetKeyCallback ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> (*xmlSecGetKeyCallback)        (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> keyId,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> usage,
-                                             <GTKDOCLINK
-HREF="TIME-T"
->time_t</GTKDOCLINK
-> certsVerificationTime);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the &lt;dsig:KeyInfo&gt; node <TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
-> and extracts the key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2967"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyId</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key Id (or NULL for "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key (may be "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->usage</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key usage.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->certsVerificationTime</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to key or NULL if the key is not found or 
-an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3004"
-></A
-><H3
-><A
-NAME="XMLSECFINDKEYCALLBACK"
-></A
->xmlSecFindKeyCallback ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> (*xmlSecFindKeyCallback)       (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> keyId,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type,
+                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> usage,
+                                             <strong>time_t</strong> certsVerificationTime);</pre></td></tr></table>
+<p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2967"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the keys manager.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyId</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key Id (or NULL for &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>type</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key (may be &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>usage</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key usage.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>certsVerificationTime</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
+an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3004"></a><h3>
+<a name="XMLSECFINDKEYCALLBACK"></a>xmlSecFindKeyCallback ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> (*xmlSecFindKeyCallback)       (<strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> usage);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches the keys manager for specified key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3016"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key name (or NULL for "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key Id (or NULL for "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key (may be "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->usage</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key usage.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to key or NULL if the key is not found or 
-an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3049"
-></A
-><H3
-><A
-NAME="XMLSECX509FINDCALLBACK"
-></A
->xmlSecX509FindCallback ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> (*xmlSecX509FindCallback) (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             const <strong>xmlChar</strong> *name,
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> id,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type,
+                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> usage);</pre></td></tr></table>
+<p>Searches the keys manager for specified key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3016"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the keys manager.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key name (or NULL for &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key Id (or NULL for &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>type</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key (may be &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>usage</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key usage.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
+an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3049"></a><h3>
+<a name="XMLSECX509FINDCALLBACK"></a>xmlSecX509FindCallback ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> (*xmlSecX509FindCallback) (<strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *subjectName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerSerial,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches for matching certificate in the keys manager.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3062"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->subjectName</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the subject name string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->issuerName</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the issuer name string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->issuerSerial</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the issuer serial.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ski</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the SKI string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cert</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the current X509 certs data (may be NULL). </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to certificate that matches given criteria or NULL 
-if an error occurs or certificate not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3099"
-></A
-><H3
-><A
-NAME="XMLSECX509VERIFYCALLBACK"
-></A
->xmlSecX509VerifyCallback ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecX509VerifyCallback)     (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             <strong>xmlChar</strong> *subjectName,
+                                             <strong>xmlChar</strong> *issuerName,
+                                             <strong>xmlChar</strong> *issuerSerial,
+                                             <strong>xmlChar</strong> *ski,
+                                             <strong>xmlSecX509DataPtr</strong> cert);</pre></td></tr></table>
+<p>Searches for matching certificate in the keys manager.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3062"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the keys manager.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer application specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>subjectName</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the subject name string.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>issuerName</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the issuer name string.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>issuerSerial</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the issuer serial.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ski</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the SKI string.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cert</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the current X509 certs data (may be NULL). </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to certificate that matches given criteria or NULL 
+if an error occurs or certificate not found.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3099"></a><h3>
+<a name="XMLSECX509VERIFYCALLBACK"></a>xmlSecX509VerifyCallback ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecX509VerifyCallback)     (<strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);</PRE
-></TD
-></TR
-></TABLE
-><P
->Validates certificate.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3107"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cert</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the cert to verify.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if the cert is trusted, 0 if it is not trusted
-and -1 if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3128"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRGETKEY"
-></A
->xmlSecKeysMngrGetKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecKeysMngrGetKey           (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+                                             <strong>xmlSecX509DataPtr</strong> cert);</pre></td></tr></table>
+<p>Validates certificate.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3107"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the keys manager.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cert</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the cert to verify.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">1 if the cert is trusted, 0 if it is not trusted
+and -1 if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3128"></a><h3>
+<a name="XMLSECKEYSMNGRGETKEY"></a>xmlSecKeysMngrGetKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecKeysMngrGetKey           (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeysMngrPtr</strong> mngr,
                                              void *context,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> keyId,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> keyType,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> keyUsage,
-                                             <GTKDOCLINK
-HREF="TIME-T"
->time_t</GTKDOCLINK
-> certsVerificationTime);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the &lt;dsig:KeyInfo&gt; node <TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
-> and extracts the key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3142"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyId</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key Id (or NULL for "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyType</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key (may be "any").</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyUsage</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the required key usage.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->certsVerificationTime</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to key or NULL if the key is not found or 
-an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-keyinfo.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-keysmngr.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->keyinfo.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->keysmngr.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> keyId,
+                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> keyType,
+                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> keyUsage,
+                                             <strong>time_t</strong> certsVerificationTime);</pre></td></tr></table>
+<p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3142"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the keys manager.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyId</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key Id (or NULL for &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyType</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key (may be &quot;any&quot;).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyUsage</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the required key usage.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>certsVerificationTime</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
+an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keyinfo.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keyinfo.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keysmngr.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

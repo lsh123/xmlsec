@@ -1,49 +1,32 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>XML Security Library: XML Digital Signature Online Verifier</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XML Security Library: XML Digital Signature Online Verifier</title>
 </head>
-  <body>
-   
-<table width="100%">
-    <tbody>
-      <tr>
-
-    <!-- top navigation menu start -->     
-    <td valign="Top" align="Left" width="210">
-	<img src="logo.gif" alt="XML Security Library" width="200" height="100">
-        <p></p>
-        <ul>
-	    <li><a href="index.html">Home</a></li>
- 	    <li><a href="download.html">Download</a></li>
- 	    <li><a href="news.html">News</a></li>
-	    <li><a href="documentation.html">Documentation</a></li>
-	    <li><a href="faq.html">FAQ</a></li>
- 	    <li><a href="xmldsig.html">XML Digital Signature</a></li>
-    	    <ul>
- 		<li><a href="xmldsig-interop.html">Interop report</a></li>
- 		<li><a href="xmldsig-verifier.html">Online Verifier</a></li>	
-	    <li><a href="example-dsig1.html">Example 1</a></li>
-	    <li><a href="example-dsig2.html">Example 2</a></li>
-	    <li><a href="example-dsig3.html">Example 3</a></li>
-	    <li><a href="example-dsig4.html">Example 4</a></li>
-    	    </ul>
- 	    <li><a href="xmlenc.html">XML Encryption</a></li>     	
-    	    <ul>
-		<li><a href="xmlenc-interop.html">Interop report</a></li>
-    	    </ul>
-	    <li><a href="c14n.html">XML Canonicalization</a></li>
- 	    <li><a href="bugs.html">Reporting Bugs</a></li>
-            <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-	</ul>
-      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" border="0" alt="LibXML2"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/XSLT/"><img src="libxslt-logo.png" border="0" alt="LibXSLT"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.openssl.org/"><img src="openssl-logo.png" border="0" alt="OpenSSL"></a><br>
-     </td>
-     <!-- top navigation menu end -->
-
-        <td valign="Top" align="Left">              
-      <div align="Center">              
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
+<li><a href="xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
+<li><a href="bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent"><div align="Center">              
       <h2>Online XML Digital Signature Verifer</h2>
       <div align="Left">The online XML Digital Signature Verifier is a simple
 cgi script (<a href="examples/dsig5/xmldsigverify.c">source code</a>) 
@@ -55,13 +38,14 @@ Please note that <b>all</b> white spaces and carriage returns are <b>significant
     <form action="/cgi-bin/xmldsigverify" method="POST">
     <center>
 	<table width="85%">
-	    <tr><td>
+<tr><td>
 		<textarea name="_xmldoc" style="WIDTH: 85%; HEIGHT: 300px"></textarea>
-	    </td></tr><tr><td>
+</td></tr>
+<tr><td>
 		<input type="submit" value="Verify Signature">
-	    </td></tr>
-	</table>
-    </center>
+</td></tr>
+</table>
+</center>
     </form>
 
 
@@ -77,46 +61,75 @@ following keys:
 root certificates from standard root CA authorities (Verisign, etc.),
 Merlin's root CA used to sign interoperability 
 tests from <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001AprJun/att-0033/01-merlin-xmldsig-sixteen.tar.gz">merlin-xmldsig-sixteen.tar.gz</a>
-or "fake" <a href="examples/dsig5/aleksey.crt">root certificate</a> 
+or &quot;fake&quot; <a href="examples/dsig5/aleksey.crt">root certificate</a> 
 (the corresponding <a href="examples/dsig5/aleksey.key">private key</a>
-is encrypted using passphrase "1234");
-<li>HMAC key "secret" (in hex, 73 65 63 72 65 74);
+is encrypted using passphrase &quot;1234&quot;);
+</li>
+<li>HMAC key &quot;secret&quot; (in hex, 73 65 63 72 65 74);
+</li>
 <li>any key public DSA/RSA key provided in the KeyInfo element of the signature.
+</li>
 </ul>
-
-<p><h4>A small list of signed XML documents from XML DSig Interop 
+<p></p>
+<h4>A small list of signed XML documents from XML DSig Interop 
 tests suites</h4>
 ATTENTION: some of these signatures use external resource located on other 
 Web servers and may fail if these resource are not available by some 
 reasons.
 
 <ul>
-<li><a href="tests/aleksey-xmldsig-01/enveloping-dsa-x509chain.xml">aleksey-xmldsig-01/enveloping-dsa-x509chain.xml</a>
-<li><a href="tests/aleksey-xmldsig-01/enveloping-hmac-md5-64.xml">aleksey-xmldsig-01/enveloping-hmac-md5-64.xml</a>
-<li><a href="tests/aleksey-xmldsig-01/enveloping-hmac-md5.xml">aleksey-xmldsig-01/enveloping-hmac-md5.xml</a>
-<li><a href="tests/aleksey-xmldsig-01/enveloping-hmac-ripemd160-64.xml">aleksey-xmldsig-01/enveloping-hmac-ripemd160-64.xml</a>
-<li><a href="tests/aleksey-xmldsig-01/enveloping-hmac-ripemd160.xml">aleksey-xmldsig-01/enveloping-hmac-ripemd160.xml</a>
-<li><a href="tests/aleksey-xmldsig-01/enveloping-rsa-x509chain.xml">aleksey-xmldsig-01/enveloping-rsa-x509chain.xml</a>
-<li><a href="tests/merlin-exc-c14n-one/exc-signature.xml">merlin-exc-c14n-one/exc-signature.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-enveloped-dsa.xml">merlin-xmldsig-fifteen/signature-enveloped-dsa.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml">merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-enveloping-dsa.xml">merlin-xmldsig-fifteen/signature-enveloping-dsa.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml">merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml">merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-enveloping-rsa.xml">merlin-xmldsig-fifteen/signature-enveloping-rsa.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-external-b64-dsa.xml">merlin-xmldsig-fifteen/signature-external-b64-dsa.xml</a>
-<li><a href="tests/merlin-xmldsig-fifteen/signature-external-dsa.xml">merlin-xmldsig-fifteen/signature-external-dsa.xml</a>
-<li><a href="tests/merlin-xmldsig-sixteen/signature.xml">merlin-xmldsig-sixteen/signature.xml</a>
+<li>
+<a href="tests/aleksey-xmldsig-01/enveloping-dsa-x509chain.xml">aleksey-xmldsig-01/enveloping-dsa-x509chain.xml</a>
+</li>
+<li>
+<a href="tests/aleksey-xmldsig-01/enveloping-hmac-md5-64.xml">aleksey-xmldsig-01/enveloping-hmac-md5-64.xml</a>
+</li>
+<li>
+<a href="tests/aleksey-xmldsig-01/enveloping-hmac-md5.xml">aleksey-xmldsig-01/enveloping-hmac-md5.xml</a>
+</li>
+<li>
+<a href="tests/aleksey-xmldsig-01/enveloping-hmac-ripemd160-64.xml">aleksey-xmldsig-01/enveloping-hmac-ripemd160-64.xml</a>
+</li>
+<li>
+<a href="tests/aleksey-xmldsig-01/enveloping-hmac-ripemd160.xml">aleksey-xmldsig-01/enveloping-hmac-ripemd160.xml</a>
+</li>
+<li>
+<a href="tests/aleksey-xmldsig-01/enveloping-rsa-x509chain.xml">aleksey-xmldsig-01/enveloping-rsa-x509chain.xml</a>
+</li>
+<li>
+<a href="tests/merlin-exc-c14n-one/exc-signature.xml">merlin-exc-c14n-one/exc-signature.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-enveloped-dsa.xml">merlin-xmldsig-fifteen/signature-enveloped-dsa.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml">merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-enveloping-dsa.xml">merlin-xmldsig-fifteen/signature-enveloping-dsa.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml">merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml">merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-enveloping-rsa.xml">merlin-xmldsig-fifteen/signature-enveloping-rsa.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-external-b64-dsa.xml">merlin-xmldsig-fifteen/signature-external-b64-dsa.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-fifteen/signature-external-dsa.xml">merlin-xmldsig-fifteen/signature-external-dsa.xml</a>
+</li>
+<li>
+<a href="tests/merlin-xmldsig-sixteen/signature.xml">merlin-xmldsig-sixteen/signature.xml</a>
+</li>
 </ul>
-        </div>
-        </div>
-
-    <p>
-    <a href="bugs.html">Aleksey Sanin</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-   
-      </body>
-      </html>
+</div>
+        </div></td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

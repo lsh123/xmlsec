@@ -1,1938 +1,526 @@
-<HTML
-><HEAD
-><TITLE
->keysmngr.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Reference"
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="keys.h"
-HREF="xmlsec-keys.html"><LINK
-REL="NEXT"
-TITLE="transforms.h"
-HREF="xmlsec-transforms.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-keys.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-transforms.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-KEYSMNGR"
-></A
->keysmngr.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN2760"
-></A
-><H2
->Name</H2
->keysmngr.h&nbsp;--&nbsp;The simple keys manager implementation.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN2763"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>keysmngr.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="keys.h" href="xmlsec-keys.html">
+<link rel="NEXT" title="transforms.h" href="xmlsec-transforms.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-KEYSMNGR"></a>keysmngr.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN2760"></a><h2>Name</h2>keysmngr.h -- The simple keys manager implementation.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN2763"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-#define     <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID"
->xmlSecSimpleKeysStoreId</A
->
-<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREID"
->xmlSecKeyDataStoreId</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKLASS"
->xmlSecSimpleKeysStoreGetKlass</A
->
+#define     <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
+<strong>xmlSecKeyDataStoreId</strong> <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKLASS">xmlSecSimpleKeysStoreGetKlass</a>
                                             (void);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREADOPTKEY"
->xmlSecSimpleKeysStoreAdoptKey</A
->   (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREFINDKEY"
->xmlSecSimpleKeysStoreFindKey</A
->   (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD"
->xmlSecSimpleKeysStoreLoad</A
->       (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
+int         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREADOPTKEY">xmlSecSimpleKeysStoreAdoptKey</a>   (<strong>xmlSecKeyDataStorePtr</strong> store,
+                                             <strong>xmlSecKeyPtr</strong> key);
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREFINDKEY">xmlSecSimpleKeysStoreFindKey</a>   (<strong>xmlSecKeyDataStorePtr</strong> store,
+                                             const <strong>xmlChar</strong> *name,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);
+int         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD">xmlSecSimpleKeysStoreLoad</a>       (<strong>xmlSecKeyDataStorePtr</strong> store,
                                              const char *uri);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE"
->xmlSecSimpleKeysStoreSave</A
->       (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
+int         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE">xmlSecSimpleKeysStoreSave</a>       (<strong>xmlSecKeyDataStorePtr</strong> store,
                                              const char *filename,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATATYPE"
->xmlSecKeyDataType</GTKDOCLINK
-> type);
-<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE"
->xmlSecKeysMngrCreate</A
->      (void);
-void        <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY"
->xmlSecKeysMngrDestroy</A
->           (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEY"
->xmlSecKeysMngrFindKey</A
->           (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEYDATA"
->xmlSecKeysMngrFindKeyData</A
->       (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREID"
->xmlSecKeyDataStoreId</GTKDOCLINK
-> storeId,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> **params,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> paramsSize,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTKEYSSTORE"
->xmlSecKeysMngrAdoptKeysStore</A
->    (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store);
-<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEYSSTORE"
->xmlSecKeysMngrGetKeysStore</A
->
-                                            (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTDATASTORE"
->xmlSecKeysMngrAdoptDataStore</A
->    (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store);
-<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETDATASTORE"
->xmlSecKeysMngrGetDataStore</A
->
-                                            (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREID"
->xmlSecKeyDataStoreId</GTKDOCLINK
-> id);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> (<A
-HREF="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK"
->*xmlSecGetKeyCallback</A
->)        (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);
-struct      <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
->xmlSecKeysMngr</A
->;
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEY"
->xmlSecKeysMngrGetKey</A
->           (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2820"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2823"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2825"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSSTOREID"
-></A
->xmlSecSimpleKeysStoreId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2830"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSSTOREGETKLASS"
-></A
->xmlSecSimpleKeysStoreGetKlass ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATASTOREID"
->xmlSecKeyDataStoreId</GTKDOCLINK
-> xmlSecSimpleKeysStoreGetKlass
-                                            (void);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2836"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2845"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSSTOREADOPTKEY"
-></A
->xmlSecSimpleKeysStoreAdoptKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysStoreAdoptKey   (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2852"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2869"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSSTOREFINDKEY"
-></A
->xmlSecSimpleKeysStoreFindKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecSimpleKeysStoreFindKey   (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2878"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoCtx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2899"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSSTORELOAD"
-></A
->xmlSecSimpleKeysStoreLoad ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysStoreLoad       (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
-                                             const char *uri);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2905"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->uri</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2922"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSSTORESAVE"
-></A
->xmlSecSimpleKeysStoreSave ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysStoreSave       (<GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store,
+                                             <strong>xmlSecKeyDataType</strong> type);
+<strong>xmlSecKeysMngrPtr</strong> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE">xmlSecKeysMngrCreate</a>      (void);
+void        <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY">xmlSecKeysMngrDestroy</a>           (<strong>xmlSecKeysMngrPtr</strong> mngr);
+int         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEY">xmlSecKeysMngrFindKey</a>           (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             const <strong>xmlChar</strong> *name,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);
+int         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEYDATA">xmlSecKeysMngrFindKeyData</a>       (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStoreId</strong> storeId,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             const <strong>xmlChar</strong> **params,
+                                             <strong>size_t</strong> paramsSize,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);
+int         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTKEYSSTORE">xmlSecKeysMngrAdoptKeysStore</a>    (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStorePtr</strong> store);
+<strong>xmlSecKeyDataStorePtr</strong> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEYSSTORE">xmlSecKeysMngrGetKeysStore</a>
+                                            (<strong>xmlSecKeysMngrPtr</strong> mngr);
+int         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTDATASTORE">xmlSecKeysMngrAdoptDataStore</a>    (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStorePtr</strong> store);
+<strong>xmlSecKeyDataStorePtr</strong> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETDATASTORE">xmlSecKeysMngrGetDataStore</a>
+                                            (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStoreId</strong> id);
+<strong>xmlSecKeyPtr</strong> (<a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">*xmlSecGetKeyCallback</a>)        (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);
+struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEY">xmlSecKeysMngrGetKey</a>           (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN2820"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN2823"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN2825"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREID"></a>xmlSecSimpleKeysStoreId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()</pre></td></tr></table>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2830"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREGETKLASS"></a>xmlSecSimpleKeysStoreGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataStoreId</strong> xmlSecSimpleKeysStoreGetKlass
+                                            (void);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2836"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2845"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREADOPTKEY"></a>xmlSecSimpleKeysStoreAdoptKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreAdoptKey   (<strong>xmlSecKeyDataStorePtr</strong> store,
+                                             <strong>xmlSecKeyPtr</strong> key);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2852"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2869"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREFINDKEY"></a>xmlSecSimpleKeysStoreFindKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecSimpleKeysStoreFindKey   (<strong>xmlSecKeyDataStorePtr</strong> store,
+                                             const <strong>xmlChar</strong> *name,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2878"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2899"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTORELOAD"></a>xmlSecSimpleKeysStoreLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreLoad       (<strong>xmlSecKeyDataStorePtr</strong> store,
+                                             const char *uri);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2905"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>uri</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2922"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTORESAVE"></a>xmlSecSimpleKeysStoreSave ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreSave       (<strong>xmlSecKeyDataStorePtr</strong> store,
                                              const char *filename,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATATYPE"
->xmlSecKeyDataType</GTKDOCLINK
-> type);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2929"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2950"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRCREATE"
-></A
->xmlSecKeysMngrCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> xmlSecKeysMngrCreate      (void);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2956"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2965"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRDESTROY"
-></A
->xmlSecKeysMngrDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecKeysMngrDestroy           (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2971"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2980"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRFINDKEY"
-></A
->xmlSecKeysMngrFindKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecKeysMngrFindKey           (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN2989"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoCtx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3014"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRFINDKEYDATA"
-></A
->xmlSecKeysMngrFindKeyData ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecKeysMngrFindKeyData       (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREID"
->xmlSecKeyDataStoreId</GTKDOCLINK
-> storeId,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> **params,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> paramsSize,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3025"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->storeId</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->params</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->paramsSize</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoCtx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3058"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRADOPTKEYSSTORE"
-></A
->xmlSecKeysMngrAdoptKeysStore ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecKeysMngrAdoptKeysStore    (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3065"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3082"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRGETKEYSSTORE"
-></A
->xmlSecKeysMngrGetKeysStore ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> xmlSecKeysMngrGetKeysStore
-                                            (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3089"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3102"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRADOPTDATASTORE"
-></A
->xmlSecKeysMngrAdoptDataStore ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecKeysMngrAdoptDataStore    (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> store);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3109"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3126"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRGETDATASTORE"
-></A
->xmlSecKeysMngrGetDataStore ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> xmlSecKeysMngrGetDataStore
-                                            (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYDATASTOREID"
->xmlSecKeyDataStoreId</GTKDOCLINK
-> id);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3134"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3151"
-></A
-><H3
-><A
-NAME="XMLSECGETKEYCALLBACK"
-></A
->xmlSecGetKeyCallback ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> (*xmlSecGetKeyCallback)        (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the &lt;dsig:KeyInfo&gt; node <TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
-> and extracts the key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3161"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoCtx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to key or NULL if the key is not found or 
-an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3178"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGR"
-></A
->struct xmlSecKeysMngr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecKeysMngr {	
+                                             <strong>xmlSecKeyDataType</strong> type);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2929"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>filename</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>type</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2950"></a><h3>
+<a name="XMLSECKEYSMNGRCREATE"></a>xmlSecKeysMngrCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeysMngrPtr</strong> xmlSecKeysMngrCreate      (void);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2956"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2965"></a><h3>
+<a name="XMLSECKEYSMNGRDESTROY"></a>xmlSecKeysMngrDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeysMngrDestroy           (<strong>xmlSecKeysMngrPtr</strong> mngr);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2971"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2980"></a><h3>
+<a name="XMLSECKEYSMNGRFINDKEY"></a>xmlSecKeysMngrFindKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrFindKey           (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             const <strong>xmlChar</strong> *name,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN2989"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3014"></a><h3>
+<a name="XMLSECKEYSMNGRFINDKEYDATA"></a>xmlSecKeysMngrFindKeyData ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrFindKeyData       (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStoreId</strong> storeId,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             const <strong>xmlChar</strong> **params,
+                                             <strong>size_t</strong> paramsSize,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3025"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>storeId</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>params</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>paramsSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3058"></a><h3>
+<a name="XMLSECKEYSMNGRADOPTKEYSSTORE"></a>xmlSecKeysMngrAdoptKeysStore ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrAdoptKeysStore    (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStorePtr</strong> store);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3065"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3082"></a><h3>
+<a name="XMLSECKEYSMNGRGETKEYSSTORE"></a>xmlSecKeysMngrGetKeysStore ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataStorePtr</strong> xmlSecKeysMngrGetKeysStore
+                                            (<strong>xmlSecKeysMngrPtr</strong> mngr);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3089"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3102"></a><h3>
+<a name="XMLSECKEYSMNGRADOPTDATASTORE"></a>xmlSecKeysMngrAdoptDataStore ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrAdoptDataStore    (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStorePtr</strong> store);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3109"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3126"></a><h3>
+<a name="XMLSECKEYSMNGRGETDATASTORE"></a>xmlSecKeysMngrGetDataStore ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataStorePtr</strong> xmlSecKeysMngrGetDataStore
+                                            (<strong>xmlSecKeysMngrPtr</strong> mngr,
+                                             <strong>xmlSecKeyDataStoreId</strong> id);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3134"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3151"></a><h3>
+<a name="XMLSECGETKEYCALLBACK"></a>xmlSecGetKeyCallback ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> (*xmlSecGetKeyCallback)        (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
+<p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3161"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
+an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3178"></a><h3>
+<a name="XMLSECKEYSMNGR"></a>struct xmlSecKeysMngr</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeysMngr {	
     xmlSecKeyDataStorePtr		keysStore;
     xmlSecPtrListPtr			storesList;
 
@@ -1945,386 +533,103 @@ CLASS="PROGRAMLISTING"
     int					maxEncKeysLevel; 
     /* x509 certs */    
     int					failIfCertNotFound; 
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The keys manager structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3184"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECKEYDATASTOREPTR"
->xmlSecKeyDataStorePtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->keysStore</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->storesList</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK"
->xmlSecGetKeyCallback</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->getKey</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the callback used to read &lt;dsig:KeyInfo&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
->xmlSecKeyOrigin</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->allowedOrigins</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the allowed origins bits mask.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->maxRetrievalsLevel</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->maxEncKeysLevel</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->failIfCertNotFound</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3221"
-></A
-><H3
-><A
-NAME="XMLSECKEYSMNGRGETKEY"
-></A
->xmlSecKeysMngrGetKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecKeysMngrGetKey           (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> keyInfoNode,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYINFOCTXPTR"
->xmlSecKeyInfoCtxPtr</GTKDOCLINK
-> keyInfoCtx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the &lt;dsig:KeyInfo&gt; node <TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
-> and extracts the key.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3231"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyInfoCtx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to key or NULL if the key is not found or 
-an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-keys.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-transforms.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->keys.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->transforms.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+};</pre></td></tr></table>
+<p>The keys manager structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3184"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecKeyDataStorePtr</strong> <tt class="STRUCTFIELD"><i>keysStore</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecPtrListPtr</strong> <tt class="STRUCTFIELD"><i>storesList</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">xmlSecGetKeyCallback</a> <tt class="STRUCTFIELD"><i>getKey</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the callback used to read &lt;dsig:KeyInfo&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECKEYORIGIN">xmlSecKeyOrigin</a> <tt class="STRUCTFIELD"><i>allowedOrigins</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the allowed origins bits mask.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>maxRetrievalsLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>maxEncKeysLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>failIfCertNotFound</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3221"></a><h3>
+<a name="XMLSECKEYSMNGRGETKEY"></a>xmlSecKeysMngrGetKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecKeysMngrGetKey           (<strong>xmlNodePtr</strong> keyInfoNode,
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
+<p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN3231"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
+an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keys.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>transforms.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

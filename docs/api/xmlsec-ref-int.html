@@ -1,258 +1,86 @@
-<HTML
-><HEAD
-><TITLE
->XML Security Library Internal Functions Reference</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="PREVIOUS"
-TITLE="x509.h"
-HREF="xmlsec-x509.html"><LINK
-REL="NEXT"
-TITLE="base64.h"
-HREF="xmlsec-base64.html"></HEAD
-><BODY
-CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-x509.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&nbsp;</B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-base64.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="XMLSEC-REF-INT"
-></A
->XML Security Library Internal Functions Reference</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
-><A
-HREF="xmlsec-base64.html"
->base64.h</A
->&nbsp;--&nbsp;The BASE64 encode/decode functions.</DT
-><DT
-><A
-HREF="xmlsec-bn.html"
->bn.h</A
->&nbsp;--&nbsp;The big numbers helper functions.</DT
-><DT
-><A
-HREF="xmlsec-io.html"
->io.h</A
->&nbsp;--&nbsp;The IO transforms.</DT
-><DT
-><A
-HREF="xmlsec-membuf.html"
->membuf.h</A
->&nbsp;--&nbsp;The memory buffer transform.</DT
-><DT
-><A
-HREF="xmlsec-nodeset.html"
->nodeset.h</A
->&nbsp;--&nbsp;The enchanced nodes set imlmentation.</DT
-><DT
-><A
-HREF="xmlsec-transformsinternal.html"
->transformsInternal.h</A
->&nbsp;--&nbsp;The internal transform's functions.</DT
-><DT
-><A
-HREF="xmlsec-xmltree.html"
->xmltree.h</A
->&nbsp;--&nbsp;The XML tree helper functions.</DT
-></DL
-></DIV
-><P
->This section contains the internal API reference for xmlsec
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XML Security Library Internal Functions Reference</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="PREVIOUS" title="x509.h" href="xmlsec-x509.html">
+<link rel="NEXT" title="base64.h" href="xmlsec-base64.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<div class="CHAPTER">
+<h1>
+<a name="XMLSEC-REF-INT"></a>XML Security Library Internal Functions Reference</h1>
+<div class="TOC"><dl>
+<dt><b>Table of Contents</b></dt>
+<dt>
+<a href="xmlsec-base64.html">base64.h</a> -- The BASE64 encode/decode functions.</dt>
+<dt>
+<a href="xmlsec-bn.html">bn.h</a> -- The big numbers helper functions.</dt>
+<dt>
+<a href="xmlsec-io.html">io.h</a> -- The IO transforms.</dt>
+<dt>
+<a href="xmlsec-membuf.html">membuf.h</a> -- The memory buffer transform.</dt>
+<dt>
+<a href="xmlsec-nodeset.html">nodeset.h</a> -- The enchanced nodes set imlmentation.</dt>
+<dt>
+<a href="xmlsec-transformsinternal.html">transformsInternal.h</a> -- The internal transform's functions.</dt>
+<dt>
+<a href="xmlsec-xmltree.html">xmltree.h</a> -- The XML tree helper functions.</dt>
+</dl></div>
+<p>This section contains the internal API reference for xmlsec
     developers. This reference guide is build by extracting comments 
-    from the code sources. </P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-x509.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&nbsp;</B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-base64.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->x509.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->base64.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    from the code sources. </p>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>x509.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>base64.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

@@ -1,51 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>XML Security Library: Example - Creating signature dynamically.</title>
-    
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XML Security Library: Example - Creating signature dynamically.</title>
 </head>
-  <body>
-<table width="100%">
-  <tbody>
-    <tr>
-    <!-- top navigation menu start -->     
-    <td valign="Top" align="Left" width="210">
-	<img src="logo.gif" alt="XML Security Library" width="200" height="100">
-        <p></p>
-        <ul>
-	    <li><a href="index.html">Home</a></li>
- 	    <li><a href="download.html">Download</a></li>
- 	    <li><a href="news.html">News</a></li>
-	    <li><a href="documentation.html">Documentation</a></li>
-	    <li><a href="faq.html">FAQ</a></li>
- 	    <li><a href="xmldsig.html">XML Digital Signature</a></li>
-    	    <ul>
- 		<li><a href="xmldsig-interop.html">Interop report</a></li>
- 		<li><a href="xmldsig-verifier.html">Online Verifier</a></li>	
-	    <li><a href="example-dsig1.html">Example 1</a></li>
-	    <li><a href="example-dsig2.html">Example 2</a></li>
-	    <li><a href="example-dsig3.html">Example 3</a></li>
-	    <li><a href="example-dsig4.html">Example 4</a></li>
-    	    </ul>
- 	    <li><a href="xmlenc.html">XML Encryption</a></li>     	
-    	    <ul>
-		<li><a href="xmlenc-interop.html">Interop report</a></li>
-    	    </ul>
-	    <li><a href="c14n.html">XML Canonicalization</a></li>
- 	    <li><a href="bugs.html">Reporting Bugs</a></li>
-            <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-	</ul>
-      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" border="0" alt="LibXML2"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/XSLT/"><img src="libxslt-logo.png" border="0" alt="LibXSLT"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.openssl.org/"><img src="openssl-logo.png" border="0" alt="OpenSSL"></a><br>
-     </td>
-     <!-- top navigation menu end -->
-
-    <td valign="Top" align="Left">
-      <div align="Center">
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
+<li><a href="xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
+<li><a href="bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div align="Center">
       <h2>XML Digital Signature <br>
                   Example 2. Creating signature dynamically.</h2>
       </div>
+<p>
                   In this example we will add a signature to the document 
 dynamically.   Comparing to the <a href="example-dsig1.html"> first example</a>,
               now we are going to create the signature section of the template ourselves instead of loading 
@@ -59,349 +45,343 @@ XMLDSig specification before.<br>
      , <a href="examples/dsig2/test.tmpl"> the original template</a>
        and <a href="examples/dsig2/test.xml"> the signed document</a>
      .<br>
-      <h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
+</p>
+<h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
+<p>
                Before using the libraries we need to initialize them. This
  should    be  done  once in the beginning of your program<br>
-               &nbsp; &nbsp;<br>
-               &nbsp;<code> &nbsp; int rnd_seed = 0;&nbsp;&nbsp;&nbsp; <br>
-      <br>
-               &nbsp;&nbsp;&nbsp; /** <br>
-               &nbsp;&nbsp;&nbsp;&nbsp; * Init OpenSSL:<br>
-        &nbsp; &nbsp; &nbsp;* this is a BAD way to init random numbers <br>
-        &nbsp; &nbsp; &nbsp;* generator<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp; <br>
-               &nbsp;&nbsp;&nbsp; while (RAND_status() != 1) {<br>
-               &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));<br>
-               &nbsp;&nbsp;&nbsp; }<br>
-               &nbsp;&nbsp;&nbsp; <br>
-               &nbsp;&nbsp;&nbsp; /**<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; * Init libxml<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp;&nbsp; <br>
-               &nbsp;&nbsp;&nbsp; xmlInitParser();<br>
-               &nbsp;&nbsp;&nbsp; LIBXML_TEST_VERSION<br>
-        &nbsp;<br>
-        &nbsp; &nbsp; &nbsp;/**<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Init xmlsec<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; xmlSecInit();&nbsp;&nbsp;&nbsp; <br>
-      </code><br>
-      <h4>Step 1. Loading key and creating the DSig context.</h4>
+                  <br>
+                <code>   int rnd_seed = 0;    <br><br>
+                   /** <br>
+                    * Init OpenSSL:<br>
+             * this is a BAD way to init random numbers <br>
+             * generator<br>
+                    */    <br>
+                   while (RAND_status() != 1) {<br>
+                      RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));<br>
+                   }<br>
+                   <br>
+                   /**<br>
+                    * Init libxml<br>
+                    */     <br>
+                   xmlInitParser();<br>
+                   LIBXML_TEST_VERSION<br>
+         <br>
+             /**<br>
+             * Init xmlsec<br>
+             */<br>
+            xmlSecInit();    <br></code><br>
+</p>
+<h4>Step 1. Loading key and creating the DSig context.</h4>
+<p>
                 Before signing or verifying the document you should create
- DSig   context    object. &nbsp;In most case you will need only one DSig
-context   object per application<br>
-      <br>
-        <code> 
-        &nbsp;&nbsp;&nbsp; xmlSecKeysMngrPtr keysMngr = NULL; <br>
-        &nbsp;&nbsp;&nbsp; xmlSecDSigCtxPtr dsigCtx = NULL;<br>
-               &nbsp;&nbsp;&nbsp; <br>
-        &nbsp;&nbsp;&nbsp; /** <br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys managers<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; keysMngr = xmlSecSimpleKeysMngrCreate();&nbsp;&nbsp;&nbsp; 
+ DSig   context    object.  In most case you will need only one DSig
+context   object per application<br><br><code> 
+            xmlSecKeysMngrPtr keysMngr = NULL; <br>
+            xmlSecDSigCtxPtr dsigCtx = NULL;<br>
+                   <br>
+            /** <br>
+             * Create Keys managers<br>
+             */<br>
+            keysMngr = xmlSecSimpleKeysMngrCreate();    
          <br>
-        &nbsp;&nbsp;&nbsp; if(keysMngr == NULL) {<br>
-        &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to create
- keys   manager\n");<br>
-        &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp;&nbsp; <br>
-        &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-        &nbsp;&nbsp;&nbsp; /** <br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * load key<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br>
-        &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to load
-key   from  \"%s\"\n", argv[1]);<br>
-        &nbsp;&nbsp;&nbsp; &nbsp; goto done;<br>
-        &nbsp;&nbsp;&nbsp; }<br>
-        &nbsp; <br>
-        &nbsp;&nbsp;&nbsp; <br>
-        &nbsp;&nbsp;&nbsp; /**<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Create Signature Context <br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
-        &nbsp;&nbsp;&nbsp; if(dsigCtx == NULL) {<br>
-        &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr,"Error: failed to create 
-dsig   context\n");<br>
-        &nbsp;&nbsp;&nbsp; &nbsp; goto done; <br>
-        &nbsp;&nbsp;&nbsp; }</code><br>
-      <h4>Step 2. Loading the document.</h4>
+            if(keysMngr == NULL) {<br>
+              fprintf(stderr, &quot;Error: failed to create
+ keys   manager\n&quot;);<br>
+              goto done;    <br>
+            }<br><br>
+            /** <br>
+             * load key<br>
+             */<br>
+            if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br>
+              fprintf(stderr, &quot;Error: failed to load
+key   from  \&quot;%s\&quot;\n&quot;, argv[1]);<br>
+              goto done;<br>
+            }<br>
+          <br>
+            <br>
+            /**<br>
+             * Create Signature Context <br>
+             */<br>
+            dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
+            if(dsigCtx == NULL) {<br>
+              fprintf(stderr,&quot;Error: failed to create 
+dsig   context\n&quot;);<br>
+              goto done; <br>
+            }</code><br>
+</p>
+<h4>Step 2. Loading the document.</h4>
+<p>
        In this example, we will load document from a file. The real application 
-   probably creates document itself.<br>
-      <br>
-               &nbsp; &nbsp; &nbsp; <code>xmlDocPtr doc = NULL;&nbsp;&nbsp;&nbsp; 
-          <br>
-      <br>
-               &nbsp; &nbsp; /** <br>
-               &nbsp;&nbsp;&nbsp;&nbsp; * build an XML tree from a the file;
+   probably creates document itself.<br><br>
+                     <code>xmlDocPtr doc = NULL;    
+          <br><br>
+                   /** <br>
+                    * build an XML tree from a the file;
   we  need   to  add default<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; * attributes and resolve all character
+                    * attributes and resolve all character
    and   entities   references<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-               &nbsp;&nbsp;&nbsp; xmlLoadExtDtdDefaultValue = XML_DETECT_IDS
+                    */<br>
+                   xmlLoadExtDtdDefaultValue = XML_DETECT_IDS
   |  XML_COMPLETE_ATTRS;<br>
-               &nbsp;&nbsp;&nbsp; xmlSubstituteEntitiesDefault(1);<br>
-      <br>
-               &nbsp;&nbsp;&nbsp; /** <br>
-               &nbsp;&nbsp;&nbsp;&nbsp; * Load doc <br>
-               &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-               &nbsp;&nbsp;&nbsp; doc = xmlParseFile(argv[2]);<br>
-               &nbsp;&nbsp;&nbsp; if (doc == NULL) {<br>
-               &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;fprintf(stderr, "Error&nbsp;&nbsp;&nbsp; 
-       : unable to parse file \"%s\"\n", argv[2]);<br>
-               &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;goto done;<br>
-               &nbsp;&nbsp;&nbsp; }<br>
-               &nbsp;&nbsp;&nbsp; <br>
-               &nbsp;&nbsp;&nbsp; /**<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; * Check the document is of the right
+                   xmlSubstituteEntitiesDefault(1);<br><br>
+                   /** <br>
+                    * Load doc <br>
+                    */<br>
+                   doc = xmlParseFile(argv[2]);<br>
+                   if (doc == NULL) {<br>
+                      fprintf(stderr, &quot;Error    
+       : unable to parse file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+                      goto done;<br>
+                   }<br>
+                   <br>
+                   /**<br>
+                    * Check the document is of the right
   kind<br>
-               &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp; <br>
-               &nbsp;&nbsp;&nbsp; if(xmlDocGetRootElement(doc) == NULL) {<br>
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr,"Error:
-    empty    document for file \"%s\"\n", argv[2]);<br>
-               &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; goto done;<br>
-               &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; </code><code></code>
-      <h4>Step 3. addSignature() function</h4>
+                    */    <br>
+                   if(xmlDocGetRootElement(doc) == NULL) {<br>
+                       fprintf(stderr,&quot;Error:
+    empty    document for file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+                       goto done;<br>
+                   }   </code><code></code>
+      </p>
+<h4>Step 3. addSignature() function</h4>
+<p>
               The XMLDSig standard defines &lt;Signature&gt; element that 
 holds  all signature     information. XML Security Library provides functions 
 to create the Signature element dynamically. However, you are not limited 
 to use XML Security Library for this and can create the template yourself! 
- In this example, we use a separate&nbsp;<code> addSignature</code> () function
- to add signature to the end of the document:&nbsp; <br>
-      <blockquote><code>xmlNodePtr addSignature(xmlDocPtr doc) {<br>
-     &nbsp;&nbsp;&nbsp; xmlNodePtr signatureNode;<br>
-     &nbsp;&nbsp;&nbsp; xmlNodePtr signedInfoNode;<br>
-     &nbsp;&nbsp;&nbsp; xmlNodePtr keyInfoNode;<br>
-     &nbsp;&nbsp;&nbsp; xmlNodePtr referenceNode;<br>
-     &nbsp;&nbsp;&nbsp; xmlNodePtr cur;<br>
-        <br>
-     &nbsp;&nbsp;&nbsp; /**<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Create Signature node <br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; signatureNode = xmlSecSignatureCreate("NULL");<br>
-     &nbsp;&nbsp;&nbsp; if(signatureNode == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  create  signature\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;&nbsp; <br>
-        <br>
-     &nbsp;&nbsp;&nbsp; /**<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Add SignedInfo and set c14n and signature 
+ In this example, we use a separate <code> addSignature</code> () function
+ to add signature to the end of the document:  <br>
+</p>
+<blockquote>
+<code>xmlNodePtr addSignature(xmlDocPtr doc) {<br>
+         xmlNodePtr signatureNode;<br>
+         xmlNodePtr signedInfoNode;<br>
+         xmlNodePtr keyInfoNode;<br>
+         xmlNodePtr referenceNode;<br>
+         xmlNodePtr cur;<br><br>
+         /**<br>
+          * Create Signature node <br>
+          */<br>
+         signatureNode = xmlSecSignatureCreate(&quot;NULL&quot;);<br>
+         if(signatureNode == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  create  signature\n&quot;);<br>
+             return(NULL);<br>
+         }    <br><br>
+         /**<br>
+          * Add SignedInfo and set c14n and signature 
 methods<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; signedInfoNode = xmlSecSignatureAddSignedInfo(signatureNode, 
+          */<br>
+         signedInfoNode = xmlSecSignatureAddSignedInfo(signatureNode, 
   NULL);<br>
-     &nbsp;&nbsp;&nbsp; if(signedInfoNode == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  SignedInfo\n");<br>
-   &nbsp; &nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-   &nbsp; &nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-        <br>
-     &nbsp;&nbsp;&nbsp; cur = xmlSecSignedInfoAddC14NMethod(signedInfoNode,
+         if(signedInfoNode == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  SignedInfo\n&quot;);<br>
+           xmlSecSignatureDestroy(signatureNode);<br>
+           return(NULL);<br>
+         }<br><br>
+         cur = xmlSecSignedInfoAddC14NMethod(signedInfoNode,
   xmlSecC14NInclusive);<br>
-     &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  C14N method\n");<br>
-            &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-        <br>
-     &nbsp;&nbsp;&nbsp; cur = xmlSecSignedInfoAddSignMethod(signedInfoNode,
+         if(cur == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  C14N method\n&quot;);<br>
+                    xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br><br>
+         cur = xmlSecSignedInfoAddSignMethod(signedInfoNode,
   xmlSecSignDsaSha1);<br>
-     &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  sign method\n");<br>
-     &nbsp;&nbsp;&nbsp; </code><code></code><code> &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-        <br>
-     &nbsp;&nbsp;&nbsp; /** <br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Create Reference node with SHA1 as digest 
+         if(cur == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  sign method\n&quot;);<br>
+         </code><code></code><code>     xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br><br>
+         /** <br>
+          * Create Reference node with SHA1 as digest 
 method   and<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * enveloped transform<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; referenceNode = xmlSecSignedInfoAddReference(signedInfoNode,<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp; NULL,<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp; NULL,<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp; NULL);<br>
-     &nbsp;&nbsp;&nbsp; if(referenceNode == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  Reference\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-        <br>
-     &nbsp;&nbsp;&nbsp; cur = xmlSecReferenceAddDigestMethod(referenceNode,
+          * enveloped transform<br>
+          */<br>
+         referenceNode = xmlSecSignedInfoAddReference(signedInfoNode,<br>
+                     
+      NULL,<br>
+                     
+      NULL,<br>
+                     
+      NULL);<br>
+         if(referenceNode == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  Reference\n&quot;);<br>
+             xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br><br>
+         cur = xmlSecReferenceAddDigestMethod(referenceNode,
   xmlSecDigestSha1);<br>
-     &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  digest method\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-     &nbsp;&nbsp;&nbsp; <br>
-     &nbsp;&nbsp;&nbsp; cur = xmlSecReferenceAddTransform(referenceNode, 
+         if(cur == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  digest method\n&quot;);<br>
+             xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br>
+         <br>
+         cur = xmlSecReferenceAddTransform(referenceNode, 
         <br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlSecTransformEnveloped);<br>
-     &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add enveloped transform\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-        <br>
-     &nbsp;&nbsp;&nbsp; /**<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Add KeyInfo node: for test purposes we will 
+                     
+        xmlSecTransformEnveloped);<br>
+         if(cur == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add enveloped transform\n&quot;);<br>
+             xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br><br>
+         /**<br>
+          * Add KeyInfo node: for test purposes we will 
  put<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * DSA key in the signature<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; keyInfoNode = xmlSecSignatureAddKeyInfo(signatureNode, 
-  NULL);&nbsp; <br>
-     &nbsp;&nbsp;&nbsp; if(keyInfoNode == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  KeyInfo\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-     &nbsp;&nbsp;&nbsp; <br>
-     &nbsp;&nbsp;&nbsp; cur = xmlSecKeyInfoAddKeyValue(keyInfoNode);<br>
-     &nbsp;&nbsp;&nbsp; if(cur == NULL) { <br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  KeyValue node\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }<br>
-        <br>
-        </code><code>&nbsp; &nbsp; /**<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Add the signature to the end of the document<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp; <br>
-     &nbsp;&nbsp;&nbsp; if(xmlAddChild(xmlDocGetRootElement(doc), signatureNode) 
+          * DSA key in the signature<br>
+          */<br>
+         keyInfoNode = xmlSecSignatureAddKeyInfo(signatureNode, 
+  NULL);  <br>
+         if(keyInfoNode == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  KeyInfo\n&quot;);<br>
+             xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br>
+         <br>
+         cur = xmlSecKeyInfoAddKeyValue(keyInfoNode);<br>
+         if(cur == NULL) { <br>
+             fprintf(stderr,&quot;Error: failed
+to  add  KeyValue node\n&quot;);<br>
+             xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }<br><br></code><code>    /**<br>
+          * Add the signature to the end of the document<br>
+          */    <br>
+         if(xmlAddChild(xmlDocGetRootElement(doc), signatureNode) 
   == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  Signature\n");<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
-     &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return(NULL);<br>
-     &nbsp;&nbsp;&nbsp; }</code><br>
-        <code>  &nbsp;<br>
-  &nbsp; &nbsp; &nbsp;return(signatureNode);<br>
+             fprintf(stderr,&quot;Error: failed
+to  add  Signature\n&quot;);<br>
+             xmlSecSignatureDestroy(signatureNode);<br>
+             return(NULL);<br>
+         }</code><br><code>   <br>
+       return(signatureNode);<br>
      }</code><br>
-        </blockquote>
-        <h4>Step 4. Add Signature node and sign!</h4>
+</blockquote>
+<h4>Step 4. Add Signature node and sign!</h4>
+<p>
  Add the Signature node using <code>addSignature</code> () function and sign 
-:<br>
-        <br>
-        <code>&nbsp; &nbsp; xmlSecDSigResultPtr result;<br>
-  &nbsp; </code>&nbsp; <code>&nbsp;xmlNodePtr signatureNode;&nbsp;&nbsp;
-        <br>
-        <br>
-              &nbsp; &nbsp; /**<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Add Signature<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */ <br>
-     &nbsp;&nbsp;&nbsp; signatureNode = addSignature(doc);<br>
-     &nbsp;&nbsp;&nbsp; if(signatureNode == NULL) {<br>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed 
-  to add signature\n");<br>
-     &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; goto done;<br>
-     &nbsp;&nbsp;&nbsp; }</code><code><br>
-        <br>
-  &nbsp;&nbsp; &nbsp;/**<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; * Sign It!<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; */ <br>
-      &nbsp;&nbsp;&nbsp; ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, signatureNode, &amp;result);<br>
-      &nbsp;&nbsp;&nbsp; if(ret &lt; 0) {<br>
-      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;fprintf(stderr,"Error: signature
-  failed\n");<br>
-      &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; goto done; <br>
-      &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp;</code>
-        <h4>Step 5. Now we can print the result.</h4>
-                Simply print the document to stdout:<br>
-        <br>
-                  &nbsp;<code> &nbsp; xmlChar* string;<br>
-                  &nbsp;&nbsp;&nbsp; /**<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp; * Print out result document<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-                  &nbsp;&nbsp;&nbsp; xmlDocDumpMemoryEnc(doc, &amp;string,
+:<br><br><code>    xmlSecDSigResultPtr result;<br>
+    </code>  <code> xmlNodePtr signatureNode;  
+        <br><br>
+                  /**<br>
+          * Add Signature<br>
+          */ <br>
+         signatureNode = addSignature(doc);<br>
+         if(signatureNode == NULL) {<br>
+             fprintf(stderr,&quot;Error: failed 
+  to add signature\n&quot;);<br>
+              goto done;<br>
+         }</code><code><br><br>
+      /**<br>
+           * Sign It!<br>
+           */ <br>
+          ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, signatureNode, &amp;result);<br>
+          if(ret &lt; 0) {<br>
+              fprintf(stderr,&quot;Error: signature
+  failed\n&quot;);<br>
+              goto done; <br>
+          }  </code>
+        </p>
+<h4>Step 5. Now we can print the result.</h4>
+<p>
+                Simply print the document to stdout:<br><br>
+                   <code>   xmlChar* string;<br>
+                      /**<br>
+                       * Print out result document<br>
+                       */<br>
+                      xmlDocDumpMemoryEnc(doc, &amp;string,
  &amp;len,      NULL);<br>
-                  &nbsp;&nbsp;&nbsp; if(result == NULL) {<br>
-                  &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr,"Error: failed 
-to  dump   document     to memory\n");<br>
-                  &nbsp;&nbsp;&nbsp; &nbsp; goto done;<br>
-                  &nbsp;&nbsp;&nbsp; }<br>
-                  &nbsp;&nbsp;&nbsp; fwrite(string, len, 1, stdout);<br>
-                  &nbsp;&nbsp;&nbsp; xmlFree(string);</code><br>
-        <h4>Step 6. Cleanup.</h4>
+                      if(result == NULL) {<br>
+                        fprintf(stderr,&quot;Error: failed 
+to  dump   document     to memory\n&quot;);<br>
+                        goto done;<br>
+                      }<br>
+                      fwrite(string, len, 1, stdout);<br>
+                      xmlFree(string);</code><br>
+</p>
+<h4>Step 6. Cleanup.</h4>
+<p>
                   At the end we need to destroy DSig context, the doc and 
 KeysManager;       shutdown  XML Security Library, LIBXml and OpenSSL<br>
               (please note that we do not delete created Signature, Reference
   andKeyInfo  nodes    separately because all nodes are included in the
  XML document  doc):<br>
-                 &nbsp;&nbsp;&nbsp; <code>&nbsp;/*<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; * Cleanup<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-      &nbsp;&nbsp;&nbsp; if(result != NULL) {<br>
-      &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;xmlSecSignatureDestroy(result);<br>
-      &nbsp;&nbsp;&nbsp; }<br>
-      &nbsp;&nbsp;&nbsp; if(dsigCtx != NULL) { <br>
-      &nbsp;&nbsp; &nbsp; &nbsp; xmlSecDSigCtxDestroy(dsigCtx);<br>
-      &nbsp;&nbsp;&nbsp; }<br>
-      &nbsp;&nbsp;&nbsp; if(doc != NULL) {<br>
-      &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;xmlFreeDoc(doc);<br>
-      &nbsp;&nbsp;&nbsp; }<br>
-      &nbsp;&nbsp; &nbsp;<br>
-      &nbsp;&nbsp;&nbsp; if(keysMngr != NULL) {<br>
-      &nbsp;&nbsp; &nbsp; &nbsp; xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
-      &nbsp;&nbsp;&nbsp; }<br>
-      &nbsp;&nbsp; &nbsp;<br>
-      &nbsp;&nbsp;&nbsp; xmlSecShutdown();<br>
-      &nbsp;&nbsp; &nbsp;<br>
-      &nbsp;&nbsp;&nbsp; /* <br>
-      &nbsp;&nbsp;&nbsp;&nbsp; * Shutdown libxml<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-      &nbsp;&nbsp;&nbsp; xmlCleanupParser();<br>
-      &nbsp;&nbsp; &nbsp;<br>
-      &nbsp;&nbsp;&nbsp; /* <br>
-      &nbsp;&nbsp;&nbsp;&nbsp; * Shutdown OpenSSL<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-      &nbsp;&nbsp;&nbsp; RAND_cleanup();<br>
-      &nbsp;&nbsp;&nbsp; ERR_clear_error();   </code>
-        <h4>Appendix A. The template document.</h4>
-        <blockquote><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+                     <code> /*<br>
+           * Cleanup<br>
+           */<br>
+          if(result != NULL) {<br>
+              xmlSecSignatureDestroy(result);<br>
+          }<br>
+          if(dsigCtx != NULL) { <br>
+             xmlSecDSigCtxDestroy(dsigCtx);<br>
+          }<br>
+          if(doc != NULL) {<br>
+              xmlFreeDoc(doc);<br>
+          }<br>
+          <br>
+          if(keysMngr != NULL) {<br>
+             xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
+          }<br>
+          <br>
+          xmlSecShutdown();<br>
+          <br>
+          /* <br>
+           * Shutdown libxml<br>
+           */<br>
+          xmlCleanupParser();<br>
+          <br>
+          /* <br>
+           * Shutdown OpenSSL<br>
+           */<br>
+          RAND_cleanup();<br>
+          ERR_clear_error();   </code>
+        </p>
+<h4>Appendix A. The template document.</h4>
+<blockquote>
+<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
       &lt;Letter&gt;<br>
-      &nbsp;&nbsp;&nbsp; Hello, World!&nbsp;&nbsp;&nbsp; <br>
-      &nbsp;&nbsp;&nbsp; &lt;Info Id="SomeData"&gt;<br>
-      &nbsp;&nbsp;&nbsp; &lt;!-- Commentary --&gt;<br>
-      &nbsp;&nbsp;&nbsp; &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
-      &nbsp;&nbsp;&nbsp; &lt;Data2&gt; More data &lt;/Data2&gt;<br>
-      &nbsp;&nbsp;&nbsp; &lt;/Info&gt;<br>
+          Hello, World!    <br>
+          &lt;Info Id=&quot;SomeData&quot;&gt;<br>
+          &lt;!-- Commentary --&gt;<br>
+          &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
+          &lt;Data2&gt; More data &lt;/Data2&gt;<br>
+          &lt;/Info&gt;<br>
       &lt;/Letter&gt;</code><br>
-          </blockquote>
-          <h4>Appendix B. The signed document.</h4>
-          <blockquote><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+</blockquote>
+<h4>Appendix B. The signed document.</h4>
+<blockquote><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
       &lt;Letter&gt;<br>
-      &nbsp;&nbsp;&nbsp; Hello, World!&nbsp;&nbsp; &nbsp;<br>
-      &nbsp;&nbsp;&nbsp; &lt;Info Id="SomeData"&gt;<br>
-      &nbsp;&nbsp; &nbsp;&lt;!-- Commentary --&gt;<br>
-      &nbsp;&nbsp; &nbsp;&lt;Data1&gt; Some data &lt;/Data1&gt;<br>
-      &nbsp;&nbsp; &nbsp;&lt;Data2&gt; More data &lt;/Data2&gt;<br>
-      &nbsp;&nbsp;&nbsp; &lt;/Info&gt;<br>
-      &lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
+          Hello, World!    <br>
+          &lt;Info Id=&quot;SomeData&quot;&gt;<br>
+          &lt;!-- Commentary --&gt;<br>
+          &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
+          &lt;Data2&gt; More data &lt;/Data2&gt;<br>
+          &lt;/Info&gt;<br>
+      &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
       &lt;SignedInfo&gt;<br>
-      &lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;<br>
-      &lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/&gt;<br>
-      &lt;Reference Id="reference-1" URI="#xpointer(id('SomeData'))"&gt;<br>
+      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br>
+      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br>
+      &lt;Reference Id=&quot;reference-1&quot; URI=&quot;#xpointer(id('SomeData'))&quot;&gt;<br>
       &lt;Transforms&gt;<br>
-      &lt;Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/&gt;<br>
+      &lt;Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#WithComments&quot;/&gt;<br>
       &lt;/Transforms&gt;<br>
-      &lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;<br>
+      &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br>
       &lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;<br>
       &lt;/Reference&gt;<br>
       &lt;/SignedInfo&gt;<br>
       &lt;SignatureValue&gt;sSXCVpcCRydyUIebOFA1xw2Yfgy+YP0Dd41jIz/57iGbowwqyODPfA==&lt;/SignatureValue&gt;<br>
-      &lt;KeyInfo Id=""&gt;<br>
+      &lt;KeyInfo Id=&quot;&quot;&gt;<br>
       &lt;KeyValue&gt;<br>
       &lt;DSAKeyValue&gt;<br>
       &lt;P&gt;<br>
@@ -425,20 +405,9 @@ KeysManager;       shutdown  XML Security Library, LIBXml and OpenSSL<br>
       &lt;/DSAKeyValue&gt;<br>
       &lt;/KeyValue&gt;<br>
       &lt;/KeyInfo&gt;<br>
-      &lt;/Signature&gt;&lt;/Letter&gt;<br>
-            <br>
-            </code></blockquote>
-            <p><a href="bugs.html">Aleksey Sanin</a>
-            </p>
-            </td>
-          </tr>
-          <tr>
-            <td valign="Top"><br>
-            </td>
-            <td valign="Top"><br>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </body>
-      </html>
+      &lt;/Signature&gt;&lt;/Letter&gt;<br><br></code></blockquote>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

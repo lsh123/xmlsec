@@ -1,1580 +1,435 @@
-<HTML
-><HEAD
-><TITLE
->xmlenc.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Reference"
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="xmldsig.h"
-HREF="xmlsec-xmldsig.html"><LINK
-REL="NEXT"
-TITLE="errors.h"
-HREF="xmlsec-errors.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-xmldsig.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-errors.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-XMLENC"
-></A
->xmlenc.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN961"
-></A
-><H2
->Name</H2
->xmlenc.h&nbsp;--&nbsp;The <A
-HREF="http://www.w3.org/Encryption/"
-TARGET="_top"
->XML Encrypiton</A
-> 
-standard implementation.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN965"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>xmlenc.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="xmldsig.h" href="xmlsec-xmldsig.html">
+<link rel="NEXT" title="errors.h" href="xmlsec-errors.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmldsig.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-errors.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-XMLENC"></a>xmlenc.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN961"></a><h2>Name</h2>xmlenc.h -- The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
+standard implementation.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN965"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-struct      <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
->;
-<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXCREATE"
->xmlSecEncCtxCreate</A
->          (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> keysMngr);
-void        <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY"
->xmlSecEncCtxDestroy</A
->             (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx);
-int         <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRYPTMEMORY"
->xmlSecEncryptMemory</A
->             (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+struct      <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>;
+<strong>xmlSecEncCtxPtr</strong> <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a>          (<strong>xmlSecKeysMngrPtr</strong> keysMngr);
+void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a>             (<strong>xmlSecEncCtxPtr</strong> ctx);
+int         <a href="xmlsec-xmlenc.html#XMLSECENCRYPTMEMORY">xmlSecEncryptMemory</a>             (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);
-int         <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRYPTURI"
->xmlSecEncryptUri</A
->                (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>size_t</strong> size,
+                                             <strong>xmlSecEncResultPtr</strong> *result);
+int         <a href="xmlsec-xmlenc.html#XMLSECENCRYPTURI">xmlSecEncryptUri</a>                (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
                                              const char *uri,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);
-int         <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRYPTXMLNODE"
->xmlSecEncryptXmlNode</A
->            (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>xmlSecEncResultPtr</strong> *result);
+int         <a href="xmlsec-xmlenc.html#XMLSECENCRYPTXMLNODE">xmlSecEncryptXmlNode</a>            (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> src,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);
-int         <A
-HREF="xmlsec-xmlenc.html#XMLSECDECRYPT"
->xmlSecDecrypt</A
->                   (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
+                                             <strong>xmlNodePtr</strong> src,
+                                             <strong>xmlSecEncResultPtr</strong> *result);
+int         <a href="xmlsec-xmlenc.html#XMLSECDECRYPT">xmlSecDecrypt</a>                   (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);
-struct      <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
->;
-<GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULTCREATE"
->xmlSecEncResultCreate</A
->    (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
+                                             <strong>xmlSecEncResultPtr</strong> *result);
+struct      <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a>;
+<strong>xmlSecEncResultPtr</strong> <a href="xmlsec-xmlenc.html#XMLSECENCRESULTCREATE">xmlSecEncResultCreate</a>    (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
                                              int encrypt,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node);
-void        <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULTDESTROY"
->xmlSecEncResultDestroy</A
->          (<GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> result);
-void        <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULTDEBUGDUMP"
->xmlSecEncResultDebugDump</A
->        (<GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> result,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATACREATE"
->xmlSecEncDataCreate</A
->             (const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *type,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *mimeType,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *encoding);
-void        <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATADESTROY"
->xmlSecEncDataDestroy</A
->            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATAADDENCMETHOD"
->xmlSecEncDataAddEncMethod</A
->       (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> encMethod);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATAADDKEYINFO"
->xmlSecEncDataAddKeyInfo</A
->         (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATAADDENCPROPERTIES"
->xmlSecEncDataAddEncProperties</A
->   (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATAADDENCPROPERTY"
->xmlSecEncDataAddEncProperty</A
->     (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *target);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATAADDCIPHERVALUE"
->xmlSecEncDataAddCipherValue</A
->     (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECENCDATAADDCIPHERREFERENCE"
->xmlSecEncDataAddCipherReference</A
-> (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *uri);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmlenc.html#XMLSECCIPHERREFERENCEADDTRANSFORM"
->xmlSecCipherReferenceAddTransform</A
->
-                                            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> transform);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN1041"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN1044"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1046"
-></A
-><H3
-><A
-NAME="XMLSECENCCTX"
-></A
->struct xmlSecEncCtx</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecEncCtx {
+                                             <strong>xmlNodePtr</strong> node);
+void        <a href="xmlsec-xmlenc.html#XMLSECENCRESULTDESTROY">xmlSecEncResultDestroy</a>          (<strong>xmlSecEncResultPtr</strong> result);
+void        <a href="xmlsec-xmlenc.html#XMLSECENCRESULTDEBUGDUMP">xmlSecEncResultDebugDump</a>        (<strong>xmlSecEncResultPtr</strong> result,
+                                             <strong>FILE</strong> *output);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATACREATE">xmlSecEncDataCreate</a>             (const <strong>xmlChar</strong> *id,
+                                             const <strong>xmlChar</strong> *type,
+                                             const <strong>xmlChar</strong> *mimeType,
+                                             const <strong>xmlChar</strong> *encoding);
+void        <a href="xmlsec-xmlenc.html#XMLSECENCDATADESTROY">xmlSecEncDataDestroy</a>            (<strong>xmlNodePtr</strong> encNode);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATAADDENCMETHOD">xmlSecEncDataAddEncMethod</a>       (<strong>xmlNodePtr</strong> encNode,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> encMethod);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATAADDKEYINFO">xmlSecEncDataAddKeyInfo</a>         (<strong>xmlNodePtr</strong> encNode);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATAADDENCPROPERTIES">xmlSecEncDataAddEncProperties</a>   (<strong>xmlNodePtr</strong> encNode,
+                                             const <strong>xmlChar</strong> *id);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATAADDENCPROPERTY">xmlSecEncDataAddEncProperty</a>     (<strong>xmlNodePtr</strong> encNode,
+                                             const <strong>xmlChar</strong> *id,
+                                             const <strong>xmlChar</strong> *target);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATAADDCIPHERVALUE">xmlSecEncDataAddCipherValue</a>     (<strong>xmlNodePtr</strong> encNode);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECENCDATAADDCIPHERREFERENCE">xmlSecEncDataAddCipherReference</a> (<strong>xmlNodePtr</strong> encNode,
+                                             const <strong>xmlChar</strong> *uri);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmlenc.html#XMLSECCIPHERREFERENCEADDTRANSFORM">xmlSecCipherReferenceAddTransform</a>
+                                            (<strong>xmlNodePtr</strong> encNode,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> transform);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN1041"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN1044"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN1046"></a><h3>
+<a name="XMLSECENCCTX"></a>struct xmlSecEncCtx</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecEncCtx {
     xmlSecKeysMngrPtr		keysMngr;
     xmlSecTransformId		encryptionMethod;
     int				ignoreType;
     time_t			certsVerificationTime;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->XML Encrypiton context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1052"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->keysMngr</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to keys manager <A
-HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
->xmlSecKeysMngr</A
->.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->encryptionMethod</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the default encryption algorithm id.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->ignoreType</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->	the flag to ignore Type attribute in the &lt;enc:EncryptedData&gt; 
-	node</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="TIME-T"
->time_t</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->certsVerificationTime</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1077"
-></A
-><H3
-><A
-NAME="XMLSECENCCTXCREATE"
-></A
->xmlSecEncCtxCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> xmlSecEncCtxCreate          (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> keysMngr);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new encryption context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1085"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keysMngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
->xmlSecKeysMngr</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->newly allocated <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1100"
-></A
-><H3
-><A
-NAME="XMLSECENCCTXDESTROY"
-></A
->xmlSecEncCtxDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecEncCtxDestroy             (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys the <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1108"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1118"
-></A
-><H3
-><A
-NAME="XMLSECENCRYPTMEMORY"
-></A
->xmlSecEncryptMemory ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecEncryptMemory             (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+};</pre></td></tr></table>
+<p>XML Encrypiton context.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1052"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecKeysMngrPtr</strong> <tt class="STRUCTFIELD"><i>keysMngr</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to keys manager <a href="xmlsec-keys.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> <tt class="STRUCTFIELD"><i>encryptionMethod</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the default encryption algorithm id.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>ignoreType</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">	the flag to ignore Type attribute in the &lt;enc:EncryptedData&gt; 
+	node</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>time_t</strong> <tt class="STRUCTFIELD"><i>certsVerificationTime</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1077"></a><h3>
+<a name="XMLSECENCCTXCREATE"></a>xmlSecEncCtxCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecEncCtxPtr</strong> xmlSecEncCtxCreate          (<strong>xmlSecKeysMngrPtr</strong> keysMngr);</pre></td></tr></table>
+<p>Creates new encryption context.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1085"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-keys.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">newly allocated <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1100"></a><h3>
+<a name="XMLSECENCCTXDESTROY"></a>xmlSecEncCtxDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDestroy             (<strong>xmlSecEncCtxPtr</strong> ctx);</pre></td></tr></table>
+<p>Destroys the <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1108"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1118"></a><h3>
+<a name="XMLSECENCRYPTMEMORY"></a>xmlSecEncryptMemory ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncryptMemory             (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts binary data from the <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
-> according to the template in the
+                                             <strong>size_t</strong> size,
+                                             <strong>xmlSecEncResultPtr</strong> *result);</pre></td></tr></table>
+<p>Encrypts binary data from the <tt class="PARAMETER"><i>buf</i></tt> according to the template in the
 &lt;enc:EncryptionData&gt; node. After the encrytion the result XML is in 
-the <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
-> node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1131"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data that will be 
-    passed to all callback functions.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to data to encrypt.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of the data in <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer where to store encryption results.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1170"
-></A
-><H3
-><A
-NAME="XMLSECENCRYPTURI"
-></A
->xmlSecEncryptUri ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecEncryptUri                (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+the <tt class="PARAMETER"><i>encNode</i></tt> node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1131"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
+    passed to all callback functions.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
+    will be used).   </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to data to encrypt.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the size of the data in <tt class="PARAMETER"><i>buf</i></tt>.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>result</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer where to store encryption results.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1170"></a><h3>
+<a name="XMLSECENCRYPTURI"></a>xmlSecEncryptUri ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncryptUri                (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
                                              const char *uri,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts binary data from the <TT
-CLASS="PARAMETER"
-><I
->uri</I
-></TT
-> according to the template in the
+                                             <strong>xmlSecEncResultPtr</strong> *result);</pre></td></tr></table>
+<p>Encrypts binary data from the <tt class="PARAMETER"><i>uri</i></tt> according to the template in the
 &lt;enc:EncryptionData&gt; node. After the encrytion the result XML is in 
-the <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
-> node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1182"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data that will be 
-    passed to all callback functions.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->uri</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the URI to data to encrypt.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer where to store encryption results.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1216"
-></A
-><H3
-><A
-NAME="XMLSECENCRYPTXMLNODE"
-></A
->xmlSecEncryptXmlNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecEncryptXmlNode            (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+the <tt class="PARAMETER"><i>encNode</i></tt> node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1182"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
+    passed to all callback functions.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
+    will be used).   </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>uri</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the URI to data to encrypt.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>result</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer where to store encryption results.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1216"></a><h3>
+<a name="XMLSECENCRYPTXMLNODE"></a>xmlSecEncryptXmlNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncryptXmlNode            (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> src,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts XML data from the <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
-> according to the template in the
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
+                                             <strong>xmlNodePtr</strong> src,
+                                             <strong>xmlSecEncResultPtr</strong> *result);</pre></td></tr></table>
+<p>Encrypts XML data from the <tt class="PARAMETER"><i>encNode</i></tt> according to the template in the
 &lt;enc:EncryptionData&gt; node. After the encrytion the result XML is in 
-the <TT
-CLASS="PARAMETER"
-><I
->src</I
-></TT
-> node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1229"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data that will be 
-    passed to all callback functions.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->src</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to XML node to encrypt.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer where to store encryption results.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1263"
-></A
-><H3
-><A
-NAME="XMLSECDECRYPT"
-></A
->xmlSecDecrypt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDecrypt                   (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+the <tt class="PARAMETER"><i>src</i></tt> node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1229"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
+    passed to all callback functions.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
+    will be used).   </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>src</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to XML node to encrypt.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>result</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer where to store encryption results.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1263"></a><h3>
+<a name="XMLSECDECRYPT"></a>xmlSecDecrypt ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDecrypt                   (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> *result);</PRE
-></TD
-></TR
-></TABLE
-><P
->Decrypts data from the &lt;enc:EncryptionData&gt; node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1273"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data that will be 
-    passed to all callback functions.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer where to store encryption results.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1303"
-></A
-><H3
-><A
-NAME="XMLSECENCRESULT"
-></A
->struct xmlSecEncResult</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecEncResult {
+                                             <strong>xmlSecKeyPtr</strong> key,
+                                             <strong>xmlNodePtr</strong> encNode,
+                                             <strong>xmlSecEncResultPtr</strong> *result);</pre></td></tr></table>
+<p>Decrypts data from the &lt;enc:EncryptionData&gt; node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1273"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
+    passed to all callback functions.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
+    will be used).   </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>result</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer where to store encryption results.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1303"></a><h3>
+<a name="XMLSECENCRESULT"></a>struct xmlSecEncResult</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecEncResult {
     xmlSecEncCtxPtr		ctx;
     void			*context;
     xmlNodePtr			self;
@@ -1587,1754 +442,467 @@ CLASS="PROGRAMLISTING"
     xmlSecKeyPtr		key;
     xmlBufferPtr		buffer;
     int				replaced;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The XML Encrypiton results.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1309"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->ctx</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->context</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->self</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to  &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->encrypt</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the encrypt/decrypt flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *<TT
-CLASS="STRUCTFIELD"
-><I
->id</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Id attribute of the  &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *<TT
-CLASS="STRUCTFIELD"
-><I
->type</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Type attribute of the  &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *<TT
-CLASS="STRUCTFIELD"
-><I
->mimeType</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *<TT
-CLASS="STRUCTFIELD"
-><I
->encoding</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->encryptionMethod</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the used encryption algorithm id.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->key</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the used encryption key.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLBUFFERPTR"
->xmlBufferPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->buffer</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the decrypted data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->replaced</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> if set then the decrypted data were put back into the original document.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1372"
-></A
-><H3
-><A
-NAME="XMLSECENCRESULTCREATE"
-></A
->xmlSecEncResultCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> xmlSecEncResultCreate    (<GTKDOCLINK
-HREF="XMLSECENCCTXPTR"
->xmlSecEncCtxPtr</GTKDOCLINK
-> ctx,
+};</pre></td></tr></table>
+<p>The XML Encrypiton results.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1309"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecEncCtxPtr</strong> <tt class="STRUCTFIELD"><i>ctx</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>context</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlNodePtr</strong> <tt class="STRUCTFIELD"><i>self</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to  &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encrypt</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the encrypt/decrypt flag.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>id</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the Id attribute of the  &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>type</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the Type attribute of the  &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>mimeType</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>encoding</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> <tt class="STRUCTFIELD"><i>encryptionMethod</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the used encryption algorithm id.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecKeyPtr</strong> <tt class="STRUCTFIELD"><i>key</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the used encryption key.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlBufferPtr</strong> <tt class="STRUCTFIELD"><i>buffer</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the decrypted data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>replaced</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> if set then the decrypted data were put back into the original document.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1372"></a><h3>
+<a name="XMLSECENCRESULTCREATE"></a>xmlSecEncResultCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecEncResultPtr</strong> xmlSecEncResultCreate    (<strong>xmlSecEncCtxPtr</strong> ctx,
                                              void *context,
                                              int encrypt,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
-> structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1382"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data that will be 
-    passed to all callback functions.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encrypt</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the encrypt/decrypt flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->newly created <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
-> structure or NULL 
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1409"
-></A
-><H3
-><A
-NAME="XMLSECENCRESULTDESTROY"
-></A
->xmlSecEncResultDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecEncResultDestroy          (<GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> result);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
-> structure <TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1418"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1428"
-></A
-><H3
-><A
-NAME="XMLSECENCRESULTDEBUGDUMP"
-></A
->xmlSecEncResultDebugDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecEncResultDebugDump        (<GTKDOCLINK
-HREF="XMLSECENCRESULTPTR"
->xmlSecEncResultPtr</GTKDOCLINK
-> result,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
->Prints the <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
-> structure <TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
-> to file <TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1439"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->result</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <A
-HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
->xmlSecEncResult</A
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to destination FILE.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1453"
-></A
-><H3
-><A
-NAME="XMLSECENCDATACREATE"
-></A
->xmlSecEncDataCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataCreate             (const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *type,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *mimeType,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *encoding);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new &lt;enc:EncryptedData&gt; node for encryption template.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1464"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Id attribute (optional).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Type attribute (optional)</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mimeType</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the MimeType attribute (optional)</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encoding</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Encoding attribute (optional)</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer newly created  &lt;enc:EncryptedData&gt; node or NULL 
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1489"
-></A
-><H3
-><A
-NAME="XMLSECENCDATADESTROY"
-></A
->xmlSecEncDataDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecEncDataDestroy            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys the &lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1497"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1506"
-></A
-><H3
-><A
-NAME="XMLSECENCDATAADDENCMETHOD"
-></A
->xmlSecEncDataAddEncMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataAddEncMethod       (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> encMethod);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;enc:EncryptionMethod&gt; node with specified encryption 
-algorithm (<TT
-CLASS="PARAMETER"
-><I
->encMethodId</I
-></TT
->) to the  &lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1517"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encMethod</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the encryption method id.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;enc:EncryptionMethod&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1534"
-></A
-><H3
-><A
-NAME="XMLSECENCDATAADDKEYINFO"
-></A
->xmlSecEncDataAddKeyInfo ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataAddKeyInfo         (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;dsig:KeyInfo&gt; to the  &lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1543"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;dsig:KeyInfo&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1556"
-></A
-><H3
-><A
-NAME="XMLSECENCDATAADDENCPROPERTIES"
-></A
->xmlSecEncDataAddEncProperties ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataAddEncProperties   (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;enc:EncryptionProperties&gt; node to the &lt;enc:EncryptedData&gt; 
-node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1566"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Id attribute (optional).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;enc:EncryptionProperties&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1583"
-></A
-><H3
-><A
-NAME="XMLSECENCDATAADDENCPROPERTY"
-></A
->xmlSecEncDataAddEncProperty ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataAddEncProperty     (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *target);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;enc:EncryptionProperty&gt; node (and the parent 
+                                             <strong>xmlNodePtr</strong> node);</pre></td></tr></table>
+<p>Creates new <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a> structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1382"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>context</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
+    passed to all callback functions.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encrypt</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the encrypt/decrypt flag.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">newly created <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a> structure or NULL 
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1409"></a><h3>
+<a name="XMLSECENCRESULTDESTROY"></a>xmlSecEncResultDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncResultDestroy          (<strong>xmlSecEncResultPtr</strong> result);</pre></td></tr></table>
+<p>Destroys <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a> structure <tt class="PARAMETER"><i>result</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1418"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>result</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1428"></a><h3>
+<a name="XMLSECENCRESULTDEBUGDUMP"></a>xmlSecEncResultDebugDump ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncResultDebugDump        (<strong>xmlSecEncResultPtr</strong> result,
+                                             <strong>FILE</strong> *output);</pre></td></tr></table>
+<p>Prints the <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a> structure <tt class="PARAMETER"><i>result</i></tt> to file <tt class="PARAMETER"><i>output</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1439"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>result</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-xmlenc.html#XMLSECENCRESULT">xmlSecEncResult</a> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>output</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to destination FILE.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1453"></a><h3>
+<a name="XMLSECENCDATACREATE"></a>xmlSecEncDataCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataCreate             (const <strong>xmlChar</strong> *id,
+                                             const <strong>xmlChar</strong> *type,
+                                             const <strong>xmlChar</strong> *mimeType,
+                                             const <strong>xmlChar</strong> *encoding);</pre></td></tr></table>
+<p>Creates new &lt;enc:EncryptedData&gt; node for encryption template.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1464"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the Id attribute (optional).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>type</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the Type attribute (optional)</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mimeType</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the MimeType attribute (optional)</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encoding</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the Encoding attribute (optional)</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer newly created  &lt;enc:EncryptedData&gt; node or NULL 
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1489"></a><h3>
+<a name="XMLSECENCDATADESTROY"></a>xmlSecEncDataDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncDataDestroy            (<strong>xmlNodePtr</strong> encNode);</pre></td></tr></table>
+<p>Destroys the &lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1497"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1506"></a><h3>
+<a name="XMLSECENCDATAADDENCMETHOD"></a>xmlSecEncDataAddEncMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataAddEncMethod       (<strong>xmlNodePtr</strong> encNode,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> encMethod);</pre></td></tr></table>
+<p>Adds &lt;enc:EncryptionMethod&gt; node with specified encryption 
+algorithm (<tt class="PARAMETER"><i>encMethodId</i></tt>) to the  &lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1517"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encMethod</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the encryption method id.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:EncryptionMethod&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1534"></a><h3>
+<a name="XMLSECENCDATAADDKEYINFO"></a>xmlSecEncDataAddKeyInfo ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataAddKeyInfo         (<strong>xmlNodePtr</strong> encNode);</pre></td></tr></table>
+<p>Adds &lt;dsig:KeyInfo&gt; to the  &lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1543"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:KeyInfo&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1556"></a><h3>
+<a name="XMLSECENCDATAADDENCPROPERTIES"></a>xmlSecEncDataAddEncProperties ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataAddEncProperties   (<strong>xmlNodePtr</strong> encNode,
+                                             const <strong>xmlChar</strong> *id);</pre></td></tr></table>
+<p>Adds &lt;enc:EncryptionProperties&gt; node to the &lt;enc:EncryptedData&gt; 
+node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1566"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the Id attribute (optional).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:EncryptionProperties&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1583"></a><h3>
+<a name="XMLSECENCDATAADDENCPROPERTY"></a>xmlSecEncDataAddEncProperty ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataAddEncProperty     (<strong>xmlNodePtr</strong> encNode,
+                                             const <strong>xmlChar</strong> *id,
+                                             const <strong>xmlChar</strong> *target);</pre></td></tr></table>
+<p>Adds &lt;enc:EncryptionProperty&gt; node (and the parent 
 &lt;enc:EncryptionProperties&gt; node if required) to the 
-&lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1594"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Id attribute (optional).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->target</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the Target attribute (optional).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;enc:EncryptionProperty&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1615"
-></A
-><H3
-><A
-NAME="XMLSECENCDATAADDCIPHERVALUE"
-></A
->xmlSecEncDataAddCipherValue ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataAddCipherValue     (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;enc:CipherValue&gt; to the &lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1624"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;enc:CipherValue&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1637"
-></A
-><H3
-><A
-NAME="XMLSECENCDATAADDCIPHERREFERENCE"
-></A
->xmlSecEncDataAddCipherReference ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecEncDataAddCipherReference (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *uri);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;enc:CipherReference&gt; node with specified URI attribute <TT
-CLASS="PARAMETER"
-><I
->uri</I
-></TT
->
-to the &lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1648"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->uri</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the URI attribute (may be NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;enc:CipherReference&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN1665"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERREFERENCEADDTRANSFORM"
-></A
->xmlSecCipherReferenceAddTransform ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecCipherReferenceAddTransform
-                                            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> encNode,
-                                             <A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node)
-with specified transform methods <TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
-> to the &lt;enc:CipherReference&gt;
-child node of the &lt;enc:EncryptedData&gt; node <TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN1676"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;enc:EncryptedData&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the transform id.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created &lt;dsig:Transform&gt; node or 
-NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-xmldsig.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-errors.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->xmldsig.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->errors.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+&lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1594"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the Id attribute (optional).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>target</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the Target attribute (optional).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:EncryptionProperty&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1615"></a><h3>
+<a name="XMLSECENCDATAADDCIPHERVALUE"></a>xmlSecEncDataAddCipherValue ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataAddCipherValue     (<strong>xmlNodePtr</strong> encNode);</pre></td></tr></table>
+<p>Adds &lt;enc:CipherValue&gt; to the &lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1624"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:CipherValue&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1637"></a><h3>
+<a name="XMLSECENCDATAADDCIPHERREFERENCE"></a>xmlSecEncDataAddCipherReference ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecEncDataAddCipherReference (<strong>xmlNodePtr</strong> encNode,
+                                             const <strong>xmlChar</strong> *uri);</pre></td></tr></table>
+<p>Adds &lt;enc:CipherReference&gt; node with specified URI attribute <tt class="PARAMETER"><i>uri</i></tt>
+to the &lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1648"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>uri</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the URI attribute (may be NULL).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:CipherReference&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1665"></a><h3>
+<a name="XMLSECCIPHERREFERENCEADDTRANSFORM"></a>xmlSecCipherReferenceAddTransform ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecCipherReferenceAddTransform
+                                            (<strong>xmlNodePtr</strong> encNode,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> transform);</pre></td></tr></table>
+<p>Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node)
+with specified transform methods <tt class="PARAMETER"><i>transform</i></tt> to the &lt;enc:CipherReference&gt;
+child node of the &lt;enc:EncryptedData&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN1676"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;enc:EncryptedData&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the transform id.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Transform&gt; node or 
+NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmldsig.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-errors.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>xmldsig.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>errors.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

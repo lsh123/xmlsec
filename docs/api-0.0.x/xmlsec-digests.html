@@ -1,334 +1,100 @@
-<HTML
-><HEAD
-><TITLE
->digests.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Internal Functions Reference"
-HREF="xmlsec-ref-int.html"><LINK
-REL="PREVIOUS"
-TITLE="ciphers.h"
-HREF="xmlsec-ciphers.html"><LINK
-REL="NEXT"
-TITLE="io.h"
-HREF="xmlsec-io.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-ciphers.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-io.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-DIGESTS"
-></A
->digests.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN5902"
-></A
-><H2
->Name</H2
->digests.h&nbsp;--&nbsp;The digests transform.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN5905"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>digests.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+<link rel="PREVIOUS" title="ciphers.h" href="xmlsec-ciphers.html">
+<link rel="NEXT" title="io.h" href="xmlsec-io.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-io.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-DIGESTS"></a>digests.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN5902"></a><h2>Name</h2>digests.h -- The digests transform.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN5905"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-struct      <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
->xmlSecDigestTransform</A
->;
-typedef     <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID"
->xmlSecDigestTransformId</A
->;
-int         (<A
-HREF="xmlsec-digests.html#XMLSECDIGESTUPDATEMETHOD"
->*xmlSecDigestUpdateMethod</A
->)     (<GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> transform,
+struct      <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>;
+typedef     <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID">xmlSecDigestTransformId</a>;
+int         (<a href="xmlsec-digests.html#XMLSECDIGESTUPDATEMETHOD">*xmlSecDigestUpdateMethod</a>)     (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         (<A
-HREF="xmlsec-digests.html#XMLSECDIGESTSIGNMETHOD"
->*xmlSecDigestSignMethod</A
->)       (<GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         (<a href="xmlsec-digests.html#XMLSECDIGESTSIGNMETHOD">*xmlSecDigestSignMethod</a>)       (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char **buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> *size);
-int         (<A
-HREF="xmlsec-digests.html#XMLSECDIGESTVERIFYMETHOD"
->*xmlSecDigestVerifyMethod</A
->)     (<GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> *size);
+int         (<a href="xmlsec-digests.html#XMLSECDIGESTVERIFYMETHOD">*xmlSecDigestVerifyMethod</a>)     (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTSIGNNODE"
->xmlSecDigestSignNode</A
->            (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> valueNode,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-digests.html#XMLSECDIGESTSIGNNODE">xmlSecDigestSignNode</a>            (<strong>xmlSecTransformPtr</strong> transform,
+                                             <strong>xmlNodePtr</strong> valueNode,
                                              int removeOldContent);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTVERIFYNODE"
->xmlSecDigestVerifyNode</A
->          (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> valueNode);
-void        <A
-HREF="xmlsec-digests.html#XMLSECDIGESTSETPUSHMODE"
->xmlSecDigestSetPushMode</A
->         (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+int         <a href="xmlsec-digests.html#XMLSECDIGESTVERIFYNODE">xmlSecDigestVerifyNode</a>          (<strong>xmlSecTransformPtr</strong> transform,
+                                             const <strong>xmlNodePtr</strong> valueNode);
+void        <a href="xmlsec-digests.html#XMLSECDIGESTSETPUSHMODE">xmlSecDigestSetPushMode</a>         (<strong>xmlSecTransformPtr</strong> transform,
                                              int enabled);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTUPDATE"
->xmlSecDigestUpdate</A
->              (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+int         <a href="xmlsec-digests.html#XMLSECDIGESTUPDATE">xmlSecDigestUpdate</a>              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTSIGN"
->xmlSecDigestSign</A
->                (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-digests.html#XMLSECDIGESTSIGN">xmlSecDigestSign</a>                (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char **buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> *size);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTVERIFY"
->xmlSecDigestVerify</A
->              (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> *size);
+int         <a href="xmlsec-digests.html#XMLSECDIGESTVERIFY">xmlSecDigestVerify</a>              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMREAD"
->xmlSecDigestTransformRead</A
->       (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMREAD">xmlSecDigestTransformRead</a>       (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMWRITE"
->xmlSecDigestTransformWrite</A
->      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMWRITE">xmlSecDigestTransformWrite</a>      (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMFLUSH"
->xmlSecDigestTransformFlush</A
->      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5944"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5947"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5949"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTTRANSFORM"
-></A
->struct xmlSecDigestTransform</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecDigestTransform {	
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMFLUSH">xmlSecDigestTransformFlush</a>      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN5944"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN5947"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN5949"></a><h3>
+<a name="XMLSECDIGESTTRANSFORM"></a>struct xmlSecDigestTransform</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecDigestTransform {	
     /* same as for xmlSecTransform but id type changed */
     xmlSecDigestTransformId		id;    
     xmlSecTransformStatus		status;
@@ -347,1862 +113,532 @@ CLASS="PROGRAMLISTING"
     size_t				digestSize;
     unsigned char			digestLastByteMask;
     void 				*digestData;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The digests transform.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5955"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID"
->xmlSecDigestTransformId</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->id</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the transform id (pointer to <A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
->xmlSecBinTransformId</A
->).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
->xmlSecTransformStatus</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->status</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the transform status (ok/fail/unknown).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->dontDestroy</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the don't automatically destroy flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->data</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to transform specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->encode</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> encode/decode (encrypt/decrypt) flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->next</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> next binary transform in the chain.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->prev</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> previous binary transform in the chain.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->binData</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to binary transform speific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->pushModeEnabled</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> if 1 then the data are sent to next transform, otherwise
-	 we are keeping data for sign or verify call.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->unsigned char *<TT
-CLASS="STRUCTFIELD"
-><I
->digest</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the internal digest buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->digestSize</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the internal digest buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->unsigned char <TT
-CLASS="STRUCTFIELD"
-><I
->digestLastByteMask</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->digestData</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to digest transform specific data.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6018"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTTRANSFORMID"
-></A
->xmlSecDigestTransformId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;</PRE
-></TD
-></TR
-></TABLE
-><P
->The digest transform id (<TT
-CLASS="LITERAL"
->xmlSecTransformTypeBinary</TT
-> type).</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6025"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTUPDATEMETHOD"
-></A
->xmlSecDigestUpdateMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecDigestUpdateMethod)     (<GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> transform,
+};</pre></td></tr></table>
+<p>The digests transform.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5955"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID">xmlSecDigestTransformId</a> <tt class="STRUCTFIELD"><i>id</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the transform id (pointer to <a href="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID">xmlSecBinTransformId</a>).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <tt class="STRUCTFIELD"><i>status</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the transform status (ok/fail/unknown).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroy</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the don't automatically destroy flag.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>data</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to transform specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encode</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> encode/decode (encrypt/decrypt) flag.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecDigestTransformPtr</strong> <tt class="STRUCTFIELD"><i>next</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> next binary transform in the chain.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecDigestTransformPtr</strong> <tt class="STRUCTFIELD"><i>prev</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> previous binary transform in the chain.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>binData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to binary transform speific data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>pushModeEnabled</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> if 1 then the data are sent to next transform, otherwise
+	 we are keeping data for sign or verify call.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>digest</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the internal digest buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>size_t</strong> <tt class="STRUCTFIELD"><i>digestSize</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the internal digest buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned char <tt class="STRUCTFIELD"><i>digestLastByteMask</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>digestData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to digest transform specific data.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6018"></a><h3>
+<a name="XMLSECDIGESTTRANSFORMID"></a>xmlSecDigestTransformId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;</pre></td></tr></table>
+<p>The digest transform id (<tt class="LITERAL">xmlSecTransformTypeBinary</tt> type).</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6025"></a><h3>
+<a name="XMLSECDIGESTUPDATEMETHOD"></a>xmlSecDigestUpdateMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecDigestUpdateMethod)     (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Updates digest with new chunk of data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6033"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to digests transform <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
->xmlSecDigestTransform</A
->.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6055"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTSIGNMETHOD"
-></A
->xmlSecDigestSignMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecDigestSignMethod)       (<GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Updates digest with new chunk of data.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6033"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to digests transform <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6055"></a><h3>
+<a name="XMLSECDIGESTSIGNMETHOD"></a>xmlSecDigestSignMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecDigestSignMethod)       (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char **buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> *size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Finalizes digest and returns result in allocated buffer (<TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->, <TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->).
-The caller is responsible for freeing returned buffer with <GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6066"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to digests transform <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
->xmlSecDigestTransform</A
->.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to pointer to the output data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to outut data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6088"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTVERIFYMETHOD"
-></A
->xmlSecDigestVerifyMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecDigestVerifyMethod)     (<GTKDOCLINK
-HREF="XMLSECDIGESTTRANSFORMPTR"
->xmlSecDigestTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> *size);</pre></td></tr></table>
+<p>Finalizes digest and returns result in allocated buffer (<tt class="PARAMETER"><i>buffer</i></tt>, <tt class="PARAMETER"><i>size</i></tt>).
+The caller is responsible for freeing returned buffer with <strong>xmlFree</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6066"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to digests transform <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to pointer to the output data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to outut data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6088"></a><h3>
+<a name="XMLSECDIGESTVERIFYMETHOD"></a>xmlSecDigestVerifyMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecDigestVerifyMethod)     (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Verifies digest with new chunk of data. The actual verification
-status is set in <GTKDOCLINK
-HREF="STATUS"
->status</GTKDOCLINK
-> member of <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
->xmlSecDigestTransform</A
-> structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6098"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to digests transform <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
->xmlSecDigestTransform</A
->.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6120"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTSIGNNODE"
-></A
->xmlSecDigestSignNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestSignNode            (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> valueNode,
-                                             int removeOldContent);</PRE
-></TD
-></TR
-></TABLE
-><P
->Finalizes the digest result, signs it (if necessary), base64 encodes and
-puts in the given node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6128"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digest transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->valueNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to &lt;dsig:DigestValue&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->removeOldContent</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag that indicates whether the previous
-            node content will be removed or not.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6149"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTVERIFYNODE"
-></A
->xmlSecDigestVerifyNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestVerifyNode          (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> valueNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the node content, base64 decodes it, finalizes the digest result and
-verifies that it does match with the content of the node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6157"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digest transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->valueNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a &lt;dsig:DigestValue&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6174"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTSETPUSHMODE"
-></A
->xmlSecDigestSetPushMode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecDigestSetPushMode         (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             int enabled);</PRE
-></TD
-></TR
-></TABLE
-><P
->Sets the push more flag. If push mode is enabled then the digest is
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Verifies digest with new chunk of data. The actual verification
+status is set in <strong>status</strong> member of <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a> structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6098"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to digests transform <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">1 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6120"></a><h3>
+<a name="XMLSECDIGESTSIGNNODE"></a>xmlSecDigestSignNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestSignNode            (<strong>xmlSecTransformPtr</strong> transform,
+                                             <strong>xmlNodePtr</strong> valueNode,
+                                             int removeOldContent);</pre></td></tr></table>
+<p>Finalizes the digest result, signs it (if necessary), base64 encodes and
+puts in the given node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6128"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digest transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>valueNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:DigestValue&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>removeOldContent</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag that indicates whether the previous
+            node content will be removed or not.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6149"></a><h3>
+<a name="XMLSECDIGESTVERIFYNODE"></a>xmlSecDigestVerifyNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestVerifyNode          (<strong>xmlSecTransformPtr</strong> transform,
+                                             const <strong>xmlNodePtr</strong> valueNode);</pre></td></tr></table>
+<p>Reads the node content, base64 decodes it, finalizes the digest result and
+verifies that it does match with the content of the node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6157"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digest transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>valueNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a &lt;dsig:DigestValue&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6174"></a><h3>
+<a name="XMLSECDIGESTSETPUSHMODE"></a>xmlSecDigestSetPushMode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDigestSetPushMode         (<strong>xmlSecTransformPtr</strong> transform,
+                                             int enabled);</pre></td></tr></table>
+<p>Sets the push more flag. If push mode is enabled then the digest is
 finalized and send to next transform when 
 1) read from previous transform returned 0
-2) flush called</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6181"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digests transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->enabled</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new "push mode" flag.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6194"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTUPDATE"
-></A
->xmlSecDigestUpdate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestUpdate              (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+2) flush called</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6181"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>enabled</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new &quot;push mode&quot; flag.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6194"></a><h3>
+<a name="XMLSECDIGESTUPDATE"></a>xmlSecDigestUpdate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestUpdate              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Updates data with the new chunk of data (wrapper for 
-xmlSecDigestTransformId::digestUpdate method).</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6202"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digests transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6223"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTSIGN"
-></A
->xmlSecDigestSign ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestSign                (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Updates data with the new chunk of data (wrapper for 
+xmlSecDigestTransformId::digestUpdate method).</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6202"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6223"></a><h3>
+<a name="XMLSECDIGESTSIGN"></a>xmlSecDigestSign ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestSign                (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char **buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> *size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Finalizes digest and writes the result into the allocated 
+                                             <strong>size_t</strong> *size);</pre></td></tr></table>
+<p>Finalizes digest and writes the result into the allocated 
 buffer (wrapper for xmlSecDigestTransformId::digestSign function).
-Caller is responsble for freeing allocated buffer with <GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6232"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digests transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the pointer to the output buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the output buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6253"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTVERIFY"
-></A
->xmlSecDigestVerify ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestVerify              (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+Caller is responsble for freeing allocated buffer with <strong>xmlFree</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6232"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the pointer to the output buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to the output buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6253"></a><h3>
+<a name="XMLSECDIGESTVERIFY"></a>xmlSecDigestVerify ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestVerify              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Checks the computed digest and the data in the input buffer
-(wrapper for xmlSecDigestTransformId::digestVerify function).</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6261"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digests transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6282"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTTRANSFORMREAD"
-></A
->xmlSecDigestTransformRead ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestTransformRead       (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Checks the computed digest and the data in the input buffer
+(wrapper for xmlSecDigestTransformId::digestVerify function).</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6261"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6282"></a><h3>
+<a name="XMLSECDIGESTTRANSFORMREAD"></a>xmlSecDigestTransformRead ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformRead       (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads all data from previos transform and digests it. If the 
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Reads all data from previos transform and digests it. If the 
 push mode enabled then the result is finalized and returned to the caller,
-otherwise we return 0</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6290"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digest transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes in the buffer or negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6311"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTTRANSFORMWRITE"
-></A
->xmlSecDigestTransformWrite ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestTransformWrite      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+otherwise we return 0</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6290"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digest transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes in the buffer or negative value
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6311"></a><h3>
+<a name="XMLSECDIGESTTRANSFORMWRITE"></a>xmlSecDigestTransformWrite ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformWrite      (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds new chunk of data to the digest.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6319"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the poiter to a digests transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6340"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTTRANSFORMFLUSH"
-></A
->xmlSecDigestTransformFlush ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecDigestTransformFlush      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->If the push mode enabled then the function finalizes the result,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Adds new chunk of data to the digest.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6319"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the poiter to a digests transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 if success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6340"></a><h3>
+<a name="XMLSECDIGESTTRANSFORMFLUSH"></a>xmlSecDigestTransformFlush ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformFlush      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table>
+<p>If the push mode enabled then the function finalizes the result,
 writes it to the next transform and calls flush for it. Otherwise,
-it just calls flush for next transform</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6347"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a digests transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success or negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-ciphers.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-io.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->ciphers.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->io.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+it just calls flush for next transform</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6347"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 if success or negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-io.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>ciphers.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>io.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

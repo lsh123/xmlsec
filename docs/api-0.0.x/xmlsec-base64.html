@@ -1,1080 +1,308 @@
-<HTML
-><HEAD
-><TITLE
->base64.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Internal Functions Reference"
-HREF="xmlsec-ref-int.html"><LINK
-REL="PREVIOUS"
-TITLE="XML Security Library Internal Functions Reference"
-HREF="xmlsec-ref-int.html"><LINK
-REL="NEXT"
-TITLE="bn.h"
-HREF="xmlsec-bn.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-bn.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-BASE64"
-></A
->base64.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN4979"
-></A
-><H2
->Name</H2
->base64.h&nbsp;--&nbsp;The BASE64 encode/decode functions.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN4982"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>base64.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+<link rel="PREVIOUS" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+<link rel="NEXT" title="bn.h" href="xmlsec-bn.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-bn.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-BASE64"></a>base64.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN4979"></a><h2>Name</h2>base64.h -- The BASE64 encode/decode functions.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN4982"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-base64.html#XMLSECBASE64CTXCREATE"
->xmlSecBase64CtxCreate</A
->    (int encode,
+<strong>xmlSecBase64CtxPtr</strong> <a href="xmlsec-base64.html#XMLSECBASE64CTXCREATE">xmlSecBase64CtxCreate</a>    (int encode,
                                              int columns);
-void        <A
-HREF="xmlsec-base64.html#XMLSECBASE64CTXDESTROY"
->xmlSecBase64CtxDestroy</A
->          (<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> ctx);
-int         <A
-HREF="xmlsec-base64.html#XMLSECBASE64CTXUPDATE"
->xmlSecBase64CtxUpdate</A
->           (<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> ctx,
+void        <a href="xmlsec-base64.html#XMLSECBASE64CTXDESTROY">xmlSecBase64CtxDestroy</a>          (<strong>xmlSecBase64CtxPtr</strong> ctx);
+int         <a href="xmlsec-base64.html#XMLSECBASE64CTXUPDATE">xmlSecBase64CtxUpdate</a>           (<strong>xmlSecBase64CtxPtr</strong> ctx,
                                              unsigned char *in,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> inLen,
+                                             <strong>size_t</strong> inLen,
                                              unsigned char *out,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> outLen);
-int         <A
-HREF="xmlsec-base64.html#XMLSECBASE64CTXFINAL"
->xmlSecBase64CtxFinal</A
->            (<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>size_t</strong> outLen);
+int         <a href="xmlsec-base64.html#XMLSECBASE64CTXFINAL">xmlSecBase64CtxFinal</a>            (<strong>xmlSecBase64CtxPtr</strong> ctx,
                                              unsigned char *out,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> outLen);
-<GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    <A
-HREF="xmlsec-base64.html#XMLSECBASE64ENCODE"
->xmlSecBase64Encode</A
->              (unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> len,
+                                             <strong>size_t</strong> outLen);
+<strong>xmlChar</strong>*    <a href="xmlsec-base64.html#XMLSECBASE64ENCODE">xmlSecBase64Encode</a>              (unsigned char *buf,
+                                             <strong>size_t</strong> len,
                                              int columns);
-int         <A
-HREF="xmlsec-base64.html#XMLSECBASE64DECODE"
->xmlSecBase64Decode</A
->              (const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *str,
+int         <a href="xmlsec-base64.html#XMLSECBASE64DECODE">xmlSecBase64Decode</a>              (const <strong>xmlChar</strong> *str,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> len);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5002"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5005"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5007"
-></A
-><H3
-><A
-NAME="XMLSECBASE64CTXCREATE"
-></A
->xmlSecBase64CtxCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> xmlSecBase64CtxCreate    (int encode,
-                                             int columns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new base64 context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5014"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->encode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the encode/decode flag (1 - encode, 0 - decode) </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->columns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the max line length.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->a pointer to newly created <GTKDOCLINK
-HREF="XMLSECBASE64CTX"
->xmlSecBase64Ctx</GTKDOCLINK
-> structure
-or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5032"
-></A
-><H3
-><A
-NAME="XMLSECBASE64CTXDESTROY"
-></A
->xmlSecBase64CtxDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecBase64CtxDestroy          (<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> ctx);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys base64 context.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5039"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECBASE64CTX"
->xmlSecBase64Ctx</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5049"
-></A
-><H3
-><A
-NAME="XMLSECBASE64CTXUPDATE"
-></A
->xmlSecBase64CtxUpdate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecBase64CtxUpdate           (<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>size_t</strong> len);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN5002"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN5005"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN5007"></a><h3>
+<a name="XMLSECBASE64CTXCREATE"></a>xmlSecBase64CtxCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecBase64CtxPtr</strong> xmlSecBase64CtxCreate    (int encode,
+                                             int columns);</pre></td></tr></table>
+<p>Creates new base64 context.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5014"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the encode/decode flag (1 - encode, 0 - decode) </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>columns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the max line length.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">a pointer to newly created <strong>xmlSecBase64Ctx</strong> structure
+or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5032"></a><h3>
+<a name="XMLSECBASE64CTXDESTROY"></a>xmlSecBase64CtxDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBase64CtxDestroy          (<strong>xmlSecBase64CtxPtr</strong> ctx);</pre></td></tr></table>
+<p>Destroys base64 context.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5039"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecBase64Ctx</strong> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5049"></a><h3>
+<a name="XMLSECBASE64CTXUPDATE"></a>xmlSecBase64CtxUpdate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64CtxUpdate           (<strong>xmlSecBase64CtxPtr</strong> ctx,
                                              unsigned char *in,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> inLen,
+                                             <strong>size_t</strong> inLen,
                                              unsigned char *out,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> outLen);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encodes/decodes the next piece of data from input buffer.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5058"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECBASE64CTX"
->xmlSecBase64Ctx</GTKDOCLINK
-> structure</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->in</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->	the input buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->inLen</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer size</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->out</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->outLen</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer size</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes written to output buffer or 
--1 if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5088"
-></A
-><H3
-><A
-NAME="XMLSECBASE64CTXFINAL"
-></A
->xmlSecBase64CtxFinal ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecBase64CtxFinal            (<GTKDOCLINK
-HREF="XMLSECBASE64CTXPTR"
->xmlSecBase64CtxPtr</GTKDOCLINK
-> ctx,
+                                             <strong>size_t</strong> outLen);</pre></td></tr></table>
+<p>Encodes/decodes the next piece of data from input buffer.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5058"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecBase64Ctx</strong> structure</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>in</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">	the input buffer</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>inLen</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer size</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>out</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>outLen</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer size</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes written to output buffer or 
+-1 if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5088"></a><h3>
+<a name="XMLSECBASE64CTXFINAL"></a>xmlSecBase64CtxFinal ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64CtxFinal            (<strong>xmlSecBase64CtxPtr</strong> ctx,
                                              unsigned char *out,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> outLen);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encodes/decodes the last piece of data stored in the context
-and finalizes the result.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5096"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctx</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECBASE64CTX"
->xmlSecBase64Ctx</GTKDOCLINK
-> structure</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->out</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->outLen</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer size</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes written to output buffer or 
--1 if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5118"
-></A
-><H3
-><A
-NAME="XMLSECBASE64ENCODE"
-></A
->xmlSecBase64Encode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    xmlSecBase64Encode              (unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> len,
-                                             int columns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encodes the data from input buffer and allocates the string for the result.
+                                             <strong>size_t</strong> outLen);</pre></td></tr></table>
+<p>Encodes/decodes the last piece of data stored in the context
+and finalizes the result.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5096"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ctx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecBase64Ctx</strong> structure</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>out</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>outLen</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer size</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes written to output buffer or 
+-1 if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5118"></a><h3>
+<a name="XMLSECBASE64ENCODE"></a>xmlSecBase64Encode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlChar</strong>*    xmlSecBase64Encode              (unsigned char *buf,
+                                             <strong>size_t</strong> len,
+                                             int columns);</pre></td></tr></table>
+<p>Encodes the data from input buffer and allocates the string for the result.
 The caller is responsible for freeing returned buffer using
-<GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5127"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->len</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->columns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output max line length (if 0 then no line breaks
-          would be inserted)</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->newly allocated string with base64 encoded data 
-or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5148"
-></A
-><H3
-><A
-NAME="XMLSECBASE64DECODE"
-></A
->xmlSecBase64Decode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecBase64Decode              (const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *str,
+<strong>xmlFree</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5127"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>len</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>columns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output max line length (if 0 then no line breaks
+          would be inserted)</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">newly allocated string with base64 encoded data 
+or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5148"></a><h3>
+<a name="XMLSECBASE64DECODE"></a>xmlSecBase64Decode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64Decode              (const <strong>xmlChar</strong> *str,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> len);</PRE
-></TD
-></TR
-></TABLE
-><P
->Decodes input base64 encoded string and puts result into
-the output buffer.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5156"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->str</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer with base64 encoded string</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->len</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer size</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes written to the output buffer or 
-a negative value if an error occurs </TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-bn.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->XML Security Library Internal Functions Reference</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->bn.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+                                             <strong>size_t</strong> len);</pre></td></tr></table>
+<p>Decodes input base64 encoded string and puts result into
+the output buffer.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5156"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>str</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer with base64 encoded string</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>len</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer size</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes written to the output buffer or 
+a negative value if an error occurs </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-bn.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library Internal Functions Reference</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>bn.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

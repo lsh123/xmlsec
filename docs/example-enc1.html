@@ -1,318 +1,298 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>XML Security Library: Example - Encryption</title>
-   
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XML Security Library: Example - Encryption</title>
 </head>
-  <body>
-<table width="100%">
-  <tbody>
-    <tr>
-    
-    <!-- top navigation menu start -->     
-    <td valign="Top" align="Left" width="210">
-	<img src="logo.gif" alt="XML Security Library" width="200" height="100">
-        <p></p>
-        <ul>
-	    <li><a href="index.html">Home</a></li>
- 	    <li><a href="download.html">Download</a></li>
- 	    <li><a href="news.html">News</a></li>
-	    <li><a href="documentation.html">Documentation</a></li>
-	    <li><a href="faq.html">FAQ</a></li>
- 	    <li><a href="xmldsig.html">XML Digital Signature</a></li>
-    	    <ul>
- 		<li><a href="xmldsig-interop.html">Interop report</a></li>
- 		<li><a href="xmldsig-verifier.html">Online Verifier</a></li>	
-    	    </ul>
- 	    <li><a href="xmlenc.html">XML Encryption</a></li>     	
-    	    <ul>
-		<li><a href="xmlenc-interop.html">Interop report</a></li>
- 	        <li><a href="example-enc1.html">Example 1</a></li>
- 		<li><a href="example-enc2.html">Example 2</a></li>
-    	    </ul>
-	    <li><a href="c14n.html">XML Canonicalization</a></li>
- 	    <li><a href="bugs.html">Reporting Bugs</a></li>
-            <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-	</ul>
-      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" border="0" alt="LibXML2"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://xmlsoft.org/XSLT/"><img src="libxslt-logo.png" border="0" alt="LibXSLT"></a><br>
- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.openssl.org/"><img src="openssl-logo.png" border="0" alt="OpenSSL"></a><br>
-     </td>
-     <!-- top navigation menu end -->
-
-	<td valign="Top" align="Left">
-      <div align="Center">
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
+<li><a href="xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
+<li><a href="bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div align="Center">
       <h2>XML Encryption <br>
                 Example 1. Encrypting</h2>
       </div>
+<p>
        To encrypt data using XML Security Library the application should:<br>
-      <ol>
-        <li>Create encryption context (depending on the application it could 
+</p>
+<ol>
+<li>Create encryption context (depending on the application it could 
    be done once in the beggining of the program).<br>
-        </li>
+</li>
         <li>Create or load encryption template that describes the encryption 
    algorithm, encryption key transport mechanism, etc.</li>
-        <li>Call one of the encryption functions:<br>
-          <ul>
-            <li><code>xmlSecEncryptMemory()</code></li>
+        <li>Call one of the encryption functions:<br><ul>
+<li><code>xmlSecEncryptMemory()</code></li>
             <li><code>xmlSecEncryptUri()</code></li>
-            <li><code>xmlSecEncryptXmlNode()</code><br>
-            </li>
+            <li>
+<code>xmlSecEncryptXmlNode()</code><br>
+</li>
           </ul>
-        </li>
+</li>
         <li>Verifiy the result.</li>
       </ol>
+<p>
    In this example, we will encrypt a string using DES3 algorithm with 
 session  key which will be RSA encrypted and included into the XML document. 
 The source  code for this example is included into the package: <a href="examples/enc1/enc1.c">
               source code</a>
         and <a href="examples/enc1/test.xml">the encrypted document</a>
   . <br>
-      <h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
+</p>
+<h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
+<p>
                 Before using the libraries we need to initialize them. This 
  should    be  done  once in the beginning of your program<br>
-                &nbsp; &nbsp;<br>
-                &nbsp;<code> &nbsp; int rnd_seed = 0;&nbsp;&nbsp;&nbsp; <br>
-      <br>
-                &nbsp;&nbsp;&nbsp; /** <br>
-                &nbsp;&nbsp;&nbsp;&nbsp; * Init OpenSSL:<br>
-         &nbsp; &nbsp; &nbsp;* this is a BAD way to init random numbers <br>
-         &nbsp; &nbsp; &nbsp;* generator<br>
-                &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp; <br>
-                &nbsp;&nbsp;&nbsp; while (RAND_status() != 1) {<br>
-                &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;RAND_seed(&amp;rnd_seed,
+                   <br>
+                 <code>   int rnd_seed = 0;    <br><br>
+                    /** <br>
+                     * Init OpenSSL:<br>
+              * this is a BAD way to init random numbers <br>
+              * generator<br>
+                     */    <br>
+                    while (RAND_status() != 1) {<br>
+                       RAND_seed(&amp;rnd_seed,
 sizeof(rnd_seed));<br>
-                &nbsp;&nbsp;&nbsp; }<br>
-                &nbsp;&nbsp;&nbsp; <br>
-                &nbsp;&nbsp;&nbsp; /**<br>
-                &nbsp;&nbsp;&nbsp;&nbsp; * Init libxml<br>
-                &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp;&nbsp; <br>
-                &nbsp;&nbsp;&nbsp; xmlInitParser();<br>
-                &nbsp;&nbsp;&nbsp; LIBXML_TEST_VERSION<br>
-        &nbsp;</code><br>
-        &nbsp; &nbsp; <code>&nbsp;/**<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Init xmlsec<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; xmlSecInit();&nbsp;&nbsp;&nbsp; <br>
-      </code><br>
-      <h4>Step 1. Loading key and creating the encryption context.</h4>
+                    }<br>
+                    <br>
+                    /**<br>
+                     * Init libxml<br>
+                     */     <br>
+                    xmlInitParser();<br>
+                    LIBXML_TEST_VERSION<br>
+         </code><br>
+            <code> /**<br>
+             * Init xmlsec<br>
+             */<br>
+            xmlSecInit();    <br></code><br>
+</p>
+<h4>Step 1. Loading key and creating the encryption context.</h4>
+<p>
                 Before encrypting or decrypting the document you should create
-   encryption context     object. &nbsp;In most case you will need only one
-  context object per application<br>
-      <br>
-        <code> 
-        &nbsp;&nbsp;&nbsp; xmlSecKeysMngrPtr keysMngr= NULL; <br>
-        &nbsp; &nbsp;&nbsp; xmlSecEncCtxPtr ctx = NULL;<br>
-        &nbsp;&nbsp;&nbsp;<br>
-        &nbsp;&nbsp;&nbsp; /** <br>
-    &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys managers<br>
-    &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-    &nbsp;&nbsp;&nbsp; keysMngr = xmlSecSimpleKeysMngrCreate();&nbsp;&nbsp;&nbsp;
+   encryption context     object.  In most case you will need only one
+  context object per application<br><br><code> 
+            xmlSecKeysMngrPtr keysMngr= NULL; <br>
+             xmlSecEncCtxPtr ctx = NULL;<br>
+           <br>
+            /** <br>
+         * Create Keys managers<br>
+         */<br>
+        keysMngr = xmlSecSimpleKeysMngrCreate();   
         <br>
-    &nbsp;&nbsp;&nbsp; if(keysMngr == NULL) {<br>
-    &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to create keys 
- manager\n");<br>
-    &nbsp;&nbsp;&nbsp; &nbsp; return(-1);&nbsp;&nbsp;&nbsp; <br>
-    &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-    &nbsp; <br>
-    &nbsp;&nbsp;&nbsp; /**<br>
-    &nbsp;&nbsp;&nbsp;&nbsp; * Create enc context<br>
-    &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-    &nbsp;&nbsp;&nbsp; ctx = xmlSecEncCtxCreate(keysMngr);<br>
-    &nbsp;&nbsp;&nbsp; if(ctx == NULL) {<br>
-    &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: template failed to create   context\n");<br>
-    &nbsp;&nbsp;&nbsp; &nbsp; return(-1)<br>
-    &nbsp;&nbsp;&nbsp; }<br>
-    &nbsp;&nbsp;&nbsp; /** <br>
-    &nbsp;&nbsp;&nbsp;&nbsp; * load key public rsa key<br>
-    &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-    &nbsp;&nbsp;&nbsp; if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 0) == NULL) {<br>
-    &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to load key from   \"%s\"\n", argv[1]);<br>
-    &nbsp;&nbsp;&nbsp; &nbsp; return(-1);<br>
-    &nbsp;&nbsp;&nbsp; }<br>
-    &nbsp; <br>
-    </code>
-      <h4>Step 2. Creating the template.</h4>
+        if(keysMngr == NULL) {<br>
+          fprintf(stderr, &quot;Error: failed to create keys 
+ manager\n&quot;);<br>
+          return(-1);    <br>
+        }<br><br>
+      <br>
+        /**<br>
+         * Create enc context<br>
+         */<br>
+        ctx = xmlSecEncCtxCreate(keysMngr);<br>
+        if(ctx == NULL) {<br>
+          fprintf(stderr, &quot;Error: template failed to create   context\n&quot;);<br>
+          return(-1)<br>
+        }<br>
+        /** <br>
+         * load key public rsa key<br>
+         */<br>
+        if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 0) == NULL) {<br>
+          fprintf(stderr, &quot;Error: failed to load key from   \&quot;%s\&quot;\n&quot;, argv[1]);<br>
+          return(-1);<br>
+        }<br>
+      <br></code>
+      </p>
+<h4>Step 2. Creating the template.</h4>
+<p>
    In this example we will create encryption template dynamically. However, 
  you can also prepare encryption templates manually, save as XML files and 
- quickly load them into the application. <br>
-      <br>
-      <code>&nbsp;&nbsp;&nbsp; xmlNodePtr encKey = NULL;<br>
-   &nbsp;&nbsp;&nbsp; xmlNodePtr encData = NULL;<br>
-   &nbsp;&nbsp;&nbsp; xmlSecEncResultPtr result = NULL;<br>
-   &nbsp;&nbsp;&nbsp; xmlNodePtr cur;<br>
-   &nbsp;&nbsp;&nbsp; int ret;<br>
-   &nbsp;&nbsp;&nbsp; <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Create the EncryptedData node<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; encData = xmlSecEncDataCreate(NULL, NULL, NULL, NULL);<br>
-   &nbsp;&nbsp;&nbsp; if(encData == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; </code><code>fprintf(stderr, "Error: template
- creation failed\n");<br>
-      </code><code>&nbsp;&nbsp;&nbsp; </code><code>&nbsp; goto done;&nbsp;&nbsp; 
- &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Set the encryption method<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncDes3Cbc);<br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   fprintf(stderr, "Error: failed to add Enc Method\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Add EncryptionProperties node just for fun<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddEncProperty(encData, BAD_CAST "Classified", 
+ quickly load them into the application. <br><br><code>    xmlNodePtr encKey = NULL;<br>
+       xmlNodePtr encData = NULL;<br>
+       xmlSecEncResultPtr result = NULL;<br>
+       xmlNodePtr cur;<br>
+       int ret;<br>
+       <br>
+       /**<br>
+        * Create the EncryptedData node<br>
+        */<br>
+       encData = xmlSecEncDataCreate(NULL, NULL, NULL, NULL);<br>
+       if(encData == NULL) {<br>
+         </code><code>fprintf(stderr, &quot;Error: template
+ creation failed\n&quot;);<br></code><code>    </code><code>  goto done;   
+  <br>
+       }<br><br>
+       /**<br>
+        * Set the encryption method<br>
+        */<br>
+       cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncDes3Cbc);<br>
+       if(cur == NULL) {<br>
+   fprintf(stderr, &quot;Error: failed to add Enc Method\n&quot;);<br>
+         goto done;    <br>
+       }<br><br>
+       /**<br>
+        * Add EncryptionProperties node just for fun<br>
+        */<br>
+       cur = xmlSecEncDataAddEncProperty(encData, BAD_CAST &quot;Classified&quot;, 
  NULL);<br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add KeyInfo\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-   &nbsp;&nbsp;&nbsp; xmlSetProp(cur, BAD_CAST "Level", BAD_CAST "Top secret: 
- destroy before reading");<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; /** <br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * The encrypted data should be saved in CipherValue 
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add KeyInfo\n&quot;);<br>
+         goto done;    <br>
+       }<br>
+       xmlSetProp(cur, BAD_CAST &quot;Level&quot;, BAD_CAST &quot;Top secret: 
+ destroy before reading&quot;);<br><br>
+       /** <br>
+        * The encrypted data should be saved in CipherValue 
  node <br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddCipherValue(encData);&nbsp;&nbsp;&nbsp; 
+        */<br>
+       cur = xmlSecEncDataAddCipherValue(encData);    
        <br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add CipherValue\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Add key info node <br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddKeyInfo(encData);<br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add KeyInfo\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * The session DES key will be RSA encrypted and 
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add CipherValue\n&quot;);<br>
+         goto done;    <br>
+       }<br><br>
+       /**<br>
+        * Add key info node <br>
+        */<br>
+       cur = xmlSecEncDataAddKeyInfo(encData);<br>
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add KeyInfo\n&quot;);<br>
+         goto done;    <br>
+       }<br><br>
+       /**<br>
+        * The session DES key will be RSA encrypted and 
  included<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * in the message<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; encKey = xmlSecKeyInfoAddEncryptedKey(cur, NULL, NULL,
+        * in the message<br>
+        */<br>
+       encKey = xmlSecKeyInfoAddEncryptedKey(cur, NULL, NULL,
  NULL);<br>
-   &nbsp;&nbsp;&nbsp; if(encKey == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add EncryptedKey\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-   &nbsp;&nbsp;&nbsp; <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Set the encryption method for encrypting the
+       if(encKey == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add EncryptedKey\n&quot;);<br>
+         goto done;    <br>
+       }<br>
+       <br>
+       /**<br>
+        * Set the encryption method for encrypting the
  key<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddEncMethod(encKey, xmlSecEncRsaOaep);<br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add EncryptedKey 
- Enc Method\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-   &nbsp;&nbsp;&nbsp; <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * The encrypted key should be stored in XML document<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddCipherValue(encKey);&nbsp;&nbsp;&nbsp; 
+        */<br>
+       cur = xmlSecEncDataAddEncMethod(encKey, xmlSecEncRsaOaep);<br>
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
+ Enc Method\n&quot;);<br>
+         goto done;    <br>
+       }<br>
+       <br>
+       /**<br>
+        * The encrypted key should be stored in XML document<br>
+        */<br>
+       cur = xmlSecEncDataAddCipherValue(encKey);    
        <br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add EncryptedKey 
- CipherValue\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Now specify the key used to encrypt session 
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
+ CipherValue\n&quot;);<br>
+         goto done;    <br>
+       }<br><br>
+       /**<br>
+        * Now specify the key used to encrypt session 
 key<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecEncDataAddKeyInfo(encKey);<br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add EncryptedKey 
- KeyInfo\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-      <br>
-   &nbsp;&nbsp;&nbsp; cur = xmlSecKeyInfoAddKeyName(cur);<br>
-   &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to add EncryptedKey 
- KeyName\n");<br>
-   &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; <br>
-      </code><br>
-      <h4>Step 3. Encrypt the data and print result document to stdout.</h4>
+        */<br>
+       cur = xmlSecEncDataAddKeyInfo(encKey);<br>
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
+ KeyInfo\n&quot;);<br>
+         goto done;    <br>
+       }<br><br>
+       cur = xmlSecKeyInfoAddKeyName(cur);<br>
+       if(cur == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
+ KeyName\n&quot;);<br>
+         goto done;    <br>
+       }           <br></code><br>
+</p>
+<h4>Step 3. Encrypt the data and print result document to stdout.</h4>
+<p>
    We are ready to encrypt the document!<br>
-   &nbsp;<code>&nbsp;&nbsp; <br>
-   &nbsp; &nbsp; static const char buf[] = "big secret";<br>
-      </code><code>&nbsp;<br>
-   &nbsp; &nbsp;/**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * Finally encrypt everything<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-   &nbsp;&nbsp;&nbsp; ret = xmlSecEncryptMemory(ctx, NULL, NULL, encData, (const unsigned 
+    <code>   <br>
+       static const char buf[] = &quot;big secret&quot;;<br></code><code> <br>
+      /**<br>
+        * Finally encrypt everything<br>
+        */<br>
+       ret = xmlSecEncryptMemory(ctx, NULL, NULL, encData, (const unsigned 
  char*)buf,<br>
-   &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    
  strlen(buf), &amp;result);<br>
-   &nbsp;&nbsp;&nbsp; if(ret &lt; 0) {<br>
-   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;fprintf(stderr, "Error: memory encryption 
- failed\n");<br>
-   &nbsp;&nbsp; &nbsp; &nbsp; goto done;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; }<br>
-   &nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; /**<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; * And print result to stdout<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
- &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>
-   &nbsp;&nbsp;&nbsp; xmlDocDump(stdout, encData-&gt;doc)</code>
-      <h4>Step 4. Cleanup.</h4>
+       if(ret &lt; 0) {<br>
+          fprintf(stderr, &quot;Error: memory encryption 
+ failed\n&quot;);<br>
+          goto done;    <br>
+       }<br>
+       <br>
+       /**<br>
+        * And print result to stdout<br>
+        */           
+       <br>
+       xmlDocDump(stdout, encData-&gt;doc)</code>
+      </p>
+<h4>Step 4. Cleanup.</h4>
+<p>
                 At the end we need to destroy encryption context, the doc 
-and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br>
-      <br>
-               &nbsp;&nbsp;&nbsp; <code>&nbsp;/*<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Cleanup<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp; <br>
-        &nbsp;&nbsp;&nbsp; if(ctx != NULL) { <br>
-        &nbsp;&nbsp; &nbsp; &nbsp; xmlSecEncCtxDestroy(ctx);<br>
-        &nbsp;&nbsp;&nbsp; }<br>
-        &nbsp;&nbsp;&nbsp; if(keysMngr != NULL) {<br>
-        &nbsp;&nbsp; &nbsp; &nbsp; xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
-        &nbsp;&nbsp;&nbsp; }<br>
-        &nbsp;&nbsp; &nbsp;<br>
-        &nbsp; &nbsp; /** <br>
-        &nbsp; &nbsp; &nbsp;* Shutdown XML Sec<br>
-        &nbsp; &nbsp; &nbsp;*/<br>
-        &nbsp;&nbsp;&nbsp; xmlSecShutdown();<br>
-      <br>
-  &nbsp; &nbsp; /**<br>
-  &nbsp; &nbsp; &nbsp;* Shutdown libxslt<br>
-  &nbsp; &nbsp; &nbsp;*/<br>
-        &nbsp;&nbsp; &nbsp;xsltCleanupGlobals();</code><br>
-      <code><br>
-        &nbsp;&nbsp;&nbsp; /* <br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Shutdown libxml<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; xmlCleanupParser();<br>
-        &nbsp;&nbsp; &nbsp;<br>
-        &nbsp;&nbsp;&nbsp; /* <br>
-        &nbsp;&nbsp;&nbsp;&nbsp; * Shutdown OpenSSL<br>
-        &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-        &nbsp;&nbsp;&nbsp; RAND_cleanup();<br>
-        &nbsp;&nbsp;&nbsp; ERR_clear_error();</code><code></code><code></code>
-      <h4>Appendix A. The encrypted document.</h4>
-      <blockquote><code>&lt;?xml version="1.0"?&gt;<br>
-  &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;<br>
-  &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;<br>
-  &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
-  &lt;EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;<br>
-  &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/&gt;<br>
-  &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
+and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br><br>
+                   <code> /*<br>
+             * Cleanup<br>
+             */   <br>
+            if(ctx != NULL) { <br>
+               xmlSecEncCtxDestroy(ctx);<br>
+            }<br>
+            if(keysMngr != NULL) {<br>
+               xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
+            }<br>
+            <br>
+            /** <br>
+             * Shutdown XML Sec<br>
+             */<br>
+            xmlSecShutdown();<br><br>
+      /**<br>
+       * Shutdown libxslt<br>
+       */<br>
+            xsltCleanupGlobals();</code><br><code><br>
+            /* <br>
+             * Shutdown libxml<br>
+             */<br>
+            xmlCleanupParser();<br>
+            <br>
+            /* <br>
+             * Shutdown OpenSSL<br>
+             */<br>
+            RAND_cleanup();<br>
+            ERR_clear_error();</code><code></code><code></code>
+      </p>
+<h4>Appendix A. The encrypted document.</h4>
+<blockquote>
+<code>&lt;?xml version=&quot;1.0&quot;?&gt;<br>
+  &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
+  &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;<br>
+  &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+  &lt;EncryptedKey xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
+  &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&quot;/&gt;<br>
+  &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
   &lt;KeyName&gt;test-rsa-key&lt;/KeyName&gt;<br>
   &lt;/KeyInfo&gt;<br>
   &lt;CipherData&gt;<br>
@@ -333,15 +313,12 @@ and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br>
   &lt;/CipherValue&gt;<br>
   &lt;/CipherData&gt;<br>
   &lt;EncryptionProperties&gt;<br>
-  &lt;EncryptionProperty Id="Classified" Level="Top secret"/&gt;<br>
+  &lt;EncryptionProperty Id=&quot;Classified&quot; Level=&quot;Top secret&quot;/&gt;<br>
   &lt;/EncryptionProperties&gt;<br>
-  &lt;/EncryptedData&gt;</code><br></blockquote>
-
-    <p>
-    <a href="bugs.html">Aleksey Sanin</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  </body>
-  </html>
+  &lt;/EncryptedData&gt;</code><br>
+</blockquote>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

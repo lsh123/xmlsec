@@ -1,2656 +1,671 @@
-<HTML
-><HEAD
-><TITLE
->x509.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Reference"
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="version.h"
-HREF="xmlsec-version.html"><LINK
-REL="NEXT"
-TITLE="XML Security Library Internal Functions Reference"
-HREF="xmlsec-ref-int.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-version.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-X509"
-></A
->x509.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN4396"
-></A
-><H2
->Name</H2
->x509.h&nbsp;--&nbsp;The X509 certificates functions.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN4399"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>x509.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="version.h" href="xmlsec-version.html">
+<link rel="NEXT" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-X509"></a>x509.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN4396"></a><h2>Name</h2>x509.h -- The X509 certificates functions.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN4399"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509DATACREATE"
->xmlSecX509DataCreate</A
->      (void);
-void        <A
-HREF="xmlsec-x509.html#XMLSECX509DATADESTROY"
->xmlSecX509DataDestroy</A
->           (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-<GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      <A
-HREF="xmlsec-x509.html#XMLSECX509DATAGETCERTSNUMBER"
->xmlSecX509DataGetCertsNumber</A
->    (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-<GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      <A
-HREF="xmlsec-x509.html#XMLSECX509DATAGETCRLSNUMBER"
->xmlSecX509DataGetCrlsNumber</A
->     (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509DATAREADDERCERT"
->xmlSecX509DataReadDerCert</A
->       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
+<strong>xmlSecX509DataPtr</strong> <a href="xmlsec-x509.html#XMLSECX509DATACREATE">xmlSecX509DataCreate</a>      (void);
+void        <a href="xmlsec-x509.html#XMLSECX509DATADESTROY">xmlSecX509DataDestroy</a>           (<strong>xmlSecX509DataPtr</strong> x509Data);
+<strong>size_t</strong>      <a href="xmlsec-x509.html#XMLSECX509DATAGETCERTSNUMBER">xmlSecX509DataGetCertsNumber</a>    (<strong>xmlSecX509DataPtr</strong> x509Data);
+<strong>size_t</strong>      <a href="xmlsec-x509.html#XMLSECX509DATAGETCRLSNUMBER">xmlSecX509DataGetCrlsNumber</a>     (<strong>xmlSecX509DataPtr</strong> x509Data);
+int         <a href="xmlsec-x509.html#XMLSECX509DATAREADDERCERT">xmlSecX509DataReadDerCert</a>       (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             <strong>xmlChar</strong> *buf,
+                                             <strong>size_t</strong> size,
                                              int base64);
-<GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    <A
-HREF="xmlsec-x509.html#XMLSECX509DATAWRITEDERCERT"
->xmlSecX509DataWriteDerCert</A
->      (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
+<strong>xmlChar</strong>*    <a href="xmlsec-x509.html#XMLSECX509DATAWRITEDERCERT">xmlSecX509DataWriteDerCert</a>      (<strong>xmlSecX509DataPtr</strong> x509Data,
                                              int pos);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509DATAREADDERCRL"
->xmlSecX509DataReadDerCrl</A
->        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
+int         <a href="xmlsec-x509.html#XMLSECX509DATAREADDERCRL">xmlSecX509DataReadDerCrl</a>        (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             <strong>xmlChar</strong> *buf,
+                                             <strong>size_t</strong> size,
                                              int base64);
-<GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    <A
-HREF="xmlsec-x509.html#XMLSECX509DATAWRITEDERCRL"
->xmlSecX509DataWriteDerCrl</A
->       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
+<strong>xmlChar</strong>*    <a href="xmlsec-x509.html#XMLSECX509DATAWRITEDERCRL">xmlSecX509DataWriteDerCrl</a>       (<strong>xmlSecX509DataPtr</strong> x509Data,
                                              int pos);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509DATAREADPEMCERT"
->xmlSecX509DataReadPemCert</A
->       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
+int         <a href="xmlsec-x509.html#XMLSECX509DATAREADPEMCERT">xmlSecX509DataReadPemCert</a>       (<strong>xmlSecX509DataPtr</strong> x509Data,
                                              const char *filename);
-<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509DATADUP"
->xmlSecX509DataDup</A
->         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509DATACREATEKEY"
->xmlSecX509DataCreateKey</A
->        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-void        <A
-HREF="xmlsec-x509.html#XMLSECX509DATADEBUGDUMP"
->xmlSecX509DataDebugDump</A
->         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
-<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509STORECREATE"
->xmlSecX509StoreCreate</A
->    (void);
-void        <A
-HREF="xmlsec-x509.html#XMLSECX509STOREDESTROY"
->xmlSecX509StoreDestroy</A
->          (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store);
-<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509STOREFIND"
->xmlSecX509StoreFind</A
->       (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *subjectName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerSerial,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509STOREVERIFY"
->xmlSecX509StoreVerify</A
->           (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509STORELOADPEMCERT"
->xmlSecX509StoreLoadPemCert</A
->      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
+<strong>xmlSecX509DataPtr</strong> <a href="xmlsec-x509.html#XMLSECX509DATADUP">xmlSecX509DataDup</a>         (<strong>xmlSecX509DataPtr</strong> x509Data);
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-x509.html#XMLSECX509DATACREATEKEY">xmlSecX509DataCreateKey</a>        (<strong>xmlSecX509DataPtr</strong> x509Data);
+void        <a href="xmlsec-x509.html#XMLSECX509DATADEBUGDUMP">xmlSecX509DataDebugDump</a>         (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             <strong>FILE</strong> *output);
+<strong>xmlSecX509StorePtr</strong> <a href="xmlsec-x509.html#XMLSECX509STORECREATE">xmlSecX509StoreCreate</a>    (void);
+void        <a href="xmlsec-x509.html#XMLSECX509STOREDESTROY">xmlSecX509StoreDestroy</a>          (<strong>xmlSecX509StorePtr</strong> store);
+<strong>xmlSecX509DataPtr</strong> <a href="xmlsec-x509.html#XMLSECX509STOREFIND">xmlSecX509StoreFind</a>       (<strong>xmlSecX509StorePtr</strong> store,
+                                             <strong>xmlChar</strong> *subjectName,
+                                             <strong>xmlChar</strong> *issuerName,
+                                             <strong>xmlChar</strong> *issuerSerial,
+                                             <strong>xmlChar</strong> *ski,
+                                             <strong>xmlSecX509DataPtr</strong> x509Data);
+int         <a href="xmlsec-x509.html#XMLSECX509STOREVERIFY">xmlSecX509StoreVerify</a>           (<strong>xmlSecX509StorePtr</strong> store,
+                                             <strong>xmlSecX509DataPtr</strong> x509Data);
+int         <a href="xmlsec-x509.html#XMLSECX509STORELOADPEMCERT">xmlSecX509StoreLoadPemCert</a>      (<strong>xmlSecX509StorePtr</strong> store,
                                              const char *filename,
                                              int trusted);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509STOREADDCERTSDIR"
->xmlSecX509StoreAddCertsDir</A
->      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
+int         <a href="xmlsec-x509.html#XMLSECX509STOREADDCERTSDIR">xmlSecX509StoreAddCertsDir</a>      (<strong>xmlSecX509StorePtr</strong> store,
                                              const char *path);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECPKCS12READKEY"
->xmlSecPKCS12ReadKey</A
->            (const char *filename,
-                                             const char *pwd);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4458"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4461"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4463"
-></A
-><H3
-><A
-NAME="XMLSECX509DATACREATE"
-></A
->xmlSecX509DataCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecX509DataCreate      (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new x509 data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4470"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure
-or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4480"
-></A
-><H3
-><A
-NAME="XMLSECX509DATADESTROY"
-></A
->xmlSecX509DataDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecX509DataDestroy           (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys x509 data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4487"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4497"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAGETCERTSNUMBER"
-></A
->xmlSecX509DataGetCertsNumber ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      xmlSecX509DataGetCertsNumber    (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Gets the number of certs in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4506"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of certs in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4521"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAGETCRLSNUMBER"
-></A
->xmlSecX509DataGetCrlsNumber ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      xmlSecX509DataGetCrlsNumber     (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Gets the number of crls in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4530"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of crls in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4545"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAREADDERCERT"
-></A
->xmlSecX509DataReadDerCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509DataReadDerCert       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             int base64);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads certificates the from a DER binary data in <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4555"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->base64</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag that indicate whether the <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
-> is base64 encoded or not.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4582"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAWRITEDERCERT"
-></A
->xmlSecX509DataWriteDerCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    xmlSecX509DataWriteDerCert      (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             int pos);</PRE
-></TD
-></TR
-></TABLE
-><P
->Writes <TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
-> certificate from <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> into allocated buffer
+<strong>xmlSecKeyPtr</strong> <a href="xmlsec-x509.html#XMLSECPKCS12READKEY">xmlSecPKCS12ReadKey</a>            (const char *filename,
+                                             const char *pwd);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN4458"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN4461"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN4463"></a><h3>
+<a name="XMLSECX509DATACREATE"></a>xmlSecX509DataCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509DataCreate      (void);</pre></td></tr></table>
+<p>Creates new x509 data.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4470"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <strong>xmlSecX509Data</strong> structure
+or NULL if an error occurs.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4480"></a><h3>
+<a name="XMLSECX509DATADESTROY"></a>xmlSecX509DataDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509DataDestroy           (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Destroys x509 data.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4487"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4497"></a><h3>
+<a name="XMLSECX509DATAGETCERTSNUMBER"></a>xmlSecX509DataGetCertsNumber ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>size_t</strong>      xmlSecX509DataGetCertsNumber    (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Gets the number of certs in <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4506"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of certs in <tt class="PARAMETER"><i>x509Data</i></tt>.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4521"></a><h3>
+<a name="XMLSECX509DATAGETCRLSNUMBER"></a>xmlSecX509DataGetCrlsNumber ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>size_t</strong>      xmlSecX509DataGetCrlsNumber     (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Gets the number of crls in <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4530"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of crls in <tt class="PARAMETER"><i>x509Data</i></tt>.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4545"></a><h3>
+<a name="XMLSECX509DATAREADDERCERT"></a>xmlSecX509DataReadDerCert ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509DataReadDerCert       (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             <strong>xmlChar</strong> *buf,
+                                             <strong>size_t</strong> size,
+                                             int base64);</pre></td></tr></table>
+<p>Reads certificates the from a DER binary data in <tt class="PARAMETER"><i>buf</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4555"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to binary data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the size of binary data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>base64</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag that indicate whether the <tt class="PARAMETER"><i>buf</i></tt> is base64 encoded or not.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4582"></a><h3>
+<a name="XMLSECX509DATAWRITEDERCERT"></a>xmlSecX509DataWriteDerCert ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlChar</strong>*    xmlSecX509DataWriteDerCert      (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             int pos);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>pos</i></tt> certificate from <tt class="PARAMETER"><i>x509Data</i></tt> into allocated buffer
 in DER + base64 encode format. The caller is responsible for freeing
-the returned buffer using <GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4593"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the cert number.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to allocated result buffer or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4611"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAREADDERCRL"
-></A
->xmlSecX509DataReadDerCrl ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509DataReadDerCrl        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             int base64);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads crls the from a DER binary data in <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4621"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->base64</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag that indicate whether the <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
-> is base64 encoded or not.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4648"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAWRITEDERCRL"
-></A
->xmlSecX509DataWriteDerCrl ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    xmlSecX509DataWriteDerCrl       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             int pos);</PRE
-></TD
-></TR
-></TABLE
-><P
->Writes <TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
-> crl from <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> into allocated buffer
+the returned buffer using <strong>xmlFree</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4593"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>pos</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the cert number.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to allocated result buffer or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4611"></a><h3>
+<a name="XMLSECX509DATAREADDERCRL"></a>xmlSecX509DataReadDerCrl ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509DataReadDerCrl        (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             <strong>xmlChar</strong> *buf,
+                                             <strong>size_t</strong> size,
+                                             int base64);</pre></td></tr></table>
+<p>Reads crls the from a DER binary data in <tt class="PARAMETER"><i>buf</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4621"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to binary data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the size of binary data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>base64</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag that indicate whether the <tt class="PARAMETER"><i>buf</i></tt> is base64 encoded or not.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4648"></a><h3>
+<a name="XMLSECX509DATAWRITEDERCRL"></a>xmlSecX509DataWriteDerCrl ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlChar</strong>*    xmlSecX509DataWriteDerCrl       (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             int pos);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>pos</i></tt> crl from <tt class="PARAMETER"><i>x509Data</i></tt> into allocated buffer
 in DER + base64 encode format. The caller is responsible for freeing
-the returned buffer using <GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4659"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the cert number.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to allocated result buffer or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4677"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAREADPEMCERT"
-></A
->xmlSecX509DataReadPemCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509DataReadPemCert       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             const char *filename);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads cert from PEM file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> into <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4686"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the PEM file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4704"
-></A
-><H3
-><A
-NAME="XMLSECX509DATADUP"
-></A
->xmlSecX509DataDup ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecX509DataDup         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Duplicates the <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4713"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly created <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure
-or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4728"
-></A
-><H3
-><A
-NAME="XMLSECX509DATACREATEKEY"
-></A
->xmlSecX509DataCreateKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecX509DataCreateKey        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates the key from  <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4737"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated key or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4751"
-></A
-><H3
-><A
-NAME="XMLSECX509DATADEBUGDUMP"
-></A
->xmlSecX509DataDebugDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecX509DataDebugDump         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
->Prints the information about <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> to <TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4761"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4776"
-></A
-><H3
-><A
-NAME="XMLSECX509STORECREATE"
-></A
->xmlSecX509StoreCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> xmlSecX509StoreCreate    (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new x509 store.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4783"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4793"
-></A
-><H3
-><A
-NAME="XMLSECX509STOREDESTROY"
-></A
->xmlSecX509StoreDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecX509StoreDestroy          (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys the <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4801"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4811"
-></A
-><H3
-><A
-NAME="XMLSECX509STOREFIND"
-></A
->xmlSecX509StoreFind ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecX509StoreFind       (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *subjectName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerSerial,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches for matching certificate in the keys manager.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4824"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->subjectName</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the subject name string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->issuerName</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the issuer name string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->issuerSerial</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the issuer serial.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ski</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the SKI string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the current X509 certs data (may be NULL). </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to certificate that matches given criteria or NULL 
-if an error occurs or certificate not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4858"
-></A
-><H3
-><A
-NAME="XMLSECX509STOREVERIFY"
-></A
->xmlSecX509StoreVerify ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509StoreVerify           (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Verifies the cert(s) from <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> against <TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4868"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if verification succeeded, 0 if not and a negative
-value if a processing error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4887"
-></A
-><H3
-><A
-NAME="XMLSECX509STORELOADPEMCERT"
-></A
->xmlSecX509StoreLoadPemCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509StoreLoadPemCert      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
+the returned buffer using <strong>xmlFree</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4659"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>pos</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the cert number.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to allocated result buffer or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4677"></a><h3>
+<a name="XMLSECX509DATAREADPEMCERT"></a>xmlSecX509DataReadPemCert ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509DataReadPemCert       (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             const char *filename);</pre></td></tr></table>
+<p>Reads cert from PEM file <tt class="PARAMETER"><i>filename</i></tt> into <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4686"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>filename</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the PEM file name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4704"></a><h3>
+<a name="XMLSECX509DATADUP"></a>xmlSecX509DataDup ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509DataDup         (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Duplicates the <tt class="PARAMETER"><i>x509Data</i></tt> structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4713"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <strong>xmlSecX509Data</strong> structure
+or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4728"></a><h3>
+<a name="XMLSECX509DATACREATEKEY"></a>xmlSecX509DataCreateKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecX509DataCreateKey        (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Creates the key from  <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4737"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated key or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4751"></a><h3>
+<a name="XMLSECX509DATADEBUGDUMP"></a>xmlSecX509DataDebugDump ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509DataDebugDump         (<strong>xmlSecX509DataPtr</strong> x509Data,
+                                             <strong>FILE</strong> *output);</pre></td></tr></table>
+<p>Prints the information about <tt class="PARAMETER"><i>x509Data</i></tt> to <tt class="PARAMETER"><i>output</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4761"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>output</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>FILE</strong> structure.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4776"></a><h3>
+<a name="XMLSECX509STORECREATE"></a>xmlSecX509StoreCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509StorePtr</strong> xmlSecX509StoreCreate    (void);</pre></td></tr></table>
+<p>Creates new x509 store.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4783"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated <strong>xmlSecX509Store</strong> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4793"></a><h3>
+<a name="XMLSECX509STOREDESTROY"></a>xmlSecX509StoreDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509StoreDestroy          (<strong>xmlSecX509StorePtr</strong> store);</pre></td></tr></table>
+<p>Destroys the <strong>xmlSecX509Store</strong> structure.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4801"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4811"></a><h3>
+<a name="XMLSECX509STOREFIND"></a>xmlSecX509StoreFind ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509StoreFind       (<strong>xmlSecX509StorePtr</strong> store,
+                                             <strong>xmlChar</strong> *subjectName,
+                                             <strong>xmlChar</strong> *issuerName,
+                                             <strong>xmlChar</strong> *issuerSerial,
+                                             <strong>xmlChar</strong> *ski,
+                                             <strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Searches for matching certificate in the keys manager.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4824"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>subjectName</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the subject name string.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>issuerName</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the issuer name string.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>issuerSerial</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the issuer serial.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ski</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the SKI string.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the current X509 certs data (may be NULL). </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to certificate that matches given criteria or NULL 
+if an error occurs or certificate not found.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4858"></a><h3>
+<a name="XMLSECX509STOREVERIFY"></a>xmlSecX509StoreVerify ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509StoreVerify           (<strong>xmlSecX509StorePtr</strong> store,
+                                             <strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Verifies the cert(s) from <tt class="PARAMETER"><i>x509Data</i></tt> against <tt class="PARAMETER"><i>store</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4868"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>x509Data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">1 if verification succeeded, 0 if not and a negative
+value if a processing error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4887"></a><h3>
+<a name="XMLSECX509STORELOADPEMCERT"></a>xmlSecX509StoreLoadPemCert ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509StoreLoadPemCert      (<strong>xmlSecX509StorePtr</strong> store,
                                              const char *filename,
-                                             int trusted);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads cert from PEM <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> and adds to the list of trusted or known
-untrusted certs in <TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4896"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the PEM file.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->trusted</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag that indicates is the certificate in <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->
-   trusted or not.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4919"
-></A
-><H3
-><A
-NAME="XMLSECX509STOREADDCERTSDIR"
-></A
->xmlSecX509StoreAddCertsDir ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509StoreAddCertsDir      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             const char *path);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds all certs in the <TT
-CLASS="PARAMETER"
-><I
->path</I
-></TT
-> to the list of trusted certs
-in <TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4928"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->path</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the path to the certs dir.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4946"
-></A
-><H3
-><A
-NAME="XMLSECPKCS12READKEY"
-></A
->xmlSecPKCS12ReadKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecPKCS12ReadKey            (const char *filename,
-                                             const char *pwd);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the key from pkcs12 file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4954"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pkcs12 file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pwd</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the password for the pkcs12 file.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated key or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-version.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->version.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->XML Security Library Internal Functions Reference</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+                                             int trusted);</pre></td></tr></table>
+<p>Reads cert from PEM <tt class="PARAMETER"><i>filename</i></tt> and adds to the list of trusted or known
+untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4896"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>filename</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the PEM file.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>trusted</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag that indicates is the certificate in <tt class="PARAMETER"><i>filename</i></tt>
+   trusted or not.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4919"></a><h3>
+<a name="XMLSECX509STOREADDCERTSDIR"></a>xmlSecX509StoreAddCertsDir ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509StoreAddCertsDir      (<strong>xmlSecX509StorePtr</strong> store,
+                                             const char *path);</pre></td></tr></table>
+<p>Adds all certs in the <tt class="PARAMETER"><i>path</i></tt> to the list of trusted certs
+in <tt class="PARAMETER"><i>store</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4928"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>store</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>path</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the path to the certs dir.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4946"></a><h3>
+<a name="XMLSECPKCS12READKEY"></a>xmlSecPKCS12ReadKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecPKCS12ReadKey            (const char *filename,
+                                             const char *pwd);</pre></td></tr></table>
+<p>Reads the key from pkcs12 file <tt class="PARAMETER"><i>filename</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN4954"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>filename</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pkcs12 file name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>pwd</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the password for the pkcs12 file.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated key or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>version.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Internal Functions Reference</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

@@ -1,2771 +1,722 @@
-<HTML
-><HEAD
-><TITLE
->xmltree.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Internal Functions Reference"
-HREF="xmlsec-ref-int.html"><LINK
-REL="PREVIOUS"
-TITLE="transformsInternal.h"
-HREF="xmlsec-transformsinternal.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-transformsinternal.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
->&nbsp;</TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-XMLTREE"
-></A
->xmltree.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN7129"
-></A
-><H2
->Name</H2
->xmltree.h&nbsp;--&nbsp;The XML tree helper functions.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN7132"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>xmltree.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+<link rel="PREVIOUS" title="transformsInternal.h" href="xmlsec-transformsinternal.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-transformsinternal.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"> </td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-XMLTREE"></a>xmltree.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN7129"></a><h2>Name</h2>xmltree.h -- The XML tree helper functions.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN7132"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-#define     <A
-HREF="xmlsec-xmltree.html#XMLSECNODEGETNAME"
->xmlSecNodeGetName</A
->               (node)
-<GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
->   <A
-HREF="xmlsec-xmltree.html#XMLSECPARSEFILE"
->xmlSecParseFile</A
->                 (const char *filename);
-<GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
->   <A
-HREF="xmlsec-xmltree.html#XMLSECPARSEMEMORY"
->xmlSecParseMemory</A
->               (unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
+#define     <a href="xmlsec-xmltree.html#XMLSECNODEGETNAME">xmlSecNodeGetName</a>               (node)
+<strong>xmlDocPtr</strong>   <a href="xmlsec-xmltree.html#XMLSECPARSEFILE">xmlSecParseFile</a>                 (const char *filename);
+<strong>xmlDocPtr</strong>   <a href="xmlsec-xmltree.html#XMLSECPARSEMEMORY">xmlSecParseMemory</a>               (unsigned char *buffer,
+                                             <strong>size_t</strong> size,
                                              int recovery);
-<GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
->   <A
-HREF="xmlsec-xmltree.html#XMLSECPARSEMEMORYEXT"
->xmlSecParseMemoryExt</A
->            (unsigned char *prefix,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> prefixSize,
+<strong>xmlDocPtr</strong>   <a href="xmlsec-xmltree.html#XMLSECPARSEMEMORYEXT">xmlSecParseMemoryExt</a>            (unsigned char *prefix,
+                                             <strong>size_t</strong> prefixSize,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> bufferSize,
+                                             <strong>size_t</strong> bufferSize,
                                              unsigned char *postfix,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> postfixSize);
-const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->* <A
-HREF="xmlsec-xmltree.html#XMLSECGETNODENSHREF"
->xmlSecGetNodeNsHref</A
->          (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur);
-int         <A
-HREF="xmlsec-xmltree.html#XMLSECCHECKNODENAME"
->xmlSecCheckNodeName</A
->             (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE"
->xmlSecGetNextElementNode</A
->        (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECFINDCHILD"
->xmlSecFindChild</A
->                 (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECFINDPARENT"
->xmlSecFindParent</A
->                (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECFINDNODE"
->xmlSecFindNode</A
->                  (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECADDCHILD"
->xmlSecAddChild</A
->                  (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECADDNEXTSIBLING"
->xmlSecAddNextSibling</A
->            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
-HREF="xmlsec-xmltree.html#XMLSECADDPREVSIBLING"
->xmlSecAddPrevSibling</A
->            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);
-int         <A
-HREF="xmlsec-xmltree.html#XMLSECREPLACENODE"
->xmlSecReplaceNode</A
->               (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> newNode);
-int         <A
-HREF="xmlsec-xmltree.html#XMLSECREPLACECONTENT"
->xmlSecReplaceContent</A
->            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> newNode);
-int         <A
-HREF="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER"
->xmlSecReplaceNodeBuffer</A
->         (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
+                                             <strong>size_t</strong> postfixSize);
+const <strong>xmlChar</strong>* <a href="xmlsec-xmltree.html#XMLSECGETNODENSHREF">xmlSecGetNodeNsHref</a>          (const <strong>xmlNodePtr</strong> cur);
+int         <a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeName</a>             (const <strong>xmlNodePtr</strong> cur,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE">xmlSecGetNextElementNode</a>        (<strong>xmlNodePtr</strong> cur);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECFINDCHILD">xmlSecFindChild</a>                 (const <strong>xmlNodePtr</strong> parent,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECFINDPARENT">xmlSecFindParent</a>                (const <strong>xmlNodePtr</strong> cur,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECFINDNODE">xmlSecFindNode</a>                  (const <strong>xmlNodePtr</strong> parent,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECADDCHILD">xmlSecAddChild</a>                  (<strong>xmlNodePtr</strong> parent,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECADDNEXTSIBLING">xmlSecAddNextSibling</a>            (<strong>xmlNodePtr</strong> node,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+<strong>xmlNodePtr</strong>  <a href="xmlsec-xmltree.html#XMLSECADDPREVSIBLING">xmlSecAddPrevSibling</a>            (<strong>xmlNodePtr</strong> node,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);
+int         <a href="xmlsec-xmltree.html#XMLSECREPLACENODE">xmlSecReplaceNode</a>               (<strong>xmlNodePtr</strong> node,
+                                             <strong>xmlNodePtr</strong> newNode);
+int         <a href="xmlsec-xmltree.html#XMLSECREPLACECONTENT">xmlSecReplaceContent</a>            (<strong>xmlNodePtr</strong> node,
+                                             <strong>xmlNodePtr</strong> newNode);
+int         <a href="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER">xmlSecReplaceNodeBuffer</a>         (<strong>xmlNodePtr</strong> node,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-void        <A
-HREF="xmlsec-xmltree.html#XMLSECADDIDS"
->xmlSecAddIDs</A
->                    (<GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> doc,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> **ids);
-#define     <A
-HREF="xmlsec-xmltree.html#XMLSECISHEX"
->xmlSecIsHex</A
->                     (c)
-#define     <A
-HREF="xmlsec-xmltree.html#XMLSECGETHEX"
->xmlSecGetHex</A
->                    (c)</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN7201"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN7204"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7206"
-></A
-><H3
-><A
-NAME="XMLSECNODEGETNAME"
-></A
->xmlSecNodeGetName()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecNodeGetName(node)</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7211"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7220"
-></A
-><H3
-><A
-NAME="XMLSECPARSEFILE"
-></A
->xmlSecParseFile ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
->   xmlSecParseFile                 (const char *filename);</PRE
-></TD
-></TR
-></TABLE
-><P
->Loads XML Doc from file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->. We need a special version because of 
-c14n issue. The code is copied from <GTKDOCLINK
-HREF="XMLSAXPARSEFILEWITHDATA"
->xmlSAXParseFileWithData</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7229"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the filename.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to the loaded XML document or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7242"
-></A
-><H3
-><A
-NAME="XMLSECPARSEMEMORY"
-></A
->xmlSecParseMemory ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
->   xmlSecParseMemory               (unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             int recovery);</PRE
-></TD
-></TR
-></TABLE
-><P
->Loads XML Doc from memory. We need a special version because of 
-c14n issue. The code is copied from <GTKDOCLINK
-HREF="XMLSAXPARSEMEMORY"
->xmlSAXParseMemory</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7251"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->recovery</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to the loaded XML document or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7272"
-></A
-><H3
-><A
-NAME="XMLSECPARSEMEMORYEXT"
-></A
->xmlSecParseMemoryExt ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
->   xmlSecParseMemoryExt            (unsigned char *prefix,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> prefixSize,
+                                             <strong>size_t</strong> size);
+void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>                    (<strong>xmlDocPtr</strong> doc,
+                                             <strong>xmlNodePtr</strong> cur,
+                                             const <strong>xmlChar</strong> **ids);
+#define     <a href="xmlsec-xmltree.html#XMLSECISHEX">xmlSecIsHex</a>                     (c)
+#define     <a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a>                    (c)</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN7201"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN7204"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN7206"></a><h3>
+<a name="XMLSECNODEGETNAME"></a>xmlSecNodeGetName()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNodeGetName(node)</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7211"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7220"></a><h3>
+<a name="XMLSECPARSEFILE"></a>xmlSecParseFile ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlDocPtr</strong>   xmlSecParseFile                 (const char *filename);</pre></td></tr></table>
+<p>Loads XML Doc from file <tt class="PARAMETER"><i>filename</i></tt>. We need a special version because of 
+c14n issue. The code is copied from <strong>xmlSAXParseFileWithData</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7229"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>filename</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the filename.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to the loaded XML document or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7242"></a><h3>
+<a name="XMLSECPARSEMEMORY"></a>xmlSecParseMemory ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlDocPtr</strong>   xmlSecParseMemory               (unsigned char *buffer,
+                                             <strong>size_t</strong> size,
+                                             int recovery);</pre></td></tr></table>
+<p>Loads XML Doc from memory. We need a special version because of 
+c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() function.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7251"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>recovery</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the flag.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to the loaded XML document or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7272"></a><h3>
+<a name="XMLSECPARSEMEMORYEXT"></a>xmlSecParseMemoryExt ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlDocPtr</strong>   xmlSecParseMemoryExt            (unsigned char *prefix,
+                                             <strong>size_t</strong> prefixSize,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> bufferSize,
+                                             <strong>size_t</strong> bufferSize,
                                              unsigned char *postfix,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> postfixSize);</PRE
-></TD
-></TR
-></TABLE
-><P
->Loads XML Doc from 3 chunks of memory: <TT
-CLASS="PARAMETER"
-><I
->prefix</I
-></TT
->, <TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
-> and <TT
-CLASS="PARAMETER"
-><I
->postfix</I
-></TT
->. '</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7285"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->prefix</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the first part of the input.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->prefixSize</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of the first part of the input.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the second part of the input.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->bufferSize</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of the second part of the input.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->postfix</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the third part of the input.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->postfixSize</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of the third part of the input.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to the loaded XML document or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7318"
-></A
-><H3
-><A
-NAME="XMLSECGETNODENSHREF"
-></A
->xmlSecGetNodeNsHref ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->* xmlSecGetNodeNsHref          (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7325"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7338"
-></A
-><H3
-><A
-NAME="XMLSECCHECKNODENAME"
-></A
->xmlSecCheckNodeName ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecCheckNodeName             (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Checks that the node has a given name and a given namespace href.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7347"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the name,</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the namespace href.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if the node matches or 0 otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7368"
-></A
-><H3
-><A
-NAME="XMLSECGETNEXTELEMENTNODE"
-></A
->xmlSecGetNextElementNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecGetNextElementNode        (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur);</PRE
-></TD
-></TR
-></TABLE
-><P
->Seraches for the next element node.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7376"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to next element node or NULL if it is not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7389"
-></A
-><H3
-><A
-NAME="XMLSECFINDCHILD"
-></A
->xmlSecFindChild ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecFindChild                 (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches a direct child of the <TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
-> node having given name and 
-namespace href.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7400"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the namespace href (may be NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to the found node or NULL if an error occurs or 
-node is not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7421"
-></A
-><H3
-><A
-NAME="XMLSECFINDPARENT"
-></A
->xmlSecFindParent ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecFindParent                (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches the ancestors axis of the <TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
-> node for a node having given name 
-and namespace href.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7432"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the namespace href (may be NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to the found node or NULL if an error occurs or 
-node is not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7453"
-></A
-><H3
-><A
-NAME="XMLSECFINDNODE"
-></A
->xmlSecFindNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecFindNode                  (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches all children of the <TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
-> node having given name and 
-namespace href.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7464"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the namespace href (may be NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to the found node or NULL if an error occurs or 
-node is not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7485"
-></A
-><H3
-><A
-NAME="XMLSECADDCHILD"
-></A
->xmlSecAddChild ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecAddChild                  (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds a child to the node <TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
-> with given <TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
-> and namespace <TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7498"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node namespace.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to the new node or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7519"
-></A
-><H3
-><A
-NAME="XMLSECADDNEXTSIBLING"
-></A
->xmlSecAddNextSibling ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecAddNextSibling            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds next sibling to the node <TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
-> with given <TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
-> and namespace <TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7532"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node namespace.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to the new node or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7553"
-></A
-><H3
-><A
-NAME="XMLSECADDPREVSIBLING"
-></A
->xmlSecAddPrevSibling ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecAddPrevSibling            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ns);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds prev sibling to the node <TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
-> with given <TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
-> and namespace <TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7566"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ns</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node namespace.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to the new node or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7587"
-></A
-><H3
-><A
-NAME="XMLSECREPLACENODE"
-></A
->xmlSecReplaceNode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecReplaceNode               (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> newNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->Swaps the <TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
-> and <TT
-CLASS="PARAMETER"
-><I
->newNode</I
-></TT
-> in the XML tree.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7597"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the current node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->newNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7614"
-></A
-><H3
-><A
-NAME="XMLSECREPLACECONTENT"
-></A
->xmlSecReplaceContent ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecReplaceContent            (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> newNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->Swaps the content of <TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
-> and <TT
-CLASS="PARAMETER"
-><I
->newNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7624"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the current node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->newNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the new node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7641"
-></A
-><H3
-><A
-NAME="XMLSECREPLACENODEBUFFER"
-></A
->xmlSecReplaceNodeBuffer ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecReplaceNodeBuffer         (<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> node,
+                                             <strong>size_t</strong> postfixSize);</pre></td></tr></table>
+<p>Loads XML Doc from 3 chunks of memory: <tt class="PARAMETER"><i>prefix</i></tt>, <tt class="PARAMETER"><i>buffer</i></tt> and <tt class="PARAMETER"><i>postfix</i></tt>. '</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7285"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>prefix</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the first part of the input.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>prefixSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the size of the first part of the input.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the second part of the input.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>bufferSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the size of the second part of the input.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>postfix</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the third part of the input.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>postfixSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the size of the third part of the input.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to the loaded XML document or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7318"></a><h3>
+<a name="XMLSECGETNODENSHREF"></a>xmlSecGetNodeNsHref ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <strong>xmlChar</strong>* xmlSecGetNodeNsHref          (const <strong>xmlNodePtr</strong> cur);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7325"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cur</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7338"></a><h3>
+<a name="XMLSECCHECKNODENAME"></a>xmlSecCheckNodeName ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCheckNodeName             (const <strong>xmlNodePtr</strong> cur,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Checks that the node has a given name and a given namespace href.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7347"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cur</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the name,</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the namespace href.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">1 if the node matches or 0 otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7368"></a><h3>
+<a name="XMLSECGETNEXTELEMENTNODE"></a>xmlSecGetNextElementNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecGetNextElementNode        (<strong>xmlNodePtr</strong> cur);</pre></td></tr></table>
+<p>Seraches for the next element node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7376"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cur</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to next element node or NULL if it is not found.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7389"></a><h3>
+<a name="XMLSECFINDCHILD"></a>xmlSecFindChild ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecFindChild                 (const <strong>xmlNodePtr</strong> parent,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Searches a direct child of the <tt class="PARAMETER"><i>parent</i></tt> node having given name and 
+namespace href.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7400"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>parent</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the namespace href (may be NULL).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to the found node or NULL if an error occurs or 
+node is not found.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7421"></a><h3>
+<a name="XMLSECFINDPARENT"></a>xmlSecFindParent ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecFindParent                (const <strong>xmlNodePtr</strong> cur,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Searches the ancestors axis of the <tt class="PARAMETER"><i>cur</i></tt> node for a node having given name 
+and namespace href.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7432"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cur</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the namespace href (may be NULL).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to the found node or NULL if an error occurs or 
+node is not found.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7453"></a><h3>
+<a name="XMLSECFINDNODE"></a>xmlSecFindNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecFindNode                  (const <strong>xmlNodePtr</strong> parent,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Searches all children of the <tt class="PARAMETER"><i>parent</i></tt> node having given name and 
+namespace href.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7464"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>parent</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the namespace href (may be NULL).</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to the found node or NULL if an error occurs or 
+node is not found.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7485"></a><h3>
+<a name="XMLSECADDCHILD"></a>xmlSecAddChild ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecAddChild                  (<strong>xmlNodePtr</strong> parent,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Adds a child to the node <tt class="PARAMETER"><i>parent</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7498"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>parent</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node namespace.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to the new node or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7519"></a><h3>
+<a name="XMLSECADDNEXTSIBLING"></a>xmlSecAddNextSibling ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecAddNextSibling            (<strong>xmlNodePtr</strong> node,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Adds next sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7532"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node namespace.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to the new node or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7553"></a><h3>
+<a name="XMLSECADDPREVSIBLING"></a>xmlSecAddPrevSibling ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecAddPrevSibling            (<strong>xmlNodePtr</strong> node,
+                                             const <strong>xmlChar</strong> *name,
+                                             const <strong>xmlChar</strong> *ns);</pre></td></tr></table>
+<p>Adds prev sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7566"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>name</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node name.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ns</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node namespace.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to the new node or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7587"></a><h3>
+<a name="XMLSECREPLACENODE"></a>xmlSecReplaceNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNode               (<strong>xmlNodePtr</strong> node,
+                                             <strong>xmlNodePtr</strong> newNode);</pre></td></tr></table>
+<p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt> in the XML tree.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7597"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the current node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>newNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7614"></a><h3>
+<a name="XMLSECREPLACECONTENT"></a>xmlSecReplaceContent ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceContent            (<strong>xmlNodePtr</strong> node,
+                                             <strong>xmlNodePtr</strong> newNode);</pre></td></tr></table>
+<p>Swaps the content of <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7624"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the current node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>newNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the new node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7641"></a><h3>
+<a name="XMLSECREPLACENODEBUFFER"></a>xmlSecReplaceNodeBuffer ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNodeBuffer         (<strong>xmlNodePtr</strong> node,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Swaps the <TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
-> and the parsed XML data from the <TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
-> in the XML tree.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7651"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->node</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the current node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the XML data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the XML data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7672"
-></A
-><H3
-><A
-NAME="XMLSECADDIDS"
-></A
->xmlSecAddIDs ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecAddIDs                    (<GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> doc,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> cur,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> **ids);</PRE
-></TD
-></TR
-></TABLE
-><P
->Walks thru all children of the <TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
-> node and adds all attributes 
-from the <TT
-CLASS="PARAMETER"
-><I
->ids</I
-></TT
-> list to the <TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
-> document IDs attributes hash.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7684"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML document.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cur</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to an XML node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ids</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a NULL terminated list of ID attributes.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7701"
-></A
-><H3
-><A
-NAME="XMLSECISHEX"
-></A
->xmlSecIsHex()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecIsHex(c)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro. Returns 1 if <TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
-> is a hex digit or 0 other wise.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7708"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the character.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7717"
-></A
-><H3
-><A
-NAME="XMLSECGETHEX"
-></A
->xmlSecGetHex()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecGetHex(c)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro. Returns the hex value of the <TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7724"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the character,</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-transformsinternal.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
->&nbsp;</TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->transformsInternal.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
->&nbsp;</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and the parsed XML data from the <tt class="PARAMETER"><i>buffer</i></tt> in the XML tree.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7651"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the current node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the XML data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the XML data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7672"></a><h3>
+<a name="XMLSECADDIDS"></a>xmlSecAddIDs ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecAddIDs                    (<strong>xmlDocPtr</strong> doc,
+                                             <strong>xmlNodePtr</strong> cur,
+                                             const <strong>xmlChar</strong> **ids);</pre></td></tr></table>
+<p>Walks thru all children of the <tt class="PARAMETER"><i>cur</i></tt> node and adds all attributes 
+from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"><i>doc</i></tt> document IDs attributes hash.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7684"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>doc</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML document.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cur</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ids</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a NULL terminated list of ID attributes.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7701"></a><h3>
+<a name="XMLSECISHEX"></a>xmlSecIsHex()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecIsHex(c)</pre></td></tr></table>
+<p>Macro. Returns 1 if <tt class="PARAMETER"><i>c</i></tt> is a hex digit or 0 other wise.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7708"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>c</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the character.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN7717"></a><h3>
+<a name="XMLSECGETHEX"></a>xmlSecGetHex()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGetHex(c)</pre></td></tr></table>
+<p>Macro. Returns the hex value of the <tt class="PARAMETER"><i>c</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN7724"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>c</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the character,</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-transformsinternal.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"> </td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>transformsInternal.h</b></font></td>
+<td colspan="2" align="right"> </td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

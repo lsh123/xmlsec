@@ -1,288 +1,87 @@
-<HTML
-><HEAD
-><TITLE
->ciphers.h</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Internal Functions Reference"
-HREF="xmlsec-ref-int.html"><LINK
-REL="PREVIOUS"
-TITLE="buffered.h"
-HREF="xmlsec-buffered.html"><LINK
-REL="NEXT"
-TITLE="digests.h"
-HREF="xmlsec-digests.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-buffered.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-digests.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-CIPHERS"
-></A
->ciphers.h</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN5556"
-></A
-><H2
->Name</H2
->ciphers.h&nbsp;--&nbsp;The ciphers transform.</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN5559"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>ciphers.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+<link rel="PREVIOUS" title="buffered.h" href="xmlsec-buffered.html">
+<link rel="NEXT" title="digests.h" href="xmlsec-digests.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a><br>
+</td>
+<td valign="top" align="left">
+<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-buffered.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-digests.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-CIPHERS"></a>ciphers.h</h1>
+<div class="REFNAMEDIV">
+<a name="AEN5556"></a><h2>Name</h2>ciphers.h -- The ciphers transform.</div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN5559"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-struct      <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORM"
->xmlSecCipherTransform</A
->;
-typedef     <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMID"
->xmlSecCipherTransformId</A
->;
-int         (<A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERUPDATEMETHOD"
->*xmlSecCipherUpdateMethod</A
->)     (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> transform,
+struct      <a href="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORM">xmlSecCipherTransform</a>;
+typedef     <a href="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMID">xmlSecCipherTransformId</a>;
+int         (<a href="xmlsec-ciphers.html#XMLSECCIPHERUPDATEMETHOD">*xmlSecCipherUpdateMethod</a>)     (<strong>xmlSecCipherTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         (<A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERFINALMETHOD"
->*xmlSecCipherFinalMethod</A
->)      (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> transform);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMREAD"
->xmlSecCipherTransformRead</A
->       (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         (<a href="xmlsec-ciphers.html#XMLSECCIPHERFINALMETHOD">*xmlSecCipherFinalMethod</a>)      (<strong>xmlSecCipherTransformPtr</strong> transform);
+int         <a href="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMREAD">xmlSecCipherTransformRead</a>       (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMWRITE"
->xmlSecCipherTransformWrite</A
->      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMWRITE">xmlSecCipherTransformWrite</a>      (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMFLUSH"
->xmlSecCipherTransformFlush</A
->      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECEVPCIPHERUPDATE"
->xmlSecEvpCipherUpdate</A
->           (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> cipher,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMFLUSH">xmlSecCipherTransformFlush</a>      (<strong>xmlSecBinTransformPtr</strong> transform);
+int         <a href="xmlsec-ciphers.html#XMLSECEVPCIPHERUPDATE">xmlSecEvpCipherUpdate</a>           (<strong>xmlSecCipherTransformPtr</strong> cipher,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECEVPCIPHERFINAL"
->xmlSecEvpCipherFinal</A
->            (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> cipher);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERUPDATE"
->xmlSecCipherUpdate</A
->              (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-ciphers.html#XMLSECEVPCIPHERFINAL">xmlSecEvpCipherFinal</a>            (<strong>xmlSecCipherTransformPtr</strong> cipher);
+int         <a href="xmlsec-ciphers.html#XMLSECCIPHERUPDATE">xmlSecCipherUpdate</a>              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         <A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERFINAL"
->xmlSecCipherFinal</A
->               (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5587"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5590"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5592"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERTRANSFORM"
-></A
->struct xmlSecCipherTransform</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecCipherTransform {	
+                                             <strong>size_t</strong> size);
+int         <a href="xmlsec-ciphers.html#XMLSECCIPHERFINAL">xmlSecCipherFinal</a>               (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN5587"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN5590"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN5592"></a><h3>
+<a name="XMLSECCIPHERTRANSFORM"></a>struct xmlSecCipherTransform</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecCipherTransform {	
     /* same as for xmlSecTransform but id type changed */
     xmlSecCipherTransformId		id;    
     xmlSecTransformStatus		status;
@@ -302,1402 +101,400 @@ CLASS="PROGRAMLISTING"
     unsigned char			*iv;
     size_t				ivPos;
     void				*cipherData;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The cipher (encrypt/decrypt) transform.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5598"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMID"
->xmlSecCipherTransformId</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->id</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the transform id (pointer to <A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
->xmlSecBinTransformId</A
->).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
->xmlSecTransformStatus</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->status</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the transform status (ok/fail/unknown).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->dontDestroy</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the don't automatically destroy flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->data</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to transform specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->int <TT
-CLASS="STRUCTFIELD"
-><I
->encode</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> encode/decode (encrypt/decrypt) flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->next</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> next binary transform in the chain.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->prev</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> previous binary transform in the chain.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->binData</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to binary transform speific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->unsigned char *<TT
-CLASS="STRUCTFIELD"
-><I
->bufIn</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to input buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->unsigned char *<TT
-CLASS="STRUCTFIELD"
-><I
->bufOut</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to output buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="EVP-CIPHER-CTX-CAPS"
->EVP_CIPHER_CTX</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->cipherCtx</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the EVP chiper context.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->unsigned char *<TT
-CLASS="STRUCTFIELD"
-><I
->iv</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to IV.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->ivPos</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the position in IV (what was written out).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
->void *<TT
-CLASS="STRUCTFIELD"
-><I
->cipherData</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the chipher specific data.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5666"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERTRANSFORMID"
-></A
->xmlSecCipherTransformId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;</PRE
-></TD
-></TR
-></TABLE
-><P
->The cipher (encrypt/decrypt) transform id.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5672"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERUPDATEMETHOD"
-></A
->xmlSecCipherUpdateMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecCipherUpdateMethod)     (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> transform,
+};</pre></td></tr></table>
+<p>The cipher (encrypt/decrypt) transform.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5598"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-ciphers.html#XMLSECCIPHERTRANSFORMID">xmlSecCipherTransformId</a> <tt class="STRUCTFIELD"><i>id</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the transform id (pointer to <a href="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID">xmlSecBinTransformId</a>).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <tt class="STRUCTFIELD"><i>status</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the transform status (ok/fail/unknown).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroy</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the don't automatically destroy flag.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>data</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to transform specific data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encode</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> encode/decode (encrypt/decrypt) flag.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecCipherTransformPtr</strong> <tt class="STRUCTFIELD"><i>next</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> next binary transform in the chain.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecCipherTransformPtr</strong> <tt class="STRUCTFIELD"><i>prev</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> previous binary transform in the chain.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>binData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to binary transform speific data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>bufIn</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to input buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>bufOut</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to output buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>EVP_CIPHER_CTX</strong> <tt class="STRUCTFIELD"><i>cipherCtx</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the EVP chiper context.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>iv</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to IV.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<strong>size_t</strong> <tt class="STRUCTFIELD"><i>ivPos</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">the position in IV (what was written out).</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>cipherData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the chipher specific data.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5666"></a><h3>
+<a name="XMLSECCIPHERTRANSFORMID"></a>xmlSecCipherTransformId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;</pre></td></tr></table>
+<p>The cipher (encrypt/decrypt) transform id.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5672"></a><h3>
+<a name="XMLSECCIPHERUPDATEMETHOD"></a>xmlSecCipherUpdateMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecCipherUpdateMethod)     (<strong>xmlSecCipherTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts/decrypts new chunk of data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5680"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to cipher transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5701"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERFINALMETHOD"
-></A
->xmlSecCipherFinalMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecCipherFinalMethod)      (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->Finalizes encryption/decryption.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5708"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to cipher transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5721"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERTRANSFORMREAD"
-></A
->xmlSecCipherTransformRead ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecCipherTransformRead       (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Encrypts/decrypts new chunk of data.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5680"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to cipher transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to data.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5701"></a><h3>
+<a name="XMLSECCIPHERFINALMETHOD"></a>xmlSecCipherFinalMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecCipherFinalMethod)      (<strong>xmlSecCipherTransformPtr</strong> transform);</pre></td></tr></table>
+<p>Finalizes encryption/decryption.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5708"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to cipher transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5721"></a><h3>
+<a name="XMLSECCIPHERTRANSFORMREAD"></a>xmlSecCipherTransformRead ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCipherTransformRead       (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads data from previous transform, encrypts or decrypts them 
-and returns in the output buffer.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5729"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a cipher transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> tje output buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes in the buffer or negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5750"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERTRANSFORMWRITE"
-></A
->xmlSecCipherTransformWrite ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecCipherTransformWrite      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Reads data from previous transform, encrypts or decrypts them 
+and returns in the output buffer.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5729"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a cipher transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the output buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> tje output buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes in the buffer or negative value
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5750"></a><h3>
+<a name="XMLSECCIPHERTRANSFORMWRITE"></a>xmlSecCipherTransformWrite ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCipherTransformWrite      (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts or decrypts the input data and writes them 
-to the next transform.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5758"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the poiter to a cipher transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5779"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERTRANSFORMFLUSH"
-></A
->xmlSecCipherTransformFlush ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecCipherTransformFlush      (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->Writes the rest of data to previous transform.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5786"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to a cipher transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success or negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5799"
-></A
-><H3
-><A
-NAME="XMLSECEVPCIPHERUPDATE"
-></A
->xmlSecEvpCipherUpdate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecEvpCipherUpdate           (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> cipher,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Encrypts or decrypts the input data and writes them 
+to the next transform.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5758"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the poiter to a cipher transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 if success or a negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5779"></a><h3>
+<a name="XMLSECCIPHERTRANSFORMFLUSH"></a>xmlSecCipherTransformFlush ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCipherTransformFlush      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table>
+<p>Writes the rest of data to previous transform.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5786"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to a cipher transform.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">0 if success or negative value otherwise.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5799"></a><h3>
+<a name="XMLSECEVPCIPHERUPDATE"></a>xmlSecEvpCipherUpdate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEvpCipherUpdate           (<strong>xmlSecCipherTransformPtr</strong> cipher,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts/decrypts new piece of data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5807"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cipher</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to EVP_* cipher transform. </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes processed or a negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5828"
-></A
-><H3
-><A
-NAME="XMLSECEVPCIPHERFINAL"
-></A
->xmlSecEvpCipherFinal ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecEvpCipherFinal            (<GTKDOCLINK
-HREF="XMLSECCIPHERTRANSFORMPTR"
->xmlSecCipherTransformPtr</GTKDOCLINK
-> cipher);</PRE
-></TD
-></TR
-></TABLE
-><P
->Finalize encryption/decryption.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5835"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cipher</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to EVP_* cipher transform. </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes processed or a negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5848"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERUPDATE"
-></A
->xmlSecCipherUpdate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecCipherUpdate              (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Encrypts/decrypts new piece of data.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5807"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cipher</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to EVP_* cipher transform. </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes processed or a negative value
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5828"></a><h3>
+<a name="XMLSECEVPCIPHERFINAL"></a>xmlSecEvpCipherFinal ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEvpCipherFinal            (<strong>xmlSecCipherTransformPtr</strong> cipher);</pre></td></tr></table>
+<p>Finalize encryption/decryption.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5835"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>cipher</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to EVP_* cipher transform. </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes processed or a negative value
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5848"></a><h3>
+<a name="XMLSECCIPHERUPDATE"></a>xmlSecCipherUpdate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCipherUpdate              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->Encrypts/decrypts new piece of data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5856"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to cipher transform. </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes processed or a negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5877"
-></A
-><H3
-><A
-NAME="XMLSECCIPHERFINAL"
-></A
->xmlSecCipherFinal ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecCipherFinal               (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->Finalize encryption/decryption.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN5884"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to cipher transform. </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes processed or a negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-buffered.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref-int.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-digests.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->buffered.h</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->digests.h</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+                                             <strong>size_t</strong> size);</pre></td></tr></table>
+<p>Encrypts/decrypts new piece of data.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5856"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to cipher transform. </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the input buffer size.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes processed or a negative value
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN5877"></a><h3>
+<a name="XMLSECCIPHERFINAL"></a>xmlSecCipherFinal ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCipherFinal               (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
+<p>Finalize encryption/decryption.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN5884"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> the pointer to cipher transform. </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the number of bytes processed or a negative value
+if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-buffered.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-digests.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>buffered.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>digests.h</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td>
+</tr></table></body>
+</html>

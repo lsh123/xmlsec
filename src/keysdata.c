@@ -624,17 +624,13 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+    if((xmlSecKeyDataTypeSymmetric & keyInfoCtx->keyReq.keyType) == 0) {
+	/* we can have only symmetric key */
+	return(0);
+    }    
+
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
-
-    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), value) != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyReqMatchKeyValue",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(0);
-    }
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
@@ -761,17 +757,13 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned 
     xmlSecAssert2(bufSize != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
+    if((xmlSecKeyDataTypeSymmetric & keyInfoCtx->keyReq.keyType) == 0) {
+	/* we can have only symmetric key */
+	return(0);
+    }    
+
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
-
-    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), value) != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyReqMatchKeyValue",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(0);
-    }
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);

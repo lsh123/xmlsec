@@ -436,8 +436,89 @@ xmlSecKeyInfoCtxEnableKeyDataByName(xmlSecKeyInfoCtxPtr keyInfoCtx, const xmlCha
     return(0);
 }
 
-/* TODO: debug dump key info ctx */
+void 
+xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
+    xmlSecAssert(keyInfoCtx != NULL);
+    xmlSecAssert(output != NULL);
 
+    fprintf(output, "= KEY INFO %s CONTEXT\n", 
+	    (keyInfoCtx->mode == xmlSecKeyInfoModeRead) ? "READ" : "WRITE");
+    if(keyInfoCtx->allowedKeyDataIds != NULL) {
+	xmlSecKeyDataId dataId;
+	size_t i, size;
+
+	fprintf(output, "== Allowed Key Data Ids:");
+	size = xmlSecPtrListGetSize(keyInfoCtx->allowedKeyDataIds);
+	for(i = 0; i < size; ++i) {
+	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(keyInfoCtx->allowedKeyDataIds, i);
+	    xmlSecAssert(dataId != NULL);
+	    xmlSecAssert(dataId->name != NULL);
+	    
+	    if(i > 0) {
+		fprintf(output, ",%s", dataId->name);
+	    } else {
+		fprintf(output, " %s", dataId->name);
+	    }	    
+	}
+	fprintf(output, "\n");
+    } else {
+	fprintf(output, "== Allowed Key Data Ids: all\n");
+    }
+    fprintf(output, "== RetrievalMethod level (cur/max): %d/%d\n",
+	    keyInfoCtx->curRetrievalMethodLevel, 
+	    keyInfoCtx->maxRetrievalMethodLevel);
+    fprintf(output, "== EncryptedKey level (cur/max): %d/%d\n",
+	    keyInfoCtx->curEncryptedKeyLevel, 
+	    keyInfoCtx->maxEncryptedKeyLevel);
+}
+
+void 
+xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
+    xmlSecAssert(keyInfoCtx != NULL);
+    xmlSecAssert(output != NULL);
+
+    switch(keyInfoCtx->mode) {
+	case xmlSecKeyInfoModeRead:
+	    fprintf(output, "<KeyInfoReadContext>\n");
+	    break;
+	case xmlSecKeyInfoModeWrite:
+	    fprintf(output, "<KeyInfoWriteContext>\n");
+	    break;
+    }
+    	    
+    if(keyInfoCtx->allowedKeyDataIds != NULL) {
+	xmlSecKeyDataId dataId;
+	size_t i, size;
+
+	fprintf(output, "<AllowedKeyDataIds>\n");
+	size = xmlSecPtrListGetSize(keyInfoCtx->allowedKeyDataIds);
+	for(i = 0; i < size; ++i) {
+	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(keyInfoCtx->allowedKeyDataIds, i);
+	    xmlSecAssert(dataId != NULL);
+	    xmlSecAssert(dataId->name != NULL);
+	    
+	    fprintf(output, "<DataId name=\"%s\" />", dataId->name);
+	}
+	fprintf(output, "</AllowedKeyDataIds>\n");
+    } else {
+	fprintf(output, "<AllowedKeyDataIds type=\"all\" />\n");
+    }
+    fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
+	    keyInfoCtx->curRetrievalMethodLevel, 
+	    keyInfoCtx->maxRetrievalMethodLevel);
+    fprintf(output, "<EncryptedKeyLevel cur=\"%d\" max=\"%d\" />\n",
+	    keyInfoCtx->curEncryptedKeyLevel, 
+	    keyInfoCtx->maxEncryptedKeyLevel);
+
+    switch(keyInfoCtx->mode) {
+	case xmlSecKeyInfoModeRead:
+	    fprintf(output, "</KeyInfoReadContext>\n");
+	    break;
+	case xmlSecKeyInfoModeWrite:
+	    fprintf(output, "</KeyInfoWriteContext>\n");
+	    break;
+    }
+}
 
 /**************************************************************************
  *
@@ -729,7 +810,6 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
 
     if(!xmlSecKeyDataIsValid(key->value) || 
        !xmlSecKeyDataCheckUsage(key->value, xmlSecKeyDataUsageKeyValueNodeWrite)){
-
 	/* nothing to write */
 	return(0);
     }
@@ -737,6 +817,10 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
         !xmlSecKeyDataIdListFind(keyInfoCtx->allowedKeyDataIds, id)) {
 
 	/* we are not allowed to write out key data with this id */
+	return(0);
+    }
+    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), key) != 1) {
+	/* we are not allowed to write out this key */
 	return(0);
     }
 

@@ -41,8 +41,6 @@ typedef enum {
  * @encryptionMethod: the used encryption algorithm id.
  * @encryptionKey: the used encryption key.
  * @encryptionResult: the encrypted or decrypted data.
-
-
  * @keysMngr: the pointer to keys manager #xmlSecKeysMngr.
  * @ignoreType:	the flag to ignore Type attribute in the <enc:EncryptedData> 
  * 	node
@@ -55,8 +53,8 @@ struct _xmlSecEncCtx {
     xmlEncCtxMode		mode;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
-    xmlSecTransformCtx		transformCtx;
-    xmlSecTransformPtr		defEncMethod;
+    xmlSecTransformCtx		encTransformCtx;
+    xmlSecTransformPtr		encMethod;
     xmlSecKeyPtr		encKey;
 
     /* these data are returned */
@@ -67,11 +65,11 @@ struct _xmlSecEncCtx {
     xmlChar*			recipient;
     xmlChar*			carriedKeyName;
     int				encrypt;
-    xmlSecTransformPtr		encMethod;
     xmlSecBufferPtr		encResult;
     int				replaced;
 
-    /* these are internal data, nobody cares about that */
+    /* these are internal data, nobody should change that except us */
+    int				dontDestroyEncMethod;
     xmlNodePtr			encDataNode;
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;

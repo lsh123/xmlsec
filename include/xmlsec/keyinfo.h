@@ -91,8 +91,10 @@ XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyData	(xmlSecKeyInfoCtxPtr keyInfoCt
 									 xmlSecKeyDataId dataId);
 XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyDataByName(xmlSecKeyInfoCtxPtr keyInfoCtx,
 									 const xmlChar* name);
-
-
+XMLSEC_EXPORT void			xmlSecKeyInfoCtxDebugDump	(xmlSecKeyInfoCtxPtr keyInfoCtx,
+									 FILE* output);
+XMLSEC_EXPORT void			xmlSecKeyInfoCtxDebugXmlDump	(xmlSecKeyInfoCtxPtr keyInfoCtx,
+									 FILE* output);
 /**
  * xmlSecKeyDataNameId
  *

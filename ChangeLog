@@ -1,3 +1,12 @@
+Mon Oct  7 19:22:11 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: added "--output" option to spefcify output file
+	* docs/xmlsec-man.html man/create.sh man/xmlsec.1  man/xmlsec.xml:
+	changed the docs to reflect new "--output" option
+	* tests/testDSig.sh tests/testEnc.sh: changed tests to use new
+	"--output" option
+	* configure.in xmlsec.pc xmlsec.spec: minor config changes
+
 Sun Sep 29 20:12:17 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* win32/Makefile.msvc: resolved further static link issues.

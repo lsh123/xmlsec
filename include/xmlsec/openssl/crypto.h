@@ -335,3 +335,4 @@ XMLSEC_EXPORT void 	xmlSecOpenSSLErrorsDefaultCallback		(const char* file,
 
 #endif /* __XMLSEC_OPENSSL_CRYPTO_H__ */
 
+#define __XMLSEC_OPENSSL_CRYPTO_H__    

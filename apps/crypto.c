@@ -18,23 +18,21 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
-#include <xmlsec/openssl/app.h>
-#include <xmlsec/openssl/crypto.h>
 
 #include "crypto.h"
 
 int
 xmlSecAppCryptoInit(void) {
-    if(xmlSecOpenSSLAppInit() < 0) {
+    if(xmlSecCryptoAppInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppInit");
+		    "xmlSecCryptoAppInit");
 	return(-1);
     }
-    if(xmlSecOpenSSLInit() < 0) {
+    if(xmlSecCryptoInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLInit");
+		    "xmlSecCryptoInit");
 	return(-1);
     }
     
@@ -43,27 +41,65 @@ xmlSecAppCryptoInit(void) {
 
 int
 xmlSecAppCryptoShutdown(void) {
-    if(xmlSecOpenSSLShutdown() < 0) {
+    if(xmlSecCryptoShutdown() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLShutdown");
+		    "xmlSecCryptoShutdown");
 	return(-1);
     }
 
-    if(xmlSecOpenSSLAppShutdown() < 0) {
+    if(xmlSecCryptoAppShutdown() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppShutdown");
+		    "xmlSecCryptoAppShutdown");
 	return(-1);
     }
     return(0);
 }
 
+xmlSecKeyPtr 
+xmlSecAppCryptoKeyGenerate(char* keyKlassAndSize, const char* name) {
+    xmlSecKeyPtr key;
+    char* p;
+    int size;
+
+    xmlSecAssert2(keyKlassAndSize != NULL, NULL);
+    
+    /* separate key klass and size */
+    p = strchr(keyKlassAndSize, '-');
+    if(p == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "key size is not specified %s", 
+		    keyKlassAndSize);
+	return(NULL);
+    }
+    *(p++) = '\0';
+    size = atoi(p);
+    
+    key = xmlSecKeyGenerate(BAD_CAST keyKlassAndSize, BAD_CAST name, size);
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyGenerate(%s, %d)",
+		    keyKlassAndSize, size);
+	return(NULL);	
+    }
+    
+    return(key);
+}
+
+
+/*****************************************************************************
+ *
+ * Simple keys manager
+ *
+ ****************************************************************************/
 int
 xmlSecAppCryptoSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
 
-    return(xmlSecOpenSSLAppSimpleKeysMngrInit(mngr));
+    return(xmlSecCryptoAppSimpleKeysMngrInit(mngr));
 }
 
 int
@@ -71,7 +107,7 @@ xmlSecAppCryptoSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *filename) 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     
-    return(xmlSecOpenSSLAppSimpleKeysMngrLoad(mngr, filename));
+    return(xmlSecCryptoAppSimpleKeysMngrLoad(mngr, filename));
 }
 
 int 
@@ -79,7 +115,7 @@ xmlSecAppCryptoSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char *filename, 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     
-    return(xmlSecOpenSSLAppSimpleKeysMngrSave(mngr, filename, type));
+    return(xmlSecCryptoAppSimpleKeysMngrSave(mngr, filename, type));
 }
 
 int 
@@ -88,7 +124,7 @@ xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *fil
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509	    
-    return(xmlSecOpenSSLAppKeysMngrPemCertLoad(mngr, filename, trusted));
+    return(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, filename, trusted));
 #else /* XMLSEC_NO_X509 */
     return(-1);
 #endif /* XMLSEC_NO_X509 */    
@@ -105,11 +141,11 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, char *pa
     xmlSecAssert2(params != NULL, -1);
 
     p = strtok(params, ","); 
-    key = xmlSecOpenSSLAppPemKeyLoad(p, pwd, NULL, privateKey);
+    key = xmlSecCryptoAppPemKeyLoad(p, pwd, NULL, privateKey);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppPemKeyLoad(%s)", p);
+		    "xmlSecCryptoAppPemKeyLoad(%s)", p);
 	return(-1);
     }
     
@@ -127,11 +163,11 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, char *pa
     p = strtok(NULL, ",");
 #ifndef XMLSEC_NO_X509     
     while((p != NULL) && (privateKey)) {
-	ret = xmlSecOpenSSLAppKeyPemCertLoad(key, p);
+	ret = xmlSecCryptoAppKeyPemCertLoad(key, p);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLAppKeyPemCertLoad(%s)", p);
+			"xmlSecCryptoAppKeyPemCertLoad(%s)", p);
 	    xmlSecKeyDestroy(key);
 	    return(-1);
 	}
@@ -146,11 +182,11 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, char *pa
     }
 #endif /* XMLSEC_NO_X509 */        
 
-    ret = xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppSimpleKeysMngrAdoptKey");
+		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey");
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
@@ -181,11 +217,11 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	pwd = buf;
     } 
 
-    key = xmlSecOpenSSLAppPkcs12Load(filename, pwd);
+    key = xmlSecCryptoAppPkcs12Load(filename, pwd);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppPkcs12Load");
+		    "xmlSecCryptoAppPkcs12Load");
 	memset(buf, 0, sizeof(buf));
 	return(-1);
     }
@@ -202,11 +238,11 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	}
     }
     
-    ret = xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppSimpleKeysMngrAdoptKey");
+		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey");
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
@@ -314,11 +350,11 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     }
 
     /* finally add it to keys manager */    
-    ret = xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppSimpleKeysMngrAdoptKey");
+		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey");
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
@@ -342,48 +378,14 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, char* keyKlassA
 	return(-1);    
     }    
 
-    ret = xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppSimpleKeysMngrAdoptKey");
+		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey");
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
     return(0);
 }
-
-xmlSecKeyPtr 
-xmlSecAppCryptoKeyGenerate(char* keyKlassAndSize, const char* name) {
-    xmlSecKeyPtr key;
-    char* p;
-    int size;
-
-    xmlSecAssert2(keyKlassAndSize != NULL, NULL);
-    
-    /* separate key klass and size */
-    p = strchr(keyKlassAndSize, '-');
-    if(p == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "key size is not specified %s", 
-		    keyKlassAndSize);
-	return(NULL);
-    }
-    *(p++) = '\0';
-    size = atoi(p);
-    
-    key = xmlSecKeyGenerate(BAD_CAST keyKlassAndSize, BAD_CAST name, size);
-    if(key == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyGenerate(%s, %d)",
-		    keyKlassAndSize, size);
-	return(NULL);	
-    }
-    
-    return(key);
-}
-
-
 

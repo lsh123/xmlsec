@@ -19,9 +19,24 @@ extern "C" {
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 
+#ifdef XMLSEC_CRYPTO_OPENSSL
+#include <xmlsec/openssl/app.h>
+#include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/x509.h>
+#include <xmlsec/openssl/symbols.h>
+#endif /* XMLSEC_CRYPTO_OPENSSL */
+
 XMLSEC_EXPORT int	xmlSecAppCryptoInit			(void);
 XMLSEC_EXPORT int	xmlSecAppCryptoShutdown			(void);
 
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecAppCryptoKeyGenerate		(char* keyKlassAndSize,
+								 const char* name);
+
+/*****************************************************************************
+ *
+ * Simple keys manager
+ *
+ ****************************************************************************/
 XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrLoad	(xmlSecKeysMngrPtr mngr, 
 								 const char *filename);
@@ -48,8 +63,6 @@ XMLSEC_EXPORT int	xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mng
 								 char* keyKlassAndSize,
 								 const char* name);
 
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecAppCryptoKeyGenerate		(char* keyKlassAndSize,
-								 const char* name);
 
 #ifdef __cplusplus
 }

@@ -156,16 +156,6 @@ xmlSecNssKeysInit(void) {
 
 static int 
 xmlSecNssTransformsInit(void) {
-#ifndef XMLSEC_NO_SHA1    
-    if(xmlSecTransformRegister(xmlSecNssTransformSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformSha1Id)),
-		    "xmlSecTransformRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformRegister(xmlSecNssTransformRipemd160Id) < 0) {

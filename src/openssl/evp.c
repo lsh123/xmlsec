@@ -732,9 +732,6 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     return(0);
 }
 
-
-
-
 /******************************************************************************
  *
  * EVP Signature transforms

@@ -56,7 +56,9 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
+/*
 #define XMLSEC_BUFFER_DEBUG 1
+*/
 
 /**************************************************************************
  *

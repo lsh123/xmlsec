@@ -35,6 +35,7 @@ endif
 endif
 
 INCLUDES = \
+    -DXMLSEC_CRYPTO=\"$(XMLSEC_CRYPTO)\" \
     -I$(top_srcdir)/include \
     $(XMLSEC_CRYPTO_INCLUDES) \
     $(LIBXSLT_CFLAGS) \

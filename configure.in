@@ -274,7 +274,7 @@ if test "$with_nss" = "no" ; then
 else
     if test "$with_nss" != "" ; then
 	NSS_PREFIX=$with_nss
-	NSS_CFLAGS="-I$NSS_PREFIX/include"
+	NSS_CFLAGS="-I$NSS_PREFIX/include -I$NSS_PREFIX/include/nss -I$NSS_PREFIX/include/nspr"
 	NSS_LIBS="-L$NSS_PREFIX/lib $NSS_LIBS_LIST"
 	NSS_LDADDS="-L$NSS_PREFIX/lib $NSS_LIBS_LIST"
 	NSS_INCLUDES_FOUND="yes"
@@ -286,9 +286,9 @@ else
 	    if test -f $dir/nss/nss.h; then
 		dnl do not add -I/usr/include because compiler does it anyway
 		if test "$dir" = "/usr/include" ; then
-		    NSS_CFLAGS=""
+		    NSS_CFLAGS="-I$dir/nss -I$dir/nspr"
 		else
-		    NSS_CFLAGS="-I$dir"
+		    NSS_CFLAGS="-I$dir -I$dir/nss -I$dir/nspr"
 		fi
 		NSS_INCLUDES_FOUND="yes"
 		break

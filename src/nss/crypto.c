@@ -9,6 +9,10 @@
 
 #include <string.h>
 
+#include <nss/nss.h>
+#include <nspr/prinit.h>
+
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -82,6 +86,16 @@ xmlSecNssKeysInit(void) {
 
 static int 
 xmlSecNssTransformsInit(void) {
+#ifndef XMLSEC_NO_SHA1    
+    if(xmlSecTransformRegister(xmlSecNssTransformSha1Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformSha1Id)),
+		    "xmlSecTransformRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_SHA1 */
 
     return(0);
 }

@@ -15,6 +15,8 @@ lib_LTLIBRARIES = libxmlsec-nss.la
 libxmlsec_nss_la_SOURCES =\
 app.c \
 crypto.c \
+digests.c \
+hmac.c \
 $(NULL)
 
 libxmlsec_nss_la_LIBADD = \

@@ -536,7 +536,7 @@ void printUsage(const char *command) {
 }
 
 void printVersion(void) {
-    fprintf(stdout, "xmlsec %s\n", XMLSEC_VERSION);
+    fprintf(stdout, "xmlsec %s (crytpo=%s)\n", XMLSEC_VERSION, XMLSEC_CRYPTO);
     fprintf(stderr, "\n");
     fprintf(stderr, "%s\n", bugs);
     fprintf(stderr, "%s\n", copyright);    

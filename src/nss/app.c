@@ -9,6 +9,9 @@
 
 #include <string.h>
 
+#include <nspr/nspr.h>
+#include <nss/nss.h>
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -29,7 +32,13 @@
  */
 int
 xmlSecNssAppInit(void) {
-
+    if(NSS_NoDB_Init(NULL) != SECSuccess) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "NSS_NoDB_Init",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "%d", PR_GetError());
+    }
     return(0);
 }
 
@@ -44,6 +53,7 @@ xmlSecNssAppInit(void) {
  */
 int
 xmlSecNssAppShutdown(void) {
+    NSS_Shutdown();
     return(0);
 }
 

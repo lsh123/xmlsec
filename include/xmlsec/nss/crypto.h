@@ -23,6 +23,24 @@ XMLSEC_EXPORT int		xmlSecNssInit				(void);
 XMLSEC_EXPORT int		xmlSecNssShutdown			(void);
 XMLSEC_EXPORT int		xmlSecNssGenerateRandom			(xmlSecBufferPtr buffer,
 									 size_t sizeBytes);
+
+
+/********************************************************************
+ *
+ * SHA1 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecNssTransformSha1Id:
+ * 
+ * The SHA1 digest transform id.
+ */
+#define xmlSecNssTransformSha1Id \
+	xmlSecNssTransformSha1GetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass	(void);
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

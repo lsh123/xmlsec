@@ -9,6 +9,9 @@
 #include <string.h>
 #include <time.h>
 
+#if defined(_MSC_VER)
+#define snprintf _snprintf
+#endif
 
 #include <openssl/evp.h>
 #include <openssl/rand.h>

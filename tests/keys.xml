@@ -3,7 +3,7 @@
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-hmac-sha1</KeyName>
 <KeyValue>
-<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">Qs3IzAppDI1SXdWBf3FCdx5s7EJSEWZL</HMACKeyValue>
+<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">Z6Pr5jpmMnMSSdf79ZFfsgSdSvtXKwpN</HMACKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -11,17 +11,17 @@
 <KeyValue>
 <RSAKeyValue>
 <Modulus>
-1IM8l0Xa0iaDLZ5B/a8SwD/4zcZgIYDiD/Ap8QAQIkaSFTy4vd/A5FGPaoSruMDS
-X64JHXfg2rMm10JMGpBp4hSv2U7nOsY/o2AblvwDMVUDN3avwaRhUDO22yHSmwfe
-ElZfiUkJQSgPd3CGnPGTk2EitswM1gWNuDAdUQKOzPE=
+t004eGueBMJ76y6wclW5f/A0VoiqSCvzjL/tWzoBx9OSOyH6nyf3HLMQRqtQIond
+kKKg1KNbxIEj1wR4egAf27IagpZXIPOLQjzFS6DUkxVB4JCiiFq7B0PynGr/31pd
+ucdCYPCAUVVi7GPa1FHZMpxGXBy6yNURe3T5RQc4+FU=
 </Modulus>
 <Exponent>
 Aw==
 </Exponent>
 <PrivateExponent xmlns="http://www.aleksey.com/xmlsec/2002">
-jazTD4PnNsRXc77WqR9h1X/7M9mVa6tBX/VxS1VgFtm2uNMl0+qAmDZfnFhyeys2
-6nQGE6VAkczEj4GIEbWb6tX7oHZ6Nc1aeLjJ2EfIQvoTwW4WsSRXUYLhzeUcDBBL
-ixmZuR6EhZRAERZoRpBtwiDDkPyuGCVjvU6jgUH8vcM=
+ejN6+vJpWIGn8h8gTDkmVUrNjwXG2sf3syqePNFWhTe20hanFMVPaHdgLxzgFwaT
+tcHAjcI9LattOgL6/AAVPACN1a3TUE8TWOCaFzlFXiHkcgDVoZkFSKvU+jTAh38g
+Ow2BPU3JdVi2OJPGlJnbBxNSwBB6pP4++qU65ykMYrM=
 </PrivateExponent>
 </RSAKeyValue>
 </KeyValue>
@@ -31,25 +31,25 @@ ixmZuR6EhZRAERZoRpBtwiDDkPyuGCVjvU6jgUH8vcM=
 <KeyValue>
 <DSAKeyValue>
 <P>
-9x6sqfEhqfC4PJ6Oko4hsYFE3P2tp8qSSYqjIRUGcK2ItGJb25zA6N1g6yLhwMx4
-898wmGJ0dmMzJxZIBhTA9vhDQm95lnf5FU3c/4INarXl811ex/bRVDp5d211djw7
-G1kdC9AnoFr12Ve61l+dcpOBgemr1mwVqxruIaT6Q5s=
+pVPG8pMDgYQExAMw1rI7SIC/IRGSqu72ZQCZAwkzs6yahbdjdemG4ri6dxZ22Bm5
+nWry8jyC6gGqGvmFTD1xK4eFnAv6pF5AuC4hKwg2iL8NRtVMQr3X31/fpzmFRlrU
+OUqNDBerXdLf/ABdHbvqHtz+eHVx6VjtuAKQCGk3QZU=
 </P>
 <Q>
-7458F8xCXm4L4pIZttwGZm0XqTM=
+5va8lTGrbNQYRg/MXLUJOI4y5T0=
 </Q>
 <G>
-vvUrSrhm38Ymrj+Dq4D9VNUuVj37x8dQvs8ywBsoZ7J9wQbMSO+SIPb6Zg+AzTj/
-2CC1rsiygdCts/ao20DpfMeggMYIerzANMe0MQtnEqMTYFpIs00iaJdqzGVtUzYR
-m01/YCv4rHNr8ANUdVivF2RADRGVG5T74vuNbeiTTI4=
+IoF2C9dCNJfj+CKC8FaubBCd5G5V+UaIMsGtdF4/jyMossq9krSLkOXuJjOncWaC
+zYsVdVWjNum5xfIZKxV8+1KNQzulMPvnAks76AgSTj30aVmfVpYBkftq/SjgOBeo
+LTZMW7FTrFVpZ8Rll6K1ykbjHG4aP1qG6nYfGpKekqc=
 </G>
 <X xmlns="http://www.aleksey.com/xmlsec/2002">
-hKLSDUVOP+8kQRyMT4DFOyQhomk=
+nNlc9r1EOcIPaEgNhxNsrzr35zY=
 </X>
 <Y>
-kCzltdo9TN8VftyJqfKDf21PsFrwV2+3MfjE0Mq3TacksJIb9zyIpzu6vugpTPPq
-Fe0hpgvbUljprDPQCR9Rrl4GCkxwgic7SG2VAuhXnFnagQLknvv3SPn0otfmqeBx
-jiG+cf/A608PKLTuvlNAYZwliiOVq41bCotaa/rTOl0=
+D8Ye6MJDz4zJcZcxD4SWLTFFLmENkX4pQLVUVDMd88eTUdTbK0sgvc7/D5zqHGoj
+xukKQflswTn7DW9tM15cnCZwJ4V6C3j1HM/2/Ig8Ef/cMoFzHLfMGOjrH2RtA8F/
+NgI8pCHgFjNR9efNnv5NwIi5JkK3QDSq7TjwshEFfdY=
 </Y>
 </DSAKeyValue>
 </KeyValue>
@@ -57,25 +57,25 @@ jiG+cf/A608PKLTuvlNAYZwliiOVq41bCotaa/rTOl0=
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-des</KeyName>
 <KeyValue>
-<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">8Yt/WxpqgvIufZYXpSqAldNxXfbBj0Ab</DESKeyValue>
+<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">XoCQbrH2A1cnDtR7JqR/64wRCPird/z6</DESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes128</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">zqyh1NI4fr5LWZxuy1iYHA==</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">vq+s2wHnczMufJMIZNHqCQ==</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes192</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">GhiHUvtpC7Jo8KBa26oNxW4CKDLNHRuV</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">0Za5Fxz6oLMmz/4nMsUw4LGuthERwPuH</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes256</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">mqg42vXU+SnSD2vPbPa+vaA1DNH73603UNqpxEm6rCw=</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">fi6t9KjvTTPnIgYYKxsUC1PtsyPwOE84wlvJB8ojVCc=</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 </Keys>

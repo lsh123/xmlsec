@@ -21,10 +21,10 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
-XMLSEC_EXPORT void	xmlSecIOInit				(void);
+XMLSEC_EXPORT int	xmlSecIOInit				(void);
 XMLSEC_EXPORT void	xmlSecIOShutdown			(void);
 XMLSEC_EXPORT void	xmlSecIOCleanupCallbacks		(void);
-XMLSEC_EXPORT void	xmlSecIORegisterDefaultCallbacks 	(void);
+XMLSEC_EXPORT int	xmlSecIORegisterDefaultCallbacks 	(void);
 XMLSEC_EXPORT int     	xmlSecIORegisterCallbacks		(xmlInputMatchCallback matchFunc,
 								 xmlInputOpenCallback openFunc,
 								 xmlInputReadCallback readFunc,

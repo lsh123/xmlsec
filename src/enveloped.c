@@ -109,7 +109,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED,
-		    "enveloped transform works only on the same document");
+		    NULL);
 	return(-1);
     }
     
@@ -118,10 +118,9 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     if(node == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecFindParent",
+		    xmlSecErrorsSafeString(xmlSecNodeSignature),
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeSignature));
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     

@@ -129,8 +129,8 @@ xmlSecBase64CtxCreate(int encode, int columns) {
     ctx = (xmlSecBase64CtxPtr) xmlMalloc(sizeof(xmlSecBase64Ctx));
     if (ctx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBase64Ctx",
-		    "xmlMalloc",
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecBase64Ctx)=%d", 
 		    sizeof(xmlSecBase64Ctx));
@@ -278,7 +278,7 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
 			NULL,
 			"xmlSecBase64CtxEncodeFinal",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"outSize=%d", outSize);
 	    return(-1);
 	}
     } else {
@@ -492,7 +492,7 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx,
 			    NULL,
 			    "xmlSecBase64CtxEncodeByte",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "status=%d", status);
                 return(-1);
         }
     }
@@ -529,7 +529,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
 			    NULL,
 			    "xmlSecBase64CtxEncodeByteFinal",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "status=%d", status);
                 return(-1);
         }
     }
@@ -538,7 +538,7 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_DATA,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "outBufSize=%d", outBufSize);
         return(-1);
     }
@@ -585,7 +585,7 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx,
 			    NULL,
 			    "xmlSecBase64CtxDecodeByte",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "status=%d", status);
                 return(-1);
         }
     }
@@ -651,9 +651,9 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", size);
+		    "size=%d", size);
 	xmlSecBase64CtxFinalize(&ctx);
 	return(NULL);
     }
@@ -664,7 +664,7 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
 		    NULL,
 		    "xmlSecBase64CtxUpdate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", len);
+		    "len=%d", len);
 	xmlFree(ptr);
 	xmlSecBase64CtxFinalize(&ctx);
 	return(NULL);
@@ -997,7 +997,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_STATUS,
-			"%d", transform->status);
+			"status=%d", transform->status);
 	    return(-1);
     }
     return(0);

@@ -16,6 +16,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
@@ -61,8 +62,8 @@ xmlSecBufferCreate(size_t size) {
     buf = (xmlSecBufferPtr)xmlMalloc(sizeof(xmlSecBuffer));
     if(buf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
-		    "xmlMalloc",
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecBuffer)=%d", sizeof(xmlSecBuffer));
 	return(NULL);
@@ -71,7 +72,7 @@ xmlSecBufferCreate(size_t size) {
     ret = xmlSecBufferInitialize(buf, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", size);
@@ -191,7 +192,7 @@ xmlSecBufferSetData(xmlSecBufferPtr buf, const unsigned char* data, size_t size)
 	ret = xmlSecBufferSetMaxSize(buf, size);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecBuffer",
+			NULL,
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"size=%d", size);
@@ -239,7 +240,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, size_t size) {
     ret = xmlSecBufferSetMaxSize(buf, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", size);
@@ -302,8 +303,8 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
     newData = (unsigned char*)xmlRealloc(buf->data, newSize);
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
-		    "xmlRealloc",
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "size=%d", newSize);
 	return(-1);
@@ -342,7 +343,7 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) 
         ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecBuffer",
+			NULL,
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"size=%d", buf->size + size);
@@ -378,7 +379,7 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const unsigned char* data, size_t size)
 	ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecBuffer",
+			NULL,
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"size=%d", buf->size + size);
@@ -468,10 +469,10 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     content = xmlNodeGetContent(node);
     if(content == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
-		    "xmlNodeGetContent",
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    "node=%s", (node->name != NULL) ? node->name : BAD_CAST "NULL");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);		
     }
     
@@ -479,7 +480,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     ret = xmlSecBufferSetMaxSize(buf, xmlStrlen(content));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -490,7 +491,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     ret = xmlSecBase64Decode(content, xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBase64Decode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -502,7 +503,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     ret = xmlSecBufferSetSize(buf, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", size);
@@ -534,7 +535,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
     content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetSize(buf), columns);
     if(content == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBase64Encode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -585,7 +586,7 @@ xmlSecBufferIOWrite(xmlSecBufferPtr buf, const unsigned char *data, size_t size)
     ret = xmlSecBufferAppend(buf, data, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecBuffer",
+		    NULL,
 		    "xmlSecBufferAppend",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", size);

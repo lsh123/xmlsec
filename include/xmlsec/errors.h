@@ -26,42 +26,190 @@ extern "C" {
  * Failed to allocate memory error.
  */
 #define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	
+
+/**
+ * XMLSEC_ERRORS_R_STRDUP_FAILED:
+ *
+ * Failed to duplicate string error.
+ */
+#define XMLSEC_ERRORS_R_STRDUP_FAILED		 2
+
 /**
  * XMLSEC_ERRORS_R_XMLSEC_FAILED:
  *
- * An XMLSec function failed.
+ * An XMLSec function failed (error subject is the failed function).
  */
-#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2
+#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 3
+
 /**
  * XMLSEC_ERRORS_R_CRYPTO_FAILED:
  *
- * Crypto (OpenSSL) function failed. 
+ * Crypto (OpenSSL) function failed (error subject is the failed function). 
  */
-#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3
+#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 4
+
 /**
  * XMLSEC_ERRORS_R_XML_FAILED:
  *
- * LibXML function failed.
+ * LibXML function failed (error subject is the failed function).
  */
-#define XMLSEC_ERRORS_R_XML_FAILED		 4
+#define XMLSEC_ERRORS_R_XML_FAILED		 5
+
 /**
  * XMLSEC_ERRORS_R_XSLT_FAILED:
  * 
- * LibXSLT function failed.
+ * LibXSLT function failed (error subject is the failed function).
  */
-#define XMLSEC_ERRORS_R_XSLT_FAILED		 5
+#define XMLSEC_ERRORS_R_XSLT_FAILED		 6
+
 /**
  * XMLSEC_ERRORS_R_IO_FAILED:
  *
  * IO operation failed.
  */
-#define XMLSEC_ERRORS_R_IO_FAILED		 6
+#define XMLSEC_ERRORS_R_IO_FAILED		 7
+
+/**
+ * XMLSEC_ERRORS_R_DISABLED:
+ *
+ * The feature is disabled during compilation.
+ * Check './configure --help' for details on how to
+ * enable it.
+ */
+#define XMLSEC_ERRORS_R_DISABLED		 8
+
+/**
+ * XMLSEC_ERRORS_R_NOT_IMPLEMENTED:
+ *
+ * Feature is not implemented.
+ */
+#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 9
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_SIZE:
+ *
+ * Invalid size.
+ */
+#define XMLSEC_ERRORS_R_INVALID_SIZE		 18
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_DATA:
+ *
+ * Invalid data.
+ */
+#define XMLSEC_ERRORS_R_INVALID_DATA		 19
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_NODE:
+ * 
+ * Invalid node (error subject is the node name).
+ */
+#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_NODE_CONTENT:
+ *
+ * Invalid node content (error subject is the node name).
+ */
+#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE:
+ *
+ * Invalid node attribute (error subject is the node name).
+ */
+#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26
+
+/**
+ * XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE:
+ *
+ * Missing node attribute (error subject is the node name).
+ */
+#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE	 26
+
+/**
+ * XMLSEC_ERRORS_R_UNEXPECTED_NODE:
+ * 
+ * Unexpected node (error subject is the node name).
+ */
+#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54
+
+/**
+ * XMLSEC_ERRORS_R_NODE_NOT_FOUND:
+ *
+ * Node not found (error subject is the required node name).
+ */
+#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29
+
 /**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM:
  * 
- * Invlaid transform.
+ * This transform is invlaid here.
  */
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS:
+ *
+ * Invalid transform status.
+ */
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS 52
+
+/**
+ * XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED:
+ *
+ * The transform requires the input document to be the same as context.
+ */
+#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_KEY_DATA:
+ *
+ * Key data is invalid.
+ */
+#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_KEY_SIZE:
+ *
+ * Invalid key size.
+ */
+#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15
+
+/**
+ * XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL:
+ *
+ * Max allowed retrievals level reached.
+ */
+#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30
+
+/**
+ * XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH:
+ *
+ * The retrieved key data type does not match the one specified 
+ * in the <dsig:RetrievalMethod/> node.
+ */
+#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH	 30
+
+/**
+ * XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL:
+ *
+ * Max EncryptedKey level reached.
+ */
+#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 56
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA:
  *
@@ -81,18 +229,6 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_INVALID_KEY		 13
 /**
- * XMLSEC_ERRORS_R_INVALID_KEY_DATA:
- *
- * Key data is invalid.
- */
-#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
-/**
- * XMLSEC_ERRORS_R_INVALID_KEY_SIZE:
- *
- * Invalid key size.
- */
-#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15
-/**
  * XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN:
  *
  * Invalid key origin.
@@ -104,18 +240,6 @@ extern "C" {
  * Key not found.
  */
 #define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17
-/**
- * XMLSEC_ERRORS_R_INVALID_SIZE:
- *
- * Invalid size.
- */
-#define XMLSEC_ERRORS_R_INVALID_SIZE		 18
-/**
- * XMLSEC_ERRORS_R_INVALID_DATA:
- *
- * Invalid data.
- */
-#define XMLSEC_ERRORS_R_INVALID_DATA		 19
 /**
  * XMLSEC_ERRORS_R_INVALID_TYPE:
  * 
@@ -129,53 +253,18 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_INVALID_USAGE		 22
 /**
- * XMLSEC_ERRORS_R_INVALID_NODE:
- * 
- * Invalid node,
- */
-#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23
-/**
  * XMLSEC_ERRORS_R_INVALID_NODESET:
  *
  * Invalid nodes set,
  */
 #define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24
 /**
- * XMLSEC_ERRORS_R_INVALID_NODE_CONTENT:
- *
- * Invalid node content.
- */
-#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25
-/**
- * XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE:
- *
- * Invalid node attribute.
- */
-#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26
-/**
  * XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT:
  *
  * Node already present,
  */
 #define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27
-/**
- * XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED:
- *
- * The transform requires the same document.
- */
-#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28
-/**
- * XMLSEC_ERRORS_R_NODE_NOT_FOUND:
- *
- * Node not found.
- */
-#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29
-/**
- * XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL:
- *
- * Max allowed retrievals level reached.
- */
-#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30
+
 /**
  * XMLSEC_ERRORS_R_CERT_VERIFY_FAILED:
  *
@@ -219,23 +308,12 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
 /**
- * XMLSEC_ERRORS_R_INVALID_STATUS:
- *
- * Invalid status.
- */
-#define XMLSEC_ERRORS_R_INVALID_STATUS		 52
-/**
  * XMLSEC_ERRORS_R_DATA_NOT_MATCH:
  *
  * The data do not match our expectation.
  */
 #define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 53
-/**
- * XMLSEC_ERRORS_R_UNEXPECTED_NODE:
- * 
- * Unexpected node.
- */
-#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54
+
 /**
  * XMLSEC_ERRORS_R_INVALID_URI_TYPE:
  * 
@@ -254,23 +332,10 @@ extern "C" {
  * Invalid assertion.
  */
 #define XMLSEC_ERRORS_R_ASSERTION		 100
-/**
- * XMLSEC_ERRORS_R_DISABLED:
- *
- * The feature is disabled during compilation.
- * Check './configure --help' for details on how to
- * enable it.
- */
-#define XMLSEC_ERRORS_R_DISABLED		 101
-/**
- * XMLSEC_ERRORS_R_NOT_IMPLEMENTED:
- *
- * Feature is not implemented.
- */
-#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 102
 
+#define XMLSEC_ERRORS_R_INVALID_STATUS		91
 
-
+    
 
 #define XMLSEC_ERRORS_R_TRANSFORM_DISABLED	111
 #define XMLSEC_ERRORS_R_KEYDATA_DISABLED	112

@@ -129,6 +129,19 @@ void
 xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
 
+    xmlSecPtrListEmpty(list);
+}
+
+/**
+ * xmlSecPtrListEmpty:
+ * @list:		the pointer to list.
+ *
+ * Remove all items from @list (if any).
+ */
+void 
+xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
+    xmlSecAssert(xmlSecPtrListIsValid(list));
+
     if(list->id->destroyItem != NULL) {
 	size_t pos;
 	

@@ -115,9 +115,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
 			    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 			    "xmlSecKeyDataXmlRead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "name=\"%s\", href=\"%s\"", 
-			    nodeName, 
-			    (nodeNs) ? nodeNs : BAD_CAST "");
+			    "node=\"%s\"", 
+			    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 		return(-1);
 	    }
 	} else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
@@ -125,11 +124,9 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
 	     * desire to disable unknown nodes*/
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecKeyDataIdListFindByNode",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 			XMLSEC_ERRORS_R_INVALID_NODE,
-			"name=\"%s\", href=\"%s\"", 
-			nodeName, 
-			(nodeNs) ? nodeNs : BAD_CAST "");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -185,20 +182,17 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
 			    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 			    "xmlSecKeyDataXmlWrite",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecKeyDataXmlWrite(name=\"%s\", href=\"%s\")", 
-			    nodeName, 
-			    (nodeNs) ? nodeNs : BAD_CAST "");
+			    "node=\"%s\"", 
+			    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 		return(-1);
 	    }
 	} else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD) != 0) {
 	    /* laxi schema validation but application can disable it*/
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecKeyDataIdListFindByNode",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 			XMLSEC_ERRORS_R_INVALID_NODE,
-			"name=\"%s\", href=\"%s\"", 
-			nodeName, 
-			(nodeNs) ? nodeNs : BAD_CAST "");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -231,7 +225,7 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     if(keyInfoCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "size=%d", sizeof(xmlSecKeyInfoCtx)); 
 	return(NULL);
@@ -714,10 +708,9 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     if(newName == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlNodeGetContent",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));    
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     /* TODO: do we need to decode the name? */
@@ -726,9 +719,9 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     if((oldName != NULL) && !xmlStrEqual(oldName, newName)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    NULL,
+		    "key name is already specified",
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-		    "key name is already specified");    
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlFree(newName);
 	return(-1);
     }
@@ -896,20 +889,17 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecKeyDataXmlRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"name=\"%s\", href=\"%s\"", 
-			nodeName, 
-			(nodeNs) ? nodeNs : BAD_CAST "");
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	    return(-1);
 	}
     } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
 	/* laxi schema validation but application can disable it */
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyDataIdListFindByNode",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "name=\"%s\", href=\"%s\"", 
-		    nodeName, 
-		    (nodeNs) ? nodeNs : BAD_CAST "");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
 
@@ -918,9 +908,9 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecGetNextElementNode",
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s", (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -970,7 +960,8 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=\"%s\"", nodeName);    
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	return(-1);	
     }
 
@@ -980,7 +971,8 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataXmlWrite",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=\"%s\"", nodeName);    
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	return(-1);	
     }
 
@@ -1115,10 +1107,9 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			NULL,
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"unknown or unspecified type \"%s\"", 
-			(retrType != NULL) ? retrType : BAD_CAST "NULL");
+			xmlSecErrorsSafeString(xmlSecAttrType),
+			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+			"value=%s", xmlSecErrorsSafeString(retrType));
 	} else {
 	    res = 0;
 	}
@@ -1293,22 +1284,20 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
-			"xmlSecKeyDataIdListFindByNode",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 			XMLSEC_ERRORS_R_INVALID_NODE,
-			"name=\"%s\", href=\"%s\"", 
-			nodeName, 
-			(nodeNs) ? nodeNs : BAD_CAST "");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	return(0);
     } else if((typeId != xmlSecKeyDataIdUnknown) && (typeId != dataId) &&
 	      ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF) != 0)) {
+	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "expected id \"%s\" does not match the found one \"%s\"", 
-		    typeId->name, dataId->name); 
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),		    
+		    XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlFreeDoc(doc);
 	return(-1);
     }
@@ -1320,9 +1309,8 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(typeId)),
 		    "xmlSecKeyDataXmlRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=\"%s\", href=\"%s\"", 
-		    nodeName, 
-		    (nodeNs) ? nodeNs : BAD_CAST "");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	xmlFreeDoc(doc);
 	return(-1);
     }
@@ -1492,19 +1480,11 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyIsValid",
-		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-
     /* dump key to a binary buffer */
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx2, NULL);
     if(ret < 0) {

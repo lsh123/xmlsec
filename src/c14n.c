@@ -81,7 +81,7 @@ xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecPtrListInitialize(nsList, xmlSecStringListId);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecPtrListInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -124,11 +124,10 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     if(cur != NULL) {
 	if(!xmlSecCheckNodeName(cur, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 			XMLSEC_ERRORS_R_INVALID_NODE,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces));
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     
@@ -136,10 +135,10 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 	if(list == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			xmlSecErrorsSafeString(xmlSecAttrPrefixList),
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+			"attribute=%s",
+			xmlSecErrorsSafeString(xmlSecAttrPrefixList));
 	    return(-1);
 	}
     
@@ -154,8 +153,8 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 	    if(tmp == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 		    	    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "xmlStrdup",
-		    	    XMLSEC_ERRORS_R_MALLOC_FAILED,
+			    NULL,
+		    	    XMLSEC_ERRORS_R_STRDUP_FAILED,
 			    "len=%d", xmlStrlen(p));
 		xmlFree(list);
 		return(-1);	
@@ -226,7 +225,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS,
 		    "status=%d", transform->status);
 	return(-1);
     }
@@ -395,7 +394,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS,
 		    "status=%d", transform->status);
 	return(-1);
     }
@@ -435,7 +434,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
     } else {
 	/* shoudn't be possible to come here, actually */
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(id->name),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -444,7 +443,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
     
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(id->name),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
 		    "xmlC14NExecute",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

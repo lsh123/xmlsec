@@ -44,8 +44,10 @@ xmlSecOpenSSLAppInit(void) {
     OpenSSL_add_all_algorithms();
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLAppLoadRANDFile",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to initialize random numbers");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -97,8 +99,10 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     f = fopen(keyfile, "r");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    keyfile,
+		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\"), errno=%d", keyfile, errno);
+		    "errno=%d", errno);
 	return(NULL);    
     }
     
@@ -109,8 +113,10 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     }
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    keyfile,
+		    (privateKey) ? "PEM_read_PrivateKey" : "PEM_read_PUBKEY",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    (privateKey) ? "PEM_read_PrivateKey" : "PEM_read_PUBKEY");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	fclose(f);
 	return(NULL);    
     }
@@ -119,8 +125,10 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     data = xmlSecOpenSSLEvpKeyAdopt(pKey);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLEvpKeyAdopt",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpKeyAdopt");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	EVP_PKEY_free(pKey);
 	return(NULL);	    
     }    
@@ -128,8 +136,10 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     key = xmlSecKeyCreate();
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDataDestroy(data);
 	return(NULL);
     }
@@ -137,8 +147,10 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeySetValue");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);
 	xmlSecKeyDataDestroy(data);
 	return(NULL);
@@ -160,24 +172,30 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
     data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecOpenSSLKeyDataX509Id->name,
+		    "xmlSecKeyEnsureData",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyEnsureData(xmlSecOpenSSLKeyDataX509Id)");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     cert = xmlSecOpenSSLAppPemCertLoad(filename);
     if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,	    
+		    "xmlSecOpenSSLAppPemCertLoad", 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppPemCertLoad(%s)", filename);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }    	
     
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecX509DataAddCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecX509DataAddCert - %d", ret);
+		    "%d", ret);
 	X509_free(cert);
 	return(-1);    
     }
@@ -204,40 +222,50 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     f = fopen(filename, "r");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
+		    "errno=%d", errno);
 	goto done;
     }
     
     p12 = d2i_PKCS12_fp(f, NULL);
     if(p12 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,		    
+		    "d2i_PKCS12_fp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "d2i_PKCS12_fp(filename=%s)", filename);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
     ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "PKCS12_verify_mac",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PKCS12_verify_mac - %d", ret);
+		    "%d", ret);
 	goto done;
     }    
         
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "PKCS12_parse",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PKCS12_parse - %d", ret);
+		    "%d", ret);
 	goto done;
     }    
 
     data = xmlSecOpenSSLEvpKeyAdopt(pKey);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "xmlSecOpenSSLEvpKeyAdopt",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpKeyAdopt");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	EVP_PKEY_free(pKey);	
 	goto done;
     }    
@@ -246,16 +274,20 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecOpenSSLKeyDataX509Id->name,
+		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }    
 
     ret = xmlSecOpenSSLKeyDataX509AdoptVerified(x509Data, cert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(x509Data),
+		    "xmlSecOpenSSLKeyDataX509AdoptCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -264,8 +296,10 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 	ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecKeyDataGetName(x509Data),
+			"xmlSecOpenSSLKeyDataX509AdoptCert",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataX509AdoptCert");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
     }
@@ -274,16 +308,20 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     key = xmlSecKeyCreate();
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }    
     
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeySetValue");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);
 	key = NULL;
 	goto done;
@@ -293,8 +331,10 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(x509Data),
+		    "xmlSecKeyAdoptData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyAdoptData");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);
 	key = NULL;
 	goto done;
@@ -345,24 +385,30 @@ xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId);
     if(x509Store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecOpenSSLX509StoreId->name,
+		    "xmlSecKeysMngrGetDataStore",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     cert = xmlSecOpenSSLAppPemCertLoad(filename);
     if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "xmlSecOpenSSLAppPemCertLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAppPemCertLoad(%s)", filename);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }    	
     
     ret = xmlSecOpenSSLX509StoreAdoptCert(x509Store, cert, trusted);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLX509StoreAdoptCert",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLX509StoreAdoptCert");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	X509_free(cert);
 	return(-1);    
     }
@@ -381,16 +427,20 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId);
     if(x509Store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecOpenSSLX509StoreId->name,
+		    "xmlSecKeysMngrGetDataStore",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     ret = xmlSecOpenSSLX509StoreAddCertsPath(x509Store, path);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    path,
+		    "xmlSecOpenSSLX509StoreAddCertsPath",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLX509StoreAddCertsPath(%s)", path);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }
     
@@ -413,16 +463,20 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 	keysStore = xmlSecKeyDataStoreCreate(xmlSecSimpleKeysStoreId);
 	if(keysStore == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			"xmlSecSimpleKeysStoreId",
+			"xmlSecKeyDataStoreCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataStoreCreate(xmlSecSimpleKeysStoreId)");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
 	ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecKeysMngrAdoptKeysStore",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeysMngrAdoptKeysStore");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecKeyDataStoreDestroy(keysStore);
 	    return(-1);        
 	}
@@ -436,16 +490,20 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
         x509Store = xmlSecKeyDataStoreCreate(xmlSecOpenSSLX509StoreId);
 	if(x509Store == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecOpenSSLX509StoreId->name,
+			"xmlSecKeyDataStoreCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataStoreCreate(xmlSecOpenSSLX509StoreId)");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);   
 	}
     
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecKeysMngrAdoptDataStore",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeysMngrAdoptDataStore(x509Store)");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecKeyDataStoreDestroy(x509Store);
 	    return(-1); 
 	}
@@ -473,16 +531,20 @@ xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeysMngrGetKeysStore",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrGetKeysStore");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSimpleKeysStoreAdoptKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSimpleKeysStoreAdoptKey");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -500,16 +562,20 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeysMngrGetKeysStore",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrGetKeysStore");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     ret = xmlSecSimpleKeysStoreLoad(store, uri);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    uri,
+		    "xmlSecSimpleKeysStoreLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSimpleKeysStoreLoad(%s)", uri);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -527,16 +593,20 @@ xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeysMngrGetKeysStore",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrGetKeysStore");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     ret = xmlSecSimpleKeysStoreSave(store, filename, type);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "xmlSecSimpleKeysStoreSave",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSimpleKeysStoreSave(%s)", filename);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -606,16 +676,20 @@ xmlSecOpenSSLAppPemCertLoad(const char* filename) {
     f = fopen(filename, "r");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
+		    "errno=%d", errno);
 	return(NULL);    
     }
     
     cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
     if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    filename,
+		    "PEM_read_X509_AUX",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PEM_read_X509_AUX(filename=%s)", filename);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	fclose(f);
 	return(NULL);    
     }    	

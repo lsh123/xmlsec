@@ -79,7 +79,9 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, const unsigned c
 
     if(keySize < (size_t)keyLen) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "key length %d is not enough (%d expected)",
 		    keySize, keyLen);
 	return(-1);
@@ -90,8 +92,10 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, const unsigned c
 			 key, NULL, transform->encode);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "EVP_CipherInit",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "EVP_CipherInit");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 		
@@ -123,8 +127,10 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	ret = xmlSecOpenSSLEvpBlockCipherInit(transform, transformCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecOpenSSLEvpBlockCipherInit",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLEvpBlockCipherInit");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -133,8 +139,10 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	ret = xmlSecOpenSSLEvpBlockCipherUpdate(transform, transformCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecOpenSSLEvpBlockCipherUpdate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLEvpBlockCipherUpdate");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
@@ -142,8 +150,10 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	    ret = xmlSecOpenSSLEvpBlockCipherFinal(transform, transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecOpenSSLEvpBlockCipherFinal",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecOpenSSLEvpBlockCipherFinal");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	} 
@@ -155,8 +165,10 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	xmlSecAssert2(last == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "invalid transform status %d", transform->status);
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "%d", transform->status);
 	return(-1);
     }
     
@@ -190,8 +202,10 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = xmlSecBufferSetSize(out, ivLen);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferSetSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferSetSize(%d)", ivLen);
+			"%d", ivLen);
 	    return(-1);
 	}
 	
@@ -199,8 +213,10 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
         ret = RAND_bytes(xmlSecBufferGetData(out), ivLen);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecTransformGetName(transform),
+			"RAND_bytes",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"RAND_bytes(%d) - %d", ivLen, ret);
+			"%d", ivLen);
 	    return(-1);    
 	}
 
@@ -208,8 +224,10 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = EVP_CipherInit(ctx, NULL, NULL, xmlSecBufferGetData(out), transform->encode);
         if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"EVP_CipherInit",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"EVP_CipherInit");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else {
@@ -223,8 +241,10 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = EVP_CipherInit(ctx, NULL, NULL, xmlSecBufferGetData(in), transform->encode);
         if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"EVP_CipherInit",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"EVP_CipherInit");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
@@ -232,8 +252,10 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = xmlSecBufferRemoveHead(in, ivLen);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferRemoveHead(%d)", ivLen);
+			"%d", ivLen);
 	    return(-1);
 	}
     }
@@ -280,8 +302,10 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferSetMaxSize(%d)", outSize + inSize + blockLen);
+		    "%d", outSize + inSize + blockLen);
 	return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -313,8 +337,10 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = EVP_CipherUpdate(ctx, outBuf, &outLen, xmlSecBufferGetData(in), inSize);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "EVP_CipherUpdate",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "EVP_CipherUpdate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -343,8 +369,10 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferSetSize(%d)", outSize + outLen);
+		    "%d", outSize + outLen);
 	return(-1);
     }
         
@@ -352,8 +380,10 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecBufferRemoveHead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferRemoveHead(%d)", inSize);
+		    "%d", inSize);
 	return(-1);
     }
     return(0);
@@ -393,8 +423,10 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferSetMaxSize(%d)", outSize + 2 * blockLen);
+		    "%d", outSize + 2 * blockLen);
 	return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -425,8 +457,10 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 	    ret = RAND_bytes(pad, padLen - 1);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecTransformGetName(transform),
+			    "RAND_bytes",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "RAND_bytes(%d) - %d", padLen - 1, ret);
+			    "%d", padLen - 1);
 		return(-1);    
 	    }
 	}
@@ -436,8 +470,10 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 	ret = EVP_CipherUpdate(ctx, outBuf, &outLen, pad, padLen);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"EVP_CipherUpdate",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"EVP_CipherUpdate");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	outBuf += outLen;
@@ -448,8 +484,10 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     ret = EVP_CipherFinal(ctx, outBuf, &outLen2);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "EVP_CipherFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "EVP_CipherFinal");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -479,8 +517,11 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 		memcpy(outBuf, ctx->final, outLen2);
 	    } else if(outLen2 < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecTransformGetName(transform),
+			    NULL,
 			    XMLSEC_ERRORS_R_INVALID_DATA,
-			    "padding is greater than buffer");
+			    "padding %d is greater than buffer %d",
+			    ctx->final[blockLen - 1], blockLen);
 		return(-1);	
 	    }
 	}
@@ -491,8 +532,10 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     ret = xmlSecBufferSetSize(out, outSize + outLen + outLen2);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferSetSize(%d)", outSize + outLen + outLen2);
+		    "%d", outSize + outLen + outLen2);
 	return(-1);
     }
 
@@ -559,15 +602,19 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     ret = EVP_DigestFinal(ctx, dgst, &dgstSize);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "EVP_DigestFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "EVP_DigestFinal");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     xmlSecAssert2(dgstSize > 0, -1);
     
     if(dataSize != dgstSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "data and digest sizes are different (data=%d, dgst=%d)", 
 		    dataSize, dgstSize);
 	transform->status = xmlSecTransformStatusFail;
@@ -576,7 +623,9 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     
     if(memcmp(dgst, data, dgstSize) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "data and digest do not match");
 	transform->status = xmlSecTransformStatusFail;
 	return(0);
@@ -607,8 +656,10 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	ret = EVP_DigestInit(ctx, xmlSecOpenSSLEvpDigestGetDigest(transform));
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"EVP_DigestInit",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"EVP_DigestInit");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	transform->status = xmlSecTransformStatusWorking;
@@ -622,16 +673,20 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	    ret = EVP_DigestUpdate(ctx, xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "EVP_DigestUpdate",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "EVP_DigestUpdate");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	    
 	    ret = xmlSecBufferRemoveHead(in, inSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecBufferRemoveHead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBufferRemoveHead(%d)", inSize);
+			    "%d", inSize);
 		return(-1);
 	    }
 	}
@@ -643,16 +698,20 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	        ret = EVP_DigestFinal(ctx, dgst, &dgstSize);
 		if(ret != 1) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecTransformGetName(transform),
+				"EVP_DigestFinal",
 				XMLSEC_ERRORS_R_CRYPTO_FAILED,
-				"EVP_DigestFinal");
+				XMLSEC_ERRORS_NO_MESSAGE);
 		    return(-1);
 		}
 		
 		ret = xmlSecBufferAppend(out, dgst, dgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecTransformGetName(transform),
+				"xmlSecBufferAppend",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecBufferAppend(%d)", dgstSize);
+				"%d", dgstSize);
 		    return(-1);
 		}
 	    }
@@ -663,8 +722,10 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "invalid transform status %d", transform->status);
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "%d", transform->status);
 	return(-1);
     }
     
@@ -732,8 +793,10 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, EVP_PKEY* pKey) {
     transform->reserved1 = xmlSecOpenSSLEvpKeyDup(pKey);
     if(transform->reserved1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xmlSecOpenSSLEvpKeyDup",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpKeyDup");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -764,12 +827,16 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     ret = EVP_VerifyFinal(ctx, (unsigned char*)data, dataSize, pKey);
     if(ret < 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "EVP_VerifyFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "EVP_VerifyFinal");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     } else if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    xmlSecTransformGetName(transform),
+		    "EVP_VerifyFinal",
+		    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
 		    "signature do not match");
 	transform->status = xmlSecTransformStatusFail;
 	return(0);
@@ -809,16 +876,20 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_SignInit(ctx, xmlSecOpenSSLEvpSignatureGetDigest(transform));
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "EVP_SignInit",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "EVP_SignInit");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	} else {
 	    ret = EVP_VerifyInit(ctx, xmlSecOpenSSLEvpSignatureGetDigest(transform));
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "EVP_VerifyInit",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "EVP_VerifyInit");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	}
@@ -830,16 +901,20 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_SignUpdate(ctx, xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "EVP_SignUpdate",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "EVP_SignUpdate");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	} else {
 	    ret = EVP_VerifyUpdate(ctx, xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "EVP_VerifyUpdate",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "EVP_VerifyUpdate");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	}
@@ -847,8 +922,10 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferRemoveHead(%d)", inSize);
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -866,24 +943,30 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = xmlSecBufferSetMaxSize(out, outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecBufferSetMaxSize",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBufferSetMaxSize(%d)", outSize);
+			    "%d", outSize);
 		return(-1);
 	    }
 	
 	    ret = EVP_SignFinal(ctx, xmlSecBufferGetData(out), &outSize, pKey);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "EVP_SignFinal",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "EVP_SignFinal");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 		
 	    ret = xmlSecBufferSetSize(out, outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecBufferSetSize",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBufferSetSize(%d)", outSize);
+			    "%d", outSize);
 		return(-1);
 	    }
 	}
@@ -895,8 +978,10 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "invalid transform status %d", transform->status);
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "%d", transform->status);
 	return(-1);
     }
     
@@ -917,8 +1002,10 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
     ret = CRYPTO_add(&pKey->references,1,CRYPTO_LOCK_EVP_PKEY);
     if(ret <= 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "CRYPTO_add",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "CRYPTO_add");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);		    	
     }
     
@@ -938,16 +1025,20 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 	data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataRsaId);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecKeyDataCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataCreate");
+			"xmlSecOpenSSLKeyDataRsaId");
 	    return(NULL);	    
 	}
 	
 	ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecOpenSSLKeyDataRsaAdoptEvp",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataRsaAdoptEvp");
+			"xmlSecOpenSSLKeyDataRsaId");
 	    xmlSecKeyDataDestroy(data);
 	    return(NULL);	    
 	}
@@ -958,16 +1049,20 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 	data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataDsaId);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecKeyDataCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataCreate");
+			"xmlSecOpenSSLKeyDataDsaId");
 	    return(NULL);	    
 	}
 	
 	ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecOpenSSLKeyDataDsaAdoptEvp",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataDsaAdoptEvp");
+			"xmlSecOpenSSLKeyDataDsaId");
 	    xmlSecKeyDataDestroy(data);
 	    return(NULL);	    
 	}
@@ -975,8 +1070,10 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 #endif /* XMLSEC_NO_DSA */	
     default:	
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "key type %d not supported", pKey->type);
+		    "evp key type %d not supported", pKey->type);
 	return(NULL);
     }
     

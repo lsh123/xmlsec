@@ -180,16 +180,20 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
 	pKey = EVP_PKEY_new();
 	if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecKeyDataGetName(data),
+			"EVP_PKEY_new",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"EVP_PKEY_new");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
 	ret = EVP_PKEY_assign_DSA(pKey, dsa);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecKeyDataGetName(data),
+			"EVP_PKEY_assign_DSA",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"EVP_PKEY_assign_DSA");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}	
     }
@@ -197,8 +201,10 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecOpenSSLKeyDataDsaAdoptEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaAdoptEvp");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	if(pKey != NULL) {
 	    EVP_PKEY_free(pKey);
 	}
@@ -262,8 +268,10 @@ xmlSecOpenSSLKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 	pKeyDst = xmlSecOpenSSLEvpKeyDup(pKeySrc);
 	if(pKeyDst == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpDupKey");
+			xmlSecKeyDataGetName(dst),
+			"xmlSecOpenSSLEvpKeyDup",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}	
     } 
@@ -271,8 +279,10 @@ xmlSecOpenSSLKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(dst, pKeyDst);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(dst),
+		    "xmlSecOpenSSLKeyDataDsaAdoptEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaAdoptEvp");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	EVP_PKEY_free(pKeyDst);
 	return(-1);
     }
@@ -290,8 +300,10 @@ xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, NULL);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecOpenSSLKeyDataDsaAdoptEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaAdoptEvp");
+		    XMLSEC_ERRORS_NO_MESSAGE);
     }
 }
 
@@ -310,16 +322,20 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     if(xmlSecKeyGetValue(key) != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecKeyGetValue",
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-		    "key already has a value");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
 
     dsa = DSA_new();
     if(dsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "DSA_new",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "DSA_new");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -328,15 +344,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "P");
+		    "<dsig:P> expected");
 	DSA_free(dsa);	
 	return(-1);
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->p)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeGetBNValue",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeGetBNValue");
+		    "<dsig:P>");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -345,15 +365,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Q");
+		    "<dsig:Q> expected");
 	DSA_free(dsa);
 	return(-1);
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->q)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeGetBNValue");
+		    "<dsig:Q>");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -362,15 +386,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "G");
+		    "<dsig:G>");
 	DSA_free(dsa);
 	return(-1);
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->g)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeGetBNValue");
+		    "<dsig:Q>");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -381,8 +409,10 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	 * we are not sure exactly what do we read */
 	if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->priv_key)) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecKeyDataKlassGetName(id),
+			"xmlSecOpenSSLNodeGetBNValue",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLNodeGetBNValue");
+			"<xmlsec:X>");
 	    DSA_free(dsa);
 	    return(-1);
 	}
@@ -392,15 +422,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is Y node. */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Y");
+		    "<dsig:Y>");
 	DSA_free(dsa);
 	return(-1);
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->pub_key)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeGetBNValue");
+		    "<dsig:Y>");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -418,8 +452,10 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s", (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    "no more nodes expected");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -427,8 +463,10 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	DSA_free(dsa);
 	return(-1);
     }
@@ -436,8 +474,10 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecOpenSSLKeyDataDsaAdoptDsa",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaAdoptDsa");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDataDestroy(data);
 	DSA_free(dsa);
 	return(-1);
@@ -446,8 +486,10 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeySetValue");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDataDestroy(data);
 	return(-1);	
     }
@@ -481,15 +523,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "P", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"P\")");
+		    "<dsig:P>");
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->p, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeSetBNValue - %d", ret);
+		    "<dsig:P>");
 	return(-1);
     }    
 
@@ -498,15 +544,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "Q", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"Q\")");	
+		    "<dsig:Q>");	
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->q, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeSetBNValue - %d", ret);
+		    "<dsig:Q>");
 	return(-1);
     }
 
@@ -515,15 +565,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "G", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"G\")");	
+		    "<dsig:G>");	
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->g, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeSetBNValue - %d", ret);
+		    "<dsig:G>");
 	return(-1);
     }
 
@@ -532,15 +586,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	cur = xmlSecAddChild(node, BAD_CAST "X", xmlSecNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecKeyDataKlassGetName(id),
+			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(\"X\")");	
+			"<dsig:X>");	
 	    return(-1);	
 	}
 	ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->priv_key, 1);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecKeyDataKlassGetName(id),
+			"xmlSecOpenSSLNodeSetBNValue",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLNodeSetBNValue - %d", ret);
+			"<dsig:X>");
 	    return(-1);
 	}
     }
@@ -550,15 +608,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "Y", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"Y\")");	
+		    "<dsig:Y>");	
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->pub_key, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(id),
+		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLNodeSetBNValue - %d", ret);
+		    "<dsig:Y>");
 	return(-1);
     }
     return(0);
@@ -577,16 +639,20 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     dsa = DSA_generate_parameters(sizeBits, NULL, 0, &counter_ret, &h_ret, NULL, NULL); 
     if(dsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "DSA_generate_parameters",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "DSA_generate_parameters(size=%d)", sizeBits);
+		    "size=%d", sizeBits);
 	return(-1);    
     }
 
     ret = DSA_generate_key(dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "DSA_generate_key",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "DSA_generate_key - %d", ret);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	DSA_free(dsa);
 	return(-1);    
     }
@@ -594,8 +660,10 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataGetName(data),
+		    "xmlSecOpenSSLKeyDataDsaAdoptDsa",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaAdoptDsa");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	DSA_free(dsa);
 	return(-1);
     }
@@ -752,16 +820,20 @@ xmlSecOpenSSLDsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     pKey = xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xmlSecOpenSSLKeyDataDsaGetEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaGetEvpKey");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     ret = xmlSecOpenSSLEvpSignatureSetKey(transform, pKey);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xmlSecOpenSSLEvpSignatureSetKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpSignatureSetKey");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -846,6 +918,8 @@ xmlSecOpenSSLDsaEvpSign(int type ATTRIBUTE_UNUSED,
        (sSize > (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2))) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "size(r)=%d or size(s)=%d > %d", 
 		    rSize, sSize, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2);
@@ -876,7 +950,9 @@ xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED,
 
     if(siglen != XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "invalid length %d (%d expected)",
 		    siglen, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE);
 	goto err;
@@ -887,8 +963,10 @@ xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED,
 		       XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2, NULL);
     if((s->r == NULL) || (s->s == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "BN_bin2bn",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "BN_bin2bn");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto err;
     }
 

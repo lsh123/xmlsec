@@ -210,13 +210,24 @@ extern "C" {
  * "Not valid after" verification failed.
  */
 #define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 46
-
 /**
  * XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE:
  *
  * The <dsig:Reference> validation failed.
  */
 #define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
+/**
+ * XMLSEC_ERRORS_R_INVALID_STATUS:
+ *
+ * Invalid status.
+ */
+#define XMLSEC_ERRORS_R_INVALID_STATUS		 52
+/**
+ * XMLSEC_ERRORS_R_DATA_NOT_MATCH:
+ *
+ * The data do not match our expectation.
+ */
+#define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 53
 /**
  * XMLSEC_ERRORS_R_ASSERTION:
  *
@@ -253,9 +264,13 @@ extern "C" {
  *
  * The errors reporting callback function typedef.
  */
-typedef void (*xmlSecErrorsCallback) 		(const char* file, int line, 
-				    		 const char* func,
-						 int reason, const char* msg);
+typedef void (*xmlSecErrorsCallback) 			(const char* file, 
+						         int line, 
+				    			 const char* func,
+							 const char* errorObject,
+							 const char* errorSubject,
+							 int reason, 
+							 const char* msg);
 
 
 XMLSEC_EXPORT void xmlSecErrorsInit			(void);
@@ -264,6 +279,8 @@ XMLSEC_EXPORT void xmlSecErrorsSetCallback		(xmlSecErrorsCallback callback);
 XMLSEC_EXPORT void xmlSecErrorsDefaultCallback		(const char* file, 
 							 int line, 
 				    			 const char* func,
+							 const char* errorObject,
+							 const char* errorSubject,
 							 int reason, 
 							 const char* msg);
 XMLSEC_EXPORT int xmlSecErrorsGetCode			(size_t pos);
@@ -288,15 +305,20 @@ XMLSEC_EXPORT_VAR int xmlSecPrintErrorMessages;
  */
 #define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
 #ifdef __GNUC__
-#define XMLSEC_ERRORS_PRINTF_ATTRIBUTE 		__attribute__ ((format (printf, 5, 6)))
+#define XMLSEC_ERRORS_PRINTF_ATTRIBUTE 		__attribute__ ((format (printf, 7, 8)))
 #else /* __GNUC__ */
 #define XMLSEC_ERRORS_PRINTF_ATTRIBUTE 		
 #endif /* __GNUC__ */
 
-XMLSEC_EXPORT void xmlSecError			(const char* file, int line, 
-						 const char* func,
-						 int reason, const char* msg, 
-						 ...) XMLSEC_ERRORS_PRINTF_ATTRIBUTE;
+#define XMLSEC_ERRORS_NO_MESSAGE 		xmlSecErrorGetEmptyMessage()
+XMLSEC_EXPORT const char* xmlSecErrorGetEmptyMessage	(void);
+XMLSEC_EXPORT void xmlSecError				(const char* file, 
+							 int line, 
+							 const char* func,
+							 const char* errorObject,
+							 const char* errorSubject,
+							 int reason,
+							 const char* msg, ...) XMLSEC_ERRORS_PRINTF_ATTRIBUTE;
 						 
 						
 
@@ -314,8 +336,10 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 #define xmlSecAssert( p ) \
 	if(!( p ) ) { \
 	    xmlSecError(XMLSEC_ERRORS_HERE, \
+			NULL, \
+			#p, \
 			XMLSEC_ERRORS_R_ASSERTION, \
-			"%s", #p); \
+			XMLSEC_ERRORS_NO_MESSAGE); \
 	    return; \
 	} 
 
@@ -329,8 +353,10 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 #define xmlSecAssert2( p, ret ) \
 	if(!( p ) ) { \
 	    xmlSecError(XMLSEC_ERRORS_HERE, \
+			NULL, \
+			#p, \
 			XMLSEC_ERRORS_R_ASSERTION, \
-			"%s", #p); \
+			XMLSEC_ERRORS_NO_MESSAGE); \
 	    return(ret); \
 	} 
 

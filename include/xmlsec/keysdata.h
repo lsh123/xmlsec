@@ -144,6 +144,10 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
 								 size_t* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+#define xmlSecKeyDataGetName(data) \
+	((xmlSecKeyDataIsValid((data))) ? \
+	  xmlSecKeyDataKlassGetName((data)->id) : NULL)
+
 /**
  * xmlSecKeyDataIsValid:
  * @data: the pointer to data.
@@ -362,7 +366,7 @@ struct _xmlSecKeyDataKlass {
     size_t				objSize;
 
     /* data */
-    const xmlChar*			name;    
+    const char*				name;    
     xmlSecKeyDataUsage			usage;
     const xmlChar*			href;
     const xmlChar*			dataNodeName;
@@ -389,6 +393,9 @@ struct _xmlSecKeyDataKlass {
     xmlSecKeyDataDebugDumpMethod	debugDump;
     xmlSecKeyDataDebugDumpMethod	debugXmlDump;
 };
+
+#define xmlSecKeyDataKlassGetName(klass) \
+	(((klass)) ? ((klass)->name) : NULL)
 
 /***********************************************************************
  *
@@ -468,6 +475,9 @@ XMLSEC_EXPORT int		xmlSecKeyDataStoreFind		(xmlSecKeyDataStorePtr store,
 								 const xmlChar** params,
 								 size_t paramsSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+#define xmlSecKeyDataStoreGetName(store) \
+    ((xmlSecKeyDataStoreIsValid((store))) ? \
+      xmlSecKeyDataStoreKlassGetName((store)->id) : NULL)
 
 /**
  * xmlSecKeyDataStoreIsValid:
@@ -549,13 +559,15 @@ struct _xmlSecKeyDataStoreKlass {
     size_t				objSize;
 
     /* data */
-    const xmlChar*			name;    
+    const char*				name;    
         
     /* constructors/destructor */
     xmlSecKeyDataStoreInitializeMethod	initialize;
     xmlSecKeyDataStoreFinalizeMethod	finalize;
     xmlSecKeyDataStoreFindMethod	find;
 };
+#define xmlSecKeyDataStoreKlassGetName(klass) \
+	(((klass)) ? ((klass)->name) : NULL)
 
 /***********************************************************************
  *

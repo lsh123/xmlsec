@@ -326,6 +326,8 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha1GetKlass	(void);
 XMLSEC_EXPORT void 	xmlSecOpenSSLErrorsDefaultCallback		(const char* file, 
 									 int line, 
 									 const char* func,
+									 const char* errorObject,
+									 const char* errorSubject,
 									 int reason, 
 									 const char* msg);
 

@@ -18,6 +18,9 @@ extern "C" {
 #include <libxml/xpath.h>
 #include <xmlsec/xmlsec.h>
 
+#define xmlSecNodeGetName(node) \
+    (((node)) ? ((const char*)((node)->name)) : NULL)
+
 XMLSEC_EXPORT xmlDocPtr		xmlSecParseFile		(const char *filename);
 XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemory	(const unsigned char *buffer, 
 							 size_t size,

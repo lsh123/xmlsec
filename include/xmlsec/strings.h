@@ -59,26 +59,26 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrURI[];
  * AES strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAESKeyValue[];
+XMLSEC_EXPORT_VAR const char xmlSecNameAESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeAESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAESKeyValue[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes128Cbc[];
+XMLSEC_EXPORT_VAR const char xmlSecNameAes128Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes128Cbc[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes192Cbc[];
+XMLSEC_EXPORT_VAR const char xmlSecNameAes192Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes192Cbc[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes256Cbc[];
+XMLSEC_EXPORT_VAR const char xmlSecNameAes256Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes256Cbc[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWAes128[];
+XMLSEC_EXPORT_VAR const char xmlSecNameKWAes128[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes128[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWAes192[];
+XMLSEC_EXPORT_VAR const char xmlSecNameKWAes192[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes192[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWAes256[];
+XMLSEC_EXPORT_VAR const char xmlSecNameKWAes256[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes256[];
 
 /*************************************************************************
@@ -86,7 +86,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes256[];
  * BASE64 strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameBase64[];
+XMLSEC_EXPORT_VAR const char xmlSecNameBase64[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefBase64[];
 
 /*************************************************************************
@@ -94,14 +94,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefBase64[];
  * DES strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDESKeyValue[];
+XMLSEC_EXPORT_VAR const char xmlSecNameDESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDESKeyValue[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDes3Cbc[];
+XMLSEC_EXPORT_VAR const char xmlSecNameDes3Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDes3Cbc[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWDes3[];
+XMLSEC_EXPORT_VAR const char xmlSecNameKWDes3[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWDes3[];
 
 /*************************************************************************
@@ -109,11 +109,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWDes3[];
  * DSA strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDSAKeyValue[];
+XMLSEC_EXPORT_VAR const char xmlSecNameDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDSAKeyValue[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDsaSha1[];
+XMLSEC_EXPORT_VAR const char xmlSecNameDsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha1[];
 
 /*************************************************************************
@@ -121,19 +121,19 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha1[];
  * HMAC strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHMACKeyValue[];
+XMLSEC_EXPORT_VAR const char xmlSecNameHMACKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHMACKeyValue[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACOutputLength[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha1[];
+XMLSEC_EXPORT_VAR const char xmlSecNameHmacSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha1[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacRipemd160[];
+XMLSEC_EXPORT_VAR const char xmlSecNameHmacRipemd160[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacRipemd160[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacMd5[];
+XMLSEC_EXPORT_VAR const char xmlSecNameHmacMd5[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacMd5[];
 
 /*************************************************************************
@@ -141,14 +141,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacMd5[];
  * Memory Buffer strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMemBuf[];
+XMLSEC_EXPORT_VAR const char xmlSecNameMemBuf[];
 
 /*************************************************************************
  *
  * RIPEMD160 strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRipemd160[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRipemd160[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRipemd160[];
 
 /*************************************************************************
@@ -156,17 +156,17 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRipemd160[];
  * RSA strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRSAKeyValue[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRSAKeyValue[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha1[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha1[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPkcs1[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRsaPkcs1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPkcs1[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaOaep[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRsaOaep[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaOaep[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
 
@@ -175,7 +175,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
  * SHA1 strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha1[];
+XMLSEC_EXPORT_VAR const char xmlSecNameSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha1[];
 
 /*************************************************************************
@@ -183,11 +183,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha1[];
  * X509 strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Data[];
+XMLSEC_EXPORT_VAR const char xmlSecNameX509Data[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509Data[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX509Data[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRawX509Cert[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRawX509Cert[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRawX509Cert[];
 
 /*************************************************************************
@@ -195,7 +195,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRawX509Cert[];
  * Xslt strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXslt[];
+XMLSEC_EXPORT_VAR const char xmlSecNameXslt[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
 
 
@@ -205,7 +205,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
  * RetrievalMethod
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRetrievalMethod[];
+XMLSEC_EXPORT_VAR const char xmlSecNameRetrievalMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRetrievalMethod[];
 
 /*************************************************************************
@@ -213,7 +213,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRetrievalMethod[];
  * EncryptedKey
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEncryptedKey[];
+XMLSEC_EXPORT_VAR const char xmlSecNameEncryptedKey[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptedKey[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncryptedKey[];
 

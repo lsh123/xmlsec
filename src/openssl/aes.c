@@ -407,8 +407,10 @@ xmlSecOpenSSLAesCbcSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 					    xmlSecBufferGetSize(buffer)); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecOpenSSLEvpBlockCipherSetKey",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpBlockCipherSetKey"); 
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }
 
@@ -573,8 +575,10 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(xmlSecOpenSSLKWAesGetKey(transform), 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xmlSecOpenSSLKWAesGetKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKWAesGetKey");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
         
@@ -628,7 +632,9 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     expectedKeySize = xmlSecOpenSSLKWAesGetKeySize(transform);
     if(keySize < expectedKeySize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    xmlSecTransformGetName(transform),
+		    xmlSecKeyDataGetName(xmlSecKeyGetValue(key)),
+		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "key length %d is not enough (%d expected)",
 		    keySize, expectedKeySize);
 	return(-1);
@@ -639,9 +645,10 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 			    expectedKeySize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlSecBufferSetData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferSetData(%d)", 
-		    expectedKeySize);
+		    "%d", expectedKeySize);
 	return(-1);    
     }
 
@@ -678,6 +685,8 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	if((inSize % 8) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecTransformGetName(transform),
+			NULL,
 			XMLSEC_ERRORS_R_INVALID_SIZE,
 			"%d bytes - not 8 bytes aligned", inSize);
 	    return(-1);
@@ -694,8 +703,10 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	ret = xmlSecBufferSetMaxSize(out, outSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferSetMaxSize(%d)", outSize);
+			"%d", outSize);
 	    return(-1);
 	}
 
@@ -705,8 +716,10 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 					    xmlSecBufferGetData(out), outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecOpenSSLKWAesEncode",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecOpenSSLKWAesEncode");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	    outSize = ret;
@@ -716,8 +729,10 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 					    xmlSecBufferGetData(out), outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecOpenSSLKWAesDecode",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecOpenSSLKWAesDecode");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	    outSize = ret;
@@ -726,16 +741,20 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	ret = xmlSecBufferSetSize(out, outSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferSetSize", 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferSetSize(%d)", outSize);
+			"%d", outSize);
 	    return(-1);
 	}
 	
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferRemoveHead(%d)", inSize);
+			"%d", inSize);
 	    return(-1);
 	}
 	
@@ -745,8 +764,10 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "invalid transform status %d", transform->status);
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "%d", transform->status);
 	return(-1);
     }
     return(0);
@@ -857,8 +878,10 @@ xmlSecOpenSSLKWAesEncode(const unsigned char *key, size_t keySize,
     ret = AES_set_encrypt_key(key, 8 * keySize, &aesKey);
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "AES_set_encrypt_key",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "AES_set_encrypt_key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
 
@@ -913,8 +936,10 @@ xmlSecOpenSSLKWAesDecode(const unsigned char *key, size_t keySize,
     ret = AES_set_decrypt_key(key, 8 * keySize, &aesKey);
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "AES_set_decrypt_key",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "AES_set_decrypt_key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
     
@@ -947,8 +972,10 @@ xmlSecOpenSSLKWAesDecode(const unsigned char *key, size_t keySize,
     
     if(memcmp(xmlSecOpenSSLKWAesMagicBlock, out, XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "xmlSecOpenSSLKWAesMagicBlock",
 		    XMLSEC_ERRORS_R_INVALID_DATA,
-		    "magic block");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
 	
@@ -958,4 +985,3 @@ xmlSecOpenSSLKWAesDecode(const unsigned char *key, size_t keySize,
 
 #endif /* XMLSEC_OPENSSL_096 */
 #endif /* XMLSEC_NO_AES */
-

@@ -105,6 +105,7 @@ xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
  */
 void 
 xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
+			    const char* errorObject, const char* errorSubject,
 			    int reason, const char* msg) {
     if(xmlSecPrintErrorMessages) {    
 	const char* error_msg = NULL;
@@ -117,10 +118,12 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 	    }
 	}
 	xmlGenericError(xmlGenericErrorContext,
-	    "%s (%s:%d): error %d: %s : %s \n",
+	    "func=%s:file=%s:line=%d:obj=%s:subj=%s:error=%d: %s : %s \n",
 	    (func != NULL) ? func : "unknown",
 	    (file != NULL) ? file : "unknown",
 	    line,
+	    (errorObject != NULL) ? errorObject : "unknown",
+	    (errorSubject != NULL) ? errorSubject : "unknown",
 	    reason,
 	    (error_msg != NULL) ? error_msg : "",
 	    (msg != NULL) ? msg : "");
@@ -145,6 +148,12 @@ xmlSecErrorsGetMsg(size_t pos) {
     return(NULL);
 }
 
+const char* 
+xmlSecErrorGetEmptyMessage(void) {
+    static const char emptyMessage[] = " ";
+    return(emptyMessage);
+}
+
 /**
  * xmlSecError:
  * @file: the error origin filename (__FILE__).
@@ -158,12 +167,13 @@ xmlSecErrorsGetMsg(size_t pos) {
  */
 void	
 xmlSecError(const char* file, int line, const char* func, 
+	    const char* errorObject, const char* errorSubject,
   	    int reason, const char* msg, ...) {
 	    
     if(xmlSecErrorsClbk != NULL) {
 	char error_msg[XMLSEC_ERRORS_BUFFER_SIZE];
 	
-	if(msg != NULL) {
+	if((msg != NULL) && (msg != XMLSEC_ERRORS_NO_MESSAGE)){
 	    va_list va;
 
 	    va_start(va, msg);
@@ -175,8 +185,8 @@ xmlSecError(const char* file, int line, const char* func,
 	    error_msg[sizeof(error_msg) - 1] = '\0';
 	    va_end(va);	
 	}
-	xmlSecErrorsClbk(file, line, func, reason, 
-			(msg != NULL) ? error_msg : NULL);
+	xmlSecErrorsClbk(file, line, func, errorObject, errorSubject, reason, 
+			(msg != NULL) ? error_msg : XMLSEC_ERRORS_NO_MESSAGE);
     }	
 }
  

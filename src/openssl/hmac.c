@@ -445,8 +445,10 @@ xmlSecOpenSSLHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode
     
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    xmlSecTransformGetName(transform),
+		    xmlSecNodeGetName(cur),
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "no nodes expected");
 	return(-1);
     }
     return(0); 
@@ -486,6 +488,8 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     if(xmlSecBufferGetSize(buffer) == 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "key is empty");
 	return(-1);    
@@ -527,7 +531,9 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     
     if(dataSize != bytesDgstSize){
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "data and digest sizes are different (data=%d, dgst=%d)", 
 		    dataSize, bytesDgstSize);
 	transform->status = xmlSecTransformStatusFail;
@@ -544,7 +550,9 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
         
 	if((dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			xmlSecTransformGetName(transform),
+			NULL,
+			XMLSEC_ERRORS_R_DATA_NOT_MATCH,
 			"data and digest do not match");
 	    transform->status = xmlSecTransformStatusFail;
 	    return(0);
@@ -554,7 +562,9 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     
     if((dataSize > 0) && (memcmp(dgst, data, dataSize) != 0)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
 		    "data and digest do not match");
 	transform->status = xmlSecTransformStatusFail;
 	return(0);
@@ -596,8 +606,10 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 	    ret = xmlSecBufferRemoveHead(in, inSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecTransformGetName(transform),
+			    "xmlSecBufferRemoveHead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBufferRemoveHead(%d)", inSize);
+			    "%d", inSize);
 		return(-1);
 	    }
 	}
@@ -614,7 +626,9 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 		    bytesDgstSize = dgstSize;
 		} else if(bytesDgstSize > dgstSize) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				xmlSecTransformGetName(transform),
+				NULL,
+				XMLSEC_ERRORS_R_INVALID_SIZE,
 				"required digest size %d is less than we have %d)", 
 				bytesDgstSize, dgstSize);
 		    return(-1);
@@ -623,8 +637,10 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 		ret = xmlSecBufferAppend(out, dgst, bytesDgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				xmlSecTransformGetName(transform),
+				"xmlSecBufferAppend",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecBufferAppend(%d)", dgstSize);
+				"%d", dgstSize);
 		    return(-1);
 		}
 	    }
@@ -635,8 +651,10 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "invalid transform status %d", transform->status);
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "%d", transform->status);
 	return(-1);
     }
     

@@ -219,6 +219,11 @@ XMLSEC_EXPORT int			xmlSecTransformDefault2WriteBin	(xmlSecTransformPtr transfor
 								 size_t size);		
 XMLSEC_EXPORT int			xmlSecTransformDefault2FlushBin	(xmlSecTransformPtr transform);
 
+#define xmlSecTransformGetName(transform) \
+	((xmlSecTransformIsValid((transform))) ? \
+	  xmlSecTransformKlassGetName((transform)->id) : NULL)
+
+
 /**
  * xmlSecTransformIsValid:
  * @transform: the pointer to transform.
@@ -490,7 +495,7 @@ struct _xmlSecTransformKlass {
     size_t				objSize;
 
     /* general data */
-    const xmlChar*			name;
+    const char*				name;
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
     const xmlChar			*href;
@@ -519,7 +524,8 @@ struct _xmlSecTransformKlass {
     xmlSecTransformExecuteC14NMethod	executeC14N;
 };
 
-
+#define xmlSecTransformKlassGetName(klass) \
+	(((klass)) ? ((klass)->name) : NULL)
 
 
 #include "transforms-old.h"

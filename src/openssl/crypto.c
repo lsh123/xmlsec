@@ -36,20 +36,26 @@ int
 xmlSecOpenSSLInit (void)  {
     if(xmlSecOpenSSLErrorsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLErrorsInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to initiaze errors");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecOpenSSLKeysInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLKeysInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register keys");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecOpenSSLTransformsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLTransformsInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register transforms");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -79,8 +85,10 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "xmlSecBufferSetSize`");
+		    "%d", size);
 	return(-1);
     }
         
@@ -88,8 +96,10 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     ret = RAND_bytes((unsigned char*)xmlSecBufferGetData(buffer), size);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "RAND_bytes",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "RAND_bytes");
+		    "%d", size);
 	return(-1);    
     }	
     return(0);
@@ -97,11 +107,15 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
 
 void 
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
+				const char* errorObject, const char* errorSubject,
 				int reason, const char* msg) {
 
-    ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB, XMLSEC_OPENSSL_ERRORS_FUNCTION, 
-		  reason, file, line);
-    xmlSecErrorsDefaultCallback(file, line, func, reason, msg);
+    ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB, 
+		XMLSEC_OPENSSL_ERRORS_FUNCTION, 
+		reason, file, line);
+    xmlSecErrorsDefaultCallback(file, line, func, 
+		errorObject, errorSubject, 
+		reason, msg);
 }
 
 static int 
@@ -141,8 +155,10 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_OPENSSL_096
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataAesId),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_OPENSSL_096 */    
@@ -151,8 +167,10 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_DES    
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataDesId),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register des key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_DES */
@@ -160,8 +178,10 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_DSA
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDsaId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataDsaId),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register dsa key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_DSA */    
@@ -169,8 +189,10 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_HMAC  
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataHmacId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataHmacId),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register hmac key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_HMAC */    
@@ -178,8 +200,10 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_RSA
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataRsaId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataRsaId),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa key");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_RSA */
@@ -187,15 +211,19 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_X509
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataX509Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataX509Id),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register x509 data");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataRawX509CertId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataRawX509CertId),
+		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register x509 data");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_X509 */
@@ -208,8 +236,10 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_SHA1    
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformSha1Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register sha1 digest transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_SHA1 */
@@ -217,30 +247,37 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRipemd160Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRipemd160Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register ripemd160 digest transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-    /* MAC */ 
 #ifndef XMLSEC_NO_HMAC
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacSha1Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register hmac sha1 transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacRipemd160Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacRipemd160Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register hamc ripemd160 transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacMd5Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacMd5Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register hmac md5 transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_HMAC */
@@ -248,8 +285,10 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_DSA
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformDsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformDsaSha1Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register dsa/sha1 transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_DSA */    
@@ -257,20 +296,26 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_RSA
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaSha1Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/sha1 transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaPkcs1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaPkcs1Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/pkcs1 transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaOaepId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaOaepId),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/oaep transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_RSA */
@@ -278,14 +323,18 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_DES    
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformDes3CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformDes3CbcId),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register des3-cbc encryption transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWDes3Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWDes3Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register des key wrapper transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_DES */
@@ -294,39 +343,51 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_OPENSSL_096
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes128CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes128CbcId),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes128 encryption transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes192CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes192CbcId),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes192 encryption transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes256CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes256CbcId),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes256 encryption transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes128Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes128Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes128 key wrapper transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes192Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes192Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes192 key wrapper transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes256Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes256Id),
+		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register aes256 key wrapper transform");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_OPENSSL_096 */    

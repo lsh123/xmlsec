@@ -158,6 +158,34 @@ xmltree
 @ids: 
 
 
+<!-- ##### FUNCTION xmlSecCreateTree ##### -->
+<para>
+
+</para>
+
+@rootNodeName: 
+@rootNodeNs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecIsEmptyNode ##### -->
+<para>
+
+</para>
+
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecIsEmptyString ##### -->
+<para>
+
+</para>
+
+@str: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecIsHex ##### -->
 <para>
 

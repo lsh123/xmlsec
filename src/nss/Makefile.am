@@ -2,6 +2,7 @@ NULL =
 
 EXTRA_DIST = \
 	globals.h \
+	README \
 	$(NULL)
 
 INCLUDES = \
@@ -19,11 +20,20 @@ lib_LTLIBRARIES = \
 
 libxmlsec1_nss_la_SOURCES =\
 	app.c \
+	bignum.c \
 	ciphers.c \
 	crypto.c \
 	digests.c \
 	hmac.c \
+	pkikeys.c \
+	signatures.c \
 	symkeys.c \
+	x509.c \
+	x509vfy.c \
+	keysstore.c \
+	kt_rsa.c \
+	kw_des.c \
+	kw_aes.c \
 	$(NULL)
 
 libxmlsec1_nss_la_LIBADD = \

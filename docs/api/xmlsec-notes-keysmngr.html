@@ -77,26 +77,26 @@
 	processing require a common list of trusted certificates to be 
 	available. XML Security Library keeps all the common information 
 	for key data processing in a a collection of key data stores called 
-	&quot;keys manager&quot;.
+	"keys manager".
         </p>
 <div class="FIGURE">
 <a name="AEN337"></a><p><b>Figure 1. The keys manager structure.</b></p>
 <p><img src="images/keysmngr.png" align="CENTER"></p>
 </div>
-<p>Keys manager has a special &quot;keys store&quot; which lists the keys 
-	known to the application. This &quot;keys store&quot; is used by XML Security 
+<p>Keys manager has a special "keys store" which lists the keys 
+	known to the application. This "keys store" is used by XML Security 
 	Library to lookup keys by name, type and crypto algorithm (for example,
 	during 
     	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>
 	processing). The XML Security Library 
-	provides default simple &quot;flat list&quot; based implementation of a default keys 
+	provides default simple "flat list" based implementation of a default keys 
 	store. The application can replace it with any other keys store 
 	(for example, based on an SQL database).
 	</p>
 <p>Keys manager is the only object in XML Security Library which 
 	is supposed to be shared by many different operations. Usually keys 
 	manager is initialized once at the application startup and later is 
-	used by XML Security library routines in &quot;read-only&quot; mode. If 
+	used by XML Security library routines in "read-only" mode. If 
 	application or crypto function need to modify any of the key data 
 	stores inside keys manager then proper synchronization must be 
 	implemented. In the same time, application can create a new keys 

@@ -119,7 +119,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
     /* load template */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
@@ -128,51 +128,51 @@ encrypt_file(const char* xml_file, const char* key_file) {
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
 				NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to create encryption template\n&quot;);
+	fprintf(stderr, "Error: failed to create encryption template\n");
 	goto done;   
     }
 
     /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add CipherValue node\n&quot;);
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
+	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
 
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key name\n&quot;);
+	fprintf(stderr, "Error: failed to add key name\n");
 	goto done;		
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+        fprintf(stderr,"Error: failed to create encryption context\n");
 	goto done;
     }
 
     /* load DES key, assuming that there is not password */
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &lt; 0) {
-        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
+        fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
     

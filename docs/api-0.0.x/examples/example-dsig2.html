@@ -101,16 +101,16 @@ context   object per application<br><br><code>
             keysMngr = xmlSecSimpleKeysMngrCreate();    
          <br>
             if(keysMngr == NULL) {<br>
-              fprintf(stderr, &quot;Error: failed to create
- keys   manager\n&quot;);<br>
+              fprintf(stderr, "Error: failed to create
+ keys   manager\n");<br>
               goto done;    <br>
             }<br><br>
             /** <br>
              * load key<br>
              */<br>
             if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br>
-              fprintf(stderr, &quot;Error: failed to load
-key   from  \&quot;%s\&quot;\n&quot;, argv[1]);<br>
+              fprintf(stderr, "Error: failed to load
+key   from  \"%s\"\n", argv[1]);<br>
               goto done;<br>
             }<br>
           <br>
@@ -120,8 +120,8 @@ key   from  \&quot;%s\&quot;\n&quot;, argv[1]);<br>
              */<br>
             dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
             if(dsigCtx == NULL) {<br>
-              fprintf(stderr,&quot;Error: failed to create 
-dsig   context\n&quot;);<br>
+              fprintf(stderr,"Error: failed to create 
+dsig   context\n");<br>
               goto done; <br>
             }</code><br>
 </p>
@@ -145,8 +145,8 @@ dsig   context\n&quot;);<br>
                     */<br>
                    doc = xmlParseFile(argv[2]);<br>
                    if (doc == NULL) {<br>
-                      fprintf(stderr, &quot;Error    
-       : unable to parse file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+                      fprintf(stderr, "Error    
+       : unable to parse file \"%s\"\n", argv[2]);<br>
                       goto done;<br>
                    }<br>
                    <br>
@@ -155,8 +155,8 @@ dsig   context\n&quot;);<br>
   kind<br>
                     */    <br>
                    if(xmlDocGetRootElement(doc) == NULL) {<br>
-                       fprintf(stderr,&quot;Error:
-    empty    document for file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+                       fprintf(stderr,"Error:
+    empty    document for file \"%s\"\n", argv[2]);<br>
                        goto done;<br>
                    }   </code><code></code>
       </p>
@@ -179,10 +179,10 @@ to use XML Security Library for this and can create the template yourself!
          /**<br>
           * Create Signature node <br>
           */<br>
-         signatureNode = xmlSecSignatureCreate(&quot;NULL&quot;);<br>
+         signatureNode = xmlSecSignatureCreate("NULL");<br>
          if(signatureNode == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  create  signature\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  create  signature\n");<br>
              return(NULL);<br>
          }    <br><br>
          /**<br>
@@ -192,24 +192,24 @@ methods<br>
          signedInfoNode = xmlSecSignatureAddSignedInfo(signatureNode, 
   NULL);<br>
          if(signedInfoNode == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  SignedInfo\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  SignedInfo\n");<br>
            xmlSecSignatureDestroy(signatureNode);<br>
            return(NULL);<br>
          }<br><br>
          cur = xmlSecSignedInfoAddC14NMethod(signedInfoNode,
   xmlSecC14NInclusive);<br>
          if(cur == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  C14N method\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  C14N method\n");<br>
                     xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br><br>
          cur = xmlSecSignedInfoAddSignMethod(signedInfoNode,
   xmlSecSignDsaSha1);<br>
          if(cur == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  sign method\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  sign method\n");<br>
          </code><code></code><code>     xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br><br>
@@ -226,16 +226,16 @@ method   and<br>
                      
       NULL);<br>
          if(referenceNode == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  Reference\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  Reference\n");<br>
              xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br><br>
          cur = xmlSecReferenceAddDigestMethod(referenceNode,
   xmlSecDigestSha1);<br>
          if(cur == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  digest method\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  digest method\n");<br>
              xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br>
@@ -245,8 +245,8 @@ to  add  digest method\n&quot;);<br>
                      
         xmlSecTransformEnveloped);<br>
          if(cur == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add enveloped transform\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add enveloped transform\n");<br>
              xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br><br>
@@ -258,16 +258,16 @@ to  add enveloped transform\n&quot;);<br>
          keyInfoNode = xmlSecSignatureAddKeyInfo(signatureNode, 
   NULL);  <br>
          if(keyInfoNode == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  KeyInfo\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  KeyInfo\n");<br>
              xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br>
          <br>
          cur = xmlSecKeyInfoAddKeyValue(keyInfoNode);<br>
          if(cur == NULL) { <br>
-             fprintf(stderr,&quot;Error: failed
-to  add  KeyValue node\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  KeyValue node\n");<br>
              xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }<br><br></code><code>    /**<br>
@@ -275,8 +275,8 @@ to  add  KeyValue node\n&quot;);<br>
           */    <br>
          if(xmlAddChild(xmlDocGetRootElement(doc), signatureNode) 
   == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed
-to  add  Signature\n&quot;);<br>
+             fprintf(stderr,"Error: failed
+to  add  Signature\n");<br>
              xmlSecSignatureDestroy(signatureNode);<br>
              return(NULL);<br>
          }</code><br><code>   <br>
@@ -294,8 +294,8 @@ to  add  Signature\n&quot;);<br>
           */ <br>
          signatureNode = addSignature(doc);<br>
          if(signatureNode == NULL) {<br>
-             fprintf(stderr,&quot;Error: failed 
-  to add signature\n&quot;);<br>
+             fprintf(stderr,"Error: failed 
+  to add signature\n");<br>
               goto done;<br>
          }</code><code><br><br>
       /**<br>
@@ -303,8 +303,8 @@ to  add  Signature\n&quot;);<br>
            */ <br>
           ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, signatureNode, &amp;result);<br>
           if(ret &lt; 0) {<br>
-              fprintf(stderr,&quot;Error: signature
-  failed\n&quot;);<br>
+              fprintf(stderr,"Error: signature
+  failed\n");<br>
               goto done; <br>
           }  </code>
         </p>
@@ -318,8 +318,8 @@ to  add  Signature\n&quot;);<br>
                       xmlDocDumpMemoryEnc(doc, &amp;string,
  &amp;len,      NULL);<br>
                       if(result == NULL) {<br>
-                        fprintf(stderr,&quot;Error: failed 
-to  dump   document     to memory\n&quot;);<br>
+                        fprintf(stderr,"Error: failed 
+to  dump   document     to memory\n");<br>
                         goto done;<br>
                       }<br>
                       fwrite(string, len, 1, stdout);<br>
@@ -364,10 +364,10 @@ KeysManager;       shutdown  XML Security Library, LIBXml and OpenSSL<br>
         </p>
 <h4>Appendix A. The template document.</h4>
 <blockquote>
-<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+<code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
       &lt;Letter&gt;<br>
           Hello, World!    <br>
-          &lt;Info Id=&quot;SomeData&quot;&gt;<br>
+          &lt;Info Id="SomeData"&gt;<br>
           &lt;!-- Commentary --&gt;<br>
           &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
           &lt;Data2&gt; More data &lt;/Data2&gt;<br>
@@ -375,28 +375,28 @@ KeysManager;       shutdown  XML Security Library, LIBXml and OpenSSL<br>
       &lt;/Letter&gt;</code><br>
 </blockquote>
 <h4>Appendix B. The signed document.</h4>
-<blockquote><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+<blockquote><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
       &lt;Letter&gt;<br>
           Hello, World!    <br>
-          &lt;Info Id=&quot;SomeData&quot;&gt;<br>
+          &lt;Info Id="SomeData"&gt;<br>
           &lt;!-- Commentary --&gt;<br>
           &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
           &lt;Data2&gt; More data &lt;/Data2&gt;<br>
           &lt;/Info&gt;<br>
-      &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+      &lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
       &lt;SignedInfo&gt;<br>
-      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br>
-      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br>
-      &lt;Reference Id=&quot;reference-1&quot; URI=&quot;#xpointer(id('SomeData'))&quot;&gt;<br>
+      &lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;<br>
+      &lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/&gt;<br>
+      &lt;Reference Id="reference-1" URI="#xpointer(id('SomeData'))"&gt;<br>
       &lt;Transforms&gt;<br>
-      &lt;Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#WithComments&quot;/&gt;<br>
+      &lt;Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/&gt;<br>
       &lt;/Transforms&gt;<br>
-      &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br>
+      &lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;<br>
       &lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;<br>
       &lt;/Reference&gt;<br>
       &lt;/SignedInfo&gt;<br>
       &lt;SignatureValue&gt;sSXCVpcCRydyUIebOFA1xw2Yfgy+YP0Dd41jIz/57iGbowwqyODPfA==&lt;/SignatureValue&gt;<br>
-      &lt;KeyInfo Id=&quot;&quot;&gt;<br>
+      &lt;KeyInfo Id=""&gt;<br>
       &lt;KeyValue&gt;<br>
       &lt;DSAKeyValue&gt;<br>
       &lt;P&gt;<br>

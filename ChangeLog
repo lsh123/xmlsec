@@ -1,3 +1,8 @@
+Tue 29 Jul 2003 07:41:18 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/ include/ docs/ man/ configure.in: merged xmlsec-nss 
+	from the branch (Tej)
+
 Tue Jul 29 08:44:24 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/x509.c: minor patches for errors (Roumen)

@@ -48,6 +48,10 @@ int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</lin
 void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> **ids);
+<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecCreateTree">xmlSecCreateTree</link>                (const <link linkend="xmlChar">xmlChar</link> *rootNodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *rootNodeNs);
+int         <link linkend="xmlSecIsEmptyNode">xmlSecIsEmptyNode</link>               (<link linkend="xmlNode">xmlNodePtr</link> node);
+int         <link linkend="xmlSecIsEmptyString">xmlSecIsEmptyString</link>             (const <link linkend="xmlChar">xmlChar</link> *str);
 #define     <link linkend="xmlSecIsHex">xmlSecIsHex</link>                     (c)
 #define     <link linkend="xmlSecGetHex">xmlSecGetHex</link>                    (c)
 </synopsis>
@@ -345,6 +349,52 @@ from the <parameter>ids</parameter> list to the <parameter>doc</parameter> docum
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ids</parameter>&nbsp;:</term>
 <listitem><simpara> 		the pointer to a NULL terminated list of ID attributes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCreateTree">xmlSecCreateTree ()</title>
+<programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecCreateTree                (const <link linkend="xmlChar">xmlChar</link> *rootNodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *rootNodeNs);</programlisting>
+<para>
+Creates a new XML tree with one root node <parameter>rootNodeName</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>rootNodeName</parameter>&nbsp;:</term>
+<listitem><simpara>	the root node name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rootNodeNs</parameter>&nbsp;:</term>
+<listitem><simpara>		the root node namespace (otpional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the newly created tree or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecIsEmptyNode">xmlSecIsEmptyNode ()</title>
+<programlisting>int         xmlSecIsEmptyNode               (<link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<para>
+Checks whethere the <parameter>node</parameter> is empty (i.e. has only whitespaces children).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the node to check
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>1 if <parameter>node</parameter> is empty, 0 otherwise or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecIsEmptyString">xmlSecIsEmptyString ()</title>
+<programlisting>int         xmlSecIsEmptyString             (const <link linkend="xmlChar">xmlChar</link> *str);</programlisting>
+<para>
+Checks whethere the <parameter>str</parameter> is empty (i.e. has only whitespaces children).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
+<listitem><simpara>		the string to check
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>1 if <parameter>str</parameter> is empty, 0 otherwise or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

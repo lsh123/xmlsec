@@ -114,8 +114,8 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 3) {
-	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
-	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n", argv[0]);
 	return(1);
     }
 
@@ -130,19 +130,19 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: crypto initialization failed.\n");
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
 
@@ -203,11 +203,11 @@ load_rsa_keys(char* key_file) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	fprintf(stderr, "Error: failed to create keys manager.\n");
 	return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }    
@@ -215,14 +215,14 @@ load_rsa_keys(char* key_file) {
     /* load private RSA key */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
-        fprintf(stderr,&quot;Error: failed to load rsa key from file \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load rsa key from file \"%s\"\n", key_file);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(key, BAD_CAST key_file) &lt; 0) {
-        fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         xmlSecKeyDestroy(key);	
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -232,7 +232,7 @@ load_rsa_keys(char* key_file) {
      * for destroying key 
      */
     if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
-        fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
         xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);
         return(NULL);
@@ -269,7 +269,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     /* load template */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
@@ -278,20 +278,20 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
 				NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to create encryption template\n&quot;);
+	fprintf(stderr, "Error: failed to create encryption template\n");
 	goto done;   
     }
 
     /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add CipherValue node\n&quot;);
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
     /* add &lt;dsig:KeyInfo/&gt; */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
+	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
 
@@ -300,46 +300,46 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 				    xmlSecTransformRsaOaepId, 
 				    NULL, NULL, NULL);
     if(encKeyNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
+	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
 
     /* we want to put encrypted key in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add CipherValue node\n&quot;);
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
 	goto done;   
     }
 
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to &lt;enc:EncryptedKey/&gt; */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
+	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
     
     /* set key name so we can lookup key when needed */
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, key_name) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key name\n&quot;);
+	fprintf(stderr, "Error: failed to add key name\n");
 	goto done;		
     }
 
     /* create encryption context */
     encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+        fprintf(stderr,"Error: failed to create encryption context\n");
 	goto done;
     }
 
     /* generate a Triple DES key */
     encCtx-&gt;encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to generate session des key\n&quot;);
+        fprintf(stderr,"Error: failed to generate session des key\n");
 	goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &lt; 0) {
-        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
+        fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
     
@@ -377,11 +377,11 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <a name="AEN772"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file before encryption (encrypt3 example). 
 --&gt;
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;
+&lt;Envelope xmlns="urn:envelope"&gt;
   &lt;Data&gt;
 	Hello, World!
   &lt;/Data&gt;
@@ -395,16 +395,16 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 <p></p>
 <div class="INFORMALEXAMPLE">
 <a name="AEN777"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: XML doc file encrypted with a session DES key (encrypt3 example). 
 --&gt;
-&lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot; Type=&quot;http://www.w3.org/2001/04/xmlenc#Element&quot;&gt;
-&lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
-&lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
-&lt;EncryptedKey xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;
-&lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&quot;/&gt;
-&lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
+&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
+&lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
+&lt;EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
+&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/&gt;
+&lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 &lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
 &lt;/KeyInfo&gt;
 &lt;CipherData&gt;

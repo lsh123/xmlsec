@@ -5,6 +5,7 @@
  * distribution for preciese wording.
  * 
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_CRYPTO_H__
 #define __XMLSEC_NSS_CRYPTO_H__    
@@ -72,6 +73,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformAes192CbcGetKlass(void)
 	xmlSecNssTransformAes256CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformAes256CbcGetKlass(void);
 
+/**
+ * xmlSecNssTransformKWAes128Id:
+ * 
+ * The AES 128 key wrap transform klass.
+ */
+#define xmlSecNssTransformKWAes128Id \
+	xmlSecNssTransformKWAes128GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes128GetKlass(void);
+
+/**
+ * xmlSecNssTransformKWAes192Id:
+ * 
+ * The AES 192 key wrap transform klass.
+ */
+#define xmlSecNssTransformKWAes192Id \
+	xmlSecNssTransformKWAes192GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes192GetKlass(void);
+
+/**
+ * xmlSecNssTransformKWAes256Id:
+ * 
+ * The AES 256 key wrap transform klass.
+ */
+#define xmlSecNssTransformKWAes256Id \
+	xmlSecNssTransformKWAes256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes256GetKlass(void);
+
 #endif /* XMLSEC_NO_AES */
 
 /********************************************************************
@@ -101,7 +129,44 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataDesSet		(xmlSecKeyDataPtr data,
 	xmlSecNssTransformDes3CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDes3CbcGetKlass(void);
 
+/**
+* xmlSecNssTransformKWDes3Id:
+* 
+* The DES3 CBC cipher transform klass.
+*/ 
+#define xmlSecNssTransformKWDes3Id \
+	xmlSecNssTransformKWDes3GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass(void);
+
+
 #endif /* XMLSEC_NO_DES */
+
+/********************************************************************
+ *
+ * DSA transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+/**
+ * xmlSecNssKeyDataDsaId:
+ * 
+ * The DSA key klass.
+ */
+#define xmlSecNssKeyDataDsaId \
+	xmlSecNssKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataDsaGetKlass	(void);
+
+/**
+ * xmlSecNssTransformDsaSha1Id:
+ * 
+ * The DSA SHA1 signature transform klass.
+ */
+#define xmlSecNssTransformDsaSha1Id \
+	xmlSecNssTransformDsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass(void);
+
+#endif /* XMLSEC_NO_DSA */
 
 
 /********************************************************************
@@ -150,6 +215,43 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
 
 
 #endif /* XMLSEC_NO_HMAC */
+
+
+/********************************************************************
+ *
+ * RSA transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_RSA
+
+/**
+ * xmlSecNssKeyDataRsaId:
+ * 
+ * The RSA key klass.
+ */
+#define xmlSecNssKeyDataRsaId \
+	xmlSecNssKeyDataRsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataRsaGetKlass	(void);
+
+/**
+ * xmlSecNssTransformRsaSha1Id:
+ * 
+ * The RSA-SHA1 signature transform klass.
+ */
+#define xmlSecNssTransformRsaSha1Id	\
+	xmlSecNssTransformRsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
+
+/**
+ * xmlSecNssTransformRsaPkcs1Id:
+ * 
+ * The RSA PKCS1 key transport transform klass.
+ */
+#define xmlSecNssTransformRsaPkcs1Id \
+        xmlSecNssTransformRsaPkcs1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
+
+#endif /* XMLSEC_NO_RSA */
 
 
 /********************************************************************

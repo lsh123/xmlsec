@@ -116,8 +116,8 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 4) {
-	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
-	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;key-file&gt; &lt;cert-file&gt;\n&quot;, argv[0]);
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt; &lt;cert-file&gt;\n", argv[0]);
 	return(1);
     }
 
@@ -132,19 +132,19 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: crypto initialization failed.\n");
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
 
@@ -198,7 +198,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     /* load doc file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
@@ -206,7 +206,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to create signature template\n&quot;);
+	fprintf(stderr, "Error: failed to create signature template\n");
 	goto done;		
     }
 
@@ -217,57 +217,57 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
 					NULL, NULL, NULL);
     if(refNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add reference to signature template\n&quot;);
+	fprintf(stderr, "Error: failed to add reference to signature template\n");
 	goto done;		
     }
 
     /* add enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add enveloped transform to reference\n&quot;);
+	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
 	goto done;		
     }
     
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
+	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
     
     if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add X509Data node\n&quot;);
+	fprintf(stderr, "Error: failed to add X509Data node\n");
 	goto done;		
     }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
 
     /* load private key, assuming that there is not password */
     dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
 	goto done;
     }
     
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(dsigCtx-&gt;signKey, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
-        fprintf(stderr,&quot;Error: failed to load pem certificate \&quot;%s\&quot;\n&quot;, cert_file);
+        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, signNode) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature failed\n&quot;);
+        fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
         
@@ -297,11 +297,11 @@ done:
 <p></p>
 <div class="INFORMALEXAMPLE">
 <a name="AEN673"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Original XML doc file for sign3 example. 
 --&gt;
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;
+&lt;Envelope xmlns="urn:envelope"&gt;
   &lt;Data&gt;
 	Hello, World!
   &lt;/Data&gt;
@@ -315,23 +315,23 @@ XML Security Library example: Original XML doc file for sign3 example.
 <p></p>
 <div class="INFORMALEXAMPLE">
 <a name="AEN678"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: Signed XML doc file (sign3 example). 
 --&gt;
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;
+&lt;Envelope xmlns="urn:envelope"&gt;
   &lt;Data&gt;
 	Hello, World!
   &lt;/Data&gt;
-&lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 &lt;SignedInfo&gt;
-&lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#&quot;/&gt;
-&lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&gt;
+&lt;CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/&gt;
+&lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/&gt;
 &lt;Reference&gt;
 &lt;Transforms&gt;
-&lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;
+&lt;Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
 &lt;/Transforms&gt;
-&lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;
+&lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
 &lt;DigestValue&gt;HjY8ilZAIEM2tBbPn5mYO1ieIX4=&lt;/DigestValue&gt;
 &lt;/Reference&gt;
 &lt;/SignedInfo&gt;

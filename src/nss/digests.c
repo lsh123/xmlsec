@@ -5,6 +5,7 @@
  * distribution for preciese wording.
  * 
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
 
@@ -106,7 +107,7 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "SECOID_FindOIDByTag",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	return(-1);
     }
     
@@ -116,7 +117,7 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_CreateDigestContext",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	return(-1);
     }
 	
@@ -207,7 +208,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"PK11_DigestBegin",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);
 	}
 	transform->status = xmlSecTransformStatusWorking;
@@ -224,7 +225,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "PK11_DigestOp",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	    
@@ -245,7 +246,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "PK11_DigestFinal",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	    xmlSecAssert2(ctx->dgstSize > 0, -1);

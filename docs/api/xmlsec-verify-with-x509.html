@@ -112,8 +112,8 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc &lt; 3) {
-	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
-	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;cert-file1&gt; [&lt;cert-file2&gt; [...]]\n&quot;, argv[0]);
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;cert-file1&gt; [&lt;cert-file2&gt; [...]]\n", argv[0]);
 	return(1);
     }
 
@@ -128,19 +128,19 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: crypto initialization failed.\n");
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
 
@@ -203,11 +203,11 @@ load_trusted_certs(char** files, int files_size) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	fprintf(stderr, "Error: failed to create keys manager.\n");
 	return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }    
@@ -217,7 +217,7 @@ load_trusted_certs(char** files, int files_size) {
 
 	/* load trusted cert */
 	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
-    	    fprintf(stderr,&quot;Error: failed to load pem certificate from \&quot;%s\&quot;\n&quot;, files[i]);
+    	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
@@ -248,35 +248,35 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* load file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
 	goto done;	
     }
 
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature verify\n&quot;);
+        fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
         
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, &quot;Signature is OK\n&quot;);
+	fprintf(stdout, "Signature is OK\n");
     } else {
-	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
+	fprintf(stdout, "Signature is INVALID\n");
     }    
 
     /* success */

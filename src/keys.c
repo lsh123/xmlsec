@@ -911,9 +911,11 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	    xmlSecKeyDestroy(key);
 	    return(NULL);
 	}
-	if(xmlSecKeyGetValue(key) != NULL) {
-	    return(key);
-	}
+
+	if((xmlSecKeyGetValue(key) != NULL) &&
+           (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) != 0)) {
+            return(key);
+        }
     }	
     xmlSecKeyDestroy(key);
     

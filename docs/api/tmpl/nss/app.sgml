@@ -83,16 +83,6 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppKeysMngrAddCertsPath ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@path: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecNssAppKeyLoad ##### -->
 <para>
 

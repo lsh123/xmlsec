@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
  
 #include <libxml/tree.h>
 #include <libxml/valid.h>

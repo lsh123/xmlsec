@@ -241,10 +241,10 @@ Reads key from the a file.</para>
 <listitem><simpara>		the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
-<listitem><simpara>		the PEM key file password.
+<listitem><simpara>		the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
-<listitem><simpara>	the PEM key password callback.
+<listitem><simpara>	the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
 <listitem><simpara>	the user context for password callback.
@@ -259,7 +259,9 @@ Reads key from the a file.</para>
                                              <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
 <para>
-Reads key and all associated certificates from the PKCS12 file.</para>
+Reads key and all associated certificates from the PKCS12 file.
+For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 
 </para><variablelist role="params">

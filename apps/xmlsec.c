@@ -668,6 +668,17 @@ static xmlSecAppCmdLineParam depthParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+
+static xmlSecAppCmdLineParam X509SkipStrictChecksParam = { 
+    xmlSecAppCmdLineTopicX509Certs,
+    "--X509-skip-strict-checks",
+    NULL,    
+    "--X509-skip-strict-checks"
+    "\n\tskip strict checking of X509 data",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
 #endif /* XMLSEC_NO_X509 */    
 
 static xmlSecAppCmdLineParamPtr parameters[] = {
@@ -725,6 +736,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &untrustedDerParam,
     &verificationTimeParam,
     &depthParam,    
+    &X509SkipStrictChecksParam,    
 #endif /* XMLSEC_NO_X509 */    
     
     /* General configuration params */
@@ -1849,6 +1861,9 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
 	keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
+    }
+    if(xmlSecAppCmdLineParamIsSet(&X509SkipStrictChecksParam)) {
+	keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;
     }
 #endif /* XMLSEC_NO_X509 */
 

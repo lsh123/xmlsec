@@ -94,7 +94,7 @@
       </p>
 <h4>2.2. How to compile xmlsec?</h4>
 <p>
-      On Unix just follow the &quot;standard&quot;:
+      On Unix just follow the "standard":
          </p>
 <blockquote>
 	 <code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br><code>cd xmlsec-xxxx</code><br><code>./configure --help</code><br><code>./configure [possible options] </code><br><code>make</code><br><code>make install</code><br><code>make check</code>
@@ -243,7 +243,7 @@
       to <code>xmlSecDSigStatusSucceeded</code>.
       </p>
 <h4>3.2. I am trying to sign an XML document and I have a warning
-      about &quot;empty nodes set&quot;. Should I worry about this?</h4>
+      about "empty nodes set". Should I worry about this?</h4>
 <p>
       Most likely <b>yes</b>. When it's not an error from specification
       point of view, I can hardly imagine a real world case that 
@@ -253,14 +253,14 @@
       For example, the following Reference element:
         </p>
 <blockquote><code>
-	  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;&gt;<br>
+	  &lt;?xml version="1.0" encoding="UTF-8"&gt;<br>
 	  &lt;Root&gt;<br>
-	    &lt;Data Id=&quot;1234&quot;&gt;<br>
+	    &lt;Data Id="1234"&gt;<br>
 	      The data I want to sign<br>
 	    &lt;/Data&gt;<br>
-	    &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+	    &lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
 	    ...<br>
-	      &lt;Reference URI=&quot;#1234&quot;&gt;<br>
+	      &lt;Reference URI="#1234"&gt;<br>
 	      ...<br>
 	      &lt;/Reference&gt;<br>
 	    ...<br>
@@ -277,7 +277,7 @@
 	]&gt;<br></code></blockquote>
 <p>
       If you are using XML Security Library in your application (not the xmlsec
-      command line utility!) then you can do a &quot;hack&quot; and tell LibXML2 (and
+      command line utility!) then you can do a "hack" and tell LibXML2 (and
       XMLSec) which attributes are ID attributes without providing a DTD
       by calling <code>xmlAddID</code> function. However, this might 
       make you signature non-interoperable with other XMLDSig implementations.
@@ -300,7 +300,7 @@
       If you are using xmlsec command line utility then you can use 
       <code>--verification-time &lt;time&gt;</code> option (where
       <code>&lt;time&gt;</code> is the local system time in the 
-      &quot;<code>YYYY-MM-DD HH:MM:SS</code>&quot; format).
+      "<code>YYYY-MM-DD HH:MM:SS</code>" format).
       
       </p>
 <h4>3.4. I really like the XMLSec library but it is based on OpenSSL

@@ -41,558 +41,551 @@
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top">
-<tr><td valign="top" align="left" id="xmlsecContent"><div align="center">
-      <h2>  XML Encryption </h2>
-                       
-      <div align="Left">
-<a href="http://www.w3.org/TR/xmlenc-core">XML Encryption</a>
-   standard specifies the process for encryptind data and representing the
- result in XML document. The data may be an XML element, or an XML element
- content, or any arbitrary data (including XML document).                 
-</div>
-
-<div align="center">
-<h3>XML Encryption Implementation and 
-Interoperability Report</h3>
-</div>
-<div align="center">
-<p>
-      </p>
-<table cellpadding="2" cellspacing="2" border="1" width="85%"><tbody>
+<tr><td valign="top" align="left" id="xmlsecContent"><div align="center">       
+            <h2>  XML Encryption </h2>
+                               
+            <div align="left"> <a href="http://www.w3.org/TR/xmlenc-core">XML Encryption</a>    standard specifies
+the process for encryptind data and representing the  result in XML document.
+The data may be an XML element, or an XML element  content, or any arbitrary
+data (including XML document).                  </div>
+  
+            <div align="center"> 
+            <h3>XML Encryption Implementation and  Interoperability Report</h3>
+ </div>
+ 
+            <div align="center"> 
+            <p>       </p>
+ 
+            <table cellpadding="2" cellspacing="2" border="1" width="85%"><tbody>
 <tr>
 <td valign="top" align="left"><b>Features and algorithms<br></b></td>
-            <td valign="top" align="left"><b>Key Word<br></b></td>
-            <td valign="top" align="left">
-<b>XMLSec with OpenSSL</b> </td>
-            <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
-            <td style="vertical-align: top;">
-<b>XMLSec with NSS</b>
-</td>
-          </tr>
+             <td valign="top" align="left"><b>Key Word<br></b></td>
+             <td valign="top" align="left"> <b>XMLSec with OpenSSL</b> </td>
+             <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
+             <td style="vertical-align: top;"> <b>XMLSec with NSS</b> </td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-Encryption-Syntax"> Laxly  
-valid schema generation</a> of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">EncryptedData</a>
-/<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">EncryptedKey</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-Encryption-Syntax"> Laxly   valid
+schema generation</a> of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">EncryptedData</a> 
+/<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">EncryptedKey</a>
+                  <br>
 </td>
-            <td valign="top" align="left">MUST<br>
+             <td valign="top" align="left">MUST<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
+<td valign="top" align="left">             
+                  <ul>
 <li> Normalized Form C generations. </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">SHOULD <br>
+             <td valign="top" align="left">SHOULD <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedType"> Type,      
-MimeType, and Encoding</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedType"> Type,       MimeType,
+and Encoding</a> <br>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">
-CipherReference URI derefencing</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference"> CipherReference
+URI derefencing</a> <br>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
+<td valign="top" align="left">             
+                  <ul>
 <li> Transforms </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">OPTIONAL <br>
+             <td valign="top" align="left">OPTIONAL <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-Extensions-to-KeyInfo">
-ds:KeyInfo</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-Extensions-to-KeyInfo"> ds:KeyInfo</a>
+                  <br>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
+<td valign="top" align="left">             
+                  <ul>
 <li> enc:DHKeyValue </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">OPTIONAL <br>
+             <td valign="top" align="left">OPTIONAL <br>
 </td>
-            <td valign="top" align="left">N<br>
+             <td valign="top" align="left">N<br>
 </td>
-            <td style="vertical-align: top;">N<br>
+             <td style="vertical-align: top;">N<br>
 </td>
-            <td style="vertical-align: top;">N<br>
+             <td style="vertical-align: top;">N<br>
 </td>
-          </tr>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
+<td valign="top" align="left">             
+                  <ul>
 <li> ds:KeyName </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">RECOMMENDED <br>
+             <td valign="top" align="left">RECOMMENDED <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
-<li>
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-ds:RetrievalMethod">
+<td valign="top" align="left">             
+                  <ul>
+<li> <a href="http://www.w3.org/TR/xmlenc-core/#sec-ds:RetrievalMethod"> 
 ds:RetrievalMethod</a> </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left"> REQUIRED<br>
+             <td valign="top" align="left"> REQUIRED<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">
-ReferenceList</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList"> ReferenceList</a>
+                  <br>
 </td>
-            <td valign="top" align="left">OPTIONAL <br>
+             <td valign="top" align="left">OPTIONAL <br>
 </td>
-            <td valign="top" align="left">N<br>
+             <td valign="top" align="left">N<br>
 </td>
-            <td style="vertical-align: top;">N<br>
+             <td style="vertical-align: top;">N<br>
 </td>
-            <td style="vertical-align: top;">N<br>
+             <td style="vertical-align: top;">N<br>
 </td>
-          </tr>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">
-EncryptionProperties</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties"> EncryptionProperties</a>
+                  <br>
 </td>
-            <td valign="top" align="left">OPTIONAL <br>
+             <td valign="top" align="left">OPTIONAL <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top" align="left"> Satisfactory Performance<br>
 </td>
-            <td valign="top" align="left">(required!)<br>
+             <td valign="top" align="left">(required!)<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-Processing-XML"> Required  
-Type support: Element and Content.</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-Processing-XML"> Required   Type
+support: Element and Content.</a> <br>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-Processing-Encryption">
-Encryption</a> <br>
+<td valign="top" align="left"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-Processing-Encryption"> Encryption</a>
+                  <br>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
-<li> Serialization of XML Element and Content.           
-                <ol>
+<td valign="top" align="left">             
+                  <ul>
+<li> Serialization of XML Element and Content.                         
+  
+                      <ol>
 <li> NFC conversion from non-Unicode  encodings.     </li>
-                </ol>
+                 
+                      </ol>
 </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">MAY<br>
-MUST <br>
+             <td valign="top" align="left">MAY<br>
+ MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
+<td valign="top" align="left">             
+                  <ul>
 <li> Encryptor returns EncryptedData structure.           </li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
-<li> Encryptor replaces EncryptedData into  source
-document (when Type is                 Element or Content).      </li>
-            </ul>
+<td valign="top" align="left">             
+                  <ul>
+<li> Encryptor replaces EncryptedData into  source document (when Type is
+                Element or Content).      </li>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">SHOULD <br>
+             <td valign="top" align="left">SHOULD <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top">
-<a href="http://www.w3.org/TR/xmlenc-core/#sec-Processing-Decryption">
-Decryption</a> <br>
+<td valign="top"> <a href="http://www.w3.org/TR/xmlenc-core/#sec-Processing-Decryption"> Decryption</a>
+                  <br>
 </td>
-            <td valign="top">MUST <br>
+             <td valign="top">MUST <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
-<li> The decryptor returns the data and its  Type to the
-application (be it                 an octet sequence or key value).    </li>
-            </ul>
+<td valign="top" align="left">             
+                  <ul>
+<li> The decryptor returns the data and its  Type to the application (be
+it                 an octet sequence or key value).    </li>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
-<li> If data is Element or Content the decryptor  return
-the UTF-8 encoding                 XML character data. </li>
-            </ul>
+<td valign="top" align="left">             
+                  <ul>
+<li> If data is Element or Content the decryptor  return the UTF-8 encoding
+                XML character data. </li>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">MUST <br>
+             <td valign="top" align="left">MUST <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left">
-            <ul>
-<li> If data is Element or Content the decryptor 
-replaces the EncryptedData                 in the source document with
-the  decrypted data. </li>
-            </ul>
+<td valign="top" align="left">             
+                  <ul>
+<li> If data is Element or Content the decryptor  replaces the EncryptedData
+                in the source document with the  decrypted data. </li>
+             
+                  </ul>
 </td>
-            <td valign="top" align="left">SHOULD <br>
+             <td valign="top" align="left">SHOULD <br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top" align="left"> TRIPLEDES<br>
 </td>
-            <td valign="top" align="left"> REQUIRED<br>
+             <td valign="top" align="left"> REQUIRED<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top" align="left"> AES-128<br>
 </td>
-            <td valign="top" align="left"> REQUIRED<br>
+             <td valign="top" align="left"> REQUIRED<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top" align="left"> AES-256<br>
 </td>
-            <td valign="top" align="left"> REQUIRED<br>
+             <td valign="top" align="left"> REQUIRED<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top"> AES-192<br>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top" align="left"> RSA-v1.5 (192 bit  keys for
-AES or DES)<br>
+<td valign="top" align="left"> RSA-v1.5 (192 bit  keys for AES or DES)<br>
 </td>
-            <td valign="top" align="left"> REQUIRED<br>
+             <td valign="top" align="left"> REQUIRED<br>
 </td>
-            <td valign="top" align="left">Y<br>
+             <td valign="top" align="left">Y<br>
 </td>
-            <td style="vertical-align: top;">N<br>
+             <td style="vertical-align: top;">N<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
 <td valign="top"> RSA-OAEP (128 and 256 bit keys  for AES)<br>
 </td>
-            <td valign="top"> REQUIRED<br>
+             <td valign="top"> REQUIRED<br>
 </td>
-            <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a> <br>
+             <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a> <br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
 <td valign="top"> Diffie-Hellman Key Agreement<br>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">N<br>
+             <td valign="top">N<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
 <td valign="top"> TRIPLEDES Key Wrap<br>
 </td>
-            <td valign="top"> REQUIRED<br>
+             <td valign="top"> REQUIRED<br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top"> AES-128 Key Wrap (128 bit keys)<br>
 </td>
-            <td valign="top"> REQUIRED<br>
+             <td valign="top"> REQUIRED<br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+           </tr>
 <tr>
 <td valign="top"> AES-256 Key Wrap (256 bit keys)<br>
 </td>
-            <td valign="top"> REQUIRED<br>
+             <td valign="top"> REQUIRED<br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+           </tr>
 <tr>
 <td valign="top"> AES-192 Key Wrap<br>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+           </tr>
 <tr>
 <td valign="top"> SHA1<br>
 </td>
-            <td valign="top">REQUIRED<br>
+             <td valign="top">REQUIRED<br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-          </tr>
+           </tr>
 <tr>
 <td valign="top"> SHA256<br>
 </td>
-            <td valign="top">RECOMMENDED <br>
+             <td valign="top">RECOMMENDED <br>
 </td>
-            <td valign="top">N <br>
+             <td valign="top">N <br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
 <td valign="top"> SHA512<br>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">N <br>
+             <td valign="top">N <br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
 <td valign="top"> RIPEMD-160<br>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">N<br>
 </td>
-          </tr>
+           </tr>
 <tr>
-<td valign="top">
-<a href="http://www.w3.org/TR/xmldsig-core/"> XML Digital Signature</a> <br>
+<td valign="top"> <a href="http://www.w3.org/TR/xmldsig-core/"> XML Digital
+Signature</a> <br>
 </td>
-            <td valign="top">RECOMMENDED <br>
+             <td valign="top">RECOMMENDED <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-          </tr>
+           </tr>
 <tr>
-<td valign="top">
-<a name="decryption-transform" id="decryption-transform" href="http://www.w3.org/TR/xmlenc-decrypt">
-Decryption Transform for XML             Signature</a> <br>
+<td valign="top"> <a name="decryption-transform" id="decryption-transform" href="http://www.w3.org/TR/xmlenc-decrypt"> Decryption
+Transform for XML             Signature</a> <br>
 </td>
-            <td valign="top">RECOMMENDED <br>
+             <td valign="top">RECOMMENDED <br>
 </td>
-            <td valign="top">N<br>
+             <td valign="top">N<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
-<td valign="top">
-            <ul>
+<td valign="top">             
+                  <ul>
 <li> XPointer support in <code>Except</code><code> URI</code>.</li>
-            </ul>
+             
+                  </ul>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">N<br>
+             <td valign="top">N<br>
 </td>
-            <td style="vertical-align: top;">N</td>
-            <td style="vertical-align: top;">N</td>
-          </tr>
+             <td style="vertical-align: top;">N</td>
+             <td style="vertical-align: top;">N</td>
+           </tr>
 <tr>
-<td valign="top">
-            <p>
-<a href="http://www.w3.org/TR/xml-c14n">Canonical XML</a>
+<td valign="top">             
+                  <p> <a href="http://www.w3.org/TR/xml-c14n">Canonical XML</a> 
 (with and               without comments) </p>
-            </td>
-            <td valign="top">OPTIONAL <br>
+             </td>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y<br>
+             <td style="vertical-align: top;">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
-<td valign="top">
-<a href="http://www.w3.org/TR/xml-exc-c14n">
-Exclusive Canonicalization</a> (with and without comments)<br>
+<td valign="top"> <a href="http://www.w3.org/TR/xml-exc-c14n"> Exclusive
+Canonicalization</a> (with and without comments)<br>
 </td>
-            <td valign="top">OPTIONAL <br>
+             <td valign="top">OPTIONAL <br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 <tr>
 <td valign="top"> base64 Encoding<br>
 </td>
-            <td valign="top"> REQUIRED<br>
+             <td valign="top"> REQUIRED<br>
 </td>
-            <td valign="top">Y<br>
+             <td valign="top">Y<br>
 </td>
-            <td style="vertical-align: top;">Y</td>
-            <td style="vertical-align: top;">Y</td>
-          </tr>
+             <td style="vertical-align: top;">Y</td>
+             <td style="vertical-align: top;">Y</td>
+           </tr>
 </tbody></table>
-<div align="left">
-<br><a name="rsa-oaep"></a> <sup>(1)</sup> OpenSSL (and XML Security
-Library) supports only SHA1 as the digest in the RSA-OAEP key
-transport.<br><p>
-<b>Test vectors (from <a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">W3C XML 
-Encryption interop page</a>):
-
-</b><br><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/0008.html">
-merlin-xmlenc-five.tar.gz</a> <br><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/att-0052/01-phaos-xmlenc-3.zip">
+<div align="left"> <br><a name="rsa-oaep"></a> <sup>(1)</sup> OpenSSL (and XML Security 
+Library) supports only SHA1 as the digest in the RSA-OAEP key transport.<br><p> <b>Test vectors (from <a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">W3C XML  Encryption
+interop page</a>):  </b><br><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/0008.html"> 
+merlin-xmlenc-five.tar.gz</a> <br><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/att-0052/01-phaos-xmlenc-3.zip"> 
 phaos-xmlenc-3.zip</a> <br>
 </p>
-      </div>
-      </div>
-</div></td></tr>
+       </div>
+       </div>
+ </div></td></tr>
 <tr><td>
 <br><br><p><a href="bugs.html">Aleksey Sanin</a></p>
 </td></tr>

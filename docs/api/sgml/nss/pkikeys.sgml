@@ -1,0 +1,133 @@
+<refentry id="xmlsec-nss-pkikeys">
+<refmeta>
+<refentrytitle>pkikeys</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-NSS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>pkikeys</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecNssPKIAdoptKey">xmlSecNssPKIAdoptKey</link>       (<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link> *privkey,
+                                             <link linkend="SECKEYPublicKey">SECKEYPublicKey</link> *pubkey);
+<link linkend="SECKEYPublicKey">SECKEYPublicKey</link>* <link linkend="xmlSecNssPKIKeyDataGetPubKey">xmlSecNssPKIKeyDataGetPubKey</link>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>* <link linkend="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey</link>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="KeyType">KeyType</link>     <link linkend="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecNssPKIAdoptKey">xmlSecNssPKIAdoptKey ()</title>
+<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecNssPKIAdoptKey       (<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link> *privkey,
+                                             <link linkend="SECKEYPublicKey">SECKEYPublicKey</link> *pubkey);</programlisting>
+<para>
+Build a KeyData object from the given Private Key and Public
+Key handles.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>privkey</parameter>&nbsp;:</term>
+<listitem><simpara>        the NSS Private Key handle
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pubkey</parameter>&nbsp;:</term>
+<listitem><simpara>         the NSS Public Key handle
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to KeyData object or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssPKIKeyDataGetPubKey">xmlSecNssPKIKeyDataGetPubKey ()</title>
+<programlisting><link linkend="SECKEYPublicKey">SECKEYPublicKey</link>* xmlSecNssPKIKeyDataGetPubKey
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the Public Key from the key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to NSS Key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SECKEYPublicKey or NULL if an error occurs.
+Caller is responsible for freeing the key when done
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey ()</title>
+<programlisting><link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>* xmlSecNssPKIKeyDataGetPrivKey
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the Private Key from the key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to NSS Key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SECKEYPrivateKey or NULL if an error occurs.
+Caller is responsible for freeing the key when done
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType ()</title>
+<programlisting><link linkend="KeyType">KeyType</link>     xmlSecNssPKIKeyDataGetKeyType   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Gets the Key Type from the key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to NSS Key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>Key Type 
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate ()</title>
+<programlisting>int         xmlSecNssPKIKeyDataDuplicate    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);</programlisting>
+<para>
+Duplicates the keydata from src to dst</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to NSS Key data to copy to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
+<listitem><simpara>               the pointer to NSS Key data to copy from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>-1 on error, 0 on success
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

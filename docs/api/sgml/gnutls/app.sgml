@@ -240,10 +240,10 @@ Reads key from the a file (not implemented yet).</para>
 <listitem><simpara>		the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
-<listitem><simpara>		the PEM key file password.
+<listitem><simpara>		the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
-<listitem><simpara>	the PEM key password callback.
+<listitem><simpara>	the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
 <listitem><simpara>	the user context for password callback.
@@ -259,7 +259,9 @@ Reads key from the a file (not implemented yet).</para>
                                              void *pwdCallbackCtx);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 file
-(not implemented yet).</para>
+(not implemented yet).
+For uniformity, call xmlSecGnuTLSAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 
 </para><variablelist role="params">

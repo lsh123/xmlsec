@@ -1,10 +1,16 @@
+2004-11-08  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keysmngr.h src/keysmngr.c: added 
+	xmlSecSimpleKeysStoreGetKeys() function
+
 2004-11-07  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* src/xmltree.c: fixed xmlSecGenerateID
 
 2004-10-27  Aleksey Sanin  <aleksey@aleksey.com>
 
-	* src/dl.c: set dl memory functions before initialization (Daniel Vogelheim)
+	* src/dl.c: set dl memory functions before initialization (from 
+	Daniel Vogelheim patch)
 
 2004-10-14  Aleksey Sanin  <aleksey@aleksey.com>
 

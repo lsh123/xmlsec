@@ -253,6 +253,7 @@ XMLSEC_EXPORT int			xmlSecSimpleKeysStoreLoad 	(xmlSecKeyStorePtr store,
 XMLSEC_EXPORT int			xmlSecSimpleKeysStoreSave	(xmlSecKeyStorePtr store, 
 									 const char *filename,
 									 xmlSecKeyDataType type);
+XMLSEC_EXPORT xmlSecPtrListPtr		xmlSecSimpleKeysStoreGetKeys	(xmlSecKeyStorePtr store);
 
 
 #ifdef __cplusplus

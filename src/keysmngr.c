@@ -664,6 +664,25 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     return(0);
 }
 
+/** 
+ * xmlSecSimpleKeysStoreGetKeys:
+ * @store:		the pointer to simple keys store.
+ * 
+ * Returns pointer to the list of keys stored in the keys store or NULL
+ * if an error occurs.
+ */
+xmlSecPtrListPtr 
+xmlSecSimpleKeysStoreGetKeys(xmlSecKeyStorePtr store) {
+    xmlSecPtrListPtr list;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), NULL);
+
+    list = xmlSecSimpleKeysStoreGetList(store);
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), NULL);
+
+    return list;
+}
+
 static int
 xmlSecSimpleKeysStoreInitialize(xmlSecKeyStorePtr store) {
     xmlSecPtrListPtr list;

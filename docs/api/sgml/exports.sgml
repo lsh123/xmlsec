@@ -25,6 +25,8 @@
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -36,7 +38,7 @@
 <title>Details</title>
 <refsect2>
 <title><anchor id="extern">extern</title>
-<programlisting>#define     extern</programlisting>
+<indexterm><primary>extern</primary></indexterm><programlisting>#define     extern</programlisting>
 <para>
 
 </para></refsect2>

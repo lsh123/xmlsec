@@ -18,33 +18,35 @@
 enum        <link linkend="xmlEncCtxMode">xmlEncCtxMode</link>;
 struct      <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
 <link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link>          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
-int         <link linkend="xmlSecEncCtxInitialize">xmlSecEncCtxInitialize</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="void">void</link>        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecEncCtxInitialize">xmlSecEncCtxInitialize</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link>            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
-int         <link linkend="xmlSecEncCtxCopyUserPref">xmlSecEncCtxCopyUserPref</link>        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> dst,
+<link linkend="void">void</link>        <link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link>            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecEncCtxCopyUserPref">xmlSecEncCtxCopyUserPref</link>        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> dst,
                                              <link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> src);
-void        <link linkend="xmlSecEncCtxReset">xmlSecEncCtxReset</link>               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
-int         <link linkend="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt</link>       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="void">void</link>        <link linkend="xmlSecEncCtxReset">xmlSecEncCtxReset</link>               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt</link>       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
-int         <link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="int">int</link>         <link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-int         <link linkend="xmlSecEncCtxUriEncrypt">xmlSecEncCtxUriEncrypt</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="int">int</link>         <link linkend="xmlSecEncCtxUriEncrypt">xmlSecEncCtxUriEncrypt</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
-int         <link linkend="xmlSecEncCtxDecrypt">xmlSecEncCtxDecrypt</link>             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="int">int</link>         <link linkend="xmlSecEncCtxDecrypt">xmlSecEncCtxDecrypt</link>             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
 <link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecEncCtxDecryptToBuffer">xmlSecEncCtxDecryptToBuffer</link> (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-void        <link linkend="xmlSecEncCtxDebugDump">xmlSecEncCtxDebugDump</link>           (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="void">void</link>        <link linkend="xmlSecEncCtxDebugDump">xmlSecEncCtxDebugDump</link>           (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</link>        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<link linkend="void">void</link>        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</link>        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -63,13 +65,13 @@ void        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</l
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlEncCtxMode">enum xmlEncCtxMode</title>
-<programlisting>typedef enum {
+<indexterm><primary>xmlEncCtxMode</primary></indexterm><programlisting>typedef enum {
     xmlEncCtxModeEncryptedData = 0,
     xmlEncCtxModeEncryptedKey
 } xmlEncCtxMode;
 </programlisting>
 <para>
-The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
+The <link linkend="xmlSecEncCtx"><type>xmlSecEncCtx</type></link> mode.</para>
 <para>
 
 </para><variablelist role="enum">
@@ -86,7 +88,7 @@ The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
-<programlisting>struct xmlSecEncCtx {
+<indexterm><primary>xmlSecEncCtx</primary></indexterm><programlisting>struct xmlSecEncCtx {
 
     /* these data user can set before performing the operation */
     void*			userData;
@@ -131,18 +133,18 @@ XML Encrypiton context.</para>
 
 </para><variablelist role="struct">
 <varlistentry>
-<term>void *<structfield>userData</structfield></term>
+<term><link linkend="void">void</link> *<structfield>userData</structfield></term>
 <listitem><simpara>			the pointer to user data (xmlsec and xmlsec-crypto libraries
 			never touches this).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>unsigned int <structfield>flags</structfield></term>
+<term>unsigned <link linkend="int">int</link> <structfield>flags</structfield></term>
 <listitem><simpara>			the XML Encryption processing flags.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>unsigned int <structfield>flags2</structfield></term>
+<term>unsigned <link linkend="int">int</link> <structfield>flags2</structfield></term>
 <listitem><simpara>			the XML Encryption processing flags.
 </simpara></listitem>
 </varlistentry>
@@ -174,7 +176,7 @@ XML Encrypiton context.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKey">xmlSecKeyPtr</link> <structfield>encKey</structfield></term>
-<listitem><simpara>			the signature key; application may set <link linkend="encKey">encKey</link>
+<listitem><simpara>			the signature key; application may set <link linkend="encKey"><type>encKey</type></link>
 			before calling encryption/decryption functions.
 </simpara></listitem>
 </varlistentry>
@@ -189,12 +191,12 @@ XML Encrypiton context.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>int <structfield>resultBase64Encoded</structfield></term>
-<listitem><simpara>	the flag: if set then result in <link linkend="result">result</link> is base64 encoded.
+<term><link linkend="int">int</link> <structfield>resultBase64Encoded</structfield></term>
+<listitem><simpara>	the flag: if set then result in <link linkend="result"><type>result</type></link> is base64 encoded.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>int <structfield>resultReplaced</structfield></term>
+<term><link linkend="int">int</link> <structfield>resultReplaced</structfield></term>
 <listitem><simpara>		the flag: if set then resulted <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node is added to the document.
 </simpara></listitem>
@@ -260,23 +262,23 @@ XML Encrypiton context.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved0</structfield></term>
 <listitem><simpara>			reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
 <listitem><simpara>			reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCreate">xmlSecEncCtxCreate ()</title>
-<programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<indexterm><primary>xmlSecEncCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
 The caller is responsible for destroying returend object by calling 
-<link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link> function.</para>
+<link linkend="xmlSecEncCtxDestroy"><type>xmlSecEncCtxDestroy</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -289,9 +291,9 @@ occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy ()</title>
-<programlisting>void        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+<indexterm><primary>xmlSecEncCtxDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
 <para>
-Destroy context object created with <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link> function.</para>
+Destroy context object created with <link linkend="xmlSecEncCtxCreate"><type>xmlSecEncCtxCreate</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -301,12 +303,12 @@ Destroy context object created with <link linkend="xmlSecEncCtxCreate">xmlSecEnc
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxInitialize">xmlSecEncCtxInitialize ()</title>
-<programlisting>int         xmlSecEncCtxInitialize          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecEncCtxInitialize          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 Initializes <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
 The caller is responsible for cleaing up returend object by calling 
-<link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link> function.</para>
+<link linkend="xmlSecEncCtxFinalize"><type>xmlSecEncCtxFinalize</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -321,7 +323,7 @@ The caller is responsible for cleaing up returend object by calling
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize ()</title>
-<programlisting>void        xmlSecEncCtxFinalize            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+<indexterm><primary>xmlSecEncCtxFinalize</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecEncCtxFinalize            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
 <para>
 Cleans up <parameter>encCtx</parameter> object.</para>
 <para>
@@ -333,7 +335,7 @@ Cleans up <parameter>encCtx</parameter> object.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCopyUserPref">xmlSecEncCtxCopyUserPref ()</title>
-<programlisting>int         xmlSecEncCtxCopyUserPref        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> dst,
+<indexterm><primary>xmlSecEncCtxCopyUserPref</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecEncCtxCopyUserPref        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> dst,
                                              <link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> src);</programlisting>
 <para>
 Copies user preference from <parameter>src</parameter> context to <parameter>dst</parameter>.</para>
@@ -351,7 +353,7 @@ Copies user preference from <parameter>src</parameter> context to <parameter>dst
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxReset">xmlSecEncCtxReset ()</title>
-<programlisting>void        xmlSecEncCtxReset               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+<indexterm><primary>xmlSecEncCtxReset</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecEncCtxReset               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
 <para>
 Resets <parameter>encCtx</parameter> object, user settings are not touched.</para>
 <para>
@@ -363,7 +365,7 @@ Resets <parameter>encCtx</parameter> object, user settings are not touched.</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt ()</title>
-<programlisting>int         xmlSecEncCtxBinaryEncrypt       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxBinaryEncrypt</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecEncCtxBinaryEncrypt       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
@@ -389,7 +391,7 @@ Encrypts <parameter>data</parameter> according to template <parameter>tmpl</para
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt ()</title>
-<programlisting>int         xmlSecEncCtxXmlEncrypt          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxXmlEncrypt</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecEncCtxXmlEncrypt          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
@@ -412,7 +414,7 @@ with result <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxUriEncrypt">xmlSecEncCtxUriEncrypt ()</title>
-<programlisting>int         xmlSecEncCtxUriEncrypt          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxUriEncrypt</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecEncCtxUriEncrypt          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
@@ -434,7 +436,7 @@ Encrypts data from <parameter>uri</parameter> according to template <parameter>t
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDecrypt">xmlSecEncCtxDecrypt ()</title>
-<programlisting>int         xmlSecEncCtxDecrypt             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxDecrypt</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecEncCtxDecrypt             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 Decrypts <parameter>node</parameter> and if necessary replaces <parameter>node</parameter> with decrypted data.</para>
@@ -452,7 +454,7 @@ Decrypts <parameter>node</parameter> and if necessary replaces <parameter>node</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDecryptToBuffer">xmlSecEncCtxDecryptToBuffer ()</title>
-<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecEncCtxDecryptToBuffer (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxDecryptToBuffer</primary></indexterm><programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecEncCtxDecryptToBuffer (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 Decrypts <parameter>node</parameter> data to the <parameter>encCtx</parameter> buffer.</para>
@@ -470,7 +472,7 @@ Decrypts <parameter>node</parameter> data to the <parameter>encCtx</parameter> b
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDebugDump">xmlSecEncCtxDebugDump ()</title>
-<programlisting>void        xmlSecEncCtxDebugDump           (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecEncCtxDebugDump           (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints the debug information about <parameter>encCtx</parameter> to <parameter>output</parameter>.</para>
@@ -486,7 +488,7 @@ Prints the debug information about <parameter>encCtx</parameter> to <parameter>o
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump ()</title>
-<programlisting>void        xmlSecEncCtxDebugXmlDump        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+<indexterm><primary>xmlSecEncCtxDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecEncCtxDebugXmlDump        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints the debug information about <parameter>encCtx</parameter> to <parameter>output</parameter> in XML format.</para>

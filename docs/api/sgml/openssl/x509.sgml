@@ -22,17 +22,17 @@
                                             (void);
 <link linkend="X509-CAPS">X509</link>*       <link linkend="xmlSecOpenSSLKeyDataX509GetKeyCert">xmlSecOpenSSLKeyDataX509GetKeyCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptKeyCert">xmlSecOpenSSLKeyDataX509AdoptKeyCert</link>
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLKeyDataX509AdoptKeyCert">xmlSecOpenSSLKeyDataX509AdoptKeyCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);
-int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCert">xmlSecOpenSSLKeyDataX509AdoptCert</link>
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCert">xmlSecOpenSSLKeyDataX509AdoptCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);
 <link linkend="X509-CAPS">X509</link>*       <link linkend="xmlSecOpenSSLKeyDataX509GetCert">xmlSecOpenSSLKeyDataX509GetCert</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);
 <link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecOpenSSLKeyDataX509GetCertsSize">xmlSecOpenSSLKeyDataX509GetCertsSize</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDataX509AdoptCrl</link>
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDataX509AdoptCrl</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CRL-CAPS">X509_CRL</link> *crl);
 <link linkend="X509-CRL-CAPS">X509_CRL</link>*   <link linkend="xmlSecOpenSSLKeyDataX509GetCrl">xmlSecOpenSSLKeyDataX509GetCrl</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
@@ -57,14 +57,16 @@ int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDat
                                              <link linkend="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</link> *certs,
                                              <link linkend="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</link> *crls,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
-int         <link linkend="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert</link> (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert</link> (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath</link>
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath</link>
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                             const char *path);
+                                             const <link linkend="char">char</link> *path);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -83,7 +85,7 @@ int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509
 <title>Details</title>
 <refsect2>
 <title><anchor id="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</title>
-<programlisting>#define XMLSEC_STACK_OF_X509		STACK_OF(X509)
+<indexterm><primary>XMLSEC_STACK_OF_X509</primary></indexterm><programlisting>#define XMLSEC_STACK_OF_X509		STACK_OF(X509)
 </programlisting>
 <para>
 Macro. To make docbook happy.</para>
@@ -92,7 +94,7 @@ Macro. To make docbook happy.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</title>
-<programlisting>#define XMLSEC_STACK_OF_X509_CRL	STACK_OF(X509_CRL)
+<indexterm><primary>XMLSEC_STACK_OF_X509_CRL</primary></indexterm><programlisting>#define XMLSEC_STACK_OF_X509_CRL	STACK_OF(X509_CRL)
 </programlisting>
 <para>
 Macro. To make docbook happy.</para>
@@ -101,7 +103,7 @@ Macro. To make docbook happy.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</title>
-<programlisting>#define     xmlSecOpenSSLKeyDataX509Id</programlisting>
+<indexterm><primary>xmlSecOpenSSLKeyDataX509Id</primary></indexterm><programlisting>#define     xmlSecOpenSSLKeyDataX509Id</programlisting>
 <para>
 The OpenSSL X509 data klass.</para>
 <para>
@@ -109,10 +111,10 @@ The OpenSSL X509 data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetKlass">xmlSecOpenSSLKeyDataX509GetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataX509GetKlass
+<indexterm><primary>xmlSecOpenSSLKeyDataX509GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataX509GetKlass
                                             (void);</programlisting>
 <para>
-The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data">sec-X509Data</link>).</para>
+The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data"><type>sec-X509Data</type></link>).</para>
 <para>
 
 </para><variablelist role="params">
@@ -121,7 +123,7 @@ The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetKeyCert">xmlSecOpenSSLKeyDataX509GetKeyCert ()</title>
-<programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetKeyCert
+<indexterm><primary>xmlSecOpenSSLKeyDataX509GetKeyCert</primary></indexterm><programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the certificate from which the key was extracted.</para>
@@ -137,7 +139,7 @@ extraction or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509AdoptKeyCert">xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</title>
-<programlisting>int         xmlSecOpenSSLKeyDataX509AdoptKeyCert
+<indexterm><primary>xmlSecOpenSSLKeyDataX509AdoptKeyCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLKeyDataX509AdoptKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);</programlisting>
 <para>
@@ -156,7 +158,7 @@ Sets the key's certificate in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509AdoptCert">xmlSecOpenSSLKeyDataX509AdoptCert ()</title>
-<programlisting>int         xmlSecOpenSSLKeyDataX509AdoptCert
+<indexterm><primary>xmlSecOpenSSLKeyDataX509AdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLKeyDataX509AdoptCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);</programlisting>
 <para>
@@ -175,7 +177,7 @@ Adds certificate to the X509 key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCert">xmlSecOpenSSLKeyDataX509GetCert ()</title>
-<programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecOpenSSLKeyDataX509GetCert</primary></indexterm><programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets a certificate from X509 key data.</para>
@@ -194,7 +196,7 @@ number of certificates in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCertsSize">xmlSecOpenSSLKeyDataX509GetCertsSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecOpenSSLKeyDataX509GetCertsSize
+<indexterm><primary>xmlSecOpenSSLKeyDataX509GetCertsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecOpenSSLKeyDataX509GetCertsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of certificates in <parameter>data</parameter>.</para>
@@ -209,7 +211,7 @@ Gets the number of certificates in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDataX509AdoptCrl ()</title>
-<programlisting>int         xmlSecOpenSSLKeyDataX509AdoptCrl
+<indexterm><primary>xmlSecOpenSSLKeyDataX509AdoptCrl</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLKeyDataX509AdoptCrl
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CRL-CAPS">X509_CRL</link> *crl);</programlisting>
 <para>
@@ -228,7 +230,7 @@ Adds CRL to the X509 key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCrl">xmlSecOpenSSLKeyDataX509GetCrl ()</title>
-<programlisting><link linkend="X509-CRL-CAPS">X509_CRL</link>*   xmlSecOpenSSLKeyDataX509GetCrl  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecOpenSSLKeyDataX509GetCrl</primary></indexterm><programlisting><link linkend="X509-CRL-CAPS">X509_CRL</link>*   xmlSecOpenSSLKeyDataX509GetCrl  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets a CRL from X509 key data.</para>
@@ -247,7 +249,7 @@ number of CRLs in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCrlsSize">xmlSecOpenSSLKeyDataX509GetCrlsSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecOpenSSLKeyDataX509GetCrlsSize
+<indexterm><primary>xmlSecOpenSSLKeyDataX509GetCrlsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecOpenSSLKeyDataX509GetCrlsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of CRLs in <parameter>data</parameter>.</para>
@@ -262,7 +264,7 @@ Gets the number of CRLs in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509CertGetKey">xmlSecOpenSSLX509CertGetKey ()</title>
-<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecOpenSSLX509CertGetKey
+<indexterm><primary>xmlSecOpenSSLX509CertGetKey</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecOpenSSLX509CertGetKey
                                             (<link linkend="X509-CAPS">X509</link> *cert);</programlisting>
 <para>
 Extracts public key from the <parameter>cert</parameter>.</para>
@@ -277,7 +279,7 @@ Extracts public key from the <parameter>cert</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRawX509CertId">xmlSecOpenSSLKeyDataRawX509CertId</title>
-<programlisting>#define     xmlSecOpenSSLKeyDataRawX509CertId</programlisting>
+<indexterm><primary>xmlSecOpenSSLKeyDataRawX509CertId</primary></indexterm><programlisting>#define     xmlSecOpenSSLKeyDataRawX509CertId</programlisting>
 <para>
 The OpenSSL raw X509 certificate klass.</para>
 <para>
@@ -285,7 +287,7 @@ The OpenSSL raw X509 certificate klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRawX509CertGetKlass">xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataRawX509CertGetKlass
+<indexterm><primary>xmlSecOpenSSLKeyDataRawX509CertGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataRawX509CertGetKlass
                                             (void);</programlisting>
 <para>
 The raw X509 certificates key data klass.</para>
@@ -297,7 +299,7 @@ The raw X509 certificates key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreId">xmlSecOpenSSLX509StoreId</title>
-<programlisting>#define     xmlSecOpenSSLX509StoreId</programlisting>
+<indexterm><primary>xmlSecOpenSSLX509StoreId</primary></indexterm><programlisting>#define     xmlSecOpenSSLX509StoreId</programlisting>
 <para>
 The OpenSSL X509 store klass.</para>
 <para>
@@ -305,7 +307,7 @@ The OpenSSL X509 store klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreGetKlass">xmlSecOpenSSLX509StoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecOpenSSLX509StoreGetKlass
+<indexterm><primary>xmlSecOpenSSLX509StoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecOpenSSLX509StoreGetKlass
                                             (void);</programlisting>
 <para>
 The OpenSSL X509 certificates key data store klass.</para>
@@ -317,7 +319,7 @@ The OpenSSL X509 certificates key data store klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreFindCert">xmlSecOpenSSLX509StoreFindCert ()</title>
-<programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreFindCert  (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<indexterm><primary>xmlSecOpenSSLX509StoreFindCert</primary></indexterm><programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreFindCert  (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="xmlChar">xmlChar</link> *subjectName,
                                              <link linkend="xmlChar">xmlChar</link> *issuerName,
                                              <link linkend="xmlChar">xmlChar</link> *issuerSerial,
@@ -352,7 +354,7 @@ or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreVerify">xmlSecOpenSSLX509StoreVerify ()</title>
-<programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreVerify    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<indexterm><primary>xmlSecOpenSSLX509StoreVerify</primary></indexterm><programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreVerify    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</link> *certs,
                                              <link linkend="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</link> *crls,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
@@ -378,7 +380,7 @@ Verifies <parameter>certs</parameter> list.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert ()</title>
-<programlisting>int         xmlSecOpenSSLX509StoreAdoptCert (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<indexterm><primary>xmlSecOpenSSLX509StoreAdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLX509StoreAdoptCert (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -400,9 +402,9 @@ Adds trusted (root) or untrusted certificate to the store.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath ()</title>
-<programlisting>int         xmlSecOpenSSLX509StoreAddCertsPath
+<indexterm><primary>xmlSecOpenSSLX509StoreAddCertsPath</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLX509StoreAddCertsPath
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                             const char *path);</programlisting>
+                                             const <link linkend="char">char</link> *path);</programlisting>
 <para>
 Adds all certs in the <parameter>path</parameter> to the list of trusted certs
 in <parameter>store</parameter>.</para>

@@ -20,17 +20,17 @@
                                             (void);
 <link linkend="CERTCertificate">CERTCertificate</link>* <link linkend="xmlSecNssKeyDataX509GetKeyCert">xmlSecNssKeyDataX509GetKeyCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecNssKeyDataX509AdoptKeyCert">xmlSecNssKeyDataX509AdoptKeyCert</link>
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataX509AdoptKeyCert">xmlSecNssKeyDataX509AdoptKeyCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="CERTCertificate">CERTCertificate</link> *cert);
-int         <link linkend="xmlSecNssKeyDataX509AdoptCert">xmlSecNssKeyDataX509AdoptCert</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataX509AdoptCert">xmlSecNssKeyDataX509AdoptCert</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="CERTCertificate">CERTCertificate</link> *cert);
 <link linkend="CERTCertificate">CERTCertificate</link>* <link linkend="xmlSecNssKeyDataX509GetCert">xmlSecNssKeyDataX509GetCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);
 <link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecNssKeyDataX509GetCertsSize">xmlSecNssKeyDataX509GetCertsSize</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecNssKeyDataX509AdoptCrl">xmlSecNssKeyDataX509AdoptCrl</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataX509AdoptCrl">xmlSecNssKeyDataX509AdoptCrl</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="CERTSignedCrl">CERTSignedCrl</link> *crl);
 <link linkend="CERTSignedCrl">CERTSignedCrl</link>* <link linkend="xmlSecNssKeyDataX509GetCrl">xmlSecNssKeyDataX509GetCrl</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);
@@ -51,11 +51,13 @@ int         <link linkend="xmlSecNssKeyDataX509AdoptCrl">xmlSecNssKeyDataX509Ado
 <link linkend="CERTCertificate">CERTCertificate</link>* <link linkend="xmlSecNssX509StoreVerify">xmlSecNssX509StoreVerify</link>   (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="CERTCertList">CERTCertList</link> *certs,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
-int         <link linkend="xmlSecNssX509StoreAdoptCert">xmlSecNssX509StoreAdoptCert</link>     (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<link linkend="int">int</link>         <link linkend="xmlSecNssX509StoreAdoptCert">xmlSecNssX509StoreAdoptCert</link>     (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="CERTCertificate">CERTCertificate</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -74,7 +76,7 @@ int         <link linkend="xmlSecNssX509StoreAdoptCert">xmlSecNssX509StoreAdoptC
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509Id">xmlSecNssKeyDataX509Id</title>
-<programlisting>#define     xmlSecNssKeyDataX509Id</programlisting>
+<indexterm><primary>xmlSecNssKeyDataX509Id</primary></indexterm><programlisting>#define     xmlSecNssKeyDataX509Id</programlisting>
 <para>
 The NSS X509 data klass.</para>
 <para>
@@ -82,10 +84,10 @@ The NSS X509 data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509GetKlass">xmlSecNssKeyDataX509GetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataX509GetKlass
+<indexterm><primary>xmlSecNssKeyDataX509GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataX509GetKlass
                                             (void);</programlisting>
 <para>
-The NSS X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data">sec-X509Data</link>).</para>
+The NSS X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data"><type>sec-X509Data</type></link>).</para>
 <para>
 
 </para><variablelist role="params">
@@ -94,7 +96,7 @@ The NSS X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="se
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509GetKeyCert">xmlSecNssKeyDataX509GetKeyCert ()</title>
-<programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssKeyDataX509GetKeyCert
+<indexterm><primary>xmlSecNssKeyDataX509GetKeyCert</primary></indexterm><programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssKeyDataX509GetKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the certificate from which the key was extracted.</para>
@@ -110,7 +112,7 @@ extraction or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509AdoptKeyCert">xmlSecNssKeyDataX509AdoptKeyCert ()</title>
-<programlisting>int         xmlSecNssKeyDataX509AdoptKeyCert
+<indexterm><primary>xmlSecNssKeyDataX509AdoptKeyCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeyDataX509AdoptKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="CERTCertificate">CERTCertificate</link> *cert);</programlisting>
 <para>
@@ -129,7 +131,7 @@ Sets the key's certificate in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509AdoptCert">xmlSecNssKeyDataX509AdoptCert ()</title>
-<programlisting>int         xmlSecNssKeyDataX509AdoptCert   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecNssKeyDataX509AdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeyDataX509AdoptCert   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="CERTCertificate">CERTCertificate</link> *cert);</programlisting>
 <para>
 Adds certificate to the X509 key data.</para>
@@ -147,7 +149,7 @@ Adds certificate to the X509 key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509GetCert">xmlSecNssKeyDataX509GetCert ()</title>
-<programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssKeyDataX509GetCert
+<indexterm><primary>xmlSecNssKeyDataX509GetCert</primary></indexterm><programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssKeyDataX509GetCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
@@ -167,7 +169,7 @@ number of certificates in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509GetCertsSize">xmlSecNssKeyDataX509GetCertsSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecNssKeyDataX509GetCertsSize
+<indexterm><primary>xmlSecNssKeyDataX509GetCertsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecNssKeyDataX509GetCertsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of certificates in <parameter>data</parameter>.</para>
@@ -182,7 +184,7 @@ Gets the number of certificates in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509AdoptCrl">xmlSecNssKeyDataX509AdoptCrl ()</title>
-<programlisting>int         xmlSecNssKeyDataX509AdoptCrl    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecNssKeyDataX509AdoptCrl</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeyDataX509AdoptCrl    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="CERTSignedCrl">CERTSignedCrl</link> *crl);</programlisting>
 <para>
 Adds CRL to the X509 key data.</para>
@@ -200,7 +202,7 @@ Adds CRL to the X509 key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509GetCrl">xmlSecNssKeyDataX509GetCrl ()</title>
-<programlisting><link linkend="CERTSignedCrl">CERTSignedCrl</link>* xmlSecNssKeyDataX509GetCrl   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecNssKeyDataX509GetCrl</primary></indexterm><programlisting><link linkend="CERTSignedCrl">CERTSignedCrl</link>* xmlSecNssKeyDataX509GetCrl   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets a CRL from X509 key data.</para>
@@ -219,7 +221,7 @@ number of CRLs in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataX509GetCrlsSize">xmlSecNssKeyDataX509GetCrlsSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecNssKeyDataX509GetCrlsSize (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<indexterm><primary>xmlSecNssKeyDataX509GetCrlsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecNssKeyDataX509GetCrlsSize (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of CRLs in <parameter>data</parameter>.</para>
 <para>
@@ -233,7 +235,7 @@ Gets the number of CRLs in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssX509CertGetKey">xmlSecNssX509CertGetKey ()</title>
-<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecNssX509CertGetKey    (<link linkend="CERTCertificate">CERTCertificate</link> *cert);</programlisting>
+<indexterm><primary>xmlSecNssX509CertGetKey</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecNssX509CertGetKey    (<link linkend="CERTCertificate">CERTCertificate</link> *cert);</programlisting>
 <para>
 Extracts public key from the <parameter>cert</parameter>.</para>
 <para>
@@ -247,7 +249,7 @@ Extracts public key from the <parameter>cert</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataRawX509CertId">xmlSecNssKeyDataRawX509CertId</title>
-<programlisting>#define     xmlSecNssKeyDataRawX509CertId</programlisting>
+<indexterm><primary>xmlSecNssKeyDataRawX509CertId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataRawX509CertId</programlisting>
 <para>
 The NSS raw X509 certificate klass.</para>
 <para>
@@ -255,7 +257,7 @@ The NSS raw X509 certificate klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataRawX509CertGetKlass">xmlSecNssKeyDataRawX509CertGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataRawX509CertGetKlass
+<indexterm><primary>xmlSecNssKeyDataRawX509CertGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataRawX509CertGetKlass
                                             (void);</programlisting>
 <para>
 The raw X509 certificates key data klass.</para>
@@ -267,7 +269,7 @@ The raw X509 certificates key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssX509StoreId">xmlSecNssX509StoreId</title>
-<programlisting>#define     xmlSecNssX509StoreId</programlisting>
+<indexterm><primary>xmlSecNssX509StoreId</primary></indexterm><programlisting>#define     xmlSecNssX509StoreId</programlisting>
 <para>
 The NSS X509 store klass.</para>
 <para>
@@ -275,7 +277,7 @@ The NSS X509 store klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssX509StoreGetKlass">xmlSecNssX509StoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecNssX509StoreGetKlass
+<indexterm><primary>xmlSecNssX509StoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecNssX509StoreGetKlass
                                             (void);</programlisting>
 <para>
 The NSS X509 certificates key data store klass.</para>
@@ -287,7 +289,7 @@ The NSS X509 certificates key data store klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssX509StoreFindCert">xmlSecNssX509StoreFindCert ()</title>
-<programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssX509StoreFindCert (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<indexterm><primary>xmlSecNssX509StoreFindCert</primary></indexterm><programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssX509StoreFindCert (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="xmlChar">xmlChar</link> *subjectName,
                                              <link linkend="xmlChar">xmlChar</link> *issuerName,
                                              <link linkend="xmlChar">xmlChar</link> *issuerSerial,
@@ -322,7 +324,7 @@ or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssX509StoreVerify">xmlSecNssX509StoreVerify ()</title>
-<programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssX509StoreVerify   (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<indexterm><primary>xmlSecNssX509StoreVerify</primary></indexterm><programlisting><link linkend="CERTCertificate">CERTCertificate</link>* xmlSecNssX509StoreVerify   (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="CERTCertList">CERTCertList</link> *certs,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
 <para>
@@ -344,7 +346,7 @@ Verifies <parameter>certs</parameter> list.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssX509StoreAdoptCert">xmlSecNssX509StoreAdoptCert ()</title>
-<programlisting>int         xmlSecNssX509StoreAdoptCert     (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+<indexterm><primary>xmlSecNssX509StoreAdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssX509StoreAdoptCert     (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="CERTCertificate">CERTCertificate</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>

@@ -18,18 +18,20 @@
 typedef     <link linkend="xmlSec">xmlSecPtr</link>;
 #define     <link linkend="xmlSecSize">xmlSecSize</link>
 #define     <link linkend="xmlSecByte">xmlSecByte</link>
-int         <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
-int         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
+<link linkend="int">int</link>         <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
+<link linkend="int">int</link>         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
 #define     <link linkend="xmlSecCheckVersionExact">xmlSecCheckVersionExact</link>         ()
 #define     <link linkend="xmlSecCheckVersion">xmlSecCheckVersion</link>              ()
 enum        <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link>;
-int         <link linkend="xmlSecCheckVersionExt">xmlSecCheckVersionExt</link>           (int major,
-                                             int minor,
-                                             int subminor,
+<link linkend="int">int</link>         <link linkend="xmlSecCheckVersionExt">xmlSecCheckVersionExt</link>           (<link linkend="int">int</link> major,
+                                             <link linkend="int">int</link> minor,
+                                             <link linkend="int">int</link> subminor,
                                              <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link> mode);
 #define     <link linkend="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</link>
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -48,7 +50,7 @@ int         <link linkend="xmlSecCheckVersionExt">xmlSecCheckVersionExt</link>  
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecPtr">xmlSecPtr</title>
-<programlisting>typedef void*					xmlSecPtr;
+<indexterm><primary>xmlSecPtr</primary></indexterm><programlisting>typedef void*					xmlSecPtr;
 </programlisting>
 <para>
 Void pointer.</para>
@@ -57,7 +59,7 @@ Void pointer.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSize">xmlSecSize</title>
-<programlisting>#define     xmlSecSize</programlisting>
+<indexterm><primary>xmlSecSize</primary></indexterm><programlisting>#define     xmlSecSize</programlisting>
 <para>
 Size of something. Should be typedef instead of define
 but it will break ABI (todo).</para>
@@ -66,7 +68,7 @@ but it will break ABI (todo).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecByte">xmlSecByte</title>
-<programlisting>#define xmlSecByte				unsigned char
+<indexterm><primary>xmlSecByte</primary></indexterm><programlisting>#define xmlSecByte				unsigned char
 </programlisting>
 <para>
 One byte. Should be typedef instead of define
@@ -76,7 +78,7 @@ but it will break ABI (todo).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecInit">xmlSecInit ()</title>
-<programlisting>int         xmlSecInit                      (void);</programlisting>
+<indexterm><primary>xmlSecInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecInit                      (void);</programlisting>
 <para>
 Initializes XML Security Library. The depended libraries
 (LibXML and LibXSLT) must be initialized before.</para>
@@ -88,7 +90,7 @@ Initializes XML Security Library. The depended libraries
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecShutdown">xmlSecShutdown ()</title>
-<programlisting>int         xmlSecShutdown                  (void);</programlisting>
+<indexterm><primary>xmlSecShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecShutdown                  (void);</programlisting>
 <para>
 Clean ups the XML Security Library.</para>
 <para>
@@ -99,7 +101,7 @@ Clean ups the XML Security Library.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCheckVersionExact">xmlSecCheckVersionExact()</title>
-<programlisting>#define     xmlSecCheckVersionExact()</programlisting>
+<indexterm><primary>xmlSecCheckVersionExact</primary></indexterm><programlisting>#define     xmlSecCheckVersionExact()</programlisting>
 <para>
 Macro. Returns 1 if the loaded xmlsec library version exactly matches 
 the one used to compile the caller, 0 if it does not or a negative
@@ -109,7 +111,7 @@ value if an error occurs.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCheckVersion">xmlSecCheckVersion()</title>
-<programlisting>#define     xmlSecCheckVersion()</programlisting>
+<indexterm><primary>xmlSecCheckVersion</primary></indexterm><programlisting>#define     xmlSecCheckVersion()</programlisting>
 <para>
 Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
 the one used to compile the caller, 0 if it does not or a negative
@@ -119,7 +121,7 @@ value if an error occurs.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCheckVersionMode">enum xmlSecCheckVersionMode</title>
-<programlisting>typedef enum {
+<indexterm><primary>xmlSecCheckVersionMode</primary></indexterm><programlisting>typedef enum {
     xmlSecCheckVersionExact = 0,
     xmlSecCheckVersionABICompatible
 } xmlSecCheckVersionMode;
@@ -142,9 +144,9 @@ The xmlsec library version mode.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCheckVersionExt">xmlSecCheckVersionExt ()</title>
-<programlisting>int         xmlSecCheckVersionExt           (int major,
-                                             int minor,
-                                             int subminor,
+<indexterm><primary>xmlSecCheckVersionExt</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCheckVersionExt           (<link linkend="int">int</link> major,
+                                             <link linkend="int">int</link> minor,
+                                             <link linkend="int">int</link> subminor,
                                              <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link> mode);</programlisting>
 <para>
 Checks if the loaded version of xmlsec library could be used.</para>
@@ -169,7 +171,7 @@ Checks if the loaded version of xmlsec library could be used.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</title>
-<programlisting>#define     ATTRIBUTE_UNUSED</programlisting>
+<indexterm><primary>ATTRIBUTE_UNUSED</primary></indexterm><programlisting>#define     ATTRIBUTE_UNUSED</programlisting>
 <para>
 Macro used to signal to GCC unused function parameters</para>
 <para>

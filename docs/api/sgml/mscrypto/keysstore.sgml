@@ -18,16 +18,18 @@
 #define     <link linkend="xmlSecMSCryptoKeysStoreId">xmlSecMSCryptoKeysStoreId</link>
 <link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <link linkend="xmlSecMSCryptoKeysStoreGetKlass">xmlSecMSCryptoKeysStoreGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecMSCryptoKeysStoreAdoptKey">xmlSecMSCryptoKeysStoreAdoptKey</link> (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeysStoreAdoptKey">xmlSecMSCryptoKeysStoreAdoptKey</link> (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecMSCryptoKeysStoreLoad">xmlSecMSCryptoKeysStoreLoad</link>     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *uri,
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeysStoreLoad">xmlSecMSCryptoKeysStoreLoad</link>     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *uri,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-int         <link linkend="xmlSecMSCryptoKeysStoreSave">xmlSecMSCryptoKeysStoreSave</link>     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *filename,
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeysStoreSave">xmlSecMSCryptoKeysStoreSave</link>     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -46,7 +48,7 @@ int         <link linkend="xmlSecMSCryptoKeysStoreSave">xmlSecMSCryptoKeysStoreS
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeysStoreId">xmlSecMSCryptoKeysStoreId</title>
-<programlisting>#define xmlSecMSCryptoKeysStoreId	xmlSecMSCryptoKeysStoreGetKlass()
+<indexterm><primary>xmlSecMSCryptoKeysStoreId</primary></indexterm><programlisting>#define xmlSecMSCryptoKeysStoreId	xmlSecMSCryptoKeysStoreGetKlass()
 </programlisting>
 <para>
 A MSCrypto keys store klass id.</para>
@@ -55,7 +57,7 @@ A MSCrypto keys store klass id.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeysStoreGetKlass">xmlSecMSCryptoKeysStoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecMSCryptoKeysStoreGetKlass
+<indexterm><primary>xmlSecMSCryptoKeysStoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecMSCryptoKeysStoreGetKlass
                                             (void);</programlisting>
 <para>
 The MSCrypto list based keys store klass.</para>
@@ -67,7 +69,7 @@ The MSCrypto list based keys store klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeysStoreAdoptKey">xmlSecMSCryptoKeysStoreAdoptKey ()</title>
-<programlisting>int         xmlSecMSCryptoKeysStoreAdoptKey (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<indexterm><primary>xmlSecMSCryptoKeysStoreAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeysStoreAdoptKey (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
@@ -85,8 +87,8 @@ Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeysStoreLoad">xmlSecMSCryptoKeysStoreLoad ()</title>
-<programlisting>int         xmlSecMSCryptoKeysStoreLoad     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *uri,
+<indexterm><primary>xmlSecMSCryptoKeysStoreLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeysStoreLoad     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *uri,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 Reads keys from an XML file.</para>
@@ -107,8 +109,8 @@ Reads keys from an XML file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeysStoreSave">xmlSecMSCryptoKeysStoreSave ()</title>
-<programlisting>int         xmlSecMSCryptoKeysStoreSave     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *filename,
+<indexterm><primary>xmlSecMSCryptoKeysStoreSave</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeysStoreSave     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Writes keys from <parameter>store</parameter> to an XML file.</para>

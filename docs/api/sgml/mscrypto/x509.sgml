@@ -20,10 +20,10 @@
                                             (void);
 <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> <link linkend="xmlSecMSCryptoKeyDataX509GetKeyCert">xmlSecMSCryptoKeyDataX509GetKeyCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecMSCryptoKeyDataX509AdoptKeyCert">xmlSecMSCryptoKeyDataX509AdoptKeyCert</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeyDataX509AdoptKeyCert">xmlSecMSCryptoKeyDataX509AdoptKeyCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert);
-int         <link linkend="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKeyDataX509AdoptCert</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKeyDataX509AdoptCert</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert);
 <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> <link linkend="xmlSecMSCryptoKeyDataX509GetCert">xmlSecMSCryptoKeyDataX509GetCert</link>
@@ -31,7 +31,7 @@ int         <link linkend="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKey
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);
 <link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecMSCryptoKeyDataX509GetCertsSize">xmlSecMSCryptoKeyDataX509GetCertsSize</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyDataX509AdoptCrl</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyDataX509AdoptCrl</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="PCCRL-CONTEXT-CAPS">PCCRL_CONTEXT</link> crl);
 <link linkend="PCCRL-CONTEXT-CAPS">PCCRL_CONTEXT</link> <link linkend="xmlSecMSCryptoKeyDataX509GetCrl">xmlSecMSCryptoKeyDataX509GetCrl</link>
@@ -56,12 +56,14 @@ int         <link linkend="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyD
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> certs,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
-int         <link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</link>
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -80,7 +82,7 @@ int         <link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509S
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509Id">xmlSecMSCryptoKeyDataX509Id</title>
-<programlisting>#define     xmlSecMSCryptoKeyDataX509Id</programlisting>
+<indexterm><primary>xmlSecMSCryptoKeyDataX509Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataX509Id</programlisting>
 <para>
 The MSCrypto X509 data klass.</para>
 <para>
@@ -88,10 +90,10 @@ The MSCrypto X509 data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509GetKlass">xmlSecMSCryptoKeyDataX509GetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataX509GetKlass
+<indexterm><primary>xmlSecMSCryptoKeyDataX509GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataX509GetKlass
                                             (void);</programlisting>
 <para>
-The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data">sec-X509Data</link>).</para>
+The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data"><type>sec-X509Data</type></link>).</para>
 <para>
 
 </para><variablelist role="params">
@@ -100,7 +102,7 @@ The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linken
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509GetKeyCert">xmlSecMSCryptoKeyDataX509GetKeyCert ()</title>
-<programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataX509GetKeyCert
+<indexterm><primary>xmlSecMSCryptoKeyDataX509GetKeyCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataX509GetKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the certificate from which the key was extracted.</para>
@@ -116,7 +118,7 @@ extraction or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509AdoptKeyCert">xmlSecMSCryptoKeyDataX509AdoptKeyCert ()</title>
-<programlisting>int         xmlSecMSCryptoKeyDataX509AdoptKeyCert
+<indexterm><primary>xmlSecMSCryptoKeyDataX509AdoptKeyCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeyDataX509AdoptKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert);</programlisting>
 <para>
@@ -135,7 +137,7 @@ Sets the key's certificate in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKeyDataX509AdoptCert ()</title>
-<programlisting>int         xmlSecMSCryptoKeyDataX509AdoptCert
+<indexterm><primary>xmlSecMSCryptoKeyDataX509AdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeyDataX509AdoptCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert);</programlisting>
 <para>
@@ -154,7 +156,7 @@ Adds certificate to the X509 key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509GetCert">xmlSecMSCryptoKeyDataX509GetCert ()</title>
-<programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataX509GetCert
+<indexterm><primary>xmlSecMSCryptoKeyDataX509GetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataX509GetCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
@@ -174,7 +176,7 @@ number of certificates in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509GetCertsSize">xmlSecMSCryptoKeyDataX509GetCertsSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecMSCryptoKeyDataX509GetCertsSize
+<indexterm><primary>xmlSecMSCryptoKeyDataX509GetCertsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecMSCryptoKeyDataX509GetCertsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of certificates in <parameter>data</parameter>.</para>
@@ -189,7 +191,7 @@ Gets the number of certificates in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyDataX509AdoptCrl ()</title>
-<programlisting>int         xmlSecMSCryptoKeyDataX509AdoptCrl
+<indexterm><primary>xmlSecMSCryptoKeyDataX509AdoptCrl</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeyDataX509AdoptCrl
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="PCCRL-CONTEXT-CAPS">PCCRL_CONTEXT</link> crl);</programlisting>
 <para>
@@ -208,7 +210,7 @@ Adds CRL to the X509 key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509GetCrl">xmlSecMSCryptoKeyDataX509GetCrl ()</title>
-<programlisting><link linkend="PCCRL-CONTEXT-CAPS">PCCRL_CONTEXT</link> xmlSecMSCryptoKeyDataX509GetCrl
+<indexterm><primary>xmlSecMSCryptoKeyDataX509GetCrl</primary></indexterm><programlisting><link linkend="PCCRL-CONTEXT-CAPS">PCCRL_CONTEXT</link> xmlSecMSCryptoKeyDataX509GetCrl
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
@@ -228,7 +230,7 @@ number of CRLs in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataX509GetCrlsSize">xmlSecMSCryptoKeyDataX509GetCrlsSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecMSCryptoKeyDataX509GetCrlsSize
+<indexterm><primary>xmlSecMSCryptoKeyDataX509GetCrlsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecMSCryptoKeyDataX509GetCrlsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of CRLs in <parameter>data</parameter>.</para>
@@ -243,7 +245,7 @@ Gets the number of CRLs in <parameter>data</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataRawX509CertId">xmlSecMSCryptoKeyDataRawX509CertId</title>
-<programlisting>#define     xmlSecMSCryptoKeyDataRawX509CertId</programlisting>
+<indexterm><primary>xmlSecMSCryptoKeyDataRawX509CertId</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataRawX509CertId</programlisting>
 <para>
 The MSCrypto raw X509 certificate klass.</para>
 <para>
@@ -251,7 +253,7 @@ The MSCrypto raw X509 certificate klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataRawX509CertGetKlass">xmlSecMSCryptoKeyDataRawX509CertGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataRawX509CertGetKlass
+<indexterm><primary>xmlSecMSCryptoKeyDataRawX509CertGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataRawX509CertGetKlass
                                             (void);</programlisting>
 <para>
 The raw X509 certificates key data klass.</para>
@@ -263,7 +265,7 @@ The raw X509 certificates key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoX509StoreId">xmlSecMSCryptoX509StoreId</title>
-<programlisting>#define     xmlSecMSCryptoX509StoreId</programlisting>
+<indexterm><primary>xmlSecMSCryptoX509StoreId</primary></indexterm><programlisting>#define     xmlSecMSCryptoX509StoreId</programlisting>
 <para>
 The MSCrypto X509 store klass.</para>
 <para>
@@ -271,7 +273,7 @@ The MSCrypto X509 store klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoX509StoreGetKlass">xmlSecMSCryptoX509StoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecMSCryptoX509StoreGetKlass
+<indexterm><primary>xmlSecMSCryptoX509StoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecMSCryptoX509StoreGetKlass
                                             (void);</programlisting>
 <para>
 The MSCrypto X509 certificates key data store klass.</para>
@@ -283,7 +285,7 @@ The MSCrypto X509 certificates key data store klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoX509StoreFindCert">xmlSecMSCryptoX509StoreFindCert ()</title>
-<programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoX509StoreFindCert
+<indexterm><primary>xmlSecMSCryptoX509StoreFindCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoX509StoreFindCert
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="xmlChar">xmlChar</link> *subjectName,
                                              <link linkend="xmlChar">xmlChar</link> *issuerName,
@@ -319,7 +321,7 @@ or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoX509StoreVerify">xmlSecMSCryptoX509StoreVerify ()</title>
-<programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoX509StoreVerify
+<indexterm><primary>xmlSecMSCryptoX509StoreVerify</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoX509StoreVerify
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> certs,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
@@ -342,7 +344,7 @@ Verifies <parameter>certs</parameter> list.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert ()</title>
-<programlisting>int         xmlSecMSCryptoX509StoreAdoptCert
+<indexterm><primary>xmlSecMSCryptoX509StoreAdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoX509StoreAdoptCert
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>

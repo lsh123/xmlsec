@@ -95,31 +95,33 @@
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *type,
                                              const <link linkend="xmlChar">xmlChar</link> *recipient);
-int         <link linkend="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength</link>
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bitsLen);
-int         <link linkend="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam</link>
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
-int         <link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link>
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *xslt);
-int         <link linkend="xmlSecTmplTransformAddC14NInclNamespaces">xmlSecTmplTransformAddC14NInclNamespaces</link>
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddC14NInclNamespaces">xmlSecTmplTransformAddC14NInclNamespaces</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *prefixList);
-int         <link linkend="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath</link>     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath</link>     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **nsList);
-int         <link linkend="xmlSecTmplTransformAddXPath2">xmlSecTmplTransformAddXPath2</link>    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXPath2">xmlSecTmplTransformAddXPath2</link>    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *type,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **nsList);
-int         <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer</link>  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+<link linkend="int">int</link>         <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer</link>  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **nsList);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -138,7 +140,7 @@ int         <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAd
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureCreate">xmlSecTmplSignatureCreate ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureCreate       (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+<indexterm><primary>xmlSecTmplSignatureCreate</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureCreate       (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethodId,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethodId,
                                              const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
@@ -172,7 +174,7 @@ error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureEnsureKeyInfo">xmlSecTmplSignatureEnsureKeyInfo ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureEnsureKeyInfo
+<indexterm><primary>xmlSecTmplSignatureEnsureKeyInfo</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureEnsureKeyInfo
                                             (<link linkend="xmlNode">xmlNodePtr</link> signNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
@@ -193,7 +195,7 @@ error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureAddReference">xmlSecTmplSignatureAddReference ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddReference (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+<indexterm><primary>xmlSecTmplSignatureAddReference</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddReference (<link linkend="xmlNode">xmlNodePtr</link> signNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethodId,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
@@ -226,7 +228,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddObject    (<link linkend="xmlNode">xmlNodePtr</link> signNode,
+<indexterm><primary>xmlSecTmplSignatureAddObject</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddObject    (<link linkend="xmlNode">xmlNodePtr</link> signNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *mimeType,
                                              const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
@@ -253,7 +255,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureGetSignMethodNode">xmlSecTmplSignatureGetSignMethodNode ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetSignMethodNode
+<indexterm><primary>xmlSecTmplSignatureGetSignMethodNode</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetSignMethodNode
                                             (<link linkend="xmlNode">xmlNodePtr</link> signNode);</programlisting>
 <para>
 Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod">&lt;dsig:SignatureMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</para>
@@ -268,7 +270,7 @@ Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMeth
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureGetC14NMethodNode">xmlSecTmplSignatureGetC14NMethodNode ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetC14NMethodNode
+<indexterm><primary>xmlSecTmplSignatureGetC14NMethodNode</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetC14NMethodNode
                                             (<link linkend="xmlNode">xmlNodePtr</link> signNode);</programlisting>
 <para>
 Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod">&lt;dsig:CanonicalizationMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</para>
@@ -283,7 +285,7 @@ Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Canonicalizat
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplReferenceAddTransform (<link linkend="xmlNode">xmlNodePtr</link> referenceNode,
+<indexterm><primary>xmlSecTmplReferenceAddTransform</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplReferenceAddTransform (<link linkend="xmlNode">xmlNodePtr</link> referenceNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node <parameter>referenceNode</parameter>.</para>
@@ -302,7 +304,7 @@ error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplObjectAddSignProperties">xmlSecTmplObjectAddSignProperties ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplObjectAddSignProperties
+<indexterm><primary>xmlSecTmplObjectAddSignProperties</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplObjectAddSignProperties
                                             (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
@@ -326,7 +328,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplObjectAddManifest">xmlSecTmplObjectAddManifest ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplObjectAddManifest     (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
+<indexterm><primary>xmlSecTmplObjectAddManifest</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplObjectAddManifest     (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.</para>
@@ -345,7 +347,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplManifestAddReference">xmlSecTmplManifestAddReference ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplManifestAddReference  (<link linkend="xmlNode">xmlNodePtr</link> manifestNode,
+<indexterm><primary>xmlSecTmplManifestAddReference</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplManifestAddReference  (<link linkend="xmlNode">xmlNodePtr</link> manifestNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethodId,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
@@ -378,7 +380,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataCreate">xmlSecTmplEncDataCreate ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataCreate         (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+<indexterm><primary>xmlSecTmplEncDataCreate</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataCreate         (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethodId,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *type,
@@ -415,7 +417,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureKeyInfo">xmlSecTmplEncDataEnsureKeyInfo ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataEnsureKeyInfo  (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+<indexterm><primary>xmlSecTmplEncDataEnsureKeyInfo</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataEnsureKeyInfo  (<link linkend="xmlNode">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> to the  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
@@ -434,7 +436,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureEncProperties">xmlSecTmplEncDataEnsureEncProperties ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureEncProperties
+<indexterm><primary>xmlSecTmplEncDataEnsureEncProperties</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureEncProperties
                                             (<link linkend="xmlNode">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
@@ -455,7 +457,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataAddEncProperty">xmlSecTmplEncDataAddEncProperty ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataAddEncProperty (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+<indexterm><primary>xmlSecTmplEncDataAddEncProperty</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataAddEncProperty (<link linkend="xmlNode">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
 <para>
@@ -480,7 +482,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureCipherValue">xmlSecTmplEncDataEnsureCipherValue ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherValue
+<indexterm><primary>xmlSecTmplEncDataEnsureCipherValue</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherValue
                                             (<link linkend="xmlNode">xmlNodePtr</link> encNode);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
@@ -496,7 +498,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureCipherReference">xmlSecTmplEncDataEnsureCipherReference ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherReference
+<indexterm><primary>xmlSecTmplEncDataEnsureCipherReference</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherReference
                                             (<link linkend="xmlNode">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
@@ -517,7 +519,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataGetEncMethodNode">xmlSecTmplEncDataGetEncMethodNode ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataGetEncMethodNode
+<indexterm><primary>xmlSecTmplEncDataGetEncMethodNode</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataGetEncMethodNode
                                             (<link linkend="xmlNode">xmlNodePtr</link> encNode);</programlisting>
 <para>
 Gets pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncrytpionMethod">&lt;enc:EncrytpionMethod/&gt;</ulink> node.</para>
@@ -532,7 +534,7 @@ Gets pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncrytpionMeth
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplCipherReferenceAddTransform
+<indexterm><primary>xmlSecTmplCipherReferenceAddTransform</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplCipherReferenceAddTransform
                                             (<link linkend="xmlNode">xmlNodePtr</link> cipherReferenceNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
@@ -554,7 +556,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplReferenceListAddDataReference">xmlSecTmplReferenceListAddDataReference ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddDataReference
+<indexterm><primary>xmlSecTmplReferenceListAddDataReference</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddDataReference
                                             (<link linkend="xmlNode">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
@@ -574,7 +576,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplReferenceListAddKeyReference">xmlSecTmplReferenceListAddKeyReference ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddKeyReference
+<indexterm><primary>xmlSecTmplReferenceListAddKeyReference</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddKeyReference
                                             (<link linkend="xmlNode">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
@@ -594,7 +596,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddKeyName">xmlSecTmplKeyInfoAddKeyName ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyName     (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<indexterm><primary>xmlSecTmplKeyInfoAddKeyName</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyName     (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
@@ -613,7 +615,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddKeyValue">xmlSecTmplKeyInfoAddKeyValue ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyValue    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
+<indexterm><primary>xmlSecTmplKeyInfoAddKeyValue</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyValue    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
@@ -628,7 +630,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddX509Data">xmlSecTmplKeyInfoAddX509Data ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddX509Data    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
+<indexterm><primary>xmlSecTmplKeyInfoAddX509Data</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddX509Data    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
 <para>
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
@@ -643,7 +645,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddRetrievalMethod">xmlSecTmplKeyInfoAddRetrievalMethod ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddRetrievalMethod
+<indexterm><primary>xmlSecTmplKeyInfoAddRetrievalMethod</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddRetrievalMethod
                                             (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
                                              const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
@@ -667,7 +669,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplRetrievalMethodAddTransform">xmlSecTmplRetrievalMethodAddTransform ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplRetrievalMethodAddTransform
+<indexterm><primary>xmlSecTmplRetrievalMethodAddTransform</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplRetrievalMethodAddTransform
                                             (<link linkend="xmlNode">xmlNodePtr</link> retrMethodNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
@@ -688,7 +690,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddEncryptedKey">xmlSecTmplKeyInfoAddEncryptedKey ()</title>
-<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddEncryptedKey
+<indexterm><primary>xmlSecTmplKeyInfoAddEncryptedKey</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddEncryptedKey
                                             (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethodId,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
@@ -721,7 +723,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength ()</title>
-<programlisting>int         xmlSecTmplTransformAddHmacOutputLength
+<indexterm><primary>xmlSecTmplTransformAddHmacOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddHmacOutputLength
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bitsLen);</programlisting>
 <para>
@@ -741,7 +743,7 @@ node <parameter>node</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam ()</title>
-<programlisting>int         xmlSecTmplTransformAddRsaOaepParam
+<indexterm><primary>xmlSecTmplTransformAddRsaOaepParam</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddRsaOaepParam
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
@@ -764,7 +766,7 @@ Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-OAEPParam">&lt;enc:OAE
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet ()</title>
-<programlisting>int         xmlSecTmplTransformAddXsltStylesheet
+<indexterm><primary>xmlSecTmplTransformAddXsltStylesheet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXsltStylesheet
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *xslt);</programlisting>
 <para>
@@ -783,7 +785,7 @@ Writes the XSLT transform expression to the <parameter>node</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddC14NInclNamespaces">xmlSecTmplTransformAddC14NInclNamespaces ()</title>
-<programlisting>int         xmlSecTmplTransformAddC14NInclNamespaces
+<indexterm><primary>xmlSecTmplTransformAddC14NInclNamespaces</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddC14NInclNamespaces
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *prefixList);</programlisting>
 <para>
@@ -796,7 +798,7 @@ Adds "inclusive" namespaces to the ExcC14N transform node <parameter>node</param
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>prefixList</parameter>&nbsp;:</term>
 <listitem><simpara> 	the white space delimited  list of namespace prefixes, 
-		where "<link linkend="default">default</link>" indicates the default namespace
+		where "<link linkend="default"><type>default</type></link>" indicates the default namespace
 		(optional).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 if success or a negative value otherwise.
@@ -804,7 +806,7 @@ Adds "inclusive" namespaces to the ExcC14N transform node <parameter>node</param
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath ()</title>
-<programlisting>int         xmlSecTmplTransformAddXPath     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+<indexterm><primary>xmlSecTmplTransformAddXPath</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXPath     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **nsList);</programlisting>
 <para>
@@ -828,7 +830,7 @@ Writes XPath transform infromation to the <ulink URL="http://www.w3.org/TR/xmlds
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXPath2">xmlSecTmplTransformAddXPath2 ()</title>
-<programlisting>int         xmlSecTmplTransformAddXPath2    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+<indexterm><primary>xmlSecTmplTransformAddXPath2</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXPath2    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *type,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **nsList);</programlisting>
@@ -856,7 +858,7 @@ Writes XPath2 transform infromation to the <ulink URL="http://www.w3.org/TR/xmld
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer ()</title>
-<programlisting>int         xmlSecTmplTransformAddXPointer  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
+<indexterm><primary>xmlSecTmplTransformAddXPointer</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTmplTransformAddXPointer  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **nsList);</programlisting>
 <para>

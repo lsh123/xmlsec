@@ -17,11 +17,11 @@
 
 #define     <link linkend="XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS">XMLSEC_TRANSFORM_BINARY_CHUNK</link>
 <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecTransformIdsGet">xmlSecTransformIdsGet</link>      (void);
-int         <link linkend="xmlSecTransformIdsInit">xmlSecTransformIdsInit</link>          (void);
-void        <link linkend="xmlSecTransformIdsShutdown">xmlSecTransformIdsShutdown</link>      (void);
-int         <link linkend="xmlSecTransformIdsRegisterDefault">xmlSecTransformIdsRegisterDefault</link>
+<link linkend="int">int</link>         <link linkend="xmlSecTransformIdsInit">xmlSecTransformIdsInit</link>          (void);
+<link linkend="void">void</link>        <link linkend="xmlSecTransformIdsShutdown">xmlSecTransformIdsShutdown</link>      (void);
+<link linkend="int">int</link>         <link linkend="xmlSecTransformIdsRegisterDefault">xmlSecTransformIdsRegisterDefault</link>
                                             (void);
-int         <link linkend="xmlSecTransformIdsRegister">xmlSecTransformIdsRegister</link>      (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);
+<link linkend="int">int</link>         <link linkend="xmlSecTransformIdsRegister">xmlSecTransformIdsRegister</link>      (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);
 enum        <link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link>;
 enum        <link linkend="xmlSecTransformMode">xmlSecTransformMode</link>;
 enum        <link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link>;
@@ -32,7 +32,7 @@ typedef     <link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link>
 #define     <link linkend="xmlSecTransformUriTypeLocal">xmlSecTransformUriTypeLocal</link>
 #define     <link linkend="xmlSecTransformUriTypeRemote">xmlSecTransformUriTypeRemote</link>
 #define     <link linkend="xmlSecTransformUriTypeAny">xmlSecTransformUriTypeAny</link>
-int         <link linkend="xmlSecTransformUriTypeCheck">xmlSecTransformUriTypeCheck</link>     (<link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> type,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformUriTypeCheck">xmlSecTransformUriTypeCheck</link>     (<link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> type,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
 typedef     <link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link>;
 #define     <link linkend="xmlSecTransformDataTypeUnknown">xmlSecTransformDataTypeUnknown</link>
@@ -46,24 +46,24 @@ typedef     <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link>;
 #define     <link linkend="xmlSecTransformUsageSignatureMethod">xmlSecTransformUsageSignatureMethod</link>
 #define     <link linkend="xmlSecTransformUsageEncryptionMethod">xmlSecTransformUsageEncryptionMethod</link>
 #define     <link linkend="xmlSecTransformUsageAny">xmlSecTransformUsageAny</link>
-int         (<link linkend="xmlSecTransformCtxPreExecuteCallback">*xmlSecTransformCtxPreExecuteCallback</link>)
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformCtxPreExecuteCallback">*xmlSecTransformCtxPreExecuteCallback</link>)
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 #define     <link linkend="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</link>
 struct      <link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>;
 <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> <link linkend="xmlSecTransformCtxCreate">xmlSecTransformCtxCreate</link>
                                             (void);
-void        <link linkend="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
-int         <link linkend="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
-void        <link linkend="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize</link>      (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
-void        <link linkend="xmlSecTransformCtxReset">xmlSecTransformCtxReset</link>         (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
-int         <link linkend="xmlSecTransformCtxCopyUserPref">xmlSecTransformCtxCopyUserPref</link>  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> dst,
+<link linkend="void">void</link>        <link linkend="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
+<link linkend="void">void</link>        <link linkend="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize</link>      (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
+<link linkend="void">void</link>        <link linkend="xmlSecTransformCtxReset">xmlSecTransformCtxReset</link>         (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxCopyUserPref">xmlSecTransformCtxCopyUserPref</link>  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> dst,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> src);
-int         <link linkend="xmlSecTransformCtxSetUri">xmlSecTransformCtxSetUri</link>        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxSetUri">xmlSecTransformCtxSetUri</link>        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
                                              <link linkend="xmlNode">xmlNodePtr</link> hereNode);
-int         <link linkend="xmlSecTransformCtxAppend">xmlSecTransformCtxAppend</link>        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxAppend">xmlSecTransformCtxAppend</link>        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
-int         <link linkend="xmlSecTransformCtxPrepend">xmlSecTransformCtxPrepend</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxPrepend">xmlSecTransformCtxPrepend</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
 <link linkend="xmlSecTransform">xmlSecTransformPtr</link> <link linkend="xmlSecTransformCtxCreateAndAppend">xmlSecTransformCtxCreateAndAppend</link>
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -75,42 +75,42 @@ int         <link linkend="xmlSecTransformCtxPrepend">xmlSecTransformCtxPrepend<
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);
-int         <link linkend="xmlSecTransformCtxNodesListRead">xmlSecTransformCtxNodesListRead</link> (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxNodesListRead">xmlSecTransformCtxNodesListRead</link> (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);
-int         <link linkend="xmlSecTransformCtxPrepare">xmlSecTransformCtxPrepare</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxPrepare">xmlSecTransformCtxPrepare</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> inputDataType);
-int         <link linkend="xmlSecTransformCtxBinaryExecute">xmlSecTransformCtxBinaryExecute</link> (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxBinaryExecute">xmlSecTransformCtxBinaryExecute</link> (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
-int         <link linkend="xmlSecTransformCtxUriExecute">xmlSecTransformCtxUriExecute</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxUriExecute">xmlSecTransformCtxUriExecute</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
-int         <link linkend="xmlSecTransformCtxXmlExecute">xmlSecTransformCtxXmlExecute</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxXmlExecute">xmlSecTransformCtxXmlExecute</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes);
-int         <link linkend="xmlSecTransformCtxExecute">xmlSecTransformCtxExecute</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformCtxExecute">xmlSecTransformCtxExecute</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlDoc">xmlDocPtr</link> doc);
-void        <link linkend="xmlSecTransformCtxDebugDump">xmlSecTransformCtxDebugDump</link>     (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="void">void</link>        <link linkend="xmlSecTransformCtxDebugDump">xmlSecTransformCtxDebugDump</link>     (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecTransformCtxDebugXmlDump">xmlSecTransformCtxDebugXmlDump</link>  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<link linkend="void">void</link>        <link linkend="xmlSecTransformCtxDebugXmlDump">xmlSecTransformCtxDebugXmlDump</link>  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecTransform">xmlSecTransform</link>;
 <link linkend="xmlSecTransform">xmlSecTransformPtr</link> <link linkend="xmlSecTransformCreate">xmlSecTransformCreate</link>    (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);
-void        <link linkend="xmlSecTransformDestroy">xmlSecTransformDestroy</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
+<link linkend="void">void</link>        <link linkend="xmlSecTransformDestroy">xmlSecTransformDestroy</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
 <link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <link linkend="xmlSecTransformNodeRead">xmlSecTransformNodeRead</link>  (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformPump">xmlSecTransformPump</link>             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformPump">xmlSecTransformPump</link>             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> right,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformSetKey">xmlSecTransformSetKey</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformSetKey">xmlSecTransformSetKey</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecTransformSetKeyReq">xmlSecTransformSetKeyReq</link>        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformSetKeyReq">xmlSecTransformSetKeyReq</link>        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
-int         <link linkend="xmlSecTransformVerify">xmlSecTransformVerify</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformVerify">xmlSecTransformVerify</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformVerifyNodeContent">xmlSecTransformVerifyNodeContent</link>
+<link linkend="int">int</link>         <link linkend="xmlSecTransformVerifyNodeContent">xmlSecTransformVerifyNodeContent</link>
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
@@ -118,56 +118,56 @@ int         <link linkend="xmlSecTransformVerifyNodeContent">xmlSecTransformVeri
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformPushBin">xmlSecTransformPushBin</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformPushBin">xmlSecTransformPushBin</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             int final,
+                                             <link linkend="int">int</link> final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformPopBin">xmlSecTransformPopBin</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformPopBin">xmlSecTransformPopBin</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
                                              <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformPushXml">xmlSecTransformPushXml</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformPushXml">xmlSecTransformPushXml</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformPopXml">xmlSecTransformPopXml</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformPopXml">xmlSecTransformPopXml</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformExecute">xmlSecTransformExecute</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             int last,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformExecute">xmlSecTransformExecute</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+                                             <link linkend="int">int</link> last,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-void        <link linkend="xmlSecTransformDebugDump">xmlSecTransformDebugDump</link>        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="void">void</link>        <link linkend="xmlSecTransformDebugDump">xmlSecTransformDebugDump</link>        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecTransformDebugXmlDump">xmlSecTransformDebugXmlDump</link>     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="void">void</link>        <link linkend="xmlSecTransformDebugXmlDump">xmlSecTransformDebugXmlDump</link>     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecTransformGetName">xmlSecTransformGetName</link>          (transform)
 #define     <link linkend="xmlSecTransformIsValid">xmlSecTransformIsValid</link>          (transform)
 #define     <link linkend="xmlSecTransformCheckType">xmlSecTransformCheckType</link>        (transform, t)
 #define     <link linkend="xmlSecTransformCheckId">xmlSecTransformCheckId</link>          (transform, i)
 #define     <link linkend="xmlSecTransformCheckSize">xmlSecTransformCheckSize</link>        (transform, size)
-int         <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> right,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-void        <link linkend="xmlSecTransformRemove">xmlSecTransformRemove</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
+<link linkend="void">void</link>        <link linkend="xmlSecTransformRemove">xmlSecTransformRemove</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
 <link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> <link linkend="xmlSecTransformDefaultGetDataType">xmlSecTransformDefaultGetDataType</link>
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformDefaultPushBin">xmlSecTransformDefaultPushBin</link>   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformDefaultPushBin">xmlSecTransformDefaultPushBin</link>   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             int final,
+                                             <link linkend="int">int</link> final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformDefaultPopBin">xmlSecTransformDefaultPopBin</link>    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformDefaultPopBin">xmlSecTransformDefaultPopBin</link>    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
                                              <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformDefaultPushXml">xmlSecTransformDefaultPushXml</link>   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformDefaultPushXml">xmlSecTransformDefaultPushXml</link>   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         <link linkend="xmlSecTransformDefaultPopXml">xmlSecTransformDefaultPopXml</link>    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformDefaultPopXml">xmlSecTransformDefaultPopXml</link>    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 <link linkend="xmlOutputBuffer">xmlOutputBufferPtr</link> <link linkend="xmlSecTransformCreateOutputBuffer">xmlSecTransformCreateOutputBuffer</link>
@@ -176,56 +176,56 @@ int         <link linkend="xmlSecTransformDefaultPopXml">xmlSecTransformDefaultP
 <link linkend="xmlParserInputBuffer">xmlParserInputBufferPtr</link> <link linkend="xmlSecTransformCreateInputBuffer">xmlSecTransformCreateInputBuffer</link>
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformInitializeMethod">*xmlSecTransformInitializeMethod</link>)
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformInitializeMethod">*xmlSecTransformInitializeMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
-void        (<link linkend="xmlSecTransformFinalizeMethod">*xmlSecTransformFinalizeMethod</link>)
+<link linkend="void">void</link>        (<link linkend="xmlSecTransformFinalizeMethod">*xmlSecTransformFinalizeMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
 <link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> (<link linkend="xmlSecTransformGetDataTypeMethod">*xmlSecTransformGetDataTypeMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformNodeReadMethod">*xmlSecTransformNodeReadMethod</link>)
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformNodeReadMethod">*xmlSecTransformNodeReadMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformNodeWriteMethod">*xmlSecTransformNodeWriteMethod</link>)
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformNodeWriteMethod">*xmlSecTransformNodeWriteMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformSetKeyRequirementsMethod">*xmlSecTransformSetKeyRequirementsMethod</link>)
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformSetKeyRequirementsMethod">*xmlSecTransformSetKeyRequirementsMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
-int         (<link linkend="xmlSecTransformSetKeyMethod">*xmlSecTransformSetKeyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformSetKeyMethod">*xmlSecTransformSetKeyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         (<link linkend="xmlSecTransformVerifyMethod">*xmlSecTransformVerifyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformVerifyMethod">*xmlSecTransformVerifyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformPushBinMethod">*xmlSecTransformPushBinMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformPushBinMethod">*xmlSecTransformPushBinMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             int final,
+                                             <link linkend="int">int</link> final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformPopBinMethod">*xmlSecTransformPopBinMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformPopBinMethod">*xmlSecTransformPopBinMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
                                              <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformPushXmlMethod">*xmlSecTransformPushXmlMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformPushXmlMethod">*xmlSecTransformPushXmlMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformPopXmlMethod">*xmlSecTransformPopXmlMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformPopXmlMethod">*xmlSecTransformPopXmlMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformExecuteMethod">*xmlSecTransformExecuteMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             int last,
+<link linkend="int">int</link>         (<link linkend="xmlSecTransformExecuteMethod">*xmlSecTransformExecuteMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+                                             <link linkend="int">int</link> last,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 struct      <link linkend="xmlSecTransformKlass">xmlSecTransformKlass</link>;
 #define     <link linkend="xmlSecTransformKlassGetName">xmlSecTransformKlassGetName</link>     (klass)
 #define     <link linkend="xmlSecTransformIdListId">xmlSecTransformIdListId</link>
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecTransformIdListGetKlass">xmlSecTransformIdListGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecTransformIdListFind">xmlSecTransformIdListFind</link>       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformIdListFind">xmlSecTransformIdListFind</link>       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformIdListFindByHref">xmlSecTransformIdListFindByHref</link>
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
@@ -235,16 +235,16 @@ int         <link linkend="xmlSecTransformIdListFind">xmlSecTransformIdListFind<
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);
-void        <link linkend="xmlSecTransformIdListDebugDump">xmlSecTransformIdListDebugDump</link>  (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+<link linkend="void">void</link>        <link linkend="xmlSecTransformIdListDebugDump">xmlSecTransformIdListDebugDump</link>  (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdListDebugXmlDump</link>
+<link linkend="void">void</link>        <link linkend="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdListDebugXmlDump</link>
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</link>
 #define     <link linkend="xmlSecTransformBase64Id">xmlSecTransformBase64Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformBase64GetKlass">xmlSecTransformBase64GetKlass</link>
                                             (void);
-void        <link linkend="xmlSecTransformBase64SetLineSize">xmlSecTransformBase64SetLineSize</link>
+<link linkend="void">void</link>        <link linkend="xmlSecTransformBase64SetLineSize">xmlSecTransformBase64SetLineSize</link>
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecSize">xmlSecSize</link> lineSize);
 #define     <link linkend="xmlSecTransformInclC14NId">xmlSecTransformInclC14NId</link>
@@ -271,7 +271,7 @@ void        <link linkend="xmlSecTransformBase64SetLineSize">xmlSecTransformBase
 #define     <link linkend="xmlSecTransformXPointerId">xmlSecTransformXPointerId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformXPointerGetKlass">xmlSecTransformXPointerGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPointerSetExpr</link>  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPointerSetExpr</link>  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *expr,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> nodeSetType,
                                              <link linkend="xmlNode">xmlNodePtr</link> hereNode);
@@ -284,10 +284,12 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 #define     <link linkend="xmlSecTransformVisa3DHackId">xmlSecTransformVisa3DHackId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformVisa3DHackGetKlass">xmlSecTransformVisa3DHackGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecTransformVisa3DHackSetID">xmlSecTransformVisa3DHackSetID</link>  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformVisa3DHackSetID">xmlSecTransformVisa3DHackSetID</link>  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *id);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -306,7 +308,7 @@ int         <link linkend="xmlSecTransformVisa3DHackSetID">xmlSecTransformVisa3D
 <title>Details</title>
 <refsect2>
 <title><anchor id="XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS">XMLSEC_TRANSFORM_BINARY_CHUNK</title>
-<programlisting>#define XMLSEC_TRANSFORM_BINARY_CHUNK			64
+<indexterm><primary>XMLSEC_TRANSFORM_BINARY_CHUNK</primary></indexterm><programlisting>#define XMLSEC_TRANSFORM_BINARY_CHUNK			64
 </programlisting>
 <para>
 The binary data chunks size. XMLSec processes binary data one chunk 
@@ -316,7 +318,7 @@ at a time. Changing this impacts xmlsec memory usage and performance.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsGet">xmlSecTransformIdsGet ()</title>
-<programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecTransformIdsGet      (void);</programlisting>
+<indexterm><primary>xmlSecTransformIdsGet</primary></indexterm><programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecTransformIdsGet      (void);</programlisting>
 <para>
 Gets global registered transform klasses list.</para>
 <para>
@@ -327,10 +329,10 @@ Gets global registered transform klasses list.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsInit">xmlSecTransformIdsInit ()</title>
-<programlisting>int         xmlSecTransformIdsInit          (void);</programlisting>
+<indexterm><primary>xmlSecTransformIdsInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformIdsInit          (void);</programlisting>
 <para>
 Initializes the transform klasses. This function is called from the 
-<link linkend="xmlSecInit">xmlSecInit</link> function and the application should not call it directly.</para>
+<link linkend="xmlSecInit"><type>xmlSecInit</type></link> function and the application should not call it directly.</para>
 <para>
 
 </para><variablelist role="params">
@@ -339,16 +341,16 @@ Initializes the transform klasses. This function is called from the
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsShutdown">xmlSecTransformIdsShutdown ()</title>
-<programlisting>void        xmlSecTransformIdsShutdown      (void);</programlisting>
+<indexterm><primary>xmlSecTransformIdsShutdown</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformIdsShutdown      (void);</programlisting>
 <para>
 Shuts down the keys data klasses. This function is called from the 
-<link linkend="xmlSecShutdown">xmlSecShutdown</link> function and the application should not call it directly.</para>
+<link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function and the application should not call it directly.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsRegisterDefault">xmlSecTransformIdsRegisterDefault ()</title>
-<programlisting>int         xmlSecTransformIdsRegisterDefault
+<indexterm><primary>xmlSecTransformIdsRegisterDefault</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformIdsRegisterDefault
                                             (void);</programlisting>
 <para>
 Registers default (implemented by XML Security Library)
@@ -361,7 +363,7 @@ transform klasses: XPath transform, Base64 transform, ...</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsRegister">xmlSecTransformIdsRegister ()</title>
-<programlisting>int         xmlSecTransformIdsRegister      (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
+<indexterm><primary>xmlSecTransformIdsRegister</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformIdsRegister      (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
 <para>
 Registers <parameter>id</parameter> in the global list of transform klasses.</para>
 <para>
@@ -375,7 +377,7 @@ Registers <parameter>id</parameter> in the global list of transform klasses.</pa
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformStatus">enum xmlSecTransformStatus</title>
-<programlisting>typedef enum  {
+<indexterm><primary>xmlSecTransformStatus</primary></indexterm><programlisting>typedef enum  {
     xmlSecTransformStatusNone = 0,
     xmlSecTransformStatusWorking,
     xmlSecTransformStatusFinished,
@@ -416,7 +418,7 @@ The transform execution status.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformMode">enum xmlSecTransformMode</title>
-<programlisting>typedef enum  {
+<indexterm><primary>xmlSecTransformMode</primary></indexterm><programlisting>typedef enum  {
     xmlSecTransformModeNone = 0,
     xmlSecTransformModePush,
     xmlSecTransformModePop
@@ -445,7 +447,7 @@ The transform operation mode</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformOperation">enum xmlSecTransformOperation</title>
-<programlisting>typedef enum  {
+<indexterm><primary>xmlSecTransformOperation</primary></indexterm><programlisting>typedef enum  {
     xmlSecTransformOperationNone = 0,
     xmlSecTransformOperationEncode,
     xmlSecTransformOperationDecode,
@@ -498,7 +500,7 @@ The transform operation.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriType">xmlSecTransformUriType</title>
-<programlisting>typedef unsigned int				xmlSecTransformUriType;
+<indexterm><primary>xmlSecTransformUriType</primary></indexterm><programlisting>typedef unsigned int				xmlSecTransformUriType;
 </programlisting>
 <para>
 URI transform type bit mask.</para>
@@ -507,7 +509,7 @@ URI transform type bit mask.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeNone">xmlSecTransformUriTypeNone</title>
-<programlisting>#define xmlSecTransformUriTypeNone		0x0000
+<indexterm><primary>xmlSecTransformUriTypeNone</primary></indexterm><programlisting>#define xmlSecTransformUriTypeNone		0x0000
 </programlisting>
 <para>
 The URI type is unknown or not set.</para>
@@ -516,7 +518,7 @@ The URI type is unknown or not set.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeEmpty">xmlSecTransformUriTypeEmpty</title>
-<programlisting>#define xmlSecTransformUriTypeEmpty		0x0001
+<indexterm><primary>xmlSecTransformUriTypeEmpty</primary></indexterm><programlisting>#define xmlSecTransformUriTypeEmpty		0x0001
 </programlisting>
 <para>
 The empty URI ("") type.</para>
@@ -525,7 +527,7 @@ The empty URI ("") type.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeSameDocument">xmlSecTransformUriTypeSameDocument</title>
-<programlisting>#define xmlSecTransformUriTypeSameDocument	0x0002		
+<indexterm><primary>xmlSecTransformUriTypeSameDocument</primary></indexterm><programlisting>#define xmlSecTransformUriTypeSameDocument	0x0002		
 </programlisting>
 <para>
 The smae document ("#...") but not empty ("") URI type.</para>
@@ -534,7 +536,7 @@ The smae document ("#...") but not empty ("") URI type.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeLocal">xmlSecTransformUriTypeLocal</title>
-<programlisting>#define xmlSecTransformUriTypeLocal		0x0004
+<indexterm><primary>xmlSecTransformUriTypeLocal</primary></indexterm><programlisting>#define xmlSecTransformUriTypeLocal		0x0004
 </programlisting>
 <para>
 The local URI ("file:///....") type.</para>
@@ -543,7 +545,7 @@ The local URI ("file:///....") type.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeRemote">xmlSecTransformUriTypeRemote</title>
-<programlisting>#define xmlSecTransformUriTypeRemote		0x0008
+<indexterm><primary>xmlSecTransformUriTypeRemote</primary></indexterm><programlisting>#define xmlSecTransformUriTypeRemote		0x0008
 </programlisting>
 <para>
 The remote URI type.</para>
@@ -552,7 +554,7 @@ The remote URI type.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeAny">xmlSecTransformUriTypeAny</title>
-<programlisting>#define xmlSecTransformUriTypeAny		0xFFFF
+<indexterm><primary>xmlSecTransformUriTypeAny</primary></indexterm><programlisting>#define xmlSecTransformUriTypeAny		0xFFFF
 </programlisting>
 <para>
 Any URI type.</para>
@@ -561,7 +563,7 @@ Any URI type.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeCheck">xmlSecTransformUriTypeCheck ()</title>
-<programlisting>int         xmlSecTransformUriTypeCheck     (<link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> type,
+<indexterm><primary>xmlSecTransformUriTypeCheck</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformUriTypeCheck     (<link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> type,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
 Checks if <parameter>uri</parameter> matches expected type <parameter>type</parameter>.</para>
@@ -580,7 +582,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataType">xmlSecTransformDataType</title>
-<programlisting>typedef xmlSecByte				xmlSecTransformDataType;
+<indexterm><primary>xmlSecTransformDataType</primary></indexterm><programlisting>typedef xmlSecByte				xmlSecTransformDataType;
 </programlisting>
 <para>
 Transform data type bit mask.</para>
@@ -589,7 +591,7 @@ Transform data type bit mask.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataTypeUnknown">xmlSecTransformDataTypeUnknown</title>
-<programlisting>#define xmlSecTransformDataTypeUnknown		0x0000
+<indexterm><primary>xmlSecTransformDataTypeUnknown</primary></indexterm><programlisting>#define xmlSecTransformDataTypeUnknown		0x0000
 </programlisting>
 <para>
 The transform data type is unknown or nor data expected.</para>
@@ -598,7 +600,7 @@ The transform data type is unknown or nor data expected.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataTypeBin">xmlSecTransformDataTypeBin</title>
-<programlisting>#define xmlSecTransformDataTypeBin		0x0001
+<indexterm><primary>xmlSecTransformDataTypeBin</primary></indexterm><programlisting>#define xmlSecTransformDataTypeBin		0x0001
 </programlisting>
 <para>
 The binary transform data.</para>
@@ -607,7 +609,7 @@ The binary transform data.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataTypeXml">xmlSecTransformDataTypeXml</title>
-<programlisting>#define xmlSecTransformDataTypeXml		0x0002
+<indexterm><primary>xmlSecTransformDataTypeXml</primary></indexterm><programlisting>#define xmlSecTransformDataTypeXml		0x0002
 </programlisting>
 <para>
 The xml transform data.</para>
@@ -616,7 +618,7 @@ The xml transform data.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsage">xmlSecTransformUsage</title>
-<programlisting>typedef unsigned int				xmlSecTransformUsage;
+<indexterm><primary>xmlSecTransformUsage</primary></indexterm><programlisting>typedef unsigned int				xmlSecTransformUsage;
 </programlisting>
 <para>
 The transform usage bit mask.</para>
@@ -625,7 +627,7 @@ The transform usage bit mask.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageUnknown">xmlSecTransformUsageUnknown</title>
-<programlisting>#define xmlSecTransformUsageUnknown		0x0000
+<indexterm><primary>xmlSecTransformUsageUnknown</primary></indexterm><programlisting>#define xmlSecTransformUsageUnknown		0x0000
 </programlisting>
 <para>
 Transforms usage is unknown or undefined.</para>
@@ -634,7 +636,7 @@ Transforms usage is unknown or undefined.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageDSigTransform">xmlSecTransformUsageDSigTransform</title>
-<programlisting>#define xmlSecTransformUsageDSigTransform	0x0001
+<indexterm><primary>xmlSecTransformUsageDSigTransform</primary></indexterm><programlisting>#define xmlSecTransformUsageDSigTransform	0x0001
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:Transform&gt;.</para>
@@ -643,7 +645,7 @@ Transform could be used in &lt;dsig:Transform&gt;.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageC14NMethod">xmlSecTransformUsageC14NMethod</title>
-<programlisting>#define xmlSecTransformUsageC14NMethod		0x0002
+<indexterm><primary>xmlSecTransformUsageC14NMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageC14NMethod		0x0002
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</para>
@@ -652,7 +654,7 @@ Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageDigestMethod">xmlSecTransformUsageDigestMethod</title>
-<programlisting>#define xmlSecTransformUsageDigestMethod	0x0004
+<indexterm><primary>xmlSecTransformUsageDigestMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageDigestMethod	0x0004
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:DigestMethod&gt;.</para>
@@ -661,7 +663,7 @@ Transform could be used in &lt;dsig:DigestMethod&gt;.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageSignatureMethod">xmlSecTransformUsageSignatureMethod</title>
-<programlisting>#define xmlSecTransformUsageSignatureMethod	0x0008
+<indexterm><primary>xmlSecTransformUsageSignatureMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageSignatureMethod	0x0008
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:SignatureMethod&gt;.</para>
@@ -670,7 +672,7 @@ Transform could be used in &lt;dsig:SignatureMethod&gt;.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageEncryptionMethod">xmlSecTransformUsageEncryptionMethod</title>
-<programlisting>#define xmlSecTransformUsageEncryptionMethod	0x0010
+<indexterm><primary>xmlSecTransformUsageEncryptionMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageEncryptionMethod	0x0010
 </programlisting>
 <para>
 Transform could be used in &lt;enc:EncryptionMethod&gt;.</para>
@@ -679,7 +681,7 @@ Transform could be used in &lt;enc:EncryptionMethod&gt;.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageAny">xmlSecTransformUsageAny</title>
-<programlisting>#define xmlSecTransformUsageAny			0xFFFF
+<indexterm><primary>xmlSecTransformUsageAny</primary></indexterm><programlisting>#define xmlSecTransformUsageAny			0xFFFF
 </programlisting>
 <para>
 Transform could be used for operation.</para>
@@ -688,7 +690,7 @@ Transform could be used for operation.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback ()</title>
-<programlisting>int         (*xmlSecTransformCtxPreExecuteCallback)
+<indexterm><primary>xmlSecTransformCtxPreExecuteCallback</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformCtxPreExecuteCallback)
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 The callback called after creating transforms chain but before
@@ -707,7 +709,7 @@ transforms chain will not be executed and xmlsec processing stops).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</title>
-<programlisting>#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK		0x00000001
+<indexterm><primary>XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</primary></indexterm><programlisting>#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK		0x00000001
 </programlisting>
 <para>
 If this flag is set then URI ID references are resolved directly
@@ -718,7 +720,7 @@ documents that don't follow XML, XPointer and XML DSig specifications.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtx">struct xmlSecTransformCtx</title>
-<programlisting>struct xmlSecTransformCtx {
+<indexterm><primary>xmlSecTransformCtx</primary></indexterm><programlisting>struct xmlSecTransformCtx {
 
     /* user settings */
     void*					userData;
@@ -747,19 +749,19 @@ The transform execution context.</para>
 
 </para><variablelist role="struct">
 <varlistentry>
-<term>void *<structfield>userData</structfield></term>
+<term><link linkend="void">void</link> *<structfield>userData</structfield></term>
 <listitem><simpara> 		the pointer to user data (xmlsec and xmlsec-crypto never 
 		touch this).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>unsigned int <structfield>flags</structfield></term>
+<term>unsigned <link linkend="int">int</link> <structfield>flags</structfield></term>
 <listitem><simpara> 		the bit mask flags to control transforms execution 
 		(reserved for the future).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>unsigned int <structfield>flags2</structfield></term>
+<term>unsigned <link linkend="int">int</link> <structfield>flags2</structfield></term>
 <listitem><simpara> 		the bit mask flags to control transforms execution 
 			(reserved for the future).
 </simpara></listitem>
@@ -816,24 +818,24 @@ The transform execution context.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved0</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCreate">xmlSecTransformCtxCreate ()</title>
-<programlisting><link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> xmlSecTransformCtxCreate
+<indexterm><primary>xmlSecTransformCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> xmlSecTransformCtxCreate
                                             (void);</programlisting>
 <para>
 Creates transforms chain processing context.
 The caller is responsible for destroying returend object by calling 
-<link linkend="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy</link> function.</para>
+<link linkend="xmlSecTransformCtxDestroy"><type>xmlSecTransformCtxDestroy</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -843,9 +845,9 @@ occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy ()</title>
-<programlisting>void        xmlSecTransformCtxDestroy       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
+<indexterm><primary>xmlSecTransformCtxDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformCtxDestroy       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
 <para>
-Destroy context object created with <link linkend="xmlSecTransformCtxCreate">xmlSecTransformCtxCreate</link> function.</para>
+Destroy context object created with <link linkend="xmlSecTransformCtxCreate"><type>xmlSecTransformCtxCreate</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -855,11 +857,11 @@ Destroy context object created with <link linkend="xmlSecTransformCtxCreate">xml
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize ()</title>
-<programlisting>int         xmlSecTransformCtxInitialize    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
+<indexterm><primary>xmlSecTransformCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxInitialize    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
 <para>
 Initializes transforms chain processing context.
 The caller is responsible for cleaing up returend object by calling 
-<link linkend="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize</link> function.</para>
+<link linkend="xmlSecTransformCtxFinalize"><type>xmlSecTransformCtxFinalize</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -871,9 +873,9 @@ The caller is responsible for cleaing up returend object by calling
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize ()</title>
-<programlisting>void        xmlSecTransformCtxFinalize      (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
+<indexterm><primary>xmlSecTransformCtxFinalize</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformCtxFinalize      (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
 <para>
-Cleans up <parameter>ctx</parameter> object initialized with <link linkend="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize</link> function.</para>
+Cleans up <parameter>ctx</parameter> object initialized with <link linkend="xmlSecTransformCtxInitialize"><type>xmlSecTransformCtxInitialize</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -883,7 +885,7 @@ Cleans up <parameter>ctx</parameter> object initialized with <link linkend="xmlS
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxReset">xmlSecTransformCtxReset ()</title>
-<programlisting>void        xmlSecTransformCtxReset         (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
+<indexterm><primary>xmlSecTransformCtxReset</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformCtxReset         (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
 <para>
 Resets transfroms context for new processing.</para>
 <para>
@@ -895,7 +897,7 @@ Resets transfroms context for new processing.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCopyUserPref">xmlSecTransformCtxCopyUserPref ()</title>
-<programlisting>int         xmlSecTransformCtxCopyUserPref  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> dst,
+<indexterm><primary>xmlSecTransformCtxCopyUserPref</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxCopyUserPref  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> dst,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> src);</programlisting>
 <para>
 Copies user settings from <parameter>src</parameter> context to <parameter>dst</parameter>.</para>
@@ -913,7 +915,7 @@ Copies user settings from <parameter>src</parameter> context to <parameter>dst</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxSetUri">xmlSecTransformCtxSetUri ()</title>
-<programlisting>int         xmlSecTransformCtxSetUri        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxSetUri</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxSetUri        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
                                              <link linkend="xmlNode">xmlNodePtr</link> hereNode);</programlisting>
 <para>
@@ -922,7 +924,7 @@ Parses uri and adds xpointer transforms if required.
 <para>
 The following examples demonstrate what the URI attribute identifies and
 how it is dereferenced 
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-ReferenceProcessingModel">sec-ReferenceProcessingModel</link>):
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-ReferenceProcessingModel"><type>sec-ReferenceProcessingModel</type></link>):
 </para>
 <para>
 - URI="http://example.com/bar.xml"
@@ -931,7 +933,7 @@ identifies the octets that represent the external resource
 its file extension. 
 </para>
 <para>
-- URI="http://example.com/bar.xml<link linkend="chapter1">chapter1</link>"
+- URI="http://example.com/bar.xml<link linkend="chapter1"><type>chapter1</type></link>"
 identifies the element with ID attribute value 'chapter1' of the 
 external XML resource 'http://example.com/bar.xml', provided as an 
 octet stream. Again, for the sake of interoperability, the element 
@@ -945,7 +947,7 @@ identifies the node-set (minus any comment nodes) of the XML resource
 containing the signature 
 </para>
 <para>
-- URI="<link linkend="chapter1">chapter1</link>"
+- URI="<link linkend="chapter1"><type>chapter1</type></link>"
 identifies a node-set containing the element with ID attribute value 
 'chapter1' of the XML resource containing the signature. XML Signature 
 (and its applications) modify this node-set to include the element plus 
@@ -968,11 +970,11 @@ all descendents including namespaces and attributes -- but not comments.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxAppend">xmlSecTransformCtxAppend ()</title>
-<programlisting>int         xmlSecTransformCtxAppend        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxAppend</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxAppend        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 Connects the <parameter>transform</parameter> to the end of the chain of transforms in the <parameter>ctx</parameter> 
-(see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
+(see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 
 </para><variablelist role="params">
@@ -987,11 +989,11 @@ Connects the <parameter>transform</parameter> to the end of the chain of transfo
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxPrepend">xmlSecTransformCtxPrepend ()</title>
-<programlisting>int         xmlSecTransformCtxPrepend       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxPrepend</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxPrepend       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 Connects the <parameter>transform</parameter> to the beggining of the chain of transforms in the <parameter>ctx</parameter> 
-(see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
+(see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 
 </para><variablelist role="params">
@@ -1006,12 +1008,12 @@ Connects the <parameter>transform</parameter> to the beggining of the chain of t
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCreateAndAppend">xmlSecTransformCtxCreateAndAppend ()</title>
-<programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxCreateAndAppend
+<indexterm><primary>xmlSecTransformCtxCreateAndAppend</primary></indexterm><programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxCreateAndAppend
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
 <para>
 Creaeates new transform and connects it to the end of the chain of 
-transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
+transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 
 </para><variablelist role="params">
@@ -1026,12 +1028,12 @@ transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransform
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCreateAndPrepend">xmlSecTransformCtxCreateAndPrepend ()</title>
-<programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxCreateAndPrepend
+<indexterm><primary>xmlSecTransformCtxCreateAndPrepend</primary></indexterm><programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxCreateAndPrepend
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
 <para>
 Creaeates new transform and connects it to the end of the chain of 
-transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
+transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 
 </para><variablelist role="params">
@@ -1046,7 +1048,7 @@ transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransform
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxNodeRead">xmlSecTransformCtxNodeRead ()</title>
-<programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxNodeRead
+<indexterm><primary>xmlSecTransformCtxNodeRead</primary></indexterm><programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxNodeRead
                                             (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
@@ -1070,7 +1072,7 @@ of transforms in <parameter>ctx</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxNodesListRead">xmlSecTransformCtxNodesListRead ()</title>
-<programlisting>int         xmlSecTransformCtxNodesListRead (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxNodesListRead</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxNodesListRead (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
 <para>
@@ -1093,7 +1095,7 @@ appends them to the current transforms chain in <parameter>ctx</parameter> objec
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxPrepare">xmlSecTransformCtxPrepare ()</title>
-<programlisting>int         xmlSecTransformCtxPrepare       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxPrepare</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxPrepare       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> inputDataType);</programlisting>
 <para>
 Prepares the transform context for processing data of <parameter>inputDataType</parameter>.</para>
@@ -1111,7 +1113,7 @@ Prepares the transform context for processing data of <parameter>inputDataType</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxBinaryExecute">xmlSecTransformCtxBinaryExecute ()</title>
-<programlisting>int         xmlSecTransformCtxBinaryExecute (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxBinaryExecute</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxBinaryExecute (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
 <para>
@@ -1133,7 +1135,7 @@ Processes binary data using transforms chain in the <parameter>ctx</parameter>.<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxUriExecute">xmlSecTransformCtxUriExecute ()</title>
-<programlisting>int         xmlSecTransformCtxUriExecute    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxUriExecute</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxUriExecute    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
 Process binary data from the URI using transforms chain in <parameter>ctx</parameter>.</para>
@@ -1151,7 +1153,7 @@ Process binary data from the URI using transforms chain in <parameter>ctx</param
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxXmlExecute">xmlSecTransformCtxXmlExecute ()</title>
-<programlisting>int         xmlSecTransformCtxXmlExecute    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxXmlExecute</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxXmlExecute    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes);</programlisting>
 <para>
 Process <parameter>nodes</parameter> using transforms in the transforms chain in <parameter>ctx</parameter>.</para>
@@ -1169,7 +1171,7 @@ Process <parameter>nodes</parameter> using transforms in the transforms chain in
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxExecute">xmlSecTransformCtxExecute ()</title>
-<programlisting>int         xmlSecTransformCtxExecute       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxExecute</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformCtxExecute       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
 <para>
 Executes transforms chain in <parameter>ctx</parameter>.</para>
@@ -1187,7 +1189,7 @@ Executes transforms chain in <parameter>ctx</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxDebugDump">xmlSecTransformCtxDebugDump ()</title>
-<programlisting>void        xmlSecTransformCtxDebugDump     (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformCtxDebugDump     (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints transforms context debug information to <parameter>output</parameter>.</para>
@@ -1203,7 +1205,7 @@ Prints transforms context debug information to <parameter>output</parameter>.</p
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxDebugXmlDump">xmlSecTransformCtxDebugXmlDump ()</title>
-<programlisting>void        xmlSecTransformCtxDebugXmlDump  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
+<indexterm><primary>xmlSecTransformCtxDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformCtxDebugXmlDump  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints transforms context debug information to <parameter>output</parameter> in XML format.</para>
@@ -1219,7 +1221,7 @@ Prints transforms context debug information to <parameter>output</parameter> in 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransform">struct xmlSecTransform</title>
-<programlisting>struct xmlSecTransform {
+<indexterm><primary>xmlSecTransform</primary></indexterm><programlisting>struct xmlSecTransform {
 
     xmlSecTransformId 			id; 
     xmlSecTransformOperation		operation;
@@ -1250,7 +1252,7 @@ The transform structure.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>id</structfield></term>
-<listitem><simpara> 		the transform id (pointer to <link linkend="xmlSecTransformId">xmlSecTransformId</link>).
+<listitem><simpara> 		the transform id (pointer to <link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -1299,22 +1301,22 @@ The transform structure.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved0</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCreate">xmlSecTransformCreate ()</title>
-<programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCreate    (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
+<indexterm><primary>xmlSecTransformCreate</primary></indexterm><programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCreate    (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
 <para>
 Creates new transform of the <parameter>id</parameter> klass. The caller is responsible for
-destroying returned tansform using <link linkend="xmlSecTransformDestroy">xmlSecTransformDestroy</link> function.</para>
+destroying returned tansform using <link linkend="xmlSecTransformDestroy"><type>xmlSecTransformDestroy</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1326,9 +1328,9 @@ destroying returned tansform using <link linkend="xmlSecTransformDestroy">xmlSec
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDestroy">xmlSecTransformDestroy ()</title>
-<programlisting>void        xmlSecTransformDestroy          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
+<indexterm><primary>xmlSecTransformDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformDestroy          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
-Destroys transform created with <link linkend="xmlSecTransformCreate">xmlSecTransformCreate</link> function.</para>
+Destroys transform created with <link linkend="xmlSecTransformCreate"><type>xmlSecTransformCreate</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1338,7 +1340,7 @@ Destroys transform created with <link linkend="xmlSecTransformCreate">xmlSecTran
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeRead">xmlSecTransformNodeRead ()</title>
-<programlisting><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> xmlSecTransformNodeRead  (<link linkend="xmlNode">xmlNodePtr</link> node,
+<indexterm><primary>xmlSecTransformNodeRead</primary></indexterm><programlisting><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> xmlSecTransformNodeRead  (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1372,7 +1374,7 @@ Reads transform from the <parameter>node</parameter> as follows:
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPump">xmlSecTransformPump ()</title>
-<programlisting>int         xmlSecTransformPump             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
+<indexterm><primary>xmlSecTransformPump</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformPump             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> right,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1395,7 +1397,7 @@ no more data is available.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKey">xmlSecTransformSetKey ()</title>
-<programlisting>int         xmlSecTransformSetKey           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformSetKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformSetKey           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Sets the transform's key.</para>
@@ -1413,7 +1415,7 @@ Sets the transform's key.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKeyReq">xmlSecTransformSetKeyReq ()</title>
-<programlisting>int         xmlSecTransformSetKeyReq        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformSetKeyReq</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformSetKeyReq        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
 Sets the key requirements for <parameter>transform</parameter> in the <parameter>keyReq</parameter>.</para>
@@ -1431,14 +1433,14 @@ Sets the key requirements for <parameter>transform</parameter> in the <parameter
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVerify">xmlSecTransformVerify ()</title>
-<programlisting>int         xmlSecTransformVerify           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformVerify</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformVerify           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Verifies the data with transform's processing results
 (for digest, HMAC and signature transforms). The verification
-result is stored in the <link linkend="status">status</link> member of <link linkend="xmlSecTransform">xmlSecTransform</link> object.</para>
+result is stored in the <link linkend="status"><type>status</type></link> member of <link linkend="xmlSecTransform"><type>xmlSecTransform</type></link> object.</para>
 <para>
 
 </para><variablelist role="params">
@@ -1459,12 +1461,12 @@ result is stored in the <link linkend="status">status</link> member of <link lin
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVerifyNodeContent">xmlSecTransformVerifyNodeContent ()</title>
-<programlisting>int         xmlSecTransformVerifyNodeContent
+<indexterm><primary>xmlSecTransformVerifyNodeContent</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformVerifyNodeContent
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Gets the <parameter>node</parameter> content, base64 decodes it and calls <link linkend="xmlSecTransformVerify">xmlSecTransformVerify</link>
+Gets the <parameter>node</parameter> content, base64 decodes it and calls <link linkend="xmlSecTransformVerify"><type>xmlSecTransformVerify</type></link>
 function to verify binary results.</para>
 <para>
 
@@ -1483,7 +1485,7 @@ function to verify binary results.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformGetDataType">xmlSecTransformGetDataType ()</title>
-<programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> xmlSecTransformGetDataType
+<indexterm><primary>xmlSecTransformGetDataType</primary></indexterm><programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> xmlSecTransformGetDataType
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
@@ -1507,10 +1509,10 @@ type (binary or XML).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushBin">xmlSecTransformPushBin ()</title>
-<programlisting>int         xmlSecTransformPushBin          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPushBin</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformPushBin          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             int final,
+                                             <link linkend="int">int</link> final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Process binary <parameter>data</parameter> and pushes results to next transform.</para>
@@ -1538,7 +1540,7 @@ Process binary <parameter>data</parameter> and pushes results to next transform.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopBin">xmlSecTransformPopBin ()</title>
-<programlisting>int         xmlSecTransformPopBin           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPopBin</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformPopBin           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
                                              <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
@@ -1557,7 +1559,7 @@ placed in the <parameter>dataSize</parameter>.</para>
 <listitem><simpara>		the buffer to store result data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>maxDataSize</parameter>&nbsp;:</term>
-<listitem><simpara>	the size of the buffer <link linkend="data">data</link>.
+<listitem><simpara>	the size of the buffer <link linkend="data"><type>data</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to returned data size.
@@ -1570,7 +1572,7 @@ placed in the <parameter>dataSize</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushXml">xmlSecTransformPushXml ()</title>
-<programlisting>int         xmlSecTransformPushXml          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPushXml</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformPushXml          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1592,7 +1594,7 @@ Processes <parameter>nodes</parameter> and pushes result to the next transform i
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopXml">xmlSecTransformPopXml ()</title>
-<programlisting>int         xmlSecTransformPopXml           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPopXml</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformPopXml           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1615,8 +1617,8 @@ returns result in <parameter>nodes</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExecute">xmlSecTransformExecute ()</title>
-<programlisting>int         xmlSecTransformExecute          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             int last,
+<indexterm><primary>xmlSecTransformExecute</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformExecute          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+                                             <link linkend="int">int</link> last,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</para>
@@ -1637,7 +1639,7 @@ Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDebugDump">xmlSecTransformDebugDump ()</title>
-<programlisting>void        xmlSecTransformDebugDump        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformDebugDump        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints transform's debug information to <parameter>output</parameter>.</para>
@@ -1653,7 +1655,7 @@ Prints transform's debug information to <parameter>output</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDebugXmlDump">xmlSecTransformDebugXmlDump ()</title>
-<programlisting>void        xmlSecTransformDebugXmlDump     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformDebugXmlDump     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints transform's debug information to <parameter>output</parameter> in XML format.</para>
@@ -1669,7 +1671,7 @@ Prints transform's debug information to <parameter>output</parameter> in XML for
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformGetName">xmlSecTransformGetName()</title>
-<programlisting>#define     xmlSecTransformGetName(transform)</programlisting>
+<indexterm><primary>xmlSecTransformGetName</primary></indexterm><programlisting>#define     xmlSecTransformGetName(transform)</programlisting>
 <para>
 Macro. Returns transform name.</para>
 <para>
@@ -1681,7 +1683,7 @@ Macro. Returns transform name.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIsValid">xmlSecTransformIsValid()</title>
-<programlisting>#define     xmlSecTransformIsValid(transform)</programlisting>
+<indexterm><primary>xmlSecTransformIsValid</primary></indexterm><programlisting>#define     xmlSecTransformIsValid(transform)</programlisting>
 <para>
 Macro. Returns 1 if the <parameter>transform</parameter> is valid or 0 otherwise.</para>
 <para>
@@ -1693,7 +1695,7 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid or 0 otherwise
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCheckType">xmlSecTransformCheckType()</title>
-<programlisting>#define     xmlSecTransformCheckType(transform, t)</programlisting>
+<indexterm><primary>xmlSecTransformCheckType</primary></indexterm><programlisting>#define     xmlSecTransformCheckType(transform, t)</programlisting>
 <para>
 Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified type <parameter>t</parameter> 
 or 0 otherwise.</para>
@@ -1709,7 +1711,7 @@ or 0 otherwise.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCheckId">xmlSecTransformCheckId()</title>
-<programlisting>#define     xmlSecTransformCheckId(transform, i)</programlisting>
+<indexterm><primary>xmlSecTransformCheckId</primary></indexterm><programlisting>#define     xmlSecTransformCheckId(transform, i)</programlisting>
 <para>
 Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified id <parameter>i</parameter> 
 or 0 otherwise.</para>
@@ -1725,7 +1727,7 @@ or 0 otherwise.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCheckSize">xmlSecTransformCheckSize()</title>
-<programlisting>#define     xmlSecTransformCheckSize(transform, size)</programlisting>
+<indexterm><primary>xmlSecTransformCheckSize</primary></indexterm><programlisting>#define     xmlSecTransformCheckSize(transform, size)</programlisting>
 <para>
 Macro. Returns 1 if the <parameter>transform</parameter> is valid and has at least <parameter>size</parameter>
 bytes or 0 otherwise.</para>
@@ -1741,7 +1743,7 @@ bytes or 0 otherwise.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformConnect">xmlSecTransformConnect ()</title>
-<programlisting>int         xmlSecTransformConnect          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
+<indexterm><primary>xmlSecTransformConnect</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformConnect          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
                                              <link linkend="xmlSecTransform">xmlSecTransformPtr</link> right,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1751,13 +1753,13 @@ stream using Canonical XML [XML-C14N].
 </para>
 <para>
 The story is different if the right transform is base64 decode
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64">sec-Base-64</link>):
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64"><type>sec-Base-64</type></link>):
 </para>
 <para>
 This transform requires an octet stream for input. If an XPath node-set 
 (or sufficiently functional alternative) is given as input, then it is 
 converted to an octet stream by performing operations logically equivalent 
-to 1) applying an XPath transform with expression self::<link linkend="text">text</link>(), then 2) 
+to 1) applying an XPath transform with expression self::<link linkend="text"><function>text()</function></link>, then 2) 
 taking the string-value of the node-set. Thus, if an XML element is 
 identified by a barename XPointer in the Reference URI, and its content 
 consists solely of base64 encoded character data, then this transform 
@@ -1781,19 +1783,19 @@ processing instructions. The output of this transform is an octet stream.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRemove">xmlSecTransformRemove ()</title>
-<programlisting>void        xmlSecTransformRemove           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
+<indexterm><primary>xmlSecTransformRemove</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformRemove           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 Removes <parameter>transform</parameter> from the chain.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
-<listitem><simpara> the pointer to <link linkend="xmlSecTransform">xmlSecTransform</link> structure.
+<listitem><simpara> the pointer to <link linkend="xmlSecTransform"><type>xmlSecTransform</type></link> structure.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultGetDataType">xmlSecTransformDefaultGetDataType ()</title>
-<programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> xmlSecTransformDefaultGetDataType
+<indexterm><primary>xmlSecTransformDefaultGetDataType</primary></indexterm><programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> xmlSecTransformDefaultGetDataType
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
@@ -1818,10 +1820,10 @@ methods.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPushBin">xmlSecTransformDefaultPushBin ()</title>
-<programlisting>int         xmlSecTransformDefaultPushBin   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformDefaultPushBin</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformDefaultPushBin   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             int final,
+                                             <link linkend="int">int</link> final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Process binary <parameter>data</parameter> by calling transform's execute method and pushes 
@@ -1850,7 +1852,7 @@ results to next transform.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPopBin">xmlSecTransformDefaultPopBin ()</title>
-<programlisting>int         xmlSecTransformDefaultPopBin    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformDefaultPopBin</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformDefaultPopBin    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
                                              <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
@@ -1869,7 +1871,7 @@ size of returned data is placed in the <parameter>dataSize</parameter>.</para>
 <listitem><simpara>		the buffer to store result data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>maxDataSize</parameter>&nbsp;:</term>
-<listitem><simpara>	the size of the buffer <link linkend="data">data</link>.
+<listitem><simpara>	the size of the buffer <link linkend="data"><type>data</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to returned data size.
@@ -1882,7 +1884,7 @@ size of returned data is placed in the <parameter>dataSize</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPushXml">xmlSecTransformDefaultPushXml ()</title>
-<programlisting>int         xmlSecTransformDefaultPushXml   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformDefaultPushXml</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformDefaultPushXml   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1905,7 +1907,7 @@ result to the next transform in the chain.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPopXml">xmlSecTransformDefaultPopXml ()</title>
-<programlisting>int         xmlSecTransformDefaultPopXml    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformDefaultPopXml</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformDefaultPopXml    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1928,7 +1930,7 @@ by calling transform's execute method and returns result in <parameter>nodes</pa
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCreateOutputBuffer">xmlSecTransformCreateOutputBuffer ()</title>
-<programlisting><link linkend="xmlOutputBuffer">xmlOutputBufferPtr</link> xmlSecTransformCreateOutputBuffer
+<indexterm><primary>xmlSecTransformCreateOutputBuffer</primary></indexterm><programlisting><link linkend="xmlOutputBuffer">xmlOutputBufferPtr</link> xmlSecTransformCreateOutputBuffer
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1947,7 +1949,7 @@ Creates output buffer to write data to <parameter>transform</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCreateInputBuffer">xmlSecTransformCreateInputBuffer ()</title>
-<programlisting><link linkend="xmlParserInputBuffer">xmlParserInputBufferPtr</link> xmlSecTransformCreateInputBuffer
+<indexterm><primary>xmlSecTransformCreateInputBuffer</primary></indexterm><programlisting><link linkend="xmlParserInputBuffer">xmlParserInputBufferPtr</link> xmlSecTransformCreateInputBuffer
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1966,7 +1968,7 @@ Creates input buffer to read data from <parameter>transform</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInitializeMethod">xmlSecTransformInitializeMethod ()</title>
-<programlisting>int         (*xmlSecTransformInitializeMethod)
+<indexterm><primary>xmlSecTransformInitializeMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformInitializeMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 The transform specific initialization method.</para>
@@ -1981,7 +1983,7 @@ The transform specific initialization method.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformFinalizeMethod">xmlSecTransformFinalizeMethod ()</title>
-<programlisting>void        (*xmlSecTransformFinalizeMethod)
+<indexterm><primary>xmlSecTransformFinalizeMethod</primary></indexterm><programlisting><link linkend="void">void</link>        (*xmlSecTransformFinalizeMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 The transform specific destroy method.</para>
@@ -1994,7 +1996,7 @@ The transform specific destroy method.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformGetDataTypeMethod">xmlSecTransformGetDataTypeMethod ()</title>
-<programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> (*xmlSecTransformGetDataTypeMethod)
+<indexterm><primary>xmlSecTransformGetDataTypeMethod</primary></indexterm><programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> (*xmlSecTransformGetDataTypeMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
@@ -2018,7 +2020,7 @@ data type in specified mode <parameter>mode</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeReadMethod">xmlSecTransformNodeReadMethod ()</title>
-<programlisting>int         (*xmlSecTransformNodeReadMethod)
+<indexterm><primary>xmlSecTransformNodeReadMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformNodeReadMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
@@ -2042,7 +2044,7 @@ the <parameter>node</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeWriteMethod">xmlSecTransformNodeWriteMethod ()</title>
-<programlisting>int         (*xmlSecTransformNodeWriteMethod)
+<indexterm><primary>xmlSecTransformNodeWriteMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformNodeWriteMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
@@ -2065,7 +2067,7 @@ The transform specific method to write transform information to an XML node <par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKeyRequirementsMethod">xmlSecTransformSetKeyRequirementsMethod ()</title>
-<programlisting>int         (*xmlSecTransformSetKeyRequirementsMethod)
+<indexterm><primary>xmlSecTransformSetKeyRequirementsMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformSetKeyRequirementsMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
@@ -2084,7 +2086,7 @@ Transform specific method to set transform's key requirements.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod ()</title>
-<programlisting>int         (*xmlSecTransformSetKeyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformSetKeyMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformSetKeyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 The transform specific method to set the key for use.</para>
@@ -2102,15 +2104,15 @@ The transform specific method to set the key for use.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod ()</title>
-<programlisting>int         (*xmlSecTransformVerifyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformVerifyMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformVerifyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 The transform specific method to verify transform processing results
 (used by digest and signature transforms). This method sets <parameter>status</parameter>
-member of the <link linkend="xmlSecTransform">xmlSecTransform</link> structure to either <link linkend="xmlSecTransformStatusOk">xmlSecTransformStatusOk</link>
-if verification succeeded or <link linkend="xmlSecTransformStatusFail">xmlSecTransformStatusFail</link> otherwise.</para>
+member of the <link linkend="xmlSecTransform"><type>xmlSecTransform</type></link> structure to either <link linkend="xmlSecTransformStatusOk"><type>xmlSecTransformStatusOk</type></link>
+if verification succeeded or <link linkend="xmlSecTransformStatusFail"><type>xmlSecTransformStatusFail</type></link> otherwise.</para>
 <para>
 
 </para><variablelist role="params">
@@ -2131,10 +2133,10 @@ if verification succeeded or <link linkend="xmlSecTransformStatusFail">xmlSecTra
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushBinMethod">xmlSecTransformPushBinMethod ()</title>
-<programlisting>int         (*xmlSecTransformPushBinMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPushBinMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformPushBinMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             int final,
+                                             <link linkend="int">int</link> final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 The transform specific method to process data from <parameter>data</parameter> and push
@@ -2163,7 +2165,7 @@ result to the next transform in the chain.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod ()</title>
-<programlisting>int         (*xmlSecTransformPopBinMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPopBinMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformPopBinMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
                                              <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
@@ -2195,7 +2197,7 @@ data is placed in the <parameter>dataSize</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushXmlMethod">xmlSecTransformPushXmlMethod ()</title>
-<programlisting>int         (*xmlSecTransformPushXmlMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPushXmlMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformPushXmlMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -2218,7 +2220,7 @@ transform in the chain.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopXmlMethod">xmlSecTransformPopXmlMethod ()</title>
-<programlisting>int         (*xmlSecTransformPopXmlMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformPopXmlMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformPopXmlMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -2241,8 +2243,8 @@ process the data and return result in <parameter>nodes</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod ()</title>
-<programlisting>int         (*xmlSecTransformExecuteMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             int last,
+<indexterm><primary>xmlSecTransformExecuteMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecTransformExecuteMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+                                             <link linkend="int">int</link> last,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Transform specific method to process a chunk of data.</para>
@@ -2263,7 +2265,7 @@ Transform specific method to process a chunk of data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKlass">struct xmlSecTransformKlass</title>
-<programlisting>struct xmlSecTransformKlass {
+<indexterm><primary>xmlSecTransformKlass</primary></indexterm><programlisting>struct xmlSecTransformKlass {
 
     /* data */
     xmlSecSize				klassSize;
@@ -2394,19 +2396,19 @@ The transform klass desccription structure.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved0</structfield></term>
 <listitem><simpara>			reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
 <listitem><simpara>			reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKlassGetName">xmlSecTransformKlassGetName()</title>
-<programlisting>#define     xmlSecTransformKlassGetName(klass)</programlisting>
+<indexterm><primary>xmlSecTransformKlassGetName</primary></indexterm><programlisting>#define     xmlSecTransformKlassGetName(klass)</programlisting>
 <para>
 Macro. Returns transform klass name.</para>
 <para>
@@ -2418,7 +2420,7 @@ Macro. Returns transform klass name.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListId">xmlSecTransformIdListId</title>
-<programlisting>#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()
+<indexterm><primary>xmlSecTransformIdListId</primary></indexterm><programlisting>#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()
 </programlisting>
 <para>
 Transform klasses list klass.</para>
@@ -2427,7 +2429,7 @@ Transform klasses list klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListGetKlass">xmlSecTransformIdListGetKlass ()</title>
-<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecTransformIdListGetKlass
+<indexterm><primary>xmlSecTransformIdListGetKlass</primary></indexterm><programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecTransformIdListGetKlass
                                             (void);</programlisting>
 <para>
 The transform id list klass.</para>
@@ -2439,7 +2441,7 @@ The transform id list klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListFind">xmlSecTransformIdListFind ()</title>
-<programlisting>int         xmlSecTransformIdListFind       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+<indexterm><primary>xmlSecTransformIdListFind</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformIdListFind       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
 Lookups <parameter>dataId</parameter> in <parameter>list</parameter>.</para>
@@ -2458,7 +2460,7 @@ value if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListFindByHref">xmlSecTransformIdListFindByHref ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformIdListFindByHref
+<indexterm><primary>xmlSecTransformIdListFindByHref</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformIdListFindByHref
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *href,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
@@ -2481,7 +2483,7 @@ Lookups data klass in the list with given <parameter>href</parameter> and <param
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListFindByName">xmlSecTransformIdListFindByName ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformIdListFindByName
+<indexterm><primary>xmlSecTransformIdListFindByName</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformIdListFindByName
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
@@ -2504,7 +2506,7 @@ Lookups data klass in the list with given <parameter>name</parameter> and <param
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListDebugDump">xmlSecTransformIdListDebugDump ()</title>
-<programlisting>void        xmlSecTransformIdListDebugDump  (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+<indexterm><primary>xmlSecTransformIdListDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformIdListDebugDump  (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints binary transform debug information to <parameter>output</parameter>.</para>
@@ -2520,7 +2522,7 @@ Prints binary transform debug information to <parameter>output</parameter>.</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdListDebugXmlDump ()</title>
-<programlisting>void        xmlSecTransformIdListDebugXmlDump
+<indexterm><primary>xmlSecTransformIdListDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformIdListDebugXmlDump
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
@@ -2537,7 +2539,7 @@ Prints binary transform debug information to <parameter>output</parameter> in XM
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</title>
-<programlisting>#define xmlSecTransformIdUnknown			((xmlSecTransformId)NULL)
+<indexterm><primary>xmlSecTransformIdUnknown</primary></indexterm><programlisting>#define xmlSecTransformIdUnknown			((xmlSecTransformId)NULL)
 </programlisting>
 <para>
 The "unknown" transform id (NULL).</para>
@@ -2546,7 +2548,7 @@ The "unknown" transform id (NULL).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformBase64Id">xmlSecTransformBase64Id</title>
-<programlisting>#define     xmlSecTransformBase64Id</programlisting>
+<indexterm><primary>xmlSecTransformBase64Id</primary></indexterm><programlisting>#define     xmlSecTransformBase64Id</programlisting>
 <para>
 The base64 encode transform klass.</para>
 <para>
@@ -2554,10 +2556,10 @@ The base64 encode transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformBase64GetKlass">xmlSecTransformBase64GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformBase64GetKlass
+<indexterm><primary>xmlSecTransformBase64GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformBase64GetKlass
                                             (void);</programlisting>
 <para>
-The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64">sec-Base-64</link>).
+The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64"><type>sec-Base-64</type></link>).
 The normative specification for base64 decoding transforms is RFC 2045
 (http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has 
 no content. The input is decoded by the algorithms. This transform is 
@@ -2571,7 +2573,7 @@ the encoded content of an element.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformBase64SetLineSize">xmlSecTransformBase64SetLineSize ()</title>
-<programlisting>void        xmlSecTransformBase64SetLineSize
+<indexterm><primary>xmlSecTransformBase64SetLineSize</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecTransformBase64SetLineSize
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecSize">xmlSecSize</link> lineSize);</programlisting>
 <para>
@@ -2588,7 +2590,7 @@ Sets the max line size to <parameter>lineSize</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInclC14NId">xmlSecTransformInclC14NId</title>
-<programlisting>#define     xmlSecTransformInclC14NId</programlisting>
+<indexterm><primary>xmlSecTransformInclC14NId</primary></indexterm><programlisting>#define     xmlSecTransformInclC14NId</programlisting>
 <para>
 The regular (inclusive) C14N without comments transform klass.</para>
 <para>
@@ -2596,11 +2598,11 @@ The regular (inclusive) C14N without comments transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInclC14NGetKlass">xmlSecTransformInclC14NGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14NGetKlass
+<indexterm><primary>xmlSecTransformInclC14NGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14NGetKlass
                                             (void);</programlisting>
 <para>
 Inclusive (regular) canonicalization that omits comments transform klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg">sec-c14nAlg</link> and 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg"><type>sec-c14nAlg</type></link> and 
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 <para>
 
@@ -2610,7 +2612,7 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInclC14NWithCommentsId">xmlSecTransformInclC14NWithCommentsId</title>
-<programlisting>#define     xmlSecTransformInclC14NWithCommentsId</programlisting>
+<indexterm><primary>xmlSecTransformInclC14NWithCommentsId</primary></indexterm><programlisting>#define     xmlSecTransformInclC14NWithCommentsId</programlisting>
 <para>
 The regular (inclusive) C14N with comments transform klass.</para>
 <para>
@@ -2618,11 +2620,11 @@ The regular (inclusive) C14N with comments transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInclC14NWithCommentsGetKlass">xmlSecTransformInclC14NWithCommentsGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14NWithCommentsGetKlass
+<indexterm><primary>xmlSecTransformInclC14NWithCommentsGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14NWithCommentsGetKlass
                                             (void);</programlisting>
 <para>
 Inclusive (regular) canonicalization that includes comments transform klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg">sec-c14nAlg</link> and 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg"><type>sec-c14nAlg</type></link> and 
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 <para>
 
@@ -2632,7 +2634,7 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExclC14NId">xmlSecTransformExclC14NId</title>
-<programlisting>#define     xmlSecTransformExclC14NId</programlisting>
+<indexterm><primary>xmlSecTransformExclC14NId</primary></indexterm><programlisting>#define     xmlSecTransformExclC14NId</programlisting>
 <para>
 The exclusive C14N without comments transform klass.</para>
 <para>
@@ -2640,7 +2642,7 @@ The exclusive C14N without comments transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExclC14NGetKlass">xmlSecTransformExclC14NGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformExclC14NGetKlass
+<indexterm><primary>xmlSecTransformExclC14NGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformExclC14NGetKlass
                                             (void);</programlisting>
 <para>
 Exclusive canoncicalization that ommits comments transform klass
@@ -2653,7 +2655,7 @@ Exclusive canoncicalization that ommits comments transform klass
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExclC14NWithCommentsId">xmlSecTransformExclC14NWithCommentsId</title>
-<programlisting>#define     xmlSecTransformExclC14NWithCommentsId</programlisting>
+<indexterm><primary>xmlSecTransformExclC14NWithCommentsId</primary></indexterm><programlisting>#define     xmlSecTransformExclC14NWithCommentsId</programlisting>
 <para>
 The exclusive C14N with comments transform klass.</para>
 <para>
@@ -2661,7 +2663,7 @@ The exclusive C14N with comments transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExclC14NWithCommentsGetKlass">xmlSecTransformExclC14NWithCommentsGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformExclC14NWithCommentsGetKlass
+<indexterm><primary>xmlSecTransformExclC14NWithCommentsGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformExclC14NWithCommentsGetKlass
                                             (void);</programlisting>
 <para>
 Exclusive canoncicalization that includes comments transform klass
@@ -2674,7 +2676,7 @@ Exclusive canoncicalization that includes comments transform klass
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformEnvelopedId">xmlSecTransformEnvelopedId</title>
-<programlisting>#define     xmlSecTransformEnvelopedId</programlisting>
+<indexterm><primary>xmlSecTransformEnvelopedId</primary></indexterm><programlisting>#define     xmlSecTransformEnvelopedId</programlisting>
 <para>
 The "enveloped" transform klass.</para>
 <para>
@@ -2682,10 +2684,10 @@ The "enveloped" transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformEnvelopedGetKlass">xmlSecTransformEnvelopedGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformEnvelopedGetKlass
+<indexterm><primary>xmlSecTransformEnvelopedGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformEnvelopedGetKlass
                                             (void);</programlisting>
 <para>
-The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-EnvelopedSignature">sec-EnvelopedSignature</link>):
+The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-EnvelopedSignature"><type>sec-EnvelopedSignature</type></link>):
 </para>
 <para>
 An enveloped signature transform T removes the whole Signature element 
@@ -2699,7 +2701,7 @@ XPath parameter element:
 <para>
 &lt;XPath xmlns:dsig="&amp;dsig;"&gt;
   count(ancestor-or-self::dsig:Signature |
-  <link linkend="here">here</link>()/ancestor::dsig:Signature[1]) &gt;
+  <link linkend="here"><function>here()</function></link>/ancestor::dsig:Signature[1]) &gt;
   count(ancestor-or-self::dsig:Signature)&lt;/XPath&gt;
    
 The input and output requirements of this transform are identical to 
@@ -2716,7 +2718,7 @@ parameterized by the XPath expression above.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPathId">xmlSecTransformXPathId</title>
-<programlisting>#define     xmlSecTransformXPathId</programlisting>
+<indexterm><primary>xmlSecTransformXPathId</primary></indexterm><programlisting>#define     xmlSecTransformXPathId</programlisting>
 <para>
 The XPath transform klass.</para>
 <para>
@@ -2724,12 +2726,12 @@ The XPath transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPathGetKlass">xmlSecTransformXPathGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPathGetKlass
+<indexterm><primary>xmlSecTransformXPathGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPathGetKlass
                                             (void);</programlisting>
 <para>
 The XPath transform evaluates given XPath expression and 
 intersects the result with the previous nodes set. See 
-http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for more details.</para>
+http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath"><type>sec-XPath</type></link> for more details.</para>
 <para>
 
 </para><variablelist role="params">
@@ -2738,7 +2740,7 @@ http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPath2Id">xmlSecTransformXPath2Id</title>
-<programlisting>#define     xmlSecTransformXPath2Id</programlisting>
+<indexterm><primary>xmlSecTransformXPath2Id</primary></indexterm><programlisting>#define     xmlSecTransformXPath2Id</programlisting>
 <para>
 The XPath2 transform klass.</para>
 <para>
@@ -2746,7 +2748,7 @@ The XPath2 transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPath2GetKlass">xmlSecTransformXPath2GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPath2GetKlass
+<indexterm><primary>xmlSecTransformXPath2GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPath2GetKlass
                                             (void);</programlisting>
 <para>
 The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).</para>
@@ -2758,7 +2760,7 @@ The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPointerId">xmlSecTransformXPointerId</title>
-<programlisting>#define     xmlSecTransformXPointerId</programlisting>
+<indexterm><primary>xmlSecTransformXPointerId</primary></indexterm><programlisting>#define     xmlSecTransformXPointerId</programlisting>
 <para>
 The XPointer transform klass.</para>
 <para>
@@ -2766,7 +2768,7 @@ The XPointer transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPointerGetKlass">xmlSecTransformXPointerGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPointerGetKlass
+<indexterm><primary>xmlSecTransformXPointerGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPointerGetKlass
                                             (void);</programlisting>
 <para>
 The XPointer transform klass 
@@ -2779,7 +2781,7 @@ The XPointer transform klass
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPointerSetExpr">xmlSecTransformXPointerSetExpr ()</title>
-<programlisting>int         xmlSecTransformXPointerSetExpr  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformXPointerSetExpr</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformXPointerSetExpr  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *expr,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> nodeSetType,
                                              <link linkend="xmlNode">xmlNodePtr</link> hereNode);</programlisting>
@@ -2805,7 +2807,7 @@ Sets the XPointer expression for an XPointer <parameter>transform</parameter>.</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXsltId">xmlSecTransformXsltId</title>
-<programlisting>#define     xmlSecTransformXsltId</programlisting>
+<indexterm><primary>xmlSecTransformXsltId</primary></indexterm><programlisting>#define     xmlSecTransformXsltId</programlisting>
 <para>
 The XSLT transform klass.</para>
 <para>
@@ -2813,10 +2815,10 @@ The XSLT transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXsltGetKlass">xmlSecTransformXsltGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXsltGetKlass
+<indexterm><primary>xmlSecTransformXsltGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXsltGetKlass
                                             (void);</programlisting>
 <para>
-XSLT transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XSLT">sec-XSLT</link>):
+XSLT transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XSLT"><type>sec-XSLT</type></link>):
 </para>
 <para>
 The normative specification for XSL Transformations is [XSLT]. 
@@ -2853,7 +2855,7 @@ then the result of these steps is logically equivalent [XHTML].</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRemoveXmlTagsC14NId">xmlSecTransformRemoveXmlTagsC14NId</title>
-<programlisting>#define     xmlSecTransformRemoveXmlTagsC14NId</programlisting>
+<indexterm><primary>xmlSecTransformRemoveXmlTagsC14NId</primary></indexterm><programlisting>#define     xmlSecTransformRemoveXmlTagsC14NId</programlisting>
 <para>
 The "remove all xml tags" transform klass (used before base64 transforms).</para>
 <para>
@@ -2861,14 +2863,14 @@ The "remove all xml tags" transform klass (used before base64 transforms).</para
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRemoveXmlTagsC14NGetKlass">xmlSecTransformRemoveXmlTagsC14NGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRemoveXmlTagsC14NGetKlass
+<indexterm><primary>xmlSecTransformRemoveXmlTagsC14NGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRemoveXmlTagsC14NGetKlass
                                             (void);</programlisting>
 <para>
-The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64">sec-Base-64</link>):
+The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64"><type>sec-Base-64</type></link>):
 Base64 transform requires an octet stream for input. If an XPath node-set 
 (or sufficiently functional alternative) is given as input, then it is 
 converted to an octet stream by performing operations logically equivalent 
-to 1) applying an XPath transform with expression self::<link linkend="text">text</link>(), then 2) 
+to 1) applying an XPath transform with expression self::<link linkend="text"><function>text()</function></link>, then 2) 
 taking the string-value of the node-set. Thus, if an XML element is 
 identified by a barename XPointer in the Reference URI, and its content 
 consists solely of base64 encoded character data, then this transform 
@@ -2883,23 +2885,23 @@ processing instructions. The output of this transform is an octet stream.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVisa3DHackId">xmlSecTransformVisa3DHackId</title>
-<programlisting>#define     xmlSecTransformVisa3DHackId</programlisting>
+<indexterm><primary>xmlSecTransformVisa3DHackId</primary></indexterm><programlisting>#define     xmlSecTransformVisa3DHackId</programlisting>
 <para>
 Selects node subtree by given node id string. The only reason why we need this 
 is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-something like "<link linkend="12345-CAPS">12345</link>" in the URI attribute. Since we couldn't evaluate such 
+something like "<link linkend="12345-CAPS"><type>12345</type></link>" in the URI attribute. Since we couldn't evaluate such 
 expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVisa3DHackGetKlass">xmlSecTransformVisa3DHackGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformVisa3DHackGetKlass
+<indexterm><primary>xmlSecTransformVisa3DHackGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformVisa3DHackGetKlass
                                             (void);</programlisting>
 <para>
 The Visa3DHack transform klass. The only reason why we need this 
 is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-something like "<link linkend="12345-CAPS">12345</link>" in the URI attribute. Since we couldn't evaluate such 
+something like "<link linkend="12345-CAPS"><type>12345</type></link>" in the URI attribute. Since we couldn't evaluate such 
 expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 
@@ -2909,7 +2911,7 @@ expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVisa3DHackSetID">xmlSecTransformVisa3DHackSetID ()</title>
-<programlisting>int         xmlSecTransformVisa3DHackSetID  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformVisa3DHackSetID</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformVisa3DHackSetID  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
 Sets the ID value for an Visa3DHack <parameter>transform</parameter>.</para>

@@ -22,10 +22,12 @@
 <link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>* <link linkend="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 <link linkend="KeyType">KeyType</link>     <link linkend="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+<link linkend="int">int</link>         <link linkend="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
                                              <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -44,7 +46,7 @@ int         <link linkend="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDupl
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecNssPKIAdoptKey">xmlSecNssPKIAdoptKey ()</title>
-<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecNssPKIAdoptKey       (<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link> *privkey,
+<indexterm><primary>xmlSecNssPKIAdoptKey</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecNssPKIAdoptKey       (<link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link> *privkey,
                                              <link linkend="SECKEYPublicKey">SECKEYPublicKey</link> *pubkey);</programlisting>
 <para>
 Build a KeyData object from the given Private Key and Public
@@ -63,7 +65,7 @@ Key handles.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssPKIKeyDataGetPubKey">xmlSecNssPKIKeyDataGetPubKey ()</title>
-<programlisting><link linkend="SECKEYPublicKey">SECKEYPublicKey</link>* xmlSecNssPKIKeyDataGetPubKey
+<indexterm><primary>xmlSecNssPKIKeyDataGetPubKey</primary></indexterm><programlisting><link linkend="SECKEYPublicKey">SECKEYPublicKey</link>* xmlSecNssPKIKeyDataGetPubKey
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the Public Key from the key data.</para>
@@ -79,7 +81,7 @@ Caller is responsible for freeing the key when done
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssPKIKeyDataGetPrivKey">xmlSecNssPKIKeyDataGetPrivKey ()</title>
-<programlisting><link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>* xmlSecNssPKIKeyDataGetPrivKey
+<indexterm><primary>xmlSecNssPKIKeyDataGetPrivKey</primary></indexterm><programlisting><link linkend="SECKEYPrivateKey">SECKEYPrivateKey</link>* xmlSecNssPKIKeyDataGetPrivKey
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the Private Key from the key data.</para>
@@ -95,7 +97,7 @@ Caller is responsible for freeing the key when done
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssPKIKeyDataGetKeyType">xmlSecNssPKIKeyDataGetKeyType ()</title>
-<programlisting><link linkend="KeyType">KeyType</link>     xmlSecNssPKIKeyDataGetKeyType   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<indexterm><primary>xmlSecNssPKIKeyDataGetKeyType</primary></indexterm><programlisting><link linkend="KeyType">KeyType</link>     xmlSecNssPKIKeyDataGetKeyType   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the Key Type from the key data.</para>
 <para>
@@ -109,7 +111,7 @@ Gets the Key Type from the key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssPKIKeyDataDuplicate">xmlSecNssPKIKeyDataDuplicate ()</title>
-<programlisting>int         xmlSecNssPKIKeyDataDuplicate    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+<indexterm><primary>xmlSecNssPKIKeyDataDuplicate</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssPKIKeyDataDuplicate    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
                                              <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);</programlisting>
 <para>
 Duplicates the keydata from src to dst</para>

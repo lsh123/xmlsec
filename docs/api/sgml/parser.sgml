@@ -15,10 +15,10 @@
 
 
 
-<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseFile">xmlSecParseFile</link>                 (const char *filename);
+<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseFile">xmlSecParseFile</link>                 (const <link linkend="char">char</link> *filename);
 <link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>               (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size,
-                                             int recovery);
+                                             <link linkend="int">int</link> recovery);
 <link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>            (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
                                              <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
@@ -37,6 +37,8 @@
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -48,10 +50,10 @@
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecParseFile">xmlSecParseFile ()</title>
-<programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseFile                 (const char *filename);</programlisting>
+<indexterm><primary>xmlSecParseFile</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseFile                 (const <link linkend="char">char</link> *filename);</programlisting>
 <para>
 Loads XML Doc from file <parameter>filename</parameter>. We need a special version because of 
-c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData">xmlSAXParseFileWithData</link>() function.</para>
+c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData"><function>xmlSAXParseFileWithData()</function></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -63,12 +65,12 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData">xmlS
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecParseMemory">xmlSecParseMemory ()</title>
-<programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemory               (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+<indexterm><primary>xmlSecParseMemory</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemory               (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size,
-                                             int recovery);</programlisting>
+                                             <link linkend="int">int</link> recovery);</programlisting>
 <para>
 Loads XML Doc from memory. We need a special version because of 
-c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXParseMemory</link>() function.</para>
+c14n issue. The code is copied from <link linkend="xmlSAXParseMemory"><function>xmlSAXParseMemory()</function></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -86,7 +88,7 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXPars
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecParseMemoryExt">xmlSecParseMemoryExt ()</title>
-<programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemoryExt            (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
+<indexterm><primary>xmlSecParseMemoryExt</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemoryExt            (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
                                              <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
@@ -120,7 +122,7 @@ Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</title>
-<programlisting>#define     xmlSecTransformXmlParserId</programlisting>
+<indexterm><primary>xmlSecTransformXmlParserId</primary></indexterm><programlisting>#define     xmlSecTransformXmlParserId</programlisting>
 <para>
 The XML Parser transform klass.</para>
 <para>
@@ -128,7 +130,7 @@ The XML Parser transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXmlParserGetKlass
+<indexterm><primary>xmlSecTransformXmlParserGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXmlParserGetKlass
                                             (void);</programlisting>
 <para>
 The XML parser transform.</para>

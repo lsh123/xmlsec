@@ -15,40 +15,42 @@
 
 
 
-int         <link linkend="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit</link>             (const char *config);
-int         <link linkend="xmlSecGnuTLSAppShutdown">xmlSecGnuTLSAppShutdown</link>         (void);
-int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link>
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit</link>             (const <link linkend="char">char</link> *config);
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppShutdown">xmlSecGnuTLSAppShutdown</link>         (void);
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</link>
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrLoad">xmlSecGnuTLSAppDefaultKeysMngrLoad</link>
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrLoad">xmlSecGnuTLSAppDefaultKeysMngrLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri);
-int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrSave">xmlSecGnuTLSAppDefaultKeysMngrSave</link>
+                                             const <link linkend="char">char</link> *uri);
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrSave">xmlSecGnuTLSAppDefaultKeysMngrSave</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecGnuTLSAppKeysMngrCertLoad">xmlSecGnuTLSAppKeysMngrCertLoad</link> (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppKeysMngrCertLoad">xmlSecGnuTLSAppKeysMngrCertLoad</link> (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppKeyLoad">xmlSecGnuTLSAppKeyLoad</link>         (const char *filename,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppKeyLoad">xmlSecGnuTLSAppKeyLoad</link>         (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppPkcs12Load">xmlSecGnuTLSAppPkcs12Load</link>      (const char *filename,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
-int         <link linkend="xmlSecGnuTLSAppKeyCertLoad">xmlSecGnuTLSAppKeyCertLoad</link>      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppPkcs12Load">xmlSecGnuTLSAppPkcs12Load</link>      (const <link linkend="char">char</link> *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSAppKeyCertLoad">xmlSecGnuTLSAppKeyCertLoad</link>      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-void*       <link linkend="xmlSecGnuTLSAppGetDefaultPwdCallback">xmlSecGnuTLSAppGetDefaultPwdCallback</link>
+<link linkend="void">void</link>*       <link linkend="xmlSecGnuTLSAppGetDefaultPwdCallback">xmlSecGnuTLSAppGetDefaultPwdCallback</link>
                                             (void);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -67,7 +69,7 @@ void*       <link linkend="xmlSecGnuTLSAppGetDefaultPwdCallback">xmlSecGnuTLSApp
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit ()</title>
-<programlisting>int         xmlSecGnuTLSAppInit             (const char *config);</programlisting>
+<indexterm><primary>xmlSecGnuTLSAppInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppInit             (const <link linkend="char">char</link> *config);</programlisting>
 <para>
 General crypto engine initialization. This function is used
 by XMLSec command line utility and called before 
@@ -83,7 +85,7 @@ by XMLSec command line utility and called before
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppShutdown">xmlSecGnuTLSAppShutdown ()</title>
-<programlisting>int         xmlSecGnuTLSAppShutdown         (void);</programlisting>
+<indexterm><primary>xmlSecGnuTLSAppShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppShutdown         (void);</programlisting>
 <para>
 General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after 
@@ -96,10 +98,10 @@ by XMLSec command line utility and called after
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit ()</title>
-<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrInit
+<indexterm><primary>xmlSecGnuTLSAppDefaultKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppDefaultKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId"><type>xmlSecSimpleKeysStoreId</type></link>
 and a default GnuTLS crypto key data stores.</para>
 <para>
 
@@ -112,11 +114,11 @@ and a default GnuTLS crypto key data stores.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ()</title>
-<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrAdoptKey
+<indexterm><primary>xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppDefaultKeysMngrAdoptKey
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit"><type>xmlSecGnuTLSAppDefaultKeysMngrInit</type></link>
 function.</para>
 <para>
 
@@ -132,12 +134,12 @@ function.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrLoad">xmlSecGnuTLSAppDefaultKeysMngrLoad ()</title>
-<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrLoad
+<indexterm><primary>xmlSecGnuTLSAppDefaultKeysMngrLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppDefaultKeysMngrLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri);</programlisting>
+                                             const <link linkend="char">char</link> *uri);</programlisting>
 <para>
 Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
-with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link> function.</para>
+with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit"><type>xmlSecGnuTLSAppDefaultKeysMngrInit</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -152,9 +154,9 @@ with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKe
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrSave">xmlSecGnuTLSAppDefaultKeysMngrSave ()</title>
-<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrSave
+<indexterm><primary>xmlSecGnuTLSAppDefaultKeysMngrSave</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppDefaultKeysMngrSave
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
@@ -175,8 +177,8 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppKeysMngrCertLoad">xmlSecGnuTLSAppKeysMngrCertLoad ()</title>
-<programlisting>int         xmlSecGnuTLSAppKeysMngrCertLoad (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+<indexterm><primary>xmlSecGnuTLSAppKeysMngrCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppKeysMngrCertLoad (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -203,11 +205,11 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppKeyLoad">xmlSecGnuTLSAppKeyLoad ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppKeyLoad         (const char *filename,
+<indexterm><primary>xmlSecGnuTLSAppKeyLoad</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppKeyLoad         (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key from the a file (not implemented yet).</para>
 <para>
@@ -233,10 +235,10 @@ Reads key from the a file (not implemented yet).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppPkcs12Load">xmlSecGnuTLSAppPkcs12Load ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppPkcs12Load      (const char *filename,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+<indexterm><primary>xmlSecGnuTLSAppPkcs12Load</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppPkcs12Load      (const <link linkend="char">char</link> *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 file
 (not implemented yet).
@@ -262,8 +264,8 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppKeyCertLoad">xmlSecGnuTLSAppKeyCertLoad ()</title>
-<programlisting>int         xmlSecGnuTLSAppKeyCertLoad      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             const char *filename,
+<indexterm><primary>xmlSecGnuTLSAppKeyCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSAppKeyCertLoad      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
 <para>
 Reads the certificate from $<parameter>filename</parameter> and adds it to key
@@ -285,7 +287,7 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppGetDefaultPwdCallback">xmlSecGnuTLSAppGetDefaultPwdCallback ()</title>
-<programlisting>void*       xmlSecGnuTLSAppGetDefaultPwdCallback
+<indexterm><primary>xmlSecGnuTLSAppGetDefaultPwdCallback</primary></indexterm><programlisting><link linkend="void">void</link>*       xmlSecGnuTLSAppGetDefaultPwdCallback
                                             (void);</programlisting>
 <para>
 Gets default password callback.</para>

@@ -15,66 +15,68 @@
 
 
 
-int         <link linkend="xmlSecMSCryptoAppInit">xmlSecMSCryptoAppInit</link>           (const char *config);
-int         <link linkend="xmlSecMSCryptoAppShutdown">xmlSecMSCryptoAppShutdown</link>       (void);
-const char* <link linkend="xmlSecMSCryptoAppGetCertStoreName">xmlSecMSCryptoAppGetCertStoreName</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppInit">xmlSecMSCryptoAppInit</link>           (const <link linkend="char">char</link> *config);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppShutdown">xmlSecMSCryptoAppShutdown</link>       (void);
+const <link linkend="char">char</link>* <link linkend="xmlSecMSCryptoAppGetCertStoreName">xmlSecMSCryptoAppGetCertStoreName</link>
                                             (void);
-int         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrLoad">xmlSecMSCryptoAppDefaultKeysMngrLoad</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrLoad">xmlSecMSCryptoAppDefaultKeysMngrLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri);
-int         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrSave">xmlSecMSCryptoAppDefaultKeysMngrSave</link>
+                                             const <link linkend="char">char</link> *uri);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrSave">xmlSecMSCryptoAppDefaultKeysMngrSave</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoad">xmlSecMSCryptoAppKeysMngrCertLoad</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoad">xmlSecMSCryptoAppKeysMngrCertLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoadMemory">xmlSecMSCryptoAppKeysMngrCertLoadMemory</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoadMemory">xmlSecMSCryptoAppKeysMngrCertLoadMemory</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppKeyLoad">xmlSecMSCryptoAppKeyLoad</link>       (const char *filename,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppKeyLoad">xmlSecMSCryptoAppKeyLoad</link>       (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppKeyLoadMemory">xmlSecMSCryptoAppKeyLoadMemory</link> (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppPkcs12Load">xmlSecMSCryptoAppPkcs12Load</link>    (const char *filename,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppPkcs12Load">xmlSecMSCryptoAppPkcs12Load</link>    (const <link linkend="char">char</link> *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppPkcs12LoadMemory">xmlSecMSCryptoAppPkcs12LoadMemory</link>
                                             (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
-int         <link linkend="xmlSecMSCryptoAppKeyCertLoad">xmlSecMSCryptoAppKeyCertLoad</link>    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppKeyCertLoad">xmlSecMSCryptoAppKeyCertLoad</link>    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-int         <link linkend="xmlSecMSCryptoAppKeyCertLoadMemory">xmlSecMSCryptoAppKeyCertLoadMemory</link>
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppKeyCertLoadMemory">xmlSecMSCryptoAppKeyCertLoadMemory</link>
                                             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-void*       <link linkend="xmlSecMSCryptoAppGetDefaultPwdCallback">xmlSecMSCryptoAppGetDefaultPwdCallback</link>
+<link linkend="void">void</link>*       <link linkend="xmlSecMSCryptoAppGetDefaultPwdCallback">xmlSecMSCryptoAppGetDefaultPwdCallback</link>
                                             (void);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -93,7 +95,7 @@ void*       <link linkend="xmlSecMSCryptoAppGetDefaultPwdCallback">xmlSecMSCrypt
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppInit">xmlSecMSCryptoAppInit ()</title>
-<programlisting>int         xmlSecMSCryptoAppInit           (const char *config);</programlisting>
+<indexterm><primary>xmlSecMSCryptoAppInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppInit           (const <link linkend="char">char</link> *config);</programlisting>
 <para>
 General crypto engine initialization. This function is used
 by XMLSec command line utility and called before 
@@ -109,7 +111,7 @@ by XMLSec command line utility and called before
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppShutdown">xmlSecMSCryptoAppShutdown ()</title>
-<programlisting>int         xmlSecMSCryptoAppShutdown       (void);</programlisting>
+<indexterm><primary>xmlSecMSCryptoAppShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppShutdown       (void);</programlisting>
 <para>
 General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after 
@@ -122,7 +124,7 @@ by XMLSec command line utility and called after
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppGetCertStoreName">xmlSecMSCryptoAppGetCertStoreName ()</title>
-<programlisting>const char* xmlSecMSCryptoAppGetCertStoreName
+<indexterm><primary>xmlSecMSCryptoAppGetCertStoreName</primary></indexterm><programlisting>const <link linkend="char">char</link>* xmlSecMSCryptoAppGetCertStoreName
                                             (void);</programlisting>
 <para>
 Gets the MS Crypto certs store name set by <parameter>xmlSecMSCryptoAppInit</parameter> function.</para>
@@ -134,10 +136,10 @@ Gets the MS Crypto certs store name set by <parameter>xmlSecMSCryptoAppInit</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit ()</title>
-<programlisting>int         xmlSecMSCryptoAppDefaultKeysMngrInit
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId"><type>xmlSecSimpleKeysStoreId</type></link>
 and a default MSCrypto crypto key data stores.</para>
 <para>
 
@@ -150,11 +152,11 @@ and a default MSCrypto crypto key data stores.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey ()</title>
-<programlisting>int         xmlSecMSCryptoAppDefaultKeysMngrAdoptKey
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrAdoptKey
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit"><type>xmlSecMSCryptoAppDefaultKeysMngrInit</type></link>
 function.</para>
 <para>
 
@@ -170,12 +172,12 @@ function.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrLoad">xmlSecMSCryptoAppDefaultKeysMngrLoad ()</title>
-<programlisting>int         xmlSecMSCryptoAppDefaultKeysMngrLoad
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri);</programlisting>
+                                             const <link linkend="char">char</link> *uri);</programlisting>
 <para>
 Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
-with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link> function.</para>
+with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit"><type>xmlSecMSCryptoAppDefaultKeysMngrInit</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -190,9 +192,9 @@ with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefau
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrSave">xmlSecMSCryptoAppDefaultKeysMngrSave ()</title>
-<programlisting>int         xmlSecMSCryptoAppDefaultKeysMngrSave
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrSave</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrSave
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
@@ -213,9 +215,9 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeysMngrCertLoad">xmlSecMSCryptoAppKeysMngrCertLoad ()</title>
-<programlisting>int         xmlSecMSCryptoAppKeysMngrCertLoad
+<indexterm><primary>xmlSecMSCryptoAppKeysMngrCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppKeysMngrCertLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -242,7 +244,7 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeysMngrCertLoadMemory">xmlSecMSCryptoAppKeysMngrCertLoadMemory ()</title>
-<programlisting>int         xmlSecMSCryptoAppKeysMngrCertLoadMemory
+<indexterm><primary>xmlSecMSCryptoAppKeysMngrCertLoadMemory</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppKeysMngrCertLoadMemory
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
@@ -275,11 +277,11 @@ untrusted certs in <parameter>store</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeyLoad">xmlSecMSCryptoAppKeyLoad ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppKeyLoad       (const char *filename,
+<indexterm><primary>xmlSecMSCryptoAppKeyLoad</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppKeyLoad       (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key from the a file.</para>
 <para>
@@ -305,12 +307,12 @@ Reads key from the a file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeyLoadMemory">xmlSecMSCryptoAppKeyLoadMemory ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppKeyLoadMemory (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+<indexterm><primary>xmlSecMSCryptoAppKeyLoadMemory</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppKeyLoadMemory (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key from the a file.</para>
 <para>
@@ -339,10 +341,10 @@ Reads key from the a file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppPkcs12Load">xmlSecMSCryptoAppPkcs12Load ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppPkcs12Load    (const char *filename,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+<indexterm><primary>xmlSecMSCryptoAppPkcs12Load</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppPkcs12Load    (const <link linkend="char">char</link> *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 file</para>
 <para>
@@ -365,12 +367,12 @@ Reads key and all associated certificates from the PKCS12 file</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppPkcs12LoadMemory">xmlSecMSCryptoAppPkcs12LoadMemory ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppPkcs12LoadMemory
+<indexterm><primary>xmlSecMSCryptoAppPkcs12LoadMemory</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppPkcs12LoadMemory
                                             (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 binary</para>
 <para>
@@ -396,8 +398,8 @@ Reads key and all associated certificates from the PKCS12 binary</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeyCertLoad">xmlSecMSCryptoAppKeyCertLoad ()</title>
-<programlisting>int         xmlSecMSCryptoAppKeyCertLoad    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             const char *filename,
+<indexterm><primary>xmlSecMSCryptoAppKeyCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppKeyCertLoad    (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
 <para>
 Reads the certificate from $<parameter>filename</parameter> and adds it to key.</para>
@@ -418,7 +420,7 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeyCertLoadMemory">xmlSecMSCryptoAppKeyCertLoadMemory ()</title>
-<programlisting>int         xmlSecMSCryptoAppKeyCertLoadMemory
+<indexterm><primary>xmlSecMSCryptoAppKeyCertLoadMemory</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppKeyCertLoadMemory
                                             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
@@ -445,7 +447,7 @@ Reads the certificate from $<parameter>data</parameter> and adds it to key.</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppGetDefaultPwdCallback">xmlSecMSCryptoAppGetDefaultPwdCallback ()</title>
-<programlisting>void*       xmlSecMSCryptoAppGetDefaultPwdCallback
+<indexterm><primary>xmlSecMSCryptoAppGetDefaultPwdCallback</primary></indexterm><programlisting><link linkend="void">void</link>*       xmlSecMSCryptoAppGetDefaultPwdCallback
                                             (void);</programlisting>
 <para>
 Gets default password callback.</para>

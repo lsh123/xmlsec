@@ -7,7 +7,7 @@
 <link rel="UP" title="XML Security Library for MSCrypto API Reference." href="xmlsec-mscrypto-ref.html">
 <link rel="PREVIOUS" title="app" href="xmlsec-mscrypto-app.html">
 <link rel="NEXT" title="crypto" href="xmlsec-mscrypto-crypto.html">
-<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,9 +88,9 @@
 <h1>
 <a name="XMLSEC-MSCRYPTO-CERTKEYS"></a>certkeys</h1>
 <div class="REFNAMEDIV">
-<a name="AEN24070"></a><h2>Name</h2>certkeys -- </div>
+<a name="AEN27444"></a><h2>Name</h2>certkeys -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN24073"></a><h2>Synopsis</h2>
+<a name="AEN27447"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 <font>PCCERT_CONTEXT</font> <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETCERT">xmlSecMSCryptoKeyDataGetCert</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
@@ -101,13 +101,13 @@
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN24090"></a><h2>Description</h2>
+<a name="AEN27464"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN24093"></a><h2>Details</h2>
+<a name="AEN27467"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN24095"></a><h3>
+<a name="AEN27469"></a><h3>
 <a name="XMLSECMSCRYPTOKEYDATAGETCERT"></a>xmlSecMSCryptoKeyDataGetCert ()</h3>
 <pre class="PROGRAMLISTING"><font>PCCERT_CONTEXT</font> xmlSecMSCryptoKeyDataGetCert (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Native MSCrypto certificate retrieval from xmlsec keydata. The 
@@ -116,18 +116,18 @@ returned PCCERT_CONTEXT must not be released by the caller.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24104"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27480"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key data to retrieve certificate from.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24109"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27485"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>PCCERT_CONTEXT on success or NULL otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN24114"></a><h3>
+<a name="AEN27490"></a><h3>
 <a name="XMLSECMSCRYPTOKEYDATAGETKEY"></a>xmlSecMSCryptoKeyDataGetKey ()</h3>
 <pre class="PROGRAMLISTING"><font>HCRYPTKEY</font>   xmlSecMSCryptoKeyDataGetKey     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
@@ -137,22 +137,22 @@ returned HKEY must not be destroyed by the caller.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24124"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27502"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key data to retrieve certificate from.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24129"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27507"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>              type of key requested (public/private)</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24134"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27512"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>HKEY on success or NULL otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN24139"></a><h3>
+<a name="AEN27517"></a><h3>
 <a name="XMLSECMSCRYPTOCERTDUP"></a>xmlSecMSCryptoCertDup ()</h3>
 <pre class="PROGRAMLISTING"><font>PCCERT_CONTEXT</font> xmlSecMSCryptoCertDup        (<font>PCCERT_CONTEXT</font> pCert);</pre>
 <p>Duplicates the <var class="PARAMETER">pCert</var>.</p>
@@ -160,11 +160,11 @@ returned HKEY must not be destroyed by the caller.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24149"><span style="white-space: nowrap"><var class="PARAMETER">pCert</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27529"><span style="white-space: nowrap"><var class="PARAMETER">pCert</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to cert.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24154"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27534"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to newly created PCCERT_CONTEXT object or 
 NULL if an error occurs.</p></td>
 </tr>
@@ -172,7 +172,7 @@ NULL if an error occurs.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN24159"></a><h3>
+<a name="AEN27539"></a><h3>
 <a name="XMLSECMSCRYPTOCERTADOPT"></a>xmlSecMSCryptoCertAdopt ()</h3>
 <pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecMSCryptoCertAdopt    (<font>PCCERT_CONTEXT</font> pCert,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
@@ -181,15 +181,15 @@ NULL if an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24169"><span style="white-space: nowrap"><var class="PARAMETER">pCert</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27551"><span style="white-space: nowrap"><var class="PARAMETER">pCert</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to cert.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24174"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27556"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the expected key type.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24179"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN27561"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to newly created xmlsec key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>

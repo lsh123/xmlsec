@@ -16,15 +16,15 @@
 
 
 <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link>      (void);
-void        <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="void">void</link>        <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-int         <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<link linkend="int">int</link>         <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
 <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<link linkend="int">int</link>         <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
 <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
@@ -36,7 +36,7 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 struct      <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
 <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link>      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);
-void        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="void">void</link>        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link>          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
@@ -45,9 +45,9 @@ void        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>  
 #define     <link linkend="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId</link>           (store, storeId)
 #define     <link linkend="xmlSecKeyStoreCheckSize">xmlSecKeyStoreCheckSize</link>         (store, size)
 #define     <link linkend="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</link>
-int         (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)
+<link linkend="int">int</link>         (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)
                                             (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
-void        (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="void">void</link>        (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyStoreFindKeyMethod">*xmlSecKeyStoreFindKeyMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
@@ -56,16 +56,18 @@ struct      <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
 #define     <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
 <link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>   (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<link linkend="int">int</link>         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>   (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *uri,
+<link linkend="int">int</link>         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *uri,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *filename,
+<link linkend="int">int</link>         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -84,10 +86,10 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate ()</title>
-<programlisting><link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> xmlSecKeysMngrCreate      (void);</programlisting>
+<indexterm><primary>xmlSecKeysMngrCreate</primary></indexterm><programlisting><link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> xmlSecKeysMngrCreate      (void);</programlisting>
 <para>
 Creates new keys manager. Caller is responsible for freeing it with 
-<link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link> function.</para>
+<link linkend="xmlSecKeysMngrDestroy"><type>xmlSecKeysMngrDestroy</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -97,9 +99,9 @@ an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy ()</title>
-<programlisting>void        xmlSecKeysMngrDestroy           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<indexterm><primary>xmlSecKeysMngrDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeysMngrDestroy           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link> function.</para>
+Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate"><type>xmlSecKeysMngrCreate</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -109,12 +111,12 @@ Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate">xmlSecKe
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrFindKey          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<indexterm><primary>xmlSecKeysMngrFindKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrFindKey          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Lookups key in the keys manager keys store. The caller is responsible 
-for destroying the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> method.</para>
+for destroying the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.</para>
 <para>
 
 </para><variablelist role="params">
@@ -132,7 +134,7 @@ for destroying the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKey
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore ()</title>
-<programlisting>int         xmlSecKeysMngrAdoptKeysStore    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<indexterm><primary>xmlSecKeysMngrAdoptKeysStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeysMngrAdoptKeysStore    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
 Adopts keys store in the keys manager <parameter>mngr</parameter>.</para>
@@ -150,7 +152,7 @@ Adopts keys store in the keys manager <parameter>mngr</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore ()</title>
-<programlisting><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> xmlSecKeysMngrGetKeysStore
+<indexterm><primary>xmlSecKeysMngrGetKeysStore</primary></indexterm><programlisting><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> xmlSecKeysMngrGetKeysStore
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Gets the keys store.</para>
@@ -166,7 +168,7 @@ there is no store or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore ()</title>
-<programlisting>int         xmlSecKeysMngrAdoptDataStore    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<indexterm><primary>xmlSecKeysMngrAdoptDataStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeysMngrAdoptDataStore    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
 Adopts data store in the keys manager.</para>
@@ -184,7 +186,7 @@ Adopts data store in the keys manager.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore ()</title>
-<programlisting><link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> xmlSecKeysMngrGetDataStore
+<indexterm><primary>xmlSecKeysMngrGetDataStore</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> xmlSecKeysMngrGetDataStore
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);</programlisting>
 <para>
@@ -204,7 +206,7 @@ occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetKeyCallback">xmlSecGetKeyCallback ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<indexterm><primary>xmlSecGetKeyCallback</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
@@ -223,7 +225,7 @@ an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngr">struct xmlSecKeysMngr</title>
-<programlisting>struct xmlSecKeysMngr {
+<indexterm><primary>xmlSecKeysMngr</primary></indexterm><programlisting>struct xmlSecKeysMngr {
 	
     xmlSecKeyStorePtr		keysStore;	
     xmlSecPtrList		storesList;	
@@ -253,7 +255,7 @@ The keys manager structure.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<indexterm><primary>xmlSecKeysMngrGetKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
@@ -272,7 +274,7 @@ an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStore">struct xmlSecKeyStore</title>
-<programlisting>struct xmlSecKeyStore {
+<indexterm><primary>xmlSecKeyStore</primary></indexterm><programlisting>struct xmlSecKeyStore {
 
     xmlSecKeyStoreId			id;
 
@@ -288,26 +290,26 @@ The keys store.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <structfield>id</structfield></term>
-<listitem><simpara> 		the store id (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link>).
+<listitem><simpara> 		the store id (<link linkend="xmlSecKeyStoreId"><type>xmlSecKeyStoreId</type></link>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved0</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate ()</title>
-<programlisting><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> xmlSecKeyStoreCreate      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);</programlisting>
+<indexterm><primary>xmlSecKeyStoreCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> xmlSecKeyStoreCreate      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);</programlisting>
 <para>
 Creates new store of the specified klass <parameter>klass</parameter>. Caller is responsible
-for freeing the returned store by calling <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link> function.</para>
+for freeing the returned store by calling <link linkend="xmlSecKeyStoreDestroy"><type>xmlSecKeyStoreDestroy</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -319,9 +321,9 @@ for freeing the returned store by calling <link linkend="xmlSecKeyStoreDestroy">
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy ()</title>
-<programlisting>void        xmlSecKeyStoreDestroy           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
+<indexterm><primary>xmlSecKeyStoreDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecKeyStoreDestroy           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-Destroys the store created with <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link> function.</para>
+Destroys the store created with <link linkend="xmlSecKeyStoreCreate"><type>xmlSecKeyStoreCreate</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -331,12 +333,12 @@ Destroys the store created with <link linkend="xmlSecKeyStoreCreate">xmlSecKeySt
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyStoreFindKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<indexterm><primary>xmlSecKeyStoreFindKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyStoreFindKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Lookups key in the store. The caller is responsible for destroying 
-the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> method.</para>
+the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.</para>
 <para>
 
 </para><variablelist role="params">
@@ -354,7 +356,7 @@ the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName()</title>
-<programlisting>#define     xmlSecKeyStoreGetName(store)</programlisting>
+<indexterm><primary>xmlSecKeyStoreGetName</primary></indexterm><programlisting>#define     xmlSecKeyStoreGetName(store)</programlisting>
 <para>
 Macro. Returns key store name.</para>
 <para>
@@ -366,7 +368,7 @@ Macro. Returns key store name.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreIsValid">xmlSecKeyStoreIsValid()</title>
-<programlisting>#define     xmlSecKeyStoreIsValid(store)</programlisting>
+<indexterm><primary>xmlSecKeyStoreIsValid</primary></indexterm><programlisting>#define     xmlSecKeyStoreIsValid(store)</programlisting>
 <para>
 Macro. Returns 1 if <parameter>store</parameter> is not NULL and <parameter>store</parameter>-&gt;id is not NULL
 or 0 otherwise.</para>
@@ -379,7 +381,7 @@ or 0 otherwise.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId()</title>
-<programlisting>#define     xmlSecKeyStoreCheckId(store, storeId)</programlisting>
+<indexterm><primary>xmlSecKeyStoreCheckId</primary></indexterm><programlisting>#define     xmlSecKeyStoreCheckId(store, storeId)</programlisting>
 <para>
 Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</parameter>'s id is equal to <parameter>storeId</parameter>.</para>
 <para>
@@ -394,7 +396,7 @@ Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreCheckSize">xmlSecKeyStoreCheckSize()</title>
-<programlisting>#define     xmlSecKeyStoreCheckSize(store, size)</programlisting>
+<indexterm><primary>xmlSecKeyStoreCheckSize</primary></indexterm><programlisting>#define     xmlSecKeyStoreCheckSize(store, size)</programlisting>
 <para>
 Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>stores</parameter>'s object has at least <parameter>size</parameter> bytes.</para>
 <para>
@@ -409,7 +411,7 @@ Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>stores<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</title>
-<programlisting>#define xmlSecKeyStoreIdUnknown 			((xmlSecKeyDataStoreId)NULL)
+<indexterm><primary>xmlSecKeyStoreIdUnknown</primary></indexterm><programlisting>#define xmlSecKeyStoreIdUnknown 			((xmlSecKeyDataStoreId)NULL)
 </programlisting>
 <para>
 The "unknown" id.</para>
@@ -418,7 +420,7 @@ The "unknown" id.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreInitializeMethod">xmlSecKeyStoreInitializeMethod ()</title>
-<programlisting>int         (*xmlSecKeyStoreInitializeMethod)
+<indexterm><primary>xmlSecKeyStoreInitializeMethod</primary></indexterm><programlisting><link linkend="int">int</link>         (*xmlSecKeyStoreInitializeMethod)
                                             (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
 Keys store specific initialization method.</para>
@@ -433,7 +435,7 @@ Keys store specific initialization method.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreFinalizeMethod">xmlSecKeyStoreFinalizeMethod ()</title>
-<programlisting>void        (*xmlSecKeyStoreFinalizeMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
+<indexterm><primary>xmlSecKeyStoreFinalizeMethod</primary></indexterm><programlisting><link linkend="void">void</link>        (*xmlSecKeyStoreFinalizeMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
 Keys store specific finalization (destroy) method.</para>
 <para>
@@ -445,12 +447,12 @@ Keys store specific finalization (destroy) method.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreFindKeyMethod">xmlSecKeyStoreFindKeyMethod ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyStoreFindKeyMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<indexterm><primary>xmlSecKeyStoreFindKeyMethod</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyStoreFindKeyMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Keys store specific find method. The caller is responsible for destroying 
-the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> method.</para>
+the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</type></link> method.</para>
 <para>
 
 </para><variablelist role="params">
@@ -468,7 +470,7 @@ the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreKlass">struct xmlSecKeyStoreKlass</title>
-<programlisting>struct xmlSecKeyStoreKlass {
+<indexterm><primary>xmlSecKeyStoreKlass</primary></indexterm><programlisting>struct xmlSecKeyStoreKlass {
 
     xmlSecSize				klassSize;
     xmlSecSize				objSize;
@@ -522,19 +524,19 @@ The keys store id (klass).</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved0</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
+<term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
 <listitem><simpara>		reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreKlassGetName">xmlSecKeyStoreKlassGetName()</title>
-<programlisting>#define     xmlSecKeyStoreKlassGetName(klass)</programlisting>
+<indexterm><primary>xmlSecKeyStoreKlassGetName</primary></indexterm><programlisting>#define     xmlSecKeyStoreKlassGetName(klass)</programlisting>
 <para>
 Macro. Returns store klass name.</para>
 <para>
@@ -546,7 +548,7 @@ Macro. Returns store klass name.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</title>
-<programlisting>#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
+<indexterm><primary>xmlSecSimpleKeysStoreId</primary></indexterm><programlisting>#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
 </programlisting>
 <para>
 A simple keys store klass id.</para>
@@ -555,7 +557,7 @@ A simple keys store klass id.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecSimpleKeysStoreGetKlass
+<indexterm><primary>xmlSecSimpleKeysStoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecSimpleKeysStoreGetKlass
                                             (void);</programlisting>
 <para>
 The simple list based keys store klass.</para>
@@ -567,7 +569,7 @@ The simple list based keys store klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<indexterm><primary>xmlSecSimpleKeysStoreAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
@@ -585,8 +587,8 @@ Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *uri,
+<indexterm><primary>xmlSecSimpleKeysStoreLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *uri,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 Reads keys from an XML file.</para>
@@ -607,8 +609,8 @@ Reads keys from an XML file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                             const char *filename,
+<indexterm><primary>xmlSecSimpleKeysStoreSave</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Writes keys from <parameter>store</parameter> to an XML file.</para>

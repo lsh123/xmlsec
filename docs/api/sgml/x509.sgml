@@ -21,11 +21,13 @@
 #define     <link linkend="XMLSEC-X509DATA-SKI-NODE-CAPS">XMLSEC_X509DATA_SKI_NODE</link>
 #define     <link linkend="XMLSEC-X509DATA-CRL-NODE-CAPS">XMLSEC_X509DATA_CRL_NODE</link>
 #define     <link linkend="XMLSEC-X509DATA-DEFAULT-CAPS">XMLSEC_X509DATA_DEFAULT</link>
-int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeContent</link>    (<link linkend="xmlNode">xmlNodePtr</link> node,
-                                             int deleteChildren,
+<link linkend="int">int</link>         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeContent</link>    (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="int">int</link> deleteChildren,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -44,7 +46,7 @@ int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeCo
 <title>Details</title>
 <refsect2>
 <title><anchor id="XMLSEC-X509DATA-CERTIFICATE-NODE-CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</title>
-<programlisting>#define XMLSEC_X509DATA_CERTIFICATE_NODE			0x00000001
+<indexterm><primary>XMLSEC_X509DATA_CERTIFICATE_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CERTIFICATE_NODE			0x00000001
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node found or would be written back.</para>
@@ -53,7 +55,7 @@ int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeCo
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-X509DATA-SUBJECTNAME-NODE-CAPS">XMLSEC_X509DATA_SUBJECTNAME_NODE</title>
-<programlisting>#define XMLSEC_X509DATA_SUBJECTNAME_NODE			0x00000002
+<indexterm><primary>XMLSEC_X509DATA_SUBJECTNAME_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SUBJECTNAME_NODE			0x00000002
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node found or would be written back.</para>
@@ -62,7 +64,7 @@ int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeCo
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-X509DATA-ISSUERSERIAL-NODE-CAPS">XMLSEC_X509DATA_ISSUERSERIAL_NODE</title>
-<programlisting>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE			0x00000004
+<indexterm><primary>XMLSEC_X509DATA_ISSUERSERIAL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE			0x00000004
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node found or would be written back.</para>
@@ -71,7 +73,7 @@ int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeCo
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-X509DATA-SKI-NODE-CAPS">XMLSEC_X509DATA_SKI_NODE</title>
-<programlisting>#define XMLSEC_X509DATA_SKI_NODE				0x00000008
+<indexterm><primary>XMLSEC_X509DATA_SKI_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SKI_NODE				0x00000008
 </programlisting>
 <para>
 &lt;dsig:/X509SKI&gt; node found or would be written back.</para>
@@ -80,7 +82,7 @@ int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeCo
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-X509DATA-CRL-NODE-CAPS">XMLSEC_X509DATA_CRL_NODE</title>
-<programlisting>#define XMLSEC_X509DATA_CRL_NODE				0x00000010
+<indexterm><primary>XMLSEC_X509DATA_CRL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CRL_NODE				0x00000010
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node found or would be written back.</para>
@@ -89,7 +91,7 @@ int         <link linkend="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeCo
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-X509DATA-DEFAULT-CAPS">XMLSEC_X509DATA_DEFAULT</title>
-<programlisting>#define     XMLSEC_X509DATA_DEFAULT</programlisting>
+<indexterm><primary>XMLSEC_X509DATA_DEFAULT</primary></indexterm><programlisting>#define     XMLSEC_X509DATA_DEFAULT</programlisting>
 <para>
 Default set of nodes to write in case of empty
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node template.</para>
@@ -98,8 +100,8 @@ Default set of nodes to write in case of empty
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecX509DataGetNodeContent">xmlSecX509DataGetNodeContent ()</title>
-<programlisting>int         xmlSecX509DataGetNodeContent    (<link linkend="xmlNode">xmlNodePtr</link> node,
-                                             int deleteChildren,
+<indexterm><primary>xmlSecX509DataGetNodeContent</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecX509DataGetNodeContent    (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="int">int</link> deleteChildren,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads the contents of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node and returns it as

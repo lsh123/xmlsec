@@ -17,21 +17,21 @@
 
 <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoGetFunctions-nss">xmlSecCryptoGetFunctions_nss</link>
                                             (void);
-int         <link linkend="xmlSecNssInit">xmlSecNssInit</link>                   (void);
-int         <link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link>               (void);
-int         <link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link>         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+<link linkend="int">int</link>         <link linkend="xmlSecNssInit">xmlSecNssInit</link>                   (void);
+<link linkend="int">int</link>         <link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link>               (void);
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="int">int</link>         <link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link>         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
-void        <link linkend="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback</link>  (const char *file,
-                                             int line,
-                                             const char *func,
-                                             const char *errorObject,
-                                             const char *errorSubject,
-                                             int reason,
-                                             const char *msg);
+<link linkend="void">void</link>        <link linkend="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback</link>  (const <link linkend="char">char</link> *file,
+                                             <link linkend="int">int</link> line,
+                                             const <link linkend="char">char</link> *func,
+                                             const <link linkend="char">char</link> *errorObject,
+                                             const <link linkend="char">char</link> *errorSubject,
+                                             <link linkend="int">int</link> reason,
+                                             const <link linkend="char">char</link> *msg);
 #define     <link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link> (void);
-int         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecNssTransformAes128CbcId">xmlSecNssTransformAes128CbcId</link>
@@ -54,7 +54,7 @@ int         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>
                                             (void);
 #define     <link linkend="xmlSecNssKeyDataDesId">xmlSecNssKeyDataDesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataDesGetKlass">xmlSecNssKeyDataDesGetKlass</link> (void);
-int         <link linkend="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecNssTransformDes3CbcId">xmlSecNssTransformDes3CbcId</link>
@@ -71,7 +71,7 @@ int         <link linkend="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet</link>
 #define     <link linkend="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataHmacGetKlass">xmlSecNssKeyDataHmacGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</link>         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</link>         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</link>
@@ -103,6 +103,8 @@ int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</lin
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -114,7 +116,7 @@ int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</lin
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecCryptoGetFunctions-nss">xmlSecCryptoGetFunctions_nss ()</title>
-<programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_nss
+<indexterm><primary>xmlSecCryptoGetFunctions_nss</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_nss
                                             (void);</programlisting>
 <para>
 Gets the pointer to xmlsec-nss functions table.</para>
@@ -126,7 +128,7 @@ Gets the pointer to xmlsec-nss functions table.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssInit">xmlSecNssInit ()</title>
-<programlisting>int         xmlSecNssInit                   (void);</programlisting>
+<indexterm><primary>xmlSecNssInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssInit                   (void);</programlisting>
 <para>
 XMLSec library specific crypto engine initialization.</para>
 <para>
@@ -137,7 +139,7 @@ XMLSec library specific crypto engine initialization.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssShutdown">xmlSecNssShutdown ()</title>
-<programlisting>int         xmlSecNssShutdown               (void);</programlisting>
+<indexterm><primary>xmlSecNssShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssShutdown               (void);</programlisting>
 <para>
 XMLSec library specific crypto engine shutdown.</para>
 <para>
@@ -148,7 +150,7 @@ XMLSec library specific crypto engine shutdown.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit ()</title>
-<programlisting>int         xmlSecNssKeysMngrInit           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<indexterm><primary>xmlSecNssKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeysMngrInit           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Adds NSS specific key data stores in keys manager.</para>
 <para>
@@ -162,7 +164,7 @@ Adds NSS specific key data stores in keys manager.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom ()</title>
-<programlisting>int         xmlSecNssGenerateRandom         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+<indexterm><primary>xmlSecNssGenerateRandom</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssGenerateRandom         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.</para>
@@ -180,13 +182,13 @@ Generates <parameter>size</parameter> random bytes and puts result in <parameter
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback ()</title>
-<programlisting>void        xmlSecNssErrorsDefaultCallback  (const char *file,
-                                             int line,
-                                             const char *func,
-                                             const char *errorObject,
-                                             const char *errorSubject,
-                                             int reason,
-                                             const char *msg);</programlisting>
+<indexterm><primary>xmlSecNssErrorsDefaultCallback</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecNssErrorsDefaultCallback  (const <link linkend="char">char</link> *file,
+                                             <link linkend="int">int</link> line,
+                                             const <link linkend="char">char</link> *func,
+                                             const <link linkend="char">char</link> *errorObject,
+                                             const <link linkend="char">char</link> *errorSubject,
+                                             <link linkend="int">int</link> reason,
+                                             const <link linkend="char">char</link> *msg);</programlisting>
 <para>
 The default errors reporting callback function.</para>
 <para>
@@ -216,7 +218,7 @@ The default errors reporting callback function.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</title>
-<programlisting>#define     xmlSecNssKeyDataAesId</programlisting>
+<indexterm><primary>xmlSecNssKeyDataAesId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataAesId</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
@@ -224,7 +226,7 @@ The AES key data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataAesGetKlass (void);</programlisting>
+<indexterm><primary>xmlSecNssKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataAesGetKlass (void);</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
@@ -235,7 +237,7 @@ The AES key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet ()</title>
-<programlisting>int         xmlSecNssKeyDataAesSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecNssKeyDataAesSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeyDataAesSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
@@ -257,7 +259,7 @@ Sets the value of AES key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes128CbcId">xmlSecNssTransformAes128CbcId</title>
-<programlisting>#define     xmlSecNssTransformAes128CbcId</programlisting>
+<indexterm><primary>xmlSecNssTransformAes128CbcId</primary></indexterm><programlisting>#define     xmlSecNssTransformAes128CbcId</programlisting>
 <para>
 The AES128 CBC cipher transform klass.</para>
 <para>
@@ -265,7 +267,7 @@ The AES128 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes128CbcGetKlass">xmlSecNssTransformAes128CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes128CbcGetKlass
+<indexterm><primary>xmlSecNssTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes128CbcGetKlass
                                             (void);</programlisting>
 <para>
 AES 128 CBC encryption transform klass.</para>
@@ -277,7 +279,7 @@ AES 128 CBC encryption transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes192CbcId">xmlSecNssTransformAes192CbcId</title>
-<programlisting>#define     xmlSecNssTransformAes192CbcId</programlisting>
+<indexterm><primary>xmlSecNssTransformAes192CbcId</primary></indexterm><programlisting>#define     xmlSecNssTransformAes192CbcId</programlisting>
 <para>
 The AES192 CBC cipher transform klass.</para>
 <para>
@@ -285,7 +287,7 @@ The AES192 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes192CbcGetKlass">xmlSecNssTransformAes192CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes192CbcGetKlass
+<indexterm><primary>xmlSecNssTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes192CbcGetKlass
                                             (void);</programlisting>
 <para>
 AES 192 CBC encryption transform klass.</para>
@@ -297,7 +299,7 @@ AES 192 CBC encryption transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes256CbcId">xmlSecNssTransformAes256CbcId</title>
-<programlisting>#define     xmlSecNssTransformAes256CbcId</programlisting>
+<indexterm><primary>xmlSecNssTransformAes256CbcId</primary></indexterm><programlisting>#define     xmlSecNssTransformAes256CbcId</programlisting>
 <para>
 The AES256 CBC cipher transform klass.</para>
 <para>
@@ -305,7 +307,7 @@ The AES256 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes256CbcGetKlass">xmlSecNssTransformAes256CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes256CbcGetKlass
+<indexterm><primary>xmlSecNssTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes256CbcGetKlass
                                             (void);</programlisting>
 <para>
 AES 256 CBC encryption transform klass.</para>
@@ -317,7 +319,7 @@ AES 256 CBC encryption transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWAes128Id">xmlSecNssTransformKWAes128Id</title>
-<programlisting>#define     xmlSecNssTransformKWAes128Id</programlisting>
+<indexterm><primary>xmlSecNssTransformKWAes128Id</primary></indexterm><programlisting>#define     xmlSecNssTransformKWAes128Id</programlisting>
 <para>
 The AES 128 key wrap transform klass.</para>
 <para>
@@ -325,7 +327,7 @@ The AES 128 key wrap transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWAes128GetKlass">xmlSecNssTransformKWAes128GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes128GetKlass
+<indexterm><primary>xmlSecNssTransformKWAes128GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes128GetKlass
                                             (void);</programlisting>
 <para>
 The AES-128 key wrapper transform klass.</para>
@@ -337,7 +339,7 @@ The AES-128 key wrapper transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWAes192Id">xmlSecNssTransformKWAes192Id</title>
-<programlisting>#define     xmlSecNssTransformKWAes192Id</programlisting>
+<indexterm><primary>xmlSecNssTransformKWAes192Id</primary></indexterm><programlisting>#define     xmlSecNssTransformKWAes192Id</programlisting>
 <para>
 The AES 192 key wrap transform klass.</para>
 <para>
@@ -345,7 +347,7 @@ The AES 192 key wrap transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWAes192GetKlass">xmlSecNssTransformKWAes192GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes192GetKlass
+<indexterm><primary>xmlSecNssTransformKWAes192GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes192GetKlass
                                             (void);</programlisting>
 <para>
 The AES-192 key wrapper transform klass.</para>
@@ -357,7 +359,7 @@ The AES-192 key wrapper transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWAes256Id">xmlSecNssTransformKWAes256Id</title>
-<programlisting>#define     xmlSecNssTransformKWAes256Id</programlisting>
+<indexterm><primary>xmlSecNssTransformKWAes256Id</primary></indexterm><programlisting>#define     xmlSecNssTransformKWAes256Id</programlisting>
 <para>
 The AES 256 key wrap transform klass.</para>
 <para>
@@ -365,7 +367,7 @@ The AES 256 key wrap transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWAes256GetKlass">xmlSecNssTransformKWAes256GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes256GetKlass
+<indexterm><primary>xmlSecNssTransformKWAes256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes256GetKlass
                                             (void);</programlisting>
 <para>
 The AES-256 key wrapper transform klass.</para>
@@ -377,7 +379,7 @@ The AES-256 key wrapper transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDesId">xmlSecNssKeyDataDesId</title>
-<programlisting>#define     xmlSecNssKeyDataDesId</programlisting>
+<indexterm><primary>xmlSecNssKeyDataDesId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataDesId</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
@@ -385,7 +387,7 @@ The DES key data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDesGetKlass">xmlSecNssKeyDataDesGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDesGetKlass (void);</programlisting>
+<indexterm><primary>xmlSecNssKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDesGetKlass (void);</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
@@ -396,7 +398,7 @@ The DES key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet ()</title>
-<programlisting>int         xmlSecNssKeyDataDesSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecNssKeyDataDesSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeyDataDesSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
@@ -418,7 +420,7 @@ Sets the value of DES key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformDes3CbcId">xmlSecNssTransformDes3CbcId</title>
-<programlisting>#define     xmlSecNssTransformDes3CbcId</programlisting>
+<indexterm><primary>xmlSecNssTransformDes3CbcId</primary></indexterm><programlisting>#define     xmlSecNssTransformDes3CbcId</programlisting>
 <para>
 The Triple DES CBC cipher transform klass.</para>
 <para>
@@ -426,7 +428,7 @@ The Triple DES CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformDes3CbcGetKlass">xmlSecNssTransformDes3CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDes3CbcGetKlass
+<indexterm><primary>xmlSecNssTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDes3CbcGetKlass
                                             (void);</programlisting>
 <para>
 Triple DES CBC encryption transform klass.</para>
@@ -438,7 +440,7 @@ Triple DES CBC encryption transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWDes3Id">xmlSecNssTransformKWDes3Id</title>
-<programlisting>#define     xmlSecNssTransformKWDes3Id</programlisting>
+<indexterm><primary>xmlSecNssTransformKWDes3Id</primary></indexterm><programlisting>#define     xmlSecNssTransformKWDes3Id</programlisting>
 <para>
 The DES3 CBC cipher transform klass.</para>
 <para>
@@ -446,7 +448,7 @@ The DES3 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformKWDes3GetKlass">xmlSecNssTransformKWDes3GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWDes3GetKlass
+<indexterm><primary>xmlSecNssTransformKWDes3GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWDes3GetKlass
                                             (void);</programlisting>
 <para>
 The Triple DES key wrapper transform klass.</para>
@@ -458,7 +460,7 @@ The Triple DES key wrapper transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDsaId">xmlSecNssKeyDataDsaId</title>
-<programlisting>#define     xmlSecNssKeyDataDsaId</programlisting>
+<indexterm><primary>xmlSecNssKeyDataDsaId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataDsaId</programlisting>
 <para>
 The DSA key klass.</para>
 <para>
@@ -466,7 +468,7 @@ The DSA key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDsaGetKlass">xmlSecNssKeyDataDsaGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDsaGetKlass (void);</programlisting>
+<indexterm><primary>xmlSecNssKeyDataDsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDsaGetKlass (void);</programlisting>
 <para>
 The DSA key data klass.</para>
 <para>
@@ -477,7 +479,7 @@ The DSA key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformDsaSha1Id">xmlSecNssTransformDsaSha1Id</title>
-<programlisting>#define     xmlSecNssTransformDsaSha1Id</programlisting>
+<indexterm><primary>xmlSecNssTransformDsaSha1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformDsaSha1Id</programlisting>
 <para>
 The DSA SHA1 signature transform klass.</para>
 <para>
@@ -485,7 +487,7 @@ The DSA SHA1 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformDsaSha1GetKlass">xmlSecNssTransformDsaSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDsaSha1GetKlass
+<indexterm><primary>xmlSecNssTransformDsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDsaSha1GetKlass
                                             (void);</programlisting>
 <para>
 The DSA-SHA1 signature transform klass.</para>
@@ -497,7 +499,7 @@ The DSA-SHA1 signature transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</title>
-<programlisting>#define     xmlSecNssKeyDataHmacId</programlisting>
+<indexterm><primary>xmlSecNssKeyDataHmacId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataHmacId</programlisting>
 <para>
 The DHMAC key data klass.</para>
 <para>
@@ -505,7 +507,7 @@ The DHMAC key data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacGetKlass">xmlSecNssKeyDataHmacGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataHmacGetKlass
+<indexterm><primary>xmlSecNssKeyDataHmacGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataHmacGetKlass
                                             (void);</programlisting>
 <para>
 The HMAC key data klass.</para>
@@ -517,7 +519,7 @@ The HMAC key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet ()</title>
-<programlisting>int         xmlSecNssKeyDataHmacSet         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecNssKeyDataHmacSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssKeyDataHmacSet         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
@@ -539,7 +541,7 @@ Sets the value of HMAC key data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</title>
-<programlisting>#define     xmlSecNssTransformHmacSha1Id</programlisting>
+<indexterm><primary>xmlSecNssTransformHmacSha1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacSha1Id</programlisting>
 <para>
 The HMAC with SHA1 signature transform klass.</para>
 <para>
@@ -547,7 +549,7 @@ The HMAC with SHA1 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacSha1GetKlass">xmlSecNssTransformHmacSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacSha1GetKlass
+<indexterm><primary>xmlSecNssTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacSha1GetKlass
                                             (void);</programlisting>
 <para>
 The HMAC-SHA1 transform klass.</para>
@@ -559,7 +561,7 @@ The HMAC-SHA1 transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacRipemd160Id">xmlSecNssTransformHmacRipemd160Id</title>
-<programlisting>#define     xmlSecNssTransformHmacRipemd160Id</programlisting>
+<indexterm><primary>xmlSecNssTransformHmacRipemd160Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacRipemd160Id</programlisting>
 <para>
 The HMAC with RipeMD160 signature transform klass.</para>
 <para>
@@ -567,7 +569,7 @@ The HMAC with RipeMD160 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacRipemd160GetKlass">xmlSecNssTransformHmacRipemd160GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacRipemd160GetKlass
+<indexterm><primary>xmlSecNssTransformHmacRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacRipemd160GetKlass
                                             (void);</programlisting>
 <para>
 The HMAC-RIPEMD160 transform klass.</para>
@@ -579,7 +581,7 @@ The HMAC-RIPEMD160 transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</title>
-<programlisting>#define     xmlSecNssTransformHmacMd5Id</programlisting>
+<indexterm><primary>xmlSecNssTransformHmacMd5Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacMd5Id</programlisting>
 <para>
 The HMAC with MD5 signature transform klass.</para>
 <para>
@@ -587,7 +589,7 @@ The HMAC with MD5 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacMd5GetKlass
+<indexterm><primary>xmlSecNssTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacMd5GetKlass
                                             (void);</programlisting>
 <para>
 The HMAC-MD5 transform klass.</para>
@@ -599,7 +601,7 @@ The HMAC-MD5 transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataRsaId">xmlSecNssKeyDataRsaId</title>
-<programlisting>#define     xmlSecNssKeyDataRsaId</programlisting>
+<indexterm><primary>xmlSecNssKeyDataRsaId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataRsaId</programlisting>
 <para>
 The RSA key klass.</para>
 <para>
@@ -607,7 +609,7 @@ The RSA key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataRsaGetKlass">xmlSecNssKeyDataRsaGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataRsaGetKlass (void);</programlisting>
+<indexterm><primary>xmlSecNssKeyDataRsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataRsaGetKlass (void);</programlisting>
 <para>
 The RSA key data klass.</para>
 <para>
@@ -618,7 +620,7 @@ The RSA key data klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformRsaSha1Id">xmlSecNssTransformRsaSha1Id</title>
-<programlisting>#define     xmlSecNssTransformRsaSha1Id</programlisting>
+<indexterm><primary>xmlSecNssTransformRsaSha1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformRsaSha1Id</programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
 <para>
@@ -626,7 +628,7 @@ The RSA-SHA1 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformRsaSha1GetKlass">xmlSecNssTransformRsaSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaSha1GetKlass
+<indexterm><primary>xmlSecNssTransformRsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaSha1GetKlass
                                             (void);</programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
@@ -638,7 +640,7 @@ The RSA-SHA1 signature transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</title>
-<programlisting>#define     xmlSecNssTransformRsaPkcs1Id</programlisting>
+<indexterm><primary>xmlSecNssTransformRsaPkcs1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformRsaPkcs1Id</programlisting>
 <para>
 The RSA PKCS1 key transport transform klass.</para>
 <para>
@@ -646,7 +648,7 @@ The RSA PKCS1 key transport transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaPkcs1GetKlass
+<indexterm><primary>xmlSecNssTransformRsaPkcs1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaPkcs1GetKlass
                                             (void);</programlisting>
 <para>
 The RSA-PKCS1 key transport transform klass.</para>
@@ -658,7 +660,7 @@ The RSA-PKCS1 key transport transform klass.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</title>
-<programlisting>#define     xmlSecNssTransformSha1Id</programlisting>
+<indexterm><primary>xmlSecNssTransformSha1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformSha1Id</programlisting>
 <para>
 The SHA1 digest transform klass.</para>
 <para>
@@ -666,7 +668,7 @@ The SHA1 digest transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformSha1GetKlass
+<indexterm><primary>xmlSecNssTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformSha1GetKlass
                                             (void);</programlisting>
 <para>
 SHA-1 digest transform klass.</para>

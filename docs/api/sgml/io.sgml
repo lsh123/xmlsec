@@ -15,22 +15,24 @@
 
 
 
-int         <link linkend="xmlSecIOInit">xmlSecIOInit</link>                    (void);
-void        <link linkend="xmlSecIOShutdown">xmlSecIOShutdown</link>                (void);
-void        <link linkend="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks</link>        (void);
-int         <link linkend="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</link>
+<link linkend="int">int</link>         <link linkend="xmlSecIOInit">xmlSecIOInit</link>                    (void);
+<link linkend="void">void</link>        <link linkend="xmlSecIOShutdown">xmlSecIOShutdown</link>                (void);
+<link linkend="void">void</link>        <link linkend="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks</link>        (void);
+<link linkend="int">int</link>         <link linkend="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</link>
                                             (void);
-int         <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks</link>       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
+<link linkend="int">int</link>         <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks</link>       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
                                              <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
                                              <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
                                              <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);
 #define     <link linkend="xmlSecTransformInputURIId">xmlSecTransformInputURIId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<link linkend="int">int</link>         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -49,9 +51,9 @@ int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIO
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecIOInit">xmlSecIOInit ()</title>
-<programlisting>int         xmlSecIOInit                    (void);</programlisting>
+<indexterm><primary>xmlSecIOInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIOInit                    (void);</programlisting>
 <para>
-The IO initialization (called from <link linkend="xmlSecInit">xmlSecInit</link> function).
+The IO initialization (called from <link linkend="xmlSecInit"><type>xmlSecInit</type></link> function).
 Applications should not call this function directly.</para>
 <para>
 
@@ -61,16 +63,16 @@ Applications should not call this function directly.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIOShutdown">xmlSecIOShutdown ()</title>
-<programlisting>void        xmlSecIOShutdown                (void);</programlisting>
+<indexterm><primary>xmlSecIOShutdown</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecIOShutdown                (void);</programlisting>
 <para>
-The IO clenaup (called from <link linkend="xmlSecShutdown">xmlSecShutdown</link> function).
+The IO clenaup (called from <link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function).
 Applications should not call this function directly.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks ()</title>
-<programlisting>void        xmlSecIOCleanupCallbacks        (void);</programlisting>
+<indexterm><primary>xmlSecIOCleanupCallbacks</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecIOCleanupCallbacks        (void);</programlisting>
 <para>
 Clears the entire input callback table. this includes the
 compiled-in I/O.</para>
@@ -79,7 +81,7 @@ compiled-in I/O.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks ()</title>
-<programlisting>int         xmlSecIORegisterDefaultCallbacks
+<indexterm><primary>xmlSecIORegisterDefaultCallbacks</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIORegisterDefaultCallbacks
                                             (void);</programlisting>
 <para>
 Registers the default compiled-in I/O handlers.</para>
@@ -91,7 +93,7 @@ Registers the default compiled-in I/O handlers.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks ()</title>
-<programlisting>int         xmlSecIORegisterCallbacks       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
+<indexterm><primary>xmlSecIORegisterCallbacks</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIORegisterCallbacks       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
                                              <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
                                              <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
                                              <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);</programlisting>
@@ -117,7 +119,7 @@ Register a new set of I/O callback for handling parser input.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInputURIId">xmlSecTransformInputURIId</title>
-<programlisting>#define     xmlSecTransformInputURIId</programlisting>
+<indexterm><primary>xmlSecTransformInputURIId</primary></indexterm><programlisting>#define     xmlSecTransformInputURIId</programlisting>
 <para>
 The Input URI transform id.</para>
 <para>
@@ -125,7 +127,7 @@ The Input URI transform id.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInputURIGetKlass
+<indexterm><primary>xmlSecTransformInputURIGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInputURIGetKlass
                                             (void);</programlisting>
 <para>
 The input uri transform klass. Reads binary data from an uri.</para>
@@ -137,7 +139,7 @@ The input uri transform klass. Reads binary data from an uri.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen ()</title>
-<programlisting>int         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+<indexterm><primary>xmlSecTransformInputURIOpen</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
 Opens the given <parameter>uri</parameter> for reading.</para>

@@ -30,6 +30,8 @@
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -41,7 +43,7 @@
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert ()</title>
-<programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataGetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<indexterm><primary>xmlSecMSCryptoKeyDataGetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataGetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Native MSCrypto certificate retrieval from xmlsec keydata. The 
 returned PCCERT_CONTEXT must not be released by the caller.</para>
@@ -56,7 +58,7 @@ returned PCCERT_CONTEXT must not be released by the caller.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey ()</title>
-<programlisting><link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   xmlSecMSCryptoKeyDataGetKey     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+<indexterm><primary>xmlSecMSCryptoKeyDataGetKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   xmlSecMSCryptoKeyDataGetKey     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Native MSCrypto key retrieval from xmlsec keydata. The 
@@ -75,7 +77,7 @@ returned HKEY must not be destroyed by the caller.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup ()</title>
-<programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoCertDup        (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert);</programlisting>
+<indexterm><primary>xmlSecMSCryptoCertDup</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoCertDup        (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert);</programlisting>
 <para>
 Duplicates the <parameter>pCert</parameter>.</para>
 <para>
@@ -90,7 +92,7 @@ NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt ()</title>
-<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecMSCryptoCertAdopt    (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert,
+<indexterm><primary>xmlSecMSCryptoCertAdopt</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecMSCryptoCertAdopt    (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Creates key data value from the cert.</para>

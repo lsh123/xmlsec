@@ -17,58 +17,60 @@
 
 enum        <link linkend="xmlSecBnFormat">xmlSecBnFormat</link>;
 <link linkend="xmlSecBn">xmlSecBnPtr</link> <link linkend="xmlSecBnCreate">xmlSecBnCreate</link>                  (<link linkend="xmlSecSize">xmlSecSize</link> size);
-void        <link linkend="xmlSecBnDestroy">xmlSecBnDestroy</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-int         <link linkend="xmlSecBnInitialize">xmlSecBnInitialize</link>              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="void">void</link>        <link linkend="xmlSecBnDestroy">xmlSecBnDestroy</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
+<link linkend="int">int</link>         <link linkend="xmlSecBnInitialize">xmlSecBnInitialize</link>              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
-void        <link linkend="xmlSecBnFinalize">xmlSecBnFinalize</link>                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
+<link linkend="void">void</link>        <link linkend="xmlSecBnFinalize">xmlSecBnFinalize</link>                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
 <link linkend="xmlSecByte">xmlSecByte</link>* <link linkend="xmlSecBnGetData">xmlSecBnGetData</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-int         <link linkend="xmlSecBnSetData">xmlSecBnSetData</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="int">int</link>         <link linkend="xmlSecBnSetData">xmlSecBnSetData</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
 <link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecBnGetSize">xmlSecBnGetSize</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-void        <link linkend="xmlSecBnZero">xmlSecBnZero</link>                    (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-int         <link linkend="xmlSecBnFromString">xmlSecBnFromString</link>              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="void">void</link>        <link linkend="xmlSecBnZero">xmlSecBnZero</link>                    (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
+<link linkend="int">int</link>         <link linkend="xmlSecBnFromString">xmlSecBnFromString</link>              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlChar">xmlChar</link> *str,
                                              <link linkend="xmlSecSize">xmlSecSize</link> base);
 <link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBnToString">xmlSecBnToString</link>                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlSecSize">xmlSecSize</link> base);
-int         <link linkend="xmlSecBnFromHexString">xmlSecBnFromHexString</link>           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="int">int</link>         <link linkend="xmlSecBnFromHexString">xmlSecBnFromHexString</link>           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlChar">xmlChar</link> *str);
 <link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBnToHexString">xmlSecBnToHexString</link>             (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-int         <link linkend="xmlSecBnFromDecString">xmlSecBnFromDecString</link>           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="int">int</link>         <link linkend="xmlSecBnFromDecString">xmlSecBnFromDecString</link>           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlChar">xmlChar</link> *str);
 <link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBnToDecString">xmlSecBnToDecString</link>             (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-int         <link linkend="xmlSecBnMul">xmlSecBnMul</link>                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
-                                             int multiplier);
-int         <link linkend="xmlSecBnDiv">xmlSecBnDiv</link>                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
-                                             int divider,
-                                             int *mod);
-int         <link linkend="xmlSecBnAdd">xmlSecBnAdd</link>                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
-                                             int delta);
-int         <link linkend="xmlSecBnReverse">xmlSecBnReverse</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
-int         <link linkend="xmlSecBnCompare">xmlSecBnCompare</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="int">int</link>         <link linkend="xmlSecBnMul">xmlSecBnMul</link>                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> multiplier);
+<link linkend="int">int</link>         <link linkend="xmlSecBnDiv">xmlSecBnDiv</link>                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> divider,
+                                             <link linkend="int">int</link> *mod);
+<link linkend="int">int</link>         <link linkend="xmlSecBnAdd">xmlSecBnAdd</link>                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> delta);
+<link linkend="int">int</link>         <link linkend="xmlSecBnReverse">xmlSecBnReverse</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);
+<link linkend="int">int</link>         <link linkend="xmlSecBnCompare">xmlSecBnCompare</link>                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
-int         <link linkend="xmlSecBnCompareReverse">xmlSecBnCompareReverse</link>          (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="int">int</link>         <link linkend="xmlSecBnCompareReverse">xmlSecBnCompareReverse</link>          (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
-int         <link linkend="xmlSecBnGetNodeValue">xmlSecBnGetNodeValue</link>            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<link linkend="int">int</link>         <link linkend="xmlSecBnGetNodeValue">xmlSecBnGetNodeValue</link>            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlSecBnFormat">xmlSecBnFormat</link> format,
-                                             int reverse);
-int         <link linkend="xmlSecBnSetNodeValue">xmlSecBnSetNodeValue</link>            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> reverse);
+<link linkend="int">int</link>         <link linkend="xmlSecBnSetNodeValue">xmlSecBnSetNodeValue</link>            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlSecBnFormat">xmlSecBnFormat</link> format,
-                                             int reverse,
-                                             int addLineBreaks);
-int         <link linkend="xmlSecBnBlobSetNodeValue">xmlSecBnBlobSetNodeValue</link>        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="int">int</link> reverse,
+                                             <link linkend="int">int</link> addLineBreaks);
+<link linkend="int">int</link>         <link linkend="xmlSecBnBlobSetNodeValue">xmlSecBnBlobSetNodeValue</link>        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlSecBnFormat">xmlSecBnFormat</link> format,
-                                             int reverse,
-                                             int addLineBreaks);
+                                             <link linkend="int">int</link> reverse,
+                                             <link linkend="int">int</link> addLineBreaks);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -87,7 +89,7 @@ int         <link linkend="xmlSecBnBlobSetNodeValue">xmlSecBnBlobSetNodeValue</l
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecBnFormat">enum xmlSecBnFormat</title>
-<programlisting>typedef enum {
+<indexterm><primary>xmlSecBnFormat</primary></indexterm><programlisting>typedef enum {
     xmlSecBnBase64,
     xmlSecBnHex,
     xmlSecBnDec
@@ -116,7 +118,7 @@ The big numbers formats.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnCreate">xmlSecBnCreate ()</title>
-<programlisting><link linkend="xmlSecBn">xmlSecBnPtr</link> xmlSecBnCreate                  (<link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
+<indexterm><primary>xmlSecBnCreate</primary></indexterm><programlisting><link linkend="xmlSecBn">xmlSecBnPtr</link> xmlSecBnCreate                  (<link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Creates a new BN object. Caller is responsible for destroying it
 by calling <parameter>xmlSecBnDestroy</parameter> function.</para>
@@ -131,7 +133,7 @@ by calling <parameter>xmlSecBnDestroy</parameter> function.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnDestroy">xmlSecBnDestroy ()</title>
-<programlisting>void        xmlSecBnDestroy                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnDestroy</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecBnDestroy                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Destroys <parameter>bn</parameter> object created with <parameter>xmlSecBnCreate</parameter> function.</para>
 <para>
@@ -143,7 +145,7 @@ Destroys <parameter>bn</parameter> object created with <parameter>xmlSecBnCreate
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnInitialize">xmlSecBnInitialize ()</title>
-<programlisting>int         xmlSecBnInitialize              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnInitialize              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Initializes a BN object. Caller is responsible for destroying it
@@ -162,7 +164,7 @@ by calling <parameter>xmlSecBnFinalize</parameter> function.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnFinalize">xmlSecBnFinalize ()</title>
-<programlisting>void        xmlSecBnFinalize                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnFinalize</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecBnFinalize                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Destroys <parameter>bn</parameter> object created with <parameter>xmlSecBnInitialize</parameter> function.</para>
 <para>
@@ -174,7 +176,7 @@ Destroys <parameter>bn</parameter> object created with <parameter>xmlSecBnInitia
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnGetData">xmlSecBnGetData ()</title>
-<programlisting><link linkend="xmlSecByte">xmlSecByte</link>* xmlSecBnGetData                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnGetData</primary></indexterm><programlisting><link linkend="xmlSecByte">xmlSecByte</link>* xmlSecBnGetData                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Gets pointer to the binary <parameter>bn</parameter> representation.</para>
 <para>
@@ -188,7 +190,7 @@ Gets pointer to the binary <parameter>bn</parameter> representation.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnSetData">xmlSecBnSetData ()</title>
-<programlisting>int         xmlSecBnSetData                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnSetData</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnSetData                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
@@ -210,7 +212,7 @@ Sets the value of <parameter>bn</parameter> to <parameter>data</parameter>.</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnGetSize">xmlSecBnGetSize ()</title>
-<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecBnGetSize                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnGetSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecBnGetSize                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Gets the size of binary data in <parameter>bn</parameter>.</para>
 <para>
@@ -224,7 +226,7 @@ Gets the size of binary data in <parameter>bn</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnZero">xmlSecBnZero ()</title>
-<programlisting>void        xmlSecBnZero                    (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnZero</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecBnZero                    (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Sets the value of <parameter>bn</parameter> to zero.</para>
 <para>
@@ -236,7 +238,7 @@ Sets the value of <parameter>bn</parameter> to zero.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnFromString">xmlSecBnFromString ()</title>
-<programlisting>int         xmlSecBnFromString              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnFromString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnFromString              (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlChar">xmlChar</link> *str,
                                              <link linkend="xmlSecSize">xmlSecSize</link> base);</programlisting>
 <para>
@@ -258,7 +260,7 @@ Reads <parameter>bn</parameter> from string <parameter>str</parameter> assuming 
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnToString">xmlSecBnToString ()</title>
-<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBnToString                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnToString</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBnToString                (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlSecSize">xmlSecSize</link> base);</programlisting>
 <para>
 Writes <parameter>bn</parameter> to string with base <parameter>base</parameter>. Caller is responsible for 
@@ -277,7 +279,7 @@ freeing returned string with <parameter>xmlFree</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnFromHexString">xmlSecBnFromHexString ()</title>
-<programlisting>int         xmlSecBnFromHexString           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnFromHexString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnFromHexString           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlChar">xmlChar</link> *str);</programlisting>
 <para>
 Reads <parameter>bn</parameter> from hex string <parameter>str</parameter>.</para>
@@ -295,7 +297,7 @@ Reads <parameter>bn</parameter> from hex string <parameter>str</parameter>.</par
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnToHexString">xmlSecBnToHexString ()</title>
-<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBnToHexString             (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnToHexString</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBnToHexString             (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Writes <parameter>bn</parameter> to hex string. Caller is responsible for 
 freeing returned string with <parameter>xmlFree</parameter>.</para>
@@ -310,7 +312,7 @@ freeing returned string with <parameter>xmlFree</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnFromDecString">xmlSecBnFromDecString ()</title>
-<programlisting>int         xmlSecBnFromDecString           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnFromDecString</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnFromDecString           (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlChar">xmlChar</link> *str);</programlisting>
 <para>
 Reads <parameter>bn</parameter> from decimal string <parameter>str</parameter>.</para>
@@ -328,7 +330,7 @@ Reads <parameter>bn</parameter> from decimal string <parameter>str</parameter>.<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnToDecString">xmlSecBnToDecString ()</title>
-<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBnToDecString             (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnToDecString</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBnToDecString             (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Writes <parameter>bn</parameter> to decimal string. Caller is responsible for 
 freeing returned string with <parameter>xmlFree</parameter>.</para>
@@ -343,8 +345,8 @@ freeing returned string with <parameter>xmlFree</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnMul">xmlSecBnMul ()</title>
-<programlisting>int         xmlSecBnMul                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
-                                             int multiplier);</programlisting>
+<indexterm><primary>xmlSecBnMul</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnMul                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> multiplier);</programlisting>
 <para>
 Multiplies <parameter>bn</parameter> with <parameter>multiplier</parameter>.</para>
 <para>
@@ -361,9 +363,9 @@ Multiplies <parameter>bn</parameter> with <parameter>multiplier</parameter>.</pa
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnDiv">xmlSecBnDiv ()</title>
-<programlisting>int         xmlSecBnDiv                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
-                                             int divider,
-                                             int *mod);</programlisting>
+<indexterm><primary>xmlSecBnDiv</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnDiv                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> divider,
+                                             <link linkend="int">int</link> *mod);</programlisting>
 <para>
 Divides <parameter>bn</parameter> by <parameter>divider</parameter> and places modulus into <parameter>mod</parameter>.</para>
 <para>
@@ -383,8 +385,8 @@ Divides <parameter>bn</parameter> by <parameter>divider</parameter> and places m
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnAdd">xmlSecBnAdd ()</title>
-<programlisting>int         xmlSecBnAdd                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
-                                             int delta);</programlisting>
+<indexterm><primary>xmlSecBnAdd</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnAdd                     (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+                                             <link linkend="int">int</link> delta);</programlisting>
 <para>
 Adds <parameter>delta</parameter> to <parameter>bn</parameter>.</para>
 <para>
@@ -401,7 +403,7 @@ Adds <parameter>delta</parameter> to <parameter>bn</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnReverse">xmlSecBnReverse ()</title>
-<programlisting>int         xmlSecBnReverse                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
+<indexterm><primary>xmlSecBnReverse</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnReverse                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
 Reverses bytes order in <parameter>bn</parameter>.</para>
 <para>
@@ -415,7 +417,7 @@ Reverses bytes order in <parameter>bn</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnCompare">xmlSecBnCompare ()</title>
-<programlisting>int         xmlSecBnCompare                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnCompare</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnCompare                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
 <para>
@@ -438,7 +440,7 @@ is greater than <parameter>data</parameter>.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnCompareReverse">xmlSecBnCompareReverse ()</title>
-<programlisting>int         xmlSecBnCompareReverse          (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnCompareReverse</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnCompareReverse          (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
 <para>
@@ -461,10 +463,10 @@ is greater than <parameter>data</parameter>.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnGetNodeValue">xmlSecBnGetNodeValue ()</title>
-<programlisting>int         xmlSecBnGetNodeValue            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnGetNodeValue</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnGetNodeValue            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlSecBnFormat">xmlSecBnFormat</link> format,
-                                             int reverse);</programlisting>
+                                             <link linkend="int">int</link> reverse);</programlisting>
 <para>
 Converts the node content from <parameter>format</parameter> to <parameter>bn</parameter>.</para>
 <para>
@@ -487,11 +489,11 @@ Converts the node content from <parameter>format</parameter> to <parameter>bn</p
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnSetNodeValue">xmlSecBnSetNodeValue ()</title>
-<programlisting>int         xmlSecBnSetNodeValue            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
+<indexterm><primary>xmlSecBnSetNodeValue</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnSetNodeValue            (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlSecBnFormat">xmlSecBnFormat</link> format,
-                                             int reverse,
-                                             int addLineBreaks);</programlisting>
+                                             <link linkend="int">int</link> reverse,
+                                             <link linkend="int">int</link> addLineBreaks);</programlisting>
 <para>
 Converts the <parameter>bn</parameter> and sets it to node content.</para>
 <para>
@@ -517,12 +519,12 @@ Converts the <parameter>bn</parameter> and sets it to node content.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBnBlobSetNodeValue">xmlSecBnBlobSetNodeValue ()</title>
-<programlisting>int         xmlSecBnBlobSetNodeValue        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+<indexterm><primary>xmlSecBnBlobSetNodeValue</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecBnBlobSetNodeValue        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlSecBnFormat">xmlSecBnFormat</link> format,
-                                             int reverse,
-                                             int addLineBreaks);</programlisting>
+                                             <link linkend="int">int</link> reverse,
+                                             <link linkend="int">int</link> addLineBreaks);</programlisting>
 <para>
 Converts the <parameter>blob</parameter> and sets it to node content.</para>
 <para>

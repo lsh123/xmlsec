@@ -7,7 +7,7 @@
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="xmlsec" href="xmlsec-xmlsec.html">
 <link rel="NEXT" title="x509" href="xmlsec-x509.html">
-<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,14 +88,14 @@
 <h1>
 <a name="XMLSEC-XMLTREE"></a>xmltree</h1>
 <div class="REFNAMEDIV">
-<a name="AEN16619"></a><h2>Name</h2>xmltree -- </div>
+<a name="AEN18873"></a><h2>Name</h2>xmltree -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN16622"></a><h2>Synopsis</h2>
+<a name="AEN18876"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-xmltree.html#XMLSECNODEGETNAME">xmlSecNodeGetName</a>               (node)
 const <font>xmlChar</font>* <a href="xmlsec-xmltree.html#XMLSECGETNODENSHREF">xmlSecGetNodeNsHref</a>          (const <font>xmlNodePtr</font> cur);
-int         <a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeName</a>             (const <font>xmlNodePtr</font> cur,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeName</a>             (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
                                              const <font>xmlChar</font> *ns);
 <font>xmlNodePtr</font>  <a href="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE">xmlSecGetNextElementNode</a>        (<font>xmlNodePtr</font> cur);
@@ -119,17 +119,17 @@ int         <a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeNam
 <font>xmlNodePtr</font>  <a href="xmlsec-xmltree.html#XMLSECADDPREVSIBLING">xmlSecAddPrevSibling</a>            (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *name,
                                              const <font>xmlChar</font> *ns);
-int         <a href="xmlsec-xmltree.html#XMLSECREPLACENODE">xmlSecReplaceNode</a>               (<font>xmlNodePtr</font> node,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECREPLACENODE">xmlSecReplaceNode</a>               (<font>xmlNodePtr</font> node,
                                              <font>xmlNodePtr</font> newNode);
-int         <a href="xmlsec-xmltree.html#XMLSECREPLACECONTENT">xmlSecReplaceContent</a>            (<font>xmlNodePtr</font> node,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECREPLACECONTENT">xmlSecReplaceContent</a>            (<font>xmlNodePtr</font> node,
                                              <font>xmlNodePtr</font> newNode);
-int         <a href="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER">xmlSecReplaceNodeBuffer</a>         (<font>xmlNodePtr</font> node,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER">xmlSecReplaceNodeBuffer</a>         (<font>xmlNodePtr</font> node,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);
-void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>                    (<font>xmlDocPtr</font> doc,
+<font>void</font>        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>                    (<font>xmlDocPtr</font> doc,
                                              <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> **ids);
-int         <a href="xmlsec-xmltree.html#XMLSECGENERATEANDADDID">xmlSecGenerateAndAddID</a>          (<font>xmlNodePtr</font> node,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECGENERATEANDADDID">xmlSecGenerateAndAddID</a>          (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *attrName,
                                              const <font>xmlChar</font> *prefix,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len);
@@ -137,8 +137,8 @@ int         <a href="xmlsec-xmltree.html#XMLSECGENERATEANDADDID">xmlSecGenerateA
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len);
 <font>xmlDocPtr</font>   <a href="xmlsec-xmltree.html#XMLSECCREATETREE">xmlSecCreateTree</a>                (const <font>xmlChar</font> *rootNodeName,
                                              const <font>xmlChar</font> *rootNodeNs);
-int         <a href="xmlsec-xmltree.html#XMLSECISEMPTYNODE">xmlSecIsEmptyNode</a>               (<font>xmlNodePtr</font> node);
-int         <a href="xmlsec-xmltree.html#XMLSECISEMPTYSTRING">xmlSecIsEmptyString</a>             (const <font>xmlChar</font> *str);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECISEMPTYNODE">xmlSecIsEmptyNode</a>               (<font>xmlNodePtr</font> node);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECISEMPTYSTRING">xmlSecIsEmptyString</a>             (const <font>xmlChar</font> *str);
 <font>xmlChar</font>*    <a href="xmlsec-xmltree.html#XMLSECGETQNAME">xmlSecGetQName</a>                  (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *href,
                                              const <font>xmlChar</font> *local);
@@ -148,44 +148,44 @@ typedef     <font>xmlSecQName2IntegerInfoConstPtr</font>;
 struct      <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERINFO">xmlSecQName2IntegerInfo</a>;
 <font>xmlSecQName2IntegerInfoConstPtr</font> <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINFO">xmlSecQName2IntegerGetInfo</a>
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
-                                             int intValue);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGER">xmlSecQName2IntegerGetInteger</a>   (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> intValue);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGER">xmlSecQName2IntegerGetInteger</a>   (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              const <font>xmlChar</font> *qnameHref,
                                              const <font>xmlChar</font> *qnameLocalPart,
-                                             int *intValue);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGERFROMSTRING">xmlSecQName2IntegerGetIntegerFromString</a>
+                                             <font>int</font> *intValue);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGERFROMSTRING">xmlSecQName2IntegerGetIntegerFromString</a>
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *qname,
-                                             int *intValue);
+                                             <font>int</font> *intValue);
 <font>xmlChar</font>*    <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER">xmlSecQName2IntegerGetStringFromInteger</a>
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
-                                             int intValue);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEREAD">xmlSecQName2IntegerNodeRead</a>     (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> intValue);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEREAD">xmlSecQName2IntegerNodeRead</a>     (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
-                                             int *intValue);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEWRITE">xmlSecQName2IntegerNodeWrite</a>    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> *intValue);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEWRITE">xmlSecQName2IntegerNodeWrite</a>    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
-                                             int intValue);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEREAD">xmlSecQName2IntegerAttributeRead</a>
+                                             <font>int</font> intValue);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEREAD">xmlSecQName2IntegerAttributeRead</a>
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *attrName,
-                                             int *intValue);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEWRITE">xmlSecQName2IntegerAttributeWrite</a>
+                                             <font>int</font> *intValue);
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEWRITE">xmlSecQName2IntegerAttributeWrite</a>
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *attrName,
-                                             int intValue);
-void        <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGDUMP">xmlSecQName2IntegerDebugDump</a>    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
-                                             int intValue,
+                                             <font>int</font> intValue);
+<font>void</font>        <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGDUMP">xmlSecQName2IntegerDebugDump</a>    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> intValue,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGXMLDUMP">xmlSecQName2IntegerDebugXmlDump</a> (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
-                                             int intValue,
+<font>void</font>        <a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGXMLDUMP">xmlSecQName2IntegerDebugXmlDump</a> (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> intValue,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);
 typedef     <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a>;
@@ -194,17 +194,17 @@ struct      <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKINFO">xmlSecQName2Bi
 <font>xmlSecQName2BitMaskInfoConstPtr</font> <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETINFO">xmlSecQName2BitMaskGetInfo</a>
                                             (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASK">xmlSecQName2BitMaskGetBitMask</a>   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASK">xmlSecQName2BitMaskGetBitMask</a>   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              const <font>xmlChar</font> *qnameLocalPart,
                                              const <font>xmlChar</font> *qnameHref,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> *mask);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESREAD">xmlSecQName2BitMaskNodesRead</a>    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESREAD">xmlSecQName2BitMaskNodesRead</a>    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> *node,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
-                                             int stopOnUnknown,
+                                             <font>int</font> stopOnUnknown,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> *mask);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASKFROMSTRING">xmlSecQName2BitMaskGetBitMaskFromString</a>
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASKFROMSTRING">xmlSecQName2BitMaskGetBitMaskFromString</a>
                                             (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *qname,
@@ -213,41 +213,41 @@ int         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASKFROMSTRING
                                             (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask);
-int         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESWRITE">xmlSecQName2BitMaskNodesWrite</a>   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<font>int</font>         <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESWRITE">xmlSecQName2BitMaskNodesWrite</a>   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask);
-void        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGDUMP">xmlSecQName2BitMaskDebugDump</a>    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<font>void</font>        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGDUMP">xmlSecQName2BitMaskDebugDump</a>    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSecQName2BitMaskDebugXmlDump</a> (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<font>void</font>        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSecQName2BitMaskDebugXmlDump</a> (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN16793"></a><h2>Description</h2>
+<a name="AEN19080"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN16796"></a><h2>Details</h2>
+<a name="AEN19083"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN16798"></a><h3>
+<a name="AEN19085"></a><h3>
 <a name="XMLSECNODEGETNAME"></a>xmlSecNodeGetName()</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecNodeGetName(node)</pre>
 <p>Macro. Returns node's name.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN16805"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19094"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to node.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16810"></a><h3>
+<a name="AEN19099"></a><h3>
 <a name="XMLSECGETNODENSHREF"></a>xmlSecGetNodeNsHref ()</h3>
 <pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecGetNodeNsHref          (const <font>xmlNodePtr</font> cur);</pre>
 <p>Get's node's namespace href.</p>
@@ -255,20 +255,20 @@ void        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSec
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16819"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19110"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16824"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19115"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>node's namespace href.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16829"></a><h3>
+<a name="AEN19120"></a><h3>
 <a name="XMLSECCHECKNODENAME"></a>xmlSecCheckNodeName ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecCheckNodeName             (const <font>xmlNodePtr</font> cur,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCheckNodeName             (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
                                              const <font>xmlChar</font> *ns);</pre>
 <p>Checks that the node has a given name and a given namespace href.</p>
@@ -276,26 +276,26 @@ void        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSec
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16839"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19133"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16844"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19138"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the name,</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16849"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19143"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the namespace href.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16854"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19148"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>1 if the node matches or 0 otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16859"></a><h3>
+<a name="AEN19153"></a><h3>
 <a name="XMLSECGETNEXTELEMENTNODE"></a>xmlSecGetNextElementNode ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecGetNextElementNode        (<font>xmlNodePtr</font> cur);</pre>
 <p>Seraches for the next element node.</p>
@@ -303,18 +303,18 @@ void        <a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSec
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16868"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19164"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16873"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19169"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to next element node or NULL if it is not found.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16878"></a><h3>
+<a name="AEN19174"></a><h3>
 <a name="XMLSECFINDCHILD"></a>xmlSecFindChild ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindChild                 (const <font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
@@ -325,19 +325,19 @@ namespace href.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16890"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19188"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16895"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19193"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16900"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19198"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the namespace href (may be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16905"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19203"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to the found node or NULL if an error occurs or 
 node is not found.</p></td>
 </tr>
@@ -345,7 +345,7 @@ node is not found.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16910"></a><h3>
+<a name="AEN19208"></a><h3>
 <a name="XMLSECFINDPARENT"></a>xmlSecFindParent ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindParent                (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
@@ -356,19 +356,19 @@ and namespace href.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16922"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19222"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16927"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19227"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16932"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19232"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the namespace href (may be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16937"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19237"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to the found node or NULL if an error occurs or 
 node is not found.</p></td>
 </tr>
@@ -376,7 +376,7 @@ node is not found.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16942"></a><h3>
+<a name="AEN19242"></a><h3>
 <a name="XMLSECFINDNODE"></a>xmlSecFindNode ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindNode                  (const <font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
@@ -387,19 +387,19 @@ namespace href.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16954"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19256"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16959"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19261"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16964"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19266"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the namespace href (may be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16969"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19271"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to the found node or NULL if an error occurs or 
 node is not found.</p></td>
 </tr>
@@ -407,7 +407,7 @@ node is not found.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16974"></a><h3>
+<a name="AEN19276"></a><h3>
 <a name="XMLSECADDCHILD"></a>xmlSecAddChild ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddChild                  (<font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
@@ -417,26 +417,26 @@ node is not found.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16988"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19292"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16993"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19297"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16998"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19302"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node namespace.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17003"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19307"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17008"></a><h3>
+<a name="AEN19312"></a><h3>
 <a name="XMLSECADDCHILDNODE"></a>xmlSecAddChildNode ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddChildNode              (<font>xmlNodePtr</font> parent,
                                              <font>xmlNodePtr</font> child);</pre>
@@ -445,22 +445,22 @@ node is not found.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17020"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19326"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17025"><span style="white-space: nowrap"><var class="PARAMETER">child</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19331"><span style="white-space: nowrap"><var class="PARAMETER">child</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17030"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19336"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17035"></a><h3>
+<a name="AEN19341"></a><h3>
 <a name="XMLSECADDNEXTSIBLING"></a>xmlSecAddNextSibling ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddNextSibling            (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *name,
@@ -470,26 +470,26 @@ node is not found.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17049"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19357"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17054"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19362"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17059"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19367"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node namespace.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17064"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19372"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17069"></a><h3>
+<a name="AEN19377"></a><h3>
 <a name="XMLSECADDPREVSIBLING"></a>xmlSecAddPrevSibling ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddPrevSibling            (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *name,
@@ -499,76 +499,76 @@ node is not found.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17083"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19393"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17088"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19398"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17093"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19403"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node namespace.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17098"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19408"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17103"></a><h3>
+<a name="AEN19413"></a><h3>
 <a name="XMLSECREPLACENODE"></a>xmlSecReplaceNode ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecReplaceNode               (<font>xmlNodePtr</font> node,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecReplaceNode               (<font>xmlNodePtr</font> node,
                                              <font>xmlNodePtr</font> newNode);</pre>
 <p>Swaps the <var class="PARAMETER">node</var> and <var class="PARAMETER">newNode</var> in the XML tree.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17114"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19427"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the current node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17119"><span style="white-space: nowrap"><var class="PARAMETER">newNode</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19432"><span style="white-space: nowrap"><var class="PARAMETER">newNode</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17124"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19437"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17129"></a><h3>
+<a name="AEN19442"></a><h3>
 <a name="XMLSECREPLACECONTENT"></a>xmlSecReplaceContent ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecReplaceContent            (<font>xmlNodePtr</font> node,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecReplaceContent            (<font>xmlNodePtr</font> node,
                                              <font>xmlNodePtr</font> newNode);</pre>
 <p>Swaps the content of <var class="PARAMETER">node</var> and <var class="PARAMETER">newNode</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17140"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19456"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the current node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17145"><span style="white-space: nowrap"><var class="PARAMETER">newNode</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19461"><span style="white-space: nowrap"><var class="PARAMETER">newNode</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the new node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17150"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19466"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17155"></a><h3>
+<a name="AEN19471"></a><h3>
 <a name="XMLSECREPLACENODEBUFFER"></a>xmlSecReplaceNodeBuffer ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecReplaceNodeBuffer         (<font>xmlNodePtr</font> node,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecReplaceNodeBuffer         (<font>xmlNodePtr</font> node,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre>
 <p>Swaps the <var class="PARAMETER">node</var> and the parsed XML data from the <var class="PARAMETER">buffer</var> in the XML tree.</p>
@@ -576,28 +576,28 @@ node is not found.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17167"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19486"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the current node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17172"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19491"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the XML data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17177"><span style="white-space: nowrap"><var class="PARAMETER">size</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19496"><span style="white-space: nowrap"><var class="PARAMETER">size</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the XML data size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17182"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19501"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17187"></a><h3>
+<a name="AEN19506"></a><h3>
 <a name="XMLSECADDIDS"></a>xmlSecAddIDs ()</h3>
-<pre class="PROGRAMLISTING">void        xmlSecAddIDs                    (<font>xmlDocPtr</font> doc,
+<pre class="PROGRAMLISTING"><font>void</font>        xmlSecAddIDs                    (<font>xmlDocPtr</font> doc,
                                              <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> **ids);</pre>
 <p>Walks thru all children of the <var class="PARAMETER">cur</var> node and adds all attributes 
@@ -606,24 +606,24 @@ from the <var class="PARAMETER">ids</var> list to the <var class="PARAMETER">doc
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17200"><span style="white-space: nowrap"><var class="PARAMETER">doc</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19522"><span style="white-space: nowrap"><var class="PARAMETER">doc</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML document.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17205"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19527"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17210"><span style="white-space: nowrap"><var class="PARAMETER">ids</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19532"><span style="white-space: nowrap"><var class="PARAMETER">ids</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to a NULL terminated list of ID attributes.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17215"></a><h3>
+<a name="AEN19537"></a><h3>
 <a name="XMLSECGENERATEANDADDID"></a>xmlSecGenerateAndAddID ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecGenerateAndAddID          (<font>xmlNodePtr</font> node,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecGenerateAndAddID          (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *attrName,
                                              const <font>xmlChar</font> *prefix,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len);</pre>
@@ -633,30 +633,30 @@ and puts it in the attribute <var class="PARAMETER">attrName</var>.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17229"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19554"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the node to ID attr to.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17234"><span style="white-space: nowrap"><var class="PARAMETER">attrName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19559"><span style="white-space: nowrap"><var class="PARAMETER">attrName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the ID attr name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17239"><span style="white-space: nowrap"><var class="PARAMETER">prefix</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19564"><span style="white-space: nowrap"><var class="PARAMETER">prefix</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the prefix to add to the generated ID (can be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17244"><span style="white-space: nowrap"><var class="PARAMETER">len</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19569"><span style="white-space: nowrap"><var class="PARAMETER">len</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the length of ID.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17249"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19574"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17254"></a><h3>
+<a name="AEN19579"></a><h3>
 <a name="XMLSECGENERATEID"></a>xmlSecGenerateID ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecGenerateID                (const <font>xmlChar</font> *prefix,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> len);</pre>
@@ -666,22 +666,22 @@ The caller is responsible for freeing returned string using <var class="PARAMETE
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17267"><span style="white-space: nowrap"><var class="PARAMETER">prefix</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19594"><span style="white-space: nowrap"><var class="PARAMETER">prefix</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the prefix to add to the generated ID (can be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17272"><span style="white-space: nowrap"><var class="PARAMETER">len</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19599"><span style="white-space: nowrap"><var class="PARAMETER">len</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the length of ID.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17277"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19604"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to generated ID string or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17282"></a><h3>
+<a name="AEN19609"></a><h3>
 <a name="XMLSECCREATETREE"></a>xmlSecCreateTree ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecCreateTree                (const <font>xmlChar</font> *rootNodeName,
                                              const <font>xmlChar</font> *rootNodeNs);</pre>
@@ -690,60 +690,60 @@ The caller is responsible for freeing returned string using <var class="PARAMETE
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17293"><span style="white-space: nowrap"><var class="PARAMETER">rootNodeName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19622"><span style="white-space: nowrap"><var class="PARAMETER">rootNodeName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>	the root node name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17298"><span style="white-space: nowrap"><var class="PARAMETER">rootNodeNs</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19627"><span style="white-space: nowrap"><var class="PARAMETER">rootNodeNs</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the root node namespace (otpional).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17303"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19632"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the newly created tree or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17308"></a><h3>
+<a name="AEN19637"></a><h3>
 <a name="XMLSECISEMPTYNODE"></a>xmlSecIsEmptyNode ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecIsEmptyNode               (<font>xmlNodePtr</font> node);</pre>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecIsEmptyNode               (<font>xmlNodePtr</font> node);</pre>
 <p>Checks whethere the <var class="PARAMETER">node</var> is empty (i.e. has only whitespaces children).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17317"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19649"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the node to check</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17322"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19654"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>1 if <var class="PARAMETER">node</var> is empty, 0 otherwise or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17328"></a><h3>
+<a name="AEN19660"></a><h3>
 <a name="XMLSECISEMPTYSTRING"></a>xmlSecIsEmptyString ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecIsEmptyString             (const <font>xmlChar</font> *str);</pre>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecIsEmptyString             (const <font>xmlChar</font> *str);</pre>
 <p>Checks whethere the <var class="PARAMETER">str</var> is empty (i.e. has only whitespaces children).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17337"><span style="white-space: nowrap"><var class="PARAMETER">str</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19672"><span style="white-space: nowrap"><var class="PARAMETER">str</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the string to check</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19677"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>1 if <var class="PARAMETER">str</var> is empty, 0 otherwise or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17348"></a><h3>
+<a name="AEN19683"></a><h3>
 <a name="XMLSECGETQNAME"></a>xmlSecGetQName ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecGetQName                  (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *href,
@@ -754,59 +754,59 @@ Caller is responsible for freeing returned string with xmlFree.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17362"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19699"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the context node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17367"><span style="white-space: nowrap"><var class="PARAMETER">href</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19704"><span style="white-space: nowrap"><var class="PARAMETER">href</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the QName href (can be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17372"><span style="white-space: nowrap"><var class="PARAMETER">local</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19709"><span style="white-space: nowrap"><var class="PARAMETER">local</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the QName local part.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17377"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19714"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>qname or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17382"></a><h3>
+<a name="AEN19719"></a><h3>
 <a name="XMLSECISHEX"></a>xmlSecIsHex()</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecIsHex(c)</pre>
 <p>Macro. Returns 1 if <var class="PARAMETER">c</var> is a hex digit or 0 other wise.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17390"><span style="white-space: nowrap"><var class="PARAMETER">c</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19729"><span style="white-space: nowrap"><var class="PARAMETER">c</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 			the character.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17395"></a><h3>
+<a name="AEN19734"></a><h3>
 <a name="XMLSECGETHEX"></a>xmlSecGetHex()</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecGetHex(c)</pre>
 <p>Macro. Returns the hex value of the <var class="PARAMETER">c</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17403"><span style="white-space: nowrap"><var class="PARAMETER">c</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19744"><span style="white-space: nowrap"><var class="PARAMETER">c</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 			the character,</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17408"></a><h3>
+<a name="AEN19749"></a><h3>
 <a name="XMLSECQNAME2INTEGERINFOCONSTPTR"></a>xmlSecQName2IntegerInfoConstPtr</h3>
 <pre class="PROGRAMLISTING">typedef const struct _xmlSecQName2IntegerInfo*		xmlSecQName2IntegerInfoConstPtr;</pre>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17413"></a><h3>
+<a name="AEN19756"></a><h3>
 <a name="XMLSECQNAME2INTEGERINFO"></a>struct xmlSecQName2IntegerInfo</h3>
 <pre class="PROGRAMLISTING">struct xmlSecQName2IntegerInfo {
 
@@ -818,25 +818,25 @@ Caller is responsible for freeing returned string with xmlFree.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17418"></a><h3>
+<a name="AEN19763"></a><h3>
 <a name="XMLSECQNAME2INTEGERGETINFO"></a>xmlSecQName2IntegerGetInfo ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecQName2IntegerInfoConstPtr</font> xmlSecQName2IntegerGetInfo
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
-                                             int intValue);</pre>
+                                             <font>int</font> intValue);</pre>
 <p>Maps integer <var class="PARAMETER">intValue</var> to a QName prefix.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17428"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19776"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17433"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19781"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17438"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19786"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the QName info that is mapped to <var class="PARAMETER">intValue</var> or NULL if such value
 is not found.</p></td>
 </tr>
@@ -844,250 +844,250 @@ is not found.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17444"></a><h3>
+<a name="AEN19792"></a><h3>
 <a name="XMLSECQNAME2INTEGERGETINTEGER"></a>xmlSecQName2IntegerGetInteger ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2IntegerGetInteger   (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2IntegerGetInteger   (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              const <font>xmlChar</font> *qnameHref,
                                              const <font>xmlChar</font> *qnameLocalPart,
-                                             int *intValue);</pre>
+                                             <font>int</font> *intValue);</pre>
 <p>Maps qname qname to an integer and returns it in <var class="PARAMETER">intValue</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17455"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19807"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17460"><span style="white-space: nowrap"><var class="PARAMETER">qnameHref</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19812"><span style="white-space: nowrap"><var class="PARAMETER">qnameHref</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>          the qname href value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17465"><span style="white-space: nowrap"><var class="PARAMETER">qnameLocalPart</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19817"><span style="white-space: nowrap"><var class="PARAMETER">qnameLocalPart</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>     the qname local part value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17470"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19822"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the pointer to result integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17475"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19827"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17480"></a><h3>
+<a name="AEN19832"></a><h3>
 <a name="XMLSECQNAME2INTEGERGETINTEGERFROMSTRING"></a>xmlSecQName2IntegerGetIntegerFromString ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2IntegerGetIntegerFromString
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2IntegerGetIntegerFromString
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *qname,
-                                             int *intValue);</pre>
+                                             <font>int</font> *intValue);</pre>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17489"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19845"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17494"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19850"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17499"><span style="white-space: nowrap"><var class="PARAMETER">qname</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19855"><span style="white-space: nowrap"><var class="PARAMETER">qname</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17504"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19860"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17509"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19865"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17514"></a><h3>
+<a name="AEN19870"></a><h3>
 <a name="XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER"></a>xmlSecQName2IntegerGetStringFromInteger ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecQName2IntegerGetStringFromInteger
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
-                                             int intValue);</pre>
+                                             <font>int</font> intValue);</pre>
 <p>Creates qname string for <var class="PARAMETER">intValue</var> in context of given <var class="PARAMETER">node</var>. Caller
 is responsible for freeing returned string with <var class="PARAMETER">xmlFree</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17527"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19886"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17532"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19891"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17537"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19896"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17542"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19901"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to newly allocated string on success or NULL if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17547"></a><h3>
+<a name="AEN19906"></a><h3>
 <a name="XMLSECQNAME2INTEGERNODEREAD"></a>xmlSecQName2IntegerNodeRead ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2IntegerNodeRead     (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2IntegerNodeRead     (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
-                                             int *intValue);</pre>
+                                             <font>int</font> *intValue);</pre>
 <p>Reads the content of <var class="PARAMETER">node</var> and converts it to an integer using mapping 
 from <var class="PARAMETER">info</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17558"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19921"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17563"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19926"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17568"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19931"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the pointer to result integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17573"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19936"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17578"></a><h3>
+<a name="AEN19941"></a><h3>
 <a name="XMLSECQNAME2INTEGERNODEWRITE"></a>xmlSecQName2IntegerNodeWrite ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2IntegerNodeWrite    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2IntegerNodeWrite    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
-                                             int intValue);</pre>
+                                             <font>int</font> intValue);</pre>
 <p>Creates new child node in <var class="PARAMETER">node</var> and sets its value to <var class="PARAMETER">intValue</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17591"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19958"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17596"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19963"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the parent node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17601"><span style="white-space: nowrap"><var class="PARAMETER">nodeName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19968"><span style="white-space: nowrap"><var class="PARAMETER">nodeName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the child node name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17606"><span style="white-space: nowrap"><var class="PARAMETER">nodeNs</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19973"><span style="white-space: nowrap"><var class="PARAMETER">nodeNs</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the child node namespace.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17611"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19978"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17616"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19983"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17621"></a><h3>
+<a name="AEN19988"></a><h3>
 <a name="XMLSECQNAME2INTEGERATTRIBUTEREAD"></a>xmlSecQName2IntegerAttributeRead ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2IntegerAttributeRead
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2IntegerAttributeRead
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *attrName,
-                                             int *intValue);</pre>
+                                             <font>int</font> *intValue);</pre>
 <p>Gets the value of <var class="PARAMETER">attrName</var> atrtibute from <var class="PARAMETER">node</var> and converts it to integer
 according to <var class="PARAMETER">info</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17634"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20005"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17639"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20010"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the element node. </p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17644"><span style="white-space: nowrap"><var class="PARAMETER">attrName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20015"><span style="white-space: nowrap"><var class="PARAMETER">attrName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the attribute name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17649"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20020"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the pointer to result integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17654"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20025"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17659"></a><h3>
+<a name="AEN20030"></a><h3>
 <a name="XMLSECQNAME2INTEGERATTRIBUTEWRITE"></a>xmlSecQName2IntegerAttributeWrite ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2IntegerAttributeWrite
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2IntegerAttributeWrite
                                             (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *attrName,
-                                             int intValue);</pre>
+                                             <font>int</font> intValue);</pre>
 <p>Converts <var class="PARAMETER">intValue</var> to a qname and sets it to the value of 
 attribute <var class="PARAMETER">attrName</var> in <var class="PARAMETER">node</var>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17672"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20047"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17677"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20052"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the parent node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17682"><span style="white-space: nowrap"><var class="PARAMETER">attrName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20057"><span style="white-space: nowrap"><var class="PARAMETER">attrName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the name of attribute.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17687"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20062"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17692"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20067"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17697"></a><h3>
+<a name="AEN20072"></a><h3>
 <a name="XMLSECQNAME2INTEGERDEBUGDUMP"></a>xmlSecQName2IntegerDebugDump ()</h3>
-<pre class="PROGRAMLISTING">void        xmlSecQName2IntegerDebugDump    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
-                                             int intValue,
+<pre class="PROGRAMLISTING"><font>void</font>        xmlSecQName2IntegerDebugDump    (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> intValue,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);</pre>
 <p>Prints <var class="PARAMETER">intValue</var> into <var class="PARAMETER">output</var>.</p>
@@ -1095,29 +1095,29 @@ attribute <var class="PARAMETER">attrName</var> in <var class="PARAMETER">node</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17709"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20088"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17714"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20093"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17719"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20098"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17724"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20103"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17729"></a><h3>
+<a name="AEN20108"></a><h3>
 <a name="XMLSECQNAME2INTEGERDEBUGXMLDUMP"></a>xmlSecQName2IntegerDebugXmlDump ()</h3>
-<pre class="PROGRAMLISTING">void        xmlSecQName2IntegerDebugXmlDump (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
-                                             int intValue,
+<pre class="PROGRAMLISTING"><font>void</font>        xmlSecQName2IntegerDebugXmlDump (<font>xmlSecQName2IntegerInfoConstPtr</font> info,
+                                             <font>int</font> intValue,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);</pre>
 <p>Prints <var class="PARAMETER">intValue</var> into <var class="PARAMETER">output</var> in XML format.</p>
@@ -1125,40 +1125,40 @@ attribute <var class="PARAMETER">attrName</var> in <var class="PARAMETER">node</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17741"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20124"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17746"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20129"><span style="white-space: nowrap"><var class="PARAMETER">intValue</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the integer value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17751"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20134"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17756"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20139"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17761"></a><h3>
+<a name="AEN20144"></a><h3>
 <a name="XMLSECBITMASK"></a>xmlSecBitMask</h3>
 <pre class="PROGRAMLISTING">typedef unsigned int                            	xmlSecBitMask;</pre>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17766"></a><h3>
+<a name="AEN20151"></a><h3>
 <a name="XMLSECQNAME2BITMASKINFOCONSTPTR"></a>xmlSecQName2BitMaskInfoConstPtr</h3>
 <pre class="PROGRAMLISTING">typedef const struct _xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;</pre>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17771"></a><h3>
+<a name="AEN20158"></a><h3>
 <a name="XMLSECQNAME2BITMASKINFO"></a>struct xmlSecQName2BitMaskInfo</h3>
 <pre class="PROGRAMLISTING">struct xmlSecQName2BitMaskInfo {
 
@@ -1170,7 +1170,7 @@ attribute <var class="PARAMETER">attrName</var> in <var class="PARAMETER">node</
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17776"></a><h3>
+<a name="AEN20165"></a><h3>
 <a name="XMLSECQNAME2BITMASKGETINFO"></a>xmlSecQName2BitMaskGetInfo ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecQName2BitMaskInfoConstPtr</font> xmlSecQName2BitMaskGetInfo
                                             (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
@@ -1180,24 +1180,24 @@ attribute <var class="PARAMETER">attrName</var> in <var class="PARAMETER">node</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17787"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20178"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;bit mask mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17792"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20183"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the bit mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17797"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20188"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the qname info for <var class="PARAMETER">mask</var> or NULL if mask is unknown.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17803"></a><h3>
+<a name="AEN20194"></a><h3>
 <a name="XMLSECQNAME2BITMASKGETBITMASK"></a>xmlSecQName2BitMaskGetBitMask ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2BitMaskGetBitMask   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2BitMaskGetBitMask   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              const <font>xmlChar</font> *qnameLocalPart,
                                              const <font>xmlChar</font> *qnameHref,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> *mask);</pre>
@@ -1206,36 +1206,36 @@ attribute <var class="PARAMETER">attrName</var> in <var class="PARAMETER">node</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17816"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20210"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;bit mask mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17821"><span style="white-space: nowrap"><var class="PARAMETER">qnameLocalPart</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20215"><span style="white-space: nowrap"><var class="PARAMETER">qnameLocalPart</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>     the qname LocalPart value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17826"><span style="white-space: nowrap"><var class="PARAMETER">qnameHref</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20220"><span style="white-space: nowrap"><var class="PARAMETER">qnameHref</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>          the qname Href value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17831"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20225"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to result mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17836"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20230"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17841"></a><h3>
+<a name="AEN20235"></a><h3>
 <a name="XMLSECQNAME2BITMASKNODESREAD"></a>xmlSecQName2BitMaskNodesRead ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2BitMaskNodesRead    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2BitMaskNodesRead    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> *node,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
-                                             int stopOnUnknown,
+                                             <font>int</font> stopOnUnknown,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> *mask);</pre>
 <p>Reads &lt;<var class="PARAMETER">nodeNs</var>:<var class="PARAMETER">nodeName</var>&gt; elements and puts the result bit mask
 into <var class="PARAMETER">mask</var>. When function exits, <var class="PARAMETER">node</var> points to the first element node
@@ -1244,41 +1244,41 @@ after all the &lt;<var class="PARAMETER">nodeNs</var>:<var class="PARAMETER">nod
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17859"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20257"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;bit mask mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17864"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20262"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the start.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17869"><span style="white-space: nowrap"><var class="PARAMETER">nodeName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20267"><span style="white-space: nowrap"><var class="PARAMETER">nodeName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the mask nodes name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17874"><span style="white-space: nowrap"><var class="PARAMETER">nodeNs</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20272"><span style="white-space: nowrap"><var class="PARAMETER">nodeNs</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the mask nodes namespace.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17879"><span style="white-space: nowrap"><var class="PARAMETER">stopOnUnknown</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20277"><span style="white-space: nowrap"><var class="PARAMETER">stopOnUnknown</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>	if this flag is set then function exits if unknown
 		value was found.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17884"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20282"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to result mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17889"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20287"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17894"></a><h3>
+<a name="AEN20292"></a><h3>
 <a name="XMLSECQNAME2BITMASKGETBITMASKFROMSTRING"></a>xmlSecQName2BitMaskGetBitMaskFromString ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2BitMaskGetBitMaskFromString
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2BitMaskGetBitMaskFromString
                                             (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *qname,
@@ -1287,30 +1287,30 @@ after all the &lt;<var class="PARAMETER">nodeNs</var>:<var class="PARAMETER">nod
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17904"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20305"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17909"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20310"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17914"><span style="white-space: nowrap"><var class="PARAMETER">qname</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20315"><span style="white-space: nowrap"><var class="PARAMETER">qname</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17919"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20320"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17924"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20325"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17929"></a><h3>
+<a name="AEN20330"></a><h3>
 <a name="XMLSECQNAME2BITMASKGETSTRINGFROMBITMASK"></a>xmlSecQName2BitMaskGetStringFromBitMask ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecQName2BitMaskGetStringFromBitMask
                                             (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
@@ -1322,28 +1322,28 @@ is responsible for freeing returned string with <var class="PARAMETER">xmlFree</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17943"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20346"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;integer mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17948"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20351"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17953"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20356"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17958"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20361"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to newly allocated string on success or NULL if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN17963"></a><h3>
+<a name="AEN20366"></a><h3>
 <a name="XMLSECQNAME2BITMASKNODESWRITE"></a>xmlSecQName2BitMaskNodesWrite ()</h3>
-<pre class="PROGRAMLISTING">int         xmlSecQName2BitMaskNodesWrite   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecQName2BitMaskNodesWrite   (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
@@ -1353,36 +1353,36 @@ is responsible for freeing returned string with <var class="PARAMETER">xmlFree</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17979"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20385"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;bit mask mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17984"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20390"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the parent element for mask nodes.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17989"><span style="white-space: nowrap"><var class="PARAMETER">nodeName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20395"><span style="white-space: nowrap"><var class="PARAMETER">nodeName</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the mask nodes name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17994"><span style="white-space: nowrap"><var class="PARAMETER">nodeNs</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20400"><span style="white-space: nowrap"><var class="PARAMETER">nodeNs</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the mask nodes namespace.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17999"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20405"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the bit mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18004"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20410"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs,</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN18009"></a><h3>
+<a name="AEN20415"></a><h3>
 <a name="XMLSECQNAME2BITMASKDEBUGDUMP"></a>xmlSecQName2BitMaskDebugDump ()</h3>
-<pre class="PROGRAMLISTING">void        xmlSecQName2BitMaskDebugDump    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>void</font>        xmlSecQName2BitMaskDebugDump    (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);</pre>
@@ -1391,28 +1391,28 @@ is responsible for freeing returned string with <var class="PARAMETER">xmlFree</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18022"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20431"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;bit mask mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18027"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20436"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the bit mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18032"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20441"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18037"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20446"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN18042"></a><h3>
+<a name="AEN20451"></a><h3>
 <a name="XMLSECQNAME2BITMASKDEBUGXMLDUMP"></a>xmlSecQName2BitMaskDebugXmlDump ()</h3>
-<pre class="PROGRAMLISTING">void        xmlSecQName2BitMaskDebugXmlDump (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
+<pre class="PROGRAMLISTING"><font>void</font>        xmlSecQName2BitMaskDebugXmlDump (<font>xmlSecQName2BitMaskInfoConstPtr</font> info,
                                              <a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a> mask,
                                              const <font>xmlChar</font> *name,
                                              <font>FILE</font> *output);</pre>
@@ -1421,19 +1421,19 @@ is responsible for freeing returned string with <var class="PARAMETER">xmlFree</
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18055"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20467"><span style="white-space: nowrap"><var class="PARAMETER">info</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the qname&lt;-&gt;bit mask mapping information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18060"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20472"><span style="white-space: nowrap"><var class="PARAMETER">mask</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the bit mask.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18065"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20477"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p></p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN18070"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN20482"><span style="white-space: nowrap"><var class="PARAMETER">output</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>

@@ -18,11 +18,13 @@
 <link linkend="SECItem">SECItem</link>*    <link linkend="xmlSecNssNodeGetBigNumValue">xmlSecNssNodeGetBigNumValue</link>     (<link linkend="PRArenaPool">PRArenaPool</link> *arena,
                                              const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="SECItem">SECItem</link> *a);
-int         <link linkend="xmlSecNssNodeSetBigNumValue">xmlSecNssNodeSetBigNumValue</link>     (<link linkend="xmlNode">xmlNodePtr</link> cur,
+<link linkend="int">int</link>         <link linkend="xmlSecNssNodeSetBigNumValue">xmlSecNssNodeSetBigNumValue</link>     (<link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="SECItem">SECItem</link> *a,
-                                             int addLineBreaks);
+                                             <link linkend="int">int</link> addLineBreaks);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -41,12 +43,12 @@ int         <link linkend="xmlSecNssNodeSetBigNumValue">xmlSecNssNodeSetBigNumVa
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecNssNodeGetBigNumValue">xmlSecNssNodeGetBigNumValue ()</title>
-<programlisting><link linkend="SECItem">SECItem</link>*    xmlSecNssNodeGetBigNumValue     (<link linkend="PRArenaPool">PRArenaPool</link> *arena,
+<indexterm><primary>xmlSecNssNodeGetBigNumValue</primary></indexterm><programlisting><link linkend="SECItem">SECItem</link>*    xmlSecNssNodeGetBigNumValue     (<link linkend="PRArenaPool">PRArenaPool</link> *arena,
                                              const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="SECItem">SECItem</link> *a);</programlisting>
 <para>
 Converts the node content from CryptoBinary format 
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary">sec-CryptoBinary</link>) 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary"><type>sec-CryptoBinary</type></link>) 
 to a SECItem. If no SECItem object provided then a new
 one is created (caller is responsible for freeing it).</para>
 <para>
@@ -67,12 +69,12 @@ or NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssNodeSetBigNumValue">xmlSecNssNodeSetBigNumValue ()</title>
-<programlisting>int         xmlSecNssNodeSetBigNumValue     (<link linkend="xmlNode">xmlNodePtr</link> cur,
+<indexterm><primary>xmlSecNssNodeSetBigNumValue</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssNodeSetBigNumValue     (<link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="SECItem">SECItem</link> *a,
-                                             int addLineBreaks);</programlisting>
+                                             <link linkend="int">int</link> addLineBreaks);</programlisting>
 <para>
 Converts SECItem to CryptoBinary string
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary">sec-CryptoBinary</link>) 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary"><type>sec-CryptoBinary</type></link>) 
 and sets it as the content of the given node. If the 
 addLineBreaks is set then line breaks are added 
 before and after the CryptoBinary string.</para>

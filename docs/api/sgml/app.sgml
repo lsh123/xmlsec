@@ -15,9 +15,9 @@
 
 
 
-int         <link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link>                (void);
-int         <link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link>            (void);
-int         <link linkend="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link>                (void);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link>            (void);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
 #define     <link linkend="xmlSecKeyDataAesId">xmlSecKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataAesGetKlass">xmlSecKeyDataAesGetKlass</link>    (void);
 #define     <link linkend="xmlSecKeyDataDesId">xmlSecKeyDataDesId</link>
@@ -87,40 +87,42 @@ int         <link linkend="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</l
 #define     <link linkend="xmlSecTransformSha1Id">xmlSecTransformSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformSha1GetKlass">xmlSecTransformSha1GetKlass</link>
                                             (void);
-int         <link linkend="xmlSecCryptoAppInit">xmlSecCryptoAppInit</link>             (const char *config);
-int         <link linkend="xmlSecCryptoAppShutdown">xmlSecCryptoAppShutdown</link>         (void);
-int         <link linkend="xmlSecCryptoAppDefaultKeysMngrInit">xmlSecCryptoAppDefaultKeysMngrInit</link>
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppInit">xmlSecCryptoAppInit</link>             (const <link linkend="char">char</link> *config);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppShutdown">xmlSecCryptoAppShutdown</link>         (void);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppDefaultKeysMngrInit">xmlSecCryptoAppDefaultKeysMngrInit</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecCryptoAppDefaultKeysMngrAdoptKey">xmlSecCryptoAppDefaultKeysMngrAdoptKey</link>
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppDefaultKeysMngrAdoptKey">xmlSecCryptoAppDefaultKeysMngrAdoptKey</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecCryptoAppDefaultKeysMngrLoad">xmlSecCryptoAppDefaultKeysMngrLoad</link>
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppDefaultKeysMngrLoad">xmlSecCryptoAppDefaultKeysMngrLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri);
-int         <link linkend="xmlSecCryptoAppDefaultKeysMngrSave">xmlSecCryptoAppDefaultKeysMngrSave</link>
+                                             const <link linkend="char">char</link> *uri);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppDefaultKeysMngrSave">xmlSecCryptoAppDefaultKeysMngrSave</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecCryptoAppKeysMngrCertLoad">xmlSecCryptoAppKeysMngrCertLoad</link> (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppKeysMngrCertLoad">xmlSecCryptoAppKeysMngrCertLoad</link> (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecCryptoAppKeyLoad">xmlSecCryptoAppKeyLoad</link>         (const char *filename,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecCryptoAppKeyLoad">xmlSecCryptoAppKeyLoad</link>         (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecCryptoAppPkcs12Load">xmlSecCryptoAppPkcs12Load</link>      (const char *filename,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);
-int         <link linkend="xmlSecCryptoAppKeyCertLoad">xmlSecCryptoAppKeyCertLoad</link>      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecCryptoAppPkcs12Load">xmlSecCryptoAppPkcs12Load</link>      (const <link linkend="char">char</link> *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);
+<link linkend="int">int</link>         <link linkend="xmlSecCryptoAppKeyCertLoad">xmlSecCryptoAppKeyCertLoad</link>      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-void*       <link linkend="xmlSecCryptoAppGetDefaultPwdCallback">xmlSecCryptoAppGetDefaultPwdCallback</link>
+<link linkend="void">void</link>*       <link linkend="xmlSecCryptoAppGetDefaultPwdCallback">xmlSecCryptoAppGetDefaultPwdCallback</link>
                                             (void);
 </synopsis>
 </refsynopsisdiv>
+
+
 
 
 
@@ -139,7 +141,7 @@ void*       <link linkend="xmlSecCryptoAppGetDefaultPwdCallback">xmlSecCryptoApp
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecCryptoInit">xmlSecCryptoInit ()</title>
-<programlisting>int         xmlSecCryptoInit                (void);</programlisting>
+<indexterm><primary>xmlSecCryptoInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoInit                (void);</programlisting>
 <para>
 XMLSec library specific crypto engine initialization.</para>
 <para>
@@ -150,7 +152,7 @@ XMLSec library specific crypto engine initialization.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoShutdown">xmlSecCryptoShutdown ()</title>
-<programlisting>int         xmlSecCryptoShutdown            (void);</programlisting>
+<indexterm><primary>xmlSecCryptoShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoShutdown            (void);</programlisting>
 <para>
 XMLSec library specific crypto engine shutdown.</para>
 <para>
@@ -161,7 +163,7 @@ XMLSec library specific crypto engine shutdown.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit ()</title>
-<programlisting>int         xmlSecCryptoKeysMngrInit        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<indexterm><primary>xmlSecCryptoKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoKeysMngrInit        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Adds crypto specific key data stores in keys manager.</para>
 <para>
@@ -175,7 +177,7 @@ Adds crypto specific key data stores in keys manager.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataAesId">xmlSecKeyDataAesId</title>
-<programlisting>#define xmlSecKeyDataAesId			xmlSecKeyDataAesGetKlass()
+<indexterm><primary>xmlSecKeyDataAesId</primary></indexterm><programlisting>#define xmlSecKeyDataAesId			xmlSecKeyDataAesGetKlass()
 </programlisting>
 <para>
 The AES key klass.</para>
@@ -184,7 +186,7 @@ The AES key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataAesGetKlass">xmlSecKeyDataAesGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataAesGetKlass    (void);</programlisting>
+<indexterm><primary>xmlSecKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataAesGetKlass    (void);</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
@@ -197,7 +199,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDesId">xmlSecKeyDataDesId</title>
-<programlisting>#define xmlSecKeyDataDesId			xmlSecKeyDataDesGetKlass()
+<indexterm><primary>xmlSecKeyDataDesId</primary></indexterm><programlisting>#define xmlSecKeyDataDesId			xmlSecKeyDataDesGetKlass()
 </programlisting>
 <para>
 The DES key klass.</para>
@@ -206,7 +208,7 @@ The DES key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDesGetKlass">xmlSecKeyDataDesGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataDesGetKlass    (void);</programlisting>
+<indexterm><primary>xmlSecKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataDesGetKlass    (void);</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
@@ -219,7 +221,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDsaId">xmlSecKeyDataDsaId</title>
-<programlisting>#define xmlSecKeyDataDsaId			xmlSecKeyDataDsaGetKlass()
+<indexterm><primary>xmlSecKeyDataDsaId</primary></indexterm><programlisting>#define xmlSecKeyDataDsaId			xmlSecKeyDataDsaGetKlass()
 </programlisting>
 <para>
 The DSA key klass.</para>
@@ -228,7 +230,7 @@ The DSA key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDsaGetKlass">xmlSecKeyDataDsaGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataDsaGetKlass    (void);</programlisting>
+<indexterm><primary>xmlSecKeyDataDsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataDsaGetKlass    (void);</programlisting>
 <para>
 The DSA key data klass.</para>
 <para>
@@ -241,7 +243,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataHmacId">xmlSecKeyDataHmacId</title>
-<programlisting>#define xmlSecKeyDataHmacId			xmlSecKeyDataHmacGetKlass()
+<indexterm><primary>xmlSecKeyDataHmacId</primary></indexterm><programlisting>#define xmlSecKeyDataHmacId			xmlSecKeyDataHmacGetKlass()
 </programlisting>
 <para>
 The DHMAC key klass.</para>
@@ -250,7 +252,7 @@ The DHMAC key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataHmacGetKlass">xmlSecKeyDataHmacGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataHmacGetKlass   (void);</programlisting>
+<indexterm><primary>xmlSecKeyDataHmacGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataHmacGetKlass   (void);</programlisting>
 <para>
 The HMAC key data klass.</para>
 <para>
@@ -263,7 +265,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataRsaId">xmlSecKeyDataRsaId</title>
-<programlisting>#define xmlSecKeyDataRsaId			xmlSecKeyDataRsaGetKlass()
+<indexterm><primary>xmlSecKeyDataRsaId</primary></indexterm><programlisting>#define xmlSecKeyDataRsaId			xmlSecKeyDataRsaGetKlass()
 </programlisting>
 <para>
 The RSA key klass.</para>
@@ -272,7 +274,7 @@ The RSA key klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataRsaGetKlass">xmlSecKeyDataRsaGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRsaGetKlass    (void);</programlisting>
+<indexterm><primary>xmlSecKeyDataRsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRsaGetKlass    (void);</programlisting>
 <para>
 The RSA key data klass.</para>
 <para>
@@ -285,7 +287,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataX509Id">xmlSecKeyDataX509Id</title>
-<programlisting>#define xmlSecKeyDataX509Id			xmlSecKeyDataX509GetKlass()
+<indexterm><primary>xmlSecKeyDataX509Id</primary></indexterm><programlisting>#define xmlSecKeyDataX509Id			xmlSecKeyDataX509GetKlass()
 </programlisting>
 <para>
 The X509 data klass.</para>
@@ -294,7 +296,7 @@ The X509 data klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataX509GetKlass">xmlSecKeyDataX509GetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataX509GetKlass   (void);</programlisting>
+<indexterm><primary>xmlSecKeyDataX509GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataX509GetKlass   (void);</programlisting>
 <para>
 The X509 key data klass.</para>
 <para>
@@ -307,7 +309,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataRawX509CertId">xmlSecKeyDataRawX509CertId</title>
-<programlisting>#define xmlSecKeyDataRawX509CertId		xmlSecKeyDataRawX509CertGetKlass()
+<indexterm><primary>xmlSecKeyDataRawX509CertId</primary></indexterm><programlisting>#define xmlSecKeyDataRawX509CertId		xmlSecKeyDataRawX509CertGetKlass()
 </programlisting>
 <para>
 The  raw X509 certificate klass.</para>
@@ -316,7 +318,7 @@ The  raw X509 certificate klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataRawX509CertGetKlass">xmlSecKeyDataRawX509CertGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRawX509CertGetKlass
+<indexterm><primary>xmlSecKeyDataRawX509CertGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRawX509CertGetKlass
                                             (void);</programlisting>
 <para>
 The raw X509 cert key data klass.</para>
@@ -330,7 +332,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecX509StoreId">xmlSecX509StoreId</title>
-<programlisting>#define xmlSecX509StoreId			xmlSecX509StoreGetKlass()
+<indexterm><primary>xmlSecX509StoreId</primary></indexterm><programlisting>#define xmlSecX509StoreId			xmlSecX509StoreGetKlass()
 </programlisting>
 <para>
 The  X509 store klass.</para>
@@ -339,7 +341,7 @@ The  X509 store klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecX509StoreGetKlass">xmlSecX509StoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecX509StoreGetKlass
+<indexterm><primary>xmlSecX509StoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecX509StoreGetKlass
                                             (void);</programlisting>
 <para>
 The X509 certificates key data store klass.</para>
@@ -353,7 +355,7 @@ cert key data klass is not implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</title>
-<programlisting>#define xmlSecTransformAes128CbcId		xmlSecTransformAes128CbcGetKlass()
+<indexterm><primary>xmlSecTransformAes128CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes128CbcId		xmlSecTransformAes128CbcGetKlass()
 </programlisting>
 <para>
 The AES128 CBC cipher transform klass.</para>
@@ -362,7 +364,7 @@ The AES128 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformAes128CbcGetKlass">xmlSecTransformAes128CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformAes128CbcGetKlass
+<indexterm><primary>xmlSecTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformAes128CbcGetKlass
                                             (void);</programlisting>
 <para>
 AES 128 CBC encryption transform klass.</para>
@@ -376,7 +378,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformAes192CbcId">xmlSecTransformAes192CbcId</title>
-<programlisting>#define xmlSecTransformAes192CbcId		xmlSecTransformAes192CbcGetKlass()
+<indexterm><primary>xmlSecTransformAes192CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes192CbcId		xmlSecTransformAes192CbcGetKlass()
 </programlisting>
 <para>
 The AES192 CBC cipher transform klass.</para>
@@ -385,7 +387,7 @@ The AES192 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformAes192CbcGetKlass">xmlSecTransformAes192CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformAes192CbcGetKlass
+<indexterm><primary>xmlSecTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformAes192CbcGetKlass
                                             (void);</programlisting>
 <para>
 AES 192 CBC encryption transform klass.</para>
@@ -399,7 +401,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformAes256CbcId">xmlSecTransformAes256CbcId</title>
-<programlisting>#define xmlSecTransformAes256CbcId		xmlSecTransformAes256CbcGetKlass()
+<indexterm><primary>xmlSecTransformAes256CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes256CbcId		xmlSecTransformAes256CbcGetKlass()
 </programlisting>
 <para>
 The AES256 CBC cipher transform klass.</para>
@@ -408,7 +410,7 @@ The AES256 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformAes256CbcGetKlass">xmlSecTransformAes256CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformAes256CbcGetKlass
+<indexterm><primary>xmlSecTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformAes256CbcGetKlass
                                             (void);</programlisting>
 <para>
 AES 256 CBC encryption transform klass.</para>
@@ -422,7 +424,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWAes128Id">xmlSecTransformKWAes128Id</title>
-<programlisting>#define xmlSecTransformKWAes128Id		xmlSecTransformKWAes128GetKlass()
+<indexterm><primary>xmlSecTransformKWAes128Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes128Id		xmlSecTransformKWAes128GetKlass()
 </programlisting>
 <para>
 The AES 128 key wrap transform klass.</para>
@@ -431,7 +433,7 @@ The AES 128 key wrap transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWAes128GetKlass">xmlSecTransformKWAes128GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWAes128GetKlass
+<indexterm><primary>xmlSecTransformKWAes128GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWAes128GetKlass
                                             (void);</programlisting>
 <para>
 The AES-128 kew wrapper transform klass.</para>
@@ -445,7 +447,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWAes192Id">xmlSecTransformKWAes192Id</title>
-<programlisting>#define xmlSecTransformKWAes192Id		xmlSecTransformKWAes192GetKlass()
+<indexterm><primary>xmlSecTransformKWAes192Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes192Id		xmlSecTransformKWAes192GetKlass()
 </programlisting>
 <para>
 The AES 192 key wrap transform klass.</para>
@@ -454,7 +456,7 @@ The AES 192 key wrap transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWAes192GetKlass">xmlSecTransformKWAes192GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWAes192GetKlass
+<indexterm><primary>xmlSecTransformKWAes192GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWAes192GetKlass
                                             (void);</programlisting>
 <para>
 The AES-192 kew wrapper transform klass.</para>
@@ -468,7 +470,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWAes256Id">xmlSecTransformKWAes256Id</title>
-<programlisting>#define xmlSecTransformKWAes256Id		xmlSecTransformKWAes256GetKlass()
+<indexterm><primary>xmlSecTransformKWAes256Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes256Id		xmlSecTransformKWAes256GetKlass()
 </programlisting>
 <para>
 The AES 256 key wrap transform klass.</para>
@@ -477,7 +479,7 @@ The AES 256 key wrap transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWAes256GetKlass">xmlSecTransformKWAes256GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWAes256GetKlass
+<indexterm><primary>xmlSecTransformKWAes256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWAes256GetKlass
                                             (void);</programlisting>
 <para>
 The AES-256 kew wrapper transform klass.</para>
@@ -491,7 +493,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDes3CbcId">xmlSecTransformDes3CbcId</title>
-<programlisting>#define xmlSecTransformDes3CbcId		xmlSecTransformDes3CbcGetKlass()
+<indexterm><primary>xmlSecTransformDes3CbcId</primary></indexterm><programlisting>#define xmlSecTransformDes3CbcId		xmlSecTransformDes3CbcGetKlass()
 </programlisting>
 <para>
 The Triple DES encryption transform klass.</para>
@@ -500,7 +502,7 @@ The Triple DES encryption transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDes3CbcGetKlass">xmlSecTransformDes3CbcGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformDes3CbcGetKlass
+<indexterm><primary>xmlSecTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformDes3CbcGetKlass
                                             (void);</programlisting>
 <para>
 Triple DES CBC encryption transform klass.</para>
@@ -514,7 +516,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWDes3Id">xmlSecTransformKWDes3Id</title>
-<programlisting>#define xmlSecTransformKWDes3Id			xmlSecTransformKWDes3GetKlass()
+<indexterm><primary>xmlSecTransformKWDes3Id</primary></indexterm><programlisting>#define xmlSecTransformKWDes3Id			xmlSecTransformKWDes3GetKlass()
 </programlisting>
 <para>
 The DES3 CBC cipher transform klass.</para>
@@ -523,7 +525,7 @@ The DES3 CBC cipher transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKWDes3GetKlass">xmlSecTransformKWDes3GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWDes3GetKlass
+<indexterm><primary>xmlSecTransformKWDes3GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformKWDes3GetKlass
                                             (void);</programlisting>
 <para>
 The Triple DES key wrapper transform klass.</para>
@@ -537,7 +539,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</title>
-<programlisting>#define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
+<indexterm><primary>xmlSecTransformDsaSha1Id</primary></indexterm><programlisting>#define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
 </programlisting>
 <para>
 The DSA-SHA1 signature transform klass.</para>
@@ -546,7 +548,7 @@ The DSA-SHA1 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDsaSha1GetKlass">xmlSecTransformDsaSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformDsaSha1GetKlass
+<indexterm><primary>xmlSecTransformDsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformDsaSha1GetKlass
                                             (void);</programlisting>
 <para>
 The DSA-SHA1 signature transform klass.</para>
@@ -560,7 +562,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformHmacSha1Id">xmlSecTransformHmacSha1Id</title>
-<programlisting>#define xmlSecTransformHmacSha1Id		xmlSecTransformHmacSha1GetKlass()
+<indexterm><primary>xmlSecTransformHmacSha1Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha1Id		xmlSecTransformHmacSha1GetKlass()
 </programlisting>
 <para>
 The HMAC with SHA1 signature transform klass.</para>
@@ -569,7 +571,7 @@ The HMAC with SHA1 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformHmacSha1GetKlass">xmlSecTransformHmacSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformHmacSha1GetKlass
+<indexterm><primary>xmlSecTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformHmacSha1GetKlass
                                             (void);</programlisting>
 <para>
 The HMAC-SHA1 transform klass.</para>
@@ -583,7 +585,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformHmacRipemd160Id">xmlSecTransformHmacRipemd160Id</title>
-<programlisting>#define xmlSecTransformHmacRipemd160Id		xmlSecTransformHmacRipemd160GetKlass()
+<indexterm><primary>xmlSecTransformHmacRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformHmacRipemd160Id		xmlSecTransformHmacRipemd160GetKlass()
 </programlisting>
 <para>
 The HMAC with RipeMD160 signature transform klass.</para>
@@ -592,7 +594,7 @@ The HMAC with RipeMD160 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformHmacRipemd160GetKlass">xmlSecTransformHmacRipemd160GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformHmacRipemd160GetKlass
+<indexterm><primary>xmlSecTransformHmacRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformHmacRipemd160GetKlass
                                             (void);</programlisting>
 <para>
 The HMAC-RIPEMD160 transform klass.</para>
@@ -606,7 +608,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformHmacMd5Id">xmlSecTransformHmacMd5Id</title>
-<programlisting>#define xmlSecTransformHmacMd5Id		xmlSecTransformHmacMd5GetKlass()
+<indexterm><primary>xmlSecTransformHmacMd5Id</primary></indexterm><programlisting>#define xmlSecTransformHmacMd5Id		xmlSecTransformHmacMd5GetKlass()
 </programlisting>
 <para>
 The HMAC with MD5 signature transform klass.</para>
@@ -615,7 +617,7 @@ The HMAC with MD5 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformHmacMd5GetKlass">xmlSecTransformHmacMd5GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformHmacMd5GetKlass
+<indexterm><primary>xmlSecTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformHmacMd5GetKlass
                                             (void);</programlisting>
 <para>
 The HMAC-MD5 transform klass.</para>
@@ -629,7 +631,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRipemd160Id">xmlSecTransformRipemd160Id</title>
-<programlisting>#define xmlSecTransformRipemd160Id		xmlSecTransformRipemd160GetKlass()
+<indexterm><primary>xmlSecTransformRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformRipemd160Id		xmlSecTransformRipemd160GetKlass()
 </programlisting>
 <para>
 The RIPEMD160 digest transform klass.</para>
@@ -638,7 +640,7 @@ The RIPEMD160 digest transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRipemd160GetKlass">xmlSecTransformRipemd160GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRipemd160GetKlass
+<indexterm><primary>xmlSecTransformRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRipemd160GetKlass
                                             (void);</programlisting>
 <para>
 RIPEMD-160 digest transform klass.</para>
@@ -652,7 +654,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRsaSha1Id">xmlSecTransformRsaSha1Id</title>
-<programlisting>#define xmlSecTransformRsaSha1Id		xmlSecTransformRsaSha1GetKlass()
+<indexterm><primary>xmlSecTransformRsaSha1Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha1Id		xmlSecTransformRsaSha1GetKlass()
 </programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
@@ -661,7 +663,7 @@ The RSA-SHA1 signature transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRsaSha1GetKlass">xmlSecTransformRsaSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRsaSha1GetKlass
+<indexterm><primary>xmlSecTransformRsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRsaSha1GetKlass
                                             (void);</programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
@@ -675,7 +677,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRsaPkcs1Id">xmlSecTransformRsaPkcs1Id</title>
-<programlisting>#define xmlSecTransformRsaPkcs1Id		xmlSecTransformRsaPkcs1GetKlass()
+<indexterm><primary>xmlSecTransformRsaPkcs1Id</primary></indexterm><programlisting>#define xmlSecTransformRsaPkcs1Id		xmlSecTransformRsaPkcs1GetKlass()
 </programlisting>
 <para>
 The RSA PKCS1 key transport transform klass.</para>
@@ -684,7 +686,7 @@ The RSA PKCS1 key transport transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRsaPkcs1GetKlass">xmlSecTransformRsaPkcs1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRsaPkcs1GetKlass
+<indexterm><primary>xmlSecTransformRsaPkcs1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRsaPkcs1GetKlass
                                             (void);</programlisting>
 <para>
 The RSA-PKCS1 key transport transform klass.</para>
@@ -698,7 +700,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRsaOaepId">xmlSecTransformRsaOaepId</title>
-<programlisting>#define xmlSecTransformRsaOaepId		xmlSecTransformRsaOaepGetKlass()
+<indexterm><primary>xmlSecTransformRsaOaepId</primary></indexterm><programlisting>#define xmlSecTransformRsaOaepId		xmlSecTransformRsaOaepGetKlass()
 </programlisting>
 <para>
 The RSA PKCS1 key transport transform klass.</para>
@@ -707,7 +709,7 @@ The RSA PKCS1 key transport transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRsaOaepGetKlass">xmlSecTransformRsaOaepGetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRsaOaepGetKlass
+<indexterm><primary>xmlSecTransformRsaOaepGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformRsaOaepGetKlass
                                             (void);</programlisting>
 <para>
 The RSA-OAEP key transport transform klass.</para>
@@ -721,7 +723,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSha1Id">xmlSecTransformSha1Id</title>
-<programlisting>#define xmlSecTransformSha1Id			xmlSecTransformSha1GetKlass()
+<indexterm><primary>xmlSecTransformSha1Id</primary></indexterm><programlisting>#define xmlSecTransformSha1Id			xmlSecTransformSha1GetKlass()
 </programlisting>
 <para>
 The SHA1 digest transform klass.</para>
@@ -730,7 +732,7 @@ The SHA1 digest transform klass.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSha1GetKlass">xmlSecTransformSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformSha1GetKlass
+<indexterm><primary>xmlSecTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformSha1GetKlass
                                             (void);</programlisting>
 <para>
 SHA-1 digest transform klass.</para>
@@ -744,7 +746,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppInit">xmlSecCryptoAppInit ()</title>
-<programlisting>int         xmlSecCryptoAppInit             (const char *config);</programlisting>
+<indexterm><primary>xmlSecCryptoAppInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppInit             (const <link linkend="char">char</link> *config);</programlisting>
 <para>
 General crypto engine initialization. This function is used
 by XMLSec command line utility and called before 
@@ -760,7 +762,7 @@ by XMLSec command line utility and called before
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppShutdown">xmlSecCryptoAppShutdown ()</title>
-<programlisting>int         xmlSecCryptoAppShutdown         (void);</programlisting>
+<indexterm><primary>xmlSecCryptoAppShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppShutdown         (void);</programlisting>
 <para>
 General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after 
@@ -773,10 +775,10 @@ by XMLSec command line utility and called after
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppDefaultKeysMngrInit">xmlSecCryptoAppDefaultKeysMngrInit ()</title>
-<programlisting>int         xmlSecCryptoAppDefaultKeysMngrInit
+<indexterm><primary>xmlSecCryptoAppDefaultKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppDefaultKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId"><type>xmlSecSimpleKeysStoreId</type></link>
 and a default crypto key data stores.</para>
 <para>
 
@@ -789,11 +791,11 @@ and a default crypto key data stores.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppDefaultKeysMngrAdoptKey">xmlSecCryptoAppDefaultKeysMngrAdoptKey ()</title>
-<programlisting>int         xmlSecCryptoAppDefaultKeysMngrAdoptKey
+<indexterm><primary>xmlSecCryptoAppDefaultKeysMngrAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppDefaultKeysMngrAdoptKey
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecCryptoAppDefaultKeysMngrInit">xmlSecCryptoAppDefaultKeysMngrInit</link>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecCryptoAppDefaultKeysMngrInit"><type>xmlSecCryptoAppDefaultKeysMngrInit</type></link>
 function.</para>
 <para>
 
@@ -809,12 +811,12 @@ function.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppDefaultKeysMngrLoad">xmlSecCryptoAppDefaultKeysMngrLoad ()</title>
-<programlisting>int         xmlSecCryptoAppDefaultKeysMngrLoad
+<indexterm><primary>xmlSecCryptoAppDefaultKeysMngrLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppDefaultKeysMngrLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri);</programlisting>
+                                             const <link linkend="char">char</link> *uri);</programlisting>
 <para>
 Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
-with <link linkend="xmlSecCryptoAppDefaultKeysMngrInit">xmlSecCryptoAppDefaultKeysMngrInit</link> function.</para>
+with <link linkend="xmlSecCryptoAppDefaultKeysMngrInit"><type>xmlSecCryptoAppDefaultKeysMngrInit</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -829,9 +831,9 @@ with <link linkend="xmlSecCryptoAppDefaultKeysMngrInit">xmlSecCryptoAppDefaultKe
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppDefaultKeysMngrSave">xmlSecCryptoAppDefaultKeysMngrSave ()</title>
-<programlisting>int         xmlSecCryptoAppDefaultKeysMngrSave
+<indexterm><primary>xmlSecCryptoAppDefaultKeysMngrSave</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppDefaultKeysMngrSave
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
@@ -852,8 +854,8 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppKeysMngrCertLoad">xmlSecCryptoAppKeysMngrCertLoad ()</title>
-<programlisting>int         xmlSecCryptoAppKeysMngrCertLoad (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
+<indexterm><primary>xmlSecCryptoAppKeysMngrCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppKeysMngrCertLoad (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -880,11 +882,11 @@ untrusted certs in <parameter>store</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppKeyLoad">xmlSecCryptoAppKeyLoad ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecCryptoAppKeyLoad         (const char *filename,
+<indexterm><primary>xmlSecCryptoAppKeyLoad</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecCryptoAppKeyLoad         (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key from the a file.</para>
 <para>
@@ -910,10 +912,10 @@ Reads key from the a file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppPkcs12Load">xmlSecCryptoAppPkcs12Load ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecCryptoAppPkcs12Load      (const char *filename,
-                                             const char *pwd,
-                                             void *pwdCallback,
-                                             void *pwdCallbackCtx);</programlisting>
+<indexterm><primary>xmlSecCryptoAppPkcs12Load</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecCryptoAppPkcs12Load      (const <link linkend="char">char</link> *filename,
+                                             const <link linkend="char">char</link> *pwd,
+                                             <link linkend="void">void</link> *pwdCallback,
+                                             <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 file.
 For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
@@ -938,8 +940,8 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppKeyCertLoad">xmlSecCryptoAppKeyCertLoad ()</title>
-<programlisting>int         xmlSecCryptoAppKeyCertLoad      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                             const char *filename,
+<indexterm><primary>xmlSecCryptoAppKeyCertLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecCryptoAppKeyCertLoad      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
 <para>
 Reads the certificate from $<parameter>filename</parameter> and adds it to key.</para>
@@ -960,7 +962,7 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoAppGetDefaultPwdCallback">xmlSecCryptoAppGetDefaultPwdCallback ()</title>
-<programlisting>void*       xmlSecCryptoAppGetDefaultPwdCallback
+<indexterm><primary>xmlSecCryptoAppGetDefaultPwdCallback</primary></indexterm><programlisting><link linkend="void">void</link>*       xmlSecCryptoAppGetDefaultPwdCallback
                                             (void);</programlisting>
 <para>
 Gets default password callback.</para>

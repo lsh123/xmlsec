@@ -44,8 +44,23 @@ data", "push xml data", "pop binary data" or "pop xml data":<br>
  <br>
  <br>
  
-<div style="text-align: center;"><img src="transform.png"
- title="Transform" alt="Transform" style="width: 390px; height: 240px;">
+<div style="text-align: center;"><img src="transform.png" title="Transform" alt="Transform" style="width: 390px; height: 240px;"><br>
+</div>
+<br>
+<br>
+In order to simplify transforms development, additional "execute"
+callback was added. This callback updates internal transform buffers and
+is used by the "default" xml/binary push and pop callbacks. For
+example, most of the crypto transforms could be implemented by just
+implementing one "execute" callback. However, in some cases using
+push/pop callbacks is more efficient.<br>
+When necessary, XML Security Library constructs a transforms chain as
+specified in the template or document and processes data by "pushing" or
+"poping" thru the chain. For example, then binary data chunk is pushed
+thru a binary-to-binary transform, it processes this chunk and pushes
+the result to the next transform in the chain. The following transforms
+chain might be constructed during digest calculation:<br>
+<br>
 <br>
  </div>
  <br>
@@ -68,22 +83,54 @@ be constructed during digest calculation:<br>
  title="Tranforms chain" alt="Transforms chain"
  style="width: 1050px; height: 180px;">
 <br>
- </div>
- <br>
- <br>
- The XML Security library transforms engine makes sure that output data type
-(binary or xml) of provisos transform matches the input data type of the
-next transform by inserting XML parser or default C14N when necessary. 
-<h2>2. Keys and keys data.</h2>
- <br>
- TODO<br>
- <br>
- 
+The XML Security library transforms engine makes sure that output data
+type (binary or xml) of previsous transform matches the input data type
+of the next transform by inserting XML parser or default C14N when
+necessary. Custom transforms could be added by the crypto plugin or
+application at any time.
+<h2>2. Keys and keys data. </h2>
+A key in XML Security Library is a representation of the
+&lt;dsig:KeyInfo/&gt; element and consist of several keys data objects: <br>
+<br>
+<br>
+The "value" key data usually contains raw key material (or handlers to
+key material) required to execute particular crypto transform. Other
+key data objects may contain any additional information about the key.
+All the key data objects in the key are associated with the same key
+material. For example, if a DSA key material might have both X509
+certificate and a PGP data associated with it then such a key can have
+a DSA key "value" and two key data objects for X509 certificate and PGP
+key data. <br>
+<br>
+<br>
+<br>
+XML Security Library has several "invisible" key data classes. These
+classes never show up in the keys data list of a key but are used for
+&lt;dsig:KeyInfo/&gt; chioldren elements processing
+(&lt;dsig:KeyName/&gt;, &lt;dsig:EncryptedKey/&gt;, ...). As with
+transforms, application might add any new key data processing handlers
+or replace the default ones.
 <h2>3. Keys manager and keys data stores.</h2>
- <br>
- TODO<br>
- <br>
- 
+Processing some of the key data objects require additional information
+global accross the application (or in the particular are of the
+application). For example, X509 certificates processing require a
+common list of trusted certificates to be available. XML Security
+Library keeps all the common information for key data processing in a a
+collection of key data stores called "keys manager":<br>
+<br>
+<br>
+Keys manager has a special "keys store" which lists the keys known to
+the application. This "keys store" is used by XML Security Library to
+lookup keys by name, type and crypto algorithm (for example, during
+&lt;dsig:KeyName/&gt; processing). The XML Security Library provides
+default plain list based implementation. The application can replace it
+with any other keys store (for example, keys might be stored in a
+database).<br>
+Usually keys manager is initialized once at the application startup and
+later is used by XML Security library routines in "read-only" mode. If
+application or crypto functions need to modify any of the key data
+stores then proper synchronization must be implemented.<br>
+<br>
 <h2>4. Data processing contexts.</h2>
  <br>
  TODO<br>

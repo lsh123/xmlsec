@@ -84,14 +84,14 @@ should    be  done  once in the beginning of your program.<br><code>
      keysMngr = xmlSecSimpleKeysMngrCreate();    
       <br>
      if(keysMngr == NULL) {<br>
-         fprintf(stderr, "Error: failed to create 
-keys manager\n");<br>
+         fprintf(stderr, &quot;Error: failed to create 
+keys manager\n&quot;);<br>
          goto done;    <br>
      }<br><br>
      dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
      if(dsigCtx == NULL) {<br>
-         fprintf(stderr,"Error: failed to create 
-dsig context\n");<br>
+         fprintf(stderr,&quot;Error: failed to create 
+dsig context\n&quot;);<br>
          goto done; <br>
      }<br>
         </code><br>
@@ -120,8 +120,8 @@ dsig context\n");<br>
                   */<br>
                  doc = xmlParseFile(argv[2]);<br>
                  if (doc == NULL) {<br>
-                    fprintf(stderr, "Error    
-      : unable to parse file \"%s\"\n", argv[1]);<br>
+                    fprintf(stderr, &quot;Error    
+      : unable to parse file \&quot;%s\&quot;\n&quot;, argv[1]);<br>
                     goto done;<br>
                  }<br>
                  <br>
@@ -130,14 +130,14 @@ dsig context\n");<br>
  kind<br>
                   */    <br>
                  if(xmlDocGetRootElement(doc) == NULL) {<br>
-                     fprintf(stderr,"Error:
-   empty    document for file \"%s\"\n", argv[1]);<br>
+                     fprintf(stderr,&quot;Error:
+   empty    document for file \&quot;%s\&quot;\n&quot;, argv[1]);<br>
                      goto done;<br>
                  }<br>
                  </code><br>
              In this example we set global flags to control how the document
   is  loaded.    In the real life you would probably want to control the
-loading    on "per-document"    basis. Check the libxml/c14n.h header file
+loading    on &quot;per-document&quot;    basis. Check the libxml/c14n.h header file
 from LibXML    distribution for  details.<br>
 </p>
 <h4>Step 2. Verify It!</h4>
@@ -146,10 +146,10 @@ from LibXML    distribution for  details.<br>
 &lt;Signature&gt; node:<br><code><br>
      xmlNodePtr signNode;<br>
     xmlSecDSigResultPtr result = NULL;</code><br><br><code>    signNode = xmlSecFindNode(xmlDocGetRootElement(doc),
-BAD_CAST "Signature", xmlSecDSigNs);<br>
+BAD_CAST &quot;Signature&quot;, xmlSecDSigNs);<br>
     if(signNode == NULL) {<br>
-        fprintf(stderr,"Error: failed
-to find Signature node\n");<br>
+        fprintf(stderr,&quot;Error: failed
+to find Signature node\n&quot;);<br>
         goto done;<br>
     }  </code><br>
       <code> <br>
@@ -158,8 +158,8 @@ to find Signature node\n");<br>
       */ <br>
      ret = xmlSecDSigValidate(dsigCtx, NULL, NULL, signNode, &amp;result);<br>
      if(ret &lt; 0) {<br>
-         fprintf(stderr,"Error: verification
-failed\n");<br>
+         fprintf(stderr,&quot;Error: verification
+failed\n&quot;);<br>
          goto done; <br>
      }   </code> <code></code>            
  
@@ -213,31 +213,31 @@ verification results. Real application should process signature objects list
       </p>
 <h4>Appendix A. The verification output.</h4>
 <blockquote>
-<code>= SIGNATURE (validate)</code><br><code>== result: OK</code><br><code>== sign method: http://www.w3.org/2000/09/xmldsig#dsa-sha1</code><br><code>== key name: (null)</code><br><code>== key origin: 0</code><br><code>== start buffer:</code><br><code>&lt;SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;</code><br><code>&lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"&gt;&lt;/CanonicalizationMethod&gt;</code><br><code>&lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"&gt;&lt;/SignatureMethod&gt;</code><br><code>&lt;Reference Id="reference-1" URI="#xpointer(id('SomeData'))"&gt;</code><br><code>&lt;Transforms&gt;</code><br><code>&lt;Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"&gt;&lt;/Transform&gt;</code><br><code>&lt;/Transforms&gt;</code><br><code>&lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"&gt;&lt;/DigestMethod&gt;&lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;</code><br><code>&lt;/Reference&gt;</code><br><code>&lt;/SignedInfo&gt;</code><br><code>== end buffer</code><br><code>== SIGNED INFO REFERENCES</code><br><code>==== REFERENCE </code><br><code>===== ref type: SignedInfo Reference</code><br><code>===== result: OK</code><br><code>===== digest method: http://www.w3.org/2000/09/xmldsig#sha1</code><br><code>===== uri: #xpointer(id('SomeData'))</code><br><code>===== type: NULL</code><br><code>===== id: reference-1</code><br><code>===== start buffer:</code><br><code>&lt;Info Id="SomeData"&gt;</code><br><code>    &lt;!-- Commentary --&gt;</code><br><code>    &lt;Data1&gt; Some data &lt;/Data1&gt;</code><br><code>    &lt;Data2&gt; More data &lt;/Data2&gt;</code><br><code>    &lt;/Info&gt;</code><br><code>===== end buffer</code><br>
+<code>= SIGNATURE (validate)</code><br><code>== result: OK</code><br><code>== sign method: http://www.w3.org/2000/09/xmldsig#dsa-sha1</code><br><code>== key name: (null)</code><br><code>== key origin: 0</code><br><code>== start buffer:</code><br><code>&lt;SignedInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;</code><br><code>&lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;&gt;&lt;/CanonicalizationMethod&gt;</code><br><code>&lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;&gt;&lt;/SignatureMethod&gt;</code><br><code>&lt;Reference Id=&quot;reference-1&quot; URI=&quot;#xpointer(id('SomeData'))&quot;&gt;</code><br><code>&lt;Transforms&gt;</code><br><code>&lt;Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#WithComments&quot;&gt;&lt;/Transform&gt;</code><br><code>&lt;/Transforms&gt;</code><br><code>&lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;&gt;&lt;/DigestMethod&gt;&lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;</code><br><code>&lt;/Reference&gt;</code><br><code>&lt;/SignedInfo&gt;</code><br><code>== end buffer</code><br><code>== SIGNED INFO REFERENCES</code><br><code>==== REFERENCE </code><br><code>===== ref type: SignedInfo Reference</code><br><code>===== result: OK</code><br><code>===== digest method: http://www.w3.org/2000/09/xmldsig#sha1</code><br><code>===== uri: #xpointer(id('SomeData'))</code><br><code>===== type: NULL</code><br><code>===== id: reference-1</code><br><code>===== start buffer:</code><br><code>&lt;Info Id=&quot;SomeData&quot;&gt;</code><br><code>    &lt;!-- Commentary --&gt;</code><br><code>    &lt;Data1&gt; Some data &lt;/Data1&gt;</code><br><code>    &lt;Data2&gt; More data &lt;/Data2&gt;</code><br><code>    &lt;/Info&gt;</code><br><code>===== end buffer</code><br>
 </blockquote>
 <h4>Appendix B. The signed document.</h4>
-<blockquote><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+<blockquote><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
  &lt;Letter&gt;<br>
      Hello, World!    <br>
-     &lt;Info Id="SomeData"&gt;<br>
+     &lt;Info Id=&quot;SomeData&quot;&gt;<br>
      &lt;!-- Commentary --&gt;<br>
      &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
      &lt;Data2&gt; More data &lt;/Data2&gt;<br>
      &lt;/Info&gt;<br>
- &lt;Something&gt;Some important data&lt;/Something&gt;&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
+ &lt;Something&gt;Some important data&lt;/Something&gt;&lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
  &lt;SignedInfo&gt;<br>
- &lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;<br>
- &lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/&gt;<br>
- &lt;Reference Id="reference-1" URI="#xpointer(id('SomeData'))"&gt;<br>
+ &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br>
+ &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br>
+ &lt;Reference Id=&quot;reference-1&quot; URI=&quot;#xpointer(id('SomeData'))&quot;&gt;<br>
  &lt;Transforms&gt;<br>
- &lt;Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/&gt;<br>
+ &lt;Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#WithComments&quot;/&gt;<br>
  &lt;/Transforms&gt;<br>
- &lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;<br>
+ &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br>
  &lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;<br>
  &lt;/Reference&gt;<br>
  &lt;/SignedInfo&gt;<br>
  &lt;SignatureValue&gt;uwYbk29Juoe8B0eCW6aAjw4t+QBT7oQsjAmQnu8fFQPNy0RwP6pWNA==&lt;/SignatureValue&gt;<br>
- &lt;KeyInfo Id=""&gt;<br>
+ &lt;KeyInfo Id=&quot;&quot;&gt;<br>
  &lt;KeyValue&gt;<br>
  &lt;DSAKeyValue&gt;<br>
  &lt;P&gt;<br>

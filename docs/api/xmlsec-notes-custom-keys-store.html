@@ -84,21 +84,21 @@ create_files_keys_mngr(void) {
     /* create files based keys store */
     keysStore = xmlSecKeyStoreCreate(files_keys_store_get_klass());
     if(keysStore == NULL) {
-	fprintf(stderr, "Error: failed to create keys store.\n");
+	fprintf(stderr, &quot;Error: failed to create keys store.\n&quot;);
 	return(NULL);
     }
     
     /* create keys manager */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	xmlSecKeyStoreDestroy(keysStore);
 	return(NULL);
     }
 
     /* add store to keys manager, from now on keys manager destroys the store if needed */
     if(xmlSecKeysMngrAdoptKeysStore(mngr, keysStore) &lt; 0) {
-	fprintf(stderr, "Error: failed to add keys store to keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to add keys store to keys manager.\n&quot;);
 	xmlSecKeyStoreDestroy(keysStore);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -106,7 +106,7 @@ create_files_keys_mngr(void) {
     
     /* initialize crypto library specific data in keys manager */
     if(xmlSecCryptoKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, "Error: failed to initialize crypto data in keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to initialize crypto data in keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }
@@ -129,7 +129,7 @@ static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
 static xmlSecKeyStoreKlass files_keys_store_klass = {
     sizeof(xmlSecKeyStoreKlass),
     sizeof(xmlSecKeyStore),
-    BAD_CAST "files-based-keys-store",	/* const xmlChar* name; */         
+    BAD_CAST &quot;files-based-keys-store&quot;,	/* const xmlChar* name; */         
     NULL,				/* xmlSecKeyStoreInitializeMethod initialize; */
     NULL,				/* xmlSecKeyStoreFinalizeMethod finalize; */
     files_keys_store_find_key,		/* xmlSecKeyStoreFindKeyMethod findKey; */
@@ -176,7 +176,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 	return(NULL);
     }
 
-    /* we don't want to open files in a folder other than "current";
+    /* we don't want to open files in a folder other than &quot;current&quot;;
      * to prevent it limit the characters in the key name to alpha/digit,
      * '.', '-' or '_'.
      */
@@ -190,21 +190,21 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
 	key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", name);
+    	    fprintf(stderr,&quot;Error: failed to load pem key from \&quot;%s\&quot;\n&quot;, name);
 	    return(NULL);
 	}
     } else {
 	/* otherwise it's a binary key, if key is not found then it's an error (is it?) */
 	key = xmlSecKeyReadBinaryFile(keyInfoCtx-&gt;keyReq.keyId, name);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
+    	    fprintf(stderr,&quot;Error: failed to load key from binary file \&quot;%s\&quot;\n&quot;, name);
 	    return(NULL);
 	}
     }
 
     /* set key name */
     if(xmlSecKeySetName(key, name) &lt; 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
+        fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, name);
         xmlSecKeyDestroy(key);
         return(NULL);	
     }

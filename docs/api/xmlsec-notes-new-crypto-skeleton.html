@@ -60,8 +60,8 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-NEW-CRYPTO-SKELETON"></a>Creating a framework from the skeleton.</h1>
-<p>	The XML Security Library contains a "skeleton" for creating new
-	"xmlsec-&lt;crypto&gt;" libraries. In order to create "xmlsec-mycrypto"
+<p>	The XML Security Library contains a &quot;skeleton&quot; for creating new
+	&quot;xmlsec-&lt;crypto&gt;&quot; libraries. In order to create &quot;xmlsec-mycrypto&quot;
 	library framework, do the following (this example assumes that you 
 	are using *nix system, adjust the commands if you are using something else):
 	</p>
@@ -87,11 +87,11 @@ cd ../../..
 </div>	
 	</li>
 <li>
-<p>	Replace "skeleton" with "mycrypto" in the copied files (note that there
+<p>	Replace &quot;skeleton&quot; with &quot;mycrypto&quot; in the copied files (note that there
 	are different possible cases here):
 	</p>
 <div class="EXAMPLE">
-<a name="AEN501"></a><p><b>Example 2. Replacing "skeleton" with "mycrypto".</b></p>
+<a name="AEN501"></a><p><b>Example 2. Replacing &quot;skeleton&quot; with &quot;mycrypto&quot;.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">for i in `ls include/xmlsec/mycrypto/* src/mycrypto/*`;  do 
     echo Processing $i ..;
     sed 's/skeleton/mycrypto/g' $i | \
@@ -103,7 +103,7 @@ done
 </div>
 	</li>
 <li>
-<p>	Add "xmlsec-mycrypto" library to the "include/xmlsec/crypto.h" file:
+<p>	Add &quot;xmlsec-mycrypto&quot; library to the &quot;include/xmlsec/crypto.h&quot; file:
 	</p>
 <div class="EXAMPLE">
 <a name="AEN506"></a><p><b>Example 3. Modifying include/xmlsec/crypto.h file.</b></p>
@@ -120,7 +120,7 @@ done
 </div>
 	</li>
 <li>
-<p>	Add "xmlsec-crypto" library to the configure.in file (for *nix systems;
+<p>	Add &quot;xmlsec-crypto&quot; library to the configure.in file (for *nix systems;
 	for Windows you need to modify win32/confgure.js and win32/Makefile.msvc
 	files, see win32/README.txt for details):
 	</p>
@@ -129,61 +129,61 @@ done
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">dnl ==========================================================================
 dnl See if we can find MyCrypto
 dnl ==========================================================================
-XMLSEC_MYCRYPTO_DEFINES=""
-MYCRYPTO_CONFIG="mycrypto-config" # TODO
-MYCRYPTO_WITHOUT="no"
-MYCRYPTO_MIN_VERSION="0.0.0" # TODO 
-MYCRYPTO_VERSION=""
-MYCRYPTO_PREFIX=""
-MYCRYPTO_CFLAGS=""
-MYCRYPTO_LIBS=""
-MYCRYPTO_LDADDS=""
+XMLSEC_MYCRYPTO_DEFINES=&quot;&quot;
+MYCRYPTO_CONFIG=&quot;mycrypto-config&quot; # TODO
+MYCRYPTO_WITHOUT=&quot;no&quot;
+MYCRYPTO_MIN_VERSION=&quot;0.0.0&quot; # TODO 
+MYCRYPTO_VERSION=&quot;&quot;
+MYCRYPTO_PREFIX=&quot;&quot;
+MYCRYPTO_CFLAGS=&quot;&quot;
+MYCRYPTO_LIBS=&quot;&quot;
+MYCRYPTO_LDADDS=&quot;&quot;
 AC_MSG_CHECKING(for mycrypto libraries &gt;= $MYCRYPTO_MIN_VERSION) 
 AC_ARG_WITH(mycrypto, [  --with-mycrypto=[PFX]    mycrypto location])
-if test "$with_mycrypto" = "no" ; then
-    MYCRYPTO_WITHOUT="yes"
-    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mycrypto"
+if test &quot;$with_mycrypto&quot; = &quot;no&quot; ; then
+    MYCRYPTO_WITHOUT=&quot;yes&quot;
+    XMLSEC_CRYPTO_DISABLED_LIST=&quot;$XMLSEC_CRYPTO_DISABLED_LIST mycrypto&quot;
     AC_MSG_RESULT(no)
 else
-    if test "$with_mycrypto" != "" ; then
+    if test &quot;$with_mycrypto&quot; != &quot;&quot; ; then
 	MYCRYPTO_PREFIX=$with_mycrypto
 	MYCRYPTO_CONFIG=$MYCRYPTO_PREFIX/bin/$MYCRYPTO_CONFIG
     fi
     if ! $MYCRYPTO_CONFIG --version &gt; /dev/null 2&gt;&amp;1
     then
-	MYCRYPTO_WITHOUT="yes"
-	if test "$with_mycrypto" != "" ; then
+	MYCRYPTO_WITHOUT=&quot;yes&quot;
+	if test &quot;$with_mycrypto&quot; != &quot;&quot; ; then
 	    AC_MSG_ERROR(Unable to find mycrypto at '$with_mycrypto')
 	fi
     else
-        vers=`$MYCRYPTO_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	minvers=`echo $MYCRYPTO_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	if test "$vers" -ge "$minvers"
+        vers=`$MYCRYPTO_CONFIG --version | awk -F. '{ printf &quot;%d&quot;, ($1 * 1000 + $2) * 1000 + $3;}'`
+	minvers=`echo $MYCRYPTO_MIN_VERSION | awk -F. '{ printf &quot;%d&quot;, ($1 * 1000 + $2) * 1000 + $3;}'`
+	if test &quot;$vers&quot; -ge &quot;$minvers&quot;
 	then
-    	    MYCRYPTO_LIBS="`$MYCRYPTO_CONFIG --libs`"
-	    MYCRYPTO_CFLAGS="`$MYCRYPTO_CONFIG --cflags`"
-	    MYCRYPTO_VERSION="`$MYCRYPTO_CONFIG --version`"
+    	    MYCRYPTO_LIBS=&quot;`$MYCRYPTO_CONFIG --libs`&quot;
+	    MYCRYPTO_CFLAGS=&quot;`$MYCRYPTO_CONFIG --cflags`&quot;
+	    MYCRYPTO_VERSION=&quot;`$MYCRYPTO_CONFIG --version`&quot;
 	else
     	    AC_MSG_ERROR(You need at least mycrypto $MYCRYPTO_MIN_VERSION for this version of $PACKAGE)
 	fi	
     fi
 
     dnl update crypt libraries list
-    if test "$MYCRYPTO_WITHOUT" = "no" ;
+    if test &quot;$MYCRYPTO_WITHOUT&quot; = &quot;no&quot; ;
     then
 	dnl first crypto library is default one
-	if test "z$XMLSEC_CRYPTO" = "z"
+	if test &quot;z$XMLSEC_CRYPTO&quot; = &quot;z&quot;
 	then
-	    XMLSEC_CRYPTO="mycrypto"
-    	    XMLSEC_CRYPTO_LIB="xmlsec1-mycrypto"
-	    XMLSEC_CRYPTO_CFLAGS="$MYCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MYCRYPTO=1"
-	    XMLSEC_CRYPTO_LIBS="$MYCRYPTO_LIBS"
-	    XMLSEC_CRYPTO_LDADDS="$MYCRYPTO_LDADDS"
+	    XMLSEC_CRYPTO=&quot;mycrypto&quot;
+    	    XMLSEC_CRYPTO_LIB=&quot;xmlsec1-mycrypto&quot;
+	    XMLSEC_CRYPTO_CFLAGS=&quot;$MYCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MYCRYPTO=1&quot;
+	    XMLSEC_CRYPTO_LIBS=&quot;$MYCRYPTO_LIBS&quot;
+	    XMLSEC_CRYPTO_LDADDS=&quot;$MYCRYPTO_LDADDS&quot;
 	fi	
-	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mycrypto"
+	XMLSEC_CRYPTO_LIST=&quot;$XMLSEC_CRYPTO_LIST mycrypto&quot;
     	AC_MSG_RESULT(yes ('$MYCRYPTO_VERSION'))
     else
-	XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mycrypto"
+	XMLSEC_CRYPTO_DISABLED_LIST=&quot;$XMLSEC_CRYPTO_DISABLED_LIST mycrypto&quot;
 	AC_MSG_RESULT(no)
     fi
 fi
@@ -207,7 +207,7 @@ src/mycrypto/Makefile
 	    </pre></td></tr></table>
 </div>
 	</li>
-<li><p>Modify "xmlsec.spec.in" file to create "xmlsec-mycrypto"
+<li><p>Modify &quot;xmlsec.spec.in&quot; file to create &quot;xmlsec-mycrypto&quot;
 	RPM (if necessary).
 	</p></li>
 </ul>

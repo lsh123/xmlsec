@@ -63,20 +63,20 @@
 <p>A key in XML Security Library is a representation of the 
 	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
 	element and consist of several key data objects. 
-	The "value" key data usually contains raw key material (or handlers to 
+	The &quot;value&quot; key data usually contains raw key material (or handlers to 
 	key material) required to execute particular crypto transform. Other 
 	key data objects may contain any additional information about the key. 
 	All the key data objects in the key are associated with the same key 
 	material. For example, if a DSA key material has both an X509 
 	certificate and a PGP data associated with it then such a key can 
-	have a DSA key "value" and two key data objects for X509 certificate 
+	have a DSA key &quot;value&quot; and two key data objects for X509 certificate 
 	and PGP key data.
     </p>
 <div class="FIGURE">
 <a name="AEN326"></a><p><b>Figure 1. The key structure.</b></p>
 <p><img src="images/key.png" align="CENTER"></p>
 </div>
-<p>XML Security Library has several "invisible" key data classes. 
+<p>XML Security Library has several &quot;invisible&quot; key data classes. 
 	These classes never show up in the keys data list of a key but are used for 
 	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
 	children processing (<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>, 

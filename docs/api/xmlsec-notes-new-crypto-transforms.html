@@ -61,7 +61,7 @@
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-NEW-CRYPTO-TRANSFORMS"></a>Cryptographic transforms.</h1>
 <p>The cryptographic transforms (digests, signatures and encryption)
-	implementation is the main goal of "xmlsec-&lt;crypto&gt;" library.
+	implementation is the main goal of &quot;xmlsec-&lt;crypto&gt;&quot; library.
 	Most of the cryptographic <a href="xmlsec-notes-transforms.html">transforms</a> 
 	use default <tt class="STRUCTFIELD"><i>pushBin</i></tt> and <tt class="STRUCTFIELD"><i>popBin</i></tt> 
 	methods and provide custom <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method. 
@@ -76,12 +76,12 @@
 	one buffer). In this case, transform might keep the data in the 
 	input buffer till the next call to 
 	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
-	method. The "last" parameter of the 
+	method. The &quot;last&quot; parameter of the 
 	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
 	indicates that transform MUST process all the data in the input buffer
 	and return as much as possible in the output buffer. The 
 	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method 
-	might be called multiple times with non-zero "last" parameter until 
+	might be called multiple times with non-zero &quot;last&quot; parameter until 
 	the transforms returns nothing
 	in the output buffer. In addition, the transform implementation is 
 	responsible for managing the transform <tt class="STRUCTFIELD"><i>status</i></tt> 
@@ -98,8 +98,8 @@
 </tr>
 <tr>
 <td align="LEFT" valign="TOP">xmlSecTransformStatusWorking</td>
-<td align="LEFT" valign="TOP">Transform process the next (if "last" parameter is zero) or
-	last block of data (if "last" parameter is non-zero).
+<td align="LEFT" valign="TOP">Transform process the next (if &quot;last&quot; parameter is zero) or
+	last block of data (if &quot;last&quot; parameter is non-zero).
 	When transform returns all the data, it sets the 
 	<tt class="STRUCTFIELD"><i>status</i></tt> variable to 
 	xmlSecTransformStatusFinished.</td>
@@ -117,7 +117,7 @@
 	The <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method is called
 	after transform execution is finished. The 
 	<a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method implementation 
-	must set the "status" member to <font>xmlSecTransformStatusOk</font>
+	must set the &quot;status&quot; member to <font>xmlSecTransformStatusOk</font>
 	if signature, hmac or digest is successfuly verified or to
 	<font>xmlSecTransformStatusFail</font>
 	otherwise.

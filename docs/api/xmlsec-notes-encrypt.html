@@ -129,40 +129,40 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
     /* load template */
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
 	goto done;	
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
 	goto done;
     }
 
     /* load DES key */
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) &lt; 0) {
-        fprintf(stderr,"Error: encryption failed\n");
+        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
     	goto done;
     }
         

@@ -1,0 +1,468 @@
+<!-- ##### SECTION Title ##### -->
+xkms
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### ENUM xmlXkissServerCtxMode ##### -->
+<para>
+
+</para>
+
+@xmlXkissServerCtxModeLocateRequest: 
+@xmlXkissServerCtxModeValidateRequest: 
+
+<!-- ##### STRUCT xmlSecXkissServerCtx ##### -->
+<para>
+
+</para>
+
+@userData: 
+@flags: 
+@flags2: 
+@keyInfoReadCtx: 
+@keyInfoWriteCtx: 
+@enabledRespondWith: 
+@result: 
+@keys: 
+@mode: 
+@opaqueClientDataNode: 
+@firtsMsgExtNode: 
+@firtsRespMechNode: 
+@keyInfoNode: 
+@respWithList: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxCreate ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxDestroy ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxInitialize ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxFinalize ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxCopyUserPref ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxReset ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxLocate ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxValidate ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdsGet ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdsInit ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdsShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdsRegisterDefault ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdsRegister ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithReadNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithWriteNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithDebugDump ##### -->
+<para>
+
+</para>
+
+@id: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@id: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithDefaultReadNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithDefaultWriteNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecXkmsRespondWithReadNodeMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecXkmsRespondWithWriteNodeMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecXkmsRespondWithKlass ##### -->
+<para>
+
+</para>
+
+@name: 
+@nodeName: 
+@nodeNs: 
+@readNode: 
+@writeNode: 
+
+<!-- ##### MACRO xmlSecXkmsRespondWithKlassGetName ##### -->
+<para>
+
+</para>
+
+@id: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithIdListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdListFind ##### -->
+<para>
+
+</para>
+
+@list: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdListFindByName ##### -->
+<para>
+
+</para>
+
+@list: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdListWrite ##### -->
+<para>
+
+</para>
+
+@list: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithIdUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithKeyNameId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithKeyNameGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithKeyValueId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithKeyValueGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithPrivateKeyId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithPrivateKeyGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithRetrievalMethodId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithRetrievalMethodGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithX509CertId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithX509CertGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithX509ChainId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithX509ChainGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithX509CRLId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithX509CRLGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithPGPId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithPGPGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecXkmsRespondWithSPKIId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithSPKIGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+

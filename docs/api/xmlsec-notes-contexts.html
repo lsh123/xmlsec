@@ -71,7 +71,7 @@
     For example, signature in a simple SAML Response should have only 
     one &lt;dsig:Reference/&gt; element with an empty or NULL 
     URI attribute and only one enveloped transform.
-    XML Security Library uses "context" objects to let application
+    XML Security Library uses &quot;context&quot; objects to let application
     enable or disable particular features, return the result
     data and the information collected during the processing.
     Also all the context objects defined in XML Security library have 
@@ -109,21 +109,21 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* load file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
 	goto done;	
     }
 
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
 	goto done;
     }
 
@@ -136,7 +136,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) &lt; 0) ||
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) &lt; 0)) {
 
-        fprintf(stderr,"Error: failed to limit allowed siganture transforms\n");
+        fprintf(stderr,&quot;Error: failed to limit allowed siganture transforms\n&quot;);
 	goto done;
     }
     if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) &lt; 0) ||
@@ -144,19 +144,19 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) &lt; 0) ||
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) &lt; 0)) {
 
-        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
+        fprintf(stderr,&quot;Error: failed to limit allowed reference transforms\n&quot;);
 	goto done;
     }
 
     /* in addition, limit possible key data to valid X509 certificates only */
     if(xmlSecPtrListAdd(&amp;(dsigCtx-&gt;keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) &lt; 0) {
-        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        fprintf(stderr,&quot;Error: failed to limit allowed key data\n&quot;);
 	goto done;
     }
     
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,"Error: signature verify\n");
+        fprintf(stderr,&quot;Error: signature verify\n&quot;);
 	goto done;
     }
 
@@ -164,15 +164,15 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     if((dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) &amp;&amp; 
         (xmlSecPtrListGetSize(&amp;(dsigCtx-&gt;signedInfoReferences)) != 1)) {
 	
-        fprintf(stderr,"Error: only one reference is allowed\n");
+        fprintf(stderr,&quot;Error: only one reference is allowed\n&quot;);
 	goto done;
     }
         
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, "Signature is OK\n");
+	fprintf(stdout, &quot;Signature is OK\n&quot;);
     } else {
-	fprintf(stdout, "Signature is INVALID\n");
+	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
     }    
 
     /* success */

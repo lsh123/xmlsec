@@ -78,16 +78,16 @@
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;- Root Certificate (signed by itself)
 	    </pre></td></tr></table>
 </div>
-	At the end of the chain there is a "Root Certificate" which
+	At the end of the chain there is a &quot;Root Certificate&quot; which
 	is signed by itself. There is no way to verify the validity of the
-	root certificate and application have to "trust" it
-	(another name for root certificates is "trusted" certificates).
+	root certificate and application have to &quot;trust&quot; it
+	(another name for root certificates is &quot;trusted&quot; certificates).
 	<p>	Application can use <font>xmlSecCryptoAppKeysMngrCertLoad</font>
-	function to load both "trusted" and "un-trusted"
-	certificates. However, the selection of "trusted"
+	function to load both &quot;trusted&quot; and &quot;un-trusted&quot;
+	certificates. However, the selection of &quot;trusted&quot;
 	certificates is very sensitive process and this function might be
 	not implemented for some crypto engines. In this case, the 
-	"trusted" certificates list is loaded during initialization
+	&quot;trusted&quot; certificates list is loaded during initialization
 	or specified in crypto engine configuration files.
 	Check XML Security Library API reference for more details. 
 	</p>
@@ -119,11 +119,11 @@ load_trusted_certs(char** files, int files_size) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, "Error: failed to initialize keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }    
@@ -133,7 +133,7 @@ load_trusted_certs(char** files, int files_size) {
 
 	/* load trusted cert */
 	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
-    	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
+    	    fprintf(stderr,&quot;Error: failed to load pem certificate from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}

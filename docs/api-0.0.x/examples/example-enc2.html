@@ -107,8 +107,8 @@ only one   context object per application<br><br><code>
          keysMngr = xmlSecSimpleKeysMngrCreate();    
         <br>
          if(keysMngr == NULL) {<br>
-           fprintf(stderr, "Error: failed to create keys
-  manager\n");<br>
+           fprintf(stderr, &quot;Error: failed to create keys
+  manager\n&quot;);<br>
            return(-1);    <br>
          }<br><br>
        <br><br>
@@ -117,14 +117,14 @@ only one   context object per application<br><br><code>
           */<br>
          ctx = xmlSecEncCtxCreate(keysMngr);<br>
          if(ctx == NULL) {<br>
-           fprintf(stderr, "Error: template failed to create   context\n");<br>
+           fprintf(stderr, &quot;Error: template failed to create   context\n&quot;);<br>
            return(-1)<br>
          }<br><br>
          /** <br>
           * load key private rsa key<br>
           */<br>
          if(xmlSecSimpleKeysMngrLoadPem(keysMgr, argv[1],  NULL, NULL, 1) == NULL) {<br>
-           fprintf(stderr, "Error: failed to load key   from   \"%s\"\n", argv[1]);<br>
+           fprintf(stderr, &quot;Error: failed to load key   from   \&quot;%s\&quot;\n&quot;, argv[1]);<br>
            return(-1);<br>
          }<br><br></code>
       </p>
@@ -146,7 +146,7 @@ references<br>
     xmlSubstituteEntitiesDefault(1);<br><br>
     doc = xmlParseFile(filename);<br>
     if (doc == NULL) {<br>
-       fprintf(stderr, "Error: unable to parse file \"%s\"\n",
+       fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;,
 filename);<br>
        goto done;    <br>
     }<br>
@@ -155,8 +155,8 @@ filename);<br>
      * Check the document is of the right kind<br>
      */    <br>
     if(xmlDocGetRootElement(doc) == NULL) {<br>
-       fprintf(stderr,"Error: empty document for file
-\"%s\"\n", filename);<br>
+       fprintf(stderr,&quot;Error: empty document for file
+\&quot;%s\&quot;\n&quot;, filename);<br>
        goto done;    <br>
     }<br>
     <br>
@@ -165,7 +165,7 @@ filename);<br>
      */<br>
     ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br>
     if(ret &lt; 0) {<br>
-       fprintf(stderr, "Error: decryption failed\n");<br>
+       fprintf(stderr, &quot;Error: decryption failed\n&quot;);<br>
        goto done;    <br>
     }<br>
     <br>
@@ -211,13 +211,13 @@ filename);<br>
              ERR_clear_error();</code><code></code><code></code>
       </p>
 <h4>Appendix A. The encrypted document.</h4>
-<blockquote><code>&lt;?xml version="1.0"?&gt;<br>
-   &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;<br>
-   &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/&gt;<br>
-   &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
-   &lt;EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;<br>
-   &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/&gt;<br>
-   &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
+<blockquote><code>&lt;?xml version=&quot;1.0&quot;?&gt;<br>
+   &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
+   &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#aes128-cbc&quot;/&gt;<br>
+   &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+   &lt;EncryptedKey xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
+   &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&quot;/&gt;<br>
+   &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
    &lt;KeyName&gt;test-rsa-key&lt;/KeyName&gt;<br>
    &lt;/KeyInfo&gt;<br>
    &lt;CipherData&gt;<br>
@@ -238,7 +238,7 @@ filename);<br>
    &lt;/CipherValue&gt;<br>
    &lt;/CipherData&gt;<br>
    &lt;EncryptionProperties&gt;<br>
-   &lt;EncryptionProperty Id="Classified" Level="Top secret"/&gt;<br>
+   &lt;EncryptionProperty Id=&quot;Classified&quot; Level=&quot;Top secret&quot;/&gt;<br>
    &lt;/EncryptionProperties&gt;<br>
    &lt;/EncryptedData&gt;
         </code></blockquote>

@@ -97,11 +97,11 @@ load_keys(char** files, int files_size) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, "Error: failed to initialize keys manager.\n");
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }    
@@ -112,14 +112,14 @@ load_keys(char** files, int files_size) {
 	/* load key */
 	key = xmlSecCryptoAppKeyLoad(files[i], xmlSecKeyDataFormatPem, NULL, NULL, NULL);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", files[i]);
+    	    fprintf(stderr,&quot;Error: failed to load pem key from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
 
 	/* set key name to the file name, this is just an example! */
 	if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
-    	    fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
+    	    fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeyDestroy(key);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
@@ -129,7 +129,7 @@ load_keys(char** files, int files_size) {
 	 * for destroying key 
 	 */
 	if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
-    	    fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
+    	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
 	    xmlSecKeyDestroy(key);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);

@@ -41,7 +41,7 @@ docs-format:
 	done)
 
 dist-hook:
-	@cp -p $(srcdir)/*.html $(distdir)
+	@$(CP) -p $(srcdir)/*.html $(distdir)
 
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)

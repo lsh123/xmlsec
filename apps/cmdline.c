@@ -86,7 +86,7 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
     while((pos < argc) && (argv[pos][0] == '-')) {
 	param = xmlSecAppCmdLineParamsListFind(params, topics, argv[pos]);
 	if(param == NULL) {
-	    fprintf(stderr, "Error: parameter \"%s\" is not valid.\n", argv[pos]);
+	    fprintf(stderr, "Error: parameter \"%s\" is not supported or the requested\nfeature might have been disabled during compilation.\n", argv[pos]);
 	    return(-1);
 	}
 	

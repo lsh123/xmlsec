@@ -7,7 +7,6 @@ file_format=$4
 
 pub_key_format=$file_format
 cert_format=$file_format
-crypto_config=$topfolder
 priv_key_option="--pkcs12"
 priv_key_format="p12"
 
@@ -19,7 +18,11 @@ timestamp=`date +%Y%m%d_%H%M%S`
 tmpfile=$TMPFOLDER/testDSig.$timestamp-$$.tmp
 logfile=$TMPFOLDER/testDSig.$timestamp-$$.log
 script="$0"
-keysfile=$topfolder/keys.xml
+
+# prepate crypto config folder
+crypto_config=$TMPFOLDER/xmlsec-crypto-config
+keysfile=$crypto_config/keys.xml
+
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
 
@@ -231,12 +234,12 @@ execDSigTest "merlin-xpath-filter2-three/sign-spec" \
 # test dynamic signature
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
-echo "$xmlsec_app sign-tmpl $xmlsec_params --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile >> $logfile 2>> $logfile
 printRes $?
 printf "    Verify new signature                                 "
-echo "$xmlsec_app verify --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $?
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"

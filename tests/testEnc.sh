@@ -7,7 +7,6 @@ file_format=$4
 
 pub_key_format=$file_format
 cert_format=$file_format
-crypto_config=$topfolder
 priv_key_option="--pkcs12"
 priv_key_format="p12"
 
@@ -19,7 +18,11 @@ timestamp=`date +%Y%m%d_%H%M%S`
 tmpfile=$TMPFOLDER/testEnc.$timestamp-$$.tmp
 logfile=$TMPFOLDER/testEnc.$timestamp-$$.log
 script="$0"
-keysfile=$topfolder/keys.xml
+
+# prepate crypto config folder
+crypto_config=$TMPFOLDER/xmlsec-crypto-config
+keysfile=$crypto_config/keys.xml
+
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
 
@@ -308,12 +311,12 @@ execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
 # test dynamic encryption
 echo "Dynamic encryption template"
 printf "    Encrypt template                                     "
-echo "$xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile >> $logfile 2>> $logfile
 printRes $?
 printf "    Decrypt document                                     "
-echo "$xmlsec_app decrypt $xmlsec_params $topfolder/keys.xml $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app decrypt $xmlsec_params --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app decrypt $xmlsec_params $keysfile $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app decrypt $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $?
 
 

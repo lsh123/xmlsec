@@ -78,7 +78,7 @@ docs-man:
 
 check: check-all check-info 
 
-check-all: $(TEST_APP) reset-nss-db
+check-all: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \
 	for i in $(CHECK_CRYPTO_LIST) ; do \
 	    echo "=================== Checking xmlsec-$$i =================================" && \
@@ -86,7 +86,6 @@ check-all: $(TEST_APP) reset-nss-db
 	    $(SHELL) ./tests/testDSig.sh $$i ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der && \
 	    $(SHELL) ./tests/testEnc.sh $$i ./tests $$ABS_BUILDDIR/$(TEST_APP) der ; \
 	done; )
-
 
 check-info:
 	@echo "-------------------------- ATTENTION -----------------------------------"
@@ -98,26 +97,16 @@ check-info:
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
-reset-nss-db:
-	@(ABS_BUILDDIR=`pwd` && cd $(top_srcdir) && \
-	if [ "z$(DEFAULT_CRYPTO)" = "znss" ] ; \
-	then \
-	    echo "Removing old nss db and replacing with a new one" && \
-	    rm -rf ./tests/cert*.db ./tests/key*.db ./tests/secmod*.db && \
-	    cp ./tests/nssdb/*.db ./tests; \
-	fi)
-
-check-km: $(TEST_APP) reset-nss-db
+check-km: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testKeys.sh default ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
+	$(SHELL) ./tests/testKeys.sh default tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
-check-dsig: $(TEST_APP) reset-nss-db
-	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testDSig.sh default ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
+check-dsig: $(TEST_APP) 	@($(PRECHECK_COMMANDS) && \
+	$(SHELL) ./tests/testDSig.sh default tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
 
-check-enc: $(TEST_APP) reset-nss-db
+check-enc: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testEnc.sh default ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
+	$(SHELL) ./tests/testEnc.sh default tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u
@@ -131,10 +120,10 @@ perfcheck: $(TEST_APP)
 	@(export PERF_TEST=10 && $(MAKE) check)
 
 dist-hook:
-	@(rm -rf `find $(distdir) -name CVS`)
+	@($(RM) -rf `find $(distdir) -name CVS`)
 
 cleantar:
-	@(rm -f xmlsec*.tar.gz COPYING.LIB)
+	@($(RM) -f xmlsec*.tar.gz COPYING.LIB)
 
 rpm: cleantar
 	@(unset CDPATH && $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)

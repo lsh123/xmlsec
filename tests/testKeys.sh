@@ -7,7 +7,6 @@ file_format=$4
 
 pub_key_format=$file_format
 cert_format=$file_format
-crypto_config=$topfolder
 priv_key_option="--pkcs12"
 priv_key_format="p12"
 
@@ -19,8 +18,13 @@ timestamp=`date +%Y%m%d_%H%M%S`
 tmpfile=$TMPFOLDER/testKeys.$timestamp-$$.tmp
 logfile=$TMPFOLDER/testKeys.$timestamp-$$.log
 script="$0"
-keysfile=$topfolder/keys.xml
 nssdbfolder=$topfolder/nssdb
+
+# prepate crypto config folder
+crypto_config=$TMPFOLDER/xmlsec-crypto-config
+keysfile=$crypto_config/keys.xml
+mkdir -p $crypto_config
+rm -rf $crypto_config/*
 
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
@@ -77,7 +81,7 @@ echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 # remove old keys file and copy NSS DB files if needed
 rm -rf $keysfile
 if [ "z$crypto" = "znss" ] ; then
-    cp -f $nssdbfolder/* $topfolder
+    cp -f $nssdbfolder/*.db $crypto_config
 fi
 
 execKeysTest "test-hmac-sha1" 	"hmac-192"

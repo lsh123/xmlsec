@@ -21,7 +21,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/xpath.h>
 #include <xmlsec/errors.h>
 
 /* Enveloped transform */

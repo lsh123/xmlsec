@@ -216,9 +216,10 @@ XMLSEC_EXPORT void		xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
 							 FILE *output);
 
 
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(const xmlChar* type,
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(const xmlChar* klass,
 							 const xmlChar* name,
-							 size_t sizeBits);
+							 size_t sizeBits,
+							 xmlSecKeyDataType type);
 
 
 XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key, 

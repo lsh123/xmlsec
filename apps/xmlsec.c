@@ -1361,7 +1361,7 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	    return(-1);
 	}
 	
-	ctx->sessionKey = xmlSecAppCryptoKeyGenerate(klassAndSize, NULL);
+	ctx->sessionKey = xmlSecAppCryptoKeyGenerate(klassAndSize, NULL, xmlSecKeyDataTypeSession);
 	if(ctx->sessionKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

@@ -54,7 +54,8 @@ static int	xmlSecOpenSSLSymKeyDataBinWrite		(xmlSecKeyDataId id,
 							 size_t* bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecOpenSSLSymKeyDataGenerate		(xmlSecKeyDataPtr data,
-							 size_t sizeBits);
+							 size_t sizeBits,
+							 xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLSymKeyDataGetType	(xmlSecKeyDataPtr data);
 static size_t	xmlSecOpenSSLSymKeyDataGetSize		(xmlSecKeyDataPtr data);
@@ -126,7 +127,7 @@ xmlSecOpenSSLSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecOpenSSLSymKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecOpenSSLSymKeyDataCheckId(data), -1);

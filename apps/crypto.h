@@ -40,40 +40,41 @@ extern "C" {
 #endif /* XMLSEC_CRYPTO_NSS */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 
-int	xmlSecAppCryptoInit			(void);
-int	xmlSecAppCryptoShutdown			(void);
+int	xmlSecAppCryptoInit					(void);
+int	xmlSecAppCryptoShutdown					(void);
 
-xmlSecKeyPtr xmlSecAppCryptoKeyGenerate		(char* keyKlassAndSize,
-								 const char* name);
+xmlSecKeyPtr xmlSecAppCryptoKeyGenerate				(char* keyKlassAndSize,
+								 const char* name,
+								 xmlSecKeyDataType type);
 
 /*****************************************************************************
  *
  * Simple keys manager
  *
  ****************************************************************************/
-int	xmlSecAppCryptoSimpleKeysMngrInit	(xmlSecKeysMngrPtr mngr);
-int	xmlSecAppCryptoSimpleKeysMngrLoad	(xmlSecKeysMngrPtr mngr, 
+int	xmlSecAppCryptoSimpleKeysMngrInit			(xmlSecKeysMngrPtr mngr);
+int	xmlSecAppCryptoSimpleKeysMngrLoad			(xmlSecKeysMngrPtr mngr, 
 								 const char *filename);
-int	xmlSecAppCryptoSimpleKeysMngrSave	(xmlSecKeysMngrPtr mngr, 
+int	xmlSecAppCryptoSimpleKeysMngrSave			(xmlSecKeysMngrPtr mngr, 
 								 const char *filename,
 								 xmlSecKeyDataType type);
-int 	xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrPemCertLoad		(xmlSecKeysMngrPtr mngr, 
 								 const char *filename, 
 								 int trusted);
-int 	xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad		(xmlSecKeysMngrPtr mngr, 
 								 char *params, 
 								 const char* pwd, 
 								 const char* name,
 								 int privateKey);
-int 	xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad		(xmlSecKeysMngrPtr mngr, 
 								 const char *filename, 
 								 const char* pwd, 
 								 const char *name);
-int 	xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, 
+int 	xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad		(xmlSecKeysMngrPtr mngr, 
 								 const char* keyKlass, 
 								 const char* filename, 
 								 const char *name);
-int	xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, 
+int	xmlSecAppCryptoSimpleKeysMngrKeyGenerate		(xmlSecKeysMngrPtr mngr, 
 								 char* keyKlassAndSize,
 								 const char* name);
 

@@ -387,7 +387,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, char* keyKlassA
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(keyKlassAndSize != NULL, -1);
     
-    key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name);
+    key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -412,7 +412,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, char* keyKlassA
 }
 
 xmlSecKeyPtr 
-xmlSecAppCryptoKeyGenerate(char* keyKlassAndSize, const char* name) {
+xmlSecAppCryptoKeyGenerate(char* keyKlassAndSize, const char* name, xmlSecKeyDataType type) {
     xmlSecKeyPtr key;
     char* p;
     int size;
@@ -433,7 +433,7 @@ xmlSecAppCryptoKeyGenerate(char* keyKlassAndSize, const char* name) {
     *(p++) = '\0';
     size = atoi(p);
     
-    key = xmlSecKeyGenerate(BAD_CAST keyKlassAndSize, BAD_CAST name, size);
+    key = xmlSecKeyGenerate(BAD_CAST keyKlassAndSize, BAD_CAST name, size, type);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

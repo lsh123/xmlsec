@@ -554,21 +554,21 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
 }
 
 xmlSecKeyPtr
-xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
+xmlSecKeyGenerate(const xmlChar* klass, const xmlChar* name, size_t sizeBits, xmlSecKeyDataType type) {
     xmlSecKeyPtr key;
     xmlSecKeyDataPtr data;
     xmlSecKeyDataId dataId;
     int ret;
     
-    xmlSecAssert2(type != NULL, NULL);
+    xmlSecAssert2(klass != NULL, NULL);
     
-    dataId = xmlSecKeyDataIdsFindByName(type, xmlSecKeyDataUsageAny);
+    dataId = xmlSecKeyDataIdsFindByName(klass, xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    "xmlSecKey",
 		    "xmlSecKeyDataIdsFindByName",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", type);
+		    "klass=%s", klass);
 	return(NULL);    
     }
     
@@ -582,13 +582,13 @@ xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
 	return(NULL);    
     }
 
-    ret = xmlSecKeyDataGenerate(data, sizeBits);
+    ret = xmlSecKeyDataGenerate(data, sizeBits, type);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyDataGenerate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", sizeBits);
+		    "size=%d;type=%d", sizeBits, type);
 	xmlSecKeyDataDestroy(data);
 	return(NULL);    
     }

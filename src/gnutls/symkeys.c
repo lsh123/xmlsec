@@ -29,7 +29,7 @@
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
  ****************************************************************************/
-static int	xmlSecGnuTLSSymKeyDataInitialize		(xmlSecKeyDataPtr data);
+static int	xmlSecGnuTLSSymKeyDataInitialize	(xmlSecKeyDataPtr data);
 static int	xmlSecGnuTLSSymKeyDataDuplicate		(xmlSecKeyDataPtr dst,
 							 xmlSecKeyDataPtr src);
 static void	xmlSecGnuTLSSymKeyDataFinalize		(xmlSecKeyDataPtr data);
@@ -52,11 +52,12 @@ static int	xmlSecGnuTLSSymKeyDataBinWrite		(xmlSecKeyDataId id,
 							 size_t* bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecGnuTLSSymKeyDataGenerate		(xmlSecKeyDataPtr data,
-							 size_t sizeBits);
+							 size_t sizeBits,
+							 xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecGnuTLSSymKeyDataGetType	(xmlSecKeyDataPtr data);
 static size_t	xmlSecGnuTLSSymKeyDataGetSize		(xmlSecKeyDataPtr data);
-static void	xmlSecGnuTLSSymKeyDataDebugDump	(xmlSecKeyDataPtr data,
+static void	xmlSecGnuTLSSymKeyDataDebugDump		(xmlSecKeyDataPtr data,
 							 FILE* output);
 static void	xmlSecGnuTLSSymKeyDataDebugXmlDump	(xmlSecKeyDataPtr data,
 							 FILE* output);
@@ -124,7 +125,7 @@ xmlSecGnuTLSSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecGnuTLSSymKeyDataCheckId(data), -1);

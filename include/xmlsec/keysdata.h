@@ -72,6 +72,8 @@ typedef unsigned int				xmlSecKeyDataType;
 #define xmlSecKeyDataTypePublic				0x0001
 #define xmlSecKeyDataTypePrivate			0x0002
 #define xmlSecKeyDataTypeSymmetric			0x0004
+#define xmlSecKeyDataTypeSession			0x0008
+#define xmlSecKeyDataTypePermanent			0x0010
 #define xmlSecKeyDataTypeAny				0xFFFF
 
 /**************************************************************************
@@ -117,7 +119,8 @@ XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataCreate		(xmlSecKeyDataId id);
 XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataDuplicate		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT void		xmlSecKeyDataDestroy		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int		xmlSecKeyDataGenerate		(xmlSecKeyDataPtr data,
-								 size_t sizeBits);
+								 size_t sizeBits,
+								 xmlSecKeyDataType type);
 XMLSEC_EXPORT xmlSecKeyDataType	xmlSecKeyDataGetType		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT size_t		xmlSecKeyDataGetSize		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT const xmlChar*	xmlSecKeyDataGetIdentifier	(xmlSecKeyDataPtr data);
@@ -312,7 +315,8 @@ typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
  * Returns 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataGenerateMethod)	(xmlSecKeyDataPtr data,
-								 size_t sizeBits);
+								 size_t sizeBits,
+								 xmlSecKeyDataType type);
 
 /** 
  * xmlSecKeyDataGetTypeMethod:

@@ -396,14 +396,14 @@ xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned char** buf,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKeyDataType type) {
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(data->id->generate != NULL, -1);
     
     /* write data */
-    ret = data->id->generate(data, sizeBits);
+    ret = data->id->generate(data, sizeBits, type);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),

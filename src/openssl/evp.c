@@ -313,7 +313,8 @@ static int		xmlSecOpenSSLKeyDataDsaXmlWrite		(xmlSecKeyDataId id,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int		xmlSecOpenSSLKeyDataDsaGenerate		(xmlSecKeyDataPtr data,
-								 size_t sizeBits);
+								 size_t sizeBits,
+								 xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataDsaGetType		(xmlSecKeyDataPtr data);
 static size_t		xmlSecOpenSSLKeyDataDsaGetSize		(xmlSecKeyDataPtr data);
@@ -776,7 +777,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     DSA* dsa;
     int counter_ret;
     unsigned long h_ret;
@@ -930,7 +931,8 @@ static int		xmlSecOpenSSLKeyDataRsaXmlWrite		(xmlSecKeyDataId id,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int		xmlSecOpenSSLKeyDataRsaGenerate		(xmlSecKeyDataPtr data,
-							    	 size_t sizeBits);
+							    	 size_t sizeBits,
+								 xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataRsaGetType		(xmlSecKeyDataPtr data);
 static size_t		xmlSecOpenSSLKeyDataRsaGetSize		(xmlSecKeyDataPtr data);
@@ -1297,7 +1299,7 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     RSA* rsa;
     int ret;
     

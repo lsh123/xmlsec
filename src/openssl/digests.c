@@ -107,7 +107,10 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+
+#ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_init(&(ctx->digestCtx));
+#endif /* XMLSEC_OPENSSL_096 */
     
     return(0);
 }
@@ -122,7 +125,9 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
     
+#ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_cleanup(&(ctx->digestCtx));
+#endif /* XMLSEC_OPENSSL_096 */
     memset(ctx, 0, sizeof(xmlSecOpenSSLDigestCtx));
 }
 

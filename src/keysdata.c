@@ -453,18 +453,26 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  *
  * xmlSecKeyDataBinary methods
  *
+ * key (xmlSecBuffer) is located after xmlSecKeyData structure
+ *
  *************************************************************************/
 int
 xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecBufferPtr buffer;
+    int ret;
+    
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), -1);
         
-    /* create buffer */
-    xmlSecAssert2(data->reserved0 == NULL, -1);
-    data->reserved0 = xmlSecBufferCreate(0);
-    if(data->reserved0 == NULL) {
+    /* initialize buffer */
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+    
+    ret = xmlSecBufferInitialize(buffer, 0);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferCreate");
+		    "xmlSecBufferInitialize");
 	return(-1);
     }
     
@@ -477,7 +485,9 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     int ret;
     
     xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecKeyDataBinarySize), -1);
     xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecKeyDataBinarySize), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(src);
     xmlSecAssert2(buffer != NULL, -1);
@@ -498,14 +508,16 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
 void 
 xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecBufferPtr buffer;
     
-    /* destroy buffer */
-    if(data->reserved0 != NULL) {
-	/* zero buffer before destroying */
-	xmlSecBufferDestroy((xmlSecBufferPtr)(data->reserved0));
-	data->reserved0 = NULL;
-    }
+    xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
+    
+    /* initialize buffer */
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+    
+    xmlSecBufferFinalize(buffer);    
 }
 
 int 
@@ -763,6 +775,7 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
     xmlSecAssert(data->id->dataNodeName != NULL);
     xmlSecAssert(output != NULL);
 
@@ -779,6 +792,7 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
+    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize));
     xmlSecAssert(data->id->dataNodeName != NULL);
     xmlSecAssert(output != NULL);
 
@@ -795,7 +809,7 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
-    xmlSecAssert2(data->reserved0 != NULL, 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), 0);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, 0);
@@ -807,9 +821,10 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
 xmlSecBufferPtr 
 xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(data->reserved0 != NULL, NULL);
-    
-    return((xmlSecBufferPtr)data->reserved0);    
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), NULL);
+
+    /* key (xmlSecBuffer) is located after xmlSecKeyData structure */
+    return((xmlSecBufferPtr)(((unsigned char*)data) + sizeof(xmlSecKeyData)));
 }
 
 int
@@ -817,6 +832,7 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, const unsigned char* bu
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecKeyDataBinarySize), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
 

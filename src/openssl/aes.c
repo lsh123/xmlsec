@@ -76,7 +76,7 @@ static void		xmlSecOpenSSLKeyDataAesDebugXmlDump	(xmlSecKeyDataPtr data,
 
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesKlass = {
     sizeof(xmlSecKeyDataKlass),
-    sizeof(xmlSecKeyData),
+    xmlSecKeyDataBinarySize,
     
     /* data */
     xmlSecNameAESKeyValue,

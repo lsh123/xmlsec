@@ -67,7 +67,7 @@ static void		xmlSecOpenSSLKeyDataHmacDebugXmlDump	(xmlSecKeyDataPtr data,
 
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacKlass = {
     sizeof(xmlSecKeyDataKlass),
-    sizeof(xmlSecKeyData),
+    xmlSecKeyDataBinarySize,
 
     /* data */
     xmlSecNameHMACKeyValue,

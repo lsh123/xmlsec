@@ -152,7 +152,11 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
  * or 0 otherwise.
  */ 
 #define xmlSecKeyDataIsValid(data) \
-	((( data ) != NULL) && ((( data )->id) != NULL))
+	((( data ) != NULL) && \
+	 (( data )->id != NULL) && \
+	 (( data )->id->klassSize >= sizeof(xmlSecKeyDataKlass)) && \
+	 (( data )->id->objSize >= sizeof(xmlSecKeyData)) && \
+	 (( data )->id->name != NULL))
 /**
  * xmlSecKeyDataCheckId:
  * @data: the pointer to data.
@@ -175,6 +179,16 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
  	(xmlSecKeyDataIsValid(( data )) && \
 	(((( data )->id->usage) & ( usg )) != 0))
 
+/**
+ * xmlSecKeyDataCheckSize:
+ * @data: the pointer to data.
+ * @size: the expected size.
+ *
+ * Macro. Returns 1 if @data is valid and @data's object has at least @size bytes.
+ */
+#define xmlSecKeyDataCheckSize(data, size) \
+ 	(xmlSecKeyDataIsValid(( data )) && \
+	 (( data )->id->objSize >= size))
 
 /**************************************************************************
  *
@@ -388,8 +402,13 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataPtrListGetKlass		(void);
 /**************************************************************************
  *
  * xmlSecKeyDataBinary
+ * 
+ * key (xmlSecBuffer) is located after xmlSecKeyData structure
  *
  *************************************************************************/
+#define xmlSecKeyDataBinarySize	\
+    (sizeof(xmlSecKeyData) + sizeof(xmlSecBuffer))
+ 
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueInitialize	(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueDuplicate	(xmlSecKeyDataPtr dst,
 									xmlSecKeyDataPtr src);

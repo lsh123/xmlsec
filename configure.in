@@ -491,7 +491,7 @@ NSS_FOUND="no"
 dnl if nss is disabled, bail out early
 AC_ARG_WITH(nss,     [  --with-nss=[PFX]          nss location])
 AC_ARG_WITH(nspr,    [  --with-nspr=[PFX]         nspr location (needed for NSS)])
-AC_ARG_WITH(mozilla, [  --with-mozilla-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
+AC_ARG_WITH(mozilla_ver, [  --with-mozilla-ver=[VER]  mozilla version (alt to --with-nss, --with-nspr)])
 if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
     AC_MSG_CHECKING(for NSS libraries) 
     AC_MSG_RESULT(no)

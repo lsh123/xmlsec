@@ -1,3 +1,9 @@
+Fri Jul 11 13:33:28 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am: fixed builddir != sourcedir one more time (use abs_top_*
+	instead of top_*)
+	* configure.in: upgraded mozilla search path to 1.4
+
 Mon 07 Jul 2003 08:05:18 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* src/openssl/apps.c src/openssl/x509.c src/openssl/x509vfy.c: fixed

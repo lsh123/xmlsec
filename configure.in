@@ -430,7 +430,7 @@ if test "$with_nss" = "no" ; then
     NSS_WITHOUT="yes"
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST nss"
 else
-    MOZILLA_VERSION="1.2.1"
+    MOZILLA_VERSION="1.4"
     NSPR_MIN_VERSION="4.0"
     NSPR_INCLUDES_FOUND="no"
     NSPR_LIBS_FOUND="no"

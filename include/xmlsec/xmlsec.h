@@ -83,8 +83,49 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
  */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 
-/* XPointer transform namespace */
+/**
+ * xmlSecXPointerNs:
+ *
+ * XPointer transform namespace 
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlExcC14NNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlExcC14NWithCommentsNs[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAesKeyValueName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDesKeyValueName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDsaKeyValueName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHmacKeyValueName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecRsaKeyValueName[];
+    
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncAes128CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncAes192CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncAes256CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKWAes128CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKWAes192CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKWAes256CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncDes3CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKWDes3CbcHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSignDsaSha1Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecMacHmacSha1Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecMacHmacMd5Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecMacHmacRipeMd160Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDigestRipemd160Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSignRsaSha1Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncRsaPkcs1Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncRsaOaepHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDigestSha1Href[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecBase64DecodeHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecC14NInclusiveTransformHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecC14NInclusiveWithCommentsTransformHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecC14NExclusiveTransformHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecC14NExclusiveWithCommentsTransformHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecTransformEnvelopedHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathTransformHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2TransformHref[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecTransformXsltHref[];
+
+
 
 XMLSEC_EXPORT int	xmlSecInit			(void);
 XMLSEC_EXPORT int	xmlSecShutdown			(void);

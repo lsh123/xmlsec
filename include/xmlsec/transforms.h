@@ -251,8 +251,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacMd5;
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecHmacKey;
 
-XMLSEC_EXPORT int	xmlSecHmacAddOutputLength(xmlNodePtr transformNode,
-						 size_t bitsLen);
 #endif /* XMLSEC_NO_HMAC */
 
 /********************************************************************
@@ -300,9 +298,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncRsaOaep;
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecRsaKey;
 
-XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode,
-						 const unsigned char *buf,
-						 size_t size);
 #endif /* XMLSEC_NO_RSA */
 
 
@@ -358,16 +353,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPath2;
  */
 XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPointer;
 
-XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
-						 const xmlChar *expression,
-						 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPath2Add(xmlNodePtr transformNode, 
-						 xmlSecXPath2TransformType type,
-						 const xmlChar *expression,
-						 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode, 
-						 const xmlChar *expression,
-						 const xmlChar **namespaces);
 
 /********************************************************************
  *
@@ -381,11 +366,31 @@ XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode,
  * The XSLT transform id.
  */
 XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXslt;
-XMLSEC_EXPORT int 	xmlSecTransformXsltAdd	(xmlNodePtr transformNode, 
-						 const xmlChar *xslt);
 #endif /* XMLSEC_NO_XSLT */
 
 
+/**
+ * Functions to change transforms properties
+ */
+XMLSEC_EXPORT int	xmlSecTransformHmacAddOutputLength
+						(xmlNodePtr transformNode,
+						 size_t bitsLen);
+XMLSEC_EXPORT int  	xmlSecTransformRsaOaepAddParam
+						(xmlNodePtr transformNode,
+						 const unsigned char *buf,
+						 size_t size);
+XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXPath2Add(xmlNodePtr transformNode, 
+						 xmlSecXPath2TransformType type,
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode, 
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXsltAdd	(xmlNodePtr transformNode, 
+						 const xmlChar *xslt);
 
 
 #ifdef __cplusplus

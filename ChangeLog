@@ -1,3 +1,17 @@
+Wed Nov  6 15:45:35 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keyinfo.h include/xmlsec/transforms.h
+	include/xmlsec/xmlsec.h include/xmlsec/xmltree.h
+	include/xmlsec/openssl/bn.h
+	src/base64.c src/c14n.c	src/enveloped.c src/keyinfo.c
+	src/transforms.c src/xmlsec.c src/xmltree.c 
+	src/xpath.c src/xslt.c
+	src/openssl/aes.c src/openssl/bn.c
+	src/openssl/des.c src/openssl/dsa.c
+	src/openssl/hmac.c src/openssl/ripemd160.c
+	src/openssl/rsa.c src/openssl/sha1.c: moved all XML code 
+	for keys and transforms to the core library
+
 Wed Nov  6 01:18:33 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/Makefile.am config.h.in include/xmlsec/keys.h 

@@ -906,6 +906,614 @@ done:
 }
 
 
+/** 
+ * These methods most likely should not be used by application.
+ */
+int 
+xmlSecKeyInfoReadAESKeyValueNode(xmlNodePtr node, unsigned char** key, size_t* keySize) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize != NULL, -1);
+        
+    return(xmlSecGetBase64NodeContent(node, key, keySize));
+}
+
+int 
+xmlSecKeyInfoWriteAESKeyValueNode(xmlNodePtr node, const unsigned char* key, size_t keySize) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    
+    return(xmlSecSetBase64NodeContent(node, key, keySize));
+}
+
+int 
+xmlSecKeyInfoReadDESKeyValueNode(xmlNodePtr node, unsigned char** key, size_t* keySize) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize != NULL, -1);
+        
+    return(xmlSecGetBase64NodeContent(node, key, keySize));
+}
+
+int 
+xmlSecKeyInfoWriteDESKeyValueNode(xmlNodePtr node, const unsigned char* key, size_t keySize) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    
+    return(xmlSecSetBase64NodeContent(node, key, keySize));
+}
+
+int 
+xmlSecKeyInfoReadHMACKeyValueNode(xmlNodePtr node, unsigned char** key, size_t* keySize) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize != NULL, -1);
+        
+    return(xmlSecGetBase64NodeContent(node, key, keySize));
+}
+
+int 
+xmlSecKeyInfoWriteHMACKeyValueNode(xmlNodePtr node, const unsigned char* key, size_t keySize) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    
+    return(xmlSecSetBase64NodeContent(node, key, keySize));
+}
+
+/**
+ * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
+ *
+ * DSA keys and the DSA signature algorithm are specified in [DSS]. 
+ * DSA public key values can have the following fields:
+ *      
+ *   * P - a prime modulus meeting the [DSS] requirements 
+ *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime 
+ *         divisor of P-1 
+ *   * G - an integer with certain properties with respect to P and Q 
+ *   * Y - G**X mod P (where X is part of the private key and not made 
+ *	   public) 
+ *   * J - (P - 1) / Q 
+ *   * seed - a DSA prime generation seed 
+ *   * pgenCounter - a DSA prime generation counter
+ *
+ * Parameter J is available for inclusion solely for efficiency as it is 
+ * calculatable from P and Q. Parameters seed and pgenCounter are used in the 
+ * DSA prime number generation algorithm specified in [DSS]. As such, they are 
+ * optional but must either both be present or both be absent. This prime 
+ * generation algorithm is designed to provide assurance that a weak prime is 
+ * not being used and it yields a P and Q value. Parameters P, Q, and G can be 
+ * public and common to a group of users. They might be known from application 
+ * context. As such, they are optional but P and Q must either both appear or 
+ * both be absent. If all of P, Q, seed, and pgenCounter are present, 
+ * implementations are not required to check if they are consistent and are 
+ * free to use either P and Q or seed and pgenCounter. All parameters are 
+ * encoded as base64 [MIME] values.
+ *     
+ * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are 
+ * represented in XML as octet strings as defined by the ds:CryptoBinary type.
+ *     
+ * Schema Definition:
+ *     
+ * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/> 
+ * <complexType name="DSAKeyValueType"> 
+ *   <sequence>
+ *     <sequence minOccurs="0">
+ *        <element name="P" type="ds:CryptoBinary"/> 
+ *        <element name="Q" type="ds:CryptoBinary"/>
+ *     </sequence>
+ *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/> 
+ *     <element name="Y" type="ds:CryptoBinary"/> 
+ *     <element name="J" type="ds:CryptoBinary" minOccurs="0"/>
+ *     <sequence minOccurs="0">
+ *       <element name="Seed" type="ds:CryptoBinary"/> 
+ *       <element name="PgenCounter" type="ds:CryptoBinary"/> 
+ *     </sequence>
+ *   </sequence>
+ * </complexType>
+ *     
+ * DTD Definition:
+ *     
+ *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) > 
+ *  <!ELEMENT P (#PCDATA) >
+ *  <!ELEMENT Q (#PCDATA) >
+ *  <!ELEMENT G (#PCDATA) >
+ *  <!ELEMENT Y (#PCDATA) >
+ *  <!ELEMENT J (#PCDATA) >
+ *  <!ELEMENT Seed (#PCDATA) >
+ *  <!ELEMENT PgenCounter (#PCDATA) >
+ *
+ * ============================================================================
+ * 
+ * To support reading/writing private keys an X element added (before Y).
+ * todo: The current implementation does not support Seed and PgenCounter!
+ * by this the P, Q and G are *required*!
+ *
+ */
+/* 
+ * xmlSecKeyInfoReadDSAKeyValueNode:
+ */
+int
+xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node, 
+		unsigned char** pValue, size_t* pSize,
+		unsigned char** qValue, size_t* qSize,
+		unsigned char** gValue, size_t* gSize,
+		unsigned char** xValue, size_t* xSize,
+		unsigned char** yValue, size_t* ySize,
+		unsigned char** jValue, size_t* jSize ) {
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(pValue != NULL, -1);
+    xmlSecAssert2(pSize != NULL, -1);
+    xmlSecAssert2(qValue != NULL, -1);
+    xmlSecAssert2(qSize != NULL, -1);
+    xmlSecAssert2(gValue != NULL, -1);
+    xmlSecAssert2(gSize != NULL, -1);
+    xmlSecAssert2(xValue != NULL, -1);
+    xmlSecAssert2(xSize != NULL, -1);
+    xmlSecAssert2(yValue != NULL, -1);
+    xmlSecAssert2(ySize != NULL, -1);
+    xmlSecAssert2(jValue != NULL, -1);
+    xmlSecAssert2(jSize != NULL, -1);
+
+    /* init everything */
+    (*pValue) = (*qValue) = (*gValue) = (*xValue) = (*yValue) = (*jValue) = NULL;
+    (*pSize) = (*qSize) = (*gSize) = (*xSize) = (*ySize) = (*jSize) = 0; 
+    cur = xmlSecGetNextElementNode(node->children);
+    
+    /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "P");
+	goto error;
+    }
+    ret = xmlSecGetBase64NodeContent(cur, pValue, pSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecGetBase64NodeContent - %d (P)", ret);
+	goto error;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Q");
+	goto error;
+    }
+    ret = xmlSecGetBase64NodeContent(cur, qValue, qSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecGetBase64NodeContent - %d (Q)", ret);
+	goto error;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "G");
+	goto error;
+    }
+    ret = xmlSecGetBase64NodeContent(cur, gValue, gSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecGetBase64NodeContent - %d (G)", ret);
+	goto error;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "X", xmlSecNs))) {
+        /* next is X node. It is REQUIRED for private key but
+	 * we are not sure exactly what do we read */
+	ret = xmlSecGetBase64NodeContent(cur, xValue, xSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecGetBase64NodeContent - %d (X)", ret);
+	    goto error;
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is Y node. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Y");
+	goto error;
+    }
+    ret = xmlSecGetBase64NodeContent(cur, yValue, ySize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecGetBase64NodeContent - %d (Y)", ret);
+	goto error;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "J", xmlSecDSigNs))) {
+        /* next is J node - optional */
+	ret = xmlSecGetBase64NodeContent(cur, jValue, jSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecGetBase64NodeContent - %d (J)", ret);
+	    goto error;
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* todo: add support for seed */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Seed", xmlSecDSigNs))) {
+	cur = xmlSecGetNextElementNode(cur->next);  
+    }
+
+    /* todo: add support for pgencounter */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PgenCounter", xmlSecDSigNs))) {
+	cur = xmlSecGetNextElementNode(cur->next);  
+    }
+
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "%s", (cur->name != NULL) ? (char*)cur->name : "NULL");
+	goto error;
+    }
+    return(0);
+
+error:
+    if((*pValue) != NULL) {
+	xmlFree((*pValue));
+    }
+    if((*qValue) != NULL) {
+	xmlFree((*qValue));
+    }
+    if((*gValue) != NULL) {
+	xmlFree((*gValue));
+    }
+    if((*xValue) != NULL) {
+	xmlFree((*xValue));
+    }
+    if((*yValue) != NULL) {
+	xmlFree((*yValue));
+    }
+    if((*jValue) != NULL) {
+	xmlFree((*jValue));
+    }
+    (*pValue) = (*qValue) = (*gValue) = (*xValue) = (*yValue) = (*jValue) = NULL;
+    (*pSize) = (*qSize) = (*gSize) = (*xSize) = (*ySize) = (*jSize) = 0; 
+    return(-1);
+}
+
+int 
+xmlSecKeyInfoWriteDSAKeyValueNode(xmlNodePtr node, 
+			const unsigned char* pValue, size_t pSize,
+			const unsigned char* qValue, size_t qSize,
+			const unsigned char* gValue, size_t gSize,
+			const unsigned char* xValue, size_t xSize,
+			const unsigned char* yValue, size_t ySize,
+			const unsigned char* jValue, size_t jSize) {
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(pValue != NULL, -1);
+    xmlSecAssert2(qValue != NULL, -1);
+    xmlSecAssert2(gValue != NULL, -1);
+    xmlSecAssert2(yValue != NULL, -1);
+    /* xValue may be NULL (public key); jValue may be NULL -  optional field */
+    
+    /* cleanup the node first */
+    xmlNodeSetContent(node, NULL);
+    
+    /* first is P node */
+    cur = xmlSecAddChild(node, BAD_CAST "P", xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"P\")");
+	return(-1);	
+    }
+    ret = xmlSecSetBase64NodeContent(cur, pValue, pSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSetBase64NodeContent - %d (P)", ret);
+	return(-1);	
+    }
+    
+    /* Q node */
+    cur = xmlSecAddChild(node, BAD_CAST "Q", xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Q\")");
+	return(-1);	
+    }
+    ret = xmlSecSetBase64NodeContent(cur, qValue, qSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSetBase64NodeContent - %d (Q)", ret);
+	return(-1);	
+    }
+
+    /* G node */
+    cur = xmlSecAddChild(node, BAD_CAST "G", xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"G\")");
+	return(-1);	
+    }
+    ret = xmlSecSetBase64NodeContent(cur, gValue, gSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSetBase64NodeContent - %d (G)", ret);
+	return(-1);	
+    }
+
+    /* X node */
+    if((xValue != NULL) && (xSize > 0)) {
+	cur = xmlSecAddChild(node, BAD_CAST "X", xmlSecNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"X\")");
+	    return(-1);	
+	}
+	ret = xmlSecSetBase64NodeContent(cur, xValue, xSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecSetBase64NodeContent - %d (X)", ret);
+	    return(-1);	
+	}
+    }
+
+    /* Y node */
+    cur = xmlSecAddChild(node, BAD_CAST "Y", xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Y\")");
+	return(-1);	
+    }
+    ret = xmlSecSetBase64NodeContent(cur, yValue, ySize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSetBase64NodeContent - %d (Y)", ret);
+	return(-1);	
+    }
+
+    /* J node */
+    if((jValue != NULL) && (jSize > 0)) {
+	cur = xmlSecAddChild(node, BAD_CAST "J", xmlSecDSigNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"J\")");
+	    return(-1);	
+	}
+	ret = xmlSecSetBase64NodeContent(cur, jValue, jSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecSetBase64NodeContent - %d (J)", ret);
+	    return(-1);	
+	}
+    }
+    
+    return(0);
+}
+
+/**
+ * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
+ * The RSAKeyValue Element
+ *
+ * RSA key values have two fields: Modulus and Exponent.
+ *
+ * <RSAKeyValue>
+ *   <Modulus>xA7SEU+e0yQH5rm9kbCDN9o3aPIo7HbP7tX6WOocLZAtNfyxSZDU16ksL6W
+ *     jubafOqNEpcwR3RdFsT7bCqnXPBe5ELh5u4VEy19MzxkXRgrMvavzyBpVRgBUwUlV
+ *   	  5foK5hhmbktQhyNdy/6LpQRhDUDsTvK+g9Ucj47es9AQJ3U=
+ *   </Modulus>
+ *   <Exponent>AQAB</Exponent>
+ * </RSAKeyValue>
+ *
+ * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are 
+ * represented in XML as octet strings as defined by the ds:CryptoBinary type.
+ *
+ * Schema Definition:
+ * 
+ * <element name="RSAKeyValue" type="ds:RSAKeyValueType"/>
+ * <complexType name="RSAKeyValueType">
+ *   <sequence>
+ *     <element name="Modulus" type="ds:CryptoBinary"/> 
+ *     <element name="Exponent" type="ds:CryptoBinary"/>
+ *   </sequence>
+ * </complexType>
+ *
+ * DTD Definition:
+ * 
+ * <!ELEMENT RSAKeyValue (Modulus, Exponent) > 
+ * <!ELEMENT Modulus (#PCDATA) >
+ * <!ELEMENT Exponent (#PCDATA) >
+ *
+ * ============================================================================
+ * 
+ * To support reading/writing private keys an PrivateExponent element is added
+ * to the end
+ */
+int
+xmlSecKeyInfoReadRSAKeyValueNode(xmlNodePtr node, 
+		unsigned char** modValue, size_t* modSize,
+		unsigned char** expValue, size_t* expSize,
+		unsigned char** privExpValue, size_t* privExpSize) {
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(modValue != NULL, -1);
+    xmlSecAssert2(modSize != NULL, -1);
+    xmlSecAssert2(expValue != NULL, -1);
+    xmlSecAssert2(expSize != NULL, -1);
+    xmlSecAssert2(privExpValue != NULL, -1);
+    xmlSecAssert2(privExpSize != NULL, -1);
+
+    /* init everything */
+    (*modValue) = (*expValue) = (*privExpValue) = NULL;
+    (*modSize) = (*expSize) = (*privExpSize) = 0; 
+    cur = xmlSecGetNextElementNode(node->children);
+    
+    /* first is Modulus node. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "Modulus", xmlSecDSigNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Modulus");
+	goto error;
+    }
+    ret = xmlSecGetBase64NodeContent(cur, modValue, modSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecGetBase64NodeContent - %d (Modulus)", ret);
+	goto error;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is Exponent node. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Exponent", xmlSecDSigNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Exponent");
+	goto error;
+    }
+    ret = xmlSecGetBase64NodeContent(cur, expValue, expSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecGetBase64NodeContent - %d (Exponent)", ret);
+	goto error;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PrivateExponent", xmlSecNs))) {
+        /* next is PrivateExponent node. It is REQUIRED for private key but
+	 * we are not sure exactly what do we read */
+	ret = xmlSecGetBase64NodeContent(cur, privExpValue, privExpSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecGetBase64NodeContent - %d (PrivateExponent)", ret);
+	    goto error;
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "%s", (cur->name != NULL) ? (char*)cur->name : "NULL");
+	goto error;
+    }
+    return(0);
+
+error:
+    if((*modValue) != NULL) {
+	xmlFree((*modValue));
+    }
+    if((*expValue) != NULL) {
+	xmlFree((*expValue));
+    }
+    if((*privExpValue) != NULL) {
+	xmlFree((*privExpValue));
+    }
+
+    (*modValue) = (*expValue) = (*privExpValue) = NULL;
+    (*modSize) = (*expSize) = (*privExpSize) = 0; 
+    return(-1);
+}
+
+int 
+xmlSecKeyInfoWriteRSAKeyValueNode(xmlNodePtr node, 
+		const unsigned char* modValue, size_t modSize,
+		const unsigned char* expValue, size_t expSize,
+		const unsigned char* privExpValue, size_t privExpSize) {
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(modValue != NULL, -1);
+    xmlSecAssert2(expValue != NULL, -1);
+    /* privExpValue may be NULL (public key) */
+    
+    /* cleanup the node first */
+    xmlNodeSetContent(node, NULL);
+    
+    /* first is Modulus node */
+    cur = xmlSecAddChild(node, BAD_CAST "Modulus", xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Modulus\")");
+	return(-1);	
+    }
+    ret = xmlSecSetBase64NodeContent(cur, modValue, modSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSetBase64NodeContent - %d (Modulus)", ret);
+	return(-1);	
+    }
+    
+    /* Exponent node */
+    cur = xmlSecAddChild(node, BAD_CAST "Exponent", xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Exponent\")");
+	return(-1);	
+    }
+    ret = xmlSecSetBase64NodeContent(cur, expValue, expSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSetBase64NodeContent - %d (Exponent)", ret);
+	return(-1);	
+    }
+
+    /* PrivateExponent node */
+    if((privExpValue != NULL) && (privExpSize > 0)) {
+	cur = xmlSecAddChild(node, BAD_CAST "PrivateExponent", xmlSecNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"PrivateExponent\")");
+	    return(-1);	
+	}
+	ret = xmlSecSetBase64NodeContent(cur, privExpValue, privExpSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecSetBase64NodeContent - %d (PrivateExponent)", ret);
+	    return(-1);	
+	}
+    }
+    return(0);
+}
+
+
 #ifndef XMLSEC_NO_XMLENC    
 
 static xmlSecKeyPtr 	

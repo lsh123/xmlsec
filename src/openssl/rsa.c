@@ -22,14 +22,13 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
 #include <xmlsec/buffered.h>
-#include <xmlsec/base64.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/openssl/bn.h>
@@ -72,7 +71,7 @@ static int		xmlSecRsaKeyWrite	(xmlSecKeyPtr key,
 
 struct _xmlSecKeyIdStruct xmlSecRsaKeyId = {
     /* xlmlSecKeyId data  */
-    BAD_CAST "RSAKeyValue",		/* const xmlChar *keyValueNodeName; */
+    xmlSecRsaKeyValueName,		/* const xmlChar *keyValueNodeName; */
     xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyId methods */
@@ -94,7 +93,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignRsaSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#rsa-sha1", /* xmlChar *href; */
+    xmlSecSignRsaSha1Href, 		/* xmlChar *href; */
     
     xmlSecSignRsaSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecSignRsaSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -132,7 +131,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaPkcs1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#rsa-1_5", /* const xmlChar href; */
+    xmlSecEncRsaPkcs1Href, 		/* const xmlChar href; */
 
     xmlSecRsaPkcs1Create, 		/* xmlSecTransformCreateMethod create; */
     xmlSecRsaPkcs1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -169,7 +168,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaOaepId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p", /* const xmlChar href; */
+    xmlSecEncRsaOaepHref, 		/* const xmlChar href; */
 
     xmlSecRsaOaepCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecRsaOaepDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -639,211 +638,172 @@ xmlSecRsaKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
     return(0);
 }
 
-
-/**
- * xmlSecRsaKeyRead:
- *
- * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
- * The RSAKeyValue Element
- *
- * RSA key values have two fields: Modulus and Exponent.
- *
- * <RSAKeyValue>
- *   <Modulus>xA7SEU+e0yQH5rm9kbCDN9o3aPIo7HbP7tX6WOocLZAtNfyxSZDU16ksL6W
- *     jubafOqNEpcwR3RdFsT7bCqnXPBe5ELh5u4VEy19MzxkXRgrMvavzyBpVRgBUwUlV
- *   	  5foK5hhmbktQhyNdy/6LpQRhDUDsTvK+g9Ucj47es9AQJ3U=
- *   </Modulus>
- *   <Exponent>AQAB</Exponent>
- * </RSAKeyValue>
- *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are 
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *
- * Schema Definition:
- * 
- * <element name="RSAKeyValue" type="ds:RSAKeyValueType"/>
- * <complexType name="RSAKeyValueType">
- *   <sequence>
- *     <element name="Modulus" type="ds:CryptoBinary"/> 
- *     <element name="Exponent" type="ds:CryptoBinary"/>
- *   </sequence>
- * </complexType>
- *
- * DTD Definition:
- * 
- * <!ELEMENT RSAKeyValue (Modulus, Exponent) > 
- * <!ELEMENT Modulus (#PCDATA) >
- * <!ELEMENT Exponent (#PCDATA) >
- *
- * ============================================================================
- * 
- * To support reading/writing private keys an PrivateExponent element is added
- * to the end
- */
 static int
 xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    xmlNodePtr cur;
-    RSA *rsa;
-    int privateKey = 0;
-
+    unsigned char* modValue = NULL; size_t modSize = 0;
+    unsigned char* expValue = NULL; size_t expSize = 0;
+    unsigned char* privExpValue = NULL; size_t privExpSize = 0;
+    RSA *rsa = NULL;
+    int res = -1; /* by default we fail */
+    int ret;
+    
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
-    
+
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    "xmlSecRsaKey");
-	return(-1);
+	goto done;
+    }
+    
+    /* get data from xml node */
+    ret = xmlSecKeyInfoReadRSAKeyValueNode(node, 
+			&modValue, &modSize, &expValue, &expSize,
+			&privExpValue, &privExpSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyInfoReadRSAKeyValueNode - %d", ret);
+	goto done;
     }
 
+    /* and push to RSA structure */
     rsa = RSA_new();
     if(rsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "RSA_new");
-	return(-1);
-    }    
-    cur = xmlSecGetNextElementNode(node->children);
+	goto done;
+    }
     
-    /* first is Modulus node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "Modulus", xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Modulus");
-	RSA_free(rsa);	
-	return(-1);
-    }
-    if(xmlSecNodeGetBNValue(cur, &(rsa->n)) == NULL) {
+    /* Modulus is required */
+    if(xmlSecBnFromCryptoBinary(modValue, modSize, &(rsa->n)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeGetBNValue(Modulus)");
-	RSA_free(rsa);
-	return(-1);
+		    "xmlSecBnFromCryptoBinary - %d (Modulus)", ret);
+	goto done;
     }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    /* next is Exponent node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Exponent", xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Exponent");
-	RSA_free(rsa);
-	return(-1);
-    }
-    if(xmlSecNodeGetBNValue(cur, &(rsa->e)) == NULL) {
+    /* Exponent is required */
+    if(xmlSecBnFromCryptoBinary(expValue, expSize, &(rsa->e)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeGetBNValue(Exponent)");
-	RSA_free(rsa);
-	return(-1);
+		    "xmlSecBnFromCryptoBinary - %d (Exponent)", ret);
+	goto done;
     }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PrivateExponent", xmlSecNs))) {
-        /* next is X node. It is REQUIRED for private key but
-	 * we are not sure exactly what do we read */
-	if(xmlSecNodeGetBNValue(cur, &(rsa->d)) == NULL) {
+    /* PrivateExponent is required for private keys only*/
+    if(privExpValue != NULL) {
+	if(xmlSecBnFromCryptoBinary(privExpValue, privExpSize, &(rsa->d)) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeGetBNValue(PrivateExponent)");
-	    RSA_free(rsa);
-	    return(-1);
+			"xmlSecBnFromCryptoBinary - %d (PrivateExponent)", ret);
+	    goto done;
 	}
-	privateKey = 1;
-	cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    if(cur != NULL) {
+    ret = xmlSecKeySetValue(key, rsa, sizeof(RSA));
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
-	RSA_free(rsa);
-	return(-1);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeySetValue - %d", ret);
+	goto done;
     }
+    res = 0; /* success! */
 
-    if(xmlSecGetRsaKey(key) != NULL) {
-	RSA_free(xmlSecGetRsaKey(key));
-    }    
-    key->keyData = rsa;
-    if(privateKey) {
-	key->type = xmlSecKeyTypePrivate;    
-    } else {
-	key->type = xmlSecKeyTypePublic;    	
+done:
+    /* cleanup everything we've allocated */
+    if(modValue != NULL) {
+	xmlFree(modValue);
     }
-    return(0);
+    if(expValue != NULL) {
+	xmlFree(expValue);
+    }
+    if(privExpValue != NULL) {
+	xmlFree(privExpValue);
+    }
+    if(rsa != NULL) {
+	RSA_free(rsa);
+    }
+    return(res);
 }
+
 
 /**
  * xmlSecRsaKeyWrite:
  */
 static int
 xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    xmlNodePtr cur;
+    unsigned char* modValue = NULL; size_t modSize = 0;
+    unsigned char* expValue = NULL; size_t expSize = 0;
+    unsigned char* privExpValue = NULL; size_t privExpSize = 0;
     int ret;
-
+    int res = -1;
+    
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(parent != NULL, -1);
-    
-    if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
+
+    if(!xmlSecKeyCheckId(key, xmlSecRsaKey) || (xmlSecGetRsaKey(key) == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    "xmlSecRsaKey");
-	return(-1);
+	goto done;
     }
     
-
-    /* first is Modulus node */
-    cur = xmlSecAddChild(parent, BAD_CAST "Modulus", xmlSecDSigNs);
-    if(cur == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(Modulus)");
-	return(-1);	
-    }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->n, 1);
+    /* Modulus */
+    ret = xmlSecBnToCryptoBinary(xmlSecGetRsaKey(key)->n, &modValue, &modSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetBNValue(Modulus)");
-	return(-1);
-    }    
-
-    /* next is Exponent node. */
-    cur = xmlSecAddChild(parent, BAD_CAST "Exponent", xmlSecDSigNs);
-    if(cur == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(Exponent)");
-	return(-1);	
+		    "xmlSecBnToCryptoBinary - %d (Modulus - n)", ret);
+	goto done;
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->e, 1);
+
+    /* Exponent */
+    ret = xmlSecBnToCryptoBinary(xmlSecGetRsaKey(key)->e, &expValue, &expSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetBNValue(Exponent)");
-	return(-1);
+		    "xmlSecBnToCryptoBinary - %d (Exponent - e)", ret);
+	goto done;
     }
 
-    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
-    if(((type == xmlSecKeyTypePrivate) || (type == xmlSecKeyTypeAny)) && 
-        (key->type == xmlSecKeyTypePrivate)) { 
-	cur = xmlSecAddChild(parent, BAD_CAST "PrivateExponent", xmlSecNs);
-	if(cur == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(PrivateExponent)");
-	    return(-1);	
-	}
-	ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->d, 1);
+    /* PrivateExponent */
+    if((type == xmlSecKeyTypePrivate) || 
+       ((type == xmlSecKeyTypeAny) && (xmlSecGetRsaKey(key)->d != NULL))) {
+
+	ret = xmlSecBnToCryptoBinary(xmlSecGetRsaKey(key)->d, &privExpValue, &privExpSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeSetBNValue(PrivateExponent)");
-	    return(-1);
+			"xmlSecBnToCryptoBinary - %d (PrivateExponent - d)", ret);
+	    goto done;
 	}
     }
 
-    return(0);
+    /* write the xml */
+    ret = xmlSecKeyInfoWriteRSAKeyValueNode(parent, 
+			modValue, modSize, expValue, expSize,
+			privExpValue, privExpSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyInfoWriteRSAKeyValueNode - %d", ret);
+	goto done;
+    }
+    res = 0; /* success! */
+
+done:
+    /* cleanup everything we've allocated */
+    if(modValue != NULL) {
+	xmlFree(modValue);
+    }
+    if(expValue != NULL) {
+	xmlFree(expValue);
+    }
+    if(privExpValue != NULL) {
+	xmlFree(privExpValue);
+    }
+    return(res);
 }
 
 
@@ -1068,54 +1028,6 @@ xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     return(0);
 }
 
-/**
- * xmlSecEncRsaOaepAddParam::
- * @transformNode: the pointer to <dsig:Transform> node.
- * @buf: the OAEP param buffer.
- * @size: the OAEP param buffer size.
- * 
- * Creates <enc:OAEPParam> child node in the @transformNode.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int  	
-xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf, 
-			 size_t size) {
-    xmlNodePtr oaepParamNode;
-    xmlChar *base64;
-
-    xmlSecAssert2(transformNode != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(size > 0, -1);
-
-    oaepParamNode = xmlSecFindChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
-    if(oaepParamNode != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "OAEPParam");
-	return(-1);    
-    }
-
-    oaepParamNode = xmlSecAddChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
-    if(oaepParamNode == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(OAEPParam)");
-	return(-1);    
-    }
-    
-    base64 = xmlSecBase64Encode(buf, size, 0);
-    if(base64 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Encode");
-	return(-1);    
-    }
-    
-    xmlNodeSetContent(oaepParamNode, base64);
-    xmlFree(base64);
-    return(0);
-}
 
 static int
 xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {

@@ -42,7 +42,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestRipemd160Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#ripemd160", /* xmlChar *href; */
+    xmlSecDigestRipemd160Href, 		/* xmlChar *href; */
     
     xmlSecDigestRipemd160Create,	/* xmlSecTransformCreateMethod create; */
     xmlSecDigestRipemd160Destroy,	/* xmlSecTransformDestroyMethod destroy; */

@@ -22,6 +22,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/base64.h>
 
 typedef struct _xmlSecExtMemoryParserCtx {
     const unsigned char 	*prefix;
@@ -710,5 +711,59 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 	}
 	children = children->next;
     }
+}
+
+int 		
+xmlSecGetBase64NodeContent(xmlNodePtr node, unsigned char** data, size_t* dataSize) {
+    xmlChar* value;
+    int ret;
+    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize != NULL, -1);
+    
+    (*data) = NULL;
+    (*dataSize) = 0;
+
+    value = xmlNodeGetContent(node);
+    if(value == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    " ");
+	return(-1);
+    }
+    
+    /* usual trick: decode into the same buffer */
+    ret = xmlSecBase64Decode(value, (unsigned char*)value, xmlStrlen(value));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode");
+	xmlFree(value);
+	return(-1);
+    }
+    
+    (*data) = (unsigned char*)value;
+    (*dataSize) = ret;
+    return(0);
+}
+
+int
+xmlSecSetBase64NodeContent(xmlNodePtr node, const unsigned char* data, size_t dataSize) {
+    xmlChar* value;
+    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    
+    value = xmlSecBase64Encode(data, dataSize, 0);
+    if(data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
+	return(-1);
+    }
+    xmlNodeSetContent(node, value);
+    xmlFree(value);
+    return(0);
 }
 

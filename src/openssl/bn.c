@@ -21,69 +21,56 @@
 #include <xmlsec/openssl/bn.h>
 
 /**
- * xmlSecBN2CryptoBinary:
+ * xmlSecBnToCryptoBinary:
  * @a: the pointer to BIGNUM.
+ * @value: the returned value.
+ * @valueSize: the returned value size.
  *
  * Converts BIGNUM to CryptoBinary string
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary).
  * 
- * Returns newly allocated string (caller is responsible for
- * freeing it using xmlFree() function) or NULL if an error occurs.
+ * Returns 0 on success or a negative value if an error occurs.
+ * Caller is responsible for freeing @value with @xmlFree function.
  */
-xmlChar*		
-xmlSecBN2CryptoBinary(const BIGNUM *a) {
-    unsigned char buf[512];
-    unsigned char *buffer;
-    size_t size;
+int		
+xmlSecBnToCryptoBinary(const BIGNUM *a, unsigned char** value, size_t* valueSize) {
+    unsigned char* buf = NULL;
+    size_t bufSize = 0;
     int ret;
-    xmlChar *res;
 
-    xmlSecAssert2(a != NULL, NULL);
+    xmlSecAssert2(a != NULL, -1);
+    xmlSecAssert2(value != NULL, -1);
+    xmlSecAssert2(valueSize != NULL, -1);
 
-    size = BN_num_bytes(a) + 1;
-    if(sizeof(buf) < size) {	
-	buffer = (unsigned char*)xmlMalloc(size);
-	if(buffer == NULL) {	
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d", size);
-	    return(NULL);	
-	}
-    } else {
-	buffer = buf;
+    (*value) = NULL;
+    (*valueSize) = 0;
+    
+    bufSize = BN_num_bytes(a);
+    buf = (unsigned char*)xmlMalloc(bufSize + 1); /* just in case */
+    if(buf == NULL) {	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", bufSize);
+	return(-1);	
     }
         
-    ret = BN_bn2bin(a, buffer);
+    ret = BN_bn2bin(a, buf);
     if(ret <= 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BN_bn2bin - %d", ret);
-	if(buffer != buf) {
-	    xmlFree(buffer);
-	}
-	return(NULL);
+	xmlFree(buf);
+	return(-1);
     }
-    
-    res = xmlSecBase64Encode(buffer, ret, XMLSEC_BASE64_LINESIZE);
-    if(res == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Encode");
-	if(buffer != buf) {
-	    xmlFree(buffer);
-	}
-	return(NULL);
-    }
-
-    if(buffer != buf) {
-	xmlFree(buffer);
-    }
-    return(res);
+    (*value) = buf;
+    (*valueSize) = bufSize;
+    return(0);
 }
 
 /**
- * xmlSecCryptoBinary2BN:
- * @str: the CryptoBinary string.
+ * xmlSecBnFromCryptoBinary:
+ * @value: the input buffer.
+ * @valueSize: the input buffer size.
  * @a: the buffer to store the result.
  *
  * Converts string from CryptoBinary format 
@@ -95,136 +82,21 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
  * or NULL if an error occurs.
  */
 BIGNUM*
-xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
-    unsigned char buf[512];
-    unsigned char *buffer;
-    size_t size;
-    int ret;
+xmlSecBnFromCryptoBinary(const unsigned char* value, size_t valueSize, BIGNUM **a) {
+    BIGNUM* res;
 
     xmlSecAssert2(a != NULL, NULL);
-    xmlSecAssert2(str != NULL, NULL);
-    
-    /* base64 decode could not be more than 3/4 of input */
-    size = ((3 * xmlStrlen(str)) / 4) + 3;
-    if(sizeof(buf) < size) {	
-	buffer = (unsigned char*)xmlMalloc(size);
-	if(buffer == NULL) {	
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-	    	        XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d", size);
-	    return(NULL);	
-	}
-    } else {
-	buffer = buf;
-    }
+    xmlSecAssert2(value != NULL, NULL);
 
-    ret = xmlSecBase64Decode(str, buffer, size);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Decode");
-	if(buffer != buf) {
-	    xmlFree(buffer);
-	}
-	return(NULL);
-    }
-    
-    (*a) = BN_bin2bn(buffer, ret, (*a));    
-    if( (*a) == NULL) {	
+    res = BN_bin2bn(value, valueSize, (*a));    
+    if(res == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 	    	    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BN_bin2bn");
-	if(buffer != buf) {
-	    xmlFree(buffer);
-	}
 	return(NULL);
     }
-
-    if(buffer != buf) {
-	xmlFree(buffer);    
-    }
-    return(*a);
+    
+    return((*a) = res);
 }
 
-/**
- * xmlSecNodeGetBNValue:
- * @cur: the poitner to an XML node.
- * @a: the BIGNUM buffer.
- *
- * Converts the node content from CryptoBinary format 
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary) 
- * to a BIGNUM. If no BIGNUM buffer provided then a new
- * BIGNUM is created (caller is responsible for freeing it).
- *
- * Returns a pointer to BIGNUM produced from CryptoBinary string
- * or NULL if an error occurs.
- */
-
-BIGNUM*
-xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
-    xmlChar* tmp;
-
-    xmlSecAssert2(cur != NULL, NULL);
-    
-    tmp = xmlNodeGetContent(cur);
-    if(tmp == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    " ");
-	return(NULL);
-    }    
-    
-    if(xmlSecCryptoBinary2BN(tmp, a) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecCryptoBinary2BN");
-	xmlFree(tmp);
-	return(NULL);
-    }
-    xmlFree(tmp);
-    return(*a);
-}
-
-/**
- * xmlSecNodeSetBNValue:
- * @cur: the pointer to an XML node.
- * @a: the BIGNUM.
- * @addLineBreaks: if the flag is equal to 1 then 
- *		linebreaks will be added before and after
- *		new buffer content.
- *
- * Converts BIGNUM to CryptoBinary string
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary) 
- * and sets it as the content of the given node. If the 
- * addLineBreaks is set then line breaks are added 
- * before and after the CryptoBinary string.
- * 
- * Returns 0 on success or -1 otherwise.
- */
-int
-xmlSecNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {
-    xmlChar* tmp;
-    
-    xmlSecAssert2(a != NULL, -1);
-    xmlSecAssert2(cur != NULL, -1);
-    
-    tmp = xmlSecBN2CryptoBinary(a);
-    if(tmp == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBN2CryptoBinary");
-	return(-1);
-    }
-    
-    /* todo: optimize! */
-    if(addLineBreaks) {
-        xmlNodeSetContent(cur, BAD_CAST "\n");
-        xmlNodeAddContent(cur, tmp);
-        xmlNodeAddContent(cur, BAD_CAST "\n");
-    } else {
-        xmlNodeSetContent(cur, tmp);
-    }
-    xmlFree(tmp);
-    return(0);
-}
 

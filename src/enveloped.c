@@ -38,8 +38,7 @@ struct _xmlSecXmlTransformIdStruct xmlSecTransformEnvelopedId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#enveloped-signature", 
-					/* const xmlChar *href; */
+    xmlSecTransformEnvelopedHref,	/* const xmlChar *href; */
 
     xmlSecTransformEnvelopedCreate,	/* xmlSecTransformCreateMethod create; */
     xmlSecTransformEnvelopedDestroy,	/* xmlSecTransformDestroyMethod destroy; */

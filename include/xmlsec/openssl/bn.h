@@ -15,20 +15,16 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <openssl/bn.h>
-
-#include <libxml/tree.h> 
-
 #include <xmlsec/xmlsec.h>
 
-XMLSEC_EXPORT BIGNUM*	xmlSecCryptoBinary2BN		(const xmlChar *str,
-							 BIGNUM **a);
-XMLSEC_EXPORT xmlChar*	xmlSecBN2CryptoBinary		(const BIGNUM *a);
 
-XMLSEC_EXPORT BIGNUM*	xmlSecNodeGetBNValue		(const xmlNodePtr cur,
+
+XMLSEC_EXPORT int	xmlSecBnToCryptoBinary		(const BIGNUM *a, 
+							 unsigned char** value, 
+							 size_t* valueSize);
+XMLSEC_EXPORT BIGNUM*	xmlSecBnFromCryptoBinary	(const unsigned char* value, 
+							 size_t valueSize, 
 							 BIGNUM **a);
-XMLSEC_EXPORT int	xmlSecNodeSetBNValue		(xmlNodePtr cur, 
-							 const BIGNUM *a,
-							 int addLineBreaks);
 
 #ifdef __cplusplus
 }

@@ -71,7 +71,7 @@ static const struct _xmlSecBinTransformIdStruct xmlSecTransformXsltId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/TR/1999/REC-xslt-19991116", /* const xmlChar href; */
+    xmlSecTransformXsltHref, 		/* const xmlChar href; */
 
     xmlSecTransformXsltCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecTransformXsltDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -371,25 +371,6 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     xsltTransform->binData = buffer;
     return(0);
 }
-
-/**
- * xmlSecTransformXsltAdd:
- * @transformNode: the pointer to <dsig:Transform> node.
- * @xslt: the XSLT transform exspression.
- * 
- * Writes the XSLT transform expression to the @transformNode.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
-    xmlSecAssert2(transformNode != NULL, -1);    
-    xmlSecAssert2(xslt != NULL, -1);    
-    
-    xmlNodeSetContent(transformNode, xslt);
-    return(0);
-}
-
 
 /**
  * xmlSecTransformXsltExecute:

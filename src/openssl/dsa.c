@@ -21,13 +21,12 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
-#include <xmlsec/base64.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/openssl/bn.h>
 #include <xmlsec/openssl/evp.h>
@@ -69,7 +68,7 @@ static int		xmlSecDsaKeyWrite	(xmlSecKeyPtr key,
 
 struct _xmlSecKeyIdStruct xmlSecDsaKeyId = {
     /* xlmlSecKeyId data  */
-    BAD_CAST "DSAKeyValue",		/* const xmlChar *keyValueNodeName; */
+    xmlSecDsaKeyValueName,		/* const xmlChar *keyValueNodeName; */
     xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyId methods */
@@ -89,7 +88,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignDsaSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#dsa-sha1", /* xmlChar *href; */
+    xmlSecSignDsaSha1Href, 		/* xmlChar *href; */
     
     xmlSecSignDsaSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecSignDsaSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -608,82 +607,17 @@ xmlSecDsaKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
     return(0);
 }
 
-/**
- * xmlSecDsaKeyRead:
- *
- * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
- *
- * DSA keys and the DSA signature algorithm are specified in [DSS]. 
- * DSA public key values can have the following fields:
- *      
- *   * P - a prime modulus meeting the [DSS] requirements 
- *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime 
- *         divisor of P-1 
- *   * G - an integer with certain properties with respect to P and Q 
- *   * Y - G**X mod P (where X is part of the private key and not made 
- *	   public) 
- *   * J - (P - 1) / Q 
- *   * seed - a DSA prime generation seed 
- *   * pgenCounter - a DSA prime generation counter
- *
- * Parameter J is available for inclusion solely for efficiency as it is 
- * calculatable from P and Q. Parameters seed and pgenCounter are used in the 
- * DSA prime number generation algorithm specified in [DSS]. As such, they are 
- * optional but must either both be present or both be absent. This prime 
- * generation algorithm is designed to provide assurance that a weak prime is 
- * not being used and it yields a P and Q value. Parameters P, Q, and G can be 
- * public and common to a group of users. They might be known from application 
- * context. As such, they are optional but P and Q must either both appear or 
- * both be absent. If all of P, Q, seed, and pgenCounter are present, 
- * implementations are not required to check if they are consistent and are 
- * free to use either P and Q or seed and pgenCounter. All parameters are 
- * encoded as base64 [MIME] values.
- *     
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are 
- * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *     
- * Schema Definition:
- *     
- * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/> 
- * <complexType name="DSAKeyValueType"> 
- *   <sequence>
- *     <sequence minOccurs="0">
- *        <element name="P" type="ds:CryptoBinary"/> 
- *        <element name="Q" type="ds:CryptoBinary"/>
- *     </sequence>
- *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/> 
- *     <element name="Y" type="ds:CryptoBinary"/> 
- *     <element name="J" type="ds:CryptoBinary" minOccurs="0"/>
- *     <sequence minOccurs="0">
- *       <element name="Seed" type="ds:CryptoBinary"/> 
- *       <element name="PgenCounter" type="ds:CryptoBinary"/> 
- *     </sequence>
- *   </sequence>
- * </complexType>
- *     
- * DTD Definition:
- *     
- *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) > 
- *  <!ELEMENT P (#PCDATA) >
- *  <!ELEMENT Q (#PCDATA) >
- *  <!ELEMENT G (#PCDATA) >
- *  <!ELEMENT Y (#PCDATA) >
- *  <!ELEMENT J (#PCDATA) >
- *  <!ELEMENT Seed (#PCDATA) >
- *  <!ELEMENT PgenCounter (#PCDATA) >
- *
- * ============================================================================
- * 
- * To support reading/writing private keys an X element added (before Y).
- * todo: The current implementation does not support Seed and PgenCounter!
- * by this the P, Q and G are *required*!
- *
- */
 static int
 xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    xmlNodePtr cur;
-    DSA *dsa;
-    int privateKey = 0;
+    unsigned char* pValue = NULL; size_t pSize = 0;
+    unsigned char* qValue = NULL; size_t qSize = 0;
+    unsigned char* gValue = NULL; size_t gSize = 0;
+    unsigned char* xValue = NULL; size_t xSize = 0;
+    unsigned char* yValue = NULL; size_t ySize = 0;
+    unsigned char* jValue = NULL; size_t jSize = 0;
+    DSA *dsa = NULL;
+    int res = -1; /* by default we fail */
+    int ret;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -692,128 +626,104 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    "xmlSecDsaKey");
-	return(-1);
+	goto done;
+    }
+    
+    /* get data from xml node */
+    ret = xmlSecKeyInfoReadDSAKeyValueNode(node, 
+			&pValue, &pSize, &qValue, &qSize,
+			&gValue, &gSize, &xValue, &xSize,
+			&yValue, &ySize, &jValue, &jSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyInfoReadDSAKeyValueNode - %d", ret);
+	goto done;
     }
 
+    /* and push to DSA structure */
     dsa = DSA_new();
     if(dsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "DSA_new");
-	return(-1);
+	goto done;
     }
     
-    cur = xmlSecGetNextElementNode(node->children);
-    /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "P");
-	DSA_free(dsa);	
-	return(-1);
-    }
-    if(xmlSecNodeGetBNValue(cur, &(dsa->p)) == NULL) {
+    /* P is required */
+    if(xmlSecBnFromCryptoBinary(pValue, pSize, &(dsa->p)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeGetBNValue");
-	DSA_free(dsa);
-	return(-1);
+		    "xmlSecBnFromCryptoBinary - %d (P)", ret);
+	goto done;
     }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Q");
-	DSA_free(dsa);
-	return(-1);
-    }
-    if(xmlSecNodeGetBNValue(cur, &(dsa->q)) == NULL) {
+    /* Q is required */
+    if(xmlSecBnFromCryptoBinary(qValue, qSize, &(dsa->q)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeGetBNValue");
-	DSA_free(dsa);
-	return(-1);
+		    "xmlSecBnFromCryptoBinary - %d (Q)", ret);
+	goto done;
     }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "G");
-	DSA_free(dsa);
-	return(-1);
-    }
-    if(xmlSecNodeGetBNValue(cur, &(dsa->g)) == NULL) {
+    /* G is required */
+    if(xmlSecBnFromCryptoBinary(gValue, gSize, &(dsa->g)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeGetBNValue");
-	DSA_free(dsa);
-	return(-1);
+		    "xmlSecBnFromCryptoBinary - %d (G)", ret);
+	goto done;
     }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "X", xmlSecNs))) {
-        /* next is X node. It is REQUIRED for private key but
-	 * we are not sure exactly what do we read */
-	if(xmlSecNodeGetBNValue(cur, &(dsa->priv_key)) == NULL) {
+    /* Y is required */
+    if(xmlSecBnFromCryptoBinary(yValue, ySize, &(dsa->pub_key)) == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBnFromCryptoBinary - %d (Y)", ret);
+	goto done;
+    }
+    
+    /* todo: J? */
+    
+    /* X is required for private keys only*/
+    if(xValue != NULL) {
+	if(xmlSecBnFromCryptoBinary(xValue, xSize, &(dsa->priv_key)) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeGetBNValue");
-	    DSA_free(dsa);
-	    return(-1);
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBnFromCryptoBinary - %d (Y)", ret);
+	    goto done;
 	}
-	privateKey = 1;
-	cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* next is Y node. */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Y");
-	DSA_free(dsa);
-	return(-1);
-    }
-    if(xmlSecNodeGetBNValue(cur, &(dsa->pub_key)) == NULL) {
+    ret = xmlSecKeySetValue(key, dsa, sizeof(DSA));
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeGetBNValue");
+		    "xmlSecKeySetValue - %d", ret);
+	goto done;
+    }
+    res = 0; /* success! */
+
+done:
+    /* cleanup everything we've allocated */
+    if(pValue != NULL) {
+	xmlFree(pValue);
+    }
+    if(qValue != NULL) {
+	xmlFree(qValue);
+    }
+    if(gValue != NULL) {
+	xmlFree(gValue);
+    }
+    if(xValue != NULL) {
+	xmlFree(xValue);
+    }
+    if(yValue != NULL) {
+	xmlFree(yValue);
+    }
+    if(jValue != NULL) {
+	xmlFree(jValue);
+    }
+    if(dsa != NULL) {
 	DSA_free(dsa);
-	return(-1);
     }
-    cur = xmlSecGetNextElementNode(cur->next);
-    
-    /* todo: add support for seed */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Seed", xmlSecDSigNs))) {
-	cur = xmlSecGetNextElementNode(cur->next);  
-    }
-
-    /* todo: add support for pgencounter */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PgenCounter", xmlSecDSigNs))) {
-	cur = xmlSecGetNextElementNode(cur->next);  
-    }
-
-    if(cur != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s", (cur->name != NULL) ? (char*)cur->name : "NULL");
-	DSA_free(dsa);
-	return(-1);
-    }
-
-    if(xmlSecGetDsaKey(key) != NULL) {
-	DSA_free(xmlSecGetDsaKey(key));
-    }    
-    key->keyData = dsa;
-    if(privateKey) {
-	key->type = xmlSecKeyTypePrivate;    
-    } else {
-	key->type = xmlSecKeyTypePublic;
-    }
-    return(0);
+    return(res);
 }
 
 /**
@@ -821,103 +731,111 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    xmlNodePtr cur;
+    unsigned char* pValue = NULL; size_t pSize = 0;
+    unsigned char* qValue = NULL; size_t qSize = 0;
+    unsigned char* gValue = NULL; size_t gSize = 0;
+    unsigned char* xValue = NULL; size_t xSize = 0;
+    unsigned char* yValue = NULL; size_t ySize = 0;
+    unsigned char* jValue = NULL; size_t jSize = 0;
     int ret;
+    int res = -1;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(parent != NULL, -1);
 
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+    if(!xmlSecKeyCheckId(key, xmlSecDsaKey) || (xmlSecGetDsaKey(key) == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    "xmlSecDsaKey");
-	return(-1);
+	goto done;
     }
     
-
-    /* first is P node */
-    cur = xmlSecAddChild(parent, BAD_CAST "P", xmlSecDSigNs);
-    if(cur == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"P\")");
-	return(-1);	
-    }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->p, 1);
+    /* P */
+    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->p, &pValue, &pSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetBNValue - %d", ret);
-	return(-1);
-    }    
-
-    /* next is Q node. */
-    cur = xmlSecAddChild(parent, BAD_CAST "Q", xmlSecDSigNs);
-    if(cur == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"Q\")");	
-	return(-1);	
+		    "xmlSecBnToCryptoBinary - %d (p)", ret);
+	goto done;
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->q, 1);
+
+    /* Q */
+    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->q, &qValue, &qSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetBNValue - %d", ret);
-	return(-1);
+		    "xmlSecBnToCryptoBinary - %d (q)", ret);
+	goto done;
     }
 
-    /* next is G node. */
-    cur = xmlSecAddChild(parent, BAD_CAST "G", xmlSecDSigNs);
-    if(cur == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"G\")");	
-	return(-1);	
-    }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->g, 1);
+    /* G */
+    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->g, &gValue, &gSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetBNValue - %d", ret);
-	return(-1);
+		    "xmlSecBnToCryptoBinary - %d (g)", ret);
+	goto done;
     }
 
-    /* next is X node: write it ONLY for private keys and ONLY if it is requested */
-    if(((type == xmlSecKeyTypePrivate) || (type == xmlSecKeyTypeAny)) &&
-	(key->type == xmlSecKeyTypePrivate)) {
-	cur = xmlSecAddChild(parent, BAD_CAST "X", xmlSecNs);
-	if(cur == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(\"X\")");	
-	    return(-1);	
-	}
-	ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->priv_key, 1);
+    /* Y */
+    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->pub_key, &yValue, &ySize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBnToCryptoBinary - %d (pub_key - y)", ret);
+	goto done;
+    }
+
+    /* X */
+    if((type == xmlSecKeyTypePrivate) || 
+       ((type == xmlSecKeyTypeAny) && (xmlSecGetDsaKey(key)->priv_key != NULL))) {
+
+	ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->priv_key, &xValue, &xSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeSetBNValue - %d", ret);
-	    return(-1);
+			"xmlSecBnToCryptoBinary - %d (priv_key - x)", ret);
+	    goto done;
 	}
     }
+    
+    /* todo: J? */
 
-    /* next is Y node. */
-    cur = xmlSecAddChild(parent, BAD_CAST "Y", xmlSecDSigNs);
-    if(cur == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"Y\")");	
-	return(-1);	
-    }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->pub_key, 1);
+    /* write the xml */
+    ret = xmlSecKeyInfoWriteDSAKeyValueNode(parent, 
+			pValue, pSize, qValue, qSize,
+			gValue, gSize, xValue, xSize,
+			yValue, ySize, jValue, jSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetBNValue - %d", ret);
-	return(-1);
+		    "xmlSecKeyInfoWriteDSAKeyValueNode - %d", ret);
+	goto done;
     }
-    return(0);
+
+    res = 0; /* success! */
+
+done:
+    /* cleanup everything we've allocated */
+    if(pValue != NULL) {
+	xmlFree(pValue);
+    }
+    if(qValue != NULL) {
+	xmlFree(qValue);
+    }
+    if(gValue != NULL) {
+	xmlFree(gValue);
+    }
+    if(xValue != NULL) {
+	xmlFree(xValue);
+    }
+    if(yValue != NULL) {
+	xmlFree(yValue);
+    }
+    if(jValue != NULL) {
+	xmlFree(jValue);
+    }
+    return(res);
 }
 
 #endif /* XMLSEC_NO_DSA */

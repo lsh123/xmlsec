@@ -22,13 +22,12 @@
 #include <openssl/sha.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/buffered.h> 
-#include <xmlsec/base64.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/bn.h>
@@ -69,7 +68,7 @@ static  int		xmlSecDesKeyWriteBinary		(xmlSecKeyPtr key,
 							 size_t *size);
 struct _xmlSecKeyIdStruct xmlSecDesKeyId = {
     /* xlmlSecKeyId data  */
-    BAD_CAST "DESKeyValue",		/* const xmlChar *keyValueNodeName; */
+    xmlSecDesKeyValueName,		/* const xmlChar *keyValueNodeName; */
     xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyId methods */
@@ -99,7 +98,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", /* const xmlChar href; */
+    xmlSecEncDes3CbcHref, 		/* const xmlChar href; */
 
     xmlSecDesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecDesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -159,7 +158,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#kw-tripledes", /* const xmlChar href; */
+    xmlSecKWDes3CbcHref, 		/* const xmlChar href; */
 
     xmlSecDes3KWCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecDes3KWDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -882,8 +881,8 @@ xmlSecDesKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
  */
 static int
 xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    xmlChar *keyStr;
-    size_t keyLen;
+    unsigned char* value = NULL;
+    size_t valueSize = 0;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);    
@@ -896,42 +895,32 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	return(-1);
     }
     
-    keyStr = xmlNodeGetContent(node);
-    if(keyStr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    " ");
-	return(-1);
-    }
-    /* usual trick: decode into the same buffer */
-    ret = xmlSecBase64Decode(keyStr, (unsigned char*)keyStr, xmlStrlen(keyStr));
+    ret = xmlSecKeyInfoReadDESKeyValueNode(node, &value, &valueSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Decode - %d", ret);
-	xmlFree(keyStr);
+		    "xmlSecKeyInfoReadDESKeyValueNode - %d", ret);
 	return(-1);
     }
-    keyLen = ret;
 
     if(key->keyData != NULL) {
 	xmlSecDesKeyDataDestroy((xmlSecDesKeyDataPtr)key->keyData);
 	key->keyData = NULL;
 	key->type = 0;
     }
-    if(keyLen > 0) {
-	key->keyData = xmlSecDesKeyDataCreate((unsigned char*)keyStr, keyLen);
+    if(valueSize > 0) {
+	key->keyData = xmlSecDesKeyDataCreate(value, valueSize);
 	if(key->keyData == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecDesKeyDataCreate");
-	    xmlFree(keyStr);
+	    xmlFree(value);
 	    return(-1);
 	}
 	key->type = xmlSecKeyTypePrivate;
     }
 
-    xmlFree(keyStr);
+    xmlFree(value);
     return(0);
 }
 
@@ -941,7 +930,7 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 static int
 xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     xmlSecDesKeyDataPtr ptr;
-    xmlChar *str;
+    int ret;
 
     xmlSecAssert2(key != NULL, -1);    
     xmlSecAssert2(parent != NULL, -1);
@@ -964,15 +953,13 @@ xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 	return(0);
     }
     
-    str = xmlSecBase64Encode(ptr->key, ptr->keySize, 0);
-    if(str == NULL) {
+    ret = xmlSecKeyInfoWriteDESKeyValueNode(parent, ptr->key, ptr->keySize);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Encode");
+		    "xmlSecKeyInfoWriteDESKeyValueNode - %d", ret);
 	return(-1);
     }    
-    xmlNodeSetContent(parent, str);
-    xmlFree(str);
     return(0);
 }
 

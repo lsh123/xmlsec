@@ -127,7 +127,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#base64",	/* const xmlChar href; */
+    xmlSecBase64DecodeHref,		/* const xmlChar href; */
 
     xmlSecBase64Create, 		/* xmlSecTransformCreateMethod create; */
     xmlSecBase64Destroy,		/* xmlSecTransformDestroyMethod destroy; */

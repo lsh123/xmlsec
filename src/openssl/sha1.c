@@ -42,7 +42,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#sha1", /* xmlChar *href; */
+    xmlSecDigestSha1Href, 		/* xmlChar *href; */
     
     xmlSecDigestSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecDigestSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */

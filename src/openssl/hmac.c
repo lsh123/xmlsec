@@ -28,7 +28,7 @@
 #include <xmlsec/digests.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
-#include <xmlsec/base64.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
 
@@ -87,7 +87,7 @@ static  int		xmlSecHmacKeyWriteBinary	(xmlSecKeyPtr key,
 							 size_t *size);
 struct _xmlSecKeyIdStruct xmlSecHmacKeyId = {
     /* xlmlSecKeyId data  */
-    BAD_CAST "HMACKeyValue",		/* const xmlChar *keyValueNodeName; */
+    xmlSecHmacKeyValueName,		/* const xmlChar *keyValueNodeName; */
     xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyId methods */
@@ -111,7 +111,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#hmac-sha1", /* xmlChar *href; */
+    xmlSecMacHmacSha1Href, 		/* xmlChar *href; */
     
     xmlSecMacHmacCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecMacHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -143,7 +143,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacMd5Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmldsig-more#hmac-md5", /* xmlChar *href; */
+    xmlSecMacHmacMd5Href, 		/* xmlChar *href; */
     
     xmlSecMacHmacCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecMacHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -174,7 +174,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacRipeMd160Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", /* xmlChar *href; */
+    xmlSecMacHmacRipeMd160Href, 	/* xmlChar *href; */
     
     xmlSecMacHmacCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecMacHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -338,46 +338,6 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     }
     return(0);    
 }
-
-/**
- * xmlSecHmacAddOutputLength:
- * @transformNode: the pointer to <dsig:Transform> node
- * @bitsLen: the required length in bits
- *
- * Creates <dsig:HMACOutputLength>child for the HMAC transform 
- * node @transformNode.
- *
- * Returns 0 on success and a negatie value otherwise.
- */
-int
-xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
-    xmlNodePtr node;
-    char buf[32];
-
-    xmlSecAssert2(transformNode != NULL, -1);
-    xmlSecAssert2(bitsLen > 0, -1);
-
-    node = xmlSecFindChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
-    if(node != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "HMACOutputLength");
-	return(-1);
-    }
-    
-    node = xmlSecAddChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
-    if(node == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild");
-	return(-1);
-    }    
-    
-    sprintf(buf, "%u", bitsLen);
-    xmlNodeSetContent(node, BAD_CAST buf);
-    return(0);
-}
-
 
 /**
  * xmlSecMacHmacUpdate:
@@ -699,7 +659,8 @@ xmlSecHmacKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
  */
 static int
 xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    xmlChar *str;
+    unsigned char* value = NULL;
+    size_t valueSize = 0;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -712,41 +673,32 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	return(-1);
     }
 
+    ret = xmlSecKeyInfoReadHMACKeyValueNode(node, &value, &valueSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyInfoReadHMACKeyValueNode - %d", ret);
+	return(-1);
+    }
+    
     if(key->keyData != NULL) {
 	xmlSecHmacKeyDataDestroy((xmlSecHmacKeyDataPtr)key->keyData);
 	key->keyData = NULL;
 	key->type = 0;
     }
     
-    str = xmlNodeGetContent(node);
-    if(str == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    " ");
-	return(-1);
+    if(valueSize > 0) {
+	key->keyData = xmlSecHmacKeyDataCreate(value, valueSize);
+	if(key->keyData == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecHmacKeyDataCreate");
+	    xmlFree(value);
+	    return(-1);
+	}
+	key->type = xmlSecKeyTypePrivate;
     }
-    
-    /* trick: decode into the same buffer */
-    ret = xmlSecBase64Decode(str, (unsigned char*)str, xmlStrlen(str));
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Decode - %d", ret);
-	xmlFree(str);
-	return(-1);
-    }
-    
-    key->keyData = xmlSecHmacKeyDataCreate((unsigned char*)str, ret);
-    if(key->keyData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecHmacKeyDataCreate");
-	xmlFree(str);
-	return(-1);
-    }
-    key->type = xmlSecKeyTypePrivate;
-    
-    xmlFree(str);
+    xmlFree(value);
     return(0);
 }
 
@@ -756,7 +708,7 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 static int
 xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     xmlSecHmacKeyDataPtr ptr;
-    xmlChar *str;
+    int ret;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(parent != NULL, -1);
@@ -779,16 +731,13 @@ xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 	return(0);
     }
     
-    str = xmlSecBase64Encode(ptr->key, ptr->keySize, 0);
-    if(str == NULL) {
+    ret = xmlSecKeyInfoWriteHMACKeyValueNode(parent, ptr->key, ptr->keySize);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Encode");
+		    "xmlSecKeyInfoWriteHMACKeyValueNode - %d", ret);
 	return(-1);
     }
-    
-    xmlNodeSetContent(parent, str);
-    xmlFree(str);
     return(0);
 }
 

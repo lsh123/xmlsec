@@ -20,13 +20,12 @@
 #include <openssl/rand.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/buffered.h> 
-#include <xmlsec/base64.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/openssl/evp.h>
 
@@ -70,8 +69,8 @@ static  int		xmlSecAesKeyWriteBinary		(xmlSecKeyPtr key,
 							 size_t *size);
 struct _xmlSecKeyIdStruct xmlSecAesKeyId = {
     /* xlmlSecKeyId data  */
-    BAD_CAST "AESKeyValue",		/* const xmlChar *keyValueNodeName; */
-    xmlSecNs, 				/* const xmlChar *keyValueNodeNs; */
+    xmlSecAesKeyValueName,	/* const xmlChar *keyValueNodeName; */
+    xmlSecNs, 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyId methods */
     xmlSecAesKeyCreate,		/* xmlSecKeyCreateMethod create; */    
@@ -100,7 +99,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#aes128-cbc", /* const xmlChar href; */
+    xmlSecEncAes128CbcHref, 		/* const xmlChar href; */
 
     xmlSecAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecAesDestroy,			/* xmlSecTransformDestroyMethod aestroy; */
@@ -132,7 +131,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#aes192-cbc", /* const xmlChar href; */
+    xmlSecEncAes192CbcHref,		/* const xmlChar href; */
 
     xmlSecAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecAesDestroy,			/* xmlSecTransformDestroyMethod aestroy; */
@@ -164,7 +163,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#aes256-cbc", /* const xmlChar href; */
+    xmlSecEncAes256CbcHref,		/* const xmlChar href; */
 
     xmlSecAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecAesDestroy,			/* xmlSecTransformDestroyMethod aestroy; */
@@ -215,7 +214,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes128Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#kw-aes128", /* const xmlChar href; */
+    xmlSecKWAes128CbcHref, 		/* const xmlChar href; */
 
     xmlSecKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -241,7 +240,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes192Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#kw-aes192", /* const xmlChar href; */
+    xmlSecKWAes192CbcHref, 		/* const xmlChar href; */
 
     xmlSecKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -266,7 +265,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes256Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#kw-aes256", /* const xmlChar href; */
+    xmlSecKWAes256CbcHref, 		/* const xmlChar href; */
 
     xmlSecKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -894,11 +893,11 @@ xmlSecAesKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
  */
 static int
 xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    xmlChar *keyStr;
-    size_t keyLen;
+    unsigned char* value = NULL;
+    size_t valueSize = 0;
     int ret;
 
-        xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
         
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
@@ -908,43 +907,32 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	return(-1);
     }
 
-    keyStr = xmlNodeGetContent(node);
-    if(keyStr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    " ");
-	return(-1);
-    }
-
-    /* usual trick: decode into the same buffer */
-    ret = xmlSecBase64Decode(keyStr, (unsigned char*)keyStr, xmlStrlen(keyStr));
+    ret = xmlSecKeyInfoReadAESKeyValueNode(node, &value, &valueSize); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Decode");
-	xmlFree(keyStr);
+		    "xmlSecKeyInfoReadAESKeyValueNode - %d", ret);
 	return(-1);
     }
-    keyLen = ret;
 
     if(key->keyData != NULL) {
 	xmlSecAesKeyDataDestroy((xmlSecAesKeyDataPtr)key->keyData);
 	key->keyData = NULL;
 	key->type = 0;
     }
-    if(keyLen > 0) {
-	key->keyData = xmlSecAesKeyDataCreate((unsigned char*)keyStr, keyLen);
+    if(valueSize > 0) {
+	key->keyData = xmlSecAesKeyDataCreate(value, valueSize);
 	if(key->keyData == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecAesKeyDataCreate");
-	    xmlFree(keyStr);
+	    xmlFree(value);
 	    return(-1);
 	}
 	key->type = xmlSecKeyTypePrivate;
     }
 
-    xmlFree(keyStr);
+    xmlFree(value);
     return(0);
 }
 
@@ -954,7 +942,7 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 static int
 xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     xmlSecAesKeyDataPtr ptr;
-    xmlChar *str;
+    int ret;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(parent != NULL, -1);
@@ -976,16 +964,14 @@ xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 	/* and we have no private key :) */
 	return(0);
     }
-    
-    str = xmlSecBase64Encode(ptr->key, ptr->keySize, 0);
-    if(str == NULL) {
+
+    ret = xmlSecKeyInfoWriteAESKeyValueNode(parent, ptr->key, ptr->keySize); 
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Encode");
+		    "xmlSecKeyInfoWriteAESKeyValueNode - %d", ret);
 	return(-1);
-    }    
-    xmlNodeSetContent(parent, str);
-    xmlFree(str);
+    }
     return(0);
 }
 

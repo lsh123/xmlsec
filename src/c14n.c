@@ -23,10 +23,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 
-static const xmlChar xmlExcC14NNs[] = "http://www.w3.org/2001/10/xml-exc-c14n#";
-static const xmlChar xmlExcC14NWithCommentsNs[] = "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
-
-
 static xmlSecTransformPtr xmlSecC14NTransformCreate	(xmlSecTransformId id);
 static void		xmlSecC14NTransformDestroy	(xmlSecTransformPtr transform);
 static int 		xmlSecC14NTransformReadNode	(xmlSecTransformPtr transform,
@@ -40,7 +36,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveTransformId 
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/TR/2001/REC-xml-c14n-20010315", /* const xmlChar href; */
+    xmlSecC14NInclusiveTransformHref, 	/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -55,7 +51,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveWithComments
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments", /* const xmlChar href; */
+    xmlSecC14NInclusiveWithCommentsTransformHref,	/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -70,7 +66,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NExclusiveTransformId 
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/10/xml-exc-c14n#", /* const xmlChar href; */
+    xmlSecC14NExclusiveTransformHref, 		/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -84,8 +80,8 @@ xmlSecTransformId xmlSecC14NExclusive = (xmlSecTransformId)&xmlSecC14NExclusiveT
 static const struct _xmlSecC14NTransformIdStruct xmlSecC14NExclusiveWithCommentsTransformId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
-    xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/10/xml-exc-c14n#WithComments", /* const xmlChar href; */
+    xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
+    xmlSecC14NExclusiveWithCommentsTransformHref, 	/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */

@@ -197,7 +197,7 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     signature = xmlSecFindParent(xmlTransform->here, BAD_CAST "Signature", xmlSecDSigNs);
     if(signature == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE_NOT_FOUND,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
 		    "Signature");
 	return(-1);
     }

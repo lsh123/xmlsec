@@ -335,7 +335,7 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE_NOT_FOUND,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
 		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }

@@ -55,8 +55,8 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/xmlenc.h>
-
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/errors.h>
 
 
 typedef struct _xmlSecKeyInfoNodeStatus {
@@ -157,35 +157,23 @@ static const xmlChar xmlSecRawX509Cert[] = "http://www.w3.org/2000/09/xmldsig#ra
  */
 xmlNodePtr	
 xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddKeyName";
     xmlNodePtr cur;
-    
-    if((keyInfoNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
         
     cur = xmlSecFindChild(keyInfoNode, BAD_CAST "KeyName", xmlSecDSigNs);
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: KeyName node is already present\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "KeyName");
 	return(NULL);	
     }
     
     cur = xmlSecAddChild(keyInfoNode, BAD_CAST "KeyName", xmlSecDSigNs); 
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create KeyName node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"KeyName\")");    
 	return(NULL);	
     }
     
@@ -201,35 +189,23 @@ xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
  */
 xmlNodePtr
 xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddKeyValue";
     xmlNodePtr cur;
-    
-    if((keyInfoNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
-        
+
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
+
     cur = xmlSecFindChild(keyInfoNode, BAD_CAST "KeyValue", xmlSecDSigNs);
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: KeyValue node is already present\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "KeyValue");
 	return(NULL);	
     }
     
     cur = xmlSecAddChild(keyInfoNode, BAD_CAST "KeyValue", xmlSecDSigNs); 
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create KeyValue node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"KeyValue\")");    
 	return(NULL);	
     }
     
@@ -245,35 +221,23 @@ xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
  */
 xmlNodePtr
 xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddX509Data";
     xmlNodePtr cur;
     
-    if((keyInfoNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
         
     cur = xmlSecFindChild(keyInfoNode, BAD_CAST "X509Data", xmlSecDSigNs);
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data node is already present\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "X509Data");
 	return(NULL);	
     }
     
     cur = xmlSecAddChild(keyInfoNode, BAD_CAST "X509Data", xmlSecDSigNs); 
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create X509Data node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"X509Data\")");    
 	return(NULL);	
     }
     
@@ -290,35 +254,23 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 xmlNodePtr
 xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 			     const xmlChar *type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddRetrievalMethod";
     xmlNodePtr cur;
-    
-    if((keyInfoNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
         
     cur = xmlSecFindChild(keyInfoNode, BAD_CAST "RetrievalMethod", xmlSecDSigNs);
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: RetrievalMethod node is already present\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "RetrievalMethod");
 	return(NULL);	
     }
     
     cur = xmlSecAddChild(keyInfoNode, BAD_CAST "RetrievalMethod", xmlSecDSigNs); 
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create RetrievalMethod node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"RetrievalMethod\")");
 	return(NULL);	
     }
     
@@ -342,29 +294,20 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 xmlNodePtr
 xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
 			     xmlSecTransformId transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRetrievalMethodAddTransform";
     xmlNodePtr transforms;
     xmlNodePtr cur;
     int ret;
-    
-    if((retrMethod == NULL) || (transform == xmlSecTransformUnknown)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null or transform is unknown\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+
+    xmlSecAssert2(retrMethod != NULL, NULL);
+    xmlSecAssert2(transform != NULL, NULL);
         
     transforms = xmlSecFindChild(retrMethod, BAD_CAST "Transforms", xmlSecDSigNs);
     if(transforms == NULL) {
 	transforms = xmlSecAddChild(retrMethod, BAD_CAST "Transforms", xmlSecDSigNs);
 	if(transforms == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create Transforms node\n", 
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"Transforms\")");    
 	    return(NULL);	
 	}
     }
@@ -372,21 +315,17 @@ xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
     
     cur = xmlSecAddChild(transforms, BAD_CAST "Transform", xmlSecDSigNs); 
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create Transform node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Transform\")");    
 	return(NULL);	
     }
     
     ret = xmlSecTransformNodeWrite(cur, transform);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform write failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite - %d", ret);
 	return(NULL);	
     }
     
@@ -405,27 +344,17 @@ xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
 xmlNodePtr		
 xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 			 const xmlChar *type, const xmlChar *recipient) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddEncryptedKey";
     xmlNodePtr encKey;
     xmlNodePtr cipherData;
-    
-    if((keyInfoNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
 
     /* we allow multiple encrypted key elements */
     encKey = xmlSecAddChild(keyInfoNode, BAD_CAST "EncryptedKey", xmlSecEncNs); 
     if(encKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create EncryptedKey node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"EncryptedKey\")");    
 	return(NULL);	
     }
     
@@ -442,11 +371,9 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 
     cipherData = xmlSecAddChild(encKey,  BAD_CAST "CipherData", xmlSecEncNs);
     if(cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add CipherData\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"CipherData\")");    
 	xmlUnlinkNode(encKey);
 	xmlFreeNode(encKey);
 	return(NULL);	        	
@@ -469,19 +396,11 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 xmlSecKeyPtr	
 xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context, 
 		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoNodeRead";
     xmlSecKeyInfoNodeStatus status;
     xmlNodePtr cur;
 
-    if((keyInfoNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfoNode is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
-    
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
+
     cur = xmlSecGetNextElementNode(keyInfoNode->children); 
     if(cur == NULL) {
 	return(NULL);
@@ -508,18 +427,10 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
 int
 xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context,
 		xmlSecKeyPtr key, xmlSecKeyType type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoNodeWrite";
     xmlNodePtr cur;
     int ret;
-        
-    if(keyInfoNode == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keyInfo node  is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(keyInfoNode != NULL, -1);
 
     ret = 0;
     cur = xmlSecGetNextElementNode(keyInfoNode->children);
@@ -532,26 +443,25 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void 
 #ifndef XMLSEC_NO_X509
 	    ret = xmlSecX509DataNodeWrite(cur, key); 
 #else  /* XMLSEC_NO_X509 */ 
-	    xmlGenericError(xmlGenericErrorContext,
-    	        "%s: X509 certificates support is disabled\n",
-	        func);
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_DISABLED,
+			"X509");
 #endif /* XMLSEC_NO_X509 */
 	} else if(xmlSecCheckNodeName(cur, BAD_CAST "EncryptedKey", xmlSecEncNs)) {
 #ifndef XMLSEC_NO_XMLENC
 	    ret = xmlSecEncryptedKeyNodeWrite(cur, keysMngr, context, key, type);
 #else  /* XMLSEC_NO_XMLENC */
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: XML Encryption is disabled\n",
-	        func);
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_DISABLED,
+			"XML Encryption");
 #endif /* XMLSEC_NO_XMLENC */
 	}
 	/* TODO: add retrieval method, etc. */
+
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: keyInfo failed for \"%s\"\n",
-		func, cur->name);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"%d", ret);
 	    return(-1);	    
 	}
 	cur = xmlSecGetNextElementNode(cur->next);
@@ -571,18 +481,10 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void 
  */
 static xmlSecKeyPtr
 xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoNodesListRead";
     xmlChar *keyName;
     xmlSecKeyPtr key;
     
-    if(status == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: status is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+    xmlSecAssert2(status != NULL, NULL);
     
     key = NULL;
     keyName = NULL;
@@ -602,17 +504,17 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
 #ifndef XMLSEC_NO_X509
 		key = xmlSecX509DataNodeRead(cur, status);
 #else  /* XMLSEC_NO_X509 */ 
-    		xmlGenericError(xmlGenericErrorContext,
-    		    "%s: X509 certificates support is disabled\n",
-		    func);
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_DISABLED,
+			    "X509");
 #endif /* XMLSEC_NO_X509 */
 	} else if(xmlSecCheckNodeName(cur, BAD_CAST "EncryptedKey", xmlSecEncNs)) {
 #ifndef XMLSEC_NO_XMLENC
 		key = xmlSecEncryptedKeyNodeRead(cur, status);
 #else  /* XMLSEC_NO_XMLENC */
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: XML Encryption is disabled\n",
-		    func);
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_DISABLED,
+			    "XML Encryption");
 #endif /* XMLSEC_NO_XMLENC */
 	}
 	/* TODO: add more nodes (pgp, spki, etc) */
@@ -641,26 +543,25 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
 static xmlSecKeyPtr
 xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
 		      xmlChar **name) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyNameNodeRead";    
     xmlSecKeyPtr key = NULL;
     xmlSecFindKeyCallback findKey;
     xmlChar *content;
-    
-    if((keyNameNode == NULL) || (status == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: KeyName node or status is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(keyNameNode != NULL, NULL);
+    xmlSecAssert2(status != NULL, NULL);
     
     if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginKeyName)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
+		    "xmlSecKeyOriginKeyName");
 	return(NULL);
     }
     
     content = xmlNodeGetContent(keyNameNode);
     if(content == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "KeyName");    
 	return(NULL);
     }
     
@@ -690,15 +591,15 @@ xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
  */
 static int 
 xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
-			 xmlSecKeysMngrPtr keysMngr) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyNameNodeWrite";
+		       xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
+
+    xmlSecAssert2(keyNameNode != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
-    if((keyNameNode == NULL) || (!xmlSecKeyIsValid(key))) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: KeyName node or key is not valid\n",
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);    
     }
     
@@ -743,24 +644,19 @@ xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
  * Support for private keys is added (@type parameter)
  */
 static xmlSecKeyPtr
-xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, 
-		       xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyValueNodeRead";   
+xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr status) {
     xmlNodePtr cur; 
     xmlSecKeyId keyId;
     xmlSecKeyPtr key;
     size_t i;
-    
-    if((keyValueNode == NULL) || (status == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: KeyValue node or status is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(keyValueNode != NULL, NULL);
+    xmlSecAssert2(status != NULL, NULL);
 
     if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginKeyValue)) {    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
+		    "xmlSecKeyOriginKeyValue");
 	return(NULL);
     }
     
@@ -800,16 +696,16 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode,
  */
 static int 
 xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyType type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyValueNodeWrite";
     xmlNodePtr cur;
     int ret;
+
+    xmlSecAssert2(keyValueNode != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
-    if((keyValueNode == NULL) || (!xmlSecKeyIsValid(key))) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: KeyValue node or key is null\n",
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
     
@@ -819,21 +715,17 @@ xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyTyp
     /* create key node */
     cur = xmlSecAddChild(keyValueNode, key->id->keyValueNodeName, key->id->keyValueNodeNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"%s\")", key->id->keyValueNodeName);    
 	return(-1);	
     }
     
     ret = xmlSecKeyWriteXml(key, type, cur);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to write key node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyWriteXml - %d", ret);
 	xmlUnlinkNode(cur);
 	xmlFreeNode(cur);
     }
@@ -842,7 +734,6 @@ xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyTyp
 
 static xmlSecKeyPtr	
 xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRetrievalMethodNodeRead";			 
     xmlSecKeyPtr res = NULL;
     xmlNodePtr cur;
     xmlSecTransformStatePtr state = NULL;
@@ -850,15 +741,8 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
     xmlChar *retrType = NULL;
     int ret;
  
-
-    if((retrievalMethodNode == NULL) || (status == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: RetrievalMethodNode node or status is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+    xmlSecAssert2(retrievalMethodNode != NULL, NULL);
+    xmlSecAssert2(status != NULL, NULL);
 
     cur = xmlSecGetNextElementNode(retrievalMethodNode->children);
     
@@ -867,41 +751,36 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
     if((uri == NULL) || (xmlStrlen(uri) == 0) || (uri[0] == '#')) {
 	/* same document uri */
 	if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginRetrievalDocument)) {
-	    /* not allowed */
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: local (the same document) RetrievalMethod is not allowed\n",
-		func);	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
+			"xmlSecKeyOriginRetrievalDocument");
 	    xmlFree(uri);
 	    return(NULL);
 	}
     } else {
 	/* remote document */
 	if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginRetrievalRemote)) {
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: remote (not the same document) RetrievalMethod is not allowed\n",
-		func);	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
+			"xmlSecKeyOriginRetrievalRemote");
 	    xmlFree(uri);
 	    return(NULL);
 	}
     }
 
     if(!xmlSecKeyInfoNodeCheckRetrievalsLevel(status)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: max retrieval methods recursion level %d is reached\n",
-	    func, status->retrievalsLevel);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,
+		    "%d", status->retrievalsLevel);
 	return(NULL);
     }
     ++status->retrievalsLevel;
 
     state = xmlSecTransformStateCreate(retrievalMethodNode->doc, NULL, (char*)uri);
     if(state == NULL){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create transforms state\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateCreate");
 	goto done;
     }	
 
@@ -909,11 +788,9 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
     if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecDSigNs)) {
 	ret = xmlSecTransformsNodeRead(state, cur);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read \"Transforms\"\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformsNodeRead - %d", ret);
 	    goto done;
 	}	
 	cur = xmlSecGetNextElementNode(cur->next);
@@ -921,19 +798,15 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 
     ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize transforms\n",
-	    func);
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateFinal - %d", ret);
 	goto done;
     }
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-	 xmlGenericError(xmlGenericErrorContext,
-	    "%s: unexpected node \"%s\" found\n",
-	    func, cur->name);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	goto done;
     }
 
@@ -944,11 +817,9 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
         keyDoc = xmlRecoverMemory((char*)xmlBufferContent(state->curBuf),
                               xmlBufferLength(state->curBuf));
 	if(keyDoc == NULL) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to parse keys doc\n",
-		func);
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XML_FAILED,
+			"xmlRecoverMemory");
 	    xmlFreeDoc(keyDoc);
 	    goto done;
 	}
@@ -961,22 +832,18 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 	
 	x509Data = xmlSecX509DataCreate();
 	if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create x509Data\n",
-		func);
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataCreate");
 	    goto done;
 	}
 	
 	ret = xmlSecX509DataReadDerCert(x509Data, (unsigned char*)xmlBufferContent(state->curBuf),
 	                    	    xmlBufferLength(state->curBuf), 0);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read x509Data\n",
-		func);
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataReadDerCert - %d", ret);
 	    xmlSecX509DataDestroy(x509Data);
 	    goto done;
 	}					    
@@ -984,11 +851,9 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
         /* verify data */    
 	if((status->keysMngr != NULL) && (status->keysMngr->verifyX509 != NULL)) {
 	    if((status->keysMngr->verifyX509)(status->keysMngr, status->context, x509Data) != 1) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to verify cert\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+			    NULL);
 		xmlSecX509DataDestroy(x509Data);
 		goto done;
 	    }
@@ -996,29 +861,25 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 	
 	res = xmlSecX509DataCreateKey(x509Data);
 	if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to get key from x509Data\n",
-		func);
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataCreateKey");
 	    xmlSecX509DataDestroy(x509Data);
 	    goto done;
 	}
 
     	if(xmlSecVerifyKey(res, NULL, status->keyId, status->keyType) != 1) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: key does not satisfy reqs\n",
-		func);
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_KEY,
+			NULL);
 	    xmlSecKeyDestroy(res);
 	    res = NULL;
 	}
 	
 #else  /* XMLSEC_NO_X509 */
-	xmlGenericError(xmlGenericErrorContext, 
-	    "%s: x509 certs support is disable\n",
-	    func);   
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_DISABLED,
+		    "X509");
 #endif /* XMLSEC_NO_X509 */				
     }
     
@@ -1041,31 +902,26 @@ done:
 
 static xmlSecKeyPtr 	
 xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptedKeyNodeRead";   
     xmlSecKeyPtr key = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     xmlSecEncResultPtr encResult = NULL; 
     int ret;
-    
-    if((encKeyNode == NULL) || (status == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: EncKey node or status is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(encKeyNode != NULL, NULL);
+    xmlSecAssert2(status != NULL, NULL);
+
     if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginEncryptedKey) ){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
+		    "xmlSecKeyOriginEncryptedKey");
 	return(NULL);
     }
     
     if(!xmlSecKeyInfoNodeCheckEncKeysLevel(status)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: max enc key recursion level %d is reached\n",
-	    func,
-	    status->encKeysLevel);	
-#endif
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL,
+		    "%d", status->encKeysLevel);
+	return(NULL);
     }
     
     ++status->encKeysLevel;
@@ -1075,22 +931,18 @@ xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr sta
      */    
     encCtx = xmlSecEncCtxCreate(status->keysMngr);
     if(encCtx == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: enc ctx create failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncCtxCreate");
 	goto done;
     }
     encCtx->ignoreType = 1; /* do not substitute the node! */
     
     ret = xmlSecDecrypt(encCtx, status->context, NULL, encKeyNode, &encResult);
     if((ret < 0) || (encResult == NULL) || (encResult->buffer == NULL)){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: node decrypt failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDecrypt - %d", ret);
 	goto done;
     } 
 
@@ -1098,11 +950,9 @@ xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr sta
 			   xmlBufferContent(encResult->buffer),
 			   xmlBufferLength(encResult->buffer));
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create the key\n",
-	    func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyReadBin");
 	goto done;
     }			   
     
@@ -1123,19 +973,19 @@ static int
 xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode, 
 			xmlSecKeysMngrPtr keysMngr, void *context,	 
 			xmlSecKeyPtr key, xmlSecKeyType type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptedKeyNodeWrite";   
     xmlSecEncCtxPtr encCtx = NULL;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
     int ret;
     int res = -1;
+
+    xmlSecAssert2(encKeyNode != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
-    if((encKeyNode == NULL) || (!xmlSecKeyIsValid(key))) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: EncKey node or key is null\n",
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
     /**
@@ -1143,11 +993,9 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode,
      */    
     encCtx = xmlSecEncCtxCreate(keysMngr);
     if(encCtx == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: enc ctx create failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncCtxCreate");
 	goto done;
     }
     encCtx->ignoreType = 1; /* do not substitute the node! */
@@ -1155,21 +1003,17 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode,
     
     ret = xmlSecKeyWriteBin(key, type, &keyBuf, &keySize);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: key write failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyWriteBin - %d", ret);
 	goto done;
     }
     
     ret = xmlSecEncryptMemory(encCtx, context, NULL, encKeyNode, keyBuf, keySize, NULL);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: key encrypt failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncryptMemory - %d", ret);
 	goto done;
     }
     
@@ -1275,38 +1119,27 @@ done:
  */
 static xmlSecKeyPtr	
 xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataNodeRead";   
     xmlNodePtr cur; 
     xmlSecX509DataPtr x509Data = NULL;
     xmlSecKeyPtr key = NULL;
     int ret;
-    
-    if((x509DataNode == NULL) || (status == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data node or status is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
 
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+    xmlSecAssert2(status != NULL, NULL);
+    
     if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginX509)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: using X509Data node is not allowed\n",
-	    func);	
-#endif
-	goto done;
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
+		    "xmlSecKeyOriginX509");
+	return(NULL);
     }
     
     
     x509Data = xmlSecX509DataCreate();
     if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create x509 data\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataCreate");
 	return(NULL);
     }
 
@@ -1330,11 +1163,9 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
 	    /* laxi schema validation: ignore unknown nodes */	    
 	}
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create x509 data\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"%d", ret);
 	    xmlSecX509DataDestroy(x509Data);
 	    return(NULL);	    
 	}
@@ -1349,32 +1180,26 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
     /* verify data */    
     if((status->keysMngr != NULL) && (status->keysMngr->verifyX509 != NULL)) {
 	if((status->keysMngr->verifyX509)(status->keysMngr, status->context, x509Data) != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to verify cert\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+			NULL);
 	    goto done;
 	}
     }
 
     key = xmlSecX509DataCreateKey(x509Data);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataCreateKey");
 	goto done;
     }
     x509Data = NULL; /* x509Data assigned to key now */
     
     if(xmlSecVerifyKey(key, NULL, status->keyId, status->keyType) != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to verify key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	xmlSecKeyDestroy(key);
 	key = NULL;
 	goto done;
@@ -1390,14 +1215,13 @@ done:
 
 static int
 xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataNodeWrite";
+    xmlSecAssert2(x509DataNode != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
-    if((x509DataNode == NULL) || (!xmlSecKeyIsValid(key))) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data node or key is null\n",
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
 
@@ -1414,21 +1238,17 @@ xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
 	for(i = 0; i < count; ++i) {
 	    cur = xmlSecAddChild(x509DataNode, BAD_CAST "X509Certificate", xmlSecDSigNs);
 	    if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to create X509Certificate node\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecAddChild(\"X509Certificate\")");    
 		return(-1);	
 	    }
 
 	    buf = xmlSecX509DataWriteDerCert(key->x509Data, i);
 	    if(buf == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: X509Data write failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecX509DataWriteDerCert");
 		return(-1);
 	    }
 	    
@@ -1444,78 +1264,54 @@ xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
 static int 		
 xmlSecX509IssuerSerialNodeRead(xmlNodePtr serialNode, xmlSecX509DataPtr x509Data,
 			xmlSecKeysMngrPtr keysMngr, void *context) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509IssuerSerialNodeRead";
     xmlNodePtr cur;
     xmlChar *issuerName;
     xmlChar *issuerSerial;    
-    
-    if((x509Data == NULL) || (serialNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data or node is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
 
-    if((keysMngr == NULL) || (keysMngr->findX509 == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keys mngr or findX509 method is null \n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(serialNode != NULL, -1);
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngr->findX509 != NULL, -1);
 
     cur = xmlSecGetNextElementNode(serialNode->children);
     /* the first is required node X509IssuerName */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerName", xmlSecDSigNs)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required node \"X509IssuerName\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "X509IssuerName");
 	return(-1);
     }    
     issuerName = xmlNodeGetContent(cur);
     if(issuerName == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: the \"X509IssuerName\" node content is null\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509IssuerName");    
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next); 
 
     /* next is required node X509SerialNumber */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509SerialNumber", xmlSecDSigNs)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required node \"X509SerialNumber\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "X509SerialNumber");
 	xmlFree(issuerName);
 	return(-1);
     }    
     issuerSerial = xmlNodeGetContent(cur);
     if(issuerSerial == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: the \"X509SerialNumber\" node content is null\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509SerialNumber");
 	xmlFree(issuerName);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next); 
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	 xmlGenericError(xmlGenericErrorContext,
-		"%s: unexpected node found\n",
-		func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	xmlFree(issuerSerial);
 	xmlFree(issuerName);
 	return(-1);
@@ -1524,11 +1320,9 @@ xmlSecX509IssuerSerialNodeRead(xmlNodePtr serialNode, xmlSecX509DataPtr x509Data
     x509Data = (keysMngr->findX509)(keysMngr, context, NULL, issuerName, 
 				    issuerSerial, NULL, x509Data);
     if((x509Data == NULL) && (keysMngr->failIfCertNotFound)){
-#ifdef XMLSEC_DEBUG    
-	 xmlGenericError(xmlGenericErrorContext,
-		"%s: certificate search failed\n",
-		func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+		    NULL);
 	xmlFree(issuerSerial);
 	xmlFree(issuerName);
 	return(-1);
@@ -1542,44 +1336,26 @@ xmlSecX509IssuerSerialNodeRead(xmlNodePtr serialNode, xmlSecX509DataPtr x509Data
 static int
 xmlSecX509SKINodeRead(xmlNodePtr skiNode, xmlSecX509DataPtr x509Data,
 			xmlSecKeysMngrPtr keysMngr, void *context) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509SKINodeRead";
     xmlChar *ski;
-    
-    if((x509Data == NULL) || (skiNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data or node is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
 
-    if((keysMngr == NULL) || (keysMngr->findX509 == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keys mngr or findX509 method is null \n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(skiNode != NULL, -1);
+    xmlSecAssert2(keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngr->findX509 != NULL, -1);
 
     ski = xmlNodeGetContent(skiNode);
     if(ski == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get content \n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Ski");
 	return(-1);
     }
 
     x509Data = (keysMngr->findX509)(keysMngr, context, NULL, NULL, NULL, ski, x509Data);
     if((x509Data == NULL) && (keysMngr->failIfCertNotFound)){
-#ifdef XMLSEC_DEBUG    
-	 xmlGenericError(xmlGenericErrorContext,
-		"%s: certificate search failed\n",
-		func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+		    NULL);
 	xmlFree(ski);
 	return(-1);
     }
@@ -1591,45 +1367,27 @@ xmlSecX509SKINodeRead(xmlNodePtr skiNode, xmlSecX509DataPtr x509Data,
 static int
 xmlSecX509SubjectNameNodeRead(xmlNodePtr subjectNode, xmlSecX509DataPtr x509Data,
 			xmlSecKeysMngrPtr keysMngr, void *context) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509SubjectNameNodeRead";
     xmlChar *subjectName;
+
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(subjectNode != NULL, -1);
+    xmlSecAssert2(keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngr->findX509 != NULL, -1);
         
-    if((x509Data == NULL) || (subjectNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data or node is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
-
-    if((keysMngr == NULL) || (keysMngr->findX509 == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keys mngr or findX509 method is null \n",
-	    func);	
-#endif
-	return(-1);
-    }
-
     subjectName = xmlNodeGetContent(subjectNode);
     if(subjectName == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get content \n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Subject");
 	return(-1);
     }
 
     x509Data = (keysMngr->findX509)(keysMngr, context, subjectName, 
 				    NULL, NULL, NULL, x509Data);
     if((x509Data == NULL) && (keysMngr->failIfCertNotFound)){
-#ifdef XMLSEC_DEBUG    
-	 xmlGenericError(xmlGenericErrorContext,
-		"%s: certificate search failed\n",
-		func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+		    NULL);
 	xmlFree(subjectName);
 	return(-1);
     }
@@ -1639,36 +1397,25 @@ xmlSecX509SubjectNameNodeRead(xmlNodePtr subjectNode, xmlSecX509DataPtr x509Data
 
 static int
 xmlSecX509CertificateNodeRead(xmlNodePtr certNode, xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509CertificateNodeRead";
     xmlChar *content;
     int ret;
-    
-    if((x509Data == NULL) || (certNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data or node is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(certNode != NULL, -1);
     
     content = xmlNodeGetContent(certNode);
     if(content == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get content \n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Certificate");
 	return(-1);
     }
 
     ret = xmlSecX509DataReadDerCert(x509Data, content, 0, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: cert add failed\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataReadDerCert - %d", ret);
 	xmlFree(content);
 	return(-1);
     }
@@ -1679,36 +1426,25 @@ xmlSecX509CertificateNodeRead(xmlNodePtr certNode, xmlSecX509DataPtr x509Data) {
 
 static int
 xmlSecX509CRLNodeRead(xmlNodePtr crlNode, xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509CRLNodeRead";
     xmlChar *content;
     int ret;
-    
-    if((x509Data == NULL) || (crlNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509Data or node is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(crlNode != NULL, -1);
     
     content = xmlNodeGetContent(crlNode);
     if(content == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get content \n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Crl");
 	return(-1);
     }
 
     ret = xmlSecX509DataReadDerCrl(x509Data, content, 0, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: crl add failed\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataReadDerCrl - %d", ret);
 	xmlFree(content);
 	return(-1);
     }

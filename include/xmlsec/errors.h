@@ -34,6 +34,7 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVALID_KEY		 14	/* "key is invalid" */
 #define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 15	/* "key data is invalid" */
 #define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 16	/* "invalid key size" */
+#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 17	/* "invalid key origin" */
 
 #define XMLSEC_ERRORS_R_INVALID_SIZE		 21	/* "invalid size" */
 #define XMLSEC_ERRORS_R_INVALID_DATA		 22	/* "invalid data" */
@@ -42,9 +43,16 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE	 24	/* "invalid node attribute" */
 #define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 25	/* "node already present" */
 #define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 27	/* "same document required" */
-#define XMLSEC_ERRORS_R_INVALID_NODE_NOT_FOUND 	 28	/* "node not found" */
+#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 28	/* "node not found" */
+
 
 #define XMLSEC_ERRORS_R_ASSERTION		 31	/* "assertion" */
+#define XMLSEC_ERRORS_R_DISABLED		 32	/* "disabled" */
+
+#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 41	/* "max retrievals level reached" */
+#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 42	/* "cert verification failed" */
+#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 43	/* "cert not found" */
+#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 44	/* "key not found" */
 
 /**
  * Error function

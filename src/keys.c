@@ -22,6 +22,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/errors.h>
 
 
 xmlSecKeyId xmlSecAllKeyIds[100];
@@ -69,25 +70,16 @@ xmlSecKeysInit(void) {
  */
 xmlSecKeyPtr	
 xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyCreate";
     xmlSecKeyPtr key;
     
-    if((id == xmlSecKeyIdUnknown) || (id->create == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id or create method is not defined\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->create != NULL, NULL);
     
     key = id->create(id);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key creation failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->create");
 	return(NULL);	
     }
     key->origin = origin;
@@ -104,14 +96,14 @@ xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
  */
 void
 xmlSecKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyDestroy";
-    
-    if((!xmlSecKeyIsValid(key)) || (key->id->destroy == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or destroy method is not defined\n",
-	    func);	
-#endif
+    xmlSecAssert(key != NULL);    
+    xmlSecAssert(key->id != NULL);    
+    xmlSecAssert(key->id->destroy != NULL);    
+
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return;
     }
     
@@ -129,25 +121,24 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
 
 xmlSecKeyPtr	
 xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyDuplicate";
     xmlSecKeyPtr newKey;
+
+    xmlSecAssert2(key != NULL, NULL);
+    xmlSecAssert2(key->id != NULL, NULL);
+    xmlSecAssert2(key->id->duplicate != NULL, NULL);
     
-    if(!xmlSecKeyIsValid(key) || (key->id->duplicate == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad key: unable to duplicate\n",
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(NULL);	
     }
     
     newKey = key->id->duplicate(key);
     if(newKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key duplication failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->duplicate");
 	return(NULL);	
     }
     
@@ -173,47 +164,26 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
  */
 xmlSecKeyPtr	
 xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadXml";
     xmlSecKeyPtr key;
     int ret;
-    
-    if(node == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: node is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
 
-    if(id->read == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XML read not implemented for key \"%s\"\n",
-	    func, id->keyValueNodeName);	
-#endif
-	return(NULL);	    	
-    }
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->read != NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
 
     key = xmlSecKeyCreate(id, xmlSecKeyOriginDefault);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyCreate");
 	return(NULL);    
     }
 
-    
-    
     ret = (id->read)(key, node);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->read - %d", ret);
 	xmlSecKeyDestroy(key);
 	return(NULL);    
     }
@@ -232,35 +202,26 @@ xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
  */
 int
 xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyWriteXml";
     int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->id != NULL, -1);
+    xmlSecAssert2(key->id->write != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     
-    if((!xmlSecKeyIsValid(key)) || (node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or parent is null\n",
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
-    }
-    
-    if(key->id->write == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XML write not implemented for key \"%s\"\n",
-	    func, key->id->keyValueNodeName);	
-#endif
-	return(-1);	    	
     }
     
     /* write key */
     ret = key->id->write(key, type, node);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to write key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->write - %d", ret);
 	return(-1);	    
     }
     return(0);    
@@ -268,47 +229,27 @@ xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
 
 xmlSecKeyPtr	
 xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadBin";
     xmlSecKeyPtr key;
     int ret;
+
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->readBin != NULL, NULL);
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(size > 0, NULL);
     
-    if((buf == NULL) || (size == 0)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer or size is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
-
-    if(id->readBin == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bin read not implemented for key \"%s\"\n",
-	    func, id->keyValueNodeName);	
-#endif
-	return(NULL);	    	
-    }
-
     key = xmlSecKeyCreate(id, xmlSecKeyOriginDefault);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyCreate");
 	return(NULL);    
     }
 
-    
-    
     ret = (id->readBin)(key, buf, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->readBin - %d", ret);
 	xmlSecKeyDestroy(key);
 	return(NULL);    
     }
@@ -319,36 +260,27 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
 int
 xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 		 unsigned char **buf, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyWriteBin";
     int ret;
     
-    if((!xmlSecKeyIsValid(key)) || (buf == NULL) || (size == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or buffer or size is null\n",
-	    func);	
-#endif
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->id != NULL, -1);
+    xmlSecAssert2(key->id->readBin != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size != NULL, -1);
+
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
 
-    if(key->id->writeBin == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bin write not implemented for key \"%s\"\n",
-	    func, key->id->keyValueNodeName);	
-#endif
-	return(-1);	    	
-    }
-    
-    
     /* write key */
     ret = key->id->writeBin(key, type, buf, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to write key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->writeBin - %d", ret);
 	return(-1);	    
     }
     return(0);    
@@ -356,16 +288,7 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 
 int
 xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, xmlSecKeyType type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecVerifyKey";
-	
-    if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is null\n", 
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(key != NULL, -1);
 
     if((id != xmlSecKeyIdUnknown) && (id != key->id)) {
 	return(0);
@@ -387,14 +310,13 @@ xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, xmlSecKey
  */
 void
 xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyDebugDump";
+    xmlSecAssert(key != NULL);
+    xmlSecAssert(output != NULL);
     
-    if((output == NULL) || !xmlSecKeyIsValid(key)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key or output file is null\n", 
-	    func);	
-#endif
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return;
     }
     fprintf(output, "== KEY\n");
@@ -446,34 +368,24 @@ xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadPemCert";
     int ret;
 
-    if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is null\n", 
-	    func);	
-#endif
-	return(-1);
-    }
-    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
     if(key->x509Data == NULL) {
 	key->x509Data = xmlSecX509DataCreate();
 	if(key->x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create x509 data\n", 
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataCreate");
 	    return(-1);
 	}
     }    
     
     ret = xmlSecX509DataReadPemCert(key->x509Data, filename);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read pem cert\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataReadPemCert(%s) - %d", filename, ret);
 	return(-1);
     }
     
@@ -488,15 +400,9 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *conte
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeysMngrGetKey";
     xmlSecKeyPtr key = NULL;
         
-    if(mngr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr is null\n",
-	    func);	
-#endif 	    
-	return(NULL);    
-    }
-    
+    xmlSecAssert2(keyInfoNode != NULL, NULL);
+    xmlSecAssert2(mngr != NULL, NULL);
+
     if((key == NULL) && (keyInfoNode != NULL)) {
 	key = xmlSecKeyInfoNodeRead(keyInfoNode, mngr, context,
 			keyId, keyType, keyUsage);
@@ -508,11 +414,9 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *conte
     }
     
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to find key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+		    NULL);
 	return(NULL);    
     }
     

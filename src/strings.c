@@ -51,6 +51,9 @@ const xmlChar xmlSecHrefDESKeyValue[]	= "http://www.aleksey.com/xmlsec/2002#DESK
 const xmlChar xmlSecNameDes3Cbc[]	= "tripledes-cbc";
 const xmlChar xmlSecHrefDes3Cbc[]	= "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
 
+const xmlChar xmlSecNameKWDes3[]	= "kw-tripledes";
+const xmlChar xmlSecHrefKWDes3[]	= "http://www.w3.org/2001/04/xmlenc#kw-tripledes";
+
 /*************************************************************************
  *
  * DSA strings

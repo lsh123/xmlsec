@@ -215,13 +215,17 @@ xmlSecOpenSSLTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_RSA */
     
-
-    /* encryption */
 #ifndef XMLSEC_NO_DES    
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformDes3CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register des3-cbc encryption transform");
+	return(-1);
+    }
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWDes3Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "failed to register des key wrapper transform");
 	return(-1);
     }
 #endif /* XMLSEC_NO_DES */
@@ -245,32 +249,7 @@ xmlSecOpenSSLTransformsInit(void) {
 		    "failed to register aes256 encryption transform");
 	return(-1);
     }
-#endif /* XMLSEC_NO_AES */
 
-    /* Key Transports */
-#ifndef XMLSEC_NO_RSA
-    if(xmlSecTransformRegister(xmlSecEncRsaPkcs1) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/pkcs1 transform");
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecEncRsaOaep) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/oaep transform");
-	return(-1);
-    }
-#endif /* XMLSEC_NO_RSA */
-
-    /* key wrappers */
-#ifndef XMLSEC_NO_AES   
-    if(xmlSecTransformRegister(xmlSecKWDes3Cbc) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register des key wrapper transform");
-	return(-1);
-    }
     if(xmlSecTransformRegister(xmlSecKWAes128) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -290,6 +269,21 @@ xmlSecOpenSSLTransformsInit(void) {
 	return(-1);
     }
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_RSA
+    if(xmlSecTransformRegister(xmlSecEncRsaPkcs1) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "failed to register rsa/pkcs1 transform");
+	return(-1);
+    }
+    if(xmlSecTransformRegister(xmlSecEncRsaOaep) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "failed to register rsa/oaep transform");
+	return(-1);
+    }
+#endif /* XMLSEC_NO_RSA */
     
     return(0);
 }

@@ -65,6 +65,7 @@ dnl	- with xkms support (while in development)
 dnl	- with debug
 dnl 	- with pedantic compiler flags
 dnl	- with static binaries
+dnl	- without dynamic xmlsec-crypto loading
 dnl ==========================================================================
 AC_MSG_CHECKING(for development environment) 
 AC_ARG_ENABLE(development,   [  --enable-development    enable development environment (no)])
@@ -73,6 +74,7 @@ if test "z$enable_development" = "zyes" -o "z${LOGNAME}" = "zaleksey" ; then
     enable_debuging="yes"
     enable_pedantic="yes"
 #    enable_static_linking="yes"
+#    enable_crypto_dl="no"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)

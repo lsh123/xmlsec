@@ -20,6 +20,7 @@ tmpfile=$TMPFOLDER/testKeys.$timestamp-$$.tmp
 logfile=$TMPFOLDER/testKeys.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
+nssdbfolds=$topfolder/nssdb
 
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
@@ -73,7 +74,11 @@ echo "--- log file is $logfile"
 echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
+# remove old keys file and copy NSS DB files if needed
 rm -rf $keysfile
+if [ "z$crypto" = "znss" ] ; then
+    cp -f $nssdbfolder/* $topfolder
+fi
 
 execKeysTest "test-hmac-sha1" 	"hmac-192"
 execKeysTest "test-rsa      " 	"rsa-1024"

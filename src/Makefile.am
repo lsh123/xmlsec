@@ -1,6 +1,7 @@
 NULL =
 
 INCLUDES = \
+-I$(top_srcdir) \
 -I$(top_srcdir)/include \
 $(OPENSSL_CFLAGS) \
 $(LIBXSLT_CFLAGS) \

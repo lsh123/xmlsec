@@ -26,15 +26,15 @@ check: $(DEPS)
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
 if XMLSEC_WITH_SKM_TEST
-	@./testKeys.sh
+	@$(top_srcdir)/tests/testKeys.sh
 	@echo
 endif 	
 if XMLSEC_WITH_XMLDSIG_TEST	
-	@./testDSig.sh
+	@$(top_srcdir)/tests/testDSig.sh
 	@echo
 endif	
 if XMLSEC_WITH_XMLENC_TEST
-	@./testEnc.sh
+	@$(top_srcdir)/tests/testEnc.sh
 	@echo
 endif
 

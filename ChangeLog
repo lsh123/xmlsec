@@ -1,3 +1,7 @@
+Thu Jul 11 17:17:22 2002 Aleksey Sanin  <aleksey@aleksey.com> 
+	* configure.in src/Makefile.am tests/Makefile.am: fixed
+	minor dist bugs
+
 Thu Jul 11 11:47:14 2002  Aleksey Sanin  <aleksey@aleksey.com> 
 	* Makefile.am docs/* docs/api/*: added faq and documentation
 	pages

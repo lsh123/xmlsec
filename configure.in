@@ -461,7 +461,7 @@ dnl ==========================================================================
 dnl Which files to process
 dnl ==========================================================================
 rm -f rm COPYING.LIB COPYING
-ln -s Copyright COPYING
+ln -s $srcdir/Copyright COPYING
 
 AC_OUTPUT([
 Makefile

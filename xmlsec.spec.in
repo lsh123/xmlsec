@@ -37,31 +37,31 @@ Requires: zlib-devel
 Libraries, includes, etc. you can use to develop applications with XML Digital 
 Signatures and XML Encryption support.
 
-%package nss
-Summary: NSS crypto plugin for XML Security Library
-Group: Development/Libraries 
-Requires: xmlsec = %{version}
-Requires: libxml2 >= @LIBXML_MIN_VERSION@
-Requires: libxslt >= @LIBXSLT_MIN_VERSION@
-Requires: mozilla-nss >= @NSS_MIN_VERSION@
+#%package nss
+#Summary: NSS crypto plugin for XML Security Library
+#Group: Development/Libraries 
+#Requires: xmlsec = %{version}
+#Requires: libxml2 >= @LIBXML_MIN_VERSION@
+#Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+#Requires: mozilla-nss >= @NSS_MIN_VERSION@
 
-%description nss
-NSS plugin for XML Security Library provides NSS based crypto services
-for the xmlsec library
+#%description nss
+#NSS plugin for XML Security Library provides NSS based crypto services
+#for the xmlsec library
 
-%package nss-devel
-Summary: NSS crypto plugin for XML Security Library
-Group: Development/Libraries 
-Requires: xmlsec = %{version}
-Requires: xmlsec-devel = %{version}
-Requires: xmlsec-nss = %{version}
-Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
-Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
-Requires: mozilla-nss-devel >= @NSS_MIN_VERSION@
-Requires: zlib-devel 
+#%package nss-devel
+#Summary: NSS crypto plugin for XML Security Library
+#Group: Development/Libraries 
+#Requires: xmlsec = %{version}
+#Requires: xmlsec-devel = %{version}
+#Requires: xmlsec-nss = %{version}
+#Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+#Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+#Requires: mozilla-nss-devel >= @NSS_MIN_VERSION@
+#Requires: zlib-devel 
 
-%description nss-devel
-Libraries, includes, etc. for developing XML Security applications with NSS
+#%description nss-devel
+#Libraries, includes, etc. for developing XML Security applications with NSS
 
 
 %prep
@@ -129,16 +129,16 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/libxmlsec-openssl.*a
 %{prefix}/lib/pkgconfig/xmlsec.pc
 
-%files nss
-%defattr(-, root, root)  
+#%files nss
+#%defattr(-, root, root)  
 
-%{prefix}/lib/libxmlsec-nss.so.*
-%{prefix}/lib/libxmlsec-nss.so
+#%{prefix}/lib/libxmlsec-nss.so.*
+#%{prefix}/lib/libxmlsec-nss.so
 
-%files nss-devel
-%defattr(-, root, root)  
+#%files nss-devel
+#%defattr(-, root, root)  
 
-%{prefix}/include/xmlsec/nss/*.h
-%{prefix}/lib/libxmlsec-nss.*a
+#%{prefix}/include/xmlsec/nss/*.h
+#%{prefix}/lib/libxmlsec-nss.*a
 
 %changelog

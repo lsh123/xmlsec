@@ -22,7 +22,7 @@ struct      <link linkend="xmlSecNodeSet">xmlSecNodeSet</link>;
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              <link linkend="void">void</link> *data);
-<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetCreate">xmlSecNodeSetCreate</link>        (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetCreate">xmlSecNodeSetCreate</link>        (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              <link linkend="xmlNodeSet">xmlNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);
 <link linkend="void">void</link>        <link linkend="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</link>            (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset);
@@ -30,13 +30,13 @@ struct      <link linkend="xmlSecNodeSet">xmlSecNodeSet</link>;
 <link linkend="int">int</link>         <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>           (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlNode">xmlNodePtr</link> parent);
-<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAdd">xmlSecNodeSetAdd</link>           (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAdd">xmlSecNodeSetAdd</link>           (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
                                              <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);
-<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAddList">xmlSecNodeSetAddList</link>       (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAddList">xmlSecNodeSetAddList</link>       (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
                                              <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);
-<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren</link>   (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren</link>   (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              const <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              <link linkend="int">int</link> withComments,
                                              <link linkend="int">int</link> invert);
@@ -244,7 +244,7 @@ an walk procedure should be interrupted.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetCreate">xmlSecNodeSetCreate ()</title>
-<indexterm><primary>xmlSecNodeSetCreate</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetCreate        (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+<indexterm><primary>xmlSecNodeSetCreate</primary></indexterm><programlisting><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> xmlSecNodeSetCreate        (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              <link linkend="xmlNodeSet">xmlNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);</programlisting>
 <para>
@@ -314,7 +314,7 @@ and a negative value if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetAdd">xmlSecNodeSetAdd ()</title>
-<indexterm><primary>xmlSecNodeSetAdd</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetAdd           (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+<indexterm><primary>xmlSecNodeSetAdd</primary></indexterm><programlisting><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> xmlSecNodeSetAdd           (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
                                              <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
 <para>
@@ -337,7 +337,7 @@ occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetAddList">xmlSecNodeSetAddList ()</title>
-<indexterm><primary>xmlSecNodeSetAddList</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetAddList       (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
+<indexterm><primary>xmlSecNodeSetAddList</primary></indexterm><programlisting><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> xmlSecNodeSetAddList       (<link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> newNSet,
                                              <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
 <para>
@@ -360,7 +360,7 @@ occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren ()</title>
-<indexterm><primary>xmlSecNodeSetGetChildren</primary></indexterm><programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetGetChildren   (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+<indexterm><primary>xmlSecNodeSetGetChildren</primary></indexterm><programlisting><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> xmlSecNodeSetGetChildren   (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              const <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              <link linkend="int">int</link> withComments,
                                              <link linkend="int">int</link> invert);</programlisting>

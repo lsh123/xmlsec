@@ -157,7 +157,13 @@
 		<xsl:with-param name="alt">OpenSSL</xsl:with-param> 
 	    </xsl:call-template>
 	</a>
-	</td></tr></table>
+	</td></tr>
+	
+	<!-- Sponsored links block markers -->
+	<xsl:comment>Sponsored links - start</xsl:comment>
+	<xsl:comment>Sponsored links - end</xsl:comment>
+	
+	</table>
      </td>
      <!-- top navigation menu end -->
 
@@ -175,7 +181,6 @@
 	    </td></tr>
 	</table>
     </td>
-
 
 </tr></table>
 </body>

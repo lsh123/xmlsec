@@ -96,7 +96,7 @@ struct      <link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>;
 struct      <link linkend="xmlSecTransform">xmlSecTransform</link>;
 <link linkend="xmlSecTransform">xmlSecTransformPtr</link> <link linkend="xmlSecTransformCreate">xmlSecTransformCreate</link>    (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);
 <link linkend="void">void</link>        <link linkend="xmlSecTransformDestroy">xmlSecTransformDestroy</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
-<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <link linkend="xmlSecTransformNodeRead">xmlSecTransformNodeRead</link>  (<link linkend="xmlNode">xmlNodePtr</link> node,
+<link linkend="xmlSecTransform">xmlSecTransformPtr</link> <link linkend="xmlSecTransformNodeRead">xmlSecTransformNodeRead</link>  (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 <link linkend="int">int</link>         <link linkend="xmlSecTransformPump">xmlSecTransformPump</link>             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
@@ -1076,7 +1076,7 @@ of transforms in <parameter>ctx</parameter>.</para>
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
 <para>
-Reads transforms from the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> children of the <parameter>node</parameter> and 
+Reads transforms from the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> children of the <parameter>node</parameter> and 
 appends them to the current transforms chain in <parameter>ctx</parameter> object.</para>
 <para>
 
@@ -1085,7 +1085,7 @@ appends them to the current transforms chain in <parameter>ctx</parameter> objec
 <listitem><simpara>		the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> nodes parent node.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> nodes parent node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&nbsp;:</term>
 <listitem><simpara>		the transform's usage (signature, encryption, etc.).
@@ -1267,7 +1267,7 @@ The transform structure.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link> <structfield>hereNode</structfield></term>
-<listitem><simpara>		the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform ">&lt;dsig:Transform /&gt;</ulink> node.
+<listitem><simpara>		the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform ">&lt;dsig:Transform /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -1340,7 +1340,7 @@ Destroys transform created with <link linkend="xmlSecTransformCreate"><type>xmlS
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeRead">xmlSecTransformNodeRead ()</title>
-<indexterm><primary>xmlSecTransformNodeRead</primary></indexterm><programlisting><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> xmlSecTransformNodeRead  (<link linkend="xmlNode">xmlNodePtr</link> node,
+<indexterm><primary>xmlSecTransformNodeRead</primary></indexterm><programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformNodeRead  (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -2034,7 +2034,7 @@ the <parameter>node</parameter>.</para>
 <listitem><simpara>			the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to transform context object.
@@ -2057,7 +2057,7 @@ The transform specific method to write transform information to an XML node <par
 <listitem><simpara>			the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to transform context object.

@@ -91,15 +91,15 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr data, xmlSecKe
 }
 
 int
-xmlSecX509StoreSetFolder(xmlSecX509StorePtr store, const char* folder) {
+xmlSecX509StoreSetLookupFolder(xmlSecX509StorePtr store, const char* folder) {
     xmlSecObjKlassPtr klass = xmlSecObjGetKlass(store);
     xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
 
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(storeKlass != NULL, -1);	
-    xmlSecAssert2(storeKlass->setFolder != NULL, -1);
+    xmlSecAssert2(storeKlass->setLookupFolder != NULL, -1);
     
-    return(storeKlass->setFolder(store, folder));
+    return(storeKlass->setLookupFolder(store, folder));
 }
 
 int
@@ -433,7 +433,6 @@ xmlSecX509DataReadXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
     xmlSecAssert2(node != NULL, -1);
 
     /* todo: remove all objects from data */
-
 
     /* read all certs and crls into the data object */ 
     ret = 0;

@@ -46,73 +46,6 @@ typedef enum {
  * X509 data storage
  *
  *********************************************************************/
-#define xmlSecX509StoreKlassId 				xmlSecX509StoreKlassGet()
-#define xmlSecX509StoreKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecX509StoreKlassId, xmlSecX509StoreKlassPtr)
-#define xmlSecX509StoreKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecX509StoreKlassId)
-#define xmlSecX509StoreCast(obj) 			xmlSecObjCastMacro((obj), xmlSecX509StoreKlassId, xmlSecX509StorePtr)
-#define xmlSecX509StoreCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecX509StoreKlassId)
-
-/**
- * xmlSecX509StoreFindMethod:
- *
- * Searches for key.
- *
- * Returns the pointer to key or NULL if the key is not found or 
- * an error occurs.
- */
-typedef int 		(*xmlSecX509StoreFindMethod)		(xmlSecX509StorePtr store, 
-								 xmlSecX509DataPtr data,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlChar *subjectName,
-								 xmlChar *issuerName,
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-typedef int	 	(*xmlSecX509StoreVerifyMethod)		(xmlSecX509StorePtr store, 
-								 xmlSecX509DataPtr data, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
-typedef int		(*xmlSecX509StoreSetFolderMethod)	(xmlSecX509StorePtr store,
-								 const char* folder);
-typedef int		(*xmlSecX509StoreLoadPemFileMethod)	(xmlSecX509StorePtr store,
-								 const char* filename,
-								 xmlSecX509ObjectType type);
-
-
-struct _xmlSecX509StoreKlass {
-    xmlSecObjKlass			parent;
-    
-    xmlSecX509StoreFindMethod		find;
-    xmlSecX509StoreVerifyMethod		verify;
-    xmlSecX509StoreSetFolderMethod	setFolder;
-    xmlSecX509StoreLoadPemFileMethod	loadPemFile;
-};
-
-struct _xmlSecX509Store {
-    xmlSecObj				parent;
-};
-
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecX509StoreKlassGet		(void);
-XMLSEC_EXPORT int	 	xmlSecX509StoreFind		(xmlSecX509StorePtr store, 
-								 xmlSecX509DataPtr data,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlChar *subjectName,
-								 xmlChar *issuerName,
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-XMLSEC_EXPORT int	 	xmlSecX509StoreVerify		(xmlSecX509StorePtr store, 
-								 xmlSecX509DataPtr data, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
-XMLSEC_EXPORT int		xmlSecX509StoreSetFolder	(xmlSecX509StorePtr store,
-								 const char* folder);
-XMLSEC_EXPORT int		xmlSecX509StoreLoadPemFile	(xmlSecX509StorePtr store,
-								 const char* filename,
-								 xmlSecX509ObjectType type);
-
-
-/*********************************************************************
- *
- * X509 data storage
- *
- *********************************************************************/
 #define xmlSecX509DataKlassId 				xmlSecX509DataKlassGet()
 #define xmlSecX509DataKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecX509DataKlassId, xmlSecX509DataKlassPtr)
 #define xmlSecX509DataKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecX509DataKlassId)
@@ -168,6 +101,84 @@ XMLSEC_EXPORT int		xmlSecX509DataGetObject		(xmlSecX509DataPtr data,
 XMLSEC_EXPORT xmlChar*		xmlSecX509DataGetObjectName	(xmlSecX509DataPtr data,
 								 xmlSecX509ObjectType type,
 								 size_t pos);
+
+
+/*********************************************************************
+ *
+ * X509 data storage
+ *
+ *********************************************************************/
+#define xmlSecX509StoreKlassId 				xmlSecX509StoreKlassGet()
+#define xmlSecX509StoreKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecX509StoreKlassId, xmlSecX509StoreKlassPtr)
+#define xmlSecX509StoreKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecX509StoreKlassId)
+#define xmlSecX509StoreCast(obj) 			xmlSecObjCastMacro((obj), xmlSecX509StoreKlassId, xmlSecX509StorePtr)
+#define xmlSecX509StoreCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecX509StoreKlassId)
+
+/**
+ * xmlSecX509StoreFindMethod:
+ * @store: the pointer to x509 certificates store.
+ * @data: the pointer to current x509 data.
+ * @keysMngrCtx: the pointer to current context.
+ * @subjectName: the subject name string.
+ * @issuerName: the issuer name string.
+ * @issuerSerial: the issuer serial.
+ * @ski: the SKI string.
+ * @data: the current X509 certs data (may be NULL). 
+ *
+ * Searches x509 @store for matching certificate and adds found certificate
+ * to the x509 @data.
+ *
+ * Returns 0 if certificate was not found, 1 if it was found and a negative
+ * value if an error occurs.
+ */
+typedef int 		(*xmlSecX509StoreFindMethod)		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski);
+typedef int	 	(*xmlSecX509StoreVerifyMethod)		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+typedef int		(*xmlSecX509StoreSetLookupFolderMethod)	(xmlSecX509StorePtr store,
+								 const char* folder);
+typedef int		(*xmlSecX509StoreLoadPemFileMethod)	(xmlSecX509StorePtr store,
+								 const char* filename,
+								 xmlSecX509ObjectType type);
+
+
+struct _xmlSecX509StoreKlass {
+    xmlSecObjKlass			parent;
+    
+    xmlSecX509StoreFindMethod		find;
+    xmlSecX509StoreVerifyMethod		verify;
+    xmlSecX509StoreSetLookupFolderMethod setLookupFolder;
+    xmlSecX509StoreLoadPemFileMethod	loadPemFile;
+};
+
+struct _xmlSecX509Store {
+    xmlSecObj				parent;
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecX509StoreKlassGet		(void);
+XMLSEC_EXPORT int	 	xmlSecX509StoreFind		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski);
+XMLSEC_EXPORT int	 	xmlSecX509StoreVerify		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+XMLSEC_EXPORT int		xmlSecX509StoreSetLookupFolder	(xmlSecX509StorePtr store,
+								 const char* folder);
+XMLSEC_EXPORT int		xmlSecX509StoreLoadPemFile	(xmlSecX509StorePtr store,
+								 const char* filename,
+								 xmlSecX509ObjectType type);
+
+
 
 
 /*********************************************************************

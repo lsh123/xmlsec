@@ -539,12 +539,6 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeysStorePtr keysStore, xmlSecKeysMngrCtxPtr 
     return(NULL);
 }
 
-
-
-
-
-
-
 /***************************************************************************
  *
  * xmlSecKey

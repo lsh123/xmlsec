@@ -205,6 +205,7 @@ static const char helpX509[] =
     "X509 certificates options:\n"
     "  --trusted <file>      load trusted (root) certificate from PEM file\n"
     "  --untrusted <file>    load un-trusted certificate from PEM file\n"
+    "  --crl <file>          load crl from PEM file\n"
     "  --pwd <password>      the password to use for reading keys and certs\n"
     "  --verification-time <time> the local time in \"YYYY-MM-DD HH:MM:SS\"\n"
     "                       format used certificates verification\n"
@@ -251,7 +252,6 @@ void shutdownXmlsec(void);
  * Read command line options
  */
 int  readKeyOrigins(char *keyOrigins);
-int  readPEMCertificate(const char *file, int trusted);
 int  readNumber(const char *str, int *number);
 int  readTime(const char* str, time_t* t);
 int  readKeys(char *file);
@@ -445,14 +445,17 @@ int main(int argc, char **argv) {
 		}
 	    }
 	} else
-	
+
+#ifndef XMLSEC_NO_X509
 	/**
 	 * X509 certificates options
 	 */
 	if((strcmp(argv[pos], "--trusted") == 0) && (pos + 1 < argc)) {
-	    ret = readPEMCertificate(argv[++pos], 1);
+	    ret = xmlSecX509StoreLoadPemFile(keysMngr->x509Store, argv[++pos], xmlSecX509ObjectTypeTrustedCert);
 	} else if((strcmp(argv[pos], "--untrusted") == 0) && (pos + 1 < argc)) {	
-	    ret = readPEMCertificate(argv[++pos], 0);
+	    ret = xmlSecX509StoreLoadPemFile(keysMngr->x509Store, argv[++pos], xmlSecX509ObjectTypeCert);
+	} else if((strcmp(argv[pos], "--crl") == 0) && (pos + 1 < argc)) {	
+	    ret = xmlSecX509StoreLoadPemFile(keysMngr->x509Store, argv[++pos], xmlSecX509ObjectTypeCrl);
 	} else if((strcmp(argv[pos], "--verification-time") == 0) && (pos + 1 < argc)) {
 	    time_t t = 0;
 	     
@@ -465,6 +468,7 @@ int main(int argc, char **argv) {
     		ret = -1;
 	    }
 	} else 
+#endif /* XMLSEC_NO_X509 */
 
 	/**
 	 * Misc. options
@@ -910,24 +914,6 @@ int  readTime(const char* str, time_t* t) {
 
     (*t) = mktime(&tm);
     return(0);    
-}
-
-int  readPEMCertificate(const char *file, int trusted) {
-#ifndef XMLSEC_NO_X509	    
-    int ret;
-/* todo
-    ret = xmlSecSimpleKeysStoreLoadPemCert(xmlSecSimpleKeysStoreCast(keysMngr), 
-					file, trusted);
-    if(ret < 0) {
-	fprintf(stderr, "Error: unable to load certificate file \"%s\".\n", file);
-    	return(-1);
-    }     
-*/    
-    return(0);
-#else /* XMLSEC_NO_X509 */
-    fprintf(stderr, "Error: x509 support disabled.\n");
-    return(-1);
-#endif /* XMLSEC_NO_X509 */    
 }
 
 int  readKeys(char *file) {

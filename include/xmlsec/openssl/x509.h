@@ -23,17 +23,41 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+typedef struct _xmlSecOpenSSLX509DataKlass		xmlSecOpenSSLX509DataKlass,
+							*xmlSecOpenSSLX509DataKlassPtr;
+typedef struct _xmlSecOpenSSLX509Data			xmlSecOpenSSLX509Data,
+							*xmlSecOpenSSLX509DataPtr;
 
 typedef struct _xmlSecOpenSSLX509StoreKlass		xmlSecOpenSSLX509StoreKlass,
 							*xmlSecOpenSSLX509StoreKlassPtr;
 typedef struct _xmlSecOpenSSLX509Store			xmlSecOpenSSLX509Store,
 							*xmlSecOpenSSLX509StorePtr;
 
-typedef struct _xmlSecOpenSSLX509DataKlass		xmlSecOpenSSLX509DataKlass,
-							*xmlSecOpenSSLX509DataKlassPtr;
-typedef struct _xmlSecOpenSSLX509Data			xmlSecOpenSSLX509Data,
-							*xmlSecOpenSSLX509DataPtr;
 
+/*********************************************************************
+ *
+ * OpenSSL X509 data
+ *
+ *********************************************************************/
+#define xmlSecOpenSSLX509DataKlassId 			xmlSecOpenSSLX509DataKlassGet()
+#define xmlSecOpenSSLX509DataKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecOpenSSLX509DataKlassId, xmlSecOpenSSLX509DataKlassPtr)
+#define xmlSecOpenSSLX509DataKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecOpenSSLX509DataKlassId)
+#define xmlSecOpenSSLX509DataCast(obj) 			xmlSecObjCastMacro((obj), xmlSecOpenSSLX509DataKlassId, xmlSecOpenSSLX509DataPtr)
+#define xmlSecOpenSSLX509DataCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecOpenSSLX509DataKlassId)
+
+struct _xmlSecOpenSSLX509DataKlass {
+    xmlSecX509DataKlass				parent;
+};
+
+struct _xmlSecOpenSSLX509Data {
+    xmlSecX509Data				parent;
+
+    X509*					verified;
+    STACK_OF(X509)*				certs;
+    STACK_OF(X509_CRL)*				crls;
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecOpenSSLX509DataKlassGet	(void);
 
 
 /*********************************************************************
@@ -65,33 +89,6 @@ XMLSEC_EXPORT int		xmlSecOpenSSLX509StoreLoadPemCert(xmlSecOpenSSLX509StorePtr s
 								 int trusted);
 XMLSEC_EXPORT int		xmlSecOpenSSLX509StoreAddCertsDir(xmlSecOpenSSLX509StorePtr store, 
 							 	 const char *path);
-
-
-/*********************************************************************
- *
- * OpenSSL X509 data
- *
- *********************************************************************/
-#define xmlSecOpenSSLX509DataKlassId 			xmlSecOpenSSLX509DataKlassGet()
-#define xmlSecOpenSSLX509DataKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecOpenSSLX509DataKlassId, xmlSecOpenSSLX509DataKlassPtr)
-#define xmlSecOpenSSLX509DataKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecOpenSSLX509DataKlassId)
-#define xmlSecOpenSSLX509DataCast(obj) 			xmlSecObjCastMacro((obj), xmlSecOpenSSLX509DataKlassId, xmlSecOpenSSLX509DataPtr)
-#define xmlSecOpenSSLX509DataCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecOpenSSLX509DataKlassId)
-
-struct _xmlSecOpenSSLX509DataKlass {
-    xmlSecX509DataKlass				parent;
-};
-
-struct _xmlSecOpenSSLX509Data {
-    xmlSecX509Data				parent;
-
-    X509*					verified;
-    STACK_OF(X509)*				certs;
-    STACK_OF(X509_CRL)*				crls;
-};
-
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecOpenSSLX509DataKlassGet	(void);
-
 
 
 

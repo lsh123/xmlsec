@@ -11,7 +11,6 @@ INCLUDES = \
 	$(GNUTLS_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
-	-Wall -ansi \
 	$(NULL)
 
 lib_LTLIBRARIES = \

@@ -1,3 +1,9 @@
+Thu May 29 17:15:04 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/gnutls/Makefile.am src/nss/Makefile.am 
+	src/openssl/Makefile.am src/skeleton/Makefile.am: don't use GCC
+	options in Makefiles
+
 Tue May 27 20:12:41 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in xmlsec-config.in xmlsecConf.sh.in

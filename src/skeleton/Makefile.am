@@ -12,7 +12,6 @@ INCLUDES = \
 	$(SKELETON_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
-	-Wall -ansi \
 	$(NULL)
 
 lib_LTLIBRARIES = \

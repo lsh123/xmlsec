@@ -32,6 +32,8 @@ extern "C" {
 #endif /* defined(_MSC_VER) */
 #endif /* defined(_MSC_VER) */
 
+/* XMLSec namespace */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 
 /* XMLDSig namespace */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
@@ -39,11 +41,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
 /* XMLEnc namespace */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 
-/* XMLSec namespace */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
+/* XPath transform namespace */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 
 /* XPath2 transform namespace */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
+
+/* XPointer transform namespace */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 
 XMLSEC_EXPORT void	xmlSecInit			(void);
 XMLSEC_EXPORT void	xmlSecShutdown			(void);

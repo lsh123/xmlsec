@@ -1,3 +1,14 @@
+Wed Aug  7 14:32:44 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/transforms.h include/xmlsec/xmlsec.h
+	src/transforms.c src/xmlsec.c src/xpath.c: added XPointer 
+	transform (Additional XML Security URIs)
+	* tests/aleksey-xmldsig-01/xpointer-hmac.tmpl
+	tests/aleksey-xmldsig-01/xpointer-hmac.xml 
+	tests/merlin-xpath-filter2-three/sign-xfdl.tmpl
+	tests/testDSig.sh: test cases for XPointer transform
+
+
 Wed Aug  7 01:08:13 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/transforms.c src/xmldsig.c src/xmlenc.c: full

@@ -176,6 +176,11 @@ execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
+execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
 
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     ""

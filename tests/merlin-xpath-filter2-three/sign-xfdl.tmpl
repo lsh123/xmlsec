@@ -3938,8 +3938,8 @@ PRESCRIBED BY OFFICE OF PERSONNEL MANAGEMENT, 5 CFR PART 630</value>
 		</button>
                 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
                   <SignedInfo>
-                    <CanonicalizationMethod Algorithm="" />
-                    <SignatureMethod Algorithm="" />
+    		    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    		    <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1"/>
                     <Reference URI="">
                       <Transforms>
                         <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
@@ -3950,12 +3950,14 @@ PRESCRIBED BY OFFICE OF PERSONNEL MANAGEMENT, 5 CFR PART 630</value>
                           </XPath>
                         </Transform>
                       </Transforms>
-                      <DigestMethod Algorithm="" />
+                      <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
                       <DigestValue />
                     </Reference>
                   </SignedInfo>
                   <SignatureValue />
-                  <!-- KeyInfo -->
+                  <KeyInfo>
+		    <KeyValue />
+		  </KeyInfo>
                 </Signature>
 		<field sid="FIELD46">
 			<itemlocation content="array">

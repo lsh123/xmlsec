@@ -155,7 +155,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecDigestSha1;
 #endif /* XMLSEC_NO_SHA1 */
 
 /**
- * XPath transform 
+ * XPath amd XPointer transforms
  */
 typedef enum {
     xmlSecXPathTransformIntersect = 0,
@@ -165,12 +165,16 @@ typedef enum {
  
 XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPath;
 XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPath2;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPointer;
 
 XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
 						 const xmlChar *expression,
 						 const xmlChar **namespaces);
 XMLSEC_EXPORT int 	xmlSecTransformXPath2Add(xmlNodePtr transformNode, 
 						 xmlSecXPath2TransformType type,
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode, 
 						 const xmlChar *expression,
 						 const xmlChar **namespaces);
 

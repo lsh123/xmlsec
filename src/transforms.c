@@ -84,6 +84,7 @@ void xmlSecTransformsInit(void) {
     xmlSecAllTransforms[i++] = xmlSecTransformEnveloped;
     xmlSecAllTransforms[i++] = xmlSecTransformXPath;
     xmlSecAllTransforms[i++] = xmlSecTransformXPath2;
+    xmlSecAllTransforms[i++] = xmlSecTransformXPointer;
 
 #ifndef XMLSEC_NO_XSLT
     xmlSecAllTransforms[i++] = xmlSecTransformXslt;

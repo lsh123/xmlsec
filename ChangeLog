@@ -1,3 +1,9 @@
+Sat Mar 29 17:47:09 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* tests/aleksey-xmldsig-01/* tests/keys/* tests/testDSig.sh
+	tests/merlin-xmldsig-twenty-three/signature.tmpl:
+	updated expired certificates and necessary templates
+
 Wed Mar 19 22:56:49 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/version.h 

@@ -3,14 +3,16 @@ README
 1. Files list
 
  cakey.pem	Root CA private key
- cacert.pem  	Root CA
- ca2key.pem	Second-level CA private key
- ca2cert.pem 	Second-level CA
+ cacert.pem  	Root CA for cakey.pem
+ ca2key.pem	RSA private key
+ ca2cert.pem 	Second-level RSA cert for ca2key.pem
  dsakey.pem	DSA private key
- dsacert.pem 	DSA privte key cert
+ dsacert.pem 	Third level DSA cert for dsakey.pem
  rsakey.pem	RSA private key
- rsacert.pem 	RSA privte key cert
+ rsacert.pem 	Third level RSA cert for rsacert.pem
  hmackey.bin	HMAC key ('secret')
+ expired.key	key for expired cert 
+ expired.crt	expired certificate 
 
 2. How certificates were generated:
 

@@ -801,7 +801,7 @@ static xmlSecAppCmdLineParam depthParam = {
     NULL,    
     "--depth <number>"
     "\n\tmaximum certificates chain depth",
-    xmlSecAppCmdLineParamTypeTime,
+    xmlSecAppCmdLineParamTypeNumber,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };

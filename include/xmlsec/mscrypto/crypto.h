@@ -41,6 +41,16 @@ XMLSEC_CRYPTO_EXPORT void		xmlSecMSCryptoErrorsDefaultCallback(const char* file,
 									int reason, 
 									const char* msg);
 
+/**
+ * Utils
+ */
+XMLSEC_CRYPTO_EXPORT BYTE*		xmlSecMSCryptoCertStrToName	(DWORD dwCertEncodingType, 
+									 LPCTSTR pszX500, 
+									 DWORD dwStrType,
+									 DWORD* len);
+
+
+
 /********************************************************************
  *
  * DSA transform

@@ -358,126 +358,54 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
      * subject dn
      */
     if (NULL == pCertContext) {
+	BYTE* bdata;
 	DWORD len;
-	BYTE *bdata = NULL;
-	CERT_NAME_BLOB cnb;
+	
+	bdata = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+					    name, 
+					    CERT_OID_NAME_STR,
+					    &len);
+	if(bdata != NULL) {
+	    CERT_NAME_BLOB cnb;
+    
+	    cnb.cbData = len;
+    	    cnb.pbData = bdata;
 	    
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			    name,
-			    CERT_OID_NAME_STR,
-			    NULL,
-			    NULL,
-			    &len,
-			    NULL)) {
-	    /* xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertStrToName",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE); */
-	    CertCloseStore(hStoreHandle, 0);
-	    return(NULL);
-	}
-	    
-	bdata = (BYTE *)xmlMalloc(len + 1);
-	if(bdata == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			NULL,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"len=%d", len);
-	    CertCloseStore(hStoreHandle, 0);
-	    return(NULL);
-	}
-	    
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-	    			name,
-				CERT_OID_NAME_STR,
-				NULL,
-				bdata,
-				&len,
-				NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
-			    "CertStrToName",
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+	    pCertContext = CertFindCertificateInStore(hStoreHandle,
+				X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+				0,
+				CERT_FIND_SUBJECT_NAME,
+				&cnb,
+				NULL);
 	    xmlFree(bdata);
-	    CertCloseStore(hStoreHandle, 0);
-	    return(NULL);
 	}
-
-	cnb.cbData = len;
-	cnb.pbData = bdata;
-	pCertContext = CertFindCertificateInStore(hStoreHandle,
-		X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		0,
-		CERT_FIND_SUBJECT_NAME,
-		&cnb,
-		NULL);
-	xmlFree(bdata);
     }
 	    
     /* We don't give up easily, now try to fetch the cert with a full blown 
      * subject dn, and try with a reversed dn
      */
     if (NULL == pCertContext) {
+	BYTE* bdata;
 	DWORD len;
-	BYTE *bdata = NULL;
-	CERT_NAME_BLOB cnb;
-
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-				name,
-				CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-				NULL,
-				NULL,
-				&len,
-				NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertStrToName",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    CertCloseStore(hStoreHandle, 0);
-	    return(NULL);
-	}
-
-	bdata = (BYTE *)xmlMalloc(len + 1);
-	if(bdata == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			NULL,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"len=%d", len);
-	    CertCloseStore(hStoreHandle, 0);
-	    return(NULL);
-	}
 	
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-	    			name,
-				CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-				NULL,
-				bdata,
-				&len,
-				NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertStrToName",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+	bdata = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+					    name, 
+					    CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+					    &len);
+	if(bdata != NULL) {
+	    CERT_NAME_BLOB cnb;
+    
+	    cnb.cbData = len;
+    	    cnb.pbData = bdata;
+	    
+	    pCertContext = CertFindCertificateInStore(hStoreHandle,
+				X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+				0,
+				CERT_FIND_SUBJECT_NAME,
+				&cnb,
+				NULL);
 	    xmlFree(bdata);
-	    CertCloseStore(hStoreHandle, 0);
-	    return(NULL);
 	}
-
-	cnb.cbData = len;
-	cnb.pbData = bdata;
-	pCertContext = CertFindCertificateInStore(hStoreHandle,
-		X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-		0,
-		CERT_FIND_SUBJECT_NAME,
-		&cnb,
-		NULL);
-	xmlFree(bdata);
     }   
 
     /* We could do the following here: 
@@ -486,8 +414,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
      * 'serial=1234567;issuer=CN=ikke, C=NL'
      * to be implemented by the first person who reads this, and thinks it's
      * a good idea :) WK
-     */
-     
+     */     
 
     /* OK, I give up, I'm gone :( */
     
@@ -547,9 +474,10 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	if(x509Data == NULL) {
  	    xmlSecError(XMLSEC_ERRORS_HERE,
  			NULL,
-			"CertStrToName",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			"xmlSecKeyDataCreate",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"data=%s",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
  	    goto done;
  	}
 

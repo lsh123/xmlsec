@@ -539,43 +539,20 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 
     if((pCert == NULL) && (NULL != subjectName)) {
 	CERT_NAME_BLOB cnb;
-        BYTE *cName = NULL; 
-	DWORD cNameLen = 0;
+	BYTE *cName; 
+	DWORD cNameLen;
 
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			   subjectName,
-			   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-			   NULL,
-			   NULL,
-			   &cNameLen,
-			   NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertStrToName",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return (NULL);
-	}
-
-	cName = (BYTE *)xmlMalloc(cNameLen + 1);
+	cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+					   subjectName,
+					   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+					   &cNameLen);
 	if(cName == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			NULL,
-			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"len=%d", cNameLen);
+			"xmlSecMSCryptoCertStrToName",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return (NULL);
-	}
-	    
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			   subjectName,
-			   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-			   NULL,
-			   cName,
-			   &cNameLen,
-			   NULL)) {
-	    xmlFree(cName);
-	    return(NULL);
 	}
 	cnb.pbData = cName;
 	cnb.cbData = cNameLen;
@@ -615,43 +592,18 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 	    return(NULL);
 	}
 
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			   issuerName,
-			   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-			   NULL,
-			   NULL,
-			   &cNameLen,
-			   NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertStrToName",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecBnFinalize(&issuerSerialBn);
-	    return (NULL);
-	}
-
-	cName = (BYTE *)xmlMalloc(cNameLen + 1);
+	cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+					   issuerName,
+					   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+					   &cNameLen);
 	if(cName == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			NULL,
-			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"len=%d", cNameLen);
+			"xmlSecMSCryptoCertStrToName",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecBnFinalize(&issuerSerialBn);
 	    return (NULL);
-	}
-
-	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			   issuerName,
-			   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-			   NULL,
-			   cName,
-			   &cNameLen,
-			   NULL)) {
-	    xmlSecBnFinalize(&issuerSerialBn);
-	    xmlFree(cName);
-	    return(NULL);
 	}
 
 	cnb.pbData = cName;

@@ -318,3 +318,54 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
 
     LocalFree(lpMsgBuf);
 }
+
+/**
+ * xmlSecMSCryptoCertStrToName:
+ * @dwCertEncodingType:		the encoding used.
+ * @pszX500:			the string to convert.
+ * @dsStrType:			the string type.
+ * @len:			the result len.
+ *
+ * Converts input string to name by calling @CertStrToName function.
+ *
+ * Returns a pointer to newly allocated string or NULL if an error occurs.
+ */
+BYTE* 
+xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwStrType, DWORD* len) {
+    BYTE* str = NULL; 
+    
+    xmlSecAssert2(pszX500 != NULL, NULL);
+    xmlSecAssert2(len != NULL, NULL);
+
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, 
+			NULL, NULL, len, NULL)) {
+	/* this might not be an error, string might just not exist */
+	return(NULL);
+    }
+	
+    str = (BYTE *)xmlMalloc((*len) + 1);
+    if(str == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "len=%d", (*len));
+	return(NULL);
+    }
+    memset(str, 0, (*len) + 1);
+	
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, 
+			NULL, str, len, NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CertStrToName",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	xmlFree(str);
+	return(NULL);
+    }
+
+    return(str);
+}
+
+

@@ -24,7 +24,7 @@ printRes() {
     if [ $? = 0 ]; then
 	echo "   OK"
     else 
-        echo " Fail"
+        echo " Fail ($?)"
     fi
     if [ -f .memdump ] ; then 
 	cat .memdump >> $logfile 
@@ -42,8 +42,8 @@ execDSigTest() {
 
     if [ -n "$3"  -a -z "$PERF_TEST" ] ; then
 	printf "    Create new signature                                 "
-	echo "$xmlsec_app sign $3 $file.tmpl" >> $logfile
-	$VALGRIND $xmlsec_app sign $EXTRA_PARAMS $3 $file.tmpl > $tmpfile 2>> $logfile
+	echo "$xmlsec_app sign $3 --output $tmpfile $file.tmpl" >> $logfile
+	$VALGRIND $xmlsec_app sign --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
 	printRes
 	
 	if [ -n "$4" ] ; then 

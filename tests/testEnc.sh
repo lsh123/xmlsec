@@ -51,14 +51,14 @@ execEncTest() {
 	printf "    Encrypt document                                     "
 	rm -f $tmpfile
 	echo "$xmlsec_app encrypt $3 $file.tmpl" >>  $logfile 
-	$VALGRIND $xmlsec_app encrypt $EXTRA_PARAMS $3 $file.tmpl > $tmpfile 2>> $logfile
+	$VALGRIND $xmlsec_app encrypt --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
 	printRes
 	
 	if [ -n "$4" ] ; then 
 	    if [ -z "$VALGRIND" ] ; then
 	        printf "    Decrypt new document                                 "
 		echo "$xmlsec_app decrypt $4 $tmpfile" >>  $logfile 
-	        $VALGRIND $xmlsec_app decrypt $EXTRA_PARAMS $4 $tmpfile > $tmpfile.2 2>> $logfile
+	        $VALGRIND $xmlsec_app decrypt --output $tmpfile.2 $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
 		if [ $? = 0 ]; then
 		    diff $file.data $tmpfile.2 >> $logfile 2>> $logfile
 		    printRes

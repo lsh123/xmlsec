@@ -105,6 +105,7 @@ static const char helpSign[] =
     "\n"
 #ifndef XMLSEC_NO_XMLDSIG    
     "Signature options:\n"
+    "  --output <filename>   write signed document to file <filename>\n"
     "  --ignore-manifests    do not process <Manifest> elements\n"
     "  --fake-signatures     disable actual signature calc for perf tests\n"
 #else  /* XMLSEC_NO_XMLDSIG */
@@ -139,6 +140,7 @@ static const char helpEncrypt[] =
     "\n"
 #ifndef XMLSEC_NO_XMLENC
     "Encryption options:\n"
+    "  --output <filename>   write encrypted document to file <filename>\n"
     "  --binary <binary>     binary file to encrypt\n"
     "  --xml <file>          XML file to encrypt\n"
 #else /* XMLSEC_NO_XMLENC */
@@ -149,6 +151,7 @@ static const char helpEncrypt[] =
 static const char helpDecrypt[] =
     "Decrypts data from document in \"XML Encryption\" format.\n"
 #ifndef XMLSEC_NO_XMLENC
+    "  --output <filename>   write decrypted document to file <filename>\n"
 #else /* XMLSEC_NO_XMLENC */
     "\n"
     "XML Encryption support was disabled during compilation\n"
@@ -294,6 +297,7 @@ int decrypt(xmlDocPtr doc);
 xmlSecKeysMngrPtr keyMgr = NULL; 
 xmlSecKeyPtr sessionKey = NULL;
 
+char *output = NULL; 
 char *nodeId = NULL;
 char *nodeName = NULL;
 char *nodeNs = NULL;
@@ -514,6 +518,9 @@ int main(int argc, char **argv) {
 	    ret = readNumber(argv[++pos], &repeats);
 	} else if((strcmp(argv[pos], "--pwd") == 0) && (pos + 1 < argc)) {
 	    global_pwd = argv[++pos];
+	    ret = 0;
+	} else if((strcmp(argv[pos], "--output") == 0) && (pos + 1 < argc)) {
+	    output = argv[++pos];
 	    ret = 0;
 	} else if((strcmp(argv[pos], "--disable-error-msgs") == 0)) {
 	    xmlSecPrintErrorMessages = 0;
@@ -1215,8 +1222,19 @@ int generateDSig(xmlDocPtr doc) {
         if(string == NULL) {
 	    fprintf(stderr,"Error: failed to dump document to memory\n");
 	    goto done;
-        }    
-	fwrite(string, len, 1, stdout);
+        }
+	
+	if(output) {
+	    FILE* f = fopen(output, "w");
+	    if(f == NULL) {
+		fprintf(stderr,"Error: failed to open output file \"%s\"\n", output);
+		goto done;
+	    }
+	    fwrite(string, len, 1, f);
+	    fclose(f);
+	} else {	    
+	    fwrite(string, len, 1, stdout);
+	}
     }
     res = 0;
     
@@ -1386,7 +1404,17 @@ int encrypt(xmlDocPtr tmpl) {
     	    fprintf(stderr,"Error: failed to dump document to memory\n");
     	    goto done;
         }
-	fwrite(result, len, 1, stdout);
+	if(output) {
+	    FILE* f = fopen(output, "w");
+	    if(f == NULL) {
+		fprintf(stderr,"Error: failed to open output file \"%s\"\n", output);
+		goto done;
+	    }
+	    fwrite(result, len, 1, f);
+	    fclose(f);
+	} else {	    
+	    fwrite(result, len, 1, stdout);
+	}
     }
     res = 0;
 
@@ -1429,15 +1457,30 @@ int decrypt(xmlDocPtr doc) {
     } 
 
     if(repeats <= 1) {
+	FILE* f = stdout;
+	if(output) {
+	    f = fopen(output, "w");
+	    if(f == NULL) {
+		fprintf(stderr,"Error: failed to open output file \"%s\"\n", output);
+		goto done;
+	    }
+	}
+
 	if((encResult != NULL) && encResult->replaced && (encResult->buffer != NULL)) {
-	    ret = xmlDocDump(stdout, doc);    
+	    ret = xmlDocDump(f, doc);    
         } else if((encResult != NULL) && !encResult->replaced) {
     	    ret = fwrite(xmlBufferContent(encResult->buffer), 
-	       xmlBufferLength(encResult->buffer),
-	       1, stdout);		       
+	    		 xmlBufferLength(encResult->buffer),
+	        	 1, f);		       
 	} else {
+	    if(f != stdout) {
+		fclose(f);
+	    }
     	    fprintf(stderr,"Error: bad results \n");
 	    goto done;    
+	}
+	if(f != stdout) {
+	    fclose(f);
 	}
         if(ret < 0) {
 	    fprintf(stderr,"Error: failed to print out the result \n");

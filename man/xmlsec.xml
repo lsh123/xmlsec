@@ -340,6 +340,12 @@
    <title>verify command options</title>
    <variablelist>
         <varlistentry>
+          <term><option>--output</option> <replaceable>file</replaceable></term>
+            <listitem>
+              <simpara>Writes the signed XML document to <replaceable>file</replaceable>.</simpara>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
           <term><option>--ignore-manifests</option></term>
             <listitem>
               <simpara>Instructs the <application>xmlsec</application>
@@ -493,6 +499,12 @@
   <title>encrypt command options</title>
   <variablelist>
         <varlistentry>
+          <term><option>--output</option> <replaceable>file</replaceable></term>
+            <listitem>
+              <simpara>Writes the encrypted XML document to <replaceable>file</replaceable>.</simpara>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
           <term><option>--binary</option> <replaceable>file</replaceable></term>
             <listitem>
               <simpara>Encrypts binary <replaceable>file</replaceable>.</simpara>
@@ -630,6 +642,12 @@
  <refsect1 id="options-decrypt">
    <title>decrypt command options</title>
    <variablelist>
+        <varlistentry>
+          <term><option>--output</option> <replaceable>file</replaceable></term>
+            <listitem>
+              <simpara>Writes the decrypted XML document to <replaceable>file</replaceable>.</simpara>
+            </listitem>
+        </varlistentry>
 
         <varlistentry>
           <term><option>--node-id</option> <replaceable>id</replaceable></term>

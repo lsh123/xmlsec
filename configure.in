@@ -74,7 +74,8 @@ else
     then
         LIBXML_LIBS="`$LIBXML_CONFIG --libs`"
         LIBXML_CFLAGS="`$LIBXML_CONFIG --cflags`"
-        AC_MSG_RESULT(yes ('`which $LIBXML_CONFIG`'))
+	LIBXML_VERSION="`$LIBXML_CONFIG --version`"
+        AC_MSG_RESULT(yes ('$LIBXML_VERSION'))
     else
         AC_MSG_ERROR(You need at least libxml2 $LIBXML_MIN_VERSION for this version of $PACKAGE)
     fi
@@ -122,7 +123,8 @@ else
 	then
     	    LIBXSLT_LIBS="`$LIBXSLT_CONFIG --libs`"
 	    LIBXSLT_CFLAGS="`$LIBXSLT_CONFIG --cflags`"
-    	    AC_MSG_RESULT(yes ('`which $LIBXSLT_CONFIG`'))
+	    LIBXSLT_VERSION="`$LIBXSLT_VERSION --version`"
+    	    AC_MSG_RESULT(yes ('$LIBXSLT_VERSION'))
 	else
     	    AC_MSG_ERROR(You need at least libxslt $LIBXSLT_MIN_VERSION for this version of $PACKAGE)
 	fi	

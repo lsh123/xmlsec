@@ -1,6 +1,6 @@
 Summary: Library providing support for "XML Signature" and "XML Encryption" standards
 Name: xmlsec
-Version: 0.0.8
+Version: 0.0.9
 Release: 1
 License: MIT
 Group: Development/Libraries
@@ -10,11 +10,11 @@ Packager: Aleksey Sanin <aleksey@aleksey.com>
 Source: ftp://ftp.aleksey.com/pub/xmlsec/releases/xmlsec-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 URL: http://www.aleksey.com/xmlsec
-Requires: libxml2 >= 2.4.23
-Requires: libxslt >= 1.0.19
+Requires: libxml2 >= 2.4.24
+Requires: libxslt >= 1.0.20
 Requires: openssl >= 0.9.6
-BuildRequires: libxml2-devel >= 2.4.23
-BuildRequires: libxslt-devel >= 1.0.19
+BuildRequires: libxml2-devel >= 2.4.24
+BuildRequires: libxslt-devel >= 1.0.20
 BuildRequires: openssl-devel >= 0.9.6
 Prefix: %{_prefix}
 Docdir: %{_docdir}
@@ -28,8 +28,8 @@ standards "XML Digital Signature" and "XML Encryption".
 Summary: Libraries, includes, etc. to develop applications with XML Digital Signatures and XML Encryption support.
 Group: Development/Libraries 
 Requires: xmlsec = %{version}
-Requires: libxml2-devel >= 2.4.23
-Requires: libxslt-devel >= 1.0.19
+Requires: libxml2-devel >= 2.4.24
+Requires: libxslt-devel >= 1.0.20
 Requires: openssl-devel >= 0.9.6
 Requires: zlib-devel 
 

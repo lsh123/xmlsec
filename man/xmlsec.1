@@ -184,6 +184,10 @@ Disables actual signature calculation for performance testing.
 .SH "VERIFY COMMAND OPTIONS"
 
 .TP
+\fB--output\fR \fIfile\fR
+Writes the signed XML document to \fIfile\fR.
+
+.TP
 \fB--ignore-manifests\fR
 Instructs the xmlsec program to ignore <dsig:Manifest> elements.
 
@@ -213,10 +217,10 @@ Prints all available data.
 
 .TP
 \fB--print-xml\fR
-Prints results in XML format.
+Prints result in xml format.
 
 .TP
-\fB--print-to-file\fR \fIfile\fR
+\fB--print-to-file file\fR
 Prints result to file \fIfile\fR.
 
 .TP
@@ -264,6 +268,10 @@ Repeats the operation \fInumber\fR times.
 Disables actual signature calculation for performance testing.
 
 .SH "ENCRYPT COMMAND OPTIONS"
+
+.TP
+\fB--output\fR \fIfile\fR
+Writes the encrypted XML document to \fIfile\fR.
 
 .TP
 \fB--binary\fR \fIfile\fR
@@ -336,6 +344,10 @@ Repeats the operation \fInumber\fR times.
 .SH "DECRYPT COMMAND OPTIONS"
 
 .TP
+\fB--output\fR \fIfile\fR
+Writes the decrypted XML document to \fIfile\fR.
+
+.TP
 \fB--node-id\fR \fIid\fR
 Instructs the xmlsec program to decrypt only element with given \fIid\fR.
 
@@ -387,16 +399,13 @@ Report bugs to <xmlsec@aleksey.com>
 .SH "MORE INFORMATION"
 
 
-XML Security Library: http://www.aleksey.com/xmlsec/
+XML Security Library: \fIhttp://www.aleksey.com/xmlsec/\fR
 
 
-XML Digital Signature: http://www.w3.org/Signature/
+XML Digital Signature: \fIhttp://www.w3.org/Signature/\fR
 
 
-XML Encrytpion: http://www.w3.org/Encryption/
+XML Encrytpion: \fIhttp://www.w3.org/Encryption/\fR
 
 .SH AUTHOR
-Aleksey Sanin  <aleksey@aleksey.com>.
-.SH COPYRIGHT
-Copyright 2002 Aleksey Sanin  <aleksey@aleksey.com>
-.Sp
+Aleksey Sanin <aleksey@aleksey.com>.

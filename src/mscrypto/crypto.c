@@ -119,7 +119,17 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
  */
 int 
 xmlSecMSCryptoInit (void)  {
-    /* TODO: if necessary do, additional initialization here */
+    /* Check loaded xmlsec library version */
+    if(xmlSecCheckVersionExact() != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecCheckVersionExact",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_mscrypto()) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

@@ -53,7 +53,6 @@ typedef void*					xmlSecPtr;
  */
 #define xmlSecByte				unsigned char
 
-
 /***********************************************************************
  *
  * Forward declarations
@@ -82,6 +81,50 @@ typedef struct _xmlSecXkissServerCtx		xmlSecXkissServerCtx, *xmlSecXkissServerCt
 
 XMLSEC_EXPORT int	xmlSecInit		(void);
 XMLSEC_EXPORT int	xmlSecShutdown		(void);
+
+
+
+/***********************************************************************
+ *
+ * Version checking
+ *
+ ***********************************************************************/
+/** 
+ * xmlSecCheckVersionExact:
+ *
+ * Macro. Returns 1 if the loaded xmlsec library version exactly matches 
+ * the one used to compile the caller, 0 if it does not or a negative
+ * value if an error occurs.
+ */
+#define xmlSecCheckVersionExact()	\
+    xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExact)
+
+/** 
+ * xmlSecCheckVersion:
+ *
+ * Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
+ * the one used to compile the caller, 0 if it does not or a negative
+ * value if an error occurs.
+ */
+#define xmlSecCheckVersion()	\
+    xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible)
+
+/**
+ * xmlSecCheckVersionMode:
+ * @xmlSecCheckVersionExact:		the version should match exactly.
+ * @xmlSecCheckVersionABICompatible:	the version should be ABI compatible.
+ *
+ * The xmlsec library version mode.
+ */
+typedef enum {
+    xmlSecCheckVersionExact = 0,
+    xmlSecCheckVersionABICompatible
+} xmlSecCheckVersionMode;
+
+XMLSEC_EXPORT int	xmlSecCheckVersionExt	(int major, 
+						 int minor, 
+						 int subminor, 
+						 xmlSecCheckVersionMode mode);
 
 /**
  * ATTRIBUTE_UNUSED:

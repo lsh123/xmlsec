@@ -876,7 +876,7 @@ int main(int argc, const char **argv) {
 	xmlSecAppPrintHelp(subCommand, cmdLineTopics);
 	goto success;
     } else if(command == xmlSecAppCommandVersion) {
-	fprintf(stdout, "%s %s (%s)\n", XMLSEC_PACKAGE, XMLSEC_VERSION, xmlsec_crypto);
+	fprintf(stdout, "%s %s (%s)\n", PACKAGE, XMLSEC_VERSION, xmlsec_crypto);
 	goto success;
     }
     
@@ -2214,6 +2214,10 @@ xmlSecAppInit(void) {
     /* Init xmlsec */
     if(xmlSecInit() < 0) {
 	fprintf(stderr, "Error: xmlsec intialization failed.\n");
+	return(-1);
+    }
+    if(xmlSecCheckVersion() != 1) {
+	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
 	return(-1);
     }
 

@@ -15,8 +15,7 @@
 #include <libxml/tree.h> 
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/transformsInternal.h>
-#include <xmlsec/membuf.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>

@@ -19,6 +19,46 @@ extern "C" {
 #include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
 
+
+/**
+ * xmlSecKeyUsage:
+ * @xmlSecKeyUsageAny: the key can be used in any way.
+ * @xmlSecKeyUsageSign: the key for signing.
+ * @xmlSecKeyUsageVerify: the key for signature verification.
+ * @xmlSecKeyUsageEncrypt: the encryption key.
+ * @xmlSecKeyUsageDecrypt: the decryption key.
+ *
+ * The key usage.
+ */
+typedef enum  {
+    xmlSecKeyUsageAny = 0,
+    xmlSecKeyUsageSign,
+    xmlSecKeyUsageVerify,
+    xmlSecKeyUsageEncrypt,
+    xmlSecKeyUsageDecrypt
+} xmlSecKeyUsage;
+
+
+/**************************************************************************
+ *
+ * xmlSecKeyReq - what key are we looking for?
+ *
+ *************************************************************************/
+typedef struct _xmlSecKeyReq 			xmlSecKeyReq, *xmlSecKeyReqPtr; 
+struct _xmlSecKeyReq {
+    xmlSecKeyDataId			keyId;
+    xmlSecKeyDataType			keyType;
+    xmlSecKeyUsage			keyUsage;
+    size_t				keyBitsSize;
+};
+
+XMLSEC_EXPORT int	xmlSecKeyReqInitialize			(xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT void	xmlSecKeyReqFinalize			(xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT int	xmlSecKeyReqCopy			(xmlSecKeyReqPtr dst,
+								 xmlSecKeyReqPtr src);
+XMLSEC_EXPORT int	xmlSecKeyReqValidate			(xmlSecKeyReqPtr keyReq,
+								 xmlSecKeyPtr key);
+
 /**
  * xmlSecKeyInifiteRetrivals:
  *
@@ -47,24 +87,6 @@ extern "C" {
 #define xmlSecKeyCheckId(key, keyId) \
  	(xmlSecKeyIsValid(( key )) && \
 	((( key )->value->id) == ( keyId )))
-
-/**
- * xmlSecKeyUsage:
- * @xmlSecKeyUsageAny: the key can be used in any way.
- * @xmlSecKeyUsageSign: the key for signing.
- * @xmlSecKeyUsageVerify: the key for signature verification.
- * @xmlSecKeyUsageEncrypt: the encryption key.
- * @xmlSecKeyUsageDecrypt: the decryption key.
- *
- * The key usage.
- */
-typedef enum  {
-    xmlSecKeyUsageAny = 0,
-    xmlSecKeyUsageSign,
-    xmlSecKeyUsageVerify,
-    xmlSecKeyUsageEncrypt,
-    xmlSecKeyUsageDecrypt
-} xmlSecKeyUsage;
 
 /** 
  * xmlSecKeyOrigin:

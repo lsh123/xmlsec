@@ -23,12 +23,12 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/membuf.h>
 #include <xmlsec/strings.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>

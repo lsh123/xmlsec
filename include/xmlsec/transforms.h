@@ -541,22 +541,6 @@ XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr tr
 
 /********************************************************************
  *
- * Memory Buffer transform 
- *
- *******************************************************************/
-/**
- * xmlSecTransformMemBufId:
- * 
- * The Memory Buffer transform id.
- */
-#define xmlSecTransformMemBufId \
-	xmlSecTransformMemBufGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformMemBufGetKlass		(void);
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecTransformMemBufGetBuffer		(xmlSecTransformPtr transform, 
-									 int removeBuffer);
-
-/********************************************************************
- *
  * Input URI transform 
  *
  *******************************************************************/

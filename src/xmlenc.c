@@ -20,6 +20,7 @@
 #include <libxml/parser.h> 
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>

@@ -1,4 +1,5 @@
 #include <xmlsec/transformsInternal.h>
+#include <xmlsec/membuf.h>
 
 static xmlSecTransformId xmlSecAllTransformIds[100];
 

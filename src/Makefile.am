@@ -17,6 +17,7 @@ lib_LTLIBRARIES = libxmlsec.la
 
 libxmlsec_la_SOURCES =\
 base64.c \
+buffer.c \
 c14n.c \
 debug.c \
 enveloped.c \

@@ -53,15 +53,28 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 
+/**************************************************************************
+ *
+ * Internal xslt ctx
+ *
+ *****************************************************************************/
+typedef struct _xmlSecXsltCtx			xmlSecXsltCtx, *xmlSecXsltCtxPtr;
+struct _xmlSecXsltCtx {
+    xsltStylesheetPtr	xslt;
+};	    
+
 /****************************************************************************
  *
  * XSLT transform
  *
- * resereved0 --> parsed stylesheet (xsltStylesheetPtr)
+ * xmlSecXsltCtx is located after xmlSecTransform
  * 
  ***************************************************************************/
-#define xmlSecXsltGetStylesheet(transform) \
-    ((xsltStylesheetPtr)((transform)->reserved0))
+#define xmlSecXsltSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecXsltCtx))	
+#define xmlSecXsltGetCtx(transform) \
+    ((xmlSecXsltCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+
 static int		xmlSecXsltInitialize			(xmlSecTransformPtr transform);
 static void		xmlSecXsltFinalize			(xmlSecTransformPtr transform);
 static int 		xmlSecXsltReadNode			(xmlSecTransformPtr transform,
@@ -75,7 +88,7 @@ static int		xmlSecXslProcess			(xmlSecBufferPtr in,
 static xmlSecTransformKlass xmlSecXsltKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecXsltSize,				/* size_t objSize */
 
     xmlSecNameXslt,				/* const xmlChar* name; */
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -105,20 +118,33 @@ xmlSecTransformXsltGetKlass(void) {
     
 static int 
 xmlSecXsltInitialize(xmlSecTransformPtr transform) {    
+    xmlSecXsltCtxPtr ctx;
+    
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
 
-    transform->reserved0 = NULL;    
+    ctx = xmlSecXsltGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    /* initialize context */
+    memset(ctx, 0, sizeof(xmlSecXsltCtx));
     return(0);
 }
 
 static void
 xmlSecXsltFinalize(xmlSecTransformPtr transform) {
+    xmlSecXsltCtxPtr ctx;
+
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformXsltId));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecXsltSize));
+
+    ctx = xmlSecXsltGetCtx(transform);
+    xmlSecAssert(ctx != NULL);
     
-    if(xmlSecXsltGetStylesheet(transform) != NULL) {
-	xsltFreeStylesheet(xmlSecXsltGetStylesheet(transform));
+    if(ctx->xslt != NULL) {
+	xsltFreeStylesheet(ctx->xslt);
     }
-    transform->reserved0 = NULL;    
+    memset(ctx, 0, sizeof(xmlSecXsltCtx));
 }
 
 /**
@@ -126,13 +152,18 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
+    xmlSecXsltCtxPtr ctx;
     xmlBufferPtr buffer;
     xmlDocPtr doc;
     xmlNodePtr cur;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
-    xmlSecAssert2(xmlSecXsltGetStylesheet(transform) == NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
     xmlSecAssert2(node != NULL, -1);    
+
+    ctx = xmlSecXsltGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xslt == NULL, -1);
 
     /* read content in the buffer */    
     buffer = xmlBufferCreate();
@@ -164,8 +195,8 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     }
 
     /* pre-process stylesheet */    
-    transform->reserved0 = xsltParseStylesheetDoc(doc);
-    if(transform->reserved0 == NULL) {
+    ctx->xslt = xsltParseStylesheetDoc(doc);
+    if(ctx->xslt == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xsltParseStylesheetDoc",
@@ -184,13 +215,18 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
 
 static int 
 xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecXsltCtxPtr ctx;
     xmlSecBufferPtr in, out;
     size_t inSize, outSize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
-    xmlSecAssert2(xmlSecXsltGetStylesheet(transform) != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecXsltGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xslt != NULL, -1);
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);
@@ -206,7 +242,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	xmlSecAssert2(outSize == 0, -1);
 
-	ret = xmlSecXslProcess(in, out, xmlSecXsltGetStylesheet(transform));
+	ret = xmlSecXslProcess(in, out, ctx->xslt);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -222,7 +258,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", inSize);
+			"size=%d", inSize);
 	    return(-1);
 	}
 	
@@ -235,7 +271,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "%d", transform->status);
+		    "status=%d", transform->status);
 	return(-1);
     }
     return(0);
@@ -294,7 +330,7 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
     }
 
     ret = xmlSecBufferSetData(out, xmlBufferContent(output->buffer), 
-			    xmlBufferLength(output->buffer));
+			      xmlBufferLength(output->buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

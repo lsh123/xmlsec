@@ -15,7 +15,7 @@ extern "C" {
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/membuf.h>
+#include <xmlsec/buffer.h>
 
 /**
  * Forward declarations

@@ -24,6 +24,52 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
+/**************************************************************************
+ *
+ * xmlSecKeyReq - what key are we looking for?
+ *
+ *************************************************************************/
+int 
+xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
+    xmlSecAssert2(keyReq != NULL, -1);
+    
+    memset(keyReq, 0, sizeof(xmlSecKeyReq));
+    return(0);
+}
+
+void
+xmlSecKeyReqFinalize(xmlSecKeyReqPtr keyReq) {
+    xmlSecAssert(keyReq != NULL);
+
+    memset(keyReq, 0, sizeof(xmlSecKeyReq));
+}
+
+int 
+xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
+    xmlSecAssert2(dst != NULL, -1);
+    xmlSecAssert2(src != NULL, -1);
+
+    memcpy(dst, src, sizeof(xmlSecKeyReq));
+    return(0);
+}
+
+int 
+xmlSecKeyReqValidate(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr value;
+    
+    xmlSecAssert2(keyReq != NULL, -1);
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    
+    value = xmlSecKeyGetValue(key);
+    if(!xmlSecKeyDataCheckId(value, keyReq->keyId)) {
+	return(0);
+    }
+    if((xmlSecKeyGetType(key) & keyReq->keyType) == 0) {
+	 return(0);
+    }
+    /* todo: key usage! */
+    return(1);
+}
 
 /**
  * xmlSecKeyCreate:

@@ -75,6 +75,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncElement[];
  *
  ************************************************************************/
 #ifndef XMLSEC_NO_XKMS
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestResultName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestStatusName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestLocateName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestVerifyName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestCompoundName[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeResult[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeStatusRequest[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeStatusResult[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeLocateRequest[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeLocateResult[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidateRequest[];

@@ -70,6 +70,15 @@ const xmlChar xmlSecTypeEncElement[]		= "http://www.w3.org/2001/04/xmlenc#Elemen
  *
  ************************************************************************/
 #ifndef XMLSEC_NO_XKMS
+const xmlChar xmlSecXkmsServerRequestResultName[]	= "result-response";
+const xmlChar xmlSecXkmsServerRequestStatusName[]	= "status-request";
+const xmlChar xmlSecXkmsServerRequestLocateName[]	= "locate-request";
+const xmlChar xmlSecXkmsServerRequestVerifyName[]	= "verify-request";
+const xmlChar xmlSecXkmsServerRequestCompoundName[]	= "compound-request";
+
+const xmlChar xmlSecNodeResult[]		= "Result";
+const xmlChar xmlSecNodeStatusRequest[]		= "StatusRequest";
+const xmlChar xmlSecNodeStatusResult[]		= "StatusResult";
 const xmlChar xmlSecNodeLocateRequest[]		= "LocateRequest";
 const xmlChar xmlSecNodeLocateResult[]		= "LocateResult";
 const xmlChar xmlSecNodeValidateRequest[]	= "ValidateRequest";

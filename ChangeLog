@@ -1,3 +1,11 @@
+Tue Feb  3 18:12:10 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: added xkms server "expected service" param
+	* include/xmlsec/* src/*: created errors fallback when processing
+	xkms requests
+	* tests/aleksey-xkms-01/* tests/testXKMS.sh: added more negative
+	test cases
+
 Tue Feb  3 01:40:29 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: tweaked my debug environment

@@ -10,11 +10,14 @@ XKMS Featrues
     <xkms:UseKeyWith>
     <xkms:TieInstant> and <xkms:ValidityInterval> 
     
-    
+
+Expected service is http://www.example.com/xkms
 
 Tests
   locate-example-1.xml 		- LocateRequest example 4.1.1 from XKMS 2.0 spec
   locate-example-1-no-match.xml	- "NoMatch" LocateResponse for locate-example-1.xml
+  locate-example-1-bad-service.xml	
+				- Bad service LocateResponse for locate-example-1.xml
   locate-example-2.xml 		- LocateRequest example 4.1.2 from XKMS 2.0 spec 
 				with certificate from cert3.pem 
   locate-example-2-no-match.xml	- "NoMatch" LocateResponse for locate-example-2.xml
@@ -26,7 +29,9 @@ Tests
   				xkms:OpaqueClientData nodes
   locate-opaque-client-data-no-match.xml	
 				- "NoMatch" LocateResponse for locate-opaque-client-data.xml
-    
+  bad-request-name.xml		- Invalid request name.    
+  bad-request-name-not-supported.xml	
+				- Message not supported error for bad-request-name.xml
 
 Keys and certificates (private keys are encrypted with password "secret")
   keys/create-keys.sh		- shell script to create the keys and certificates chain

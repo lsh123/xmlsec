@@ -75,6 +75,14 @@ xmlSecInit(void) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+    if(xmlSecXkmsServerRequestIdsInit() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerRequestIdsInit",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
 #endif /* XMLSEC_NO_XKMS */
 
     return(0);

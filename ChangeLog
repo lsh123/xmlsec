@@ -1,3 +1,8 @@
+2004-05-13  Aleksey Sanin <aleksey@aleksey.com>
+
+	* examples/xmldsigverify.c: disable extended debug output
+	(fixed a hole found by Pawel)
+
 2004-04-19  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/nodeset.c: fixing C14N bug with processing namespaces from attributes

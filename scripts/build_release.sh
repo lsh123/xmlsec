@@ -21,8 +21,11 @@ else
     echo "Cheking out module $module from tip"
     cvs -d $cvs_root -z3 co -P $module > /dev/null
 fi
-
 cd xmlsec
+
+# hack to remove exec bit
+chmod a-x src/mscrypto/*.c
+
 ./autogen.sh --prefix=/usr --sysconfdir=/etc
 make rpm-release
 

@@ -18,6 +18,9 @@ extern "C" {
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 
+#include <windows.h>
+#include <wincrypt.h>
+
 /**
  * Init/shutdown
  */

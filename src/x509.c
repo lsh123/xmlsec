@@ -996,7 +996,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 	}
 	
 	/* remove all revoked certs */
-	for(i = 0; i < certs->num; ++i) { 
+	for(i = 0; i < certs->num; ) { 
 	    cert = ((X509**)(certs->data))[i];
 	    if(x509Data->crls != NULL) {
 		ret = xmlSec509VerifyCertAgainstCrls(x509Data->crls, cert);

@@ -866,7 +866,35 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoad(mngr, filename, format, type));
 }
 
-				
+/**
+ * xmlSecCryptoAppKeysMngrCertLoadMemory:
+ * @mngr: 		the keys manager.
+ * @data:		the cert data.
+ * @dataSize:		the cert data size.
+ * @format:		the certificate file format.
+ * @type: 		the flag that indicates is the certificate in @filename
+ *    			trusted or not.
+ * 
+ * Reads cert from @filename and adds to the list of trusted or known
+ * untrusted certs in @store.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int 
+xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, 
+				xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoadMemory == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "cryptoAppKeysMngrCertLoadMemory",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoadMemory(mngr, data, dataSize, format, type));
+}
+
 /**
  * xmlSecCryptoAppKeyLoad:
  * @filename:		the key filename.
@@ -892,6 +920,34 @@ xmlSecCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     }
     
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecCryptoAppKeyLoadMemory:
+ * @data:		the cert data.
+ * @dataSize:		the cert data size.
+ * @format:		the key data format.
+ * @pwd:		the key data password.
+ * @pwdCallback:	the key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from the a binary data.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr 
+xmlSecCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
+		       const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoadMemory == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "cryptoAppKeyLoadMemoryMmemory",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx));
 }
 
 				
@@ -924,6 +980,36 @@ xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallba
 }
 
 /**
+ * xmlSecCryptoAppPkcs12LoadMemory:
+ * @data:		the cert data.
+ * @dataSize:		the cert data size.
+ * @pwd:		the PKCS12 data password.
+ * @pwdCallback:	the password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 binary data.
+ * For uniformity, call xmlSecCryptoAppKeyLoadMemory instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr 
+xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char* pwd, void* pwdCallback, 
+			  void* pwdCallbackCtx) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppPkcs12LoadMemory == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "cryptoAppPkcs12LoadMemory",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppPkcs12LoadMemory(data, dataSize, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+
+/**
  * xmlSecCryptoAppKeyCertLoad:
  * @key:		the pointer to key.
  * @filename:		the certificate filename.
@@ -946,6 +1032,34 @@ xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyData
     
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoad(key, filename, format));
 }
+
+
+				
+/**
+ * xmlSecCryptoAppKeyCertLoadMemory:
+ * @key:		the pointer to key.
+ * @data:		the cert data.
+ * @dataSize:		the cert data size.
+ * @format:		the certificate data format.
+ *
+ * Reads the certificate from binary data and adds it to key.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
+int 
+xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoadMemory == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "cryptoAppKeyCertLoadMemory",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoadMemory(key, data, dataSize, format));
+}
+
 
 /**
  * xmlSecCryptoAppGetDefaultPwdCallback:

@@ -247,11 +247,22 @@ XMLSEC_EXPORT int				xmlSecCryptoAppDefaultKeysMngrLoad	(xmlSecKeysMngrPtr mngr,
 XMLSEC_EXPORT int				xmlSecCryptoAppDefaultKeysMngrSave	(xmlSecKeysMngrPtr mngr,
 											 const char* filename,
 											 xmlSecKeyDataType type);
-XMLSEC_EXPORT int				xmlSecCryptoAppKeysMngrCertLoad	(xmlSecKeysMngrPtr mngr,
-										 const char *filename, 
-										 xmlSecKeyDataFormat format,
-										 xmlSecKeyDataType type);
+XMLSEC_EXPORT int				xmlSecCryptoAppKeysMngrCertLoad		(xmlSecKeysMngrPtr mngr,
+											 const char *filename, 
+											 xmlSecKeyDataFormat format,
+											xmlSecKeyDataType type);
+XMLSEC_EXPORT int				xmlSecCryptoAppKeysMngrCertLoadMemory	(xmlSecKeysMngrPtr mngr,
+											 const xmlSecByte* data,
+											 xmlSecSize dataSize, 
+											 xmlSecKeyDataFormat format,
+											 xmlSecKeyDataType type);
 XMLSEC_EXPORT xmlSecKeyPtr			xmlSecCryptoAppKeyLoad		(const char *filename, 
+										 xmlSecKeyDataFormat format,
+										 const char *pwd,
+										 void* pwdCallback,
+										 void* pwdCallbackCtx);
+XMLSEC_EXPORT xmlSecKeyPtr			xmlSecCryptoAppKeyLoadMemory	(const xmlSecByte* data,
+										 xmlSecSize dataSize, 
 										 xmlSecKeyDataFormat format,
 										 const char *pwd,
 										 void* pwdCallback,
@@ -260,8 +271,17 @@ XMLSEC_EXPORT xmlSecKeyPtr			xmlSecCryptoAppPkcs12Load	(const char* filename,
 										 const char* pwd,
 										 void* pwdCallback, 
 										 void* pwdCallbackCtx);	
+XMLSEC_EXPORT xmlSecKeyPtr			xmlSecCryptoAppPkcs12LoadMemory (const xmlSecByte* data,
+										 xmlSecSize dataSize, 
+										 const char* pwd,
+										 void* pwdCallback, 
+										 void* pwdCallbackCtx);
 XMLSEC_EXPORT int				xmlSecCryptoAppKeyCertLoad	(xmlSecKeyPtr key,
 										 const char* filename,
+										 xmlSecKeyDataFormat format);
+XMLSEC_EXPORT int				xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key,
+										 const xmlSecByte* data,
+										 xmlSecSize dataSize, 
 										 xmlSecKeyDataFormat format);
 XMLSEC_EXPORT void*				xmlSecCryptoAppGetDefaultPwdCallback(void);
 

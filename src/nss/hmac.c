@@ -247,7 +247,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 	
@@ -258,7 +258,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_ImportSymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
         PK11_FreeSlot(slot);
 	return(-1);
     }
@@ -269,7 +269,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_CreateContextBySymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	PK11_FreeSymKey(symKey);
         PK11_FreeSlot(slot);
 	return(-1);
@@ -368,7 +368,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"PK11_DigestBegin",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", PORT_GetError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	transform->status = xmlSecTransformStatusWorking;
@@ -385,7 +385,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "PK11_DigestOp",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "error code=%d", PORT_GetError());
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	    
@@ -408,7 +408,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "PK11_DigestFinal",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "error code=%d", PORT_GetError());
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	    xmlSecAssert2(dgstSize > 0, -1);

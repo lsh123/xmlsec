@@ -77,9 +77,13 @@ extern "C" {
 #define xmlSecCryptoAppDefaultKeysMngrLoad	xmlSecGnuTLSAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave	xmlSecGnuTLSAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad		xmlSecGnuTLSAppKeysMngrCertLoad
+#define xmlSecCryptoAppKeysMngrCertLoadMemory	xmlSecGnuTLSAppKeysMngrCertLoadMemory
 #define xmlSecCryptoAppKeyLoad			xmlSecGnuTLSAppKeyLoad
 #define xmlSecCryptoAppPkcs12Load		xmlSecGnuTLSAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad		xmlSecGnuTLSAppKeyCertLoad
+#define xmlSecCryptoAppKeyLoadMemory		xmlSecGnuTLSAppKeyLoadMemory
+#define xmlSecCryptoAppPkcs12LoadMemory		xmlSecGnuTLSAppPkcs12LoadMemory
+#define xmlSecCryptoAppKeyCertLoadMemory	xmlSecGnuTLSAppKeyCertLoadMemory
 #define xmlSecCryptoAppGetDefaultPwdCallback	xmlSecGnuTLSAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_GNUTLS */

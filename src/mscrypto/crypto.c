@@ -121,10 +121,14 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrSave 	= xmlSecMSCryptoAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoad 	= xmlSecMSCryptoAppKeysMngrCertLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoadMemory 	= xmlSecMSCryptoAppKeysMngrCertLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppPkcs12Load  		= xmlSecMSCryptoAppPkcs12Load; 
+    gXmlSecMSCryptoFunctions->cryptoAppPkcs12LoadMemory		= xmlSecMSCryptoAppPkcs12LoadMemory; 
     gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoad 		= xmlSecMSCryptoAppKeyCertLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoadMemory	= xmlSecMSCryptoAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecMSCryptoFunctions->cryptoAppKeyLoad 			= xmlSecMSCryptoAppKeyLoad; 
+    gXmlSecMSCryptoFunctions->cryptoAppKeyLoadMemory		= xmlSecMSCryptoAppKeyLoadMemory; 
     gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecMSCryptoAppGetDefaultPwdCallback;
 
     return(gXmlSecMSCryptoFunctions);

@@ -78,9 +78,13 @@ extern "C" {
 #define xmlSecCryptoAppDefaultKeysMngrLoad	xmlSecMSCryptoAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave	xmlSecMSCryptoAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad		xmlSecMSCryptoAppKeysMngrCertLoad
+#define xmlSecCryptoAppKeysMngrCertLoadMemory	xmlSecMSCryptoAppKeysMngrCertLoadMemory
 #define xmlSecCryptoAppKeyLoad			xmlSecMSCryptoAppKeyLoad
 #define xmlSecCryptoAppPkcs12Load		xmlSecMSCryptoAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad		xmlSecMSCryptoAppKeyCertLoad
+#define xmlSecCryptoAppKeyLoadMemory		xmlSecMSCryptoAppKeyLoadMemory
+#define xmlSecCryptoAppPkcs12LoadMemory		xmlSecMSCryptoAppPkcs12LoadMemory
+#define xmlSecCryptoAppKeyCertLoadMemory	xmlSecMSCryptoAppKeyCertLoadMemory
 #define xmlSecCryptoAppGetDefaultPwdCallback	xmlSecMSCryptoAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_MSCRYPTO */

@@ -111,7 +111,6 @@ xmlSecMSCryptoAppGetCertStoreName(void) {
  *
  * Returns pointer to the key or NULL if an error occurs.
  */
-
 xmlSecKeyPtr
 xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 			 const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
@@ -158,7 +157,8 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         }
 	
 	key = xmlSecMSCryptoAppKeyLoadMemory(xmlSecBufferGetData(&buffer),
-					xmlSecBufferGetSize(&buffer), format);
+					xmlSecBufferGetSize(&buffer), format,
+					pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -182,10 +182,22 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     return(key);
 }
 
-
-
+/**
+ * xmlSecMSCryptoAppKeyLoadMemory:
+ * @bdata:		the key binary data.
+ * @dataSize:		the key data size.
+ * @format:		the key format.
+ * @pwd:		the key password.
+ * @pwdCallback:	the key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr	
-xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xmlSecKeyDataFormat format,
+			       const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     PCCERT_CONTEXT pCert = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
     xmlSecKeyDataPtr x509Data = NULL;

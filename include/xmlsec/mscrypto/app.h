@@ -64,7 +64,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoad		(const char *filenam
 									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory	(const xmlSecByte* bdata, 
 									 xmlSecSize dataSize, 
-									 xmlSecKeyDataFormat format);
+									 xmlSecKeyDataFormat format,
+									 const char *pwd,
+		    							 void* pwdCallback, 
+									 void* pwdCallbackCtx);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12Load		(const char *filename, 
 									 const char *pwd,

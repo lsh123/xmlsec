@@ -18,6 +18,7 @@
 #include <xmlsec/list.h>
 #include <xmlsec/errors.h>
 
+
 static int		xmlSecPtrListEnsureSize			(xmlSecPtrListPtr list,
 								 size_t size);
 								 

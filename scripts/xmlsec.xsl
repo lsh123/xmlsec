@@ -149,7 +149,7 @@
      </td>
      <!-- top navigation menu end -->
 
-     <td valign="top" align="left" > 
+     <td> 
         <table width="100%">
 	    <tr><td valign="top" align="left" id="xmlsecContent" > 
 	    <xsl:choose> 
@@ -161,9 +161,11 @@
 		</xsl:otherwise>
 	    </xsl:choose>
 	    </td></tr>
+	    <tr><td>
+		<br/><br/>
+		<p><a href="/bugs.html">Aleksey Sanin</a></p>
+	    </td></tr>
 	</table>
-	<br/><br/>
-	<p><a href="/bugs.html">Aleksey Sanin</a></p>
     </td>
 
 

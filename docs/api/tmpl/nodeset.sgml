@@ -43,6 +43,7 @@ The enchanced nodes set imlmentation.
 
 @nodes: 
 @doc: 
+@destroyDoc: 
 @type: 
 @op: 
 @next: 

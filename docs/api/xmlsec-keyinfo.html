@@ -1,54 +1,34 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>keyinfo.h</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="debug.h" href="xmlsec-debug.html">
-<link rel="NEXT" title="keys.h" href="xmlsec-keys.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>keyinfo.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="debug.h" href="xmlsec-debug.html"/><link rel="NEXT" title="keys.h" href="xmlsec-keys.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-debug.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-debug.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+</tr></table></div>
 <h1>
-<a name="XMLSEC-KEYINFO"></a>keyinfo.h</h1>
+<a name="XMLSEC-KEYINFO"/>keyinfo.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN1714"></a><h2>Name</h2>keyinfo.hÂ --Â The &lt;dsig:KeyInfo&gt; element manipulation functions.</div>
+<a name="AEN1071"/><h2>Name</h2>keyinfo.h -- The &lt;dsig:KeyInfo&gt; element manipulation functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN1717"></a><h2>Synopsis</h2>
+<a name="AEN1074"/><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 int         <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODEREAD">xmlSecKeyInfoNodeRead</a>           (<strong>xmlNodePtr</strong> keyInfoNode,
@@ -67,281 +47,270 @@ int         <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODEWRITE">xmlSecKeyInfoNo
 #define     <a href="xmlsec-keyinfo.html#XMLSECKEYDATAENCRYPTEDKEYID">xmlSecKeyDataEncryptedKeyId</a>
 <strong>xmlSecKeyDataId</strong> <a href="xmlsec-keyinfo.html#XMLSECKEYDATAENCRYPTEDKEYGETKLASS">xmlSecKeyDataEncryptedKeyGetKlass</a>
                                             (void);
-struct      <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a>;
-#define     <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODECHECKORIGIN">xmlSecKeyInfoNodeCheckOrigin</a>    (status, origin)
-#define     <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODECHECKRETRIEVALSLEVEL">xmlSecKeyInfoNodeCheckRetrievalsLevel</a>(status)
-#define     <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODECHECKENCKEYSLEVEL">xmlSecKeyInfoNodeCheckEncKeysLevel</a>(status)</pre></td></tr></table>
+struct      <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a>;</pre></td></tr></table></div>
+<div class="REFSECT1">
+<a name="AEN1098"/><h2>Description</h2>
+<p/>
 </div>
 <div class="REFSECT1">
-<a name="AEN1744"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN1747"></a><h2>Details</h2>
+<a name="AEN1101"/><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN1749"></a><h3>
-<a name="XMLSECKEYINFONODEREAD"></a>xmlSecKeyInfoNodeRead ()</h3>
+<a name="AEN1103"/><h3>
+<a name="XMLSECKEYINFONODEREAD"/>xmlSecKeyInfoNodeRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyInfoNodeRead           (<strong>xmlNodePtr</strong> keyInfoNode,
                                              <strong>xmlSecKeyPtr</strong> key,
-                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
-<p>Parses the &lt;dsig:KeyInfo&gt; element and extracts the key (with required 
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table><p>Parses the &lt;dsig:KeyInfo&gt; element and extracts the key (with required 
 id, type and usage).</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN1758"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt>Â :</td>
+<a name="AEN1112"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoCtx</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or -1 if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1780"></a><h3>
-<a name="XMLSECKEYINFONODEWRITE"></a>xmlSecKeyInfoNodeWrite ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN1134"/><h3>
+<a name="XMLSECKEYINFONODEWRITE"/>xmlSecKeyInfoNodeWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyInfoNodeWrite          (<strong>xmlNodePtr</strong> keyInfoNode,
                                              <strong>xmlSecKeyPtr</strong> key,
-                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table>
-<p>Writes the key into the &lt;dsig:KeyInfo&gt; template <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p></p>
+                                             <strong>xmlSecKeyInfoCtxPtr</strong> keyInfoCtx);</pre></td></tr></table><p>Writes the key into the &lt;dsig:KeyInfo&gt; template <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN1790"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt>Â :</td>
+<a name="AEN1144"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoCtx</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or -1 if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1812"></a><h3>
-<a name="XMLSECKEYDATANAMEID"></a>xmlSecKeyDataNameId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()</pre></td></tr></table>
-<p>The &lt;dsig:KeyName&gt; processing class.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN1166"/><h3>
+<a name="XMLSECKEYDATANAMEID"/>xmlSecKeyDataNameId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()</pre></td></tr></table><p>The &lt;dsig:KeyName&gt; processing class.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1818"></a><h3>
-<a name="XMLSECKEYDATANAMEGETKLASS"></a>xmlSecKeyDataNameGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataId</strong> xmlSecKeyDataNameGetKlass   (void);</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN1172"/><h3>
+<a name="XMLSECKEYDATANAMEGETKLASS"/>xmlSecKeyDataNameGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataId</strong> xmlSecKeyDataNameGetKlass   (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN1824"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1178"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1833"></a><h3>
-<a name="XMLSECKEYDATAVALUEID"></a>xmlSecKeyDataValueId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()</pre></td></tr></table>
-<p>The &lt;dsig:KeyValue&gt; processing class.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN1187"/><h3>
+<a name="XMLSECKEYDATAVALUEID"/>xmlSecKeyDataValueId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()</pre></td></tr></table><p>The &lt;dsig:KeyValue&gt; processing class.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1839"></a><h3>
-<a name="XMLSECKEYDATAVALUEGETKLASS"></a>xmlSecKeyDataValueGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataId</strong> xmlSecKeyDataValueGetKlass  (void);</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN1193"/><h3>
+<a name="XMLSECKEYDATAVALUEGETKLASS"/>xmlSecKeyDataValueGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataId</strong> xmlSecKeyDataValueGetKlass  (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN1845"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1199"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1854"></a><h3>
-<a name="XMLSECKEYDATARETRIEVALMETHODID"></a>xmlSecKeyDataRetrievalMethodId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()</pre></td></tr></table>
-<p>The &lt;dsig:RetrievalMethod&gt; processing class.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN1208"/><h3>
+<a name="XMLSECKEYDATARETRIEVALMETHODID"/>xmlSecKeyDataRetrievalMethodId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()</pre></td></tr></table><p>The &lt;dsig:RetrievalMethod&gt; processing class.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1860"></a><h3>
-<a name="XMLSECKEYDATARETRIEVALMETHODGETKLASS"></a>xmlSecKeyDataRetrievalMethodGetKlass ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN1214"/><h3>
+<a name="XMLSECKEYDATARETRIEVALMETHODGETKLASS"/>xmlSecKeyDataRetrievalMethodGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataId</strong> xmlSecKeyDataRetrievalMethodGetKlass
-                                            (void);</pre></td></tr></table>
-<p></p>
+                                            (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN1866"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1220"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1875"></a><h3>
-<a name="XMLSECKEYDATAENCRYPTEDKEYID"></a>xmlSecKeyDataEncryptedKeyId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()</pre></td></tr></table>
-<p>The &lt;enc:EncryptedKey&gt; processing class.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN1229"/><h3>
+<a name="XMLSECKEYDATAENCRYPTEDKEYID"/>xmlSecKeyDataEncryptedKeyId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()</pre></td></tr></table><p>The &lt;enc:EncryptedKey&gt; processing class.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1881"></a><h3>
-<a name="XMLSECKEYDATAENCRYPTEDKEYGETKLASS"></a>xmlSecKeyDataEncryptedKeyGetKlass ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN1235"/><h3>
+<a name="XMLSECKEYDATAENCRYPTEDKEYGETKLASS"/>xmlSecKeyDataEncryptedKeyGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyDataId</strong> xmlSecKeyDataEncryptedKeyGetKlass
-                                            (void);</pre></td></tr></table>
-<p></p>
+                                            (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN1887"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1241"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1896"></a><h3>
-<a name="XMLSECKEYINFOCTX"></a>struct xmlSecKeyInfoCtx</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN1250"/><h3>
+<a name="XMLSECKEYINFOCTX"/>struct xmlSecKeyInfoCtx</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeyInfoCtx {
+    void*				userData;
+    unsigned int			flags;
+    unsigned int			flags2;
     xmlSecKeysMngrPtr			keysMngr;
-    void				*context;
-    
-    xmlSecKeyReq			keyReq;
-
+    xmlSecKeyInfoMode			mode;
+    xmlSecPtrList			enabledKeyData;
     int					base64LineSize;
-    int 				retrievalsLevel;
-    int					encKeysLevel;                
+        
+    /* RetrievalMethod */
+    xmlSecTransformCtx			retrievalMethodCtx;
+    int 				maxRetrievalMethodLevel;
 
-    /* x509 certificate */
-    int					failIfCertNotFound;
+
+    /* EncryptedKey */
+    xmlSecEncCtxPtr			encCtx;
+    int					maxEncryptedKeyLevel; 
+
+	    
+
+    /* x509 certificates */
     time_t				certsVerificationTime;
     int					certsVerificationDepth;
-};</pre></td></tr></table>
-<p></p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1902"></a><h3>
-<a name="XMLSECKEYINFONODECHECKORIGIN"></a>xmlSecKeyInfoNodeCheckOrigin()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyInfoNodeCheckOrigin(status, origin)</pre></td></tr></table>
-<p></p>
+
+
+    /* PGP */
+    void*				pgpReserved;	/* TODO */
+        
+    /* internal data */
+    int 				curRetrievalMethodLevel;
+    int					curEncryptedKeyLevel;                
+    xmlSecKeyReq			keyReq;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};</pre></td></tr></table><p>The &lt;dsig:KeyInfo /&gt; reading or writing context.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN1907"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>status</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>origin</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1920"></a><h3>
-<a name="XMLSECKEYINFONODECHECKRETRIEVALSLEVEL"></a>xmlSecKeyInfoNodeCheckRetrievalsLevel()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyInfoNodeCheckRetrievalsLevel(status)</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1925"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>status</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN1934"></a><h3>
-<a name="XMLSECKEYINFONODECHECKENCKEYSLEVEL"></a>xmlSecKeyInfoNodeCheckEncKeysLevel()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyInfoNodeCheckEncKeysLevel(status)</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1939"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>status</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<a name="AEN1256"/><p/>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>userData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to user data (xmlsec and xmlsec-crypto 
+		never touch this).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the bit mask for flags that control processin.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags2</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> 		reserved for future.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecKeysMngrPtr</strong> <tt class="STRUCTFIELD"><i>keysMngr</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to current keys manager.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecKeyInfoMode</strong> <tt class="STRUCTFIELD"><i>mode</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> 		do we read or write &lt;dsig:KeyInfo /&gt; element.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecPtrList</strong> <tt class="STRUCTFIELD"><i>enabledKeyData</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the list of enabled <tt class="PARAMETER"><i>xmlSecKeyDataId</i></tt> (if list is 
+		empty then all data ids are enabled).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>base64LineSize</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">	the max columns size for base64 encoding.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a> <tt class="STRUCTFIELD"><i>retrievalMethodCtx</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the transforms context for &lt;dsig:RetrievalMethod /&gt;
+			element processing.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>maxRetrievalMethodLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max recursion level when processing
+		&lt;dsig:RetrievalMethod /&gt; element; default level is 1 
+		(see also <tt class="PARAMETER"><i>curRetrievalMethodLevel</i></tt>).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecEncCtxPtr</strong> <tt class="STRUCTFIELD"><i>encCtx</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">		the encryption context for &lt;dsig:EncryptedKey /&gt; element
+		processing.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>maxEncryptedKeyLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max recursion level when processing 
+		&lt;enc:EncryptedKey /&gt; element; default level is 1 
+		(see <tt class="PARAMETER"><i>curEncryptedKeyLevel</i></tt>).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>time_t</strong> <tt class="STRUCTFIELD"><i>certsVerificationTime</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the time to use for X509 certificates verification
+		(&quot;not valid before&quot; and &quot;not valid after&quot; checks);
+		if <tt class="PARAMETER"><i>certsVerificationTime</i></tt> is equal to 0 (default) 
+		then we verify certificates against the system's 
+		clock &quot;now&quot;.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>certsVerificationDepth</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the max certifications chain length (default is 9).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>pgpReserved</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">	reserved for PGP.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>curRetrievalMethodLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the current &lt;dsig:RetrievalMethod /&gt; element 
+		processing level (see <tt class="PARAMETER"><i>maxRetrievalMethodLevel</i></tt>).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>curEncryptedKeyLevel</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> the current &lt;enc:EncryptedKey /&gt; element
+		processing level (see <tt class="PARAMETER"><i>maxEncryptedKeyLevel</i></tt>).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReq</a> <tt class="STRUCTFIELD"><i>keyReq</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">		reserved for the future.</td>
+</tr></tbody></table><p/>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-debug.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-debug.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>debug.h</b></font></td>
+</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>debug.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keys.h</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+</tr></table></div>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

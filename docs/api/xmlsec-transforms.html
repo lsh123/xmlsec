@@ -1,61 +1,38 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>transforms.h</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="keysmngr.h" href="xmlsec-keysmngr.html">
-<link rel="NEXT" title="version.h" href="xmlsec-version.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>transforms.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="keysmngr.h" href="xmlsec-keysmngr.html"/><link rel="NEXT" title="version.h" href="xmlsec-version.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+</tr></table></div>
 <h1>
-<a name="XMLSEC-TRANSFORMS"></a>transforms.h</h1>
+<a name="XMLSEC-TRANSFORMS"/>transforms.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN3259"></a><h2>Name</h2>transforms.hÂ --Â The transforms functions.</div>
+<a name="AEN2510"/><h2>Name</h2>transforms.h -- The transforms functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN3262"></a><h2>Synopsis</h2>
+<a name="AEN2513"/><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-transforms.html#XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS">XMLSEC_TRANSFORM_BINARY_CHUNK</a>
-#define     <a href="xmlsec-transforms.html#XMLSEC-TRANSFORM-BUFFER-SIZE-CAPS">XMLSEC_TRANSFORM_BUFFER_SIZE</a>
-typedef     <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a>;
 enum        <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a>;
-#define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUSISDONE">xmlSecTransformStatusIsDone</a>     (status)
 enum        <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a>;
 typedef     <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a>;
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPEUNKNOWN">xmlSecTransformDataTypeUnknown</a>
@@ -63,12 +40,8 @@ typedef     <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTrans
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPEXML">xmlSecTransformDataTypeXml</a>
 struct      <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a>;
 struct      <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a>;
-<strong>xmlSecTransformPtr</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATE">xmlSecTransformCreate</a>    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> id,
-                                             int dontDestroy);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROY">xmlSecTransformDestroy</a>          (<strong>xmlSecTransformPtr</strong> transform,
-                                             int forceDestroy);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMREAD">xmlSecTransformRead</a>             (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlNodePtr</strong> node);
+<strong>xmlSecTransformPtr</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATE">xmlSecTransformCreate</a>    (<strong>xmlSecTransformId</strong> id);
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROY">xmlSecTransformDestroy</a>          (<strong>xmlSecTransformPtr</strong> transform);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEY">xmlSecTransformSetKey</a>           (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecKeyPtr</strong> key);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQ">xmlSecTransformSetKeyReq</a>        (<strong>xmlSecTransformPtr</strong> transform,
@@ -88,6 +61,7 @@ int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBIN">xmlSecTransf
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBIN">xmlSecTransformPopBin</a>           (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
+                                             <strong>size_t</strong> maxDataSize,
                                              <strong>size_t</strong> *dataSize,
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXML">xmlSecTransformPushXml</a>          (<strong>xmlSecTransformPtr</strong> transform,
@@ -107,6 +81,7 @@ int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPUSHBIN">xmlSe
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPOPBIN">xmlSecTransformDefaultPopBin</a>    (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
+                                             <strong>size_t</strong> maxDataSize,
                                              <strong>size_t</strong> *dataSize,
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPUSHXML">xmlSecTransformDefaultPushXml</a>   (<strong>xmlSecTransformPtr</strong> transform,
@@ -118,22 +93,6 @@ int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPOPXML">xmlSec
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTE">xmlSecTransformExecute</a>          (<strong>xmlSecTransformPtr</strong> transform,
                                              int last,
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMREADBIN">xmlSecTransformReadBin</a>          (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMWRITEBIN">xmlSecTransformWriteBin</a>         (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMFLUSHBIN">xmlSecTransformFlushBin</a>         (<strong>xmlSecTransformPtr</strong> transform);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEXML">xmlSecTransformExecuteXml</a>       (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> ctxDoc,
-                                             <strong>xmlDocPtr</strong> *doc,
-                                             <strong>xmlSecNodeSetPtr</strong> *nodes);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEC14N">xmlSecTransformExecuteC14N</a>      (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> doc,
-                                             <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlOutputBufferPtr</strong> buffer);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROYALL">xmlSecTransformDestroyAll</a>       (<strong>xmlSecTransformPtr</strong> transform);
 <strong>xmlSecTransformPtr</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMADDAFTER">xmlSecTransformAddAfter</a>  (<strong>xmlSecTransformPtr</strong> curTransform,
                                              <strong>xmlSecTransformPtr</strong> newTransform);
 <strong>xmlSecTransformPtr</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMADDBEFORE">xmlSecTransformAddBefore</a> (<strong>xmlSecTransformPtr</strong> curTransform,
@@ -144,7 +103,6 @@ void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMREMOVE">xmlSecTransfo
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMCHECKTYPE">xmlSecTransformCheckType</a>        (transform, t)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMCHECKID">xmlSecTransformCheckId</a>          (transform, i)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMCHECKSIZE">xmlSecTransformCheckSize</a>        (transform, size)
-enum        <a href="xmlsec-transforms.html#XMLSECTRANSFORMTYPE">xmlSecTransformType</a>;
 typedef     <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a>;
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGEUNKNOWN">xmlSecTransformUsageUnknown</a>
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGEDSIGTRANSFORM">xmlSecTransformUsageDSigTransform</a>
@@ -164,7 +122,8 @@ void        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMFINALIZEMETHOD">*xml
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEREADMETHOD">*xmlSecTransformNodeReadMethod</a>)
                                             (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlNodePtr</strong> node);
+                                             <strong>xmlNodePtr</strong> node,
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQUIREMENTS">*xmlSecTransformSetKeyRequirements</a>)
                                             (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecKeyReqPtr</strong> keyReq);
@@ -181,6 +140,7 @@ int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">*xmlS
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">*xmlSecTransformPopBinMethod</a>)  (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
+                                             <strong>size_t</strong> maxDataSize,
                                              <strong>size_t</strong> *dataSize,
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">*xmlSecTransformPushXmlMethod</a>) (<strong>xmlSecTransformPtr</strong> transform,
@@ -192,2027 +152,1046 @@ int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">*xmlSe
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">*xmlSecTransformExecuteMethod</a>) (<strong>xmlSecTransformPtr</strong> transform,
                                              int last,
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMREADMETHOD">*xmlSecTransformReadMethod</a>)    (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMWRITEMETHOD">*xmlSecTransformWriteMethod</a>)   (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMFLUSHMETHOD">*xmlSecTransformFlushMethod</a>)   (<strong>xmlSecTransformPtr</strong> transform);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEXMLMETHOD">*xmlSecTransformExecuteXmlMethod</a>)
-                                            (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> ctxDoc,
-                                             <strong>xmlDocPtr</strong> *doc,
-                                             <strong>xmlSecNodeSetPtr</strong> *nodes);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEC14NMETHOD">*xmlSecTransformExecuteC14NMethod</a>)
-                                            (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> doc,
-                                             <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlOutputBufferPtr</strong> buffer);
 struct      <a href="xmlsec-transforms.html#XMLSECTRANSFORMKLASS">xmlSecTransformKlass</a>;
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMKLASSGETNAME">xmlSecTransformKlassGetName</a>     (klass)
 #define     <a href="xmlsec-transforms.html#XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</a>
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64ID">xmlSecTransformBase64Id</a>
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64GETKLASS">xmlSecTransformBase64GetKlass</a>
+<strong>xmlSecTransformId</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64GETKLASS">xmlSecTransformBase64GetKlass</a>
                                             (void);
 void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64SETLINESIZE">xmlSecTransformBase64SetLineSize</a>
                                             (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>size_t</strong> lineSize);
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMINPUTURIID">xmlSecTransformInputURIId</a>
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMINPUTURIGETKLASS">xmlSecTransformInputURIGetKlass</a>
+<strong>xmlSecTransformId</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMINPUTURIGETKLASS">xmlSecTransformInputURIGetKlass</a>
                                             (void);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMINPUTURIOPEN">xmlSecTransformInputURIOpen</a>     (<strong>xmlSecTransformPtr</strong> transform,
-                                             const char *uri);
+                                             const <strong>xmlChar</strong> *uri);
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMXSLTID">xmlSecTransformXsltId</a>
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMXSLTGETKLASS">xmlSecTransformXsltGetKlass</a>
-                                            (void);</pre></td></tr></table>
+<strong>xmlSecTransformId</strong> <a href="xmlsec-transforms.html#XMLSECTRANSFORMXSLTGETKLASS">xmlSecTransformXsltGetKlass</a>
+                                            (void);</pre></td></tr></table></div>
+<div class="REFSECT1">
+<a name="AEN2672"/><h2>Description</h2>
+<p/>
 </div>
 <div class="REFSECT1">
-<a name="AEN3461"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN3464"></a><h2>Details</h2>
+<a name="AEN2675"/><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN3466"></a><h3>
-<a name="XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS"></a>XMLSEC_TRANSFORM_BINARY_CHUNK</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORM_BINARY_CHUNK			64</pre></td></tr></table>
-<p></p>
+<a name="AEN2677"/><h3>
+<a name="XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS"/>XMLSEC_TRANSFORM_BINARY_CHUNK</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORM_BINARY_CHUNK			64</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3471"></a><h3>
-<a name="XMLSEC-TRANSFORM-BUFFER-SIZE-CAPS"></a>XMLSEC_TRANSFORM_BUFFER_SIZE</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORM_BUFFER_SIZE			64	/* should be greater than XMLSEC_TRANSFORM_MIN_BLOCK_SIZE */</pre></td></tr></table>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3476"></a><h3>
-<a name="XMLSECTRANSFORMID"></a>xmlSecTransformId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;</pre></td></tr></table>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3481"></a><h3>
-<a name="XMLSECTRANSFORMSTATUS"></a>enum xmlSecTransformStatus</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2682"/><h3>
+<a name="XMLSECTRANSFORMSTATUS"/>enum xmlSecTransformStatus</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
     xmlSecTransformStatusNone = 0,
     xmlSecTransformStatusWorking,
     xmlSecTransformStatusFinished,
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
-} xmlSecTransformStatus;</pre></td></tr></table>
-<p>The transform execution result.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN3487"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusNone</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> the status unknown.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusWorking</tt></td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusFinished</tt></td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusOk</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> success.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusFail</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> an error occur.</td>
-</tr>
-</tbody></table>
-<p></p>
+} xmlSecTransformStatus;</pre></td></tr></table><p/>
 </div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3512"></a><h3>
-<a name="XMLSECTRANSFORMSTATUSISDONE"></a>xmlSecTransformStatusIsDone()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformStatusIsDone(status)</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN3517"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>status</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3526"></a><h3>
-<a name="XMLSECTRANSFORMMODE"></a>enum xmlSecTransformMode</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2687"/><h3>
+<a name="XMLSECTRANSFORMMODE"/>enum xmlSecTransformMode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
     xmlSecTransformModeNone = 0,
     xmlSecTransformModePush,
     xmlSecTransformModePop
-} xmlSecTransformMode;</pre></td></tr></table>
-<p></p>
+} xmlSecTransformMode;</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3531"></a><h3>
-<a name="XMLSECTRANSFORMDATATYPE"></a>xmlSecTransformDataType</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned char			xmlSecTransformDataType;</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN2692"/><h3>
+<a name="XMLSECTRANSFORMDATATYPE"/>xmlSecTransformDataType</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned char				xmlSecTransformDataType;</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3536"></a><h3>
-<a name="XMLSECTRANSFORMDATATYPEUNKNOWN"></a>xmlSecTransformDataTypeUnknown</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeUnknown	0x00</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN2697"/><h3>
+<a name="XMLSECTRANSFORMDATATYPEUNKNOWN"/>xmlSecTransformDataTypeUnknown</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeUnknown		0x0000</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3541"></a><h3>
-<a name="XMLSECTRANSFORMDATATYPEBIN"></a>xmlSecTransformDataTypeBin</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeBin	0x01</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN2702"/><h3>
+<a name="XMLSECTRANSFORMDATATYPEBIN"/>xmlSecTransformDataTypeBin</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeBin		0x0001</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3546"></a><h3>
-<a name="XMLSECTRANSFORMDATATYPEXML"></a>xmlSecTransformDataTypeXml</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeXml	0x02</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN2707"/><h3>
+<a name="XMLSECTRANSFORMDATATYPEXML"/>xmlSecTransformDataTypeXml</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeXml		0x0002</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3551"></a><h3>
-<a name="XMLSECTRANSFORMCTX"></a>struct xmlSecTransformCtx</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2712"/><h3>
+<a name="XMLSECTRANSFORMCTX"/>struct xmlSecTransformCtx</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecTransformCtx {
-    int 	something;
-};</pre></td></tr></table>
-<p>The transform context.</p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3557"></a><h3>
-<a name="XMLSECTRANSFORM"></a>struct xmlSecTransform</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecTransform {
-    /* general data */
-    xmlSecTransformId 			id; 
-    xmlSecTransformStatus		status;
-    int					dontDestroy;
+    /* user settings */
+    void*				userData;
+    unsigned int			flags;
+    unsigned int			flags2;
+    xmlSecTransformUriType		enabledUris;
+    xmlSecPtrList			enabledTransforms;
 
-    /* binary specific */
-    int					encode;
-    xmlSecTransformPtr			next;
-    xmlSecTransformPtr			prev;
-    
-    /* xml specific */
+    /* results */
+    xmlSecBufferPtr			result;
+    xmlSecTransformStatus		status;
+    xmlChar*				uri;
+    xmlChar*				xptrExpr;
+    xmlSecTransformPtr			first;
+    xmlSecTransformPtr			last;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};</pre></td></tr></table><p>The transform context.</p>
+<p/>
+</div>
+<hr/><div class="REFSECT2">
+<a name="AEN2718"/><h3>
+<a name="XMLSECTRANSFORM"/>struct xmlSecTransform</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecTransform {
+    xmlSecTransformId 			id; 
+    xmlSecTransformOperation		operation;
+    xmlSecTransformStatus		status;
     xmlNodePtr				hereNode;
 
+    /* transforms chain */
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+
+    /* binary data */
     xmlSecBuffer			inBuf;
     xmlSecBuffer			outBuf;
         
-    unsigned char			binBuf[XMLSEC_TRANSFORM_BUFFER_SIZE];
-    size_t				binBufSize;
-    size_t				processed;
-        
+    /* xml data */
+    xmlSecNodeSetPtr			inNodes;
+    xmlSecNodeSetPtr			outNodes;
+
+    /* reserved for the future */    
     void*				reserved0;
     void*				reserved1;
-    void*				reserved2;
-    void*				reserved3;
-    int					reserved4;
-    int					reserved5;
-};</pre></td></tr></table>
-<p>The transform structure.</p>
-<p></p>
+};</pre></td></tr></table><p>The transform structure.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3563"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> <tt class="STRUCTFIELD"><i>id</i></tt>
+<a name="AEN2724"/><p/>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformId</strong> <tt class="STRUCTFIELD"><i>id</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP"> the transform id (pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a>).</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> the transform id (pointer to <strong>xmlSecTransformId</strong>).</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformOperation</strong> <tt class="STRUCTFIELD"><i>operation</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <tt class="STRUCTFIELD"><i>status</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the transform status (ok/fail/unknown).</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroy</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the don't automatically destroy flag.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encode</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecTransformPtr</strong> <tt class="STRUCTFIELD"><i>next</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecTransformPtr</strong> <tt class="STRUCTFIELD"><i>prev</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlNodePtr</strong> <tt class="STRUCTFIELD"><i>hereNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformPtr</strong> <tt class="STRUCTFIELD"><i>next</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformPtr</strong> <tt class="STRUCTFIELD"><i>prev</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlSecBuffer</strong> <tt class="STRUCTFIELD"><i>inBuf</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlSecBuffer</strong> <tt class="STRUCTFIELD"><i>outBuf</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">unsigned char <tt class="STRUCTFIELD"><i>binBuf</i></tt>[XMLSEC_TRANSFORM_BUFFER_SIZE]</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<strong>size_t</strong> <tt class="STRUCTFIELD"><i>binBufSize</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecNodeSetPtr</strong> <tt class="STRUCTFIELD"><i>inNodes</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<strong>size_t</strong> <tt class="STRUCTFIELD"><i>processed</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecNodeSetPtr</strong> <tt class="STRUCTFIELD"><i>outNodes</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved2</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved3</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>reserved4</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>reserved5</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3650"></a><h3>
-<a name="XMLSECTRANSFORMCREATE"></a>xmlSecTransformCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformPtr</strong> xmlSecTransformCreate    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> id,
-                                             int dontDestroy);</pre></td></tr></table>
-<p>Creates new transform from the transform id object.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN2788"/><h3>
+<a name="XMLSECTRANSFORMCREATE"/>xmlSecTransformCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformPtr</strong> xmlSecTransformCreate    (<strong>xmlSecTransformId</strong> id);</pre></td></tr></table><p>Creates new transform from the transform id object.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3658"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>id</i></tt>Â :</td>
+<a name="AEN2796"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the transform id to create.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dontDestroy</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the flag that controls wherther the transforms
-	can destroy the transforms automatically</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure
 or NULL if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3676"></a><h3>
-<a name="XMLSECTRANSFORMDESTROY"></a>xmlSecTransformDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDestroy          (<strong>xmlSecTransformPtr</strong> transform,
-                                             int forceDestroy);</pre></td></tr></table>
-<p>Destroys transform by calling appropriate transform specific function.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN2810"/><h3>
+<a name="XMLSECTRANSFORMDESTROY"/>xmlSecTransformDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDestroy          (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table><p>Destroys transform by calling appropriate transform specific function.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3683"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN2817"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>forceDestroy</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the flag whether the transform destruction will be
-  forced.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3697"></a><h3>
-<a name="XMLSECTRANSFORMREAD"></a>xmlSecTransformRead ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformRead             (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlNodePtr</strong> node);</pre></td></tr></table>
-<p>Reads transform information from the <tt class="PARAMETER"><i>transformNode</i></tt> using 
-transform specific function.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN3706"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>node</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to the &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3724"></a><h3>
-<a name="XMLSECTRANSFORMSETKEY"></a>xmlSecTransformSetKey ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2827"/><h3>
+<a name="XMLSECTRANSFORMSETKEY"/>xmlSecTransformSetKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformSetKey           (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlSecKeyPtr</strong> key);</pre></td></tr></table>
-<p>Sets the key for binary transform (wrapper for transform specific 
+                                             <strong>xmlSecKeyPtr</strong> key);</pre></td></tr></table><p>Sets the key for binary transform (wrapper for transform specific 
 <strong>setKey</strong>() method).</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3733"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN2836"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure. </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3752"></a><h3>
-<a name="XMLSECTRANSFORMSETKEYREQ"></a>xmlSecTransformSetKeyReq ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2855"/><h3>
+<a name="XMLSECTRANSFORMSETKEYREQ"/>xmlSecTransformSetKeyReq ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformSetKeyReq        (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlSecKeyReqPtr</strong> keyReq);</pre></td></tr></table>
-<p>Sets the key for binary transform (wrapper for transform specific 
+                                             <strong>xmlSecKeyReqPtr</strong> keyReq);</pre></td></tr></table><p>Sets the key for binary transform (wrapper for transform specific 
 <strong>setKeyReq</strong>() method).</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3761"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN2864"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3779"></a><h3>
-<a name="XMLSECTRANSFORMVERIFY"></a>xmlSecTransformVerify ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2882"/><h3>
+<a name="XMLSECTRANSFORMVERIFY"/>xmlSecTransformVerify ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformVerify           (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
                                              <strong>size_t</strong> dataSize,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3787"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN2890"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3812"></a><h3>
-<a name="XMLSECTRANSFORMGETDATATYPE"></a>xmlSecTransformGetDataType ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2915"/><h3>
+<a name="XMLSECTRANSFORMGETDATATYPE"/>xmlSecTransformGetDataType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> xmlSecTransformGetDataType
                                             (<strong>xmlSecTransformPtr</strong> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3821"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>mode</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN2924"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3842"></a><h3>
-<a name="XMLSECTRANSFORMPUSHBIN"></a>xmlSecTransformPushBin ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2945"/><h3>
+<a name="XMLSECTRANSFORMPUSHBIN"/>xmlSecTransformPushBin ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPushBin          (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
                                              <strong>size_t</strong> dataSize,
                                              int final,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3850"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>final</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN2953"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>final</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3879"></a><h3>
-<a name="XMLSECTRANSFORMPOPBIN"></a>xmlSecTransformPopBin ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN2982"/><h3>
+<a name="XMLSECTRANSFORMPOPBIN"/>xmlSecTransformPopBin ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPopBin           (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
+                                             <strong>size_t</strong> maxDataSize,
                                              <strong>size_t</strong> *dataSize,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3887"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN2991"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>maxDataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3912"></a><h3>
-<a name="XMLSECTRANSFORMPUSHXML"></a>xmlSecTransformPushXml ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3020"/><h3>
+<a name="XMLSECTRANSFORMPUSHXML"/>xmlSecTransformPushXml ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPushXml          (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3920"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3028"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>nodes</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3941"></a><h3>
-<a name="XMLSECTRANSFORMPOPXML"></a>xmlSecTransformPopXml ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3049"/><h3>
+<a name="XMLSECTRANSFORMPOPXML"/>xmlSecTransformPopXml ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPopXml           (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecNodeSetPtr</strong> *nodes,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3949"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3057"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>nodes</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3970"></a><h3>
-<a name="XMLSECTRANSFORMDEFAULTGETDATATYPE"></a>xmlSecTransformDefaultGetDataType ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3078"/><h3>
+<a name="XMLSECTRANSFORMDEFAULTGETDATATYPE"/>xmlSecTransformDefaultGetDataType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> xmlSecTransformDefaultGetDataType
                                             (<strong>xmlSecTransformPtr</strong> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN3979"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>mode</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3087"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4000"></a><h3>
-<a name="XMLSECTRANSFORMDEFAULTPUSHBIN"></a>xmlSecTransformDefaultPushBin ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3108"/><h3>
+<a name="XMLSECTRANSFORMDEFAULTPUSHBIN"/>xmlSecTransformDefaultPushBin ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPushBin   (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
                                              <strong>size_t</strong> dataSize,
                                              int final,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4008"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>final</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3116"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>final</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4037"></a><h3>
-<a name="XMLSECTRANSFORMDEFAULTPOPBIN"></a>xmlSecTransformDefaultPopBin ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3145"/><h3>
+<a name="XMLSECTRANSFORMDEFAULTPOPBIN"/>xmlSecTransformDefaultPopBin ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPopBin    (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
+                                             <strong>size_t</strong> maxDataSize,
                                              <strong>size_t</strong> *dataSize,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4045"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3154"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>maxDataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4070"></a><h3>
-<a name="XMLSECTRANSFORMDEFAULTPUSHXML"></a>xmlSecTransformDefaultPushXml ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3183"/><h3>
+<a name="XMLSECTRANSFORMDEFAULTPUSHXML"/>xmlSecTransformDefaultPushXml ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPushXml   (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4078"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3191"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>nodes</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4099"></a><h3>
-<a name="XMLSECTRANSFORMDEFAULTPOPXML"></a>xmlSecTransformDefaultPopXml ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3212"/><h3>
+<a name="XMLSECTRANSFORMDEFAULTPOPXML"/>xmlSecTransformDefaultPopXml ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPopXml    (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecNodeSetPtr</strong> *nodes,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4107"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3220"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>nodes</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4128"></a><h3>
-<a name="XMLSECTRANSFORMEXECUTE"></a>xmlSecTransformExecute ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3241"/><h3>
+<a name="XMLSECTRANSFORMEXECUTE"/>xmlSecTransformExecute ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformExecute          (<strong>xmlSecTransformPtr</strong> transform,
                                              int last,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4135"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>last</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3248"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>last</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4156"></a><h3>
-<a name="XMLSECTRANSFORMREADBIN"></a>xmlSecTransformReadBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformReadBin          (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Reads chunk of data from the transform (wrapper transform specific
-<strong>readBin</strong>() function).</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4165"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the output buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the output buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the number of bytes in the buffer or negative value
-if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4187"></a><h3>
-<a name="XMLSECTRANSFORMWRITEBIN"></a>xmlSecTransformWriteBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformWriteBin         (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Writes data to the transform (wrapper to the transform specific
-<strong>writeBin</strong>() function).</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4196"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the input data buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the number of bytes consumed or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4218"></a><h3>
-<a name="XMLSECTRANSFORMFLUSHBIN"></a>xmlSecTransformFlushBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformFlushBin         (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
-<p>Finalizes writing (wrapper for transform specific <strong>flushBin</strong>() method).</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4226"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 if success or negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4240"></a><h3>
-<a name="XMLSECTRANSFORMEXECUTEXML"></a>xmlSecTransformExecuteXml ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformExecuteXml       (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> ctxDoc,
-                                             <strong>xmlDocPtr</strong> *doc,
-                                             <strong>xmlSecNodeSetPtr</strong> *nodes);</pre></td></tr></table>
-<p>Executes the XML <tt class="PARAMETER"><i>transform</i></tt> and returns result nodes set in <tt class="PARAMETER"><i>nodes</i></tt>
-(wrapper for transform specific <strong>executeXml</strong>() method).</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4253"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to XML transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>ctxDoc</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to the document containing the transform's 
-	&lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>doc</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to the pointer to current document.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to the pointer to current and result nodes set.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4278"></a><h3>
-<a name="XMLSECTRANSFORMEXECUTEC14N"></a>xmlSecTransformExecuteC14N ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformExecuteC14N      (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> doc,
-                                             <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlOutputBufferPtr</strong> buffer);</pre></td></tr></table>
-<p>Executes the C14N <tt class="PARAMETER"><i>transform</i></tt> and returns result in the <tt class="PARAMETER"><i>buffer</i></tt>
-(wrapper for transform specific <strong>executeC14n</strong>() method). If the 
-<tt class="PARAMETER"><i>trnaform</i></tt> is NULL then the default <strong>xmlSecC14NInclusive</strong> 
-transform is executed.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4293"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to C14N transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>doc</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to current document.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to current nodes set.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the result buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4318"></a><h3>
-<a name="XMLSECTRANSFORMDESTROYALL"></a>xmlSecTransformDestroyAll ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDestroyAll       (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
-<p>Destroys all transforms in the chain.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4325"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr></tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4335"></a><h3>
-<a name="XMLSECTRANSFORMADDAFTER"></a>xmlSecTransformAddAfter ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3269"/><h3>
+<a name="XMLSECTRANSFORMADDAFTER"/>xmlSecTransformAddAfter ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformPtr</strong> xmlSecTransformAddAfter  (<strong>xmlSecTransformPtr</strong> curTransform,
-                                             <strong>xmlSecTransformPtr</strong> newTransform);</pre></td></tr></table>
-<p>Adds <tt class="PARAMETER"><i>newTransform</i></tt> after the <tt class="PARAMETER"><i>curTransform</i></tt>.</p>
-<p></p>
+                                             <strong>xmlSecTransformPtr</strong> newTransform);</pre></td></tr></table><p>Adds <tt class="PARAMETER"><i>newTransform</i></tt> after the <tt class="PARAMETER"><i>curTransform</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4346"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>curTransform</i></tt>Â :</td>
+<a name="AEN3280"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>curTransform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to current transform (may be NULL).</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>newTransform</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>newTransform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to new transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">pointer to the new transforms chain or NULL if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4363"></a><h3>
-<a name="XMLSECTRANSFORMADDBEFORE"></a>xmlSecTransformAddBefore ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3297"/><h3>
+<a name="XMLSECTRANSFORMADDBEFORE"/>xmlSecTransformAddBefore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformPtr</strong> xmlSecTransformAddBefore (<strong>xmlSecTransformPtr</strong> curTransform,
-                                             <strong>xmlSecTransformPtr</strong> newTransform);</pre></td></tr></table>
-<p>Adds <tt class="PARAMETER"><i>newTransform</i></tt> before the <tt class="PARAMETER"><i>curTransform</i></tt>.</p>
-<p></p>
+                                             <strong>xmlSecTransformPtr</strong> newTransform);</pre></td></tr></table><p>Adds <tt class="PARAMETER"><i>newTransform</i></tt> before the <tt class="PARAMETER"><i>curTransform</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4374"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>curTransform</i></tt>Â :</td>
+<a name="AEN3308"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>curTransform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to current transform (may be NULL).</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>newTransform</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>newTransform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to new transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">pointer to the new transforms chain or NULL if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4391"></a><h3>
-<a name="XMLSECTRANSFORMREMOVE"></a>xmlSecTransformRemove ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformRemove           (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
-<p>Removes <tt class="PARAMETER"><i>transform</i></tt> from the chain. This method MUST be called by any 
+<hr/><div class="REFSECT2">
+<a name="AEN3325"/><h3>
+<a name="XMLSECTRANSFORMREMOVE"/>xmlSecTransformRemove ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformRemove           (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table><p>Removes <tt class="PARAMETER"><i>transform</i></tt> from the chain. This method MUST be called by any 
 bin transform id destructor.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4399"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3333"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr></tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4409"></a><h3>
-<a name="XMLSECTRANSFORMGETNAME"></a>xmlSecTransformGetName()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformGetName(transform)</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3343"/><h3>
+<a name="XMLSECTRANSFORMGETNAME"/>xmlSecTransformGetName()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformGetName(transform)</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4414"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<a name="AEN3348"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4423"></a><h3>
-<a name="XMLSECTRANSFORMISVALID"></a>xmlSecTransformIsValid()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformIsValid(transform)</pre></td></tr></table>
-<p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid or 0 otherwise.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3357"/><h3>
+<a name="XMLSECTRANSFORMISVALID"/>xmlSecTransformIsValid()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformIsValid(transform)</pre></td></tr></table><p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid or 0 otherwise.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4430"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3364"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to transform.</td>
-</tr></tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4439"></a><h3>
-<a name="XMLSECTRANSFORMCHECKTYPE"></a>xmlSecTransformCheckType()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformCheckType(transform, t)</pre></td></tr></table>
-<p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid and has specified type <tt class="PARAMETER"><i>t</i></tt> 
+<hr/><div class="REFSECT2">
+<a name="AEN3373"/><h3>
+<a name="XMLSECTRANSFORMCHECKTYPE"/>xmlSecTransformCheckType()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformCheckType(transform, t)</pre></td></tr></table><p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid and has specified type <tt class="PARAMETER"><i>t</i></tt> 
 or 0 otherwise.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4447"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3381"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>t</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>t</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the transform type.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4460"></a><h3>
-<a name="XMLSECTRANSFORMCHECKID"></a>xmlSecTransformCheckId()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformCheckId(transform, i)</pre></td></tr></table>
-<p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid and has specified id <tt class="PARAMETER"><i>i</i></tt> 
+<hr/><div class="REFSECT2">
+<a name="AEN3394"/><h3>
+<a name="XMLSECTRANSFORMCHECKID"/>xmlSecTransformCheckId()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformCheckId(transform, i)</pre></td></tr></table><p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid and has specified id <tt class="PARAMETER"><i>i</i></tt> 
 or 0 otherwise.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4468"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3402"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>i</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>i</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the transform id.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4481"></a><h3>
-<a name="XMLSECTRANSFORMCHECKSIZE"></a>xmlSecTransformCheckSize()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformCheckSize(transform, size)</pre></td></tr></table>
-<p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid and has at least <tt class="PARAMETER"><i>size</i></tt>
+<hr/><div class="REFSECT2">
+<a name="AEN3415"/><h3>
+<a name="XMLSECTRANSFORMCHECKSIZE"/>xmlSecTransformCheckSize()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformCheckSize(transform, size)</pre></td></tr></table><p>Macro. Returns 1 if the <tt class="PARAMETER"><i>transform</i></tt> is valid and has at least <tt class="PARAMETER"><i>size</i></tt>
 bytes or 0 otherwise.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4489"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3423"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the transform object size.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4502"></a><h3>
-<a name="XMLSECTRANSFORMTYPE"></a>enum xmlSecTransformType</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
-    xmlSecTransformTypeBinary,
-    xmlSecTransformTypeXml,
-    xmlSecTransformTypeC14N
-} xmlSecTransformType;</pre></td></tr></table>
-<p>The transform input/output types.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4508"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformTypeBinary</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> input - binary; output - binary.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformTypeXml</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> input - XML; output - XML.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformTypeC14N</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> input - XML; output - binary.</td>
-</tr>
-</tbody></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3436"/><h3>
+<a name="XMLSECTRANSFORMUSAGE"/>xmlSecTransformUsage</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned int				xmlSecTransformUsage;</pre></td></tr></table><p/>
 </div>
+<hr/><div class="REFSECT2">
+<a name="AEN3441"/><h3>
+<a name="XMLSECTRANSFORMUSAGEUNKNOWN"/>xmlSecTransformUsageUnknown</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageUnknown		0x0000</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4525"></a><h3>
-<a name="XMLSECTRANSFORMUSAGE"></a>xmlSecTransformUsage</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned int					xmlSecTransformUsage;</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3446"/><h3>
+<a name="XMLSECTRANSFORMUSAGEDSIGTRANSFORM"/>xmlSecTransformUsageDSigTransform</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageDSigTransform	0x0001</pre></td></tr></table><p>Transform could be used in &lt;dsig:Transform&gt;.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4530"></a><h3>
-<a name="XMLSECTRANSFORMUSAGEUNKNOWN"></a>xmlSecTransformUsageUnknown</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageUnknown			0x0000</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3452"/><h3>
+<a name="XMLSECTRANSFORMUSAGEC14NMETHOD"/>xmlSecTransformUsageC14NMethod</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageC14NMethod		0x0002</pre></td></tr></table><p>Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4535"></a><h3>
-<a name="XMLSECTRANSFORMUSAGEDSIGTRANSFORM"></a>xmlSecTransformUsageDSigTransform</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageDSigTransform		0x0001</pre></td></tr></table>
-<p>Transform could be used in &lt;dsig:Transform&gt;.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3458"/><h3>
+<a name="XMLSECTRANSFORMUSAGEDIGESTMETHOD"/>xmlSecTransformUsageDigestMethod</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageDigestMethod	0x0004</pre></td></tr></table><p>Transform could be used in &lt;dsig:DigestMethod&gt;.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4541"></a><h3>
-<a name="XMLSECTRANSFORMUSAGEC14NMETHOD"></a>xmlSecTransformUsageC14NMethod</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageC14NMethod			0x0002</pre></td></tr></table>
-<p>Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3464"/><h3>
+<a name="XMLSECTRANSFORMUSAGESIGNATUREMETHOD"/>xmlSecTransformUsageSignatureMethod</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageSignatureMethod	0x0008</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4547"></a><h3>
-<a name="XMLSECTRANSFORMUSAGEDIGESTMETHOD"></a>xmlSecTransformUsageDigestMethod</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageDigestMethod		0x0004</pre></td></tr></table>
-<p>Transform could be used in &lt;dsig:DigestMethod&gt;.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3469"/><h3>
+<a name="XMLSECTRANSFORMUSAGEENCRYPTIONMETHOD"/>xmlSecTransformUsageEncryptionMethod</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageEncryptionMethod	0x0010</pre></td></tr></table><p>Transform could be used in &lt;enc:EncryptionMethod&gt;.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4553"></a><h3>
-<a name="XMLSECTRANSFORMUSAGESIGNATUREMETHOD"></a>xmlSecTransformUsageSignatureMethod</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageSignatureMethod		0x0008</pre></td></tr></table>
-<p>Transform could be used in &lt;dsig:SignatureMethod&gt;.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3475"/><h3>
+<a name="XMLSECTRANSFORMUSAGEANY"/>xmlSecTransformUsageAny</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageAny			0xFFFF</pre></td></tr></table><p>Transform could be used for operation.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4559"></a><h3>
-<a name="XMLSECTRANSFORMUSAGEENCRYPTIONMETHOD"></a>xmlSecTransformUsageEncryptionMethod</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageEncryptionMethod		0x0010</pre></td></tr></table>
-<p>Transform could be used in &lt;enc:EncryptionMethod&gt;.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3481"/><h3>
+<a name="XMLSECTRANSFORMIDUNKNOWN"/>xmlSecTransformIdUnknown</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformIdUnknown			NULL</pre></td></tr></table><p>The &quot;unknown&quot; transform id (NULL).</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4565"></a><h3>
-<a name="XMLSECTRANSFORMUSAGEANY"></a>xmlSecTransformUsageAny</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUsageAny				0xFFFF</pre></td></tr></table>
-<p>Transform could be used for operation.</p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4571"></a><h3>
-<a name="XMLSECTRANSFORMIDUNKNOWN"></a>xmlSecTransformIdUnknown</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformIdUnknown			NULL</pre></td></tr></table>
-<p>The &quot;unknown&quot; transform id (NULL).</p>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4577"></a><h3>
-<a name="XMLSECTRANSFORMINITIALIZEMETHOD"></a>xmlSecTransformInitializeMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3487"/><h3>
+<a name="XMLSECTRANSFORMINITIALIZEMETHOD"/>xmlSecTransformInitializeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformInitializeMethod)
-                                            (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
-<p>The transform specific creation method.</p>
-<p></p>
+                                            (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table><p>The transform specific creation method.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4584"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3494"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4597"></a><h3>
-<a name="XMLSECTRANSFORMFINALIZEMETHOD"></a>xmlSecTransformFinalizeMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3507"/><h3>
+<a name="XMLSECTRANSFORMFINALIZEMETHOD"/>xmlSecTransformFinalizeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecTransformFinalizeMethod)
-                                            (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
-<p>The transform specific destroy method.</p>
-<p></p>
+                                            (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table><p>The transform specific destroy method.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4604"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3514"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr></tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4614"></a><h3>
-<a name="XMLSECTRANSFORMGETDATATYPEMETHOD"></a>xmlSecTransformGetDataTypeMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3524"/><h3>
+<a name="XMLSECTRANSFORMGETDATATYPEMETHOD"/>xmlSecTransformGetDataTypeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> (*xmlSecTransformGetDataTypeMethod)
                                             (<strong>xmlSecTransformPtr</strong> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4623"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>mode</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3533"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>mode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4644"></a><h3>
-<a name="XMLSECTRANSFORMNODEREADMETHOD"></a>xmlSecTransformNodeReadMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3554"/><h3>
+<a name="XMLSECTRANSFORMNODEREADMETHOD"/>xmlSecTransformNodeReadMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformNodeReadMethod)
                                             (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlNodePtr</strong> node);</pre></td></tr></table>
-<p>The transfomr specific method to read the transform data from 
-the <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+                                             <strong>xmlNodePtr</strong> node,
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p>The transfomr specific method to read the transform data from 
+the <tt class="PARAMETER"><i>node</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4653"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3564"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>node</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4671"></a><h3>
-<a name="XMLSECTRANSFORMSETKEYREQUIREMENTS"></a>xmlSecTransformSetKeyRequirements ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3586"/><h3>
+<a name="XMLSECTRANSFORMSETKEYREQUIREMENTS"/>xmlSecTransformSetKeyRequirements ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformSetKeyRequirements)
                                             (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlSecKeyReqPtr</strong> keyReq);</pre></td></tr></table>
-<p></p>
-<p></p>
+                                             <strong>xmlSecKeyReqPtr</strong> keyReq);</pre></td></tr></table><p/>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4679"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3594"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4697"></a><h3>
-<a name="XMLSECTRANSFORMSETKEYMETHOD"></a>xmlSecTransformSetKeyMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3612"/><h3>
+<a name="XMLSECTRANSFORMSETKEYMETHOD"/>xmlSecTransformSetKeyMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformSetKeyMethod)  (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlSecKeyPtr</strong> key);</pre></td></tr></table>
-<p>The transform specific method to set key for use.</p>
-<p></p>
+                                             <strong>xmlSecKeyPtr</strong> key);</pre></td></tr></table><p>The transform specific method to set key for use.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4705"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3620"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to binary transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4722"></a><h3>
-<a name="XMLSECTRANSFORMVERIFYMETHOD"></a>xmlSecTransformVerifyMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3637"/><h3>
+<a name="XMLSECTRANSFORMVERIFYMETHOD"/>xmlSecTransformVerifyMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformVerifyMethod)  (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
                                              <strong>size_t</strong> dataSize,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4730"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3645"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4755"></a><h3>
-<a name="XMLSECTRANSFORMPUSHBINMETHOD"></a>xmlSecTransformPushBinMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3670"/><h3>
+<a name="XMLSECTRANSFORMPUSHBINMETHOD"/>xmlSecTransformPushBinMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPushBinMethod) (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
                                              <strong>size_t</strong> dataSize,
                                              int final,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4763"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>final</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3678"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>final</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4792"></a><h3>
-<a name="XMLSECTRANSFORMPOPBINMETHOD"></a>xmlSecTransformPopBinMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3707"/><h3>
+<a name="XMLSECTRANSFORMPOPBINMETHOD"/>xmlSecTransformPopBinMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPopBinMethod)  (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *data,
+                                             <strong>size_t</strong> maxDataSize,
                                              <strong>size_t</strong> *dataSize,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4800"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataSize</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3716"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>data</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>maxDataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4825"></a><h3>
-<a name="XMLSECTRANSFORMPUSHXMLMETHOD"></a>xmlSecTransformPushXmlMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3745"/><h3>
+<a name="XMLSECTRANSFORMPUSHXMLMETHOD"/>xmlSecTransformPushXmlMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPushXmlMethod) (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4833"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3753"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>nodes</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4854"></a><h3>
-<a name="XMLSECTRANSFORMPOPXMLMETHOD"></a>xmlSecTransformPopXmlMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3774"/><h3>
+<a name="XMLSECTRANSFORMPOPXMLMETHOD"/>xmlSecTransformPopXmlMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPopXmlMethod)  (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlSecNodeSetPtr</strong> *nodes,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4862"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3782"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>nodes</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4883"></a><h3>
-<a name="XMLSECTRANSFORMEXECUTEMETHOD"></a>xmlSecTransformExecuteMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3803"/><h3>
+<a name="XMLSECTRANSFORMEXECUTEMETHOD"/>xmlSecTransformExecuteMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformExecuteMethod) (<strong>xmlSecTransformPtr</strong> transform,
                                              int last,
-                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
-<p>Transform specific execute method. returns result in the <tt class="PARAMETER"><i>buffer</i></tt>.</p>
-<p></p>
+                                             <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN4892"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to C14N transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>last</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformCtx</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3810"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>last</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformCtx</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4913"></a><h3>
-<a name="XMLSECTRANSFORMREADMETHOD"></a>xmlSecTransformReadMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformReadMethod)    (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>The transform specific method to read next chunk of binary data into <tt class="PARAMETER"><i>buf</i></tt>.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4922"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the output buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the output buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the number of bytes in the buffer or negative value
-if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4944"></a><h3>
-<a name="XMLSECTRANSFORMWRITEMETHOD"></a>xmlSecTransformWriteMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformWriteMethod)   (<strong>xmlSecTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>The transform specific method to write next chunk of binary data from <tt class="PARAMETER"><i>buf</i></tt>.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4953"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the input data buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 if success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4975"></a><h3>
-<a name="XMLSECTRANSFORMFLUSHMETHOD"></a>xmlSecTransformFlushMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformFlushMethod)   (<strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
-<p>The transform specific method to finalize writing.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN4982"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 if success or negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4996"></a><h3>
-<a name="XMLSECTRANSFORMEXECUTEXMLMETHOD"></a>xmlSecTransformExecuteXmlMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformExecuteXmlMethod)
-                                            (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> ctxDoc,
-                                             <strong>xmlDocPtr</strong> *doc,
-                                             <strong>xmlSecNodeSetPtr</strong> *nodes);</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5005"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>ctxDoc</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>doc</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5030"></a><h3>
-<a name="XMLSECTRANSFORMEXECUTEC14NMETHOD"></a>xmlSecTransformExecuteC14NMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformExecuteC14NMethod)
-                                            (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>xmlDocPtr</strong> doc,
-                                             <strong>xmlSecNodeSetPtr</strong> nodes,
-                                             <strong>xmlOutputBufferPtr</strong> buffer);</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5039"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>doc</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5064"></a><h3>
-<a name="XMLSECTRANSFORMKLASS"></a>struct xmlSecTransformKlass</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3831"/><h3>
+<a name="XMLSECTRANSFORMKLASS"/>struct xmlSecTransformKlass</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecTransformKlass {
+    /* data */
     size_t				klassSize;
     size_t				objSize;
-
-    /* general data */
     const xmlChar*			name;
-    xmlSecTransformType			type;
+    const xmlChar*			href;
     xmlSecTransformUsage		usage;
-    const xmlChar			*href;
 
-    /* general methods */
+    /* methods */
     xmlSecTransformInitializeMethod	initialize;
     xmlSecTransformFinalizeMethod	finalize;
-    xmlSecTransformNodeReadMethod	readNode;    
+
+    xmlSecTransformNodeReadMethod	readNode;
+    xmlSecTransformNodeWriteMethod	writeNode;
+
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
     xmlSecTransformVerifyMethod		verify;
     xmlSecTransformGetDataTypeMethod	getDataType;
+
     xmlSecTransformPushBinMethod	pushBin;
     xmlSecTransformPopBinMethod		popBin;
     xmlSecTransformPushXmlMethod	pushXml;
@@ -2221,308 +1200,214 @@ if an error occurs.</td>
     /* low level method */
     xmlSecTransformExecuteMethod	execute;
 
-    /* obsolete */    
-    xmlSecTransformExecuteXmlMethod	executeXml;
-    xmlSecTransformExecuteC14NMethod	executeC14N;
-};</pre></td></tr></table>
-<p>The transform id structure.</p>
-<p></p>
+    /* reserved for future */ 
+    void* 				reserved0;
+    void* 				reserved1;
+};</pre></td></tr></table><p>The transform id structure.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN5070"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<a name="AEN3837"/><p/>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>size_t</strong> <tt class="STRUCTFIELD"><i>klassSize</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>size_t</strong> <tt class="STRUCTFIELD"><i>objSize</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">const <strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>name</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">const <strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>name</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMTYPE">xmlSecTransformType</a> <tt class="STRUCTFIELD"><i>type</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">const <strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>href</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP"> the type.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> the algorithm href.</td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> <tt class="STRUCTFIELD"><i>usage</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the usage.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">const <strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>href</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the algorithm href.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMINITIALIZEMETHOD">xmlSecTransformInitializeMethod</a> <tt class="STRUCTFIELD"><i>initialize</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMFINALIZEMETHOD">xmlSecTransformFinalizeMethod</a> <tt class="STRUCTFIELD"><i>finalize</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEREADMETHOD">xmlSecTransformNodeReadMethod</a> <tt class="STRUCTFIELD"><i>readNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformNodeWriteMethod</strong> <tt class="STRUCTFIELD"><i>writeNode</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQUIREMENTS">xmlSecTransformSetKeyRequirements</a> <tt class="STRUCTFIELD"><i>setKeyReq</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYMETHOD">xmlSecTransformSetKeyMethod</a> <tt class="STRUCTFIELD"><i>setKey</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">xmlSecTransformVerifyMethod</a> <tt class="STRUCTFIELD"><i>verify</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMGETDATATYPEMETHOD">xmlSecTransformGetDataTypeMethod</a> <tt class="STRUCTFIELD"><i>getDataType</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">xmlSecTransformPushBinMethod</a> <tt class="STRUCTFIELD"><i>pushBin</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">xmlSecTransformPopBinMethod</a> <tt class="STRUCTFIELD"><i>popBin</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">xmlSecTransformPushXmlMethod</a> <tt class="STRUCTFIELD"><i>pushXml</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">xmlSecTransformPopXmlMethod</a> <tt class="STRUCTFIELD"><i>popXml</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">xmlSecTransformExecuteMethod</a> <tt class="STRUCTFIELD"><i>execute</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEXMLMETHOD">xmlSecTransformExecuteXmlMethod</a> <tt class="STRUCTFIELD"><i>executeXml</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEC14NMETHOD">xmlSecTransformExecuteC14NMethod</a> <tt class="STRUCTFIELD"><i>executeC14N</i></tt>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr>
-</tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5175"></a><h3>
-<a name="XMLSECTRANSFORMKLASSGETNAME"></a>xmlSecTransformKlassGetName()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformKlassGetName(klass)</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3940"/><h3>
+<a name="XMLSECTRANSFORMKLASSGETNAME"/>xmlSecTransformKlassGetName()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformKlassGetName(klass)</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN5180"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>klass</i></tt>Â :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<a name="AEN3945"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>klass</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5189"></a><h3>
-<a name="XMLSEC-BASE64-LINESIZE-CAPS"></a>XMLSEC_BASE64_LINESIZE</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_BASE64_LINESIZE			64</pre></td></tr></table>
-<p>The default max line size for base64 encoding</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3954"/><h3>
+<a name="XMLSEC-BASE64-LINESIZE-CAPS"/>XMLSEC_BASE64_LINESIZE</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_BASE64_LINESIZE				64</pre></td></tr></table><p>The default max line size for base64 encoding</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5195"></a><h3>
-<a name="XMLSECTRANSFORMBASE64ID"></a>xmlSecTransformBase64Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformBase64Id</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3960"/><h3>
+<a name="XMLSECTRANSFORMBASE64ID"/>xmlSecTransformBase64Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformBase64Id</pre></td></tr></table><p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5200"></a><h3>
-<a name="XMLSECTRANSFORMBASE64GETKLASS"></a>xmlSecTransformBase64GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> xmlSecTransformBase64GetKlass
-                                            (void);</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3965"/><h3>
+<a name="XMLSECTRANSFORMBASE64GETKLASS"/>xmlSecTransformBase64GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformId</strong> xmlSecTransformBase64GetKlass
+                                            (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN5206"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3971"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5215"></a><h3>
-<a name="XMLSECTRANSFORMBASE64SETLINESIZE"></a>xmlSecTransformBase64SetLineSize ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3980"/><h3>
+<a name="XMLSECTRANSFORMBASE64SETLINESIZE"/>xmlSecTransformBase64SetLineSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformBase64SetLineSize
                                             (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>size_t</strong> lineSize);</pre></td></tr></table>
-<p>Sets the max line size to <tt class="PARAMETER"><i>lineSize</i></tt>.</p>
-<p></p>
+                                             <strong>size_t</strong> lineSize);</pre></td></tr></table><p>Sets the max line size to <tt class="PARAMETER"><i>lineSize</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN5224"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN3989"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to BASE64 encode transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>lineSize</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>lineSize</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the new max line size.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5237"></a><h3>
-<a name="XMLSECTRANSFORMINPUTURIID"></a>xmlSecTransformInputURIId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformInputURIId</pre></td></tr></table>
-<p>The Input URI transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4002"/><h3>
+<a name="XMLSECTRANSFORMINPUTURIID"/>xmlSecTransformInputURIId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformInputURIId</pre></td></tr></table><p>The Input URI transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5243"></a><h3>
-<a name="XMLSECTRANSFORMINPUTURIGETKLASS"></a>xmlSecTransformInputURIGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> xmlSecTransformInputURIGetKlass
-                                            (void);</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4008"/><h3>
+<a name="XMLSECTRANSFORMINPUTURIGETKLASS"/>xmlSecTransformInputURIGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformId</strong> xmlSecTransformInputURIGetKlass
+                                            (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN5249"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4014"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5258"></a><h3>
-<a name="XMLSECTRANSFORMINPUTURIOPEN"></a>xmlSecTransformInputURIOpen ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4023"/><h3>
+<a name="XMLSECTRANSFORMINPUTURIOPEN"/>xmlSecTransformInputURIOpen ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformInputURIOpen     (<strong>xmlSecTransformPtr</strong> transform,
-                                             const char *uri);</pre></td></tr></table>
-<p>Opens the given <tt class="PARAMETER"><i>uri</i></tt> for reading.</p>
-<p></p>
+                                             const <strong>xmlChar</strong> *uri);</pre></td></tr></table><p>Opens the given <tt class="PARAMETER"><i>uri</i></tt> for reading.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN5266"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN4032"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to IO transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>uri</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>uri</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the URL to open.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5283"></a><h3>
-<a name="XMLSECTRANSFORMXSLTID"></a>xmlSecTransformXsltId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformXsltId</pre></td></tr></table>
-<p>The XSLT transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4049"/><h3>
+<a name="XMLSECTRANSFORMXSLTID"/>xmlSecTransformXsltId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformXsltId</pre></td></tr></table><p>The XSLT transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5289"></a><h3>
-<a name="XMLSECTRANSFORMXSLTGETKLASS"></a>xmlSecTransformXsltGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> xmlSecTransformXsltGetKlass
-                                            (void);</pre></td></tr></table>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4055"/><h3>
+<a name="XMLSECTRANSFORMXSLTGETKLASS"/>xmlSecTransformXsltGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformId</strong> xmlSecTransformXsltGetKlass
+                                            (void);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN5295"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4061"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">Â </td>
-</tr></tbody></table>
-<p></p>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table><p/>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keysmngr.h</b></font></td>
+</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keysmngr.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>version.h</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+</tr></table></div>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

@@ -14,71 +14,16 @@ transforms-old
 
 </para>
 
-<!-- ##### VARIABLE xmlSecC14NInclusive ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NInclusiveWithComments ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NExclusive ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NExclusiveWithComments ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION xmlSecC14NExclAddInclNamespaces ##### -->
 <para>
 
 </para>
 
-@transformNode: 
+@node: 
 @prefixList: 
 @Returns: 
-
-
-<!-- ##### VARIABLE xmlSecTransformEnveloped ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ENUM xmlSecXPath2TransformType ##### -->
-<para>
-
-</para>
-
-@xmlSecXPathTransformIntersect: 
-@xmlSecXPathTransformSubtract: 
-@xmlSecXPathTransformUnion: 
-
-<!-- ##### VARIABLE xmlSecTransformXPath ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformXPath2 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformXPointer ##### -->
-<para>
-
-</para>
+<!-- # Unused Parameters # -->
+@transformNode: 
 
 
 <!-- ##### FUNCTION xmlSecTransformXPathAdd ##### -->
@@ -86,10 +31,12 @@ transforms-old
 
 </para>
 
-@transformNode: 
+@node: 
 @expression: 
 @namespaces: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@transformNode: 
 
 
 <!-- ##### FUNCTION xmlSecTransformXPath2Add ##### -->
@@ -97,11 +44,13 @@ transforms-old
 
 </para>
 
-@transformNode: 
+@node: 
 @type: 
 @expression: 
 @namespaces: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@transformNode: 
 
 
 <!-- ##### FUNCTION xmlSecTransformXPointerAdd ##### -->
@@ -109,9 +58,11 @@ transforms-old
 
 </para>
 
-@transformNode: 
+@node: 
 @expression: 
 @namespaces: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@transformNode: 
 
 

@@ -1,40 +1,29 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>XML Security Library: Download</title>
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>XML Security Library: Download</title></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="index.html">Home</a></li>
 <li><a href="download.html">Download</a></li>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
 <li><a href="faq.html">FAQ</a></li>
 <li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="xmldsig-interop.html">Interop report</a></li>
 <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul><li><a href="c14n.html">XML Canonicalization</a></li>
 <li><a href="bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
 <div align="Center">       
       <h1>Download</h1>
       </div>
 <h2>Stable release.</h2>
 <p>The latest stable XML Security Library version is <b>0.0.14</b>:</p>
-<ul>
-<li>
+<ul><li>
 <a href="download/xmlsec-0.0.14.tar.gz">Sources</a> 
 	    (<a href="ftp://ftp.xmlsoft.org/xmlsec/releases">XMLSoft.org</a> and 
  	     <a href="ftp://ftp.rpmfind.net/pub/XML/xmlsec/releases">RPMFind.net</a> mirrors).
@@ -54,8 +43,7 @@
 	<a href="http://memebeam.org/john/tests/libxmlsec/">Debian packages</a> 
 	from <a href="mailto:jvb@prairienet.org">John Belmonte</a>.
 	</li>
-      </ul>
-<p>
+      </ul><p>
       The <a href="ftp://ftp.aleksey.com/pub/xmlsec/releases/">previous versions</a>
       are also available.        
           
@@ -64,14 +52,12 @@
 <p>
       The latest development XML Security Library version is <b>0.1.0</b>:
       </p>
-<ul>
-<li>
+<ul><li>
 <a href="download/xmlsec-0.1.0.tar.gz">Sources</a> 
 	    (<a href="ftp://ftp.xmlsoft.org/xmlsec/releases">XMLSoft.org</a> and 
  	     <a href="ftp://ftp.rpmfind.net/pub/XML/xmlsec/releases">RPMFind.net</a> mirrors).
         </li>
-      </ul>
-<p>
+      </ul><p>
       The <a href="ftp://ftp.aleksey.com/pub/xmlsec/snapshots/">daily snapshots</a>
       are also available.
       </p>
@@ -92,26 +78,21 @@
 <p>
       The XML Security Library requires:
       </p>
-<ul>
-<li>
+<ul><li>
 <a href="http://xmlsoft.org/downloads.html">LibXML version 2.4.24</a> or geater</li>
          <li>
 <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT 1.0.20</a> or greater (optional)</li>
          <li><a href="http://www.openssl.org/source/openssl-0.9.7a.tar.gz">OpenSSL version 0.9.7a</a></li>
-      </ul>
-<h2>Installation (source archive)</h2>
+      </ul><h2>Installation (source archive)</h2>
 <p>
-      All steps are usual:<br>
-</p>
+      All steps are usual:<br/></p>
 <blockquote>
-<code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br><code>cd xmlsec-xxxx</code><br><code>./configure --help</code><br><code>./configure [possible options] </code><br><code>make</code><br><code>make install</code><br><code>make check</code>
+<code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br/><code>cd xmlsec-xxxx</code><br/><code>./configure --help</code><br/><code>./configure [possible options] </code><br/><code>make</code><br/><code>make install</code><br/><code>make check</code>
 </blockquote>
 <p>
        The last step is optional and requires Internet connection to execute
-       some tests.<br>
-</p>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+       some tests.<br/></p>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

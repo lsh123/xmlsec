@@ -38,16 +38,6 @@ typedef     <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>;
 int         <link linkend="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit</link>            (void);
 int         <link linkend="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault</link> (void);
 int         <link linkend="xmlSecKeyDataIdsRegister">xmlSecKeyDataIdsRegister</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
-void        <link linkend="xmlSecKeyDataIdsClear">xmlSecKeyDataIdsClear</link>           (void);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataIdsGetSize">xmlSecKeyDataIdsGetSize</link>         (void);
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsGetId">xmlSecKeyDataIdsGetId</link>       (<link linkend="size-t">size_t</link> pos);
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsFindByNode">xmlSecKeyDataIdsFindByNode</link>  (const <link linkend="xmlChar">xmlChar</link> *nodeName,
-                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
-                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsFindByHref">xmlSecKeyDataIdsFindByHref</link>  (const <link linkend="xmlChar">xmlChar</link> *href,
-                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsFindByName">xmlSecKeyDataIdsFindByName</link>  (const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
 struct      <link linkend="xmlSecKeyData">xmlSecKeyData</link>;
 <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataCreate">xmlSecKeyDataCreate</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
 <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
@@ -120,9 +110,6 @@ void        (<link linkend="xmlSecKeyDataDebugDumpMethod">*xmlSecKeyDataDebugDum
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecKeyDataKlass">xmlSecKeyDataKlass</link>;
 #define     <link linkend="xmlSecKeyDataKlassGetName">xmlSecKeyDataKlassGetName</link>       (klass)
-#define     <link linkend="xmlSecKeyDataPtrListId">xmlSecKeyDataPtrListId</link>
-<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataPtrListGetKlass">xmlSecKeyDataPtrListGetKlass</link>
-                                            (void);
 #define     <link linkend="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</link>
 int         <link linkend="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize</link>
                                             (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
@@ -400,122 +387,11 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataIdsClear">xmlSecKeyDataIdsClear ()</title>
-<programlisting>void        xmlSecKeyDataIdsClear           (void);</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataIdsGetSize">xmlSecKeyDataIdsGetSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataIdsGetSize         (void);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataIdsGetId">xmlSecKeyDataIdsGetId ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsGetId       (<link linkend="size-t">size_t</link> pos);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataIdsFindByNode">xmlSecKeyDataIdsFindByNode ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsFindByNode  (const <link linkend="xmlChar">xmlChar</link> *nodeName,
-                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
-                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>nodeName</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>nodeNs</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataIdsFindByHref">xmlSecKeyDataIdsFindByHref ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsFindByHref  (const <link linkend="xmlChar">xmlChar</link> *href,
-                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>href</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataIdsFindByName">xmlSecKeyDataIdsFindByName ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsFindByName  (const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKeyData">struct xmlSecKeyData</title>
 <programlisting>struct xmlSecKeyData {
     xmlSecKeyDataId			id;
-    void				*reserved0;
-    void				*reserved1;
-    void				*reserved2;
-    void				*reserved3;
+    void*				reserved0;
+    void*				reserved1;
 };
 </programlisting>
 <para>
@@ -539,16 +415,6 @@ The data.</para>
 </row>
 <row>
 <entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved2</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved3</structfield></entry>
 <entry>
 
 </entry>
@@ -1277,6 +1143,10 @@ KeyData specific method for printing debug info.</para>
     /* debug */
     xmlSecKeyDataDebugDumpMethod	debugDump;
     xmlSecKeyDataDebugDumpMethod	debugXmlDump;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 </programlisting>
 <para>
@@ -1296,29 +1166,6 @@ The data id.</para>
 <tbody>
 <row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
 <entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataPtrListId">xmlSecKeyDataPtrListId</title>
-<programlisting>#define xmlSecKeyDataPtrListId	xmlSecKeyDataPtrListGetKlass()
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataPtrListGetKlass">xmlSecKeyDataPtrListGetKlass ()</title>
-<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyDataPtrListGetKlass
-                                            (void);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
 
 
 </entry></row>
@@ -1628,10 +1475,10 @@ The data id.</para>
 <title><anchor id="xmlSecKeyDataStore">struct xmlSecKeyDataStore</title>
 <programlisting>struct xmlSecKeyDataStore {
     xmlSecKeyDataStoreId		id;
+
+    /* for the future */
     void*				reserved0;
     void*				reserved1;
-    void*				reserved2;
-    void*				reserved4;
 };
 </programlisting>
 <para>
@@ -1655,16 +1502,6 @@ The store.</para>
 </row>
 <row>
 <entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved2</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved4</structfield></entry>
 <entry>
 
 </entry>
@@ -1887,6 +1724,10 @@ KeyDataStore specific find method.</para>
     xmlSecKeyDataStoreInitializeMethod	initialize;
     xmlSecKeyDataStoreFinalizeMethod	finalize;
     xmlSecKeyDataStoreFindMethod	find;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 </programlisting>
 <para>

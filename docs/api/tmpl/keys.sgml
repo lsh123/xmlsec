@@ -14,16 +14,11 @@ The keys helper functions.
 
 </para>
 
-<!-- ##### ENUM xmlSecKeyUsage ##### -->
+<!-- ##### TYPEDEF xmlSecKeyUsage ##### -->
 <para>
 
 </para>
 
-@xmlSecKeyUsageAny: 
-@xmlSecKeyUsageSign: 
-@xmlSecKeyUsageVerify: 
-@xmlSecKeyUsageEncrypt: 
-@xmlSecKeyUsageDecrypt: 
 
 <!-- ##### STRUCT xmlSecKeyReq ##### -->
 <para>
@@ -82,13 +77,6 @@ The keys helper functions.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecKeyInifiteRetrivals ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO xmlSecKeyIsValid ##### -->
 <para>
 
@@ -106,92 +94,17 @@ The keys helper functions.
 @keyId: 
 
 
-<!-- ##### TYPEDEF xmlSecKeyOrigin ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### MACRO xmlSecKeyOriginDefault ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginKeyManager ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginKeyName ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginKeyValue ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginRetrievalDocument ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginRetrievalRemote ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginX509 ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginPGP ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginEncryptedKey ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecKeyOriginAll ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### STRUCT xmlSecKey ##### -->
 <para>
 
 </para>
 
-@value: 
 @name: 
+@value: 
 @dataList: 
-@type: 
-@origin: 
+@usage: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### FUNCTION xmlSecKeyCreate ##### -->
 <para>

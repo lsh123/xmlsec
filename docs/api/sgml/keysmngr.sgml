@@ -23,7 +23,8 @@ int         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreA
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const char *uri);
+                                             const char *uri,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
 int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
@@ -143,7 +144,8 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad ()</title>
 <programlisting>int         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const char *uri);</programlisting>
+                                             const char *uri,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -155,6 +157,9 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 <entry>
 </entry></row>
 <row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
@@ -401,16 +406,7 @@ an error occurs.
 <programlisting>struct xmlSecKeysMngr {	
     xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
     xmlSecPtrListPtr		storesList;	/* list of other key data storages */
-
-
-
     xmlSecGetKeyCallback	getKey;		/* the callback used to read &lt;dsig:KeyInfo&gt; node. */
-
-    xmlSecKeyOrigin 		allowedOrigins;
-    int 			maxRetrievalsLevel;
-    int				maxEncKeysLevel; 
-    /* x509 certs */    
-    int				failIfCertNotFound; 
 };
 </programlisting>
 <para>
@@ -435,26 +431,6 @@ The keys manager structure.</para>
 <row>
 <entry><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link> <structfield>getKey</structfield></entry>
 <entry> the callback used to read &lt;dsig:KeyInfo&gt; node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> <structfield>allowedOrigins</structfield></entry>
-<entry> the allowed origins bits mask.
-</entry>
-</row>
-<row>
-<entry>int <structfield>maxRetrievalsLevel</structfield></entry>
-<entry> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.
-</entry>
-</row>
-<row>
-<entry>int <structfield>maxEncKeysLevel</structfield></entry>
-<entry> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.
-</entry>
-</row>
-<row>
-<entry>int <structfield>failIfCertNotFound</structfield></entry>
-<entry> the flag.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>

@@ -20,28 +20,30 @@ standard implementation.
 
 </para>
 
-@keyInfoCtx: 
-@encryptionMethod: 
-@ignoreType: 
-@certsVerificationTime: 
-
-<!-- ##### STRUCT xmlSecEncResult ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@self: 
-@encrypt: 
+@userData: 
+@mode: 
+@keyInfoReadCtx: 
+@keyInfoWriteCtx: 
+@encTransformCtx: 
+@encMethod: 
+@encKey: 
+@result: 
+@operation: 
+@resultBase64Encoded: 
+@resultReplaced: 
 @id: 
 @type: 
 @mimeType: 
 @encoding: 
-@encryptionMethod: 
-@key: 
-@buffer: 
-@replaced: 
+@recipient: 
+@carriedKeyName: 
+@dontDestroyEncMethod: 
+@encDataNode: 
+@encMethodNode: 
+@keyInfoNode: 
+@cipherValueNode: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### FUNCTION xmlSecEncCtxCreate ##### -->
 <para>
@@ -57,102 +59,8 @@ standard implementation.
 
 </para>
 
-@ctx: 
-
-
-<!-- ##### FUNCTION xmlSecEncryptMemory ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@key: 
-@encNode: 
-@buf: 
-@size: 
-@result: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncryptUri ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@key: 
-@encNode: 
-@uri: 
-@result: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncryptXmlNode ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@key: 
-@encNode: 
-@src: 
-@result: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDecrypt ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@key: 
-@encNode: 
-@result: 
-@Returns: 
+@encCtx: 
 <!-- # Unused Parameters # -->
-@encDataNode: 
-
-
-<!-- ##### FUNCTION xmlSecEncResultCreate ##### -->
-<para>
-
-</para>
-
 @ctx: 
-@context: 
-@encrypt: 
-@node: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncResultDestroy ##### -->
-<para>
-
-</para>
-
-@result: 
-
-
-<!-- ##### FUNCTION xmlSecEncResultDebugDump ##### -->
-<para>
-
-</para>
-
-@result: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecEncResultDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@result: 
-@output: 
 
 

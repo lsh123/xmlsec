@@ -34,6 +34,13 @@ XMLSEC_EXPORT int 		xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 								 xmlSecKeyPtr key,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+/** 
+ * xmlSecKeyInfoMode:
+ * @xmlSecKeyInfoModeRead: read <dsig:KeyInfo /> element.
+ * @xmlSecKeyInfoModeWrite: write <dsig:KeyInfo /> element.
+ *
+ * The @xmlSecKeyInfoCtx operation mode (read or write).
+ */
 typedef enum {
     xmlSecKeyInfoModeRead = 0,
     xmlSecKeyInfoModeWrite

@@ -20,6 +20,13 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 /**
+ * XMLSEC_BASE64_LINESIZE:
+ *
+ * The default maximum base64 encoded line size.
+ */
+#define XMLSEC_BASE64_LINESIZE				64
+
+/**
  * Base64 Context
  */
 typedef struct _xmlSecBase64Ctx 				xmlSecBase64Ctx, 

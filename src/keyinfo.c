@@ -49,6 +49,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
@@ -254,7 +255,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
     keyInfoCtx->keysMngr = keysMngr;
-    
+    keyInfoCtx->base64LineSize = XMLSEC_BASE64_LINESIZE;    
     ret = xmlSecPtrListInitialize(&(keyInfoCtx->enabledKeyData), xmlSecKeyDataIdListId);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

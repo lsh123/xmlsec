@@ -82,6 +82,7 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
     xmlSecPtr*			data;
     size_t			use;
     size_t			max;
+    xmlSecAllocMode 		allocMode;
 };
 </programlisting>
 <para>

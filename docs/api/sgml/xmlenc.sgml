@@ -16,42 +16,8 @@ standard implementation.</refpurpose>
 
 
 struct      <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
-struct      <link linkend="xmlSecEncResult">xmlSecEncResult</link>;
 <link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link>          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx);
-int         <link linkend="xmlSecEncryptMemory">xmlSecEncryptMemory</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> size,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
-int         <link linkend="xmlSecEncryptUri">xmlSecEncryptUri</link>                (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const char *uri,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
-int         <link linkend="xmlSecEncryptXmlNode">xmlSecEncryptXmlNode</link>            (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> src,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
-int         <link linkend="xmlSecDecrypt">xmlSecDecrypt</link>                   (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
-<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> <link linkend="xmlSecEncResultCreate">xmlSecEncResultCreate</link>    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             int encrypt,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
-void        <link linkend="xmlSecEncResultDestroy">xmlSecEncResultDestroy</link>          (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result);
-void        <link linkend="xmlSecEncResultDebugDump">xmlSecEncResultDebugDump</link>        (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecEncResultDebugXmlDump">xmlSecEncResultDebugXmlDump</link>     (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> encCtx);
 </synopsis>
 </refsynopsisdiv>
 
@@ -71,10 +37,40 @@ void        <link linkend="xmlSecEncResultDebugXmlDump">xmlSecEncResultDebugXmlD
 <refsect2>
 <title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
 <programlisting>struct xmlSecEncCtx {
-    xmlSecKeyInfoCtx		keyInfoCtx;
-    xmlSecTransformId		encryptionMethod;
-    int				ignoreType;
-    time_t			certsVerificationTime;
+    /* these data user can set before performing the operation */
+    void*			userData;
+    xmlEncCtxMode		mode;
+    xmlSecKeyInfoCtx		keyInfoReadCtx;
+    xmlSecKeyInfoCtx		keyInfoWriteCtx;
+    xmlSecTransformCtx		encTransformCtx;
+
+    xmlSecTransformPtr		encMethod;
+    xmlSecKeyPtr		encKey;
+
+    /* these data are returned */
+    xmlSecBufferPtr		result;
+    xmlSecTransformOperation	operation;
+    int				resultBase64Encoded;
+    int				resultReplaced;
+
+    /* attributes from EncryptedData or EncryptedKey */    
+    xmlChar*			id;
+    xmlChar*			type;
+    xmlChar*			mimeType;
+    xmlChar*			encoding;
+    xmlChar*			recipient;
+    xmlChar*			carriedKeyName;
+
+    /* these are internal data, nobody should change that except us */
+    int				dontDestroyEncMethod;
+    xmlNodePtr			encDataNode;
+    xmlNodePtr			encMethodNode;
+    xmlNodePtr			keyInfoNode;
+    xmlNodePtr			cipherValueNode;
+    
+    /* reserved for future */
+    void*			reserved0;
+    void*			reserved1;
 };
 </programlisting>
 <para>
@@ -87,72 +83,58 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row>
-<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoCtx</structfield></entry>
+<entry>void *<structfield>userData</structfield></entry>
 <entry>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>encryptionMethod</structfield></entry>
-<entry> the default encryption algorithm id.
-</entry>
-</row>
-<row>
-<entry>int <structfield>ignoreType</structfield></entry>
-<entry>	the flag to ignore Type attribute in the &lt;enc:EncryptedData&gt; 
-	node
-</entry>
-</row>
-<row>
-<entry><link linkend="time-t">time_t</link> <structfield>certsVerificationTime</structfield></entry>
+<entry><link linkend="xmlEncCtxMode">xmlEncCtxMode</link> <structfield>mode</structfield></entry>
 <entry>
-
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncResult">struct xmlSecEncResult</title>
-<programlisting>struct xmlSecEncResult {
-    xmlSecEncCtxPtr		ctx;
-    void			*context;
-    xmlNodePtr			self;
-    int				encrypt;
-    xmlChar			*id;
-    xmlChar			*type;
-    xmlChar			*mimeType;
-    xmlChar			*encoding;
-    xmlSecTransformId		encryptionMethod;
-    xmlSecKeyPtr		key;
-    xmlSecBufferPtr		buffer;
-    int				replaced;
-};
-</programlisting>
-<para>
-The XML Encrypiton results.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <structfield>ctx</structfield></entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
 </entry>
 </row>
 <row>
-<entry>void *<structfield>context</structfield></entry>
-<entry> the pointer to application specific data.
+<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoReadCtx</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>self</structfield></entry>
-<entry> the pointer to  &lt;enc:EncryptedData&gt; node.
+<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoWriteCtx</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
-<entry>int <structfield>encrypt</structfield></entry>
-<entry> the encrypt/decrypt flag.
+<entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>encTransformCtx</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>encMethod</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>encKey</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>int <structfield>resultBase64Encoded</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>int <structfield>resultReplaced</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
@@ -176,31 +158,55 @@ The XML Encrypiton results.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>encryptionMethod</structfield></entry>
-<entry> the used encryption algorithm id.
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>recipient</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>key</structfield></entry>
-<entry> the used encryption key.
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>carriedKeyName</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>buffer</structfield></entry>
-<entry> the decrypted data.
+<entry>int <structfield>dontDestroyEncMethod</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
-<entry>int <structfield>replaced</structfield></entry>
-<entry> if set then the decrypted data were put back into the original document.
+<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>encDataNode</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>encMethodNode</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>keyInfoNode</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>cipherValueNode</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>
+
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCreate">xmlSecEncCtxCreate ()</title>
 <programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
-<para>
-Creates new encryption context.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -209,16 +215,16 @@ Creates new encryption context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link> structure.
+<entry>
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>newly allocated <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy ()</title>
-<programlisting>void        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx);</programlisting>
-<para>
-Destroys the <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.</para>
+<programlisting>void        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> encCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -226,262 +232,8 @@ Destroys the <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncryptMemory">xmlSecEncryptMemory ()</title>
-<programlisting>int         xmlSecEncryptMemory             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> size,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
-<para>
-Encrypts binary data from the <parameter>buf</parameter> according to the template in the
-&lt;enc:EncryptionData&gt; node. After the encrytion the result XML is in 
-the <parameter>encNode</parameter> node.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   
-</entry></row>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).
-</entry></row>
-<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry> the pointer to data to encrypt.
-</entry></row>
-<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the size of the data in <parameter>buf</parameter>.
-</entry></row>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer where to store encryption results.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncryptUri">xmlSecEncryptUri ()</title>
-<programlisting>int         xmlSecEncryptUri                (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const char *uri,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
-<para>
-Encrypts binary data from the <parameter>uri</parameter> according to the template in the
-&lt;enc:EncryptionData&gt; node. After the encrytion the result XML is in 
-the <parameter>encNode</parameter> node.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   
-</entry></row>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> the URI to data to encrypt.
-</entry></row>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer where to store encryption results.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncryptXmlNode">xmlSecEncryptXmlNode ()</title>
-<programlisting>int         xmlSecEncryptXmlNode            (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> src,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
-<para>
-Encrypts XML data from the <parameter>encNode</parameter> according to the template in the
-&lt;enc:EncryptionData&gt; node. After the encrytion the result XML is in 
-the <parameter>src</parameter> node.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   
-</entry></row>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).
-</entry></row>
-<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
-<entry> the pointer to XML node to encrypt.
-</entry></row>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer where to store encryption results.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecDecrypt">xmlSecDecrypt ()</title>
-<programlisting>int         xmlSecDecrypt                   (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
-<para>
-Decrypts data from the &lt;enc:EncryptionData&gt; node.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the key to use (if NULL then the key specified in &lt;dsig:KeyInfo&gt;
-    will be used).   
-</entry></row>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to encryption template (&lt;enc:EncryptionData&gt; node).
-</entry></row>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer where to store encryption results.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncResultCreate">xmlSecEncResultCreate ()</title>
-<programlisting><link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> xmlSecEncResultCreate    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
-                                             void *context,
-                                             int encrypt,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
-<para>
-Creates new <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
-</entry></row>
-<row><entry align="right"><parameter>encrypt</parameter>&nbsp;:</entry>
-<entry> the encrypt/decrypt flag.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>newly created <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure or NULL 
-if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncResultDestroy">xmlSecEncResultDestroy ()</title>
-<programlisting>void        xmlSecEncResultDestroy          (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result);</programlisting>
-<para>
-Destroys <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure <parameter>result</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncResultDebugDump">xmlSecEncResultDebugDump ()</title>
-<programlisting>void        xmlSecEncResultDebugDump        (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints the <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure <parameter>result</parameter> to file <parameter>output</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry> the pointer to destination FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncResultDebugXmlDump">xmlSecEncResultDebugXmlDump ()</title>
-<programlisting>void        xmlSecEncResultDebugXmlDump     (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
-<para>
-Prints the <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure <parameter>result</parameter> to file <parameter>output</parameter> in XML format.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry> the pointer to destination FILE.
+<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

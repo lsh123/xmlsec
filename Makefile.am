@@ -21,19 +21,23 @@ EXTRA_DIST = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xmlsec.pc
 
-api-docs: create-api-docs format-docs
+docs: api-docs docs-format
+
+docs-clean: api-docs-clean
+
+api-docs: api-docs-create
 	
 
-create-api-docs:
+api-docs-create:
 	@cd docs/api; \
 	make;\
 	echo "Cleaning up result files"; \
 	perl ../../scripts/remove-gtkdoclink.pl `find . -name "*.html" -print`
 
-api-doc-clean:
+api-docs-clean:
 	@cd docs/api;make clean
 
-format-docs:
+docs-format:
 	@(echo "Formatting html documents"; \
 	for i in `find docs -name "*.html" -print`; \
 	do \
@@ -41,12 +45,17 @@ format-docs:
 	    top_folder=`echo $$i | sed 's#/[^/]*$$#/#' | \
 			sed 's#/[^/]*/#/../#g' | sed 's#docs/##'`; \
 	    xsltproc --html --stringparam topfolder "$$top_folder" \
-		     --output $$i scripts/xmlsec.xsl $$i; \
+		     scripts/xmlsec.xsl $$i | \
+	    xmllint --html --encode "ISO-8859-1" - | \
+	    sed 's/<meta [^>]*>//' | \
+	    sed 's/<?xml .*>//' > \
+	    $$i.tmp; \
 	    if [ $$? != 0 ]; \
 	    then \
 		echo "ERROR: processing file $$i"; \
 		exit 1; \
 	    fi; \
+	    mv $$i.tmp $$i; \
 	done)
 
 check-km: $(TEST_APP)

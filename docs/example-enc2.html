@@ -1,235 +1,216 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>XML Security Library: Example - Decryption</title>
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>XML Security Library: Example - Decryption</title></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="index.html">Home</a></li>
 <li><a href="download.html">Download</a></li>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
 <li><a href="faq.html">FAQ</a></li>
 <li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="xmldsig-interop.html">Interop report</a></li>
 <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul><li><a href="c14n.html">XML Canonicalization</a></li>
 <li><a href="bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
 <div align="Center">
-      <h2>XML Encryption <br>
+      <h2>XML Encryption <br/>
                  Example 1. Encrypting</h2>
       </div>
 <p>
-        To decrypt data using XML Security Library the application should:<br>
-</p>
-<ol>
-<li>Create decryption context (depending on the application it could
-    be done once in the beggining of the program).<br>
-</li>
-        <li>Call decryption functions:<br><ul>
-<li><code>xmlSecDecrypt()</code></li>
-          </ul>
-</li>
+        To decrypt data using XML Security Library the application should:<br/></p>
+<ol><li>Create decryption context (depending on the application it could
+    be done once in the beggining of the program).<br/></li>
+        <li>Call decryption functions:<br/><ul><li><code>xmlSecDecrypt()</code></li>
+          </ul></li>
         <li>Verifiy the result and continue decrypted data processing.</li>
-      </ol>
-<p>
+      </ol><p>
     In this example, we will decrypt XML document encrypted in <a href="example-enc1.html">
- previous example.</a> TheÂ <a href="examples/enc2/enc2.c">source code</a>
-  for this example is included into the package. <br>
-</p>
+ previous example.</a> The <a href="examples/enc2/enc2.c">source code</a>
+  for this example is included into the package. <br/></p>
 <h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
 <p>
                  Before using the libraries we need to initialize them. This
-  should    be  done  once in the beginning of your program<br>
-                 Â  Â <br>
-                 Â <code> Â  int rnd_seed = 0;Â Â Â 
-      <br><br>
-                 Â Â Â  /** <br>
-                 Â Â Â Â  * Init OpenSSL:<br>
-          Â  Â  Â * this is a BAD way to init random numbers
-      <br>
-          Â  Â  Â * generator<br>
-                 Â Â Â Â  */Â Â Â  <br>
-                 Â Â Â  while (RAND_status() != 1) {<br>
-                 Â Â Â  Â  Â RAND_seed(&amp;rnd_seed, 
-sizeof(rnd_seed));<br>
-                 Â Â Â  }<br>
-                 Â Â Â  <br>
-                 Â Â Â  /**<br>
-                 Â Â Â Â  * Init libxml<br>
-                 Â Â Â Â  */Â Â Â Â  <br>
-                 Â Â Â  xmlInitParser();<br>
-                 Â Â Â  LIBXML_TEST_VERSION<br>
-         Â </code><br>
-         Â  Â  <code>Â /**<br>
-         Â Â Â Â  * Init xmlsec<br>
-         Â Â Â Â  */<br>
-         Â Â Â  xmlSecInit();Â Â Â  <br></code><br>
-</p>
+  should    be  done  once in the beginning of your program<br/>
+                    <br/>
+                  <code>   int rnd_seed = 0;   
+      <br/><br/>
+                     /** <br/>
+                      * Init OpenSSL:<br/>
+               * this is a BAD way to init random numbers
+      <br/>
+               * generator<br/>
+                      */    <br/>
+                     while (RAND_status() != 1) {<br/>
+                        RAND_seed(&amp;rnd_seed, 
+sizeof(rnd_seed));<br/>
+                     }<br/>
+                     <br/>
+                     /**<br/>
+                      * Init libxml<br/>
+                      */     <br/>
+                     xmlInitParser();<br/>
+                     LIBXML_TEST_VERSION<br/>
+          </code><br/>
+             <code> /**<br/>
+              * Init xmlsec<br/>
+              */<br/>
+             xmlSecInit();    <br/></code><br/></p>
 <h4>Step 1. Loading key and creating the encryption context.</h4>
 <p>
                  Before encrypting or decrypting the document you should
-create    encryption context     object. Â In most case you will need
-only one   context object per application<br><br><code>
-    Â Â Â  Â xmlSecKeysMngrPtr keysMngr = NULL; <br>
-    Â Â Â  xmlSecEncCtxPtr ctx = NULL;<br>
-                 Â Â Â  <br>
-         Â Â Â  /** <br>
-     Â Â Â Â  * Create Keys managers<br>
-     Â Â Â Â  */<br>
-     Â Â Â  keysMngr = xmlSecSimpleKeysMngrCreate();Â Â Â  
-        <br>
-     Â Â Â  if(keysMngr == NULL) {<br>
-     Â Â Â  Â  fprintf(stderr, &quot;Error: failed to create keys
-  manager\n&quot;);<br>
-     Â Â Â  Â  return(-1);Â Â Â  <br>
-     Â Â Â  }<br><br>
-     Â  <br><br>
-     Â Â Â  /**<br>
-     Â Â Â Â  * Create enc context<br>
-     Â Â Â Â  */<br>
-     Â Â Â  ctx = xmlSecEncCtxCreate(keysMngr);<br>
-     Â Â Â  if(ctx == NULL) {<br>
-     Â Â Â  Â  fprintf(stderr, &quot;Error: template failed to create   context\n&quot;);<br>
-     Â Â Â  Â  return(-1)<br>
-     Â Â Â  }<br><br>
-     Â Â Â  /** <br>
-     Â Â Â Â  * load key private rsa key<br>
-     Â Â Â Â  */<br>
-     Â Â Â  if(xmlSecSimpleKeysMngrLoadPem(keysMgr, argv[1],  NULL, NULL, 1) == NULL) {<br>
-     Â Â Â  Â  fprintf(stderr, &quot;Error: failed to load key   from   \&quot;%s\&quot;\n&quot;, argv[1]);<br>
-     Â Â Â  Â  return(-1);<br>
-     Â Â Â  }<br><br></code>
+create    encryption context     object.  In most case you will need
+only one   context object per application<br/><br/><code>
+         xmlSecKeysMngrPtr keysMngr = NULL; <br/>
+        xmlSecEncCtxPtr ctx = NULL;<br/>
+                     <br/>
+             /** <br/>
+          * Create Keys managers<br/>
+          */<br/>
+         keysMngr = xmlSecSimpleKeysMngrCreate();    
+        <br/>
+         if(keysMngr == NULL) {<br/>
+           fprintf(stderr, &quot;Error: failed to create keys
+  manager\n&quot;);<br/>
+           return(-1);    <br/>
+         }<br/><br/>
+       <br/><br/>
+         /**<br/>
+          * Create enc context<br/>
+          */<br/>
+         ctx = xmlSecEncCtxCreate(keysMngr);<br/>
+         if(ctx == NULL) {<br/>
+           fprintf(stderr, &quot;Error: template failed to create   context\n&quot;);<br/>
+           return(-1)<br/>
+         }<br/><br/>
+         /** <br/>
+          * load key private rsa key<br/>
+          */<br/>
+         if(xmlSecSimpleKeysMngrLoadPem(keysMgr, argv[1],  NULL, NULL, 1) == NULL) {<br/>
+           fprintf(stderr, &quot;Error: failed to load key   from   \&quot;%s\&quot;\n&quot;, argv[1]);<br/>
+           return(-1);<br/>
+         }<br/><br/></code>
       </p>
 <h4>Step 2. Load the document, decrypt and print result document to
 stdout.</h4>
 <p>
-    We are ready to decrypt the document!<br>
-    Â <code>Â Â  <br>
-    Â  Â  xmlDocPtr doc = NULL;<br>
-Â Â Â  xmlSecEncResultPtr result = NULL;<br>
-Â Â Â  int ret;<br><br><br>
-Â Â Â  /*<br>
-Â Â Â Â  * build an XML tree from a the file; we need to
-add default<br>
-Â Â Â Â  * attributes and resolve all character and entities
-references<br>
-Â Â Â Â  */<br>
-Â Â Â  xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;<br>
-Â Â Â  xmlSubstituteEntitiesDefault(1);<br><br>
-Â Â Â  doc = xmlParseFile(filename);<br>
-Â Â Â  if (doc == NULL) {<br>
-Â Â  Â  Â  fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;,
-filename);<br>
-Â Â  Â  Â  goto done;Â Â Â  <br>
-Â Â Â  }<br>
-Â Â  Â <br>
-Â Â Â  /*<br>
-Â Â Â Â  * Check the document is of the right kind<br>
-Â Â Â Â  */Â Â  Â <br>
-Â Â Â  if(xmlDocGetRootElement(doc) == NULL) {<br>
-Â Â  Â  Â  fprintf(stderr,&quot;Error: empty document for file
-\&quot;%s\&quot;\n&quot;, filename);<br>
-Â Â  Â  Â  goto done;Â Â Â  <br>
-Â Â Â  }<br>
-Â Â  Â <br>
-Â Â Â  /** <br>
-Â Â Â Â  * Decrypt<br>
-Â Â Â Â  */<br>
-Â Â Â  ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br>
-Â Â Â  if(ret &lt; 0) {<br>
-Â Â  Â  Â  fprintf(stderr, &quot;Error: decryption failed\n&quot;);<br>
-Â Â  Â  Â  goto done;Â Â Â  <br>
-Â Â Â  }<br>
-Â Â  Â <br>
-Â Â Â  /**<br>
-Â Â Â Â  * And print result to stdout<br>
-Â Â Â Â  */Â Â  Â Â Â Â  Â Â Â 
-Â Â Â Â  <br>
-Â Â Â Â  ret = fwrite(xmlBufferContent(result-&gt;buffer),xmlBufferLength(result-&gt;buffer),<br>
-Â Â  Â Â Â Â  Â  Â  Â  Â  Â 
-1, stdout);Â Â Â Â  </code><code></code>
+    We are ready to decrypt the document!<br/>
+     <code>   <br/>
+        xmlDocPtr doc = NULL;<br/>
+    xmlSecEncResultPtr result = NULL;<br/>
+    int ret;<br/><br/><br/>
+    /*<br/>
+     * build an XML tree from a the file; we need to
+add default<br/>
+     * attributes and resolve all character and entities
+references<br/>
+     */<br/>
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;<br/>
+    xmlSubstituteEntitiesDefault(1);<br/><br/>
+    doc = xmlParseFile(filename);<br/>
+    if (doc == NULL) {<br/>
+       fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;,
+filename);<br/>
+       goto done;    <br/>
+    }<br/>
+    <br/>
+    /*<br/>
+     * Check the document is of the right kind<br/>
+     */    <br/>
+    if(xmlDocGetRootElement(doc) == NULL) {<br/>
+       fprintf(stderr,&quot;Error: empty document for file
+\&quot;%s\&quot;\n&quot;, filename);<br/>
+       goto done;    <br/>
+    }<br/>
+    <br/>
+    /** <br/>
+     * Decrypt<br/>
+     */<br/>
+    ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br/>
+    if(ret &lt; 0) {<br/>
+       fprintf(stderr, &quot;Error: decryption failed\n&quot;);<br/>
+       goto done;    <br/>
+    }<br/>
+    <br/>
+    /**<br/>
+     * And print result to stdout<br/>
+     */           
+     <br/>
+     ret = fwrite(xmlBufferContent(result-&gt;buffer),xmlBufferLength(result-&gt;buffer),<br/>
+                 
+1, stdout);     </code><code/>
       </p>
 <h4>Step 3. Cleanup.</h4>
 <p>
                  At the end we need to destroy encryption context, the doc
- and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br><br>
-                Â Â Â  <code>Â /*<br>
-         Â Â Â Â  * Cleanup<br>
-         Â Â Â Â  */Â Â  <br>
-         Â Â Â  if(ctx != NULL) { <br>
-         Â Â  Â  Â  xmlSecEncCtxDestroy(ctx);<br>
-         Â Â Â  }<br>
-         Â Â Â  if(keysMngr != NULL) {<br>
-         Â Â  Â  Â  xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
-         Â Â Â  }<br>
-         Â Â  Â <br>
-         Â  Â  /** <br>
-         Â  Â  Â * Shutdown XML Sec<br>
-         Â  Â  Â */<br>
-         Â Â Â  xmlSecShutdown();<br><br>
-   Â  Â  /**<br>
-   Â  Â  Â * Shutdown libxslt<br>
-   Â  Â  Â */<br>
-         Â Â  Â xsltCleanupGlobals();</code><br><code><br>
-         Â Â Â  /* <br>
-         Â Â Â Â  * Shutdown libxml<br>
-         Â Â Â Â  */<br>
-         Â Â Â  xmlCleanupParser();<br>
-         Â Â  Â <br>
-         Â Â Â  /* <br>
-         Â Â Â Â  * Shutdown OpenSSL<br>
-         Â Â Â Â  */<br>
-         Â Â Â  RAND_cleanup();<br>
-         Â Â Â  ERR_clear_error();</code><code></code><code></code>
+ and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br/><br/>
+                    <code> /*<br/>
+              * Cleanup<br/>
+              */   <br/>
+             if(ctx != NULL) { <br/>
+                xmlSecEncCtxDestroy(ctx);<br/>
+             }<br/>
+             if(keysMngr != NULL) {<br/>
+                xmlSecSimpleKeysMngrDestroy(keysMngr);<br/>
+             }<br/>
+             <br/>
+             /** <br/>
+              * Shutdown XML Sec<br/>
+              */<br/>
+             xmlSecShutdown();<br/><br/>
+       /**<br/>
+        * Shutdown libxslt<br/>
+        */<br/>
+             xsltCleanupGlobals();</code><br/><code><br/>
+             /* <br/>
+              * Shutdown libxml<br/>
+              */<br/>
+             xmlCleanupParser();<br/>
+             <br/>
+             /* <br/>
+              * Shutdown OpenSSL<br/>
+              */<br/>
+             RAND_cleanup();<br/>
+             ERR_clear_error();</code><code/><code/>
       </p>
 <h4>Appendix A. The encrypted document.</h4>
-<blockquote><code>&lt;?xml version=&quot;1.0&quot;?&gt;<br>
-   &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
-   &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#aes128-cbc&quot;/&gt;<br>
-   &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
-   &lt;EncryptedKey xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
-   &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&quot;/&gt;<br>
-   &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
-   &lt;KeyName&gt;test-rsa-key&lt;/KeyName&gt;<br>
-   &lt;/KeyInfo&gt;<br>
-   &lt;CipherData&gt;<br>
-   &lt;CipherValue&gt;<br>
-   ETFcDnUPrXyZpaUNDCbe6r6E+YIWmoXBcppWHgv03H+0jIH+w74YKRJh601KUA4u<br>
-   KDUK/MbglWQ40FvQ4vhOC4X0uGtWizRllOoZJHn9ppzAcIuwURQOIjCNl9GtrcEx<br>
-   14HNIlUoAEXjIbbwSaGCS5u4IdtxzhS2f9P8INh5PkpJjV9EYT73cbX4Cq5e4Yto<br>
-   Puox+NUpfOhSfPhTf+41+3u99Nn6oaxlLokfl//lbSE8gD2Yo48cyXN2HkX4tchF<br>
-   qOFdCb5bYXA/NmLnrdXXm1Fpuf4QoLDXmbfrCXGF+mHSBkVC1C49FL4ynIVGcBF3<br>
-   FibDfsohFvg/ucbDhKHNVQ==<br>
-   &lt;/CipherValue&gt;<br>
-   &lt;/CipherData&gt;<br>
-   &lt;/EncryptedKey&gt;<br>
-   &lt;/KeyInfo&gt;<br>
-   &lt;CipherData&gt;<br>
-   &lt;CipherValue&gt;<br>
-   BwP8RHXhJ8xcFVSONxfkwOxhgZNElAmJbaaAdzAIjbk=<br>
-   &lt;/CipherValue&gt;<br>
-   &lt;/CipherData&gt;<br>
-   &lt;EncryptionProperties&gt;<br>
-   &lt;EncryptionProperty Id=&quot;Classified&quot; Level=&quot;Top secret&quot;/&gt;<br>
-   &lt;/EncryptionProperties&gt;<br>
+<blockquote><code>&lt;?xml version=&quot;1.0&quot;?&gt;<br/>
+   &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br/>
+   &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#aes128-cbc&quot;/&gt;<br/>
+   &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br/>
+   &lt;EncryptedKey xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br/>
+   &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&quot;/&gt;<br/>
+   &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br/>
+   &lt;KeyName&gt;test-rsa-key&lt;/KeyName&gt;<br/>
+   &lt;/KeyInfo&gt;<br/>
+   &lt;CipherData&gt;<br/>
+   &lt;CipherValue&gt;<br/>
+   ETFcDnUPrXyZpaUNDCbe6r6E+YIWmoXBcppWHgv03H+0jIH+w74YKRJh601KUA4u<br/>
+   KDUK/MbglWQ40FvQ4vhOC4X0uGtWizRllOoZJHn9ppzAcIuwURQOIjCNl9GtrcEx<br/>
+   14HNIlUoAEXjIbbwSaGCS5u4IdtxzhS2f9P8INh5PkpJjV9EYT73cbX4Cq5e4Yto<br/>
+   Puox+NUpfOhSfPhTf+41+3u99Nn6oaxlLokfl//lbSE8gD2Yo48cyXN2HkX4tchF<br/>
+   qOFdCb5bYXA/NmLnrdXXm1Fpuf4QoLDXmbfrCXGF+mHSBkVC1C49FL4ynIVGcBF3<br/>
+   FibDfsohFvg/ucbDhKHNVQ==<br/>
+   &lt;/CipherValue&gt;<br/>
+   &lt;/CipherData&gt;<br/>
+   &lt;/EncryptedKey&gt;<br/>
+   &lt;/KeyInfo&gt;<br/>
+   &lt;CipherData&gt;<br/>
+   &lt;CipherValue&gt;<br/>
+   BwP8RHXhJ8xcFVSONxfkwOxhgZNElAmJbaaAdzAIjbk=<br/>
+   &lt;/CipherValue&gt;<br/>
+   &lt;/CipherData&gt;<br/>
+   &lt;EncryptionProperties&gt;<br/>
+   &lt;EncryptionProperty Id=&quot;Classified&quot; Level=&quot;Top secret&quot;/&gt;<br/>
+   &lt;/EncryptionProperties&gt;<br/>
    &lt;/EncryptedData&gt;
         </code></blockquote>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

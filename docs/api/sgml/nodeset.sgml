@@ -157,6 +157,7 @@ The simple nodes sets operations.</para>
 <programlisting>struct xmlSecNodeSet {
     xmlNodeSetPtr	nodes;
     xmlDocPtr		doc;
+    int			destroyDoc;
     xmlSecNodeSetType	type;
     xmlSecNodeSetOp	op;
     xmlSecNodeSetPtr	next;
@@ -181,6 +182,11 @@ The enchanced nodes set.</para>
 <row>
 <entry><link linkend="xmlDocPtr">xmlDocPtr</link> <structfield>doc</structfield></entry>
 <entry> the parent XML document.
+</entry>
+</row>
+<row>
+<entry>int <structfield>destroyDoc</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>

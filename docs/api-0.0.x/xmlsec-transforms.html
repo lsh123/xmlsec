@@ -1,54 +1,34 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>transforms.h</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="keysmngr.h" href="xmlsec-keysmngr.html">
-<link rel="NEXT" title="version.h" href="xmlsec-version.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>transforms.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="keysmngr.h" href="xmlsec-keysmngr.html"/><link rel="NEXT" title="version.h" href="xmlsec-version.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+</tr></table></div>
 <h1>
-<a name="XMLSEC-TRANSFORMS"></a>transforms.h</h1>
+<a name="XMLSEC-TRANSFORMS"/>transforms.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN3613"></a><h2>Name</h2>transforms.hÂ --Â The transforms functions.</div>
+<a name="AEN3613"/><h2>Name</h2>transforms.h -- The transforms functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN3616"></a><h2>Synopsis</h2>
+<a name="AEN3616"/><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a>;
@@ -122,818 +102,575 @@ int         <a href="xmlsec-transforms.html#XMLSECRSAKEYGENERATE">xmlSecRsaKeyGe
                                              <strong>RSA</strong> *rsa);
 #define     <a href="xmlsec-transforms.html#XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</a>
 void        <a href="xmlsec-transforms.html#XMLSECBASE64ENCODESETLINESIZE">xmlSecBase64EncodeSetLineSize</a>   (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>size_t</strong> lineSize);</pre></td></tr></table>
+                                             <strong>size_t</strong> lineSize);</pre></td></tr></table></div>
+<div class="REFSECT1">
+<a name="AEN3700"/><h2>Description</h2>
+<p/>
 </div>
 <div class="REFSECT1">
-<a name="AEN3700"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN3703"></a><h2>Details</h2>
+<a name="AEN3703"/><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN3705"></a><h3>
-<a name="XMLSECTRANSFORMSTATUS"></a>enum xmlSecTransformStatus</h3>
+<a name="AEN3705"/><h3>
+<a name="XMLSECTRANSFORMSTATUS"/>enum xmlSecTransformStatus</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
     xmlSecTransformStatusNone = 0,
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
-} xmlSecTransformStatus;</pre></td></tr></table>
-<p>The transform execution result.</p>
-<p></p>
+} xmlSecTransformStatus;</pre></td></tr></table><p>The transform execution result.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3711"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusNone</tt></td>
+<a name="AEN3711"/><p/>
+<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusNone</tt></td>
 <td width="80%" align="LEFT" valign="TOP"> the status unknown.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusOk</tt></td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusOk</tt></td>
 <td width="80%" align="LEFT" valign="TOP"> success.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusFail</tt></td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformStatusFail</tt></td>
 <td width="80%" align="LEFT" valign="TOP"> an error occur.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3728"></a><h3>
-<a name="XMLSECTRANSFORMID"></a>xmlSecTransformId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;</pre></td></tr></table>
-<p>The transform id structure.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3728"/><h3>
+<a name="XMLSECTRANSFORMID"/>xmlSecTransformId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;</pre></td></tr></table><p>The transform id structure.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3734"></a><h3>
-<a name="XMLSECTRANSFORMUNKNOWN"></a>xmlSecTransformUnknown</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUnknown			NULL</pre></td></tr></table>
-<p>The &quot;unknown&quot; transform id (NULL).</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3734"/><h3>
+<a name="XMLSECTRANSFORMUNKNOWN"/>xmlSecTransformUnknown</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformUnknown			NULL</pre></td></tr></table><p>The &quot;unknown&quot; transform id (NULL).</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3740"></a><h3>
-<a name="XMLSECENCAES128CBC"></a>xmlSecEncAes128Cbc</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncAes128Cbc;</pre></td></tr></table>
-<p>The AES-CBC with 128 bits key encryption transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3740"/><h3>
+<a name="XMLSECENCAES128CBC"/>xmlSecEncAes128Cbc</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncAes128Cbc;</pre></td></tr></table><p>The AES-CBC with 128 bits key encryption transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3746"></a><h3>
-<a name="XMLSECENCAES192CBC"></a>xmlSecEncAes192Cbc</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncAes192Cbc;</pre></td></tr></table>
-<p>The AES-CBC with 192 bits key encryption transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3746"/><h3>
+<a name="XMLSECENCAES192CBC"/>xmlSecEncAes192Cbc</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncAes192Cbc;</pre></td></tr></table><p>The AES-CBC with 192 bits key encryption transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3752"></a><h3>
-<a name="XMLSECENCAES256CBC"></a>xmlSecEncAes256Cbc</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncAes256Cbc;</pre></td></tr></table>
-<p>The AES-CBC with 256 bits key encryption transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3752"/><h3>
+<a name="XMLSECENCAES256CBC"/>xmlSecEncAes256Cbc</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncAes256Cbc;</pre></td></tr></table><p>The AES-CBC with 256 bits key encryption transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3758"></a><h3>
-<a name="XMLSECKWAES128"></a>xmlSecKWAes128</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWAes128;</pre></td></tr></table>
-<p>The AES with 128 bits key wrap transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3758"/><h3>
+<a name="XMLSECKWAES128"/>xmlSecKWAes128</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWAes128;</pre></td></tr></table><p>The AES with 128 bits key wrap transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3764"></a><h3>
-<a name="XMLSECKWAES192"></a>xmlSecKWAes192</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWAes192;</pre></td></tr></table>
-<p>The AES with 192 bits key wrap transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3764"/><h3>
+<a name="XMLSECKWAES192"/>xmlSecKWAes192</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWAes192;</pre></td></tr></table><p>The AES with 192 bits key wrap transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3770"></a><h3>
-<a name="XMLSECKWAES256"></a>xmlSecKWAes256</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWAes256;</pre></td></tr></table>
-<p>The AES with 256 bits key wrap transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3770"/><h3>
+<a name="XMLSECKWAES256"/>xmlSecKWAes256</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWAes256;</pre></td></tr></table><p>The AES with 256 bits key wrap transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3776"></a><h3>
-<a name="XMLSECENCBASE64ENCODE"></a>xmlSecEncBase64Encode</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncBase64Encode;</pre></td></tr></table>
-<p>The base64 encode transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3776"/><h3>
+<a name="XMLSECENCBASE64ENCODE"/>xmlSecEncBase64Encode</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncBase64Encode;</pre></td></tr></table><p>The base64 encode transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3782"></a><h3>
-<a name="XMLSECENCBASE64DECODE"></a>xmlSecEncBase64Decode</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncBase64Decode;</pre></td></tr></table>
-<p>The base64 decode transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3782"/><h3>
+<a name="XMLSECENCBASE64DECODE"/>xmlSecEncBase64Decode</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncBase64Decode;</pre></td></tr></table><p>The base64 decode transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3788"></a><h3>
-<a name="XMLSECC14NINCLUSIVE"></a>xmlSecC14NInclusive</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NInclusive;</pre></td></tr></table>
-<p>The regular (inclusive) C14N without comments transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3788"/><h3>
+<a name="XMLSECC14NINCLUSIVE"/>xmlSecC14NInclusive</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NInclusive;</pre></td></tr></table><p>The regular (inclusive) C14N without comments transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3794"></a><h3>
-<a name="XMLSECC14NINCLUSIVEWITHCOMMENTS"></a>xmlSecC14NInclusiveWithComments</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NInclusiveWithComments;</pre></td></tr></table>
-<p>The regular (inclusive) C14N with comments transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3794"/><h3>
+<a name="XMLSECC14NINCLUSIVEWITHCOMMENTS"/>xmlSecC14NInclusiveWithComments</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NInclusiveWithComments;</pre></td></tr></table><p>The regular (inclusive) C14N with comments transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3800"></a><h3>
-<a name="XMLSECC14NEXCLUSIVE"></a>xmlSecC14NExclusive</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NExclusive;</pre></td></tr></table>
-<p>The exclusive C14N without comments transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3800"/><h3>
+<a name="XMLSECC14NEXCLUSIVE"/>xmlSecC14NExclusive</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NExclusive;</pre></td></tr></table><p>The exclusive C14N without comments transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3806"></a><h3>
-<a name="XMLSECC14NEXCLUSIVEWITHCOMMENTS"></a>xmlSecC14NExclusiveWithComments</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NExclusiveWithComments;</pre></td></tr></table>
-<p>The exclusive C14N with comments transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3806"/><h3>
+<a name="XMLSECC14NEXCLUSIVEWITHCOMMENTS"/>xmlSecC14NExclusiveWithComments</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecC14NExclusiveWithComments;</pre></td></tr></table><p>The exclusive C14N with comments transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3812"></a><h3>
-<a name="XMLSECENCDES3CBC"></a>xmlSecEncDes3Cbc</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncDes3Cbc;</pre></td></tr></table>
-<p>The DES3-CBC encryption transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3812"/><h3>
+<a name="XMLSECENCDES3CBC"/>xmlSecEncDes3Cbc</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncDes3Cbc;</pre></td></tr></table><p>The DES3-CBC encryption transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3818"></a><h3>
-<a name="XMLSECKWDES3CBC"></a>xmlSecKWDes3Cbc</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWDes3Cbc;</pre></td></tr></table>
-<p>The DES3-CBC key wrap transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3818"/><h3>
+<a name="XMLSECKWDES3CBC"/>xmlSecKWDes3Cbc</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecKWDes3Cbc;</pre></td></tr></table><p>The DES3-CBC key wrap transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3824"></a><h3>
-<a name="XMLSECSIGNDSASHA1"></a>xmlSecSignDsaSha1</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecSignDsaSha1;</pre></td></tr></table>
-<p>The DSA with SHA1 signature transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3824"/><h3>
+<a name="XMLSECSIGNDSASHA1"/>xmlSecSignDsaSha1</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecSignDsaSha1;</pre></td></tr></table><p>The DSA with SHA1 signature transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3830"></a><h3>
-<a name="XMLSECTRANSFORMENVELOPED"></a>xmlSecTransformEnveloped</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformEnveloped;</pre></td></tr></table>
-<p>The &quot;enveloped&quot; transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3830"/><h3>
+<a name="XMLSECTRANSFORMENVELOPED"/>xmlSecTransformEnveloped</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformEnveloped;</pre></td></tr></table><p>The &quot;enveloped&quot; transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3836"></a><h3>
-<a name="XMLSECMACHMACSHA1"></a>xmlSecMacHmacSha1</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecMacHmacSha1;</pre></td></tr></table>
-<p>The HMAC with SHA1 signature transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3836"/><h3>
+<a name="XMLSECMACHMACSHA1"/>xmlSecMacHmacSha1</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecMacHmacSha1;</pre></td></tr></table><p>The HMAC with SHA1 signature transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3842"></a><h3>
-<a name="XMLSECMACHMACRIPEMD160"></a>xmlSecMacHmacRipeMd160</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecMacHmacRipeMd160;</pre></td></tr></table>
-<p>The HMAC with RipeMD160 signature transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3842"/><h3>
+<a name="XMLSECMACHMACRIPEMD160"/>xmlSecMacHmacRipeMd160</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecMacHmacRipeMd160;</pre></td></tr></table><p>The HMAC with RipeMD160 signature transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3848"></a><h3>
-<a name="XMLSECMACHMACMD5"></a>xmlSecMacHmacMd5</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecMacHmacMd5;</pre></td></tr></table>
-<p>The HMAC with MD5 signature transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3848"/><h3>
+<a name="XMLSECMACHMACMD5"/>xmlSecMacHmacMd5</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecMacHmacMd5;</pre></td></tr></table><p>The HMAC with MD5 signature transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3854"></a><h3>
-<a name="XMLSECDIGESTRIPEMD160"></a>xmlSecDigestRipemd160</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecDigestRipemd160;</pre></td></tr></table>
-<p>The RIPEMD160 digest transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3854"/><h3>
+<a name="XMLSECDIGESTRIPEMD160"/>xmlSecDigestRipemd160</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecDigestRipemd160;</pre></td></tr></table><p>The RIPEMD160 digest transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3860"></a><h3>
-<a name="XMLSECSIGNRSASHA1"></a>xmlSecSignRsaSha1</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecSignRsaSha1;</pre></td></tr></table>
-<p>The RSA with SHA1 signature transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3860"/><h3>
+<a name="XMLSECSIGNRSASHA1"/>xmlSecSignRsaSha1</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecSignRsaSha1;</pre></td></tr></table><p>The RSA with SHA1 signature transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3866"></a><h3>
-<a name="XMLSECENCRSAPKCS1"></a>xmlSecEncRsaPkcs1</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncRsaPkcs1;</pre></td></tr></table>
-<p>The RSA-PKCS1 key transport transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3866"/><h3>
+<a name="XMLSECENCRSAPKCS1"/>xmlSecEncRsaPkcs1</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncRsaPkcs1;</pre></td></tr></table><p>The RSA-PKCS1 key transport transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3872"></a><h3>
-<a name="XMLSECENCRSAOAEP"></a>xmlSecEncRsaOaep</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncRsaOaep;</pre></td></tr></table>
-<p>The RSA-OAEP key transport transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3872"/><h3>
+<a name="XMLSECENCRSAOAEP"/>xmlSecEncRsaOaep</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecEncRsaOaep;</pre></td></tr></table><p>The RSA-OAEP key transport transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3878"></a><h3>
-<a name="XMLSECDIGESTSHA1"></a>xmlSecDigestSha1</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecDigestSha1;</pre></td></tr></table>
-<p>The SHA1 digest transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3878"/><h3>
+<a name="XMLSECDIGESTSHA1"/>xmlSecDigestSha1</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecDigestSha1;</pre></td></tr></table><p>The SHA1 digest transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3884"></a><h3>
-<a name="XMLSECTRANSFORMXPATH"></a>xmlSecTransformXPath</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXPath;</pre></td></tr></table>
-<p>The XPath transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3884"/><h3>
+<a name="XMLSECTRANSFORMXPATH"/>xmlSecTransformXPath</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXPath;</pre></td></tr></table><p>The XPath transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3890"></a><h3>
-<a name="XMLSECTRANSFORMXPATH2"></a>xmlSecTransformXPath2</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXPath2;</pre></td></tr></table>
-<p>The XPath2 transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3890"/><h3>
+<a name="XMLSECTRANSFORMXPATH2"/>xmlSecTransformXPath2</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXPath2;</pre></td></tr></table><p>The XPath2 transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3896"></a><h3>
-<a name="XMLSECTRANSFORMXPOINTER"></a>xmlSecTransformXPointer</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXPointer;</pre></td></tr></table>
-<p>The XPointer transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3896"/><h3>
+<a name="XMLSECTRANSFORMXPOINTER"/>xmlSecTransformXPointer</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXPointer;</pre></td></tr></table><p>The XPointer transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3902"></a><h3>
-<a name="XMLSECTRANSFORMXSLT"></a>xmlSecTransformXslt</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXslt;</pre></td></tr></table>
-<p>The XSLT transform id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN3902"/><h3>
+<a name="XMLSECTRANSFORMXSLT"/>xmlSecTransformXslt</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId 		xmlSecTransformXslt;</pre></td></tr></table><p>The XSLT transform id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3908"></a><h3>
-<a name="XMLSECC14NEXCLADDINCLNAMESPACES"></a>xmlSecC14NExclAddInclNamespaces ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3908"/><h3>
+<a name="XMLSECC14NEXCLADDINCLNAMESPACES"/>xmlSecC14NExclAddInclNamespaces ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecC14NExclAddInclNamespaces (<strong>xmlNodePtr</strong> transformNode,
-                                             const <strong>xmlChar</strong> *prefixList);</pre></td></tr></table>
-<p>Adds &quot;inclusive&quot; namespaces to the ExcC14N transform node <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+                                             const <strong>xmlChar</strong> *prefixList);</pre></td></tr></table><p>Adds &quot;inclusive&quot; namespaces to the ExcC14N transform node <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3917"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN3917"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>prefixList</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>prefixList</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the white space delimited  list of namespace prefixes, 
 	where &quot;<strong>default</strong>&quot; indicates the default namespace</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 if success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3935"></a><h3>
-<a name="XMLSECHMACADDOUTPUTLENGTH"></a>xmlSecHmacAddOutputLength ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3935"/><h3>
+<a name="XMLSECHMACADDOUTPUTLENGTH"/>xmlSecHmacAddOutputLength ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecHmacAddOutputLength       (<strong>xmlNodePtr</strong> transformNode,
-                                             <strong>size_t</strong> bitsLen);</pre></td></tr></table>
-<p>Creates &lt;dsig:HMACOutputLength&gt;child for the HMAC transform 
+                                             <strong>size_t</strong> bitsLen);</pre></td></tr></table><p>Creates &lt;dsig:HMACOutputLength&gt;child for the HMAC transform 
 node <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3944"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN3944"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:Transform&gt; node</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>bitsLen</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>bitsLen</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the required length in bits</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success and a negatie value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3961"></a><h3>
-<a name="XMLSECENCRSAOAEPADDPARAM"></a>xmlSecEncRsaOaepAddParam ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3961"/><h3>
+<a name="XMLSECENCRSAOAEPADDPARAM"/>xmlSecEncRsaOaepAddParam ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncRsaOaepAddParam        (<strong>xmlNodePtr</strong> transformNode,
                                              unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Creates &lt;enc:OAEPParam&gt; child node in the <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Creates &lt;enc:OAEPParam&gt; child node in the <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN3970"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN3970"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the OAEP param buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the OAEP param buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN3991"></a><h3>
-<a name="XMLSECTRANSFORMXPATHADD"></a>xmlSecTransformXPathAdd ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN3991"/><h3>
+<a name="XMLSECTRANSFORMXPATHADD"/>xmlSecTransformXPathAdd ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformXPathAdd         (<strong>xmlNodePtr</strong> transformNode,
                                              const <strong>xmlChar</strong> *expression,
-                                             const <strong>xmlChar</strong> **namespaces);</pre></td></tr></table>
-<p>Writes XPath transform infromation to the &lt;dsig:Transform&gt; node 
+                                             const <strong>xmlChar</strong> **namespaces);</pre></td></tr></table><p>Writes XPath transform infromation to the &lt;dsig:Transform&gt; node 
 <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4001"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN4001"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>expression</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>expression</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the XPath expression.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>namespaces</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>namespaces</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> NULL terminated list of namespace prefix/href pairs.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 for success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4022"></a><h3>
-<a name="XMLSECXPATH2TRANSFORMTYPE"></a>enum xmlSecXPath2TransformType</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4022"/><h3>
+<a name="XMLSECXPATH2TRANSFORMTYPE"/>enum xmlSecXPath2TransformType</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlSecXPathTransformIntersect = 0,
     xmlSecXPathTransformSubtract,
     xmlSecXPathTransformUnion
-} xmlSecXPath2TransformType;</pre></td></tr></table>
-<p>The XPath2 transform types.</p>
-<p></p>
+} xmlSecXPath2TransformType;</pre></td></tr></table><p>The XPath2 transform types.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4028"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecXPathTransformIntersect</tt></td>
+<a name="AEN4028"/><p/>
+<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecXPathTransformIntersect</tt></td>
 <td width="80%" align="LEFT" valign="TOP"> intersect.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecXPathTransformSubtract</tt></td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecXPathTransformSubtract</tt></td>
 <td width="80%" align="LEFT" valign="TOP"> subtract.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecXPathTransformUnion</tt></td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecXPathTransformUnion</tt></td>
 <td width="80%" align="LEFT" valign="TOP">  union.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4045"></a><h3>
-<a name="XMLSECTRANSFORMXPATH2ADD"></a>xmlSecTransformXPath2Add ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4045"/><h3>
+<a name="XMLSECTRANSFORMXPATH2ADD"/>xmlSecTransformXPath2Add ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformXPath2Add        (<strong>xmlNodePtr</strong> transformNode,
                                              <a href="xmlsec-transforms.html#XMLSECXPATH2TRANSFORMTYPE">xmlSecXPath2TransformType</a> type,
                                              const <strong>xmlChar</strong> *expression,
-                                             const <strong>xmlChar</strong> **namespaces);</pre></td></tr></table>
-<p>Writes XPath2 transform infromation to the &lt;dsig:Transform&gt; node 
+                                             const <strong>xmlChar</strong> **namespaces);</pre></td></tr></table><p>Writes XPath2 transform infromation to the &lt;dsig:Transform&gt; node 
 <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4056"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN4056"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>type</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> XPath2 transform type (&quot;union&quot;, &quot;intersect&quot; or &quot;subtract&quot;).</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>expression</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>expression</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the XPath expression.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>namespaces</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>namespaces</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> NULL terminated list of namespace prefix/href pairs.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 for success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4081"></a><h3>
-<a name="XMLSECTRANSFORMXPOINTERADD"></a>xmlSecTransformXPointerAdd ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4081"/><h3>
+<a name="XMLSECTRANSFORMXPOINTERADD"/>xmlSecTransformXPointerAdd ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformXPointerAdd      (<strong>xmlNodePtr</strong> transformNode,
                                              const <strong>xmlChar</strong> *expression,
-                                             const <strong>xmlChar</strong> **namespaces);</pre></td></tr></table>
-<p>Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node 
+                                             const <strong>xmlChar</strong> **namespaces);</pre></td></tr></table><p>Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node 
 <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4091"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN4091"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>expression</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>expression</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the XPath expression.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>namespaces</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>namespaces</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> NULL terminated list of namespace prefix/href pairs.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 for success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4112"></a><h3>
-<a name="XMLSECTRANSFORMXSLTADD"></a>xmlSecTransformXsltAdd ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4112"/><h3>
+<a name="XMLSECTRANSFORMXSLTADD"/>xmlSecTransformXsltAdd ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformXsltAdd          (<strong>xmlNodePtr</strong> transformNode,
-                                             const <strong>xmlChar</strong> *xslt);</pre></td></tr></table>
-<p>Writes the XSLT transform expression to the <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
-<p></p>
+                                             const <strong>xmlChar</strong> *xslt);</pre></td></tr></table><p>Writes the XSLT transform expression to the <tt class="PARAMETER"><i>transformNode</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4121"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformNode</i></tt>Â :</td>
+<a name="AEN4121"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:Transform&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>xslt</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>xslt</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the XSLT transform exspression.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4138"></a><h3>
-<a name="XMLSECAESKEY"></a>xmlSecAesKey</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 	 		xmlSecAesKey;</pre></td></tr></table>
-<p>The AES key id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4138"/><h3>
+<a name="XMLSECAESKEY"/>xmlSecAesKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 	 		xmlSecAesKey;</pre></td></tr></table><p>The AES key id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4144"></a><h3>
-<a name="XMLSECDESKEY"></a>xmlSecDesKey</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecDesKey;</pre></td></tr></table>
-<p>The DES key id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4144"/><h3>
+<a name="XMLSECDESKEY"/>xmlSecDesKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecDesKey;</pre></td></tr></table><p>The DES key id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4150"></a><h3>
-<a name="XMLSECDSAKEY"></a>xmlSecDsaKey</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecDsaKey;</pre></td></tr></table>
-<p>The DSA signature key id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4150"/><h3>
+<a name="XMLSECDSAKEY"/>xmlSecDsaKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecDsaKey;</pre></td></tr></table><p>The DSA signature key id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4156"></a><h3>
-<a name="XMLSECHMACKEY"></a>xmlSecHmacKey</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecHmacKey;</pre></td></tr></table>
-<p>The HMAC key id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4156"/><h3>
+<a name="XMLSECHMACKEY"/>xmlSecHmacKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecHmacKey;</pre></td></tr></table><p>The HMAC key id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4162"></a><h3>
-<a name="XMLSECRSAKEY"></a>xmlSecRsaKey</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecRsaKey;</pre></td></tr></table>
-<p>The RSA key id.</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4162"/><h3>
+<a name="XMLSECRSAKEY"/>xmlSecRsaKey</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecKeyId 			xmlSecRsaKey;</pre></td></tr></table><p>The RSA key id.</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4168"></a><h3>
-<a name="XMLSECAESKEYGENERATE"></a>xmlSecAesKeyGenerate ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4168"/><h3>
+<a name="XMLSECAESKEYGENERATE"/>xmlSecAesKeyGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecAesKeyGenerate            (<strong>xmlSecKeyPtr</strong> key,
                                              unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Sets the AES key to the given data or generates a new random key.</p>
-<p></p>
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Sets the AES key to the given data or generates a new random key.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4176"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+<a name="AEN4176"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to AES key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to AES key data or NULL if new key should be generated.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the AES key data size or 0 if new key should be generated.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 for success or a negative value otherwise.  </td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4197"></a><h3>
-<a name="XMLSECDESKEYGENERATE"></a>xmlSecDesKeyGenerate ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4197"/><h3>
+<a name="XMLSECDESKEYGENERATE"/>xmlSecDesKeyGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDesKeyGenerate            (<strong>xmlSecKeyPtr</strong> key,
                                              unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Reads the DES key from the input buffer or generates a new one.</p>
-<p></p>
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Reads the DES key from the input buffer or generates a new one.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4205"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+<a name="AEN4205"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to DES key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input key data (or NULL if new key should be generated).</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input biffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4226"></a><h3>
-<a name="XMLSECDSAKEYGENERATE"></a>xmlSecDsaKeyGenerate ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4226"/><h3>
+<a name="XMLSECDSAKEYGENERATE"/>xmlSecDsaKeyGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDsaKeyGenerate            (<strong>xmlSecKeyPtr</strong> key,
-                                             <strong>DSA</strong> *dsa);</pre></td></tr></table>
-<p>Sets the DSA key to geven value or generates a new one if <tt class="PARAMETER"><i>dsa</i></tt> is NULL.</p>
-<p></p>
+                                             <strong>DSA</strong> *dsa);</pre></td></tr></table><p>Sets the DSA key to geven value or generates a new one if <tt class="PARAMETER"><i>dsa</i></tt> is NULL.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4235"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+<a name="AEN4235"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a DSA key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dsa</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dsa</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to OpenSSL DSA key structure or NULL.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4252"></a><h3>
-<a name="XMLSECHMACKEYGENERATE"></a>xmlSecHmacKeyGenerate ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4252"/><h3>
+<a name="XMLSECHMACKEYGENERATE"/>xmlSecHmacKeyGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecHmacKeyGenerate           (<strong>xmlSecKeyPtr</strong> key,
                                              unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Sets the HMAC key <tt class="PARAMETER"><i>key</i></tt> to data in <tt class="PARAMETER"><i>buf</i></tt> or generates a new HMAC key 
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Sets the HMAC key <tt class="PARAMETER"><i>key</i></tt> to data in <tt class="PARAMETER"><i>buf</i></tt> or generates a new HMAC key 
 if <tt class="PARAMETER"><i>buf</i></tt> is NULL.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4263"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+<a name="AEN4263"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to HMAC key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the HMAC key binary data or NULL.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the binary data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4284"></a><h3>
-<a name="XMLSECRSAKEYGENERATE"></a>xmlSecRsaKeyGenerate ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4284"/><h3>
+<a name="XMLSECRSAKEYGENERATE"/>xmlSecRsaKeyGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecRsaKeyGenerate            (<strong>xmlSecKeyPtr</strong> key,
-                                             <strong>RSA</strong> *rsa);</pre></td></tr></table>
-<p>Sets the <tt class="PARAMETER"><i>key</i></tt> to the value of <tt class="PARAMETER"><i>rsa</i></tt> or generates a new RSA key
+                                             <strong>RSA</strong> *rsa);</pre></td></tr></table><p>Sets the <tt class="PARAMETER"><i>key</i></tt> to the value of <tt class="PARAMETER"><i>rsa</i></tt> or generates a new RSA key
 if <tt class="PARAMETER"><i>rsa</i></tt> is NULL.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4295"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt>Â :</td>
+<a name="AEN4295"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to RSA key.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>rsa</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>rsa</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to OpenSSL RSA key or NULL.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4312"></a><h3>
-<a name="XMLSEC-BASE64-LINESIZE-CAPS"></a>XMLSEC_BASE64_LINESIZE</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_BASE64_LINESIZE			64</pre></td></tr></table>
-<p>The default max line size for base64 encoding</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN4312"/><h3>
+<a name="XMLSEC-BASE64-LINESIZE-CAPS"/>XMLSEC_BASE64_LINESIZE</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_BASE64_LINESIZE			64</pre></td></tr></table><p>The default max line size for base64 encoding</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN4318"></a><h3>
-<a name="XMLSECBASE64ENCODESETLINESIZE"></a>xmlSecBase64EncodeSetLineSize ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN4318"/><h3>
+<a name="XMLSECBASE64ENCODESETLINESIZE"/>xmlSecBase64EncodeSetLineSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBase64EncodeSetLineSize   (<strong>xmlSecTransformPtr</strong> transform,
-                                             <strong>size_t</strong> lineSize);</pre></td></tr></table>
-<p>Sets the max line size to <tt class="PARAMETER"><i>lineSize</i></tt>.</p>
-<p></p>
+                                             <strong>size_t</strong> lineSize);</pre></td></tr></table><p>Sets the max line size to <tt class="PARAMETER"><i>lineSize</i></tt>.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN4327"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN4327"/><p/>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to BASE64 encode transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>lineSize</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>lineSize</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the new max line size.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keysmngr.h</b></font></td>
+</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keysmngr.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>version.h</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+</tr></table></div>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

@@ -308,9 +308,11 @@ templates
 
 </para>
 
-@transformNode: 
+@node: 
 @bitsLen: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@transformNode: 
 
 
 <!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
@@ -318,10 +320,12 @@ templates
 
 </para>
 
-@transformNode: 
+@node: 
 @buf: 
 @size: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@transformNode: 
 
 
 <!-- ##### FUNCTION xmlSecXsltAddStylesheet ##### -->

@@ -14,32 +14,3 @@ The usefull debugging functions.
 
 </para>
 
-<!-- ##### FUNCTION xmlSecTimerInit ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTimerStart ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTimerEnd ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTimerGet ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-

@@ -13,147 +13,17 @@ The internal transform's functions.
 
 </para>
 
-<!-- ##### ENUM xmlSecTransformResult ##### -->
-<para>
-
-</para>
-
-@xmlSecTransformResultBinary: 
-@xmlSecTransformResultXml: 
-
-<!-- ##### STRUCT xmlSecTransformState ##### -->
-<para>
-
-</para>
-
-@initDoc: 
-@initNodeSet: 
-@initUri: 
-@curDoc: 
-@curNodeSet: 
-@curBuf: 
-@curFirstBinTransform: 
-@curLastBinTransform: 
-@curC14NTransform: 
-
-<!-- ##### FUNCTION xmlSecTransformStateCreate ##### -->
-<para>
-
-</para>
-
-@doc: 
-@nodeSet: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformStateDestroy ##### -->
-<para>
-
-</para>
-
-@state: 
-
-
-<!-- ##### FUNCTION xmlSecTransformStateUpdate ##### -->
-<para>
-
-</para>
-
-@state: 
-@transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformStateFinal ##### -->
-<para>
-
-</para>
-
-@state: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformStateFinalToNode ##### -->
-<para>
-
-</para>
-
-@state: 
-@node: 
-@addBase64: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformStateFinalVerifyNode ##### -->
-<para>
-
-</para>
-
-@state: 
-@transform: 
-@node: 
-@transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformRegister ##### -->
-<para>
-
-</para>
-
-@keyId: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformsInit ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformsNodeRead ##### -->
-<para>
-
-</para>
-
-@state: 
-@transformsNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformFind ##### -->
-<para>
-
-</para>
-
-@href: 
-@usage: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecTransformNodeRead ##### -->
 <para>
 
 </para>
 
-@transformNode: 
+@node: 
 @usage: 
-@dontDestroy: 
+@transformCtx: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformNodeWrite ##### -->
-<para>
-
-</para>
-
+<!-- # Unused Parameters # -->
 @transformNode: 
-@id: 
-@Returns: 
+@dontDestroy: 
 
 

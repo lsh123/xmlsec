@@ -57,6 +57,7 @@ The simple keys manager implementation.
 
 @store: 
 @uri: 
+@keysMngr: 
 @Returns: 
 
 
@@ -176,10 +177,6 @@ The simple keys manager implementation.
 @keysStore: 
 @storesList: 
 @getKey: 
-@allowedOrigins: 
-@maxRetrievalsLevel: 
-@maxEncKeysLevel: 
-@failIfCertNotFound: 
 
 <!-- ##### FUNCTION xmlSecKeysMngrGetKey ##### -->
 <para>

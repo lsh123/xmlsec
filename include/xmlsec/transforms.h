@@ -587,7 +587,6 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformIdListFindByName	(xmlSecPtrListPt
  */ 
 #define xmlSecTransformBase64Id \
 	xmlSecTransformBase64GetKlass()
-#define XMLSEC_BASE64_LINESIZE				64
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
 XMLSEC_EXPORT void 		xmlSecTransformBase64SetLineSize	(xmlSecTransformPtr transform,
 									 size_t lineSize);

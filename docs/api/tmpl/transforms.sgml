@@ -21,19 +21,6 @@ The transforms functions.
 
 
 
-<!-- ##### MACRO XMLSEC_TRANSFORM_BUFFER_SIZE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### TYPEDEF xmlSecTransformId ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### ENUM xmlSecTransformStatus ##### -->
 <para>
 
@@ -44,14 +31,6 @@ The transforms functions.
 @xmlSecTransformStatusFinished: 
 @xmlSecTransformStatusOk: 
 @xmlSecTransformStatusFail: 
-
-<!-- ##### MACRO xmlSecTransformStatusIsDone ##### -->
-<para>
-
-</para>
-
-@status: 
-
 
 <!-- ##### ENUM xmlSecTransformMode ##### -->
 <para>
@@ -94,7 +73,19 @@ The transforms functions.
 
 </para>
 
-@something: 
+@userData: 
+@flags: 
+@flags2: 
+@enabledUris: 
+@enabledTransforms: 
+@result: 
+@status: 
+@uri: 
+@xptrExpr: 
+@first: 
+@last: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### STRUCT xmlSecTransform ##### -->
 <para>
@@ -102,23 +93,17 @@ The transforms functions.
 </para>
 
 @id: 
+@operation: 
 @status: 
-@dontDestroy: 
-@encode: 
+@hereNode: 
 @next: 
 @prev: 
-@hereNode: 
 @inBuf: 
 @outBuf: 
-@binBuf: 
-@binBufSize: 
-@processed: 
+@inNodes: 
+@outNodes: 
 @reserved0: 
 @reserved1: 
-@reserved2: 
-@reserved3: 
-@reserved4: 
-@reserved5: 
 
 <!-- ##### FUNCTION xmlSecTransformCreate ##### -->
 <para>
@@ -126,9 +111,9 @@ The transforms functions.
 </para>
 
 @id: 
-@dontDestroy: 
 @Returns: 
 <!-- # Unused Parameters # -->
+@dontDestroy: 
 @usage: 
 
 
@@ -138,19 +123,8 @@ The transforms functions.
 </para>
 
 @transform: 
-@forceDestroy: 
-
-
-<!-- ##### FUNCTION xmlSecTransformRead ##### -->
-<para>
-
-</para>
-
-@transform: 
-@node: 
-@Returns: 
 <!-- # Unused Parameters # -->
-@transformNode: 
+@forceDestroy: 
 
 
 <!-- ##### FUNCTION xmlSecTransformSetKey ##### -->
@@ -216,6 +190,7 @@ The transforms functions.
 
 @transform: 
 @data: 
+@maxDataSize: 
 @dataSize: 
 @transformCtx: 
 @Returns: 
@@ -274,6 +249,7 @@ The transforms functions.
 
 @transform: 
 @data: 
+@maxDataSize: 
 @dataSize: 
 @transformCtx: 
 @Returns: 
@@ -310,69 +286,6 @@ The transforms functions.
 @last: 
 @transformCtx: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformReadBin ##### -->
-<para>
-
-</para>
-
-@transform: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformWriteBin ##### -->
-<para>
-
-</para>
-
-@transform: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformFlushBin ##### -->
-<para>
-
-</para>
-
-@transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformExecuteXml ##### -->
-<para>
-
-</para>
-
-@transform: 
-@ctxDoc: 
-@doc: 
-@nodes: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformExecuteC14N ##### -->
-<para>
-
-</para>
-
-@transform: 
-@doc: 
-@nodes: 
-@buffer: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformDestroyAll ##### -->
-<para>
-
-</para>
-
-@transform: 
 
 
 <!-- ##### FUNCTION xmlSecTransformAddAfter ##### -->
@@ -445,15 +358,6 @@ The transforms functions.
 @transform: 
 @size: 
 
-
-<!-- ##### ENUM xmlSecTransformType ##### -->
-<para>
-
-</para>
-
-@xmlSecTransformTypeBinary: 
-@xmlSecTransformTypeXml: 
-@xmlSecTransformTypeC14N: 
 
 <!-- ##### TYPEDEF xmlSecTransformUsage ##### -->
 <para>
@@ -552,6 +456,7 @@ The transforms functions.
 
 @transform: 
 @node: 
+@transformCtx: 
 @Returns: 
 
 
@@ -607,6 +512,7 @@ The transforms functions.
 
 @transform: 
 @data: 
+@maxDataSize: 
 @dataSize: 
 @transformCtx: 
 @Returns: 
@@ -645,61 +551,6 @@ The transforms functions.
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformReadMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformWriteMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformFlushMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformExecuteXmlMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@ctxDoc: 
-@doc: 
-@nodes: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecTransformExecuteC14NMethod ##### -->
-<para>
-
-</para>
-
-@transform: 
-@doc: 
-@nodes: 
-@buffer: 
-@Returns: 
-
-
 <!-- ##### STRUCT xmlSecTransformKlass ##### -->
 <para>
 
@@ -708,12 +559,12 @@ The transforms functions.
 @klassSize: 
 @objSize: 
 @name: 
-@type: 
-@usage: 
 @href: 
+@usage: 
 @initialize: 
 @finalize: 
 @readNode: 
+@writeNode: 
 @setKeyReq: 
 @setKey: 
 @verify: 
@@ -723,8 +574,8 @@ The transforms functions.
 @pushXml: 
 @popXml: 
 @execute: 
-@executeXml: 
-@executeC14N: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### MACRO xmlSecTransformKlassGetName ##### -->
 <para>

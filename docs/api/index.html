@@ -1,53 +1,39 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>XML Security Library Reference Manual</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="NEXT" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>XML Security Library Reference Manual</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="NEXT" title="XML Security Library Programming Notes" href="xmlsec-notes.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
 <div class="BOOK">
 <div class="TITLEPAGE">
-<table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th align="center" valign="center"><font color="#FFFFFF" size="7"><p class="TITLE"><a name="AEN2">XML Security Library Reference Manual</a></p></font></th></tr></table>
-<h3 class="AUTHOR">
-<a name="AEN5"></a>Aleksey Sanin</h3>
-<div class="AFFILIATION"><div class="ADDRESS"><p class="ADDRESS">	Â Â Â Â aleksey@aleksey.com<br>
-	Â Â </p></div></div>
-<p class="COPYRIGHT">Copyright Â© 2002 by Aleksey Sanin</p>
+<table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th align="center" valign="center"><font color="#FFFFFF" size="7"><p class="TITLE"><a name="AEN2">XML Security Library Reference Manual</a></p></font></th></tr></table><h3 class="AUTHOR">
+<a name="AEN5"/>Aleksey Sanin</h3>
+<div class="AFFILIATION"><div class="ADDRESS"><p class="ADDRESS">	    aleksey@aleksey.com<br/>
+	  </p></div></div>
+<p class="COPYRIGHT">Copyright © 2002 by Aleksey Sanin</p>
 <div><div class="ABSTRACT">
-<a name="AEN18"></a><p></p>
+<a name="AEN18"/><p/>
 <p>This manual documents the interfaces of the xmlsec
       library and has some short notes to help get you up to speed
       with using the library.</p>
-<p></p>
+<p/>
 </div></div>
 <div class="LEGALNOTICE">
-<a name="AEN14"></a><p></p>
+<a name="AEN14"/><p/>
 <p>Permission is granted to make and distribute verbatim
       copies of this manual provided the copyright notice and this
       permission notice are preserved on all copies.</p>
@@ -59,74 +45,64 @@
 <p>Permission is granted to copy and distribute translations
       of this manual into another language, under the above conditions
       for modified versions.</p>
-<p></p>
+<p/>
 </div>
 </div>
-<div class="TOC"><dl>
-<dt><b>Table of Contents</b></dt>
+<div class="TOC"><dl><dt><b>Table of Contents</b></dt>
 <dt><a href="xmlsec-notes.html">XML Security Library Programming Notes</a></dt>
 <dt><a href="xmlsec-ref.html">XML Security Library Reference</a></dt>
-<dd><dl>
+<dd><dl><dt>
+<a href="xmlsec-xmlsec.html">xmlsec.h</a> -- The library initialization/cleanup functions.</dt>
 <dt>
-<a href="xmlsec-xmlsec.html">xmlsec.h</a>Â --Â The library initialization/cleanup functions.</dt>
-<dt>
-<a href="xmlsec-xmldsig.html">xmldsig.h</a>Â --Â The <a href="http://www.w3.org/Signature/" target="_top">XML Digital Signature</a> 
+<a href="xmlsec-xmldsig.html">xmldsig.h</a> -- The <a href="http://www.w3.org/Signature/" target="_top">XML Digital Signature</a> 
 standard implementation.</dt>
 <dt>
-<a href="xmlsec-xmlenc.html">xmlenc.h</a>Â --Â The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
+<a href="xmlsec-xmlenc.html">xmlenc.h</a> -- The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
 standard implementation.</dt>
 <dt>
-<a href="xmlsec-errors.html">errors.h</a>Â --Â The errors reporting functions.</dt>
+<a href="xmlsec-errors.html">errors.h</a> -- The errors reporting functions.</dt>
 <dt>
-<a href="xmlsec-debug.html">debug.h</a>Â --Â The usefull debugging functions.</dt>
+<a href="xmlsec-debug.html">debug.h</a> -- The usefull debugging functions.</dt>
 <dt>
-<a href="xmlsec-keyinfo.html">keyinfo.h</a>Â --Â The &lt;dsig:KeyInfo&gt; element manipulation functions.</dt>
+<a href="xmlsec-keyinfo.html">keyinfo.h</a> -- The &lt;dsig:KeyInfo&gt; element manipulation functions.</dt>
 <dt>
-<a href="xmlsec-keys.html">keys.h</a>Â --Â The keys helper functions.</dt>
+<a href="xmlsec-keys.html">keys.h</a> -- The keys helper functions.</dt>
 <dt>
-<a href="xmlsec-keysmngr.html">keysmngr.h</a>Â --Â The simple keys manager implementation.</dt>
+<a href="xmlsec-keysmngr.html">keysmngr.h</a> -- The simple keys manager implementation.</dt>
 <dt>
-<a href="xmlsec-transforms.html">transforms.h</a>Â --Â The transforms functions.</dt>
+<a href="xmlsec-transforms.html">transforms.h</a> -- The transforms functions.</dt>
 <dt>
-<a href="xmlsec-version.html">version.h</a>Â --Â The library version infromation.</dt>
+<a href="xmlsec-version.html">version.h</a> -- The library version infromation.</dt>
 <dt>
-<a href="xmlsec-x509.html">x509.h</a>Â --Â The X509 certificates functions.</dt>
+<a href="xmlsec-x509.html">x509.h</a> -- The X509 certificates functions.</dt>
 </dl></dd>
 <dt><a href="xmlsec-ref-int.html">XML Security Library Internal Functions Reference</a></dt>
-<dd><dl>
+<dd><dl><dt>
+<a href="xmlsec-base64.html">base64.h</a> -- The BASE64 encode/decode functions.</dt>
 <dt>
-<a href="xmlsec-base64.html">base64.h</a>Â --Â The BASE64 encode/decode functions.</dt>
+<a href="xmlsec-bn.html">bn.h</a> -- The big numbers helper functions.</dt>
 <dt>
-<a href="xmlsec-bn.html">bn.h</a>Â --Â The big numbers helper functions.</dt>
+<a href="xmlsec-io.html">io.h</a> -- The IO transforms.</dt>
 <dt>
-<a href="xmlsec-io.html">io.h</a>Â --Â The IO transforms.</dt>
+<a href="xmlsec-membuf.html">membuf.h</a> -- The memory buffer transform.</dt>
 <dt>
-<a href="xmlsec-membuf.html">membuf.h</a>Â --Â The memory buffer transform.</dt>
+<a href="xmlsec-nodeset.html">nodeset.h</a> -- The enchanced nodes set imlmentation.</dt>
 <dt>
-<a href="xmlsec-nodeset.html">nodeset.h</a>Â --Â The enchanced nodes set imlmentation.</dt>
+<a href="xmlsec-transformsinternal.html">transformsInternal.h</a> -- The internal transform's functions.</dt>
 <dt>
-<a href="xmlsec-transformsinternal.html">transformsInternal.h</a>Â --Â The internal transform's functions.</dt>
-<dt>
-<a href="xmlsec-xmltree.html">xmltree.h</a>Â --Â The XML tree helper functions.</dt>
+<a href="xmlsec-xmltree.html">xmltree.h</a> -- The XML tree helper functions.</dt>
 </dl></dd>
 </dl></div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left">Â </td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b>Â </b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b>Â </b></font></td>
+<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"> </td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left">Â </td>
+</tr><tr><td colspan="2" align="left"> </td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Programming Notes</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+</tr></table></div>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

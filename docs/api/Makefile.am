@@ -32,6 +32,9 @@ doc_sources: $(DOC_SOURCE_FILES)
 	    file_name=`echo $$i | sed 's#.*/##'`; \
 	    test -d $(DOC_SOURCE_DIR)/$$folder_name || mkdir -p $(DOC_SOURCE_DIR)/$$folder_name; \
 	    cat $$i | \
+		sed 's/#if.*//' | \
+		sed 's/#el.*//' | \
+		sed 's/#end.*//' | \
 		sed 's/XMLSEC_EXPORT_VAR/extern/' | \
 		sed 's/XMLSEC_EXPORT//' | \
 		sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \

@@ -18,8 +18,7 @@
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass</link>
                                             (void);
 <link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</link>
-                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
-                                             int removeBuffer);
+                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);
 </synopsis>
 </refsynopsisdiv>
 
@@ -63,8 +62,7 @@ The Memory Buffer transform id.</para>
 <refsect2>
 <title><anchor id="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer ()</title>
 <programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecTransformMemBufGetBuffer
-                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
-                                             int removeBuffer);</programlisting>
+                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 Gets the memory transform buffer.</para>
 <para>
@@ -77,12 +75,7 @@ Gets the memory transform buffer.</para>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
 <entry> the pointer to memory buffer transform.
 </entry></row>
-<row><entry align="right"><parameter>removeBuffer</parameter>&nbsp;:</entry>
-<entry> the flag that indicates whether the buffer
-	will be removed from the transform.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the xmlSecBufferPtr. If <parameter>removeBuffer</parameter> is set to 1 then the buffer 
-is removed from transform and the caller is responsible for freeing it
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the transform's xmlSecBufferPtr. 
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

@@ -31,9 +31,6 @@ int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass</link>
                                             (void);
 struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
-#define     <link linkend="xmlSecKeyInfoNodeCheckOrigin">xmlSecKeyInfoNodeCheckOrigin</link>    (status, origin)
-#define     <link linkend="xmlSecKeyInfoNodeCheckRetrievalsLevel">xmlSecKeyInfoNodeCheckRetrievalsLevel</link>(status)
-#define     <link linkend="xmlSecKeyInfoNodeCheckEncKeysLevel">xmlSecKeyInfoNodeCheckEncKeysLevel</link>(status)
 </synopsis>
 </refsynopsisdiv>
 
@@ -204,76 +201,161 @@ The &lt;enc:EncryptedKey&gt; processing class.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyInfoCtx">struct xmlSecKeyInfoCtx</title>
 <programlisting>struct xmlSecKeyInfoCtx {
+    void*				userData;
+    unsigned int			flags;
+    unsigned int			flags2;
     xmlSecKeysMngrPtr			keysMngr;
-    void				*context;
-    
-    xmlSecKeyReq			keyReq;
-
+    xmlSecKeyInfoMode			mode;
+    xmlSecPtrList			enabledKeyData;
     int					base64LineSize;
-    int 				retrievalsLevel;
-    int					encKeysLevel;                
+        
+    /* RetrievalMethod */
+    xmlSecTransformCtx			retrievalMethodCtx;
+    int 				maxRetrievalMethodLevel;
 
-    /* x509 certificate */
-    int					failIfCertNotFound;
+
+    /* EncryptedKey */
+    xmlSecEncCtxPtr			encCtx;
+    int					maxEncryptedKeyLevel; 
+
+	    
+
+    /* x509 certificates */
     time_t				certsVerificationTime;
     int					certsVerificationDepth;
+
+
+    /* PGP */
+    void*				pgpReserved;	/* TODO */
+        
+    /* internal data */
+    int 				curRetrievalMethodLevel;
+    int					curEncryptedKeyLevel;                
+    xmlSecKeyReq			keyReq;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 </programlisting>
 <para>
-</para>
+The &lt;dsig:KeyInfo /&gt; reading or writing context.</para>
 <para>
 
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoNodeCheckOrigin">xmlSecKeyInfoNodeCheckOrigin()</title>
-<programlisting>#define     xmlSecKeyInfoNodeCheckOrigin(status, origin)</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
+</para><informaltable pgwide="1" frame="none" role="struct">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>status</parameter>&nbsp;:</entry>
+<row>
+<entry>void *<structfield>userData</structfield></entry>
+<entry>		the pointer to user data (xmlsec and xmlsec-crypto 
+		never touch this).
+</entry>
+</row>
+<row>
+<entry>unsigned int <structfield>flags</structfield></entry>
+<entry> 		the bit mask for flags that control processin.
+</entry>
+</row>
+<row>
+<entry>unsigned int <structfield>flags2</structfield></entry>
+<entry> 		reserved for future.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> <structfield>keysMngr</structfield></entry>
+<entry>		the pointer to current keys manager.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link> <structfield>mode</structfield></entry>
+<entry> 		do we read or write &lt;dsig:KeyInfo /&gt; element.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledKeyData</structfield></entry>
+<entry> 	the list of enabled <parameter>xmlSecKeyDataId</parameter> (if list is 
+		empty then all data ids are enabled).
+</entry>
+</row>
+<row>
+<entry>int <structfield>base64LineSize</structfield></entry>
+<entry>	the max columns size for base64 encoding.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>retrievalMethodCtx</structfield></entry>
+<entry> the transforms context for &lt;dsig:RetrievalMethod /&gt;
+			element processing.
+</entry>
+</row>
+<row>
+<entry>int <structfield>maxRetrievalMethodLevel</structfield></entry>
+<entry> the max recursion level when processing
+		&lt;dsig:RetrievalMethod /&gt; element; default level is 1 
+		(see also <parameter>curRetrievalMethodLevel</parameter>).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <structfield>encCtx</structfield></entry>
+<entry>		the encryption context for &lt;dsig:EncryptedKey /&gt; element
+		processing.
+</entry>
+</row>
+<row>
+<entry>int <structfield>maxEncryptedKeyLevel</structfield></entry>
+<entry> the max recursion level when processing 
+		&lt;enc:EncryptedKey /&gt; element; default level is 1 
+		(see <parameter>curEncryptedKeyLevel</parameter>).
+</entry>
+</row>
+<row>
+<entry><link linkend="time-t">time_t</link> <structfield>certsVerificationTime</structfield></entry>
+<entry> the time to use for X509 certificates verification
+		("not valid before" and "not valid after" checks);
+		if <parameter>certsVerificationTime</parameter> is equal to 0 (default) 
+		then we verify certificates against the system's 
+		clock "now".
+</entry>
+</row>
+<row>
+<entry>int <structfield>certsVerificationDepth</structfield></entry>
+<entry> the max certifications chain length (default is 9).
+</entry>
+</row>
+<row>
+<entry>void *<structfield>pgpReserved</structfield></entry>
+<entry>	reserved for PGP.
+</entry>
+</row>
+<row>
+<entry>int <structfield>curRetrievalMethodLevel</structfield></entry>
+<entry> the current &lt;dsig:RetrievalMethod /&gt; element 
+		processing level (see <parameter>maxRetrievalMethodLevel</parameter>).
+</entry>
+</row>
+<row>
+<entry>int <structfield>curEncryptedKeyLevel</structfield></entry>
+<entry> the current &lt;enc:EncryptedKey /&gt; element
+		processing level (see <parameter>maxEncryptedKeyLevel</parameter>).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyReq">xmlSecKeyReq</link> <structfield>keyReq</structfield></entry>
 <entry>
-</entry></row>
-<row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
 <entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoNodeCheckRetrievalsLevel">xmlSecKeyInfoNodeCheckRetrievalsLevel()</title>
-<programlisting>#define     xmlSecKeyInfoNodeCheckRetrievalsLevel(status)</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>status</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyInfoNodeCheckEncKeysLevel">xmlSecKeyInfoNodeCheckEncKeysLevel()</title>
-<programlisting>#define     xmlSecKeyInfoNodeCheckEncKeysLevel(status)</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>status</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
 </tbody></tgroup></informaltable></refsect2>
 
 </refsect1>

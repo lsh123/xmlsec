@@ -77,9 +77,9 @@ void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>    
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *type,
                                              const <link linkend="xmlChar">xmlChar</link> *recipient);
-int         <link linkend="xmlSecHmacAddOutputLength">xmlSecHmacAddOutputLength</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+int         <link linkend="xmlSecHmacAddOutputLength">xmlSecHmacAddOutputLength</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="size-t">size_t</link> bitsLen);
-int         <link linkend="xmlSecEncRsaOaepAddParam">xmlSecEncRsaOaepAddParam</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+int         <link linkend="xmlSecEncRsaOaepAddParam">xmlSecEncRsaOaepAddParam</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);
 int         <link linkend="xmlSecXsltAddStylesheet">xmlSecXsltAddStylesheet</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
@@ -781,11 +781,11 @@ NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecHmacAddOutputLength">xmlSecHmacAddOutputLength ()</title>
-<programlisting>int         xmlSecHmacAddOutputLength       (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+<programlisting>int         xmlSecHmacAddOutputLength       (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="size-t">size_t</link> bitsLen);</programlisting>
 <para>
 Creates &lt;dsig:HMACOutputLength&gt;child for the HMAC transform 
-node <parameter>transformNode</parameter>.</para>
+node <parameter>node</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -793,7 +793,7 @@ node <parameter>transformNode</parameter>.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
 <entry> the pointer to &lt;dsig:Transform&gt; node
 </entry></row>
 <row><entry align="right"><parameter>bitsLen</parameter>&nbsp;:</entry>
@@ -804,11 +804,11 @@ node <parameter>transformNode</parameter>.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncRsaOaepAddParam">xmlSecEncRsaOaepAddParam ()</title>
-<programlisting>int         xmlSecEncRsaOaepAddParam        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+<programlisting>int         xmlSecEncRsaOaepAddParam        (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Creates &lt;enc:OAEPParam&gt; child node in the <parameter>transformNode</parameter>.</para>
+Creates &lt;enc:OAEPParam&gt; child node in the <parameter>node</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -816,7 +816,7 @@ Creates &lt;enc:OAEPParam&gt; child node in the <parameter>transformNode</parame
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
 <entry> the pointer to &lt;dsig:Transform&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>

@@ -14,24 +14,3 @@ The big numbers helper functions.
 
 </para>
 
-<!-- ##### FUNCTION xmlSecOpenSSLNodeGetBNValue ##### -->
-<para>
-
-</para>
-
-@cur: 
-@a: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecOpenSSLNodeSetBNValue ##### -->
-<para>
-
-</para>
-
-@cur: 
-@a: 
-@addLineBreaks: 
-@Returns: 
-
-

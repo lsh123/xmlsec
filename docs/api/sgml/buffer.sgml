@@ -67,15 +67,42 @@ int         <link linkend="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase6
 <refsect2>
 <title><anchor id="xmlSecBuffer">struct xmlSecBuffer</title>
 <programlisting>struct xmlSecBuffer {
-    unsigned char* 	 data;
-    size_t 		 size;
-    size_t		 maxSize;
-    enum xmlSecAllocMode allocMode;
+    unsigned char* 	data;
+    size_t 		size;
+    size_t		maxSize;
+    xmlSecAllocMode 	allocMode;
 };
 </programlisting>
 <para>
+Binary data buffer.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry>unsigned char *<structfield>data</structfield></entry>
+<entry> the pointer to buffer data.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>size</structfield></entry>
+<entry> the current data size.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>maxSize</structfield></entry>
+<entry> the max data size (allocated buffer size).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecAllocMode">xmlSecAllocMode</link> <structfield>allocMode</structfield></entry>
+<entry> the buffer memory allocation mode.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBufferCreate">xmlSecBufferCreate ()</title>
 <programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecBufferCreate          (<link linkend="size-t">size_t</link> size);</programlisting>

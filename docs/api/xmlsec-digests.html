@@ -1,51 +1,31 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>digests.h</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
-<link rel="PREVIOUS" title="ciphers.h" href="xmlsec-ciphers.html">
-<link rel="NEXT" title="io.h" href="xmlsec-io.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><title>digests.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html"/><link rel="PREVIOUS" title="ciphers.h" href="xmlsec-ciphers.html"/><link rel="NEXT" title="io.h" href="xmlsec-io.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
+<ul><li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
 </td>
-<td valign="top" align="left">
-<table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-io.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+</tr></table></div>
 <h1><a name="XMLSEC-DIGESTS">digests.h</a></h1>
 <div class="REFNAMEDIV">
-<a name="AEN5874"></a><h2>Name</h2>digests.hÂ --Â The digests transform.</div>
+<a name="AEN5874"/><h2>Name</h2>digests.h -- The digests transform.</div>
 <div class="REFSYNOPSISDIV">
 <a name="AEN5877"><h2>Synopsis</h2></a><table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
@@ -82,17 +62,16 @@ int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMREAD">xmlSecDigest
 int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMWRITE">xmlSecDigestTransformWrite</a>      (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
                                              <strong>size_t</strong> size);
-int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMFLUSH">xmlSecDigestTransformFlush</a>      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table>
+int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMFLUSH">xmlSecDigestTransformFlush</a>      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table></div>
+<div class="REFSECT1">
+<a name="AEN5916"/><h2>Description</h2>
+<p/>
 </div>
 <div class="REFSECT1">
-<a name="AEN5916"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN5919"></a><h2>Details</h2>
+<a name="AEN5919"/><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN5921"></a><h3>
-<a name="XMLSECDIGESTTRANSFORM"></a>struct xmlSecDigestTransform</h3>
+<a name="AEN5921"/><h3>
+<a name="XMLSECDIGESTTRANSFORM"/>struct xmlSecDigestTransform</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecDigestTransform {	
     /* same as for xmlSecTransform but id type changed */
     xmlSecDigestTransformId		id;    
@@ -111,514 +90,344 @@ int         <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMFLUSH">xmlSecDiges
     unsigned char			*digest;
     size_t				digestSize;
     void 				*digestData;
-};</pre></td></tr></table>
-<p>The digests transform.</p>
-<p></p>
+};</pre></td></tr></table><p>The digests transform.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN5927"><p></p></a><table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+<a name="AEN5927"><p/></a><table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID">xmlSecDigestTransformId</a> <tt class="STRUCTFIELD"><i>id</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the transform id (pointer to <a href="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID">xmlSecBinTransformId</a>).</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <tt class="STRUCTFIELD"><i>status</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the transform status (ok/fail/unknown).</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroy</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroy</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the don't automatically destroy flag.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>data</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>data</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to transform specific data.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encode</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encode</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> encode/decode (encrypt/decrypt) flag.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlSecDigestTransformPtr</strong> <tt class="STRUCTFIELD"><i>next</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> next binary transform in the chain.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlSecDigestTransformPtr</strong> <tt class="STRUCTFIELD"><i>prev</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> previous binary transform in the chain.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>binData</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>binData</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to binary transform speific data.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>pushModeEnabled</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>pushModeEnabled</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> if 1 then the data are sent to next transform, otherwise
 	 we are keeping data for sign or verify call.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>digest</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>digest</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the internal digest buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>size_t</strong> <tt class="STRUCTFIELD"><i>digestSize</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the internal digest buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>digestData</i></tt>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>digestData</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to digest transform specific data.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5986"></a><h3>
-<a name="XMLSECDIGESTTRANSFORMID"></a>xmlSecDigestTransformId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;</pre></td></tr></table>
-<p>The digest transform id (<tt class="LITERAL">xmlSecTransformTypeBinary</tt> type).</p>
-<p></p>
+<hr/><div class="REFSECT2">
+<a name="AEN5986"/><h3>
+<a name="XMLSECDIGESTTRANSFORMID"/>xmlSecDigestTransformId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;</pre></td></tr></table><p>The digest transform id (<tt class="LITERAL">xmlSecTransformTypeBinary</tt> type).</p>
+<p/>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN5993"></a><h3>
-<a name="XMLSECDIGESTUPDATEMETHOD"></a>xmlSecDigestUpdateMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN5993"/><h3>
+<a name="XMLSECDIGESTUPDATEMETHOD"/>xmlSecDigestUpdateMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecDigestUpdateMethod)     (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Updates digest with new chunk of data.</p>
-<p></p>
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Updates digest with new chunk of data.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6001"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6001"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to digests transform <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6023"></a><h3>
-<a name="XMLSECDIGESTSIGNMETHOD"></a>xmlSecDigestSignMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6023"/><h3>
+<a name="XMLSECDIGESTSIGNMETHOD"/>xmlSecDigestSignMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecDigestSignMethod)       (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char **buffer,
-                                             <strong>size_t</strong> *size);</pre></td></tr></table>
-<p>Finalizes digest and returns result in allocated buffer (<tt class="PARAMETER"><i>buffer</i></tt>, <tt class="PARAMETER"><i>size</i></tt>).
+                                             <strong>size_t</strong> *size);</pre></td></tr></table><p>Finalizes digest and returns result in allocated buffer (<tt class="PARAMETER"><i>buffer</i></tt>, <tt class="PARAMETER"><i>size</i></tt>).
 The caller is responsible for freeing returned buffer with <strong>xmlFree</strong>() function.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6034"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6034"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to digests transform <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to pointer to the output data.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to outut data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6056"></a><h3>
-<a name="XMLSECDIGESTVERIFYMETHOD"></a>xmlSecDigestVerifyMethod ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6056"/><h3>
+<a name="XMLSECDIGESTVERIFYMETHOD"/>xmlSecDigestVerifyMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecDigestVerifyMethod)     (<strong>xmlSecDigestTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Verifies digest with new chunk of data. The actual verification
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Verifies digest with new chunk of data. The actual verification
 status is set in <strong>status</strong> member of <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a> structure.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6066"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6066"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to digests transform <a href="xmlsec-digests.html#XMLSECDIGESTTRANSFORM">xmlSecDigestTransform</a>.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">1 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6088"></a><h3>
-<a name="XMLSECDIGESTSIGNNODE"></a>xmlSecDigestSignNode ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6088"/><h3>
+<a name="XMLSECDIGESTSIGNNODE"/>xmlSecDigestSignNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestSignNode            (<strong>xmlSecTransformPtr</strong> transform,
                                              <strong>xmlNodePtr</strong> valueNode,
-                                             int removeOldContent);</pre></td></tr></table>
-<p>Finalizes the digest result, signs it (if necessary), base64 encodes and
+                                             int removeOldContent);</pre></td></tr></table><p>Finalizes the digest result, signs it (if necessary), base64 encodes and
 puts in the given node.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6096"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6096"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digest transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>valueNode</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>valueNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:DigestValue&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>removeOldContent</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>removeOldContent</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the flag that indicates whether the previous
             node content will be removed or not.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6117"></a><h3>
-<a name="XMLSECDIGESTVERIFYNODE"></a>xmlSecDigestVerifyNode ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6117"/><h3>
+<a name="XMLSECDIGESTVERIFYNODE"/>xmlSecDigestVerifyNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestVerifyNode          (<strong>xmlSecTransformPtr</strong> transform,
-                                             const <strong>xmlNodePtr</strong> valueNode);</pre></td></tr></table>
-<p>Reads the node content, base64 decodes it, finalizes the digest result and
+                                             const <strong>xmlNodePtr</strong> valueNode);</pre></td></tr></table><p>Reads the node content, base64 decodes it, finalizes the digest result and
 verifies that it does match with the content of the node.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6125"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6125"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digest transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>valueNode</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>valueNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a &lt;dsig:DigestValue&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6142"></a><h3>
-<a name="XMLSECDIGESTSETPUSHMODE"></a>xmlSecDigestSetPushMode ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6142"/><h3>
+<a name="XMLSECDIGESTSETPUSHMODE"/>xmlSecDigestSetPushMode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDigestSetPushMode         (<strong>xmlSecTransformPtr</strong> transform,
-                                             int enabled);</pre></td></tr></table>
-<p>Sets the push more flag. If push mode is enabled then the digest is
+                                             int enabled);</pre></td></tr></table><p>Sets the push more flag. If push mode is enabled then the digest is
 finalized and send to next transform when 
 1) read from previous transform returned 0
 2) flush called</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6149"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6149"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>enabled</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>enabled</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the new &quot;push mode&quot; flag.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6162"></a><h3>
-<a name="XMLSECDIGESTUPDATE"></a>xmlSecDigestUpdate ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6162"/><h3>
+<a name="XMLSECDIGESTUPDATE"/>xmlSecDigestUpdate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestUpdate              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Updates data with the new chunk of data (wrapper for 
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Updates data with the new chunk of data (wrapper for 
 xmlSecDigestTransformId::digestUpdate method).</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6170"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6170"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6191"></a><h3>
-<a name="XMLSECDIGESTSIGN"></a>xmlSecDigestSign ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6191"/><h3>
+<a name="XMLSECDIGESTSIGN"/>xmlSecDigestSign ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestSign                (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char **buffer,
-                                             <strong>size_t</strong> *size);</pre></td></tr></table>
-<p>Finalizes digest and writes the result into the allocated 
+                                             <strong>size_t</strong> *size);</pre></td></tr></table><p>Finalizes digest and writes the result into the allocated 
 buffer (wrapper for xmlSecDigestTransformId::digestSign function).
 Caller is responsble for freeing allocated buffer with <strong>xmlFree</strong>() function.</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6200"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6200"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the pointer to the output buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to the output buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6221"></a><h3>
-<a name="XMLSECDIGESTVERIFY"></a>xmlSecDigestVerify ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6221"/><h3>
+<a name="XMLSECDIGESTVERIFY"/>xmlSecDigestVerify ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestVerify              (<strong>xmlSecTransformPtr</strong> transform,
                                              unsigned char *buffer,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Checks the computed digest and the data in the input buffer
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Checks the computed digest and the data in the input buffer
 (wrapper for xmlSecDigestTransformId::digestVerify function).</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6229"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6229"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6250"></a><h3>
-<a name="XMLSECDIGESTTRANSFORMREAD"></a>xmlSecDigestTransformRead ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6250"/><h3>
+<a name="XMLSECDIGESTTRANSFORMREAD"/>xmlSecDigestTransformRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformRead       (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Reads all data from previos transform and digests it. If the 
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Reads all data from previos transform and digests it. If the 
 push mode enabled then the result is finalized and returned to the caller,
 otherwise we return 0</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6258"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6258"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digest transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the output buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the output buffer size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the number of bytes in the buffer or negative value
 if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6279"></a><h3>
-<a name="XMLSECDIGESTTRANSFORMWRITE"></a>xmlSecDigestTransformWrite ()</h3>
+<hr/><div class="REFSECT2">
+<a name="AEN6279"/><h3>
+<a name="XMLSECDIGESTTRANSFORMWRITE"/>xmlSecDigestTransformWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformWrite      (<strong>xmlSecBinTransformPtr</strong> transform,
                                              unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table>
-<p>Adds new chunk of data to the digest.</p>
-<p></p>
+                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Adds new chunk of data to the digest.</p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6287"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6287"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the poiter to a digests transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data buffer.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt>Â :</td>
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 if success or a negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6308"></a><h3>
-<a name="XMLSECDIGESTTRANSFORMFLUSH"></a>xmlSecDigestTransformFlush ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformFlush      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table>
-<p>If the push mode enabled then the function finalizes the result,
+<hr/><div class="REFSECT2">
+<a name="AEN6308"/><h3>
+<a name="XMLSECDIGESTTRANSFORMFLUSH"/>xmlSecDigestTransformFlush ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDigestTransformFlush      (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table><p>If the push mode enabled then the function finalizes the result,
 writes it to the next transform and calls flush for it. Otherwise,
 it just calls flush for next transform</p>
-<p></p>
+<p/>
 <div class="INFORMALTABLE">
-<a name="AEN6315"><p></p></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt>Â :</td>
+<a name="AEN6315"><p/></a><table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transform</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to a digests transform.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
+</tr><tr><td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 if success or negative value otherwise.</td>
-</tr>
-</tbody></table>
-<p></p>
+</tr></tbody></table><p/>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-io.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>ciphers.h</b></font></td>
+</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>ciphers.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>io.h</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr></table>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td>
-</tr></table></body>
-</html>
+</tr></table></div>
+</td></tr><tr><td>
+<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr></table></td>
+</tr></table></body></html>

@@ -35,6 +35,7 @@ list
 @data: 
 @use: 
 @max: 
+@allocMode: 
 
 <!-- ##### FUNCTION xmlSecPtrListCreate ##### -->
 <para>

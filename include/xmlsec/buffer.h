@@ -20,6 +20,16 @@ extern "C" {
 typedef struct _xmlSecBuffer					xmlSecBuffer, 
 								*xmlSecBufferPtr;
 
+
+/** 
+ * xmlSecAllocMode:
+ * @xmlSecAllocModeExact: 	the memory allocation mode that minimizes total 
+ *				allocated memory size.
+ * @xmlSecAllocModeDouble:	the memory allocation mode that tries to minimize
+ *				the number of malloc calls.
+ *
+ * The memory allocation mode (used by @xmlSecBuffer and @xmlSecList).
+ */
 typedef enum {
     xmlSecAllocModeExact = 0,
     xmlSecAllocModeDouble
@@ -30,6 +40,16 @@ typedef enum {
  * xmlSecBuffer
  *
  ****************************************************************************/
+
+/** 
+ * xmlSecBuffer:
+ * @data: the pointer to buffer data.
+ * @size: the current data size.
+ * @maxSize: the max data size (allocated buffer size).
+ * @allocMode: the buffer memory allocation mode.
+ *
+ * Binary data buffer.
+ */
 struct _xmlSecBuffer {
     unsigned char* 	data;
     size_t 		size;

@@ -182,61 +182,6 @@ keysdata
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataIdsClear ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsGetSize ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsGetId ##### -->
-<para>
-
-</para>
-
-@pos: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsFindByNode ##### -->
-<para>
-
-</para>
-
-@nodeName: 
-@nodeNs: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsFindByHref ##### -->
-<para>
-
-</para>
-
-@href: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyDataIdsFindByName ##### -->
-<para>
-
-</para>
-
-@name: 
-@usage: 
-@Returns: 
-
-
 <!-- ##### STRUCT xmlSecKeyData ##### -->
 <para>
 
@@ -245,8 +190,6 @@ keysdata
 @id: 
 @reserved0: 
 @reserved1: 
-@reserved2: 
-@reserved3: 
 
 <!-- ##### FUNCTION xmlSecKeyDataCreate ##### -->
 <para>
@@ -579,6 +522,8 @@ keysdata
 @binWrite: 
 @debugDump: 
 @debugXmlDump: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### MACRO xmlSecKeyDataKlassGetName ##### -->
 <para>
@@ -586,21 +531,6 @@ keysdata
 </para>
 
 @klass: 
-
-
-<!-- ##### MACRO xmlSecKeyDataPtrListId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecKeyDataPtrListGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### MACRO xmlSecKeyDataBinarySize ##### -->
@@ -742,8 +672,6 @@ keysdata
 @id: 
 @reserved0: 
 @reserved1: 
-@reserved2: 
-@reserved4: 
 
 <!-- ##### FUNCTION xmlSecKeyDataStoreCreate ##### -->
 <para>
@@ -848,6 +776,8 @@ keysdata
 @initialize: 
 @finalize: 
 @find: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### MACRO xmlSecKeyDataStoreKlassGetName ##### -->
 <para>

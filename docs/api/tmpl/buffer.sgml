@@ -22,6 +22,7 @@ buffer
 @data: 
 @size: 
 @maxSize: 
+@allocMode: 
 
 <!-- ##### FUNCTION xmlSecBufferCreate ##### -->
 <para>

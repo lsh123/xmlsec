@@ -14,7 +14,7 @@
 
 
 
-enum        <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
+typedef     <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
 struct      <link linkend="xmlSecKeyReq">xmlSecKeyReq</link>;
 int         <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>          (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
 void        <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
@@ -24,20 +24,8 @@ int         <link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>    
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
 int         <link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>       (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
                                              <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);
-#define     <link linkend="xmlSecKeyInifiteRetrivals">xmlSecKeyInifiteRetrivals</link>
 #define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
 #define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
-typedef     <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link>;
-#define     <link linkend="xmlSecKeyOriginDefault">xmlSecKeyOriginDefault</link>
-#define     <link linkend="xmlSecKeyOriginKeyManager">xmlSecKeyOriginKeyManager</link>
-#define     <link linkend="xmlSecKeyOriginKeyName">xmlSecKeyOriginKeyName</link>
-#define     <link linkend="xmlSecKeyOriginKeyValue">xmlSecKeyOriginKeyValue</link>
-#define     <link linkend="xmlSecKeyOriginRetrievalDocument">xmlSecKeyOriginRetrievalDocument</link>
-#define     <link linkend="xmlSecKeyOriginRetrievalRemote">xmlSecKeyOriginRetrievalRemote</link>
-#define     <link linkend="xmlSecKeyOriginX509">xmlSecKeyOriginX509</link>
-#define     <link linkend="xmlSecKeyOriginPGP">xmlSecKeyOriginPGP</link>
-#define     <link linkend="xmlSecKeyOriginEncryptedKey">xmlSecKeyOriginEncryptedKey</link>
-#define     <link linkend="xmlSecKeyOriginAll">xmlSecKeyOriginAll</link>
 struct      <link linkend="xmlSecKey">xmlSecKey</link>;
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (void);
 void        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
@@ -88,50 +76,14 @@ int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="xmlSecKeyUsage">enum xmlSecKeyUsage</title>
-<programlisting>typedef enum  {
-    xmlSecKeyUsageAny = 0,
-    xmlSecKeyUsageSign,
-    xmlSecKeyUsageVerify,
-    xmlSecKeyUsageEncrypt,
-    xmlSecKeyUsageDecrypt
-} xmlSecKeyUsage;
+<title><anchor id="xmlSecKeyUsage">xmlSecKeyUsage</title>
+<programlisting>typedef unsigned int 			xmlSecKeyUsage;
 </programlisting>
 <para>
 The key usage.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="enum">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><literal>xmlSecKeyUsageAny</literal></entry>
-<entry> the key can be used in any way.
-</entry>
-</row>
-<row>
-<entry><literal>xmlSecKeyUsageSign</literal></entry>
-<entry> the key for signing.
-</entry>
-</row>
-<row>
-<entry><literal>xmlSecKeyUsageVerify</literal></entry>
-<entry> the key for signature verification.
-</entry>
-</row>
-<row>
-<entry><literal>xmlSecKeyUsageEncrypt</literal></entry>
-<entry> the encryption key.
-</entry>
-</row>
-<row>
-<entry><literal>xmlSecKeyUsageDecrypt</literal></entry>
-<entry> the decryption key.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReq">struct xmlSecKeyReq</title>
 <programlisting>struct xmlSecKeyReq {
@@ -245,15 +197,6 @@ The key usage.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyInifiteRetrivals">xmlSecKeyInifiteRetrivals</title>
-<programlisting>#define xmlSecKeyInifiteRetrivals		99999
-</programlisting>
-<para>
-Macro. Inifinite number of retrievals (really big number :) )</para>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKeyIsValid">xmlSecKeyIsValid()</title>
 <programlisting>#define     xmlSecKeyIsValid(key)</programlisting>
 <para>
@@ -290,155 +233,23 @@ Macro. Returns 1 if <parameter>key</parameter> is valid and <parameter>key</para
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyOrigin">xmlSecKeyOrigin</title>
-<programlisting>typedef long				xmlSecKeyOrigin;
-</programlisting>
-<para>
-The key origin (keys manager, remote document, cert, etc.).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginDefault">xmlSecKeyOriginDefault</title>
-<programlisting>#define xmlSecKeyOriginDefault			0
-</programlisting>
-<para>
-Default origin (unknown).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginKeyManager">xmlSecKeyOriginKeyManager</title>
-<programlisting>#define xmlSecKeyOriginKeyManager		1
-</programlisting>
-<para>
-The key was found in the keys manager.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginKeyName">xmlSecKeyOriginKeyName</title>
-<programlisting>#define xmlSecKeyOriginKeyName			2 
-</programlisting>
-<para>
-The key was found in the keys manager via key name
-specified in the &lt;dsig:KeyName&gt; node. (useless w/o 
-<link linkend="xmlSecKeyOriginKeyManager">xmlSecKeyOriginKeyManager</link>).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginKeyValue">xmlSecKeyOriginKeyValue</title>
-<programlisting>#define xmlSecKeyOriginKeyValue			4
-</programlisting>
-<para>
-The key was extracted from &lt;dsig:KeyValue&gt; node.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginRetrievalDocument">xmlSecKeyOriginRetrievalDocument</title>
-<programlisting>#define xmlSecKeyOriginRetrievalDocument	8
-</programlisting>
-<para>
-The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
-pointing in the same document.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginRetrievalRemote">xmlSecKeyOriginRetrievalRemote</title>
-<programlisting>#define xmlSecKeyOriginRetrievalRemote		16
-</programlisting>
-<para>
-The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
-pointing to another document.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginX509">xmlSecKeyOriginX509</title>
-<programlisting>#define xmlSecKeyOriginX509			32
-</programlisting>
-<para>
-The key was extracted from X509 certificate
-in the &lt;dsig:X509Data&gt; node.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginPGP">xmlSecKeyOriginPGP</title>
-<programlisting>#define xmlSecKeyOriginPGP			64
-</programlisting>
-<para>
-The PGP key from &lt;dsig:PGPData&gt; node. Not used.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginEncryptedKey">xmlSecKeyOriginEncryptedKey</title>
-<programlisting>#define xmlSecKeyOriginEncryptedKey		128
-</programlisting>
-<para>
-The key was extracted from &lt;enc:EncryptedKey&gt; node.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyOriginAll">xmlSecKeyOriginAll</title>
-<programlisting>#define     xmlSecKeyOriginAll</programlisting>
-<para>
-All of the above.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKey">struct xmlSecKey</title>
 <programlisting>struct xmlSecKey {
-    xmlSecKeyDataPtr			value;
     xmlChar*				name;
+    xmlSecKeyDataPtr			value;
     xmlSecPtrListPtr			dataList;
-
-    /* obsolete */
-    xmlSecKeyDataType			type;
-    xmlSecKeyOrigin			origin;
+    xmlSecKeyUsage			usage;
+    
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 </programlisting>
 <para>
 The key.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <structfield>value</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>dataList</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <structfield>type</structfield></entry>
-<entry> the key type (private/public).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> <structfield>origin</structfield></entry>
-<entry> the key origin.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyCreate">xmlSecKeyCreate ()</title>
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (void);</programlisting>

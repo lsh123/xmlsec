@@ -19,55 +19,31 @@ standard implementation.
 
 </para>
 
+@userData: 
+@keyInfoReadCtx: 
+@keyInfoWriteCtx: 
+@signTransformCtx: 
 @processManifests: 
 @storeSignatures: 
 @storeReferences: 
 @storeManifests: 
-@fakeSignatures: 
-@keyInfoCtx: 
-
-<!-- ##### STRUCT xmlSecDSigResult ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@self: 
-@sign: 
+@enabledReferenceUris: 
+@enabledReferenceTransforms: 
+@operation: 
+@signKey: 
 @result: 
+@status: 
 @signMethod: 
-@key: 
-@firstSignRef: 
-@lastSignRef: 
-@firstManifestRef: 
-@lastManifestRef: 
-@buffer: 
-
-<!-- ##### ENUM xmlSecReferenceType ##### -->
-<para>
-
-</para>
-
-@xmlSecSignedInfoReference: 
-@xmlSecManifestReference: 
-
-<!-- ##### STRUCT xmlSecReferenceResult ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@self: 
-@refType: 
-@result: 
-@next: 
-@prev: 
-@uri: 
+@c14nMethod: 
+@preSignMemBufMethod: 
 @id: 
-@type: 
-@digestMethod: 
-@buffer: 
+@references: 
+@manifests: 
+@signValueNode: 
+@dontDestroySignMethod: 
+@dontDestroyC14NMethod: 
+@reserved0: 
+@reserved1: 
 
 <!-- ##### FUNCTION xmlSecDSigCtxCreate ##### -->
 <para>
@@ -83,70 +59,8 @@ standard implementation.
 
 </para>
 
+@dsigCtx: 
+<!-- # Unused Parameters # -->
 @ctx: 
-
-
-<!-- ##### FUNCTION xmlSecDSigValidate ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@key: 
-@signNode: 
-@result: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDSigGenerate ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@key: 
-@signNode: 
-@result: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDSigResultCreate ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@signNode: 
-@sign: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDSigResultDestroy ##### -->
-<para>
-
-</para>
-
-@result: 
-
-
-<!-- ##### FUNCTION xmlSecDSigResultDebugDump ##### -->
-<para>
-
-</para>
-
-@result: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecDSigResultDebugXmlDump ##### -->
-<para>
-
-</para>
-
-@result: 
-@output: 
 
 

@@ -1,3 +1,7 @@
+Thu 18 Jul 2002 08:51:16 AM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/x509.c: fixed problems with using self-signed certs
+	for signatures
+
 Thu Jul 11 19:30:31 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* Makefile.am configure.in xmlsec.spec.in xmlsec.pc xmlsec.pc.in:
 	Add pkgconfig script

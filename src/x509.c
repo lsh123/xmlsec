@@ -1546,7 +1546,8 @@ xmlSecX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
     
     certSubjHash = X509_subject_name_hash(cert);
     for(i = 0; i < chain->num; ++i) {
-	if(X509_issuer_name_hash(((X509**)(chain->data))[i]) == certSubjHash) {
+	if((((X509**)(chain->data))[i] != cert) && 
+	   (X509_issuer_name_hash(((X509**)(chain->data))[i]) == certSubjHash)) {
 	    return(((X509**)(chain->data))[i]);
 	}
     }

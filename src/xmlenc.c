@@ -35,7 +35,8 @@
 const xmlChar xmlSecEncTypeElement[] = "http://www.w3.org/2001/04/xmlenc#Element";
 const xmlChar xmlSecEncTypeContent[] = "http://www.w3.org/2001/04/xmlenc#Content";
 
-static const xmlChar*		xmlSecEncIds[] = { "Id", NULL };
+/* The ID attribute in XMLEnc is 'Id' */
+static const xmlChar*		xmlSecEncIds[] = { BAD_CAST "Id", NULL };
 
 typedef struct _xmlSecEncState {
     xmlSecEncCtxPtr		ctx;

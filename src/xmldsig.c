@@ -79,7 +79,8 @@ static int			xmlSecManifestRead		(xmlNodePtr manifestNode,
 								 xmlSecDSigResultPtr result);
 
 
-static const xmlChar*		xmlSecDSigIds[] = { "Id", NULL };
+/* The ID attribute in XMLDSig is 'Id' */
+static const xmlChar*		xmlSecDSigIds[] = { BAD_CAST "Id", NULL };
 
 
 /**

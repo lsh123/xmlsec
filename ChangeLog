@@ -1,4 +1,4 @@
-Mon Aug  4 19:39:52 2003  Aleksey Sanin  <aleksey@aleksey.com>
+Mon Aug  4 19:39:52 2003  Aleksey Sanin  <aleksey@aleksey.com>i
 
 	* include/xmlsec/Makefile.am include/xmlsec/x509.h src/Makefile.am 
 	src/x509.c src/openssl/x509.c win32/Makefile.msvc: moved code for 

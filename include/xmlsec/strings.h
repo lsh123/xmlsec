@@ -73,12 +73,13 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSignature[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSignedInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSignatureValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeObject[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeManifest[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCanonicalizationMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSignatureMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDigestMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDigestValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeObject[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeManifest[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSignatureProperties[];
 
 /*************************************************************************
  *
@@ -88,6 +89,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDigestValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptedData[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptionMethod[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptionProperties[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptionProperty[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherData[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherReference[];
@@ -118,6 +120,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrType[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrMimeType[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrEncoding[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrAlgorithm[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrTarget[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrFilter[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrRecipient[];
 
@@ -375,9 +378,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecStringEmpty[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecStringCR[];
-
-
-
 
 #ifdef __cplusplus
 }

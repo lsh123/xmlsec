@@ -22,104 +22,99 @@ extern "C" {
 /**
  * <dsig:Signature> node
  */
-XMLSEC_EXPORT xmlNodePtr xmlSecSignatureCreate		(const xmlChar *id);
-XMLSEC_EXPORT void	 xmlSecSignatureDestroy		(xmlNodePtr signNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecSignatureAddSignedInfo	(xmlNodePtr signNode,
-							 const xmlChar *id);
-XMLSEC_EXPORT xmlNodePtr xmlSecSignatureAddKeyInfo	(xmlNodePtr signNode,
-							const xmlChar *id);
-XMLSEC_EXPORT xmlNodePtr xmlSecSignatureAddObject	(xmlNodePtr signNode,
-							 const xmlChar *id,
-							 const xmlChar *mimeType,
-							 const xmlChar *encoding);
-XMLSEC_EXPORT xmlNodePtr xmlSecSignedInfoAddC14NMethod	(xmlNodePtr signedInfoNode,
-							 xmlSecTransformId c14nMethod);
-XMLSEC_EXPORT xmlNodePtr xmlSecSignedInfoAddSignMethod	(xmlNodePtr signedInfoNode,
-							 xmlSecTransformId signMethod);
-XMLSEC_EXPORT xmlNodePtr xmlSecSignedInfoAddReference	(xmlNodePtr signedInfoNode,
-							 const xmlChar *id, 
-							 const xmlChar *uri,
-							 const xmlChar *type);
-XMLSEC_EXPORT xmlNodePtr xmlSecReferenceAddDigestMethod	(xmlNodePtr refNode,
-							 xmlSecTransformId digestMethod);
-XMLSEC_EXPORT xmlNodePtr xmlSecReferenceAddTransform	(xmlNodePtr refNode,
-							 xmlSecTransformId transform);
-XMLSEC_EXPORT xmlNodePtr xmlSecObjectAddSignProperties	(xmlNodePtr objectNode,
-							 const xmlChar *id,
-							 const xmlChar *target);							 							 
-XMLSEC_EXPORT xmlNodePtr xmlSecObjectAddManifest	(xmlNodePtr objectNode,
-							 const xmlChar *id);
-XMLSEC_EXPORT xmlNodePtr xmlSecManifestAddReference	(xmlNodePtr manifestNode,
-							 const xmlChar *id, 
-							 const xmlChar *uri,
-							 const xmlChar *type);
-
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate		(xmlDocPtr doc,
+								 xmlSecTransformId c14nMethodId,
+								 xmlSecTransformId signMethodId,
+								 const xmlChar *id);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureEnsureKeyInfo	(xmlNodePtr signNode,
+								 const xmlChar *id);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureAddReference	(xmlNodePtr signNode,
+								 xmlSecTransformId digestMethodId,
+								 const xmlChar *id, 
+								 const xmlChar *uri,
+								 const xmlChar *type);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceAddTransform	(xmlNodePtr referenceNode,
+								 xmlSecTransformId transformId);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureAddObject		(xmlNodePtr signNode,
+								 const xmlChar *id,
+								 const xmlChar *mimeType,
+								 const xmlChar *encoding);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplObjectAddSignProperties	(xmlNodePtr objectNode,
+								 const xmlChar *id,
+								 const xmlChar *target);							 							 
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplObjectAddManifest		(xmlNodePtr objectNode,
+								 const xmlChar *id);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplManifestAddReference		(xmlNodePtr manifestNode,
+								 xmlSecTransformId digestMethodId,
+								 const xmlChar *id, 
+								 const xmlChar *uri,
+								 const xmlChar *type);
 /** 
  * <enc:EncryptedData> node
  */
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataCreate		(const xmlChar *id,
-							 const xmlChar *type,
-							 const xmlChar *mimeType,
-							 const xmlChar *encoding);
-XMLSEC_EXPORT void 	 xmlSecEncDataDestroy		(xmlNodePtr encNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataAddEncMethod	(xmlNodePtr encNode,
-							 xmlSecTransformId encMethod);
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataAddKeyInfo	(xmlNodePtr encNode);							 
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataAddEncProperties	(xmlNodePtr encNode,
-							 const xmlChar *id); 
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataAddEncProperty	(xmlNodePtr encNode,
-							 const xmlChar *id,
-							 const xmlChar *target);
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataAddCipherValue	(xmlNodePtr encNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecEncDataAddCipherReference(xmlNodePtr encNode,
-							 const xmlChar *uri);
-XMLSEC_EXPORT xmlNodePtr xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
-							 xmlSecTransformId transform);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataCreate		(xmlDocPtr doc,
+								 xmlSecTransformId encMethodId,
+								 const xmlChar *id,
+								 const xmlChar *type,
+								 const xmlChar *mimeType,
+								 const xmlChar *encoding);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataEnsureKeyInfo		(xmlNodePtr encNode,
+								 const xmlChar *id);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataEnsureEncProperties	(xmlNodePtr encNode,
+								 const xmlChar *id); 
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataAddEncProperty	(xmlNodePtr encNode,
+								 const xmlChar *id,
+								 const xmlChar *target);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataEnsureCipherValue	(xmlNodePtr encNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataEnsureCipherReference	(xmlNodePtr encNode,
+								 const xmlChar *uri);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform	(xmlNodePtr cipherReferenceNode,
+								 xmlSecTransformId transformId);
+
 
 /**
  * <dsig:KeyInfo> node
  */
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddKeyName	(xmlNodePtr keyInfoNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddKeyValue	(xmlNodePtr keyInfoNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddX509Data	(xmlNodePtr keyInfoNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddRetrievalMethod	
-							(xmlNodePtr keyInfoNode,
-							 const xmlChar *uri,
-							 const xmlChar *type);
-XMLSEC_EXPORT xmlNodePtr xmlSecRetrievalMethodAddTransform	
-							(xmlNodePtr retrMethod,
-							 xmlSecTransformId transform);						 							 
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
-							 const xmlChar *id,
-							 const xmlChar *type,
-							 const xmlChar *recipient);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyName		(xmlNodePtr keyInfoNode,
+								 const xmlChar* name);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyValue		(xmlNodePtr keyInfoNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddX509Data		(xmlNodePtr keyInfoNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddRetrievalMethod	(xmlNodePtr keyInfoNode,
+								 const xmlChar *uri,
+								 const xmlChar *type);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplRetrievalMethodAddTransform	(xmlNodePtr retrMethodNode,
+								 xmlSecTransformId transformId);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
+								 xmlSecTransformId encMethodId,
+								 const xmlChar *id,
+								 const xmlChar *type,
+								 const xmlChar *recipient);
     
 
 
 
-
-XMLSEC_EXPORT int	xmlSecHmacAddOutputLength	(xmlNodePtr node,
-							 size_t bitsLen);
-XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam	(xmlNodePtr node,
-							 const unsigned char *buf,
-							 size_t size);
-XMLSEC_EXPORT int	xmlSecXsltAddStylesheet		(xmlNodePtr node, 
-							 const xmlChar *xslt);
-
-XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces	(xmlNodePtr node,
-							 const xmlChar *prefixList);
-							 
-XMLSEC_EXPORT int 	xmlSecTransformXPathAdd		(xmlNodePtr node, 
-							 const xmlChar *expression,
-							 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPath2Add	(xmlNodePtr node, 
-							 const xmlChar* type,
-							 const xmlChar *expression,
-							 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd	(xmlNodePtr node, 
-							 const xmlChar *expression,
-							 const xmlChar **namespaces);
-
+/**
+ * <dsig:Transform> node
+ */
+XMLSEC_EXPORT int	xmlSecTmplTransformAddHmacOutputLength	(xmlNodePtr transformNode,
+								 size_t bitsLen);
+XMLSEC_EXPORT int  	xmlSecTmplTransformAddRsaOaepParam	(xmlNodePtr transformNode,
+								 const unsigned char *buf,
+								 size_t size);
+XMLSEC_EXPORT int	xmlSecTmplTransformAddXsltStylesheet	(xmlNodePtr transformNode, 
+								 const xmlChar *xslt);
+XMLSEC_EXPORT int	xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
+								 const xmlChar *prefixList);							 
+XMLSEC_EXPORT int 	xmlSecTmplTransformAddXPath		(xmlNodePtr transformNode, 
+								 const xmlChar *expression,
+								 const xmlChar **nsList);
+XMLSEC_EXPORT int 	xmlSecTmplTransformAddXPath2		(xmlNodePtr transformNode, 
+								 const xmlChar* type,
+								 const xmlChar *expression,
+								 const xmlChar **nsList);
+XMLSEC_EXPORT int 	xmlSecTmplTransformAddXPointer		(xmlNodePtr transformNode, 
+								 const xmlChar *expression,
+								 const xmlChar **nsList);
 
 #ifdef __cplusplus
 }

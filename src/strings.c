@@ -38,6 +38,7 @@ const xmlChar xmlSecNodeDigestMethod[]		= "DigestMethod";
 const xmlChar xmlSecNodeDigestValue[]		= "DigestValue";
 const xmlChar xmlSecNodeObject[]		= "Object";
 const xmlChar xmlSecNodeManifest[]		= "Manifest";
+const xmlChar xmlSecNodeSignatureProperties[]	= "SignatureProperties";
 
 /*************************************************************************
  *
@@ -79,6 +80,7 @@ const xmlChar xmlSecAttrEncoding[]		= "Encoding";
 const xmlChar xmlSecAttrAlgorithm[]		= "Algorithm";
 const xmlChar xmlSecAttrFilter[]		= "Filter";
 const xmlChar xmlSecAttrRecipient[]		= "Recipient";
+const xmlChar xmlSecAttrTarget[]		= "Target";
 
 /*************************************************************************
  *

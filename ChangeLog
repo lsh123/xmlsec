@@ -1,3 +1,7 @@
+Wed  6 Apr 2005 00:18:21 CEST Igor Zlatkovic <igor@zlatkovic.com>
+
+	* .cvsignore: added Eclipse project files
+
 2005-03-31  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/xmltree.c: fixing warning from Solaris (bug #172201)

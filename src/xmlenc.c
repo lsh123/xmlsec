@@ -65,10 +65,12 @@ static int			xmlSecEncStateAddTransform	(xmlSecEncStatePtr state,
 								 xmlSecTransformPtr transform);
 
 #define xmlSecEncResultIsValid(result) \
-	    ((( result ) != NULL) && ((result)->ctx != NULL))
+	    ((( result ) != NULL) \
+	    && ((result)->ctx != NULL) \
+	    && ((result)->ctx->keysMngrCtx != NULL) )
 #define xmlSecEncResultGetKeyCallback(result) \
 	    ( ( xmlSecEncResultIsValid((result)) ) ? \
-		((result)->ctx->keysMngr->getKey) : \
+		((result)->ctx->keysMngrCtx->keysMngr->getKey) : \
 		NULL )
 
 
@@ -118,8 +120,15 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecEncCtx));
-    
-    ctx->keysMngr = keysMngr;
+
+    ctx->keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);
+    if(ctx->keysMngrCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrCtxCreate");
+	xmlSecEncCtxDestroy(ctx);
+	return(NULL);
+    }
     return(ctx);
 }
 
@@ -132,6 +141,10 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 void
 xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
+
+    if(ctx->keysMngrCtx != NULL) {
+	xmlSecKeysMngrCtxDestroy(ctx->keysMngrCtx);
+    }
     
     memset(ctx, 0, sizeof(xmlSecEncCtx));
     xmlFree(ctx);
@@ -588,8 +601,6 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
 /**
  * xmlSecEncryptMemory:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -604,7 +615,7 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -615,7 +626,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
     xmlSecAssert2(buf != NULL, -1);    
     
-    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
+    res = xmlSecEncResultCreate(ctx, 1, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -686,8 +697,6 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecEncryptUri:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -701,7 +710,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -714,7 +723,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
     xmlSecAssert2(uri != NULL, -1);    
 
-    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
+    res = xmlSecEncResultCreate(ctx, 1, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -811,8 +820,6 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecEncryptXmlNode:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -826,7 +833,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -838,7 +845,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
     xmlSecAssert2(src != NULL, -1);    
 
-    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
+    res = xmlSecEncResultCreate(ctx, 1, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -983,8 +990,6 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecDecrypt:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -995,7 +1000,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecDecrypt(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
@@ -1005,7 +1010,7 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
 
     /* first of all, create result and encryption state objects */
-    res = xmlSecEncResultCreate(ctx, context, 0, encNode);
+    res = xmlSecEncResultCreate(ctx, 0, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1259,8 +1264,6 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
 /**
  * xmlSecEncResultCreate:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @encrypt: the encrypt/decrypt flag.
  * @node: the pointer to <enc:EncryptedData> node.
  * 
@@ -1270,7 +1273,7 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
  * if an error occurs.
  */ 		
 xmlSecEncResultPtr		
-xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
+xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, int encrypt, xmlNodePtr node) {
     xmlSecEncResultPtr result;
 
     xmlSecAssert2(ctx != NULL, NULL);    
@@ -1291,7 +1294,6 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePt
     result->ctx = ctx;
     result->self = node;
     result->encrypt = encrypt;
-    result->context = context;
     return(result);
 }
 
@@ -1442,6 +1444,8 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     xmlSecAssert2(encNode != NULL, -1);
     xmlSecAssert2(state!= NULL, -1);    
     xmlSecAssert2(result != NULL, -1);
+    xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(result->ctx->keysMngrCtx != NULL, -1);
 
     result->id = xmlGetProp(encNode, BAD_CAST "Id");
     result->type = xmlGetProp(encNode, BAD_CAST "Type");
@@ -1488,24 +1492,17 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
     if((result->key == NULL) && (xmlSecEncResultGetKeyCallback(result) != NULL)) {
-        xmlSecKeyValueId keyId;
-        xmlSecKeyValueType keyType;    
-        xmlSecKeyUsage keyUsage;
-
 	if(result->encrypt) {
-	    keyType = xmlSecBinTransformIdGetEncKeyType(result->encryptionMethod);
-	    keyUsage = xmlSecKeyUsageEncrypt;
+	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetEncKeyType(result->encryptionMethod);
+	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageEncrypt;
 	} else {
-	    keyType = xmlSecBinTransformIdGetDecKeyType(result->encryptionMethod);
-	    keyUsage = xmlSecKeyUsageDecrypt;
+	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetDecKeyType(result->encryptionMethod);
+	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageDecrypt;
 	}
-	keyId = xmlSecBinTransformIdGetKeyId(result->encryptionMethod);
+	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->encryptionMethod);
 		
 	result->key = xmlSecEncResultGetKeyCallback(result)
-					(keyInfoNode, result->ctx->keysMngr, 
-					result->context, keyId, keyType, 
-					keyUsage,
-					result->ctx->certsVerificationTime); 
+					(keyInfoNode, result->ctx->keysMngrCtx); 
     }    
     if(result->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1523,7 +1520,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     if(result->encrypt && (keyInfoNode != NULL)) {
 	/* update KeyInfo! */
 	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, 
-			result->ctx->keysMngr, result->context,
+			result->ctx->keysMngrCtx,
 		    	result->key, 
 			xmlSecBinTransformIdGetDecKeyType(result->encryptionMethod));
 	if(ret < 0) {

@@ -454,12 +454,12 @@ int main(int argc, char **argv) {
 	    if(readTime(argv[++pos], &t) >= 0) {
 #ifndef XMLSEC_NO_XMLDSIG
 		if(dsigCtx != NULL) {
-		    dsigCtx->certsVerificationTime = t;		        
+		    dsigCtx->keysMngrCtx->certsVerificationTime = t;		        
 		}  
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
 		if(encCtx != NULL) { 
-		    encCtx->certsVerificationTime = t;		        
+		    encCtx->keysMngrCtx->certsVerificationTime = t;		        
 		} 
 #endif /* XMLSEC_NO_XMLENC */
 		if(keyMgr != NULL) {
@@ -968,7 +968,16 @@ int  readKeyOrigins(char *keyOrigins) {
 	}
 	p = strtok(NULL, ",");
     }    
-    keyMgr->allowedOrigins = res;
+#ifndef XMLSEC_NO_XMLDSIG
+    if(dsigCtx != NULL) {
+	dsigCtx->keysMngrCtx->allowedOrigins = res;
+    }  
+#endif /* XMLSEC_NO_XMLDSIG */
+#ifndef XMLSEC_NO_XMLENC
+    if(encCtx != NULL) { 
+	encCtx->keysMngrCtx->allowedOrigins = res;
+    } 
+#endif /* XMLSEC_NO_XMLENC */
     return(0);
 }
 
@@ -1155,7 +1164,7 @@ int generateDSig(xmlDocPtr doc) {
     }    
 
     start_time = clock();
-    ret = xmlSecDSigGenerate(dsigCtx, NULL, sessionKey, signNode, &result);
+    ret = xmlSecDSigGenerate(dsigCtx, sessionKey, signNode, &result);
     total_time += clock() - start_time;    
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
@@ -1214,7 +1223,7 @@ int validateDSig(xmlDocPtr doc) {
     }    
 
     start_time = clock();        
-    ret = xmlSecDSigValidate(dsigCtx, NULL, sessionKey, signNode, &result);
+    ret = xmlSecDSigValidate(dsigCtx, sessionKey, signNode, &result);
     total_time += clock() - start_time;    
     if((ret < 0) || (result == NULL)){
 	fprintf(stdout,"ERROR\n");
@@ -1282,7 +1291,7 @@ int encrypt(xmlDocPtr tmpl) {
 
     if(binary && (data != NULL)) {
         start_time = clock();        
-	ret = xmlSecEncryptUri(encCtx, NULL, sessionKey,
+	ret = xmlSecEncryptUri(encCtx, sessionKey,
 				xmlDocGetRootElement(tmpl), data, 
 				&encResult);
         total_time += clock() - start_time;    
@@ -1326,7 +1335,7 @@ int encrypt(xmlDocPtr tmpl) {
 	}
 
         start_time = clock();        	
-	ret = xmlSecEncryptXmlNode(encCtx, NULL, sessionKey,
+	ret = xmlSecEncryptXmlNode(encCtx, sessionKey,
 				xmlDocGetRootElement(tmpl), 
 				cur, &encResult);	
         total_time += clock() - start_time;    
@@ -1397,7 +1406,7 @@ int decrypt(xmlDocPtr doc) {
     }
 
     start_time = clock();            
-    ret = xmlSecDecrypt(encCtx, NULL, sessionKey, cur, &encResult);
+    ret = xmlSecDecrypt(encCtx, sessionKey, cur, &encResult);
     total_time += clock() - start_time;    
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDecrypt() failed \n");

@@ -14,8 +14,67 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-
 #ifndef XMLSEC_NO_X509
+#if 0
+/***************************************************************************
+ *
+ * xmlSecKeyDataX509
+ *
+ **************************************************************************/
+typedef struct _xmlSecKeyDataX509IdStruct*	xmlSecKeyDataX509Id;
+struct _xmlSecKeyDataX509IdStruct {
+    /* same as xmlSecDataId */
+    const xmlChar*			href;
+    const xmlChar*			childNodeName;
+    const xmlChar*			childNodeNs;
+    xmlSecKeyOrigin			origin; 
+    
+    xmlSecKeyDataCreateMethod		create;
+    xmlSecKeyDataDestroyMethod		destroy;
+    xmlSecKeyDataDuplicateMethod	duplicate;
+    xmlSecKeyDataReadXmlMethod		read;
+    xmlSecKeyDataWriteXmlMethod		write;
+    xmlSecKeyDataReadBinaryMethod	readBin;
+    xmlSecKeyDataWriteBinaryMethod	writeBin;
+
+    /* new in xmlSecDataX509Id */
+};
+
+/***************************************************************************
+ *
+ * xmlSecKeyDataPGP
+ *
+ **************************************************************************/
+typedef struct _xmlSecKeyDataPGPIdStruct*	xmlSecKeyDataPGPId;
+struct _xmlSecKeyDataPGPIdStruct {
+    /* same as xmlSecDataId */
+    const xmlChar*			href;
+    const xmlChar*			childNodeName;
+    const xmlChar*			childNodeNs;
+    xmlSecKeyOrigin			origin; 
+    
+    xmlSecKeyDataCreateMethod		create;
+    xmlSecKeyDataDestroyMethod		destroy;
+    xmlSecKeyDataDuplicateMethod	duplicate;
+
+    /* new in xmlSecDataPGPId */
+};
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 typedef enum {
     xmlSecX509DataTypeUnknown = 0,

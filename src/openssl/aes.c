@@ -107,8 +107,8 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     
     /* binary data/methods */
     &xmlSecAesKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     xmlSecAesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
@@ -139,8 +139,8 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     
     /* binary data/methods */
     &xmlSecAesKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     xmlSecAesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
@@ -171,8 +171,8 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     
     /* binary data/methods */
     &xmlSecAesKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     xmlSecAesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
@@ -222,8 +222,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes128Id = {
     
     /* binary data/methods */
     &xmlSecAesKeyValueId,
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeBuffered,
     xmlSecKWAesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecBufferedTransformRead,	/* xmlSecBinTransformReadMethod readBin; */
@@ -248,8 +248,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes192Id = {
     
     /* binary data/methods */
     &xmlSecAesKeyValueId,
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeBuffered,
     xmlSecKWAesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecBufferedTransformRead,	/* xmlSecBinTransformReadMethod readBin; */
@@ -273,8 +273,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes256Id = {
     
     /* binary data/methods */
     &xmlSecAesKeyValueId,
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeBuffered,
     xmlSecKWAesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecBufferedTransformRead,	/* xmlSecBinTransformReadMethod readBin; */
@@ -809,7 +809,7 @@ xmlSecAesKeyValueDuplicate(xmlSecKeyValuePtr key) {
 	    xmlSecKeyValueDestroy(newKey);
 	    return(NULL);    
 	}
-	newKey->type = xmlSecKeyValueTypePrivate;
+	newKey->type = xmlSecKeyValueTypeAny;
     }
     return(newKey);
 }
@@ -852,7 +852,7 @@ xmlSecAesKeyValueGenerate(xmlSecKeyValuePtr key, int keySize) {
     }
     
     key->keyData = keyData;
-    key->type = xmlSecKeyValueTypePrivate;    
+    key->type = xmlSecKeyValueTypeAny;
     return(0);    
 }
 
@@ -883,7 +883,7 @@ xmlSecAesKeyValueSet(xmlSecKeyValuePtr key, void* data, int dataSize) {
     }
     
     key->keyData = keyData;
-    key->type = xmlSecKeyValueTypePrivate;    
+    key->type = xmlSecKeyValueTypeAny;
     return(0);    
 }
 
@@ -929,7 +929,7 @@ xmlSecAesKeyValueRead(xmlSecKeyValuePtr key, xmlNodePtr node) {
 	    xmlFree(value);
 	    return(-1);
 	}
-	key->type = xmlSecKeyValueTypePrivate;
+	key->type = xmlSecKeyValueTypeAny;
     }
 
     xmlFree(value);
@@ -960,11 +960,6 @@ xmlSecAesKeyValueWrite(xmlSecKeyValuePtr key, xmlSecKeyValueType type, xmlNodePt
 	return(0);
     }
     
-    if((ptr->key == NULL) || (key->type != xmlSecKeyValueTypePrivate)) {
-	/* and we have no private key :) */
-	return(0);
-    }
-
     ret = xmlSecKeyInfoWriteAESKeyValueNode(parent, ptr->key, ptr->keySize); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -1002,7 +997,7 @@ xmlSecAesKeyValueReadBinary(xmlSecKeyValuePtr key, const unsigned char *buf, siz
 		    "xmlSecAesKeyValueDataCreate");
 	    return(-1);
 	}
-	key->type = xmlSecKeyValueTypePrivate;
+	key->type = xmlSecKeyValueTypeAny;
     }
     return(0);
 }

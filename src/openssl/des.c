@@ -106,8 +106,8 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     
     /* binary data/methods */
     &xmlSecDesKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     xmlSecDesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
@@ -166,8 +166,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
     
     /* binary data/methods */
     &xmlSecDesKeyValueId,
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeBuffered,
     xmlSecDes3KWAddKey,		/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecBufferedTransformRead,	/* xmlSecBinTransformReadMethod readBin; */
@@ -799,7 +799,7 @@ xmlSecDesKeyValueDuplicate(xmlSecKeyValuePtr key) {
 	    xmlSecKeyValueDestroy(newKey);
 	    return(NULL);    
 	}
-	newKey->type = xmlSecKeyValueTypePrivate;
+	newKey->type = xmlSecKeyValueTypeAny;
     }
     return(newKey);
 }
@@ -841,7 +841,7 @@ xmlSecDesKeyValueGenerate(xmlSecKeyValuePtr key, int keySize) {
     }
     
     key->keyData = keyData;
-    key->type = xmlSecKeyValueTypePrivate;    
+    key->type = xmlSecKeyValueTypeAny;    
     return(0);    
 }
 
@@ -872,7 +872,7 @@ xmlSecDesKeyValueSet(xmlSecKeyValuePtr key, void* data, int dataSize) {
     }
     
     key->keyData = keyData;
-    key->type = xmlSecKeyValueTypePrivate;    
+    key->type = xmlSecKeyValueTypeAny;    
     return(0);    
 }
 
@@ -917,7 +917,7 @@ xmlSecDesKeyValueRead(xmlSecKeyValuePtr key, xmlNodePtr node) {
 	    xmlFree(value);
 	    return(-1);
 	}
-	key->type = xmlSecKeyValueTypePrivate;
+	key->type = xmlSecKeyValueTypeAny;
     }
 
     xmlFree(value);
@@ -945,11 +945,6 @@ xmlSecDesKeyValueWrite(xmlSecKeyValuePtr key, xmlSecKeyValueType type, xmlNodePt
 
     if((type != xmlSecKeyValueTypePrivate) && (type != xmlSecKeyValueTypeAny)){
 	/* we can have only private key */
-	return(0);
-    }
-    
-    if((ptr->key == NULL) || (key->type != xmlSecKeyValueTypePrivate)) {
-	/* and we have no private key :) */
 	return(0);
     }
     
@@ -990,7 +985,7 @@ xmlSecDesKeyValueReadBinary(xmlSecKeyValuePtr key, const unsigned char *buf, siz
 			"xmlSecDesKeyValueDataCreate");
 	    return(-1);
 	}
-	key->type = xmlSecKeyValueTypePrivate;
+	key->type = xmlSecKeyValueTypeAny;
     }
     return(0);
 }

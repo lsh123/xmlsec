@@ -1,3 +1,14 @@
+Tue Nov 12 23:34:02 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c include/xmlsec/keyinfo.h 
+	include/xmlsec/keys.h include/xmlsec/keysmngr.h
+	include/xmlsec/keyvalue.h include/xmlsec/x509.h
+	include/xmlsec/xmldsig.h include/xmlsec/xmlenc.h
+	src/keyinfo.c src/keys.c src/keyvalue.c 
+	 src/xmldsig.c src/xmlenc.c src/openssl/aes.c 
+	src/openssl/des.c src/openssl/hmac.c src/openssl/keysmngr.c:
+	created xmlSecKeysMgrCtx structure 
+
 Thu Nov  7 00:25:41 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* apps/xmlsec.c 
 	include/xmlsec/crypto.h include/xmlsec/keys.h 

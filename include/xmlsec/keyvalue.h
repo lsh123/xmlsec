@@ -145,6 +145,9 @@ XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueDuplicate	(xmlSecKeyValuePtr key,
 XMLSEC_EXPORT int		xmlSecKeyValueSet	(xmlSecKeyValuePtr key, 
 							 void* data,
 							 int dataSize);
+XMLSEC_EXPORT int		xmlSecKeyValueCheck	(xmlSecKeyValuePtr key, 
+							 xmlSecKeyValueId keyId,
+							 xmlSecKeyValueType keyType);
 XMLSEC_EXPORT void		xmlSecKeyValueDebugDump	(xmlSecKeyValuePtr key,
 							 FILE *output);
 XMLSEC_EXPORT void		xmlSecKeyValueDebugXmlDump(xmlSecKeyValuePtr key,

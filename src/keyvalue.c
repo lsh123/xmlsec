@@ -241,6 +241,22 @@ xmlSecKeyValueSet(xmlSecKeyValuePtr key,  void* data, int dataSize) {
     return(0);
 }
 
+int
+xmlSecKeyValueCheck(xmlSecKeyValuePtr key, xmlSecKeyValueId keyId, xmlSecKeyValueType keyType) {
+    xmlSecAssert2(key != NULL, -1);
+
+    if((keyId != xmlSecKeyValueIdUnknown) && (keyId != key->id)) {
+	return(0);
+    }
+    if((keyType != xmlSecKeyValueTypeAny) && 
+       (key->type != xmlSecKeyValueTypeAny) && 
+       (key->type != keyType) && 
+       (key->type != xmlSecKeyValueTypePrivate)) {
+	 return(0);
+    }
+    return(1);
+}
+
 /**
  * xmlSecKeyValueReadXml:
  * @id: the key id.

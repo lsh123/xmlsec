@@ -25,12 +25,7 @@ XMLSEC_EXPORT void		xmlSecSimpleKeysMngrDestroy 	(xmlSecKeysMngrPtr mngr);
 /**
  * Keys functions
  */
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
-							 void *context,
-							 const xmlChar *name,
-							 xmlSecKeyValueId id, 
-							 xmlSecKeyValueType type,
-							 xmlSecKeyUsage usage);
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrCtxPtr keysMngrCtx);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddKey	(xmlSecKeysMngrPtr mngr, 
 							 xmlSecKeyPtr key);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoad 	(xmlSecKeysMngrPtr mngr,
@@ -47,15 +42,13 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr
  * X509 certificates management
  */
 #ifndef XMLSEC_NO_X509						 
-XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find (xmlSecKeysMngrPtr mngr,
-							 void *context,
+XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find (xmlSecKeysMngrCtxPtr keysMngrCtx,
 							 xmlChar *subjectName,
 							 xmlChar *issuerName,
 							 xmlChar *issuerSerial,
 							 xmlChar *ski,
 							 xmlSecX509DataPtr cert);
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrPtr mngr,
-							 void *context,
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrCtxPtr keysMngrCtx,
     							 xmlSecX509DataPtr cert);  
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
 							 const char *filename,

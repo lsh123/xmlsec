@@ -65,10 +65,10 @@ typedef struct _xmlSecHmacKeyValueData {
 static xmlSecHmacKeyValueDataPtr xmlSecHmacKeyValueDataCreate	(const unsigned char *key,
 							size_t keySize);
 static void		xmlSecHmacKeyValueDataDestroy	(xmlSecHmacKeyValueDataPtr data);
-static xmlSecKeyValuePtr	xmlSecHmacKeyValueCreate		(xmlSecKeyValueId id);
-static void		xmlSecHmacKeyValueDestroy		(xmlSecKeyValuePtr key);
-static xmlSecKeyValuePtr	xmlSecHmacKeyValueDuplicate		(xmlSecKeyValuePtr key);
-static int		xmlSecHmacKeyValueGenerate		(xmlSecKeyValuePtr key,
+static xmlSecKeyValuePtr	xmlSecHmacKeyValueCreate(xmlSecKeyValueId id);
+static void		xmlSecHmacKeyValueDestroy	(xmlSecKeyValuePtr key);
+static xmlSecKeyValuePtr	xmlSecHmacKeyValueDuplicate(xmlSecKeyValuePtr key);
+static int		xmlSecHmacKeyValueGenerate	(xmlSecKeyValuePtr key,
 							 int keySize);
 static int		xmlSecHmacKeyValueSet		(xmlSecKeyValuePtr key,
 							 void* data,
@@ -78,7 +78,7 @@ static int		xmlSecHmacKeyValueRead		(xmlSecKeyValuePtr key,
 static int		xmlSecHmacKeyValueWrite		(xmlSecKeyValuePtr key,
 							 xmlSecKeyValueType type,
 							 xmlNodePtr parent);
-static  int		xmlSecHmacKeyValueReadBinary		(xmlSecKeyValuePtr key,
+static  int		xmlSecHmacKeyValueReadBinary	(xmlSecKeyValuePtr key,
 							 const unsigned char *buf,
 							 size_t size);
 static  int		xmlSecHmacKeyValueWriteBinary	(xmlSecKeyValuePtr key,
@@ -119,8 +119,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacSha1Id = {
     
     /* xmlSecBinTransform data/methods */
     &xmlSecHmacKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeDigest,	/* xmlSecBinTransformSubType binSubType; */
             
     xmlSecMacHmacAddKey,		/* xmlSecBinTransformAddKeyMethod addBinKey; */
@@ -151,8 +151,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacMd5Id = {
     
     /* xmlSecBinTransform data/methods */
     &xmlSecHmacKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeDigest,	/* xmlSecBinTransformSubType binSubType; */
             
     xmlSecMacHmacAddKey,		/* xmlSecBinTransformAddKeyMethod addBinKey; */
@@ -182,8 +182,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacRipeMd160Id = {
     
     /* xmlSecBinTransform data/methods */
     &xmlSecHmacKeyValueId,
-    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeDigest,	/* xmlSecBinTransformSubType binSubType; */
             
     xmlSecMacHmacAddKey,		/* xmlSecBinTransformAddKeyMethod addBinKey; */
@@ -577,7 +577,7 @@ xmlSecHmacKeyValueDuplicate(xmlSecKeyValuePtr key) {
 	    xmlSecKeyValueDestroy(newKey);
 	    return(NULL);    
 	}
-	newKey->type = xmlSecKeyValueTypePrivate;
+	newKey->type = xmlSecKeyValueTypeAny;
     }
     return(newKey);
 }
@@ -619,7 +619,7 @@ xmlSecHmacKeyValueGenerate(xmlSecKeyValuePtr key, int keySize) {
 	key->keyData = NULL;
     }
     key->keyData = data;
-    key->type = xmlSecKeyValueTypePrivate;    
+    key->type = xmlSecKeyValueTypeAny;    
     return(0);    
 }
 
@@ -649,7 +649,7 @@ xmlSecHmacKeyValueSet(xmlSecKeyValuePtr key, void* data, int dataSize) {
 	key->keyData = NULL;
     }
     key->keyData = keyData;
-    key->type = xmlSecKeyValueTypePrivate;    
+    key->type = xmlSecKeyValueTypeAny;    
     return(0);    
 }
 
@@ -695,7 +695,7 @@ xmlSecHmacKeyValueRead(xmlSecKeyValuePtr key, xmlNodePtr node) {
 	    xmlFree(value);
 	    return(-1);
 	}
-	key->type = xmlSecKeyValueTypePrivate;
+	key->type = xmlSecKeyValueTypeAny;
     }
     xmlFree(value);
     return(0);
@@ -722,11 +722,6 @@ xmlSecHmacKeyValueWrite(xmlSecKeyValuePtr key, xmlSecKeyValueType type, xmlNodeP
 
     if((type != xmlSecKeyValueTypePrivate) && (type != xmlSecKeyValueTypeAny)){
 	/* we can have only private key */
-	return(0);
-    }
-    
-    if((ptr->key == NULL) || (key->type != xmlSecKeyValueTypePrivate)) {
-	/* and we have no private key :) */
 	return(0);
     }
     
@@ -767,7 +762,7 @@ xmlSecHmacKeyValueReadBinary(xmlSecKeyValuePtr key, const unsigned char *buf, si
 			"xmlSecHmacKeyValueDataCreate");
 	    return(-1);
 	}
-	key->type = xmlSecKeyValueTypePrivate;
+	key->type = xmlSecKeyValueTypeAny;
     }
     return(0);
 }

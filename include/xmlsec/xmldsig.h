@@ -43,13 +43,12 @@ typedef struct _xmlSecReferenceResult xmlSecReferenceResult, *xmlSecReferenceRes
  * XML DSig context. 
  */
 struct _xmlSecDSigCtx {
-    xmlSecKeysMngrPtr		keysMngr;
+    xmlSecKeysMngrCtxPtr 	keysMngrCtx;
     int				processManifests;
     int				storeSignatures;
     int				storeReferences;
     int				storeManifests;	
     int				fakeSignatures;
-    time_t			certsVerificationTime;
 };
 
 /**
@@ -75,7 +74,6 @@ struct _xmlSecDSigCtx {
  */
 struct _xmlSecDSigResult {
     xmlSecDSigCtxPtr		ctx;
-    void			*context;
     xmlNodePtr			self;
     int				sign;
     xmlSecTransformStatus	result;
@@ -178,12 +176,10 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecManifestAddReference	(xmlNodePtr manifestNode,
  * DSig generation/validation
  */
 XMLSEC_EXPORT int		xmlSecDSigValidate		(xmlSecDSigCtxPtr ctx,
-								 void *context,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
 XMLSEC_EXPORT int		xmlSecDSigGenerate		(xmlSecDSigCtxPtr ctx,
-								 void *context,
 								 xmlSecKeyPtr key,								 
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
@@ -191,7 +187,6 @@ XMLSEC_EXPORT int		xmlSecDSigGenerate		(xmlSecDSigCtxPtr ctx,
  * DSig results methods
  */
 XMLSEC_EXPORT xmlSecDSigResultPtr xmlSecDSigResultCreate	(xmlSecDSigCtxPtr ctx,
-								 void *context,
 								 xmlNodePtr signNode,
 								 int sign);
 XMLSEC_EXPORT void		xmlSecDSigResultDestroy		(xmlSecDSigResultPtr result);

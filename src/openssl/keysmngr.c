@@ -33,7 +33,7 @@
  * Simple Keys Manager
  */
 
-#define XMLSEC_SIMPLEKEYMNGR_DEFAULT			16
+#define XMLSEC_SIMPLEKEYSMNGR_DEFAULT			16
 
 typedef struct _xmlSecSimpleKeysMngrData {
      xmlSecKeyPtr			*keys;
@@ -66,10 +66,6 @@ xmlSecSimpleKeysMngrCreate(void) {
     }
     memset(mngr, 0, sizeof(xmlSecKeysMngr));
     mngr->getKey = xmlSecKeysMngrGetKey;
-    /* set "smart" defaults */
-    mngr->allowedOrigins = xmlSecKeyOriginAll;
-    mngr->maxRetrievalsLevel = 1;
-    mngr->maxEncKeysLevel = 1;
 
     /* keys */
     mngr->keysData = xmlSecSimpleKeysDataCreate();       
@@ -123,11 +119,7 @@ xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
 /**
  * xmlSecSimpleKeysMngrFindKey
  * @mngr: the keys manager.
- * @context: the pointer to application specific data.
- * @name: the required key name (or NULL for "any").
- * @id: the required key Id (or NULL for "any").
- * @type: the required key (may be "any").
- * @usage: the required key usage.
+ * @keysMngrCtx: the pointer to application specific data.
  *
  * Searches the simple keys manager for specified key. This is an 
  * implementation of the #xmlSecFindKeyCallback for the simple keys
@@ -137,19 +129,22 @@ xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
  * an error occurs.
  */
 xmlSecKeyPtr 		
-xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
-			    const xmlChar *name, xmlSecKeyValueId id, xmlSecKeyValueType type, 
-			    xmlSecKeyUsage usage ATTRIBUTE_UNUSED) {
+xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrCtxPtr keysMngrCtx) {
     xmlSecSimpleKeysDataPtr keysData;
     xmlSecKeyPtr key;
     size_t i;
 
-    xmlSecAssert2(mngr != NULL, NULL);
-    xmlSecAssert2(mngr->keysData != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx->keysMngr->keysData != NULL, NULL);
 
-    keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);    
+    keysData = (xmlSecSimpleKeysDataPtr)((keysMngrCtx->keysMngr)->keysData);    
     for(i = 0; i < keysData->curSize; ++i) {
-	if(xmlSecKeyCheck(keysData->keys[i], name, id, type) == 1) {
+	if(xmlSecKeyCheck(keysData->keys[i], 
+			  keysMngrCtx->keyName, 
+			  keysMngrCtx->keyId, 
+			  keysMngrCtx->keyType) == 1) {
+
 	    key = xmlSecKeyDuplicate(keysData->keys[i]);
 	    if(key == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -185,17 +180,17 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
         
     if(keysData->maxSize == 0) {
-	keysData->keys = (xmlSecKeyPtr *) xmlMalloc(XMLSEC_SIMPLEKEYMNGR_DEFAULT *
+	keysData->keys = (xmlSecKeyPtr *) xmlMalloc(XMLSEC_SIMPLEKEYSMNGR_DEFAULT *
 					    sizeof(xmlSecKeyPtr));
 	if(keysData->keys == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
 			"%d", 
-			XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr));
+			XMLSEC_SIMPLEKEYSMNGR_DEFAULT * sizeof(xmlSecKeyPtr));
 	    return(-1);
 	}
-	memset(keysData->keys, 0, XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr)); 
-	keysData->maxSize = XMLSEC_SIMPLEKEYMNGR_DEFAULT;
+	memset(keysData->keys, 0, XMLSEC_SIMPLEKEYSMNGR_DEFAULT * sizeof(xmlSecKeyPtr)); 
+	keysData->maxSize = XMLSEC_SIMPLEKEYSMNGR_DEFAULT;
     } else if(keysData->curSize == keysData->maxSize) {
 	xmlSecKeyPtr *newKeys;
 	size_t newMax;
@@ -228,6 +223,7 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
  */
 int
 xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx;
     xmlSecKeysMngr keysMngr;
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -237,6 +233,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
+
     
     doc = xmlParseFile(uri);
     if(doc == NULL) {
@@ -255,17 +252,26 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 	return(-1);
     }
     
+    keysMngrCtx = xmlSecKeysMngrCtxCreate(&keysMngr);
+    if(keysMngrCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrCtxCreate");
+	xmlFreeDoc(doc);
+	return(-1);
+    }    
+    keysMngrCtx->allowedOrigins = xmlSecKeyOriginAll;
+
     memcpy(&keysMngr, mngr, sizeof(keysMngr));
-    keysMngr.allowedOrigins = xmlSecKeyOriginAll;
     cur = xmlSecGetNextElementNode(root->children);
     while(xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs)) {  
-	key = xmlSecKeyInfoNodeRead(cur, &keysMngr, NULL, xmlSecKeyValueIdUnknown,
-				    xmlSecKeyValueTypeAny, xmlSecKeyUsageAny, 0);
+	key = xmlSecKeyInfoNodeRead(cur, keysMngrCtx);
 	if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyInfoNodeRead");
 	    if(strict) {
+		xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 		xmlFreeDoc(doc);
 		return(-1);	
 	    }
@@ -275,6 +281,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecSimpleKeysMngrAddKey - %d", ret);
+		xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 		xmlSecKeyDestroy(key);
 		xmlFreeDoc(doc);
 		return(-1);	
@@ -287,10 +294,12 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    (cur->name != NULL) ? (char*) cur->name : "NULL");
+	xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 	xmlFreeDoc(doc);
 	return(-1);	    
     }
     
+    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
     xmlFreeDoc(doc);
     return(0);
 }
@@ -309,6 +318,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 int
 xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr, 
 			const char *filename, xmlSecKeyValueType type) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx;
     xmlSecSimpleKeysDataPtr keysData;  
     xmlSecKeysMngr keysMngr;
     xmlDocPtr doc;
@@ -323,7 +333,6 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
     
     keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
     memset(&keysMngr, 0, sizeof(keysMngr));
-    keysMngr.allowedOrigins = xmlSecKeyOriginKeyValue;
     
     /* create doc */
     doc = xmlNewDoc(BAD_CAST "1.0");
@@ -351,12 +360,24 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	xmlFreeDoc(doc); 
 	return(-1);
     }
+
+    keysMngrCtx = xmlSecKeysMngrCtxCreate(&keysMngr);
+    if(keysMngrCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrCtxCreate");
+	xmlFreeDoc(doc);
+	return(-1);
+    }    
+    keysMngrCtx->allowedOrigins = xmlSecKeyOriginAll;
+
     for(i = 0; i < keysData->curSize; ++i) {
 	cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecDSigNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecAddChild(\"KeyInfo\")");
+	    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}
@@ -365,6 +386,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecAddChild(\"KeyName\")");
+	    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}
@@ -373,6 +395,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecAddChild(\"KeyValue\")");
+	    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}
@@ -383,17 +406,19 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecAddChild(\"X509Data\")");
+		xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 		xmlFreeDoc(doc); 
 		return(-1);
 	    }
 	}
 #endif /* XMLSEC_NO_X509 */	     
 
-	ret = xmlSecKeyInfoNodeWrite(cur, &keysMngr, NULL, keysData->keys[i], type);
+	ret = xmlSecKeyInfoNodeWrite(cur, keysMngrCtx, keysData->keys[i], type);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyInfoNodeWrite - %d", ret);
+	    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}		
@@ -405,10 +430,12 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "xmlSaveFormatFile(\"%s\") - %d", filename, ret);
+	xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 	xmlFreeDoc(doc); 
 	return(-1);
     }	   
     
+    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
     xmlFreeDoc(doc);
     return(0);
 }
@@ -526,8 +553,7 @@ xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
 #ifndef XMLSEC_NO_X509						 
 /**
  * xmlSecSimpleKeysMngrX509Find:
- * @mngr: the keys manager.
- * @context: the pointer application specific data.
+ * @keysMngrCtx: the pointer application specific data.
  * @subjectName: the subject name string.
  * @issuerName: the issuer name string.
  * @issuerSerial: the issuer serial.
@@ -542,14 +568,15 @@ xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
  * if an error occurs or certificate not found.
  */
 xmlSecX509DataPtr
-xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
+xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrCtxPtr keysMngrCtx,
 			    xmlChar *subjectName, xmlChar *issuerName, 
 			    xmlChar *issuerSerial, xmlChar *ski, 
 			    xmlSecX509DataPtr cert) {
-    xmlSecAssert2(mngr != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
     
-    if(mngr->x509Data != NULL) {
-	return(xmlSecX509StoreFind((xmlSecX509StorePtr)mngr->x509Data, 
+    if(keysMngrCtx->keysMngr->x509Data != NULL) {
+	return(xmlSecX509StoreFind((xmlSecX509StorePtr)keysMngrCtx->keysMngr->x509Data, 
 				    subjectName, issuerName, issuerSerial, ski,
 				    cert));
 				
@@ -559,8 +586,7 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNU
 
 /**
  * xmlSecSimpleKeysMngrX509Verify:
- * @mngr: the keys manager.
- * @context: the pointer to application specific data.
+ * @keysMngrCtx: the pointer to application specific data.
  * @cert: the cert to verify.
  *
  * Validates certificate. This is the implementation of the 
@@ -570,13 +596,14 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNU
  * and -1 if an error occurs.
  */
 int	
-xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED, 
+xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrCtxPtr keysMngrCtx, 
 			       xmlSecX509DataPtr cert) {
-    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
     
-    if(mngr->x509Data != NULL) {
-	return(xmlSecX509StoreVerify((xmlSecX509StorePtr)mngr->x509Data, cert));
+    if(keysMngrCtx->keysMngr->x509Data != NULL) {
+	return(xmlSecX509StoreVerify((xmlSecX509StorePtr)keysMngrCtx->keysMngr->x509Data, cert));
     }        
     return(0);
 }

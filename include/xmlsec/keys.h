@@ -17,18 +17,15 @@ extern "C" {
 /* forward declarations */
 typedef struct _xmlSecKey			xmlSecKey,
 						*xmlSecKeyPtr;
-
 typedef struct _xmlSecKeyDataIdStruct*		xmlSecKeyDataId;
 typedef struct _xmlSecKeyData			xmlSecKeyData,
 						*xmlSecKeyDataPtr;
+typedef struct _xmlSecKeysMngrCtx		xmlSecKeysMngrCtx,
+						*xmlSecKeysMngrCtxPtr;
+typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
+						*xmlSecKeysMngrPtr;
 
-typedef struct _xmlSecKeyDataX509IdStruct*	xmlSecKeyDataX509Id;
-typedef struct _xmlSecKeyDataX509		xmlSecKeyDataX509,
-						*xmlSecKeyDataX509Ptr;
 
-typedef struct _xmlSecKeyDataPGPIdStruct*	xmlSecKeyDataPGPId;
-typedef struct _xmlSecKeyDataPGP		xmlSecKeyDataPGP,
-						*xmlSecKeyDataPGPPtr;
 
 #include <time.h>
 #include <xmlsec/xmlsec.h>
@@ -155,7 +152,7 @@ XMLSEC_EXPORT void			xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
  * Returns the pointer to newly created #xmlSecKeyData structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyDataPtr	(*xmlSecKeyDataCreateMethod)		(xmlSecKeyDataId id);
+typedef xmlSecKeyDataPtr	(*xmlSecKeyDataCreateMethod)	(xmlSecKeyDataId id);
 /** 
  * xmlSecKeyDataDuplicateMethod:
  * @key: the key data.
@@ -165,14 +162,76 @@ typedef xmlSecKeyDataPtr	(*xmlSecKeyDataCreateMethod)		(xmlSecKeyDataId id);
  * Returns the pointer to newly created #xmlSecKeyData structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyDataPtr	(*xmlSecKeyDataDuplicateMethod)		(xmlSecKeyDataPtr key);
+typedef xmlSecKeyDataPtr	(*xmlSecKeyDataDuplicateMethod)	(xmlSecKeyDataPtr key);
 /** 
  * xmlSecKeyDataDestroyMethod:
  * @key: the key data.
  *
  * Key specific destroy method.
  */
-typedef void			(*xmlSecKeyDataDestroyMethod)		(xmlSecKeyDataPtr key);
+typedef void			(*xmlSecKeyDataDestroyMethod)	(xmlSecKeyDataPtr key);
+/** 
+ * xmlSecKeyDataReadXmlMethod:
+ * @id: the key data id.
+ * @keysMngrCtx: the keys read context.
+ * @node: the pointer to key's value XML node.
+ *
+ * Key specific reading from XML node method.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef xmlSecKeyPtr		(*xmlSecKeyDataReadXmlMethod)	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr node);
+/** 
+ * xmlSecKeyDataWriteXmlMethod:
+ * @id: the key data id.
+ * @keysMngrCtx: the keys write context.
+ * @key: the key.
+ * @parent: the pointer to key's value XML node parent node.
+ *
+ * Key specific writing to XML node method.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef int			(*xmlSecKeyDataWriteXmlMethod)	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlSecKeyPtr key,
+								 xmlNodePtr parent);
+/** 
+ * xmlSecKeyDataReadBinaryMethod:
+ * @id: the key data id.
+ * @keysMngrCtx: the keys write context.
+ * @buf: the input data buffer.
+ * @size: the input data buffer size.
+ *
+ * Key specific reading binary data method.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef xmlSecKeyPtr		(*xmlSecKeyDataReadBinaryMethod)(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 const unsigned char *buf,
+								 size_t size);
+/** 
+ * xmlSecKeyDataWriteBinaryMethod:
+ * @id: the key data id.
+ * @keysMngrCtx: the keys write context.
+ * @key: the key.
+ * @buf: the pointer to pointer to the output buffer.
+ * @size: the pointer to output buffer size.
+ *
+ * Key specific writing binary data method. The data are returned
+ * in an allocated @buf and caller is responsible for freeing
+ * it using xmlFree() function.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef int			(*xmlSecKeyDataWriteBinaryMethod)(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlSecKeyPtr key,
+								 unsigned char **buf,
+								 size_t *size);
 
 struct _xmlSecKeyDataIdStruct {
     const xmlChar*			href;
@@ -183,6 +242,10 @@ struct _xmlSecKeyDataIdStruct {
     xmlSecKeyDataCreateMethod		create;
     xmlSecKeyDataDestroyMethod		destroy;
     xmlSecKeyDataDuplicateMethod	duplicate;
+    xmlSecKeyDataReadXmlMethod		read;
+    xmlSecKeyDataWriteXmlMethod		write;
+    xmlSecKeyDataReadBinaryMethod	readBin;
+    xmlSecKeyDataWriteBinaryMethod	writeBin;
 };
     
 struct _xmlSecKeyData {
@@ -193,6 +256,22 @@ struct _xmlSecKeyData {
 XMLSEC_EXPORT xmlSecKeyDataPtr		xmlSecKeyDataCreate	(xmlSecKeyDataId id);
 XMLSEC_EXPORT void			xmlSecKeyDataDestroy	(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlSecKeyDataPtr		xmlSecKeyDataDuplicate	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyDataReadXml	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int			xmlSecKeyDataWriteXml	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlSecKeyPtr key,
+								 xmlNodePtr parent);
+XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyDataReadBinary	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 const unsigned char *buf,
+								 size_t size);
+XMLSEC_EXPORT int			xmlSecKeyDataWriteBinary(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlSecKeyPtr key,
+								 unsigned char **buf,
+								 size_t *size);
 
 /**
  * xmlSecKeyDataIsValid:
@@ -208,66 +287,60 @@ XMLSEC_EXPORT xmlSecKeyDataPtr		xmlSecKeyDataDuplicate	(xmlSecKeyDataPtr data);
  * @keyData: the pointer to key data.
  * @keyDataId: the key data Id.
  *
- * Macro. Returns 1 if @keyData is valid and @keyData's id is equal to @keyId.
+ * Macro. Returns 1 if @keyData is vali	d and @keyData's id is equal to @keyId.
  */
 #define xmlSecKeyDataCheckId(keyData, keyDataId) \
  	(xmlSecKeyDataIsValid(( keyData )) && \
 	((( keyData )->id) == ( keyDataId )))
 
-/***************************************************************************
+
+/****************************************************************************
  *
- * xmlSecKeyDataX509
+ * Key Read/Write  context
  *
- **************************************************************************/
-struct _xmlSecKeyDataX509IdStruct {
-    /* same as xmlSecDataId */
-    const xmlChar*			href;
-    const xmlChar*			childNodeName;
-    const xmlChar*			childNodeNs;
-    xmlSecKeyOrigin			origin; 
+ ***************************************************************************/
+struct _xmlSecKeysMngrCtx {
+    xmlSecKeysMngrPtr	keysMngr;
+
+    /* restrictions */
+    xmlSecKeyOrigin 	allowedOrigins;
+    int 		maxRetrievalsLevel;
+    int			maxEncKeysLevel; 
+    time_t		certsVerificationTime;
+
+    /* desired key */
+    xmlSecKeyValueId	keyId;
+    xmlSecKeyValueType	keyType;
+    xmlSecKeyUsage	keyUsage;
+    xmlChar*		keyName;
     
-    xmlSecKeyDataCreateMethod		create;
-    xmlSecKeyDataDestroyMethod		destroy;
-    xmlSecKeyDataDuplicateMethod	duplicate;
-
-    /* new in xmlSecDataX509Id */
-};
-
-struct _xmlSecKeyDataX509 {
-    /* same as xmlSecData */
-    xmlSecKeyDataId			id;
-    void*				data;
-
-    /* new in xmlSecDataX509 */
-};
-
-
-/***************************************************************************
- *
- * xmlSecKeyDataPGP
- *
- **************************************************************************/
-struct _xmlSecKeyDataPGPIdStruct {
-    /* same as xmlSecDataId */
-    const xmlChar*			href;
-    const xmlChar*			childNodeName;
-    const xmlChar*			childNodeNs;
-    xmlSecKeyOrigin			origin; 
+    /* current state */
+    int 		curRetrievalsLevel;
+    int			curEncKeysLevel; 
+    xmlSecKeyDataPtr	curX509Data;
+    xmlSecKeyDataPtr	curPgpData;
     
-    xmlSecKeyDataCreateMethod		create;
-    xmlSecKeyDataDestroyMethod		destroy;
-    xmlSecKeyDataDuplicateMethod	duplicate;
-
-    /* new in xmlSecDataPGPId */
+    void*		appContext;	
 };
 
-struct _xmlSecKeyDataPGP {
-    /* same as xmlSecData */
-    xmlSecKeyDataId			id;
-    void*				data;
+XMLSEC_EXPORT xmlSecKeysMngrCtxPtr xmlSecKeysMngrCtxCreate	(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void xmlSecKeysMngrCtxDestroy			(xmlSecKeysMngrCtxPtr ctx);
+XMLSEC_EXPORT void xmlSecKeysMngrCtxSwapState			(xmlSecKeysMngrCtxPtr ctx1,
+								 xmlSecKeysMngrCtxPtr ctx2);
 
-    /* new in xmlSecDataPGP */
-};
+#define xmlSecKeysMngrCtxCheckOrigin(ctx, origin) \
+	((((ctx) != NULL) && ((ctx)->allowedOrigins & origin)) ? \
+	    1 :\
+	    0 )
+#define xmlSecKeysMngrCtxCheckRetrievalsLevel(ctx) \
+	((((ctx) != NULL) && ((ctx)->maxRetrievalsLevel >= 0)) ? \
+	    ((ctx)->maxRetrievalsLevel > (ctx)->curRetrievalsLevel) : \
+	    1 )
+#define xmlSecKeysMngrCtxCheckEncKeysLevel(ctx) \
+	((((ctx) != NULL) && ((ctx)->maxEncKeysLevel >= 0)) ? \
+	    ((ctx)->maxEncKeysLevel > (ctx)->curEncKeysLevel) : \
+	    1 )
+
 
 
 
@@ -276,8 +349,6 @@ struct _xmlSecKeyDataPGP {
  * Keys Manager
  *
  ***************************************************************************/
-typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
-						*xmlSecKeysMngrPtr;
 
 /**
  * xmlSecGetKeyCallback:
@@ -293,13 +364,8 @@ typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
-							 xmlSecKeysMngrPtr mngr,
-							 void *context,
-							 xmlSecKeyValueId keyId,
-							 xmlSecKeyValueType type,
-							 xmlSecKeyUsage usage,
-							 time_t certsVerificationTime);
+typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)			(xmlNodePtr keyInfoNode,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
 /**
  * xmlSecFindKeyCallback:
  * @mngr: the keys manager.
@@ -314,12 +380,7 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-typedef xmlSecKeyPtr 	(*xmlSecFindKeyCallback)	(xmlSecKeysMngrPtr mngr,
-							 void *context,
-							 const xmlChar *name,
-							 xmlSecKeyValueId id, 
-							 xmlSecKeyValueType type,
-							 xmlSecKeyUsage usage);
+typedef xmlSecKeyPtr 	(*xmlSecFindKeyCallback)		(xmlSecKeysMngrCtxPtr keysMngrCtx);
 
 /**
  * xmlSecX509FindCallback:
@@ -336,13 +397,12 @@ typedef xmlSecKeyPtr 	(*xmlSecFindKeyCallback)	(xmlSecKeysMngrPtr mngr,
  * Returns the pointer to certificate that matches given criteria or NULL 
  * if an error occurs or certificate not found.
  */
-typedef xmlSecX509DataPtr	(*xmlSecX509FindCallback)(xmlSecKeysMngrPtr mngr,
-							 void *context,
-							 xmlChar *subjectName,
-							 xmlChar *issuerName,
-							 xmlChar *issuerSerial,
-							 xmlChar *ski,
-							 xmlSecX509DataPtr cert);
+typedef xmlSecX509DataPtr	(*xmlSecX509FindCallback)	(xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski,
+								 xmlSecX509DataPtr cert);
 /**
  * xmlSecX509VerifyCallback:
  * @mngr: the keys manager.
@@ -354,9 +414,8 @@ typedef xmlSecX509DataPtr	(*xmlSecX509FindCallback)(xmlSecKeysMngrPtr mngr,
  * Returns 1 if the cert is trusted, 0 if it is not trusted
  * and -1 if an error occurs.
  */
-typedef int		(*xmlSecX509VerifyCallback)	(xmlSecKeysMngrPtr mngr,
-							 void *context,
-    							 xmlSecX509DataPtr cert);  
+typedef int			(*xmlSecX509VerifyCallback)	(xmlSecKeysMngrCtxPtr keysMngrCtx,
+    								 xmlSecX509DataPtr cert);  
 /**
  * xmlSecKeysMngr:
  * @getKey: the callback used to read <dsig:KeyInfo> node.
@@ -374,9 +433,6 @@ typedef int		(*xmlSecX509VerifyCallback)	(xmlSecKeysMngrPtr mngr,
  */
 struct _xmlSecKeysMngr {
     xmlSecGetKeyCallback		getKey;
-    xmlSecKeyOrigin 			allowedOrigins;
-    int 				maxRetrievalsLevel;
-    int					maxEncKeysLevel; 
 
     /* low level keys */             
     xmlSecFindKeyCallback		findKey;
@@ -390,13 +446,8 @@ struct _xmlSecKeysMngr {
 };
 
 
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
-							 xmlSecKeysMngrPtr mngr,
-							 void *context,
-							 xmlSecKeyValueId keyId,
-							 xmlSecKeyValueType keyType,
-							 xmlSecKeyUsage keyUsage,
-							 time_t certsVerificationTime);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeysMngrGetKey		(xmlNodePtr keyInfoNode,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
 
 #ifdef __cplusplus
 }

@@ -22,15 +22,9 @@ extern "C" {
 
 
 XMLSEC_EXPORT xmlSecKeyPtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
-							 xmlSecKeysMngrPtr keysMngr,
-							 void *context,
-							 xmlSecKeyValueId keyId,
-							 xmlSecKeyValueType keyType,
-							 xmlSecKeyUsage keyUsage,
-							 time_t certsVerificationTime);
+							 xmlSecKeysMngrCtxPtr keysMngrCtx);
 XMLSEC_EXPORT int 	xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
-							 xmlSecKeysMngrPtr keysMngr,
-							 void *context,
+							 xmlSecKeysMngrCtxPtr keysMngrCtx,
 							 xmlSecKeyPtr key,
 							 xmlSecKeyValueType type);
 

@@ -152,24 +152,14 @@ int
 xmlSecKeyCheck(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyValueId id, 
 		xmlSecKeyValueType type) {
     xmlSecAssert2(key != NULL, -1);
-    
-    /* todo:  */
-    if(key->value == NULL) {
-	return(0);
-    }
-    
-    if((id != xmlSecKeyValueIdUnknown) && (id != key->value->id)) {
-	return(0);
-    }
-    if((type != xmlSecKeyValueTypeAny) && 
-       (key->value->type != type) && 
-       (key->value->type != xmlSecKeyValueTypePrivate)) {
-	 return(0);
-    }
+    xmlSecAssert2(key->value != NULL, -1);
+
+    /* todo: name is not an empty string */
     if((name != NULL) && (!xmlStrEqual(key->name, name))) {
 	return(0);
     }
-    return(1);
+    
+    return(xmlSecKeyValueCheck(key->value, id, type));
 }
 
 void
@@ -335,11 +325,139 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
     return(newData);
 }
 
+xmlSecKeyPtr		
+xmlSecKeyDataReadXml(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx, xmlNodePtr node) {
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    
+    if(id->read != NULL) {
+	return id->read(id, keysMngrCtx, node);
+    }
+    return(NULL);
+}
+
+int
+xmlSecKeyDataWriteXml(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx,
+		    xmlSecKeyPtr key, xmlNodePtr parent) {
+    xmlSecAssert2(id != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+    
+    if(id->write != NULL) {
+	return id->write(id, keysMngrCtx, key, parent);
+    }
+    return(0);
+}
+
+xmlSecKeyPtr
+xmlSecKeyDataReadBinary(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx, 
+			const unsigned char *buf, size_t size) {
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    xmlSecAssert2(buf != NULL, NULL);
+    
+    if(id->readBin != NULL) {
+	return id->readBin(id, keysMngrCtx, buf, size);
+    }
+    return(NULL);
+}
+
+int
+xmlSecKeyDataWriteBinary(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx,
+			xmlSecKeyPtr key, unsigned char **buf, size_t *size) {
+    xmlSecAssert2(id != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size != NULL, -1);
+    
+    if(id->writeBin != NULL) {
+	return id->writeBin(id, keysMngrCtx, key, buf, size);
+    }
+    return(0);
+}
 
 
 
+/****************************************************************************
+ *
+ * Key Read/Write  context
+ *
+ ***************************************************************************/
+xmlSecKeysMngrCtxPtr	
+xmlSecKeysMngrCtxCreate(xmlSecKeysMngrPtr keysMngr) {
+    xmlSecKeysMngrCtxPtr ctx;
+
+    /*
+     * Allocate a new xmlSecKeyReadWrite and fill the fields.
+     */
+    ctx = (xmlSecKeysMngrCtxPtr) xmlMalloc(sizeof(xmlSecKeysMngrCtx));
+    if(ctx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecKeysMngrCtx)=%d", 
+		    sizeof(xmlSecKeysMngrCtx));
+	return(NULL);
+    }
+    memset(ctx, 0, sizeof(xmlSecKeysMngrCtx));
+    ctx->keysMngr = keysMngr;
+
+    /* set "smart" defaults */
+    ctx->allowedOrigins = xmlSecKeyOriginAll;
+    ctx->maxRetrievalsLevel = 1;
+    ctx->maxEncKeysLevel = 1;
+
+    return(ctx);    
+}
+
+void 
+xmlSecKeysMngrCtxDestroy(xmlSecKeysMngrCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if(ctx->keyName != NULL) {
+	xmlFree(ctx->keyName);
+    }
+    if(ctx->curX509Data != NULL) {
+	xmlSecKeyDataDestroy(ctx->curX509Data);
+    }
+    if(ctx->curPgpData != NULL) {
+	xmlSecKeyDataDestroy(ctx->curPgpData);
+    }
+    
+    memset(ctx, 0, sizeof(xmlSecKeysMngrCtx));
+    xmlFree(ctx);    
+}
 
 
+#define SwapData(type, a, b) \
+    { type tmp = a; a = b; b = tmp; }
+
+void 
+xmlSecKeysMngrCtxSwapState(xmlSecKeysMngrCtxPtr ctx1, 
+			     xmlSecKeysMngrCtxPtr ctx2) {
+    xmlSecAssert(ctx1 != NULL);
+    xmlSecAssert(ctx2 != NULL);
+    
+    /* keys mnrg */
+    SwapData( xmlSecKeysMngrPtr, ctx1->keysMngr, ctx2->keysMngr);
+
+    /* restrictions */
+    SwapData( xmlSecKeyOrigin, ctx1->allowedOrigins, ctx2->allowedOrigins);
+    SwapData( int, ctx1->maxRetrievalsLevel, ctx2->maxRetrievalsLevel);
+    SwapData( int, ctx1->maxEncKeysLevel, ctx2->maxEncKeysLevel);
+    SwapData( time_t, ctx1->certsVerificationTime, ctx2->certsVerificationTime);
+
+    /* desired key not copied */
+    
+    /* current state */
+    SwapData( int, ctx1->curRetrievalsLevel, ctx2->curEncKeysLevel);
+    SwapData( int, ctx1->curEncKeysLevel, ctx2->curEncKeysLevel);
+    
+    /* app data */
+    SwapData( void*, ctx1->appContext, ctx2->appContext);
+}
 
 
 
@@ -366,21 +484,24 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
  * an error occurs.
  */
 xmlSecKeyPtr 		
-xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
-		xmlSecKeyValueId keyId, xmlSecKeyValueType keyType, xmlSecKeyUsage keyUsage,
-		time_t certsVerificationTime) {
+xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrCtxPtr keysMngrCtx) {
     xmlSecKeyPtr key = NULL;
         
-    xmlSecAssert2(mngr != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
 
     if((key == NULL) && (keyInfoNode != NULL)) {
-	key = xmlSecKeyInfoNodeRead(keyInfoNode, mngr, context,
-			keyId, keyType, keyUsage, certsVerificationTime);
+	key = xmlSecKeyInfoNodeRead(keyInfoNode, keysMngrCtx);
     }
     
-    if((key == NULL) && (mngr->allowedOrigins & xmlSecKeyOriginKeyManager) && 
-			(mngr->findKey != NULL)) {
-	key = mngr->findKey(mngr, context, NULL, keyId, keyType, keyUsage);
+    if((key == NULL) && (keysMngrCtx->allowedOrigins & xmlSecKeyOriginKeyManager) && 
+			(keysMngrCtx->keysMngr->findKey != NULL)) {
+
+	if(keysMngrCtx->keyName != NULL) {
+	    xmlFree(keysMngrCtx->keyName);
+	    keysMngrCtx->keyName = NULL;
+	}
+	key = keysMngrCtx->keysMngr->findKey(keysMngrCtx);
     }
     
     if(key == NULL) {

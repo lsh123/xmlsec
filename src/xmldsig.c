@@ -34,8 +34,9 @@
 #define xmlSecDSigResultGetKeyCallback(result) \
 	    ( ( ((result) != NULL) && \
 	        ((result)->ctx != NULL) && \
-		((result)->ctx->keysMngr != NULL) ) ? \
-		((result)->ctx->keysMngr->getKey) : \
+	        ((result)->ctx->keysMngrCtx != NULL) && \
+		((result)->ctx->keysMngrCtx->keysMngr != NULL) ) ? \
+		((result)->ctx->keysMngrCtx->keysMngr->getKey) : \
 		NULL )
 
 
@@ -681,8 +682,6 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode,
 /**
  * xmlSecDSigValidate:
  * @ctx: the pointer to #xmlSecDSigCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @signNode: the pointer to <dsig:Signature> node that will be validated.
@@ -696,7 +695,7 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode,
  * is valid: check the #result member of #xmlSecDSigResult structure instead.
  */
 int
-xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
+xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, xmlSecKeyPtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
     xmlSecDSigResultPtr res;    
     int ret;
@@ -716,7 +715,7 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     /* add ids for Signature nodes */
     xmlSecAddIDs(signNode->doc, signNode, xmlSecDSigIds);
     
-    res = xmlSecDSigResultCreate(ctx, context, signNode, 0);
+    res = xmlSecDSigResultCreate(ctx, signNode, 0);
     if(res == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -747,8 +746,6 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecDSigGenerate
  * @ctx: the pointer to #xmlSecDSigCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @signNode: the pointer to <dsig:Signature> node that will be validated.
@@ -759,7 +756,7 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success and a negative value otherwise.
  */
 int
-xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
+xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, xmlSecKeyPtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
     xmlSecDSigResultPtr res;
     int ret;
@@ -781,7 +778,7 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     xmlSecAddIDs(signNode->doc, signNode, xmlSecDSigIds);
 
     
-    res = xmlSecDSigResultCreate(ctx, context, signNode, 1);
+    res = xmlSecDSigResultCreate(ctx, signNode, 1);
     if(res == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -817,8 +814,6 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecDSigResultCreate:
  * @ctx: the pointer to #xmlSecDSigCtx structure.
- * @context: the pointer to application specific data that will be 
- *     passed to all callback functions.
  * @signNode: the pointer to <dsig:Signature> node that will be validated.
  * @sign: the sign or verify flag.
  * 
@@ -828,8 +823,7 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * if an error occurs.
  */
 xmlSecDSigResultPtr	
-xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context, 
-		       xmlNodePtr signNode, int sign) {
+xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, xmlNodePtr signNode, int sign) {
     xmlSecDSigResultPtr result;
     
     xmlSecAssert2(ctx != NULL, NULL);
@@ -849,7 +843,6 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
     result->ctx = ctx;
     result->self = signNode;
     result->sign = sign;
-    result->context = context;
     return(result);
 }
 
@@ -1047,8 +1040,16 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     
+    ctx->keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);
+    if(ctx->keysMngrCtx == NULL) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrCtxCreate");
+	xmlSecDSigCtxDestroy(ctx);  
+	return(NULL);
+    }
+    
     /* by default we process Manifests and store everything */
-    ctx->keysMngr = keysMngr;
     ctx->processManifests = 1;
     ctx->storeSignatures = 1;
     ctx->storeReferences = 1;
@@ -1066,6 +1067,9 @@ void
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {    
     xmlSecAssert(ctx != NULL);
 
+    if(ctx->keysMngrCtx != NULL) {
+	xmlSecKeysMngrCtxDestroy(ctx->keysMngrCtx);
+    }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     xmlFree(ctx);
 }
@@ -1378,6 +1382,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 
     xmlSecAssert2(result != NULL, -1);
     xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(result->ctx->keysMngrCtx != NULL, -1);
     xmlSecAssert2(signedInfoNode != NULL, -1);
     xmlSecAssert2(signatureValueNode != NULL, -1);
     
@@ -1418,24 +1423,16 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
     if((result->key == NULL) && (xmlSecDSigResultGetKeyCallback(result) != NULL)) {
-        xmlSecKeyValueId keyId;
-        xmlSecKeyValueType keyType;    
-        xmlSecKeyUsage keyUsage;
-
 	if(sign) {
-	    keyType = xmlSecBinTransformIdGetEncKeyType(result->signMethod);
-	    keyUsage = xmlSecKeyUsageSign;
+	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetEncKeyType(result->signMethod);
+	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageSign;
 	} else {
-	    keyType = xmlSecBinTransformIdGetDecKeyType(result->signMethod);
-	    keyUsage = xmlSecKeyUsageVerify;
+	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetDecKeyType(result->signMethod);
+	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageVerify;
 	}
-	keyId = xmlSecBinTransformIdGetKeyId(result->signMethod);
-		
-	result->key = xmlSecDSigResultGetKeyCallback(result)
-					(keyInfoNode, result->ctx->keysMngr, 
-					result->context, keyId, keyType, 
-					keyUsage, 
-					result->ctx->certsVerificationTime); 
+	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->signMethod);
+	
+	result->key = xmlSecDSigResultGetKeyCallback(result)(keyInfoNode, result->ctx->keysMngrCtx);
     }    
     if(result->key == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1452,8 +1449,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     }
     if(sign && (keyInfoNode != NULL)) {
 	/* update KeyInfo! */
-	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, 
-			result->ctx->keysMngr, result->context,
+	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, result->ctx->keysMngrCtx,
 		    	result->key, 
 			xmlSecBinTransformIdGetDecKeyType(result->signMethod));
 	if(ret < 0) {

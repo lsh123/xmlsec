@@ -1,3 +1,8 @@
+Fri Feb 21 12:59:48 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c: fixed incorrect processing of more than
+	3 binary transforms in a row
+
 Mon Feb 17 09:34:12 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs/api/* include/xmlsec/xmldsig.h

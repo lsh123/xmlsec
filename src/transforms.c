@@ -943,7 +943,7 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state,
     switch(transform->id->type) {
     case xmlSecTransformTypeBinary:     	
 	    /* simply add transform to the chain */
-	transform = xmlSecBinTransformAddAfter(state->curFirstBinTransform, 
+	transform = xmlSecBinTransformAddAfter(state->curLastBinTransform, 
 					     transform);
 	if(transform == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,

@@ -6,6 +6,10 @@
 <!ENTITY chapter-creating-templates 	SYSTEM "chapters/creating-templates.sgml">
 <!ENTITY chapter-using-keys		SYSTEM "chapters/using-keys.sgml">
 <!ENTITY chapter-using-keysmngr 	SYSTEM "chapters/using-keysmngr.sgml">
+<!ENTITY chapter-using-x509-certs	SYSTEM "chapters/using-x509-certs.sgml">
+<!ENTITY chapter-using-transforms	SYSTEM "chapters/using-transforms.sgml">
+<!ENTITY chapter-using-contexts		SYSTEM "chapters/using-contexts.sgml">
+<!ENTITY chapter-new-crypto		SYSTEM "chapters/new-crypto.sgml">
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
 
@@ -45,18 +49,26 @@
 
 <!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
 <!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
-<!ENTITY xmlsec-example-verify1 		SYSTEM "examples/verify1.sgml">
-<!ENTITY xmlsec-example-verify2 		SYSTEM "examples/verify2.sgml">
-<!ENTITY xmlsec-example-encrypt1 		SYSTEM "examples/encrypt1.sgml">
-<!ENTITY xmlsec-example-encrypt2 		SYSTEM "examples/encrypt2.sgml">
-<!ENTITY xmlsec-example-encrypt3 		SYSTEM "examples/encrypt3.sgml">
-<!ENTITY xmlsec-example-decrypt1 		SYSTEM "examples/decrypt1.sgml">
-<!ENTITY xmlsec-example-decrypt2 		SYSTEM "examples/decrypt2.sgml">
-<!ENTITY xmlsec-example-decrypt3 		SYSTEM "examples/decrypt3.sgml">
+<!ENTITY xmlsec-example-sign3 		SYSTEM "examples/sign3.sgml">
+
+<!ENTITY xmlsec-example-verify1 	SYSTEM "examples/verify1.sgml">
+<!ENTITY xmlsec-example-verify2 	SYSTEM "examples/verify2.sgml">
+<!ENTITY xmlsec-example-verify3 	SYSTEM "examples/verify3.sgml">
+
+<!ENTITY xmlsec-example-encrypt1 	SYSTEM "examples/encrypt1.sgml">
+<!ENTITY xmlsec-example-encrypt2 	SYSTEM "examples/encrypt2.sgml">
+<!ENTITY xmlsec-example-encrypt3 	SYSTEM "examples/encrypt3.sgml">
+
+<!ENTITY xmlsec-example-decrypt1 	SYSTEM "examples/decrypt1.sgml">
+<!ENTITY xmlsec-example-decrypt2 	SYSTEM "examples/decrypt2.sgml">
+<!ENTITY xmlsec-example-decrypt3 	SYSTEM "examples/decrypt3.sgml">
+
 <!ENTITY xmlsec-example-sign1-tmpl	SYSTEM "examples/sign1-tmpl.sgml">
 <!ENTITY xmlsec-example-sign1-res	SYSTEM "examples/sign1-res.sgml">
 <!ENTITY xmlsec-example-sign2-doc	SYSTEM "examples/sign2-doc.sgml">
 <!ENTITY xmlsec-example-sign2-res	SYSTEM "examples/sign2-res.sgml">
+<!ENTITY xmlsec-example-sign3-doc	SYSTEM "examples/sign3-doc.sgml">
+<!ENTITY xmlsec-example-sign3-res	SYSTEM "examples/sign3-res.sgml">
 <!ENTITY xmlsec-example-encrypt1-tmpl	SYSTEM "examples/encrypt1-tmpl.sgml">
 <!ENTITY xmlsec-example-encrypt1-res	SYSTEM "examples/encrypt1-res.sgml">
 <!ENTITY xmlsec-example-encrypt2-doc	SYSTEM "examples/encrypt2-doc.sgml">
@@ -134,6 +146,7 @@
 	code might be general enough so switching crypto engine would be 
 	a matter of changing several #include directives.</para>
     </sect1>
+    
     &chapter-compiling-and-linking;
     &chapter-init-and-shutdown;
     &chapter-sign-and-encrypt;
@@ -141,114 +154,10 @@
     &chapter-verify-and-decrypt;
     &chapter-using-keys;
     &chapter-using-keysmngr;
-    
-    <sect1 id="xmlsec-notes-transforms">
-	<title>Transforms and transforms chain.</title>
-	<para>XML Digital Signature and XML Encryption standards are 
-	very flexible and provide an XML developer many different ways to 
-	sign or encrypt any part (or even parts) of an XML document. 
-	The key for such great flexibility is the "transforms" model.
-	Transform is defined as a method of pre-processing binary or XML data 
-	before calculating digest or signature. XML Security Library extends 
-	this definition and names "transform" any operation performed on 
-	the data: reading data from an URI, xml parsing, xml transformation, 
-	calculation digest, encrypting or decrypting. Each XML Security Library
-	transform provides at least one of the following callbacks: 
-	    <itemizedlist>
-		<listitem><para>
-		    <link linkend="xmlSecTransformPushBinMethod">push binary data</link>;
-		</para></listitem>
-		<listitem><para>
-		    <link linkend="xmlSecTransformPushXmlMethod">push xml data</link>;
-		</para></listitem>
-		<listitem><para>
-		    <link linkend="xmlSecTransformPopBinMethod">pop binary data</link>;
-		</para></listitem>
-		<listitem><para>
-		    <link linkend="xmlSecTransformPopXmlMethod">pop xml data</link>.
-		</para></listitem>
-	    </itemizedlist>
-	</para><para>One additional <link linkend="xmlSecTransformExecuteMethod">execute</link>
-	callback was added to simplify the development and reduce code size. 
-	This callback is used by default
-	implementations of the four external callbacks from the list above.
-	For example, most of the crypto transforms could be implemented by 
-	just implementing one "execute" callback and using default push/pop 
-	binary data callbacks. However, in some cases using push/pop callbacks 
-	directly is more efficient.
-	</para>
-	<figure>
-	    <title>The XML Security Library transform.</title>
-	    <graphic fileref="images/transform.png" align="center" />
-	</figure>	 
-	<para>XML Security Library constructs transforms chain according to the 
-	signature/encryption template or signed/encrypted document. 
-	If necessary, XML Security Library inserts XML parser or defaul
-	canonicalization to ensure that the output data type (binary or XML) 
-	of previous transform matches the input of the next transform.
-	</para>
-	<para>The data are processed by pushing through or poping from the chain
-	depending on the transforms in the chain.  For example, then binary 
-	data chunk is pushed through a binary-to-binary transform, it 
-	processes this chunk and pushes the result to the next transform 
-	in the chain. 
-	</para>	
-	<figure>
-	    <title>Transforms chain created for &lt;dsig:Reference/&gt; element processing.</title>
-	    <graphic fileref="images/transforms-chain.png" align="center" />
-	</figure>	 
-
-	<para>
-	     <example>
-		<title>Walking through transforms chain.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-cusomize-signature">
-	<title>Customizing signature and verification process.</title>
-	<para>Application may control XML Security Library behavior using 
-	different context objects:
-	    <itemizedlist>
-		<listitem><para>
-		    <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
-		</para></listitem>
-		<listitem><para>
-		    <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
-		</para></listitem>
-		<listitem><para>
-		    <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
-		</para></listitem>
-		<listitem><para>
-		    <link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>.
-		</para></listitem>
-	    </itemizedlist>	 
-	New context objects are created for each operation and could not be 
-	reused. XML Security Library also uses context objects to store 
-	temporary data and return additional information to the application.
-	</para>
-	<para>
-	     <example>
-		<title>SAML signature validation.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-customize-encryption">
-	<title>Customizing encryption and decryption process.</title>
-	<para>TODO: example</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-new-crypto-library">
-        <title>Adding support for new cryptographic library.</title>
-        <para>This section contains information for developers who wish to use
-    	XML Security Library with a new crypto engine.
-        </para>
-	<para>TODO: example</para>
-    </sect1>
+    &chapter-using-x509-certs;
+    &chapter-using-transforms;
+    &chapter-using-contexts;
+    &chapter-new-crypto;
   </chapter>
 
   <chapter id="xmlsec-ref">
@@ -315,8 +224,10 @@ TODO
 
     &xmlsec-example-sign1;
     &xmlsec-example-sign2;
+    &xmlsec-example-sign3;
     &xmlsec-example-verify1;
     &xmlsec-example-verify2;
+    &xmlsec-example-verify3;
     &xmlsec-example-encrypt1;
     &xmlsec-example-encrypt2;
     &xmlsec-example-encrypt3;
@@ -328,6 +239,8 @@ TODO
     &xmlsec-example-sign1-res;
     &xmlsec-example-sign2-doc;
     &xmlsec-example-sign2-res;
+    &xmlsec-example-sign3-doc;
+    &xmlsec-example-sign3-res;
     &xmlsec-example-encrypt1-tmpl;
     &xmlsec-example-encrypt1-res;
     &xmlsec-example-encrypt2-doc;

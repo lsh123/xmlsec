@@ -7,6 +7,8 @@ This folder contains XML Security Library examples.
     Makefile			Makefile for building all the examples
     rsakey.pem			Private PEM key file
     rsapub.pem			Public PEM key file
+    rsacert.pem			Certificate for rsakey.pem signed with rootcert.pem
+    rootcert.pem		Root (trusted) certificate
     deskey.bin			A DES keys
     sign1.c			Signing with a template file
     sign1-tmpl.xml		An example template file for sign1 example
@@ -14,8 +16,12 @@ This folder contains XML Security Library examples.
     sign2.c			Signing a file with a dynamicaly created template
     sign2-doc.xml		An example XML file for signing by sign2.c
     sign2-res.xml		The result of signing sign2-doc.xml by sign2.c
+    sign3.c			Signing a file with a dynamicaly created template and an X509 certificate
+    sign3-doc.xml		An example XML file for signing by sign3.c
+    sign3-res.xml		The result of signing sign3-doc.xml by sign3.c
     verify1.c			Verifying a signed document with a single key
     verify2.c			Verifying a signed document using keys manager
+    verify3.c			Verifying a signed document using X509 certificate
     encrypt1.c			Encrypting binary data with a template file
     encrypt1-res.xml		An example template file for encrypt1.c
     encrypt1-tmpl.xml		The result of processing encrypt1_tmpl.xml by encrypt1.c
@@ -25,7 +31,7 @@ This folder contains XML Security Library examples.
     encrypt2.c			Encrypting XML file using a session DES key
     encrypt2-doc.xml		An example XML file for encryption by encrypt3.c
     encrypt2-res.xml		The result of encryptin encrypt3-doc.xml by encrypt3.c
-    decrypt1.c			Decrypting binary data using a signle key
+    decrypt1.c			Decrypting binary data using a single key
     decrypt2.c			Decrypting binary data using keys manager
     decrypt3.c			Decrypting binary file using custom keys manager
 
@@ -55,13 +61,18 @@ folder with any other input files:
     
 	./sign1    sign1-tmpl.xml    rsakey.pem
 	./sign2    sign2-doc.xml     rsakey.pem
+	./sign3    sign3-doc.xml     rsakey.pem rsacert.pem
+
 	./verify1  sign1-res.xml     rsapub.pem
 	./verify1  sign2-res.xml     rsapub.pem
 	./verify2  sign1-res.xml     rsapub.pem
 	./verify2  sign2-res.xml     rsapub.pem
+	./verify3  sign3-res.xml     rootcert.pem
+
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin 
 	./encrypt3 encrypt3-doc.xml  rsakey.pem
+
 	./decrypt1 encrypt1-res.xml  deskey.bin
 	./decrypt1 encrypt2-res.xml  deskey.bin
 	./decrypt2 encrypt1-res.xml  deskey.bin

@@ -7,7 +7,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
 <link rel="PREVIOUS" title="Keys." href="xmlsec-notes-keys.html">
-<link rel="NEXT" title="Transforms and transforms chain." href="xmlsec-notes-transforms.html">
+<link rel="NEXT" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -36,7 +36,7 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <br clear="all"><div class="SECT1">
@@ -51,7 +51,7 @@
 	&quot;keys manager&quot;.
     </p>
 <div class="FIGURE">
-<a name="AEN318"></a><p><b>Figure 7. The keys manager structure.</b></p>
+<a name="AEN315"></a><p><b>Figure 7. The keys manager structure.</b></p>
 <p><img src="images/keysmngr.png" align="CENTER"></p>
 </div>
 <p>Keys manager has a special &quot;keys store&quot; which lists the keys 
@@ -76,7 +76,7 @@
     </p>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN324"></a>Simple keys store.</h2>
+<a name="AEN321"></a>Simple keys store.</h2>
 <p>XML Security Library has a built-in simple keys store 
 	implemented using a keys list. You can use it in your application
 	if you have a small number of keys. However, this might be not a 
@@ -86,7 +86,7 @@
 	</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN328"></a><p><b>Example 12. Initializing keys manager and loading keys from PEM files.</b></p>
+<a name="AEN325"></a><p><b>Example 11. Initializing keys manager and loading keys from PEM files.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
  * load_keys:
  * @files:		the list of filenames.
@@ -161,7 +161,7 @@ load_keys(char** files, int files_size) {
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN333"></a>Using keys manager for signatures/encryption.</h2>
+<a name="AEN330"></a>Using keys manager for signatures/encryption.</h2>
 <p>Instead of specifiying signature or encryption key in the 
 	corresponding context object (<tt class="STRUCTFIELD"><i>signKey</i></tt> 
 	member of <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> 
@@ -179,7 +179,7 @@ load_keys(char** files, int files_size) {
 	</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN343"></a><p><b>Example 13. Encrypting file using a session key and a permanent key from keys manager.</b></p>
+<a name="AEN340"></a><p><b>Example 12. Encrypting file using a session key and a permanent key from keys manager.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
  * load_rsa_keys:
  * @key_file:		the key filename.
@@ -376,7 +376,7 @@ done:
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN348"></a>Using keys manager for verification/decryption.</h2>
+<a name="AEN345"></a>Using keys manager for verification/decryption.</h2>
 <p>If more than one key could be used for signature or encryption,
 	then using <tt class="STRUCTFIELD"><i>signKey</i></tt> member of 
 	<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure or 
@@ -388,7 +388,7 @@ done:
 	</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN356"></a><p><b>Example 14. Initializing keys manager and loading DES keys from binary files.</b></p>
+<a name="AEN353"></a><p><b>Example 13. Initializing keys manager and loading DES keys from binary files.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
  * load_des_keys:
  * @files:		the list of filenames.
@@ -463,7 +463,7 @@ load_des_keys(char** files, int files_size) {
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN361"></a>Implementing a custom keys store.</h2>
+<a name="AEN358"></a>Implementing a custom keys store.</h2>
 <p>In many cases, a simple built-in list based keys store
 	is not good enough. For example, XML Security Library (and 
 	the built-in simple keys store) have no synchronization and 
@@ -471,7 +471,7 @@ load_des_keys(char** files, int files_size) {
 	add or remove keys while other threads use the store.</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN365"></a><p><b>Example 15. Creating a custom keys manager.</b></p>
+<a name="AEN362"></a><p><b>Example 14. Creating a custom keys manager.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
  * create_files_keys_mngr:
  *  
@@ -626,11 +626,11 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Keys.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Transforms and transforms chain.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Using X509 Certificates.</b></font></td>
 </tr>
 </table>
 </div>

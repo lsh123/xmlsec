@@ -1,5 +1,5 @@
 /** 
- * XML Security Library example: Decrypting an encrypted file using a signle key.
+ * XML Security Library example: Decrypting an encrypted file using a single key.
  * 
  * Decrypts encrypted XML file using a single DES key from a binary file
  * 

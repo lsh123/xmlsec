@@ -2,8 +2,8 @@
 #
 #
 PROGRAMS	 = \
-	sign1 sign2 \
-	verify1 verify2 \
+	sign1 sign2 sign3 \
+	verify1 verify2 verify3 \
 	encrypt1 encrypt2 encrypt3 \
 	decrypt1 decrypt2 decrypt3
 
@@ -26,10 +26,12 @@ clean:
 check: $(PROGRAMS)
 	./sign1    sign1-tmpl.xml    rsakey.pem
 	./sign2    sign2-doc.xml     rsakey.pem
+	./sign3    sign3-doc.xml     rsakey.pem rsacert.pem
 	./verify1  sign1-res.xml     rsapub.pem
 	./verify1  sign2-res.xml     rsapub.pem
 	./verify2  sign1-res.xml     rsapub.pem
 	./verify2  sign2-res.xml     rsapub.pem
+	./verify3  sign3-res.xml     rootcert.pem
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin 
 	./encrypt3 encrypt3-doc.xml  rsakey.pem

@@ -1,14 +1,16 @@
 /** 
- * XML Security Library example: Verifying a file using a single key.
+ * XML Security Library example: Verifying a file signed with X509 certificate
  *
- * Verifies a file using a key from PEM file.
+ * Verifies a file signed with X509 certificate. 
  * 
+ * This example was developed and tested with OpenSSL crypto library. The 
+ * certificates management policies for another crypto library may break it.
+ *
  * Usage: 
- *	verify1 <signed-file> <pem-key> 
+ *	verify2 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
  *
  * Example:
- *	./verify1 sign1-res.xml rsapub.pem
- *	./verify1 sign2-res.xml rsapub.pem
+ *	./verify3 sign3-res.xml rootcert.pem
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -32,15 +34,18 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
-int verify_file(const char* xml_file, const char* key_file);
+xmlSecKeysMngrPtr load_trusted_certs(char** files, int files_size);
+int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
 
 int 
 main(int argc, char **argv) {
+    xmlSecKeysMngrPtr mngr;
+    
     assert(argv);
 
-    if(argc != 3) {
+    if(argc < 3) {
 	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
+	fprintf(stderr, "Usage: %s <xml-file> <cert-file1> [<cert-file2> [...]]\n", argv[0]);
 	return(1);
     }
 
@@ -71,9 +76,20 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(verify_file(argv[1], argv[2]) < 0) {
+    /* create keys manager and load trusted certificates */
+    mngr = load_trusted_certs(&(argv[2]), argc - 2);
+    if(mngr == NULL) {
+	return(-1);
+    }
+    
+    /* verify file */
+    if(verify_file(mngr, argv[1]) < 0) {
+	xmlSecKeysMngrDestroy(mngr);	
 	return(-1);
     }    
+    
+    /* destroy keys manager */
+    xmlSecKeysMngrDestroy(mngr);
     
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
@@ -93,24 +109,73 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/**
+ * load_trusted_certs:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load trusted certificates from PEM #files.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_trusted_certs(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    int i;
+        
+    assert(files);
+    assert(files_size > 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, "Error: failed to create keys manager.\n");
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) < 0) {
+	fprintf(stderr, "Error: failed to initialize keys manager.\n");
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i < files_size; ++i) {
+	assert(files[i]);
+
+	/* load trusted cert */
+	if(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, files[i], 1) < 0) {
+    	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
+}
+
 /** 
  * verify_file:
+ * @mngr:		the pointer to keys manager.
  * @xml_file:		the signed XML file name.
- * @key_file:		the PEM public key file name.
  *
- * Verifies XML signature in #xml_file using public key from #key_file.
+ * Verifies XML signature in #xml_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-verify_file(const char* xml_file, const char* key_file) {
+verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
     
+    assert(mngr);
     assert(xml_file);
-    assert(key_file);
 
     /* load file */
     doc = xmlParseFile(xml_file);
@@ -126,23 +191,10 @@ verify_file(const char* xml_file, const char* key_file) {
 	goto done;	
     }
 
-    /* create signature context, we don't need keys manager in this example */
-    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    /* create signature context */
+    dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
         fprintf(stderr,"Error: failed to create signature context\n");
-	goto done;
-    }
-
-    /* load public key */
-    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
-    if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
-	goto done;
-    }
-
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(dsigCtx->signKey, key_file) < 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

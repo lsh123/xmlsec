@@ -1,3 +1,8 @@
+2005-02-21  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in, docs/download.html, docs/index.html, docs/news.html,
+	include/xmlsec/version.h: preparing new release 1.2.7
+
 2005-01-26  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/bn.c: fixed xmlSecBnFromString function (patch from Michael Mi)

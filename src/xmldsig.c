@@ -696,7 +696,7 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode,
  * is valid: check the #result member of #xmlSecDSigResult structure instead.
  */
 int
-xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
+xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
     xmlSecDSigResultPtr res;    
     int ret;
@@ -725,7 +725,7 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     }
 
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key, key->origin);    
+	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
     }
 
     ret = xmlSecSignatureRead(signNode, 0, res);
@@ -757,7 +757,7 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success and a negative value otherwise.
  */
 int
-xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
+xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
     xmlSecDSigResultPtr res;
     int ret;
@@ -788,7 +788,7 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     }
 
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key, key->origin);    
+	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
     }
     
     ret = xmlSecSignatureRead(signNode, 1, res);
@@ -876,7 +876,7 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
 	xmlBufferFree(result->buffer);     
     }
     if(result->key != NULL) {
-	xmlSecKeyDestroy(result->key);
+	xmlSecKeyValueDestroy(result->key);
     }
     memset(result, 0, sizeof(xmlSecDSigResult));
     xmlFree(result);
@@ -903,7 +903,7 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
 	    (result->signMethod != NULL) ? 
 	    (char*)((result->signMethod)->href) : "NULL"); 
     if(result->key != NULL) {
-	xmlSecKeyDebugDump(result->key, output);
+	xmlSecKeyValueDebugDump(result->key, output);
     }
     if(result->buffer != NULL) {
 	fprintf(output, "== start buffer:\n");
@@ -947,7 +947,7 @@ xmlSecDSigResultDebugXmlDump(xmlSecDSigResultPtr result, FILE *output) {
 	    (result->signMethod != NULL) ? 
 	    (char*)((result->signMethod)->href) : "NULL"); 
     if(result->key != NULL) {
-	xmlSecKeyDebugXmlDump(result->key, output);
+	xmlSecKeyValueDebugXmlDump(result->key, output);
     }
     if(result->buffer != NULL) {
 	fprintf(output, "<SignatureBuffer>");
@@ -1414,8 +1414,8 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
     if((result->key == NULL) && (xmlSecDSigResultGetKeyCallback(result) != NULL)) {
-        xmlSecKeyId keyId;
-        xmlSecKeyType keyType;    
+        xmlSecKeyValueId keyId;
+        xmlSecKeyValueType keyType;    
         xmlSecKeyUsage keyUsage;
 
 	if(sign) {

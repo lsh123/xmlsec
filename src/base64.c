@@ -102,9 +102,9 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     
     /* binary data/methods */
-    xmlSecKeyIdUnknown,
-    xmlSecKeyTypeAny,			/* xmlSecKeyType encryption; */
-    xmlSecKeyTypeAny,			/* xmlSecKeyType decryption; */
+    xmlSecKeyValueIdUnknown,
+    xmlSecKeyValueTypeAny,			/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,			/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
@@ -134,9 +134,9 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     
     /* binary data/methods */
-    xmlSecKeyIdUnknown,
-    xmlSecKeyTypeAny,			/* xmlSecKeyType encryption; */
-    xmlSecKeyTypeAny,			/* xmlSecKeyType decryption; */
+    xmlSecKeyValueIdUnknown,
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */

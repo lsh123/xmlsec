@@ -323,7 +323,7 @@ int 			xmlSecTransformRead		(xmlSecTransformPtr transform,
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int  	(*xmlSecBinTransformAddKeyMethod)	(xmlSecBinTransformPtr transform, 
-							 xmlSecKeyPtr key);
+							 xmlSecKeyValuePtr key);
 /**
  * xmlSecBinTransformReadMethod:
  * @transform: the pointer to #xmlSecTransform structure.
@@ -394,9 +394,9 @@ struct _xmlSecBinTransformIdStruct {
 
     /* xmlSecBinTransform data/methods */
     /* data */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
+    xmlSecKeyValueId			keyId;
+    xmlSecKeyValueType			encryption;
+    xmlSecKeyValueType			decryption;
     xmlSecBinTransformSubType		binSubType;
     
     /* methods */        
@@ -459,7 +459,7 @@ struct _xmlSecBinTransform {
 	((((id) != NULL) && \
 	 ((id)->type == xmlSecTransformTypeBinary)) ? \
 	  ((xmlSecBinTransformId)(id))->keyId : \
-	  xmlSecKeyIdUnknown)
+	  xmlSecKeyValueIdUnknown)
 /**
  * xmlSecBinTransformCheckSubType:
  * @transform: the pointer to transform.
@@ -483,7 +483,7 @@ struct _xmlSecBinTransform {
 	((((id) != NULL) && \
 	 ((id)->type == xmlSecTransformTypeBinary)) ? \
 	  ((xmlSecBinTransformId)(id))->encryption : \
-	  xmlSecKeyTypeAny)
+	  xmlSecKeyValueTypeAny)
 /**
  * xmlSecBinTransformIdGetDecKeyType:
  * @id: the transform id.
@@ -495,10 +495,10 @@ struct _xmlSecBinTransform {
 	((((id) != NULL) && \
 	 ((id)->type == xmlSecTransformTypeBinary)) ? \
 	  ((xmlSecBinTransformId)(id))->decryption : \
-	  xmlSecKeyTypeAny)
+	  xmlSecKeyValueTypeAny)
 
 int  			xmlSecBinTransformAddKey	(xmlSecTransformPtr transform, 
-							 xmlSecKeyPtr key);
+							 xmlSecKeyValuePtr key);
 int			xmlSecBinTransformRead		(xmlSecTransformPtr transform,
 							 unsigned char *buf,
 							 size_t size);		

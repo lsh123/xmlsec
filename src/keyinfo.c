@@ -63,8 +63,8 @@ typedef struct _xmlSecKeyInfoNodeStatus {
     xmlSecKeysMngrPtr			keysMngr;
     void				*context;
     
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			keyType;
+    xmlSecKeyValueId			keyId;
+    xmlSecKeyValueType			keyType;
     xmlSecKeyUsage			keyUsage;
     time_t				certsVerificationTime;
     int 				retrievalsLevel;
@@ -95,39 +95,39 @@ typedef struct _xmlSecKeyInfoNodeStatus {
 	    (status)->keysMngr->findKey : \
 	    NULL)	    
     
-static xmlSecKeyPtr	xmlSecKeyInfoNodesListRead	(xmlNodePtr cur, 
+static xmlSecKeyValuePtr	xmlSecKeyInfoNodesListRead	(xmlNodePtr cur, 
 							 xmlSecKeyInfoNodeStatusPtr status);
-static xmlSecKeyPtr 	xmlSecKeyNameNodeRead		(xmlNodePtr keyNameNode,
+static xmlSecKeyValuePtr 	xmlSecKeyNameNodeRead		(xmlNodePtr keyNameNode,
 							 xmlSecKeyInfoNodeStatusPtr status,
 							 xmlChar **name);
 static int 		xmlSecKeyNameNodeWrite		(xmlNodePtr keyNameNode,
-							 xmlSecKeyPtr key,
+							 xmlSecKeyValuePtr key,
 							 xmlSecKeysMngrPtr keysMngr);
-static xmlSecKeyPtr	xmlSecKeyValueNodeRead		(xmlNodePtr keyValueNode,
+static xmlSecKeyValuePtr	xmlSecKeyValueNodeRead		(xmlNodePtr keyValueNode,
 							 xmlSecKeyInfoNodeStatusPtr status);
 static int 		xmlSecKeyValueNodeWrite		(xmlNodePtr keyValueNode,
-							 xmlSecKeyPtr key,
-							 xmlSecKeyType type);
-static xmlSecKeyPtr	xmlSecRetrievalMethodNodeRead	(xmlNodePtr retrievalMethodNode,
+							 xmlSecKeyValuePtr key,
+							 xmlSecKeyValueType type);
+static xmlSecKeyValuePtr	xmlSecRetrievalMethodNodeRead	(xmlNodePtr retrievalMethodNode,
 							 xmlSecKeyInfoNodeStatusPtr status);
 
 #ifndef XMLSEC_NO_XMLENC
-static xmlSecKeyPtr 	xmlSecEncryptedKeyNodeRead	(xmlNodePtr encKeyNode, 
+static xmlSecKeyValuePtr 	xmlSecEncryptedKeyNodeRead	(xmlNodePtr encKeyNode, 
 							 xmlSecKeyInfoNodeStatusPtr status);
 static int		xmlSecEncryptedKeyNodeWrite	(xmlNodePtr encKeyNode, 
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
-							 xmlSecKeyPtr key,
-							 xmlSecKeyType type);
+							 xmlSecKeyValuePtr key,
+							 xmlSecKeyValueType type);
 #endif /* XMLSEC_NO_XMLENC */
 
 
 /* X509Data node */
 #ifndef XMLSEC_NO_X509
-static xmlSecKeyPtr	xmlSecX509DataNodeRead		(xmlNodePtr x509DataNode,
+static xmlSecKeyValuePtr	xmlSecX509DataNodeRead		(xmlNodePtr x509DataNode,
 							 xmlSecKeyInfoNodeStatusPtr status);
 static int		xmlSecX509DataNodeWrite		(xmlNodePtr x509DataNode,
-							 xmlSecKeyPtr key);
+							 xmlSecKeyValuePtr key);
 static int 		xmlSecX509IssuerSerialNodeRead	(xmlNodePtr serialNode,
 							 xmlSecX509DataPtr x509Data,
 							 xmlSecKeysMngrPtr keysMngr,
@@ -406,7 +406,7 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 /**
  * xmlSecKeyInfoNodeRead:
  * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
- * @keysMngr: the pointer to #xmlSecKeysMngr struvture.
+ * @keysMngr: the pointer to #xmlSecKeyValuesMngr struvture.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @keyId: the required key id or NULL.
@@ -419,9 +419,9 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
  * Returns the pointer to extracted key or NULL if an error occurs or
  * required key is not found.
  */
-xmlSecKeyPtr	
+xmlSecKeyValuePtr	
 xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context, 
-		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage,
+		xmlSecKeyValueId keyId, xmlSecKeyValueType keyType, xmlSecKeyUsage keyUsage,
 		time_t certsVerificationTime) {
     xmlSecKeyInfoNodeStatus status;
     xmlNodePtr cur;
@@ -446,10 +446,10 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
 /**
  * xmlSecKeyInfoNodeWrite
  * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
- * @keysMngr: the pointer to #xmlSecKeysMngr struvture.
+ * @keysMngr: the pointer to #xmlSecKeyValuesMngr struvture.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
- * @key: the pointer to the #xmlSecKey structure.
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @type: the key type (public/private).
  *
  * Writes the key into the <dsig:KeyInfo> template @keyInfoNode.
@@ -458,7 +458,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
  */
 int
 xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, 
-		void *context, xmlSecKeyPtr key, xmlSecKeyType type) {
+		void *context, xmlSecKeyValuePtr key, xmlSecKeyValueType type) {
     xmlNodePtr cur;
     int ret;
 
@@ -505,10 +505,10 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr,
 /**
  * xmlSecKeyNodesListRead:
  */
-static xmlSecKeyPtr
+static xmlSecKeyValuePtr
 xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
     xmlChar *keyName;
-    xmlSecKeyPtr key;
+    xmlSecKeyValuePtr key;
     
     xmlSecAssert2(status != NULL, NULL);
     
@@ -563,10 +563,10 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
 /**
  * xmlSecKeyNameNodeRead:
  */
-static xmlSecKeyPtr
+static xmlSecKeyValuePtr
 xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
 		      xmlChar **name) {
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr key = NULL;
     xmlSecFindKeyCallback findKey;
     xmlChar *content;
 
@@ -609,13 +609,13 @@ xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
  * xmlSecKeyNameNodeWrite:
  */
 static int 
-xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
+xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyValuePtr key,
 		       xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
 
     xmlSecAssert2(keyNameNode != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -659,11 +659,11 @@ xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
  * =========================================================================
  * Support for private keys is added (@type parameter)
  */
-static xmlSecKeyPtr
+static xmlSecKeyValuePtr
 xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr status) {
     xmlNodePtr cur; 
-    xmlSecKeyId keyId;
-    xmlSecKeyPtr key;
+    xmlSecKeyValueId keyId;
+    xmlSecKeyValuePtr key;
 
     xmlSecAssert2(keyValueNode != NULL, NULL);
     xmlSecAssert2(status != NULL, NULL);
@@ -678,19 +678,19 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr statu
     key = NULL;
     cur = xmlSecGetNextElementNode(keyValueNode->children);    
     while(cur != NULL) {
-	keyId = xmlSecKeyIdsFindByNode(status->keyId, cur);
-	if(keyId != xmlSecKeyIdUnknown) {
-	    key = xmlSecKeyReadXml(keyId, cur);
+	keyId = xmlSecKeyValueIdsFindByNode(status->keyId, cur);
+	if(keyId != xmlSecKeyValueIdUnknown) {
+	    key = xmlSecKeyValueReadXml(keyId, cur);
 	    if(key == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecKeyReadXml(%s)", (cur->name != NULL) ? cur->name : BAD_CAST "NULL");
+			    "xmlSecKeyValueReadXml(%s)", (cur->name != NULL) ? cur->name : BAD_CAST "NULL");
 		return(NULL);
 	    }
-	    if((key->type == status->keyType) || (status->keyType == xmlSecKeyTypeAny)) {
+	    if((key->type == status->keyType) || (status->keyType == xmlSecKeyValueTypeAny)) {
 		return(key);
 	    } else {
-		xmlSecKeyDestroy(key);
+		xmlSecKeyValueDestroy(key);
 		key = NULL;
 	    }
 	}	
@@ -703,14 +703,14 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr statu
  * xmlSecKeyValueNodeWrite:
  */
 static int 
-xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyType type) {
+xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyValuePtr key,  xmlSecKeyValueType type) {
     xmlNodePtr cur;
     int ret;
 
     xmlSecAssert2(keyValueNode != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -729,20 +729,20 @@ xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyTyp
 	return(-1);	
     }
     
-    ret = xmlSecKeyWriteXml(key, type, cur);
+    ret = xmlSecKeyValueWriteXml(key, type, cur);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyWriteXml - %d", ret);
+		    "xmlSecKeyValueWriteXml - %d", ret);
 	xmlUnlinkNode(cur);
 	xmlFreeNode(cur);
     }
     return(0);    
 }
 
-static xmlSecKeyPtr	
+static xmlSecKeyValuePtr	
 xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeStatusPtr status) {
-    xmlSecKeyPtr res = NULL;
+    xmlSecKeyValuePtr res = NULL;
     xmlNodePtr cur;
     xmlSecTransformStatePtr state = NULL;
     xmlChar *uri = NULL;
@@ -876,11 +876,11 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 	    goto done;
 	}
 
-    	if(xmlSecKeyCheck(res, NULL, status->keyId, status->keyType) != 1) {
+    	if(xmlSecKeyValueCheck(res, NULL, status->keyId, status->keyType) != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY,
 			" ");
-	    xmlSecKeyDestroy(res);
+	    xmlSecKeyValueDestroy(res);
 	    res = NULL;
 	}
 	
@@ -1516,9 +1516,9 @@ xmlSecKeyInfoWriteRSAKeyValueNode(xmlNodePtr node,
 
 #ifndef XMLSEC_NO_XMLENC    
 
-static xmlSecKeyPtr 	
+static xmlSecKeyValuePtr 	
 xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr status) {
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr key = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     xmlSecEncResultPtr encResult = NULL; 
     int ret;
@@ -1562,13 +1562,13 @@ xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr sta
 	goto done;
     } 
 
-    key = xmlSecKeyReadBin(status->keyId, 
+    key = xmlSecKeyValueReadBin(status->keyId, 
 			   xmlBufferContent(encResult->buffer),
 			   xmlBufferLength(encResult->buffer));
     if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyReadBin");
+			"xmlSecKeyValueReadBin");
 	goto done;
     }			   
     
@@ -1588,7 +1588,7 @@ done:
 static int
 xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode, 
 			xmlSecKeysMngrPtr keysMngr, void *context,	 
-			xmlSecKeyPtr key, xmlSecKeyType type) {
+			xmlSecKeyValuePtr key, xmlSecKeyValueType type) {
     xmlSecEncCtxPtr encCtx = NULL;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
@@ -1598,7 +1598,7 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode,
     xmlSecAssert2(encKeyNode != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -1617,11 +1617,11 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode,
     encCtx->ignoreType = 1; /* do not substitute the node! */
 
     
-    ret = xmlSecKeyWriteBin(key, type, &keyBuf, &keySize);
+    ret = xmlSecKeyValueWriteBin(key, type, &keyBuf, &keySize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyWriteBin - %d", ret);
+		    "xmlSecKeyValueWriteBin - %d", ret);
 	goto done;
     }
     
@@ -1733,11 +1733,11 @@ done:
  *    <!ELEMENT X509Certificate (#PCDATA) >
  *    <!ELEMENT X509CRL (#PCDATA) >
  */
-static xmlSecKeyPtr	
+static xmlSecKeyValuePtr	
 xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr status) {
     xmlNodePtr cur; 
     xmlSecX509DataPtr x509Data = NULL;
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr key = NULL;
     int ret;
 
     xmlSecAssert2(x509DataNode != NULL, NULL);
@@ -1813,11 +1813,11 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
     }
     x509Data = NULL; /* x509Data assigned to key now */
     
-    if(xmlSecKeyCheck(key, NULL, status->keyId, status->keyType) != 1) {
+    if(xmlSecKeyValueCheck(key, NULL, status->keyId, status->keyType) != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	key = NULL;
 	goto done;
     }
@@ -1831,11 +1831,11 @@ done:
 }
 
 static int
-xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
+xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyValuePtr key) {
     xmlSecAssert2(x509DataNode != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");

@@ -39,50 +39,50 @@
 /**
  * DES key
  */
-typedef struct _xmlSecDesKeyData {
+typedef struct _xmlSecDesKeyValueData {
     unsigned char 		*key;
     size_t			keySize;
-} xmlSecDesKeyData, *xmlSecDesKeyDataPtr;
-static xmlSecDesKeyDataPtr xmlSecDesKeyDataCreate	(const unsigned char *key,
-							 size_t keySize);
-static void		xmlSecDesKeyDataDestroy		(xmlSecDesKeyDataPtr data);
-static xmlSecKeyPtr	xmlSecDesKeyCreate		(xmlSecKeyId id);
-static void		xmlSecDesKeyDestroy		(xmlSecKeyPtr key);
-static xmlSecKeyPtr	xmlSecDesKeyDuplicate		(xmlSecKeyPtr key);
-static int		xmlSecDesKeyGenerate		(xmlSecKeyPtr key,
-							 int keySize);
-static int		xmlSecDesKeySetValue		(xmlSecKeyPtr key,
-							 void* data,
-							 int dataSize);
-static int		xmlSecDesKeyRead		(xmlSecKeyPtr key,
-							 xmlNodePtr node);
-static int		xmlSecDesKeyWrite		(xmlSecKeyPtr key,
-							 xmlSecKeyType type,
-							 xmlNodePtr parent);
-static  int		xmlSecDesKeyReadBinary		(xmlSecKeyPtr key,
-							 const unsigned char *buf,
-							 size_t size);
-static  int		xmlSecDesKeyWriteBinary		(xmlSecKeyPtr key,
-							 xmlSecKeyType type,
-							 unsigned char **buf,
-							 size_t *size);
-struct _xmlSecKeyIdStruct xmlSecDesKeyId = {
+} xmlSecDesKeyValueData, *xmlSecDesKeyValueDataPtr;
+static xmlSecDesKeyValueDataPtr xmlSecDesKeyValueDataCreate	(const unsigned char *key,
+								size_t keySize);
+static void			xmlSecDesKeyValueDataDestroy	(xmlSecDesKeyValueDataPtr data);
+static xmlSecKeyValuePtr 	xmlSecDesKeyValueCreate		(xmlSecKeyValueId id);
+static void			xmlSecDesKeyValueDestroy	(xmlSecKeyValuePtr key);
+static xmlSecKeyValuePtr	xmlSecDesKeyValueDuplicate	(xmlSecKeyValuePtr key);
+static int			xmlSecDesKeyValueGenerate	(xmlSecKeyValuePtr key,
+								 int keySize);
+static int			xmlSecDesKeyValueSet	(xmlSecKeyValuePtr key,
+								 void* data,
+								 int dataSize);
+static int			xmlSecDesKeyValueRead		(xmlSecKeyValuePtr key,
+								xmlNodePtr node);
+static int			xmlSecDesKeyValueWrite		(xmlSecKeyValuePtr key,
+								 xmlSecKeyValueType type,
+								 xmlNodePtr parent);
+static  int			xmlSecDesKeyValueReadBinary	(xmlSecKeyValuePtr key,
+								 const unsigned char *buf,
+								 size_t size);
+static  int			xmlSecDesKeyValueWriteBinary	(xmlSecKeyValuePtr key,
+							         xmlSecKeyValueType type,
+								 unsigned char **buf,
+								 size_t *size);
+xmlSecKeyValueIdStruct xmlSecDesKeyValueId = {
     /* xlmlSecKeyId data  */
     xmlSecDesKeyValueName,		/* const xmlChar *keyValueNodeName; */
     xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
     
-    /* xmlSecKeyId methods */
-    xmlSecDesKeyCreate,		/* xmlSecKeyCreateMethod create; */    
-    xmlSecDesKeyDestroy,	/* xmlSecKeyDestroyMethod destroy; */
-    xmlSecDesKeyDuplicate,	/* xmlSecKeyDuplicateMethod duplicate; */
-    xmlSecDesKeyGenerate,	/* xmlSecKeyGenerateMethod generate; */
-    xmlSecDesKeySetValue,	/* xmlSecKeySetValueMethod setValue; */
-    xmlSecDesKeyRead, 		/* xmlSecKeyReadXmlMethod read; */
-    xmlSecDesKeyWrite,		/* xmlSecKeyWriteXmlMethod write; */
-    xmlSecDesKeyReadBinary,	/* xmlSecKeyReadBinaryMethod readBin; */
-    xmlSecDesKeyWriteBinary	/* xmlSecKeyWriteBinaryMethod writeBin; */
+    /* xmlSecKeyValueId methods */
+    xmlSecDesKeyValueCreate,		/* xmlSecKeyValueCreateMethod create; */    
+    xmlSecDesKeyValueDestroy,		/* xmlSecKeyValueDestroyMethod destroy; */
+    xmlSecDesKeyValueDuplicate,		/* xmlSecKeyValueDuplicateMethod duplicate; */
+    xmlSecDesKeyValueGenerate,		/* xmlSecKeyValueGenerateMethod generate; */
+    xmlSecDesKeyValueSet,		/* xmlSecKeyValueSetMethod setValue; */
+    xmlSecDesKeyValueRead, 		/* xmlSecKeyValueReadXmlMethod read; */
+    xmlSecDesKeyValueWrite,		/* xmlSecKeyValueWriteXmlMethod write; */
+    xmlSecDesKeyValueReadBinary,	/* xmlSecKeyValueReadBinaryMethod readBin; */
+    xmlSecDesKeyValueWriteBinary	/* xmlSecKeyValueWriteBinaryMethod writeBin; */
 };
-xmlSecKeyId xmlSecDesKey = &xmlSecDesKeyId;
+xmlSecKeyValueId xmlSecDesKeyValue = &xmlSecDesKeyValueId;
 
 /**
  * DES transform methods
@@ -90,7 +90,7 @@ xmlSecKeyId xmlSecDesKey = &xmlSecDesKeyId;
 static xmlSecTransformPtr xmlSecDesCreate	(xmlSecTransformId id);
 static void 	xmlSecDesDestroy		(xmlSecTransformPtr transform);
 static int  	xmlSecDesAddKey			(xmlSecBinTransformPtr transform, 
-						 xmlSecKeyPtr key);
+						 xmlSecKeyValuePtr key);
 /**
  * DES transforms
  */
@@ -105,9 +105,9 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     
     /* binary data/methods */
-    &xmlSecDesKeyId,
-    xmlSecKeyTypePrivate,		/* xmlSecKeyType encryption; */
-    xmlSecKeyTypePublic,		/* xmlSecKeyType decryption; */
+    &xmlSecDesKeyValueId,
+    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeCipher,
     xmlSecDesAddKey,			/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
@@ -132,7 +132,7 @@ xmlSecTransformId xmlSecEncDes3Cbc = (xmlSecTransformId)&xmlSecEncDes3CbcId;
 static xmlSecTransformPtr xmlSecDes3KWCreate	(xmlSecTransformId id);
 static void 	xmlSecDes3KWDestroy		(xmlSecTransformPtr transform);
 static int  	xmlSecDes3KWAddKey		(xmlSecBinTransformPtr transform, 
-						 xmlSecKeyPtr key);
+						 xmlSecKeyValuePtr key);
 static int  	xmlSecDes3KWProcess		(xmlSecBufferedTransformPtr buffered, 
 						 xmlBufferPtr buffer);
 static int  	xmlSecDes3KWEncode		(const unsigned char *key,
@@ -165,9 +165,9 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     
     /* binary data/methods */
-    &xmlSecDesKeyId,
-    xmlSecKeyTypePublic,		/* xmlSecKeyType encryption; */
-    xmlSecKeyTypePrivate,		/* xmlSecKeyType decryption; */
+    &xmlSecDesKeyValueId,
+    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeBuffered,
     xmlSecDes3KWAddKey,		/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecBufferedTransformRead,	/* xmlSecBinTransformReadMethod readBin; */
@@ -256,24 +256,24 @@ xmlSecDesDestroy(xmlSecTransformPtr transform) {
  * xmlSecDesAddKey:
  */ 
 static int  	
-xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
+xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyValuePtr key) {
     xmlSecOpenSSLEvpCipherTransformPtr cipher;
-    xmlSecDesKeyDataPtr desKey;
+    xmlSecDesKeyValueDataPtr desKey;
     int ret;
 
     xmlSecAssert2(transform != NULL, -1);    
     xmlSecAssert2(key != NULL, -1);    
 
     if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc) || 
-	!xmlSecKeyCheckId(key, xmlSecDesKey) || (key->keyData == NULL)) {
+	!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue) || (key->keyData == NULL)) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
-		    "xmlSecEncDes3Cbc and xmlSecDesKey");
+		    "xmlSecEncDes3Cbc and xmlSecDesKeyValue");
 	return(-1);
     }    
     cipher = (xmlSecOpenSSLEvpCipherTransformPtr) transform;
-    desKey = (xmlSecDesKeyDataPtr)key->keyData;
+    desKey = (xmlSecDesKeyValueDataPtr)key->keyData;
 
     if(desKey->keySize < cipher->id->keySize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -308,7 +308,7 @@ xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  *
  ********************************************************************/
 #define xmlSecDes3KWKeyData(t) \
-    ((xmlSecDesKeyDataPtr)(((xmlSecBufferedTransformPtr)( t ))->binData))
+    ((xmlSecDesKeyValueDataPtr)(((xmlSecBufferedTransformPtr)( t ))->binData))
     
 static xmlSecTransformPtr 
 xmlSecDes3KWCreate(xmlSecTransformId id) {    
@@ -355,7 +355,7 @@ xmlSecDes3KWDestroy(xmlSecTransformPtr transform) {
     buffered = (xmlSecBufferedTransformPtr)transform;
 
     if(xmlSecDes3KWKeyData(buffered) != NULL) {
-	xmlSecDesKeyDataDestroy(xmlSecDes3KWKeyData(buffered));
+	xmlSecDesKeyValueDataDestroy(xmlSecDes3KWKeyData(buffered));
     }    
     xmlSecBufferedDestroy(buffered);        
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -363,33 +363,33 @@ xmlSecDes3KWDestroy(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecDes3KWAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
+xmlSecDes3KWAddKey(xmlSecBinTransformPtr transform, xmlSecKeyValuePtr key) {
     xmlSecBufferedTransformPtr buffered;
-    xmlSecDesKeyDataPtr desKey;
+    xmlSecDesKeyValueDataPtr desKey;
 
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
     if(!xmlSecTransformCheckId(transform, xmlSecKWDes3Cbc) ||
-       !xmlSecKeyCheckId(key, xmlSecDesKey) || (key->keyData == NULL)) {
+       !xmlSecKeyValueCheckId(key, xmlSecDesKeyValue) || (key->keyData == NULL)) {
        
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
-		    "xmlSecKWDes3Cbc and xmlSecDesKey");
+		    "xmlSecKWDes3Cbc and xmlSecDesKeyValue");
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
-    desKey = xmlSecDesKeyDataCreate(((xmlSecDesKeyDataPtr)key->keyData)->key,
-				    ((xmlSecDesKeyDataPtr)key->keyData)->keySize);
+    desKey = xmlSecDesKeyValueDataCreate(((xmlSecDesKeyValueDataPtr)key->keyData)->key,
+				    ((xmlSecDesKeyValueDataPtr)key->keyData)->keySize);
     if(desKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDesKeyDataCreate");
+		    "xmlSecDesKeyValueDataCreate");
 	return(-1);    
     }
         
     if(xmlSecDes3KWKeyData(buffered) != NULL) {
-	xmlSecDesKeyDataDestroy(xmlSecDes3KWKeyData(buffered));
+	xmlSecDesKeyValueDataDestroy(xmlSecDes3KWKeyData(buffered));
     }    
     transform->binData = desKey;
     return(0);
@@ -715,114 +715,114 @@ xmlSecBufferReverse(unsigned char *buf, size_t size) {
  ***********************************************************************/
  
 /**
- * xmlSecDesKeyCreate:
+ * xmlSecDesKeyValueCreate:
  */
-static xmlSecKeyPtr	
-xmlSecDesKeyCreate(xmlSecKeyId id) {
-    xmlSecKeyPtr key;
+static xmlSecKeyValuePtr	
+xmlSecDesKeyValueCreate(xmlSecKeyValueId id) {
+    xmlSecKeyValuePtr key;
     
     xmlSecAssert2(id != NULL, NULL);
     
-    if(id != xmlSecDesKey) {
+    if(id != xmlSecDesKeyValue) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(NULL);	
     }
     
-    key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
+    key = (xmlSecKeyValuePtr)xmlMalloc(sizeof(xmlSecKeyValue));
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(struct _xmlSecKey) = %d",
-		    sizeof(struct _xmlSecKey));
+		    "sizeof(xmlSecKeyValue) = %d",
+		    sizeof(xmlSecKeyValue));
 	return(NULL);
     }
-    memset(key, 0, sizeof(struct _xmlSecKey));  
+    memset(key, 0, sizeof(xmlSecKeyValue));  
         
     key->id = id;
     return(key);
 }
 
 /**
- * xmlSecDesKeyDestroy:
+ * xmlSecDesKeyValueDestroy:
  */
 static void
-xmlSecDesKeyDestroy(xmlSecKeyPtr key) {
+xmlSecDesKeyValueDestroy(xmlSecKeyValuePtr key) {
 
     xmlSecAssert(key != NULL);
 
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return;
     }
     
     if(key->keyData != NULL) {
-	xmlSecDesKeyDataDestroy((xmlSecDesKeyDataPtr)key->keyData);
+	xmlSecDesKeyValueDataDestroy((xmlSecDesKeyValueDataPtr)key->keyData);
     }    
-    memset(key, 0, sizeof(struct _xmlSecKey));
+    memset(key, 0, sizeof(xmlSecKeyValue));
     
     xmlFree(key);		    
 }
 
-static xmlSecKeyPtr	
-xmlSecDesKeyDuplicate(xmlSecKeyPtr key) {
-    xmlSecKeyPtr newKey;
+static xmlSecKeyValuePtr	
+xmlSecDesKeyValueDuplicate(xmlSecKeyValuePtr key) {
+    xmlSecKeyValuePtr newKey;
 
     xmlSecAssert2(key != NULL, NULL);    
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(NULL);
     }
     
-    newKey = xmlSecDesKeyCreate(key->id);
+    newKey = xmlSecDesKeyValueCreate(key->id);
     if(newKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDesKeyCreate");	
+		    "xmlSecDesKeyValueCreate");	
 	return(NULL);
     }
     
     if(key->keyData != NULL) {
-	xmlSecDesKeyDataPtr data; 
+	xmlSecDesKeyValueDataPtr data; 
 	
-	data = (xmlSecDesKeyDataPtr)key->keyData;
-	newKey->keyData = xmlSecDesKeyDataCreate(data->key, data->keySize);
+	data = (xmlSecDesKeyValueDataPtr)key->keyData;
+	newKey->keyData = xmlSecDesKeyValueDataCreate(data->key, data->keySize);
 	if(newKey->keyData == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecDesKeyDataCreate");
-	    xmlSecKeyDestroy(newKey);
+			"xmlSecDesKeyValueDataCreate");
+	    xmlSecKeyValueDestroy(newKey);
 	    return(NULL);    
 	}
-	newKey->type = xmlSecKeyTypePrivate;
+	newKey->type = xmlSecKeyValueTypePrivate;
     }
     return(newKey);
 }
 
 static int		
-xmlSecDesKeyGenerate(xmlSecKeyPtr key, int keySize) {
-    xmlSecDesKeyDataPtr keyData;
+xmlSecDesKeyValueGenerate(xmlSecKeyValuePtr key, int keySize) {
+    xmlSecDesKeyValueDataPtr keyData;
     int ret;
     
     xmlSecAssert2(key != NULL, -1);    
 
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(-1);
     }
     
-    keyData = xmlSecDesKeyDataCreate(NULL, keySize);
+    keyData = xmlSecDesKeyValueDataCreate(NULL, keySize);
     if(keyData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDesKeyDataCreate");
+		    "xmlSecDesKeyValueDataCreate");
 	return(-1);    
     }
     
@@ -832,55 +832,55 @@ xmlSecDesKeyGenerate(xmlSecKeyPtr key, int keySize) {
         xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "RAND_bytes - %d", ret);
-	xmlSecDesKeyDataDestroy(keyData);   
+	xmlSecDesKeyValueDataDestroy(keyData);   
 	return(-1);    
     }
     if(key->keyData != NULL) {
-	xmlSecDesKeyDataDestroy((xmlSecDesKeyDataPtr)key->keyData);
+	xmlSecDesKeyValueDataDestroy((xmlSecDesKeyValueDataPtr)key->keyData);
 	key->keyData = NULL;
     }
     
     key->keyData = keyData;
-    key->type = xmlSecKeyTypePrivate;    
+    key->type = xmlSecKeyValueTypePrivate;    
     return(0);    
 }
 
 static int		
-xmlSecDesKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
-    xmlSecDesKeyDataPtr keyData;
+xmlSecDesKeyValueSet(xmlSecKeyValuePtr key, void* data, int dataSize) {
+    xmlSecDesKeyValueDataPtr keyData;
     
     xmlSecAssert2(key != NULL, -1);    
 
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(-1);
     }
     
-    keyData = xmlSecDesKeyDataCreate((unsigned char*)data, dataSize);
+    keyData = xmlSecDesKeyValueDataCreate((unsigned char*)data, dataSize);
     if(keyData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDesKeyDataCreate");
+		    "xmlSecDesKeyValueDataCreate");
 	return(-1);    
     }
     
     if(key->keyData != NULL) {
-	xmlSecDesKeyDataDestroy((xmlSecDesKeyDataPtr)key->keyData);
+	xmlSecDesKeyValueDataDestroy((xmlSecDesKeyValueDataPtr)key->keyData);
 	key->keyData = NULL;
     }
     
     key->keyData = keyData;
-    key->type = xmlSecKeyTypePrivate;    
+    key->type = xmlSecKeyValueTypePrivate;    
     return(0);    
 }
 
 /**
- * xmlSecDesKeyRead:
+ * xmlSecDesKeyValueRead:
  */
 static int
-xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
+xmlSecDesKeyValueRead(xmlSecKeyValuePtr key, xmlNodePtr node) {
     unsigned char* value = NULL;
     size_t valueSize = 0;
     int ret;
@@ -888,10 +888,10 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     xmlSecAssert2(key != NULL, -1);    
     xmlSecAssert2(node != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(-1);
     }
     
@@ -904,20 +904,20 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
 
     if(key->keyData != NULL) {
-	xmlSecDesKeyDataDestroy((xmlSecDesKeyDataPtr)key->keyData);
+	xmlSecDesKeyValueDataDestroy((xmlSecDesKeyValueDataPtr)key->keyData);
 	key->keyData = NULL;
 	key->type = 0;
     }
     if(valueSize > 0) {
-	key->keyData = xmlSecDesKeyDataCreate(value, valueSize);
+	key->keyData = xmlSecDesKeyValueDataCreate(value, valueSize);
 	if(key->keyData == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecDesKeyDataCreate");
+			"xmlSecDesKeyValueDataCreate");
 	    xmlFree(value);
 	    return(-1);
 	}
-	key->type = xmlSecKeyTypePrivate;
+	key->type = xmlSecKeyValueTypePrivate;
     }
 
     xmlFree(value);
@@ -925,30 +925,30 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 }
 
 /**
- * xmlSecDesKeyWrite:
+ * xmlSecDesKeyValueWrite:
  */
 static int
-xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    xmlSecDesKeyDataPtr ptr;
+xmlSecDesKeyValueWrite(xmlSecKeyValuePtr key, xmlSecKeyValueType type, xmlNodePtr parent) {
+    xmlSecDesKeyValueDataPtr ptr;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);    
     xmlSecAssert2(parent != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(-1);
     }
-    ptr = (xmlSecDesKeyDataPtr)key->keyData;
+    ptr = (xmlSecDesKeyValueDataPtr)key->keyData;
 
-    if((type != xmlSecKeyTypePrivate) && (type != xmlSecKeyTypeAny)){
+    if((type != xmlSecKeyValueTypePrivate) && (type != xmlSecKeyValueTypeAny)){
 	/* we can have only private key */
 	return(0);
     }
     
-    if((ptr->key == NULL) || (key->type != xmlSecKeyTypePrivate)) {
+    if((ptr->key == NULL) || (key->type != xmlSecKeyValueTypePrivate)) {
 	/* and we have no private key :) */
 	return(0);
     }
@@ -964,59 +964,59 @@ xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 }
 
 /**
- * xmlSecDesKeyReadBinary:
+ * xmlSecDesKeyValueReadBinary:
  */
 static  int
-xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
+xmlSecDesKeyValueReadBinary(xmlSecKeyValuePtr key, const unsigned char *buf, size_t size) {
     xmlSecAssert2(key != NULL, -1);    
 
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(-1);
     }
 
     if(key->keyData != NULL) {
-	xmlSecDesKeyDataDestroy((xmlSecDesKeyDataPtr)key->keyData);
+	xmlSecDesKeyValueDataDestroy((xmlSecDesKeyValueDataPtr)key->keyData);
 	key->keyData = NULL;
 	key->type = 0;
     }
     if((buf != NULL) && (size > 0)) {
-	key->keyData = xmlSecDesKeyDataCreate(buf, size);
+	key->keyData = xmlSecDesKeyValueDataCreate(buf, size);
 	if(key->keyData == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecDesKeyDataCreate");
+			"xmlSecDesKeyValueDataCreate");
 	    return(-1);
 	}
-	key->type = xmlSecKeyTypePrivate;
+	key->type = xmlSecKeyValueTypePrivate;
     }
     return(0);
 }
 
 /**
- * xmlSecDesKeyWriteBinary:
+ * xmlSecDesKeyValueWriteBinary:
  */
 static  int
-xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
+xmlSecDesKeyValueWriteBinary(xmlSecKeyValuePtr key, xmlSecKeyValueType type ATTRIBUTE_UNUSED,
 			unsigned char **buf, size_t *size) {
-    xmlSecDesKeyDataPtr keyData;
+    xmlSecDesKeyValueDataPtr keyData;
 
     xmlSecAssert2(key != NULL, -1);    
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(size != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey) || (key->keyData == NULL)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDesKeyValue) || (key->keyData == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDesKey");	
+		    "xmlSecDesKeyValue");	
 	return(-1);
     }
     (*buf) = NULL;
     (*size) = 0;
     
-    keyData = (xmlSecDesKeyDataPtr)key->keyData;
+    keyData = (xmlSecDesKeyValueDataPtr)key->keyData;
     if((keyData->key == NULL) || (keyData->keySize <= 0)) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
@@ -1043,25 +1043,25 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
  *
  *************************************************************************/
 /**
- * xmlSecDesKeyDataCreate:
+ * xmlSecDesKeyValueDataCreate:
  */
-static xmlSecDesKeyDataPtr	
-xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
-    xmlSecDesKeyDataPtr data;
+static xmlSecDesKeyValueDataPtr	
+xmlSecDesKeyValueDataCreate(const unsigned char *key, size_t keySize) {
+    xmlSecDesKeyValueDataPtr data;
     size_t size;
     
-    size = sizeof(xmlSecDesKeyData) + sizeof(unsigned char) * keySize;	    
-    data = (xmlSecDesKeyDataPtr) xmlMalloc(size);
+    size = sizeof(xmlSecDesKeyValueData) + sizeof(unsigned char) * keySize;	    
+    data = (xmlSecDesKeyValueDataPtr) xmlMalloc(size);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "%d", size);
 	return(NULL);
     }
-    memset(data, 0,  sizeof(xmlSecDesKeyData) + 
+    memset(data, 0,  sizeof(xmlSecDesKeyValueData) + 
 		     sizeof(unsigned char) * keySize); 
 		     
-    data->key = ((unsigned char*)data) + sizeof(struct _xmlSecDesKeyData);
+    data->key = ((unsigned char*)data) + sizeof(struct _xmlSecDesKeyValueData);
     data->keySize = keySize;
     if((key != NULL) && (keySize > 0)) {
 	memcpy(data->key, key, keySize);
@@ -1070,13 +1070,13 @@ xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
 }
 
 /**
- * xmlSecDesKeyDataDestroy:
+ * xmlSecDesKeyValueDataDestroy:
  */
 static void
-xmlSecDesKeyDataDestroy(xmlSecDesKeyDataPtr data) {
+xmlSecDesKeyValueDataDestroy(xmlSecDesKeyValueDataPtr data) {
     xmlSecAssert(data != NULL);
     
-    memset(data, 0, sizeof(struct _xmlSecDesKeyData) +  
+    memset(data, 0, sizeof(struct _xmlSecDesKeyValueData) +  
 		    sizeof(unsigned char) * data->keySize);
     xmlFree(data);		    
 }

@@ -49,9 +49,9 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestRipemd160Id = {
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     
     /* xmlSecBinTransform data/methods */
-    xmlSecKeyIdUnknown,
-    xmlSecKeyTypeAny,			/* xmlSecKeyType encryption; */
-    xmlSecKeyTypeAny,			/* xmlSecKeyType decryption; */
+    xmlSecKeyValueIdUnknown,
+    xmlSecKeyValueTypeAny,			/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,			/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeDigest,	/* xmlSecBinTransformSubType binSubType; */
             
     NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */

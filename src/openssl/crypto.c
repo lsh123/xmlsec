@@ -107,7 +107,7 @@ xmlSecCryptoInit(void) {
 
     /* register keys and transforms */
 #ifndef XMLSEC_NO_DSA
-    if(xmlSecKeyIdsRegister(xmlSecDsaKey) < 0) {
+    if(xmlSecKeyValueIdsRegister(xmlSecDsaKeyValue) < 0) {
 	return(-1);
     }
     if(xmlSecTransformIdsRegister(xmlSecSignDsaSha1) < 0) {
@@ -116,7 +116,7 @@ xmlSecCryptoInit(void) {
 #endif /* XMLSEC_NO_DSA */    
 
 #ifndef XMLSEC_NO_RSA
-    if(xmlSecKeyIdsRegister(xmlSecRsaKey) < 0) {
+    if(xmlSecKeyValueIdsRegister(xmlSecRsaKeyValue) < 0) {
 	return(-1);
     }
     if(xmlSecTransformIdsRegister(xmlSecSignRsaSha1) < 0) {
@@ -131,7 +131,7 @@ xmlSecCryptoInit(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_DES    
-    if(xmlSecKeyIdsRegister(xmlSecDesKey) < 0) {
+    if(xmlSecKeyValueIdsRegister(xmlSecDesKeyValue) < 0) {
 	return(-1);
     }
     if(xmlSecTransformIdsRegister(xmlSecEncDes3Cbc) < 0) {
@@ -143,7 +143,7 @@ xmlSecCryptoInit(void) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES    
-    if(xmlSecKeyIdsRegister(xmlSecAesKey) < 0) {
+    if(xmlSecKeyValueIdsRegister(xmlSecAesKeyValue) < 0) {
 	return(-1);
     }
     if(xmlSecTransformIdsRegister(xmlSecEncAes128Cbc) < 0) {
@@ -178,7 +178,7 @@ xmlSecCryptoInit(void) {
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_HMAC    
-    if(xmlSecKeyIdsRegister(xmlSecHmacKey) < 0) {
+    if(xmlSecKeyValueIdsRegister(xmlSecHmacKeyValue) < 0) {
 	return(-1);
     }
     if(xmlSecTransformIdsRegister(xmlSecMacHmacSha1) < 0) {

@@ -102,9 +102,9 @@ struct _xmlSecDigestTransformIdStruct {
     xmlSecTransformReadNodeMethod	read;
     
     /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
+    xmlSecKeyValueId			keyId;
+    xmlSecKeyValueType			encryption;
+    xmlSecKeyValueType			decryption;
     xmlSecBinTransformSubType		binSubType;
             
     xmlSecBinTransformAddKeyMethod	addBinKey;

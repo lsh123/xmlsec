@@ -258,7 +258,7 @@ int  readPKCS12Key(char *filename, char *name);
 /**
  * Keys generation/manipulation
  */
-xmlSecKeyPtr genKey(const char* type, const char *name);
+xmlSecKeyValuePtr genKey(const char* type, const char *name);
  
 /**
  * Print help
@@ -294,7 +294,7 @@ int decrypt(xmlDocPtr doc);
  * Global data
  */
 xmlSecKeysMngrPtr keyMgr = NULL; 
-xmlSecKeyPtr sessionKey = NULL;
+xmlSecKeyValuePtr sessionKey = NULL;
 
 char *output = NULL; 
 char *nodeId = NULL;
@@ -499,7 +499,7 @@ int main(int argc, char **argv) {
 	 * Keys options
 	 */	
 	if((strncmp(argv[pos], "--gen-", 6) == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
+	    xmlSecKeyValuePtr key;
 	    char* type = argv[pos] + 6;
 	    key = genKey(type, argv[++pos]);
 	    if(key != NULL) {
@@ -615,7 +615,7 @@ int main(int argc, char **argv) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
 		ret = xmlSecSimpleKeysMngrSave(keyMgr,  argv[pos], 
-			xmlSecKeyTypePublic | xmlSecKeyTypePrivate);
+			xmlSecKeyValueTypePublic | xmlSecKeyValueTypePrivate);
 	    } else {
 		doc = xmlSecParseFile(argv[pos]);
 	        if(doc == NULL) {
@@ -834,7 +834,7 @@ int initXmlsec(xmlsecCommand command) {
 void shutdownXmlsec(void) {
 
     if(sessionKey != NULL) {
-	xmlSecKeyDestroy(sessionKey);
+	xmlSecKeyValueDestroy(sessionKey);
     }
 
     /* destroy xmlsec objects */
@@ -974,7 +974,7 @@ int  readKeyOrigins(char *keyOrigins) {
 
 int readPemKey(int privateKey, char *param, char *name) {
     char *p;
-    xmlSecKeyPtr key;
+    xmlSecKeyValuePtr key;
     int ret;
     
     p = strtok(param, ","); 
@@ -990,7 +990,7 @@ int readPemKey(int privateKey, char *param, char *name) {
     p = strtok(NULL, ",");
 #ifndef XMLSEC_NO_X509     
     while((p != NULL) && (privateKey)) {
-	ret = xmlSecKeyReadPemCert(key, p);
+	ret = xmlSecKeyValueReadPemCert(key, p);
 	if(ret < 0){
 	    fprintf(stderr, "Error: failed to load cert from \"%s\"\n", p);
 	    return(-1);
@@ -1045,7 +1045,7 @@ int readHmacKey(char *filename, char *name) {
 #ifndef XMLSEC_NO_HMAC
     FILE *f;
     unsigned char buf[1024];
-    xmlSecKeyPtr key;
+    xmlSecKeyValuePtr key;
     int ret;    
     
     f = fopen(filename, "r");
@@ -1063,15 +1063,15 @@ int readHmacKey(char *filename, char *name) {
     fclose(f);    
     
     /* HMAC */    
-    key = xmlSecKeyCreate(xmlSecHmacKey, xmlSecKeyOriginDefault);
+    key = xmlSecKeyValueCreate(xmlSecHmacKeyValue, xmlSecKeyOriginDefault);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to create hmac key\n"); 
 	return(-1);
     }    
-    ret = xmlSecKeySetValue(key, buf, ret);
+    ret = xmlSecKeyValueSet(key, buf, ret);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to set key value\n"); 
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	return(-1);
     }    
     if(name != NULL) {
@@ -1079,7 +1079,7 @@ int readHmacKey(char *filename, char *name) {
     }
     ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
     if(ret < 0) {
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	fprintf(stderr, "Error: failed to add hmac key\n"); 
 	return(-1);
     }
@@ -1446,8 +1446,8 @@ done:
 /**
  * Keys generation/manipulation
  */
-xmlSecKeyPtr genKey(const char* type, const char *name) {
-    xmlSecKeyPtr key = NULL;    
+xmlSecKeyValuePtr genKey(const char* type, const char *name) {
+    xmlSecKeyValuePtr key = NULL;    
 
     if(type == NULL) {
     	fprintf(stderr, "Error: bad key type (NULL)\n");
@@ -1455,33 +1455,33 @@ xmlSecKeyPtr genKey(const char* type, const char *name) {
     } else
 #ifndef XMLSEC_NO_HMAC    
     if(strcmp(type, "hmac") == 0) {
-	key = xmlSecKeyGenerate(xmlSecHmacKey, 24, xmlSecKeyOriginDefault, name);
+	key = xmlSecKeyValueGenerate(xmlSecHmacKeyValue, 24, xmlSecKeyOriginDefault, name);
     } else 
 #endif /* XMLSEC_NO_HMAC */ 
 #ifndef XMLSEC_NO_RSA
     if(strcmp(type, "rsa") == 0) {
-	key = xmlSecKeyGenerate(xmlSecRsaKey, 1024, xmlSecKeyOriginDefault, name);	
+	key = xmlSecKeyValueGenerate(xmlSecRsaKeyValue, 1024, xmlSecKeyOriginDefault, name);	
     } else 
 #endif /* XMLSEC_NO_RSA */    
 #ifndef XMLSEC_NO_DSA
     if(strcmp(type, "dsa") == 0) {
-	key = xmlSecKeyGenerate(xmlSecDsaKey, 1024, xmlSecKeyOriginDefault, name);	
+	key = xmlSecKeyValueGenerate(xmlSecDsaKeyValue, 1024, xmlSecKeyOriginDefault, name);	
     } else 
 #endif /* XMLSEC_NO_DSA */    
 #ifndef XMLSEC_NO_DES
     if(strcmp(type, "des3") == 0) {
-	key = xmlSecKeyGenerate(xmlSecDesKey, 24, xmlSecKeyOriginDefault, name);	
+	key = xmlSecKeyValueGenerate(xmlSecDesKeyValue, 24, xmlSecKeyOriginDefault, name);	
     } else 
 #endif /* XMLSEC_NO_DES */
 #ifndef XMLSEC_NO_AES
     if(strcmp(type, "aes128") == 0) {
-    	key = xmlSecKeyGenerate(xmlSecAesKey, 16, xmlSecKeyOriginDefault, name);	
+    	key = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 16, xmlSecKeyOriginDefault, name);	
     } else 
     if(strcmp(type, "aes192") == 0) {
-    	key = xmlSecKeyGenerate(xmlSecAesKey, 24, xmlSecKeyOriginDefault, name);	
+    	key = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 24, xmlSecKeyOriginDefault, name);	
     } else 
     if(strcmp(type, "aes256") == 0) {
-    	key = xmlSecKeyGenerate(xmlSecAesKey, 32, xmlSecKeyOriginDefault, name);	
+    	key = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 32, xmlSecKeyOriginDefault, name);	
     } else 
 #endif /* XMLSEC_NO_AES */
     {

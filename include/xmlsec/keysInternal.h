@@ -21,6 +21,8 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/x509.h>
 
+typedef const struct _xmlSecKeyValueIdStruct	xmlSecKeyValueIdStruct	; 
+
 /**
  * xmlSecKeyInifiteRetrivals:
  *
@@ -29,34 +31,34 @@ extern "C" {
 #define xmlSecKeyInifiteRetrivals		99999
 
 /** 
- * xmlSecKeyCreateMethod:
+ * xmlSecKeyValueCreateMethod:
  * @id: the key id.
  *
  * Key specific creation method.
  *
- * Returns the pointer to newly created #xmlSecKey structure
+ * Returns the pointer to newly created #xmlSecKeyValue structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyPtr	(*xmlSecKeyCreateMethod)	(xmlSecKeyId id);
+typedef xmlSecKeyValuePtr	(*xmlSecKeyValueCreateMethod)	(xmlSecKeyValueId id);
 /** 
- * xmlSecKeyDuplicateMethod:
+ * xmlSecKeyValueDuplicateMethod:
  * @key: the key.
  *
  * Key specific duplication method.
  *
- * Returns the pointer to newly created #xmlSecKey structure
+ * Returns the pointer to newly created #xmlSecKeyValue structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyPtr	(*xmlSecKeyDuplicateMethod)	(xmlSecKeyPtr key);
+typedef xmlSecKeyValuePtr	(*xmlSecKeyValueDuplicateMethod)	(xmlSecKeyValuePtr key);
 /** 
- * xmlSecKeyDestroyMethod:
+ * xmlSecKeyValueDestroyMethod:
  * @key: the key.
  *
  * Key specific destroy method.
  */
-typedef void		(*xmlSecKeyDestroyMethod)	(xmlSecKeyPtr key);
+typedef void			(*xmlSecKeyValueDestroyMethod)		(xmlSecKeyValuePtr key);
 /** 
- * xmlSecKeyGenerateMethod:
+ * xmlSecKeyValueGenerateMethod:
  * @id: the key id.
  * @keySize: the key size (specific to key type).
  *
@@ -65,9 +67,9 @@ typedef void		(*xmlSecKeyDestroyMethod)	(xmlSecKeyPtr key);
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeyGenerateMethod)	(xmlSecKeyPtr key, int keySize);
+typedef int			(*xmlSecKeyValueGenerateMethod)		(xmlSecKeyValuePtr key, int keySize);
 /** 
- * xmlSecKeySetValueMethod:
+ * xmlSecKeyValueSetMethod:
  * @id: the key id.
  * @data: the key data (specific to key type).
  * @dataSize: the @data size.
@@ -77,9 +79,9 @@ typedef int		(*xmlSecKeyGenerateMethod)	(xmlSecKeyPtr key, int keySize);
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeySetValueMethod)	(xmlSecKeyPtr key, void* data, int dataSize);
+typedef int			(*xmlSecKeyValueSetMethod)		(xmlSecKeyValuePtr key, void* data, int dataSize);
 /** 
- * xmlSecKeyReadXmlMethod:
+ * xmlSecKeyValueReadXmlMethod:
  * @key: the key.
  * @node: the pointer to key's value XML node.
  *
@@ -87,10 +89,10 @@ typedef int		(*xmlSecKeySetValueMethod)	(xmlSecKeyPtr key, void* data, int dataS
  * 
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeyReadXmlMethod)	(xmlSecKeyPtr key,
-							 xmlNodePtr node);
+typedef int			(*xmlSecKeyValueReadXmlMethod)		(xmlSecKeyValuePtr key,
+									 xmlNodePtr node);
 /** 
- * xmlSecKeyWriteXmlMethod:
+ * xmlSecKeyValueWriteXmlMethod:
  * @key: the key.
  * @type: the key type to write (public/private).
  * @parent: the pointer to key's value XML node parent node.
@@ -99,11 +101,11 @@ typedef int		(*xmlSecKeyReadXmlMethod)	(xmlSecKeyPtr key,
  * 
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeyWriteXmlMethod)	(xmlSecKeyPtr key,
-							 xmlSecKeyType type,
-							 xmlNodePtr parent);
+typedef int		(*xmlSecKeyValueWriteXmlMethod)			(xmlSecKeyValuePtr key,
+									 xmlSecKeyValueType type,
+									 xmlNodePtr parent);
 /** 
- * xmlSecKeyReadBinaryMethod:
+ * xmlSecKeyValueReadBinaryMethod:
  * @key: the key.
  * @buf: the input data buffer.
  * @size: the input data buffer size.
@@ -112,11 +114,11 @@ typedef int		(*xmlSecKeyWriteXmlMethod)	(xmlSecKeyPtr key,
  * 
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeyReadBinaryMethod)	(xmlSecKeyPtr key,
-							 const unsigned char *buf,
-							 size_t size);
+typedef int		(*xmlSecKeyValueReadBinaryMethod)		(xmlSecKeyValuePtr key,
+									 const unsigned char *buf,
+									 size_t size);
 /** 
- * xmlSecKeyWriteBinaryMethod:
+ * xmlSecKeyValueWriteBinaryMethod:
  * @key: the key.
  * @type: the key type to write (public/private).
  * @buf: the pointer to pointer to the output buffer.
@@ -128,13 +130,13 @@ typedef int		(*xmlSecKeyReadBinaryMethod)	(xmlSecKeyPtr key,
  * 
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeyWriteBinaryMethod)	(xmlSecKeyPtr key,
-							 xmlSecKeyType type,
-							 unsigned char **buf,
-							 size_t *size);
+typedef int		(*xmlSecKeyValueWriteBinaryMethod)		(xmlSecKeyValuePtr key,
+									 xmlSecKeyValueType type,
+									 unsigned char **buf,
+									 size_t *size);
 
 /**
- * xmlSecKeyIdStruct:
+ * xmlSecKeyValueIdStruct:
  * @keyValueNodeName: the name of the key's value node.
  * @keyValueNodeNs: the namespace href of the key's value node.
  * @create: the key specific create method.
@@ -145,73 +147,73 @@ typedef int		(*xmlSecKeyWriteBinaryMethod)	(xmlSecKeyPtr key,
  * @readBin: the key specific readBin method.
  * @writeBin: the key specific writeBin method.
  */ 
-struct _xmlSecKeyIdStruct {
+struct _xmlSecKeyValueIdStruct {
     /* xlmlSecKeyId data */
     const xmlChar 			*keyValueNodeName;
     const xmlChar			*keyValueNodeNs;
     
-    /* xmlSecKeyId methods */
-    xmlSecKeyCreateMethod		create;
-    xmlSecKeyDestroyMethod		destroy;
-    xmlSecKeyDuplicateMethod		duplicate;
-    xmlSecKeyGenerateMethod		generate;
-    xmlSecKeySetValueMethod		setValue;
-    xmlSecKeyReadXmlMethod		read;
-    xmlSecKeyWriteXmlMethod		write;
-    xmlSecKeyReadBinaryMethod		readBin;
-    xmlSecKeyWriteBinaryMethod		writeBin;
+    /* xmlSecKeyValueId methods */
+    xmlSecKeyValueCreateMethod		create;
+    xmlSecKeyValueDestroyMethod		destroy;
+    xmlSecKeyValueDuplicateMethod	duplicate;
+    xmlSecKeyValueGenerateMethod	generate;
+    xmlSecKeyValueSetMethod		setValue;
+    xmlSecKeyValueReadXmlMethod		read;
+    xmlSecKeyValueWriteXmlMethod	write;
+    xmlSecKeyValueReadBinaryMethod	readBin;
+    xmlSecKeyValueWriteBinaryMethod	writeBin;
 };
 
 
 /** 
  * XML Sec Key
  */
-XMLSEC_EXPORT int xmlSecKeyIdsRegister			(xmlSecKeyId id); 
-XMLSEC_EXPORT int xmlSecKeyIdsRegisterDefault		(void); 
-XMLSEC_EXPORT void xmlSecKeyIdsUnregisterAll		(void); 
-XMLSEC_EXPORT xmlSecKeyId xmlSecKeyIdsFindByNode	(xmlSecKeyId desiredKeyId, 
+XMLSEC_EXPORT int xmlSecKeyValueIdsRegister		(xmlSecKeyValueId id); 
+XMLSEC_EXPORT int xmlSecKeyValueIdsRegisterDefault	(void); 
+XMLSEC_EXPORT void xmlSecKeyValueIdsUnregisterAll	(void); 
+XMLSEC_EXPORT xmlSecKeyValueId xmlSecKeyValueIdsFindByNode(xmlSecKeyValueId desiredKeyId, 
 							 xmlNodePtr cur);
  
 /**
- * xmlSecKeyIsValid:
+ * xmlSecKeyValueIsValid:
  * @		key: the pointer to key.
  *
  * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
  * or 0 otherwise.
  */ 
-#define xmlSecKeyIsValid(key) \
+#define xmlSecKeyValueIsValid(key) \
 	((( key ) != NULL) && ((( key )->id) != NULL))
 /**
- * xmlSecKeyCheckId:
+ * xmlSecKeyValueCheckId:
  * @key: the pointer to key.
  * @keyId: the key Id.
  *
  * Macro. Returns 1 if @key is valid and @key's id is equal to @keyId.
  */
-#define xmlSecKeyCheckId(key, keyId) \
- 	(xmlSecKeyIsValid(( key )) && \
+#define xmlSecKeyValueCheckId(key, keyId) \
+ 	(xmlSecKeyValueIsValid(( key )) && \
 	((( key )->id) == ( keyId )))
 /**
- * xmlSecKeyCheckTransform:
+ * xmlSecKeyValueCheckTransform:
  * @key: the pointer to key.
  * @tr: the pointer to transform.
  * 
  * Macro. Returns 1 if @key is valid and could be used for transform @tr.
  */
-#define xmlSecKeyCheckTransform(key, tr) \
- 	(xmlSecKeyIsValid(( key )) && \
-	((((const xmlSecKeyId) (( key )->id->transformId))) == ( tr )))
+#define xmlSecKeyValueCheckTransform(key, tr) \
+ 	(xmlSecValueKeyIsValid(( key )) && \
+	((((const xmlSecKeyValueId) (( key )->id->transformId))) == ( tr )))
 
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadXml	(xmlSecKeyId id,
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueReadXml	(xmlSecKeyValueId id,
 							 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecKeyWriteXml	(xmlSecKeyPtr key,
-							 xmlSecKeyType type,
+XMLSEC_EXPORT int		xmlSecKeyValueWriteXml	(xmlSecKeyValuePtr key,
+							 xmlSecKeyValueType type,
 							 xmlNodePtr node); 							
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadBin	(xmlSecKeyId id,
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueReadBin	(xmlSecKeyValueId id,
 							 const unsigned char *buf,
 							 size_t size);
-XMLSEC_EXPORT int		xmlSecKeyWriteBin	(xmlSecKeyPtr key,
-							 xmlSecKeyType type,
+XMLSEC_EXPORT int		xmlSecKeyValueWriteBin	(xmlSecKeyValuePtr key,
+							 xmlSecKeyValueType type,
 							 unsigned char **buf,
 							 size_t *size);
     

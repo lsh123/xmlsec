@@ -604,7 +604,7 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -623,7 +623,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key, key->origin);    
+	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
     }
     
     /* add ids for Encrypted nodes */
@@ -699,7 +699,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -720,7 +720,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key, key->origin);    
+	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
     }
 
     /* add ids for Encrypted nodes */
@@ -822,7 +822,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -842,7 +842,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key, key->origin);    
+	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
     }
 
     /* add ids for Encrypted nodes */
@@ -989,7 +989,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
@@ -1007,7 +1007,7 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key, key->origin);    
+	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
     }
 
     /* add ids for Encrypted nodes */
@@ -1298,7 +1298,7 @@ xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
     xmlSecAssert(result != NULL);
     
     if(result->key != NULL) {
-	xmlSecKeyDestroy(result->key);
+	xmlSecKeyValueDestroy(result->key);
     }
 
     if(result->buffer != NULL) {
@@ -1356,7 +1356,7 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
     }
     
     if(result->key != NULL) {
-	xmlSecKeyDebugDump(result->key, output);
+	xmlSecKeyValueDebugDump(result->key, output);
     }
 
     if(result->buffer != NULL) {
@@ -1402,7 +1402,7 @@ xmlSecEncResultDebugXmlDump(xmlSecEncResultPtr result, FILE *output) {
     }
     
     if(result->key != NULL) {
-	xmlSecKeyDebugXmlDump(result->key, output);
+	xmlSecKeyValueDebugXmlDump(result->key, output);
     }
 
     if(result->buffer != NULL) {
@@ -1480,8 +1480,8 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
     if((result->key == NULL) && (xmlSecEncResultGetKeyCallback(result) != NULL)) {
-        xmlSecKeyId keyId;
-        xmlSecKeyType keyType;    
+        xmlSecKeyValueId keyId;
+        xmlSecKeyValueType keyType;    
         xmlSecKeyUsage keyUsage;
 
 	if(result->encrypt) {

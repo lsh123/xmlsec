@@ -86,9 +86,9 @@ static int 		xmlSecX509_NAME_ENTRY_cmp	(const X509_NAME_ENTRY **a,
  *
  * Returns the pointer to newly allocated key or NULL if an error occurs.
  */ 
-xmlSecKeyPtr
+xmlSecKeyValuePtr
 xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
-    xmlSecKeyPtr key;
+    xmlSecKeyValuePtr key;
     FILE *f;
     PKCS12 *p12;
     EVP_PKEY *pKey = NULL;
@@ -156,7 +156,7 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecX509DataCreate");
 	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	return(NULL);
     }
     key->x509Data->certs = chain;
@@ -384,9 +384,9 @@ xmlSecX509DataAddCert(xmlSecX509DataPtr x509Data, X509 *cert) {
  *
  * Returns the pointer to newly allocated key or NULL if an error occurs.
  */ 
-xmlSecKeyPtr
+xmlSecKeyValuePtr
 xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr key = NULL;
     EVP_PKEY *pKey = NULL;
 
     xmlSecAssert2(x509Data != NULL, NULL);

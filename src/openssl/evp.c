@@ -236,9 +236,9 @@ xmlSecOpenSSLEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 /**
  * Misc EVP functions
  */
-xmlSecKeyPtr	
+xmlSecKeyValuePtr	
 xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr key = NULL;
     int ret;
     
     xmlSecAssert2(pKey != NULL, NULL);
@@ -246,40 +246,40 @@ xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
     switch(pKey->type) {	
 #ifndef XMLSEC_NO_RSA    
     case EVP_PKEY_RSA:
-	key = xmlSecKeyCreate(xmlSecRsaKey, xmlSecKeyOriginX509);
+	key = xmlSecKeyValueCreate(xmlSecRsaKeyValue, xmlSecKeyOriginX509);
 	if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyCreate");
+			"xmlSecKeyValueCreate");
 	    return(NULL);	    
 	}
 	
-	ret = xmlSecKeySetValue(key, pKey->pkey.rsa, sizeof(RSA));
+	ret = xmlSecKeyValueSet(key, pKey->pkey.rsa, sizeof(RSA));
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecRsaKeyGenerate");
-	    xmlSecKeyDestroy(key);
+	    xmlSecKeyValueDestroy(key);
 	    return(NULL);	    
 	}
 	break;
 #endif /* XMLSEC_NO_RSA */	
 #ifndef XMLSEC_NO_DSA	
     case EVP_PKEY_DSA:
-	key = xmlSecKeyCreate(xmlSecDsaKey, xmlSecKeyOriginX509);
+	key = xmlSecKeyValueCreate(xmlSecDsaKeyValue, xmlSecKeyOriginX509);
 	if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyCreate");
+			"xmlSecKeyValueCreate");
 	    return(NULL);	    
 	}
 	
-	ret = xmlSecKeySetValue(key, pKey->pkey.dsa, sizeof(DSA));
+	ret = xmlSecKeyValueSet(key, pKey->pkey.dsa, sizeof(DSA));
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecDsaKeySet");
-	    xmlSecKeyDestroy(key);
+	    xmlSecKeyValueDestroy(key);
 	    return(NULL);	    
 	}
 	break;

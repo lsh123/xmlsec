@@ -21,18 +21,18 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlSecKeyValuePtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
-							 xmlSecKeyId keyId,
-							 xmlSecKeyType keyType,
+							 xmlSecKeyValueId keyId,
+							 xmlSecKeyValueType keyType,
 							 xmlSecKeyUsage keyUsage,
 							 time_t certsVerificationTime);
 XMLSEC_EXPORT int 	xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
-							 xmlSecKeyPtr key,
-							 xmlSecKeyType type);
+							 xmlSecKeyValuePtr key,
+							 xmlSecKeyValueType type);
 
 
 

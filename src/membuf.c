@@ -43,9 +43,9 @@ static const struct _xmlSecBinTransformIdStruct xmlSecMemBufTransformId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     
     /* binary methods */
-    xmlSecKeyIdUnknown,
-    xmlSecKeyTypeAny,			/* xmlSecKeyType encryption; */
-    xmlSecKeyTypeAny,			/* xmlSecKeyType decryption; */
+    xmlSecKeyValueIdUnknown,
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeNone,
     NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecMemBufTransformRead,		/* xmlSecBinTransformReadMethod readBin; */

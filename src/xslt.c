@@ -78,9 +78,9 @@ static const struct _xmlSecBinTransformIdStruct xmlSecTransformXsltId = {
     xmlSecTransformXsltReadNode,	/* xmlSecTransformReadMethod read; */
     
     /* binary methods */
-    xmlSecKeyIdUnknown,
-    xmlSecKeyTypeAny,			/* xmlSecKeyType encryption; */
-    xmlSecKeyTypeAny,			/* xmlSecKeyType decryption; */
+    xmlSecKeyValueIdUnknown,
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeNone,
     NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
     xmlSecTransformXsltRead,		/* xmlSecBinTransformReadMethod readBin; */

@@ -38,7 +38,7 @@
 static xmlSecTransformPtr xmlSecSignDsaSha1Create(xmlSecTransformId id);
 static void 	xmlSecSignDsaSha1Destroy	(xmlSecTransformPtr transform);
 static int  	xmlSecSignDsaSha1AddKey		(xmlSecBinTransformPtr transform, 
-						 xmlSecKeyPtr key);
+						 xmlSecKeyValuePtr key);
 static int 	xmlSecSignDsaSha1Update		(xmlSecDigestTransformPtr digest,
 						 const unsigned char *buffer,
 						 size_t size);
@@ -52,37 +52,37 @@ static int 	xmlSecSignDsaSha1Verify		(xmlSecDigestTransformPtr digest,
  * DSA key
  */
 static DSA* 		xmlSecDsaDup		(DSA *dsa);
-static xmlSecKeyPtr	xmlSecDsaKeyCreate	(xmlSecKeyId id);
-static void		xmlSecDsaKeyDestroy	(xmlSecKeyPtr key);
-static xmlSecKeyPtr	xmlSecDsaKeyDuplicate	(xmlSecKeyPtr key);
-static int		xmlSecDsaKeyGenerate	(xmlSecKeyPtr key,
+static xmlSecKeyValuePtr	xmlSecDsaKeyValueCreate	(xmlSecKeyValueId id);
+static void		xmlSecDsaKeyValueDestroy	(xmlSecKeyValuePtr key);
+static xmlSecKeyValuePtr	xmlSecDsaKeyValueDuplicate	(xmlSecKeyValuePtr key);
+static int		xmlSecDsaKeyValueGenerate	(xmlSecKeyValuePtr key,
 						 int keySize);
-static int		xmlSecDsaKeySetValue	(xmlSecKeyPtr key,
+static int		xmlSecDsaKeyValueSet	(xmlSecKeyValuePtr key,
 						 void* data,
 						 int dataSize);
-static int		xmlSecDsaKeyRead	(xmlSecKeyPtr key,
+static int		xmlSecDsaKeyValueRead	(xmlSecKeyValuePtr key,
 						 xmlNodePtr node);
-static int		xmlSecDsaKeyWrite	(xmlSecKeyPtr key,
-						 xmlSecKeyType type,
+static int		xmlSecDsaKeyValueWrite	(xmlSecKeyValuePtr key,
+						 xmlSecKeyValueType type,
 						 xmlNodePtr parent);
 
-struct _xmlSecKeyIdStruct xmlSecDsaKeyId = {
+xmlSecKeyValueIdStruct xmlSecDsaKeyValueId = {
     /* xlmlSecKeyId data  */
     xmlSecDsaKeyValueName,		/* const xmlChar *keyValueNodeName; */
     xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
     
-    /* xmlSecKeyId methods */
-    xmlSecDsaKeyCreate,		/* xmlSecKeyCreateMethod create; */    
-    xmlSecDsaKeyDestroy,	/* xmlSecKeyDestroyMethod destroy; */
-    xmlSecDsaKeyDuplicate,	/* xmlSecKeyDuplicateMethod duplicate; */
-    xmlSecDsaKeyGenerate,	/* xmlSecKeyGenerateMethod generate; */
-    xmlSecDsaKeySetValue,	/* xmlSecKeySetValueMethod setValue; */
-    xmlSecDsaKeyRead, 		/* xmlSecKeyReadXmlMethod read; */
-    xmlSecDsaKeyWrite,		/* xmlSecKeyWriteXmlMethod write; */
-    NULL,			/* xmlSecKeyReadBinaryMethod readBin; */
-    NULL			/* xmlSecKeyWriteBinaryMethod writeBin; */
+    /* xmlSecKeyValueId methods */
+    xmlSecDsaKeyValueCreate,		/* xmlSecKeyValueCreateMethod create; */    
+    xmlSecDsaKeyValueDestroy,		/* xmlSecKeyValueDestroyMethod destroy; */
+    xmlSecDsaKeyValueDuplicate,		/* xmlSecKeyValueDuplicateMethod duplicate; */
+    xmlSecDsaKeyValueGenerate,		/* xmlSecKeyValueGenerateMethod generate; */
+    xmlSecDsaKeyValueSet,		/* xmlSecKeyValueSetMethod setValue; */
+    xmlSecDsaKeyValueRead, 		/* xmlSecKeyValueReadXmlMethod read; */
+    xmlSecDsaKeyValueWrite,		/* xmlSecKeyValueWriteXmlMethod write; */
+    NULL,				/* xmlSecKeyValueReadBinaryMethod readBin; */
+    NULL				/* xmlSecKeyValueWriteBinaryMethod writeBin; */
 };
-xmlSecKeyId xmlSecDsaKey = &xmlSecDsaKeyId;
+xmlSecKeyValueId xmlSecDsaKeyValue = &xmlSecDsaKeyValueId;
 
 struct _xmlSecDigestTransformIdStruct xmlSecSignDsaSha1Id = {
     /* same as xmlSecTransformId */    
@@ -95,9 +95,9 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignDsaSha1Id = {
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     
     /* xmlSecBinTransform data/methods */
-    &xmlSecDsaKeyId,
-    xmlSecKeyTypePrivate,		/* xmlSecKeyType encryption; */
-    xmlSecKeyTypePublic,		/* xmlSecKeyType decryption; */
+    &xmlSecDsaKeyValueId,
+    xmlSecKeyValueTypePrivate,		/* xmlSecKeyValueType encryption; */
+    xmlSecKeyValueTypePublic,		/* xmlSecKeyValueType decryption; */
     xmlSecBinTransformSubTypeDigest,	/* xmlSecBinTransformSubType binSubType; */
             
     xmlSecSignDsaSha1AddKey,		/* xmlSecBinTransformAddKeyMethod addBinKey; */
@@ -115,7 +115,7 @@ xmlSecTransformId xmlSecSignDsaSha1 = (xmlSecTransformId)&xmlSecSignDsaSha1Id;
 
 #define XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE		20
 
-#define xmlSecGetDsaKey( k ) 			((DSA*)(( k )->keyData))
+#define xmlSecGetDsaKeyValue( k ) 			((DSA*)(( k )->keyData))
 
 /****************************************************************************
  *
@@ -350,7 +350,7 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
  * xmlSecSignDsaSha1AddKey:
  */																 
 static int
-xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
+xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyValuePtr key) {
     xmlSecDigestTransformPtr digest;
     DSA *dsa;
     
@@ -358,23 +358,23 @@ xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecSignDsaSha1) || 
-       !xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+       !xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue)) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
-		    "xmlSecSignDsaSha1 and xmlSecDsaKey");
+		    "xmlSecSignDsaSha1 and xmlSecDsaKeyValue");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
 
-    if(xmlSecGetDsaKey(key) == NULL) {
+    if(xmlSecGetDsaKeyValue(key) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
 	return(-1);
     }
     
-    dsa = xmlSecDsaDup(xmlSecGetDsaKey(key));
+    dsa = xmlSecDsaDup(xmlSecGetDsaKeyValue(key));
     if(dsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -433,96 +433,96 @@ DSA* xmlSecDsaDup(DSA *dsa) {
 }
 
 /**
- * xmlSecDsaKeyCreate:
+ * xmlSecDsaKeyValueCreate:
  */
-static xmlSecKeyPtr	
-xmlSecDsaKeyCreate(xmlSecKeyId id) {
-    xmlSecKeyPtr key;
+static xmlSecKeyValuePtr	
+xmlSecDsaKeyValueCreate(xmlSecKeyValueId id) {
+    xmlSecKeyValuePtr key;
     
     xmlSecAssert2(id != NULL, NULL);
-    if(id != xmlSecDsaKey) {
+    if(id != xmlSecDsaKeyValue) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	return(NULL);	
     }
     
-    key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
+    key = (xmlSecKeyValuePtr)xmlMalloc(sizeof(xmlSecKeyValue));
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(struct _xmlSecKey)=%d", 
-		    sizeof(struct _xmlSecKey));
+		    "sizeof(xmlSecKeyValue)=%d", 
+		    sizeof(xmlSecKeyValue));
 	return(NULL);
     }
-    memset(key, 0, sizeof(struct _xmlSecKey));  
+    memset(key, 0, sizeof(xmlSecKeyValue));  
         
     key->id = id;
     return(key);
 }
 
 /**
- * xmlSecDsaKeyDestroy:
+ * xmlSecDsaKeyValueDestroy:
  */
 static void
-xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
+xmlSecDsaKeyValueDestroy(xmlSecKeyValuePtr key) {
     xmlSecAssert(key != NULL);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	return;
     }
     
-    if(xmlSecGetDsaKey(key) != NULL) {
-	DSA_free(xmlSecGetDsaKey(key));
+    if(xmlSecGetDsaKeyValue(key) != NULL) {
+	DSA_free(xmlSecGetDsaKeyValue(key));
     }    
-    memset(key, 0, sizeof(struct _xmlSecKey));    
+    memset(key, 0, sizeof(xmlSecKeyValue));    
     xmlFree(key);		    
 }
 
-static xmlSecKeyPtr	
-xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
-    xmlSecKeyPtr newKey;
+static xmlSecKeyValuePtr	
+xmlSecDsaKeyValueDuplicate(xmlSecKeyValuePtr key) {
+    xmlSecKeyValuePtr newKey;
     
     xmlSecAssert2(key != NULL, NULL);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	return(NULL);
     }
     
-    newKey = xmlSecDsaKeyCreate(key->id);
+    newKey = xmlSecDsaKeyValueCreate(key->id);
     if(newKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDsaKeyCreate");
+		    "xmlSecDsaKeyValueCreate");
 	return(NULL);
     }
     
-    if(xmlSecGetDsaKey(key) != NULL) {
-	newKey->keyData = xmlSecDsaDup(xmlSecGetDsaKey(key));
+    if(xmlSecGetDsaKeyValue(key) != NULL) {
+	newKey->keyData = xmlSecDsaDup(xmlSecGetDsaKeyValue(key));
 	if(newKey->keyData == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecDsaDup");
-	    xmlSecKeyDestroy(newKey);
+	    xmlSecKeyValueDestroy(newKey);
 	    return(NULL);    
 	}
-	if(xmlSecGetDsaKey(newKey)->priv_key != NULL) {
-	    newKey->type = xmlSecKeyTypePrivate;
+	if(xmlSecGetDsaKeyValue(newKey)->priv_key != NULL) {
+	    newKey->type = xmlSecKeyValueTypePrivate;
 	} else {
-	    newKey->type = xmlSecKeyTypePublic;
+	    newKey->type = xmlSecKeyValueTypePublic;
 	}
     }
     return(newKey);
 }
 
 static int	
-xmlSecDsaKeyGenerate(xmlSecKeyPtr key, int keySize) {
+xmlSecDsaKeyValueGenerate(xmlSecKeyValuePtr key, int keySize) {
     int counter_ret;
     unsigned long h_ret;
     DSA* dsa;
@@ -530,10 +530,10 @@ xmlSecDsaKeyGenerate(xmlSecKeyPtr key, int keySize) {
     
     xmlSecAssert2(key != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	return(-1);
     }
     
@@ -554,11 +554,11 @@ xmlSecDsaKeyGenerate(xmlSecKeyPtr key, int keySize) {
 	return(-1);    
     }
 
-    ret = xmlSecDsaKeySetValue(key, dsa, sizeof(DSA));
+    ret = xmlSecDsaKeyValueSet(key, dsa, sizeof(DSA));
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDsaKeySetValue");
+		    "xmlSecDsaKeyValueSet");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -567,14 +567,14 @@ xmlSecDsaKeyGenerate(xmlSecKeyPtr key, int keySize) {
 }
 
 static int	
-xmlSecDsaKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
+xmlSecDsaKeyValueSet(xmlSecKeyValuePtr key, void* data, int dataSize) {
     DSA* dsa = NULL;
     xmlSecAssert2(key != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	return(-1);
     }
     
@@ -595,20 +595,20 @@ xmlSecDsaKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
 	    return(-1);    
 	}
     }
-    if(xmlSecGetDsaKey(key) != NULL) {
-	DSA_free(xmlSecGetDsaKey(key));
+    if(xmlSecGetDsaKeyValue(key) != NULL) {
+	DSA_free(xmlSecGetDsaKeyValue(key));
     }    
     key->keyData = dsa;
     if((dsa != NULL) && (dsa->priv_key != NULL)) {
-        key->type = xmlSecKeyTypePrivate;    
+        key->type = xmlSecKeyValueTypePrivate;    
     } else {
-        key->type = xmlSecKeyTypePublic;    
+        key->type = xmlSecKeyValueTypePublic;    
     }
     return(0);
 }
 
 static int
-xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
+xmlSecDsaKeyValueRead(xmlSecKeyValuePtr key, xmlNodePtr node) {
     unsigned char* pValue = NULL; size_t pSize = 0;
     unsigned char* qValue = NULL; size_t qSize = 0;
     unsigned char* gValue = NULL; size_t gSize = 0;
@@ -622,10 +622,10 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	goto done;
     }
     
@@ -691,11 +691,11 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	}
     }
 
-    ret = xmlSecKeySetValue(key, dsa, sizeof(DSA));
+    ret = xmlSecKeyValueSet(key, dsa, sizeof(DSA));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeySetValue - %d", ret);
+		    "xmlSecKeyValueSet - %d", ret);
 	goto done;
     }
     res = 0; /* success! */
@@ -727,10 +727,10 @@ done:
 }
 
 /**
- * xmlSecDsaKeyWrite:
+ * xmlSecDsaKeyValueWrite:
  */
 static int
-xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
+xmlSecDsaKeyValueWrite(xmlSecKeyValuePtr key, xmlSecKeyValueType type, xmlNodePtr parent) {
     unsigned char* pValue = NULL; size_t pSize = 0;
     unsigned char* qValue = NULL; size_t qSize = 0;
     unsigned char* gValue = NULL; size_t gSize = 0;
@@ -743,15 +743,15 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(parent != NULL, -1);
 
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey) || (xmlSecGetDsaKey(key) == NULL)) {
+    if(!xmlSecKeyValueCheckId(key, xmlSecDsaKeyValue) || (xmlSecGetDsaKeyValue(key) == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    "xmlSecDsaKey");
+		    "xmlSecDsaKeyValue");
 	goto done;
     }
     
     /* P */
-    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->p, &pValue, &pSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKeyValue(key)->p, &pValue, &pSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -760,7 +760,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     }
 
     /* Q */
-    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->q, &qValue, &qSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKeyValue(key)->q, &qValue, &qSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -769,7 +769,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     }
 
     /* G */
-    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->g, &gValue, &gSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKeyValue(key)->g, &gValue, &gSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -778,7 +778,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     }
 
     /* Y */
-    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->pub_key, &yValue, &ySize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKeyValue(key)->pub_key, &yValue, &ySize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -787,10 +787,10 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     }
 
     /* X */
-    if((type == xmlSecKeyTypePrivate) || 
-       ((type == xmlSecKeyTypeAny) && (xmlSecGetDsaKey(key)->priv_key != NULL))) {
+    if((type == xmlSecKeyValueTypePrivate) || 
+       ((type == xmlSecKeyValueTypeAny) && (xmlSecGetDsaKeyValue(key)->priv_key != NULL))) {
 
-	ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->priv_key, &xValue, &xSize);
+	ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKeyValue(key)->priv_key, &xValue, &xSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,

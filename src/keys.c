@@ -25,50 +25,56 @@
 #include <xmlsec/errors.h>
 
 
+
+/*************************************************************************
+ *
+ * KeyValue ids
+ *
+ ************************************************************************/
 #define XMLSEC_KEYIDS_SIZE 	100
 
-static xmlSecKeyId xmlSecKeyIdsAll[XMLSEC_KEYIDS_SIZE] = { xmlSecKeyIdUnknown };
-static int xmlSecKeyIdsPos = 0;
+static xmlSecKeyValueId xmlSecKeyValueIdsAll[XMLSEC_KEYIDS_SIZE] = { xmlSecKeyValueIdUnknown };
+static int xmlSecKeyValueIdsPos = 0;
 
 int 
-xmlSecKeyIdsRegister(xmlSecKeyId id) {
-    xmlSecAssert2(id != xmlSecKeyIdUnknown, -1);
+xmlSecKeyValueIdsRegister(xmlSecKeyValueId id) {
+    xmlSecAssert2(id != xmlSecKeyValueIdUnknown, -1);
     
-    if(xmlSecKeyIdsPos + 1 >= XMLSEC_KEYIDS_SIZE) {
+    if(xmlSecKeyValueIdsPos + 1 >= XMLSEC_KEYIDS_SIZE) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
-		    "%d", xmlSecKeyIdsPos);
+		    "%d", xmlSecKeyValueIdsPos);
 	return(-1);	
     }
     
-    xmlSecKeyIdsAll[xmlSecKeyIdsPos++] = id;
-    xmlSecKeyIdsAll[xmlSecKeyIdsPos] = xmlSecKeyIdUnknown; /* MUST be the last in the list */  
+    xmlSecKeyValueIdsAll[xmlSecKeyValueIdsPos++] = id;
+    xmlSecKeyValueIdsAll[xmlSecKeyValueIdsPos] = xmlSecKeyValueIdUnknown; /* MUST be the last in the list */  
 
     return(0);
 }
 
 int 
-xmlSecKeyIdsRegisterDefault(void) {
+xmlSecKeyValueIdsRegisterDefault(void) {
     /* all keys are registered in crypto engine */
     return(0);
 }
 
 void 
-xmlSecKeyIdsUnregisterAll(void) {
-    memset(xmlSecKeyIdsAll, 0, sizeof(xmlSecKeyIdsAll));
-    xmlSecKeyIdsPos = 0;
+xmlSecKeyValueIdsUnregisterAll(void) {
+    memset(xmlSecKeyValueIdsAll, 0, sizeof(xmlSecKeyValueIdsAll));
+    xmlSecKeyValueIdsPos = 0;
 }
 
-xmlSecKeyId 
-xmlSecKeyIdsFindByNode(xmlSecKeyId desiredKeyId, xmlNodePtr cur) {
-    xmlSecKeyId keyId;
+xmlSecKeyValueId 
+xmlSecKeyValueIdsFindByNode(xmlSecKeyValueId desiredKeyId, xmlNodePtr cur) {
+    xmlSecKeyValueId keyId;
     int i;
 
-    xmlSecAssert2(cur != NULL, xmlSecKeyIdUnknown);
+    xmlSecAssert2(cur != NULL, xmlSecKeyValueIdUnknown);
     
-    for(i = 0; i < xmlSecKeyIdsPos; ++i) {
-	keyId = xmlSecKeyIdsAll[i];
-	if((desiredKeyId != xmlSecKeyIdUnknown) && (desiredKeyId != keyId)) {
+    for(i = 0; i < xmlSecKeyValueIdsPos; ++i) {
+	keyId = xmlSecKeyValueIdsAll[i];
+	if((desiredKeyId != xmlSecKeyValueIdUnknown) && (desiredKeyId != keyId)) {
 	    continue;
 	}
 	if(xmlSecCheckNodeName(cur, keyId->keyValueNodeName, keyId->keyValueNodeNs)) {
@@ -76,22 +82,27 @@ xmlSecKeyIdsFindByNode(xmlSecKeyId desiredKeyId, xmlNodePtr cur) {
 	}
     }
     /* todo: print an error? */
-    return(xmlSecKeyIdUnknown);
+    return(xmlSecKeyValueIdUnknown);
 }
 
+/*************************************************************************
+ *
+ * KeyValue 
+ *
+ ************************************************************************/
 /**
- * xmlSecKeyCreate:
+ * xmlSecKeyValueCreate:
  * @id: the key id.
  * @origin: the key origins.
  *
  * Creates new key of the specified type @id.
  *
- * Returns the pointer to newly allocated #xmlSecKey structure
+ * Returns the pointer to newly allocated #xmlSecKeyValue structure
  * or NULL if an error occurs.
  */
-xmlSecKeyPtr	
-xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
-    xmlSecKeyPtr key;
+xmlSecKeyValuePtr	
+xmlSecKeyValueCreate(xmlSecKeyValueId id, xmlSecKeyOrigin origin)  {
+    xmlSecKeyValuePtr key;
     
     xmlSecAssert2(id != NULL, NULL);
     xmlSecAssert2(id->create != NULL, NULL);
@@ -108,18 +119,18 @@ xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
 }
 
 /**
- * xmlSecKeyDestroy:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueDestroy:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  *
  * Destroys the key and frees all allocated memory. 
  */
 void
-xmlSecKeyDestroy(xmlSecKeyPtr key) {
+xmlSecKeyValueDestroy(xmlSecKeyValuePtr key) {
     xmlSecAssert(key != NULL);    
     xmlSecAssert(key->id != NULL);    
     xmlSecAssert(key->id->destroy != NULL);    
 
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -139,24 +150,24 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyDuplicate:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueDuplicate:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @origin: the key origins.
  *
  * Creates a duplicate of the given @key.
  *
- * Returns the pointer to newly allocated #xmlSecKey structure
+ * Returns the pointer to newly allocated #xmlSecKeyValue structure
  * or NULL if an error occurs.
  */
-xmlSecKeyPtr	
-xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
-    xmlSecKeyPtr newKey;
+xmlSecKeyValuePtr	
+xmlSecKeyValueDuplicate(xmlSecKeyValuePtr key,  xmlSecKeyOrigin origin) {
+    xmlSecKeyValuePtr newKey;
 
     xmlSecAssert2(key != NULL, NULL);
     xmlSecAssert2(key->id != NULL, NULL);
     xmlSecAssert2(key->id->duplicate != NULL, NULL);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -185,15 +196,15 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
     return(newKey);
 }
 
-xmlSecKeyPtr
-xmlSecKeyGenerate(xmlSecKeyId id, int keySize, xmlSecKeyOrigin origin, const char* name) {
-    xmlSecKeyPtr key;
+xmlSecKeyValuePtr
+xmlSecKeyValueGenerate(xmlSecKeyValueId id, int keySize, xmlSecKeyOrigin origin, const char* name) {
+    xmlSecKeyValuePtr key;
     int ret;
     
     xmlSecAssert2(id != NULL, NULL);
     xmlSecAssert2(id->generate != NULL, NULL);
     
-    key = xmlSecKeyCreate(id, origin);
+    key = xmlSecKeyValueCreate(id, origin);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -206,7 +217,7 @@ xmlSecKeyGenerate(xmlSecKeyId id, int keySize, xmlSecKeyOrigin origin, const cha
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "id->generate");
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	return(NULL);	
     }	
 
@@ -217,14 +228,14 @@ xmlSecKeyGenerate(xmlSecKeyId id, int keySize, xmlSecKeyOrigin origin, const cha
 }
 
 int
-xmlSecKeySetValue(xmlSecKeyPtr key,  void* data, int dataSize) {
+xmlSecKeyValueSet(xmlSecKeyValuePtr key,  void* data, int dataSize) {
     int ret;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(key->id != NULL, -1);
     xmlSecAssert2(key->id->setValue != NULL, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -242,29 +253,29 @@ xmlSecKeySetValue(xmlSecKeyPtr key,  void* data, int dataSize) {
 }
 
 /**
- * xmlSecKeyReadXml:
+ * xmlSecKeyValueReadXml:
  * @id: the key id.
  * @node: the pointer to key value node.
  * 
  * Reads the key from XML node.
  *
- * Returns the pointer to newly allocated #xmlSecKey structure
+ * Returns the pointer to newly allocated #xmlSecKeyValue structure
  * or NULL if an error occurs.
  */
-xmlSecKeyPtr	
-xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
-    xmlSecKeyPtr key;
+xmlSecKeyValuePtr	
+xmlSecKeyValueReadXml(xmlSecKeyValueId id, xmlNodePtr node) {
+    xmlSecKeyValuePtr key;
     int ret;
 
     xmlSecAssert2(id != NULL, NULL);
     xmlSecAssert2(id->read != NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
 
-    key = xmlSecKeyCreate(id, xmlSecKeyOriginDefault);
+    key = xmlSecKeyValueCreate(id, xmlSecKeyOriginDefault);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyCreate");
+		    "xmlSecKeyValueCreate");
 	return(NULL);    
     }
 
@@ -273,7 +284,7 @@ xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "id->read - %d", ret);
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	return(NULL);    
     }
     
@@ -281,8 +292,8 @@ xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
 }
 
 /**
- * xmlSecKeyWriteXml:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueWriteXml:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @type: the key type to write (public/private).
  * @node: the parent XML node. 
  * 
@@ -291,7 +302,7 @@ xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
+xmlSecKeyValueWriteXml(xmlSecKeyValuePtr key, xmlSecKeyValueType type, xmlNodePtr node) {
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -299,7 +310,7 @@ xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
     xmlSecAssert2(key->id->write != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -318,19 +329,19 @@ xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
 }
 
 /**
- * xmlSecKeyReadBin:
+ * xmlSecKeyValueReadBin:
  * @id: the key id.
  * @buf: the pointer to key binary data buffer.
  * @size: the size of the binary key data @buf.
  * 
  * Reads the key from binary data.
  *
- * Returns the pointer to newly allocated #xmlSecKey structure
+ * Returns the pointer to newly allocated #xmlSecKeyValue structure
  * or NULL if an error occurs.
  */
-xmlSecKeyPtr	
-xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
-    xmlSecKeyPtr key;
+xmlSecKeyValuePtr	
+xmlSecKeyValueReadBin(xmlSecKeyValueId id, const unsigned char *buf, size_t size) {
+    xmlSecKeyValuePtr key;
     int ret;
 
     xmlSecAssert2(id != NULL, NULL);
@@ -338,11 +349,11 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
     
-    key = xmlSecKeyCreate(id, xmlSecKeyOriginDefault);
+    key = xmlSecKeyValueCreate(id, xmlSecKeyOriginDefault);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyCreate");
+		    "xmlSecKeyValueCreate");
 	return(NULL);    
     }
 
@@ -351,7 +362,7 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "id->readBin - %d", ret);
-	xmlSecKeyDestroy(key);
+	xmlSecKeyValueDestroy(key);
 	return(NULL);    
     }
     
@@ -359,8 +370,8 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
 }
 
 /**
- * xmlSecKeyWriteBin:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueWriteBin:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @type: the key type to write (public/private).
  * @buf: the pointer to pointer to the binary data buffer.
  * @size: the pointer to the returned buffer size.
@@ -371,7 +382,7 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
+xmlSecKeyValueWriteBin(xmlSecKeyValuePtr key, xmlSecKeyValueType type,
 		 unsigned char **buf, size_t *size) {
     int ret;
     
@@ -381,7 +392,7 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(size != NULL, -1);
 
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -400,8 +411,8 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 }
 
 /**
- * xmlSecKeyCheck:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueCheck:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @name: the pointer to key name (may be NULL).
  * @id: the key id (may be "any").
  * @type: the key type to write (public/private).
@@ -413,14 +424,14 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
  * Returns 1 if the key satisfies the given criteria or 0 otherwise.
  */
 int
-xmlSecKeyCheck(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, 
-		xmlSecKeyType type) {
+xmlSecKeyValueCheck(xmlSecKeyValuePtr key, const xmlChar *name, xmlSecKeyValueId id, 
+		xmlSecKeyValueType type) {
     xmlSecAssert2(key != NULL, -1);
 
-    if((id != xmlSecKeyIdUnknown) && (id != key->id)) {
+    if((id != xmlSecKeyValueIdUnknown) && (id != key->id)) {
 	return(0);
     }
-    if((type != xmlSecKeyTypeAny) && (key->type != type) && (key->type != xmlSecKeyTypePrivate)) {
+    if((type != xmlSecKeyValueTypeAny) && (key->type != type) && (key->type != xmlSecKeyValueTypePrivate)) {
 	 return(0);
     }
     if((name != NULL) && (!xmlStrEqual(key->name, name))) {
@@ -430,24 +441,24 @@ xmlSecKeyCheck(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id,
 }
 
 /** 
- * xmlSecKeyDebugDump:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueDebugDump:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @output: the destination #FILE pointer.
  *
  * Prints the information about the @key to the @output.
  */
 void
-xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
+xmlSecKeyValueDebugDump(xmlSecKeyValuePtr key, FILE *output) {
     xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
 	return;
     }
-    fprintf(output, "== KEY\n");
+    fprintf(output, "== KEY VALUE\n");
     fprintf(output, "=== method: %s\n", 
 	    (key->id->keyValueNodeName != NULL) ? 
 	    (char*)(key->id->keyValueNodeName) : "NULL"); 
@@ -455,7 +466,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 	    (key->name != NULL) ? 
 	    (char*)(key->name) : "NULL"); 
     fprintf(output, "=== key type: %s\n", 
-	    (key->type == xmlSecKeyTypePrivate) ? 
+	    (key->type == xmlSecKeyValueTypePrivate) ? 
 	    "Private" : "Public"); 
     fprintf(output, "=== key origin:");
     if(key->origin & xmlSecKeyOriginKeyManager) {
@@ -491,18 +502,18 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 }
 
 /** 
- * xmlSecKeyDebugXmlDump:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueDebugXmlDump:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @output: the destination #FILE pointer.
  *
  * Prints the information about the @key to the @output in XML format.
  */
 void
-xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
+xmlSecKeyValueDebugXmlDump(xmlSecKeyValuePtr key, FILE *output) {
     xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
     
-    if(!xmlSecKeyIsValid(key)) {
+    if(!xmlSecKeyValueIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");
@@ -518,7 +529,7 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
 	        key->name);
     }
     fprintf(output, "<KeyType>%s</KeyType>\n", 
-	    (key->type == xmlSecKeyTypePrivate) ? 
+	    (key->type == xmlSecKeyValueTypePrivate) ? 
 	    "Private" : "Public"); 
     fprintf(output, "<KeyOrigins>\n");
     if(key->origin & xmlSecKeyOriginKeyManager) {
@@ -570,11 +581,11 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-xmlSecKeyPtr 		
+xmlSecKeyValuePtr 		
 xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
-		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage,
+		xmlSecKeyValueId keyId, xmlSecKeyValueType keyType, xmlSecKeyUsage keyUsage,
 		time_t certsVerificationTime) {
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr key = NULL;
         
     xmlSecAssert2(mngr != NULL, NULL);
 
@@ -600,8 +611,8 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *conte
 
 #ifndef XMLSEC_NO_X509
 /**
- * xmlSecKeyReadPemCert:
- * @key: the pointer to the #xmlSecKey structure.
+ * xmlSecKeyValueReadPemCert:
+ * @key: the pointer to the #xmlSecKeyValue structure.
  * @filename: the PEM cert file name.
  *
  * Reads the cert from a PEM file and assigns the cert
@@ -610,7 +621,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *conte
  * Returns 0 on success or a negative value otherwise.
  */ 
 int		
-xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
+xmlSecKeyValueReadPemCert(xmlSecKeyValuePtr key,  const char *filename) {
     int ret;
 
     xmlSecAssert2(key != NULL, -1);

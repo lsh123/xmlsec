@@ -86,7 +86,7 @@ struct _xmlSecEncResult {
     xmlChar			*mimeType;
     xmlChar			*encoding;
     xmlSecTransformId		encryptionMethod;
-    xmlSecKeyPtr		key;
+    xmlSecKeyValuePtr		key;
     xmlBufferPtr		buffer;
     int				replaced;
 };
@@ -103,20 +103,20 @@ XMLSEC_EXPORT void 		xmlSecEncCtxDestroy	(xmlSecEncCtxPtr ctx);
  */
 XMLSEC_EXPORT int		xmlSecEncryptMemory	(xmlSecEncCtxPtr ctx,
 							 void *context,
-							 xmlSecKeyPtr key,
+							 xmlSecKeyValuePtr key,
 							 xmlNodePtr encNode,
 							 const unsigned char *buf,
 							 size_t size,
 							 xmlSecEncResultPtr *result);
 XMLSEC_EXPORT int		xmlSecEncryptUri	(xmlSecEncCtxPtr ctx,
 							 void *context,
-							 xmlSecKeyPtr key,
+							 xmlSecKeyValuePtr key,
 							 xmlNodePtr encNode,
 							 const char *uri,
 							 xmlSecEncResultPtr *result);
 XMLSEC_EXPORT int		xmlSecEncryptXmlNode	(xmlSecEncCtxPtr ctx,
 							 void *context,
-							 xmlSecKeyPtr key,
+							 xmlSecKeyValuePtr key,
 							 xmlNodePtr encNode,
 							 xmlNodePtr src,
 							 xmlSecEncResultPtr *result);
@@ -125,7 +125,7 @@ XMLSEC_EXPORT int		xmlSecEncryptXmlNode	(xmlSecEncCtxPtr ctx,
  */
 XMLSEC_EXPORT int		xmlSecDecrypt		(xmlSecEncCtxPtr ctx,
 							 void *context,
-							 xmlSecKeyPtr key,
+							 xmlSecKeyValuePtr key,
 							 xmlNodePtr encNode,
 							 xmlSecEncResultPtr *result);
 /**

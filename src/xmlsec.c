@@ -83,7 +83,7 @@ xmlSecInit(void) {
 	return(-1);
     }
     xmlSecTransformIdsRegisterDefault();
-    xmlSecKeyIdsRegisterDefault();
+    xmlSecKeyValueIdsRegisterDefault();
     xmlSecIOInit();
     return(0);
 }
@@ -98,7 +98,7 @@ xmlSecShutdown(void) {
     int ret;
     
     xmlSecIOShutdown();
-    xmlSecKeyIdsUnregisterAll();
+    xmlSecKeyValueIdsUnregisterAll();
     xmlSecTransformIdsUnregisterAll();
     ret = xmlSecCryptoShutdown();
     if(ret < 0) {

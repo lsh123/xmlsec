@@ -18,27 +18,27 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 
 /**
- * xmlSecKeyId:
+ * xmlSecKeyValueId:
  *
  * The key id (key type information).
  */
-typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
-typedef struct _xmlSecKey 		xmlSecKey, *xmlSecKeyPtr; 
-typedef struct _xmlSecKeysMngr  	xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
+typedef const struct _xmlSecKeyValueIdStruct	*xmlSecKeyValueId; 
+typedef struct _xmlSecKeyValue	 		xmlSecKeyValue, *xmlSecKeyValuePtr; 
+typedef struct _xmlSecKeysMngr  		xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
 
 /**
- * xmlSecKeyType:
- * @xmlSecKeyTypePublic: the public key.
- * @xmlSecKeyTypePrivate: the private key.
- * @xmlSecKeyTypeAny: any key.
+ * xmlSecKeyValueType:
+ * @xmlSecKeyValueTypePublic: the public key.
+ * @xmlSecKeyValueTypePrivate: the private key.
+ * @xmlSecKeyValueTypeAny: any key.
  *
  * The key type (public/private).
  */
 typedef enum  {
-    xmlSecKeyTypePublic = 0,
-    xmlSecKeyTypePrivate,
-    xmlSecKeyTypeAny
-} xmlSecKeyType;
+    xmlSecKeyValueTypePublic = 0,
+    xmlSecKeyValueTypePrivate,
+    xmlSecKeyValueTypeAny
+} xmlSecKeyValueType;
 
 /**
  * xmlSecKeyUsages:
@@ -106,19 +106,19 @@ typedef long				xmlSecKeyOrigin;
 
 
 /**
- * xmlSecKeyIdUnknown:
+ * xmlSecKeyValueIdUnknown:
  *
  * The "unknown" id.
  */
-#define xmlSecKeyIdUnknown 			NULL
+#define xmlSecKeyValueIdUnknown		NULL
 
 
 #include <xmlsec/x509.h>
 
 
 /**
- * xmlSecKey:
- * @id: the key id (#xmlSecKeyId).
+ * xmlSecKeyValue:
+ * @id: the key id (#xmlSecKeyValueId).
  * @type: the key type (private/public).
  * @name: the key name (may be NULL).
  * @origin: the key origin.
@@ -127,9 +127,9 @@ typedef long				xmlSecKeyOrigin;
  *
  * The key.
  */
-struct _xmlSecKey {
-    xmlSecKeyId				id;
-    xmlSecKeyType			type;
+struct _xmlSecKeyValue {
+    xmlSecKeyValueId			id;
+    xmlSecKeyValueType			type;
     xmlChar				*name;
     xmlSecKeyOrigin			origin;
     xmlSecX509DataPtr			x509Data;
@@ -137,28 +137,28 @@ struct _xmlSecKey {
 };
 
 
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(xmlSecKeyId id,
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueCreate	(xmlSecKeyValueId id,
 							 xmlSecKeyOrigin origin);
-XMLSEC_EXPORT void		xmlSecKeyDestroy	(xmlSecKeyPtr key);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(xmlSecKeyId id,
+XMLSEC_EXPORT void		xmlSecKeyValueDestroy	(xmlSecKeyValuePtr key);
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueGenerate	(xmlSecKeyValueId id,
 							 int keySize,
 							 xmlSecKeyOrigin origin,
 							 const char* name);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDuplicate	(xmlSecKeyPtr key,
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueDuplicate	(xmlSecKeyValuePtr key,
 							 xmlSecKeyOrigin origin);
-XMLSEC_EXPORT int		xmlSecKeySetValue	(xmlSecKeyPtr key, 
+XMLSEC_EXPORT int		xmlSecKeyValueSet	(xmlSecKeyValuePtr key, 
 							 void* data,
 							 int dataSize);
-XMLSEC_EXPORT int		xmlSecKeyCheck		(xmlSecKeyPtr key, 
+XMLSEC_EXPORT int		xmlSecKeyValueCheck	(xmlSecKeyValuePtr key, 
 							 const xmlChar *name,
-							 xmlSecKeyId id, 
-							 xmlSecKeyType type);
-XMLSEC_EXPORT void		xmlSecKeyDebugDump	(xmlSecKeyPtr key,
+							 xmlSecKeyValueId id, 
+							 xmlSecKeyValueType type);
+XMLSEC_EXPORT void		xmlSecKeyValueDebugDump	(xmlSecKeyValuePtr key,
 							 FILE *output);
-XMLSEC_EXPORT void		xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
+XMLSEC_EXPORT void		xmlSecKeyValueDebugXmlDump(xmlSecKeyValuePtr key,
 							 FILE *output);
 #ifndef XMLSEC_NO_X509
-XMLSEC_EXPORT int		xmlSecKeyReadPemCert	(xmlSecKeyPtr key,
+XMLSEC_EXPORT int		xmlSecKeyValueReadPemCert(xmlSecKeyValuePtr key,
 							 const char *filename);
 #endif /* XMLSEC_NO_X509 */
 
@@ -181,11 +181,11 @@ XMLSEC_EXPORT int		xmlSecKeyReadPemCert	(xmlSecKeyPtr key,
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
+typedef xmlSecKeyValuePtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr mngr,
 							 void *context,
-							 xmlSecKeyId keyId,
-							 xmlSecKeyType type,
+							 xmlSecKeyValueId keyId,
+							 xmlSecKeyValueType type,
 							 xmlSecKeyUsage usage,
 							 time_t certsVerificationTime);
 /**
@@ -202,11 +202,11 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-typedef xmlSecKeyPtr 	(*xmlSecFindKeyCallback)	(xmlSecKeysMngrPtr mngr,
+typedef xmlSecKeyValuePtr 	(*xmlSecFindKeyCallback)	(xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 const xmlChar *name,
-							 xmlSecKeyId id, 
-							 xmlSecKeyType type,
+							 xmlSecKeyValueId id, 
+							 xmlSecKeyValueType type,
 							 xmlSecKeyUsage usage);
 
 /**
@@ -278,11 +278,11 @@ struct _xmlSecKeysMngr {
 };
 
 
-XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr mngr,
 							 void *context,
-							 xmlSecKeyId keyId,
-							 xmlSecKeyType keyType,
+							 xmlSecKeyValueId keyId,
+							 xmlSecKeyValueType keyType,
 							 xmlSecKeyUsage keyUsage,
 							 time_t certsVerificationTime);
 

@@ -94,7 +94,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes256;
  * 
  * The AES key id.
  */
-XMLSEC_EXPORT_VAR xmlSecKeyId 	 		xmlSecAesKey;
+XMLSEC_EXPORT_VAR xmlSecKeyValueId 	 	xmlSecAesKeyValue;
 
 #endif /* XMLSEC_NO_AES */
 
@@ -183,7 +183,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWDes3Cbc;
  * 
  * The DES key id.
  */
-XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecDesKey;
+XMLSEC_EXPORT_VAR xmlSecKeyValueId 			xmlSecDesKeyValue;
  
 #endif /* XMLSEC_NO_DES */
 
@@ -204,7 +204,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecSignDsaSha1;
  * 
  * The DSA signature key id.
  */
-XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecDsaKey;
+XMLSEC_EXPORT_VAR xmlSecKeyValueId 			xmlSecDsaKeyValue;
 #endif /* XMLSEC_NO_DSA */
 
 /********************************************************************
@@ -249,7 +249,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacMd5;
  * 
  * The HMAC key id.
  */
-XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecHmacKey;
+XMLSEC_EXPORT_VAR xmlSecKeyValueId 			xmlSecHmacKeyValue;
 
 #endif /* XMLSEC_NO_HMAC */
 
@@ -296,7 +296,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncRsaOaep;
  * 
  * The RSA key id.
  */
-XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecRsaKey;
+XMLSEC_EXPORT_VAR xmlSecKeyValueId		xmlSecRsaKeyValue;
 
 #endif /* XMLSEC_NO_RSA */
 

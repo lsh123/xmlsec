@@ -63,14 +63,14 @@ XMLSEC_EXPORT int		xmlSecCryptoAppInit		(void);
  */
 XMLSEC_EXPORT int		xmlSecCryptoAppShutdown		(void);
 
-XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecCryptoAppLoadPemKey	(const xmlChar* keyName,
+XMLSEC_EXPORT xmlSecKeyValuePtr 	xmlSecCryptoAppLoadPemKey	(const xmlChar* keyName,
 								 const char* filename,
 								 const char* pwd,
-								 xmlSecKeyType type);
+								 xmlSecKeyValueType type);
 XMLSEC_EXPORT xmlSecX509Data 	xmlSecCryptoAppLoadPemCert	(const char* filename,
 								 const char* pwd,
 								 xmlSecX509DataType type);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecCryptoAppLoadPkcs12	(const xmlChar* keyName,
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecCryptoAppLoadPkcs12	(const xmlChar* keyName,
 								 const char* filename,
 								 const char* pwd);
 								

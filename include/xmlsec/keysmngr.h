@@ -25,21 +25,21 @@ XMLSEC_EXPORT void		xmlSecSimpleKeysMngrDestroy 	(xmlSecKeysMngrPtr mngr);
 /**
  * Keys functions
  */
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT xmlSecKeyValuePtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 const xmlChar *name,
-							 xmlSecKeyId id, 
-							 xmlSecKeyType type,
+							 xmlSecKeyValueId id, 
+							 xmlSecKeyValueType type,
 							 xmlSecKeyUsage usage);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddKey	(xmlSecKeysMngrPtr mngr, 
-							 xmlSecKeyPtr key);
+							 xmlSecKeyValuePtr key);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoad 	(xmlSecKeysMngrPtr mngr,
 							 const char *uri,
 							 int strict); 
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrSave	(const xmlSecKeysMngrPtr mngr, 
 							 const char *filename,
-							 xmlSecKeyType type);
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
+							 xmlSecKeyValueType type);
+XMLSEC_EXPORT xmlSecKeyValuePtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
 							 const char *keyfile,
 							 const char *keyPwd,
 							 int privateKey);

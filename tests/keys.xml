@@ -3,7 +3,7 @@
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-hmac-sha1</KeyName>
 <KeyValue>
-<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">6kAw8jl809nsXayfJJCV1YDudO4qtNiW</HMACKeyValue>
+<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">pEft/CcoMW+EdA/E4AOu4aTmqHVXmoHh</HMACKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -11,9 +11,9 @@
 <KeyValue>
 <RSAKeyValue>
 <Modulus>
-qhsItq4wXSxzGxGvnK4j1jp8mqbk4n1lhJIpz78aGq1UfR9VjYvl19WlFYhNbK++
-Ty0XmQqLjHnn2uxzNvBUaC14rLb4vRdQ8wEcZA69SvvMKho8l+od+mKTUcn1knja
-/SwA37XIM6EWorU9TuHOfkH0q9x06DTrZ61QVwqg1K0=
+yLkB1DM9fv+hv9yDzm1cz69vNUZSdnCuR0B8Cjaf+F0SJRa7GKzDeeYEonW0Ads4
+ZOfK/3rrXA977OJRjK8r1qr3SbNzZLnbc19yaBVIyXN/dXFqQZOZCKgHNZfJL7nd
+xL9LR9FRlgIPrvcxluEWaLTc2tyTUZ81Aou9MZ7Kh20=
 </Modulus>
 <Exponent>
 AQAB
@@ -26,22 +26,22 @@ AQAB
 <KeyValue>
 <DSAKeyValue>
 <P>
-x9nvUYy71qbWfY5a6lgLe90LVKaoBT7k68W6AyIQe7B3wvmKojeD07BBHe7BIOgq
-tluUNAZhEqRptRJQx6zGeDbwCuD6NmFN5l6Dqa1RNLBm0eihN0QOBFueDb8MpTSJ
-I4uX9NzY6SEe7rVLNlxWcBqKrLzREcoJSm2Tx6RD61s=
+u3f3gj9bvHQiJPB5tnUK8lR3+eqllmcrsDZJt8r0uS/QYoaLqRjQgO9WME0WIowP
+j9IDPEOkVYuAklygk3MomoPvSvgYsgejOqGCvEUfVoysRVFcUxU9M9lnKDJ0omlR
+DEi6dEcr7opydrlCYiysaAg6bqzCRKrlC9ka3kIhx/s=
 </P>
 <Q>
-sBGxOPZMhWqyjFxkRhrHmIp4yEU=
++DbU/MlXWI6j8mn7b0pCHwATyUE=
 </Q>
 <G>
-q+XFS00i2xVOFyMgDZRY2qAEHCASpvhDNOKOIc9dwViQIitkRVHIAH1qntvqOoFJ
-1qtMJ+7Zut03i2BqyymN+5VOui+EsniWB50bWPUW6+u41Fr+6XgC2TEHSWb9qyJV
-g3YytkXvg30+1GOUdl7pah0KwyYifvYMvlbLS2Cd7/8=
+SBh1iQhLqyC2T/zOxkyKTHYoQ0DSx4AALtg1R3e8PRwcwF7IlAoTHJarKkdC88Y4
+d0S9JYPKpOnfN9GyDj/+XOLQrXpW6JPRTXXhDYkhJt65Wma9cDOwcUcWMIu/G6q/
+F4i3ZTPOYAZD8lb6rh1Y7tSqGmjecmLlGlKSQketlCo=
 </G>
 <Y>
-SRG8kq/7tQkw26xCqLjbYvmbhVAWTK5S/ORhqg8ddO5N6ukkRklYvg7zxBhIjZEg
-RLzNDwCETsRs5Y6fQ/us5slJyLh3QAf5kmrFwkZYXYKIGuclLJAeQDq9VnQIUd7f
-0uKaxmwZzYhzISZwj1WIz2jtqTvBptgvpYphUE5X/lA=
+fYfrMHJl4AcidT/0yHmLRWb2RFYSTVOGJ7qrCjmg+O7lFL0NSu/yNQkV8+qqktM7
+hBwBt5VKKd80WPL/hN1jTFUO7elAHDnaj6cLfNxmoKQ5rdeH3LZxRv8h69UR8nZI
+yKlr/sxxvWg9XTMbqqBjM8T2cdAMxJ7/lCjtUr8Pspg=
 </Y>
 </DSAKeyValue>
 </KeyValue>
@@ -49,25 +49,25 @@ RLzNDwCETsRs5Y6fQ/us5slJyLh3QAf5kmrFwkZYXYKIGuclLJAeQDq9VnQIUd7f
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-des</KeyName>
 <KeyValue>
-<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">LfvUx8fVgf0sG5MDSZF3ze1paL5ZmTrt</DESKeyValue>
+<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">y8j00HutmeIowYbt16xYvpGHwTnU7DEv</DESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes128</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">jze5JdLxpYKtUxkdIH3BTQ==</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">SoB5WDynItX/fPeipaSNiw==</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes192</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">3qE/Q92SA9DwVao1Hm6nmsKzB6av+FA1</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">17NtkQymfsJCsGdknwVoji/2IvyqMVnG</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes256</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">4xJlDxuL73r0eXeFM7KHoOaiPi14mKa6wGzdNCQKmqI=</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">3yNbwfRw2TiZvy2BCZBCGN3gzZm7I5l4wXNLqJsTY/Y=</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 </Keys>

@@ -28,6 +28,7 @@ libxmlsec1_gnutls_la_SOURCES =\
 	$(NULL)
 
 libxmlsec1_gnutls_la_LIBADD = \
+	../libxmlsec1.la \
 	$(GNUTLS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \

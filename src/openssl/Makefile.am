@@ -36,6 +36,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	$(NULL)
 
 libxmlsec1_openssl_la_LIBADD = \
+	../libxmlsec1.la \
 	$(OPENSSL_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \

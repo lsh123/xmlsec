@@ -38,6 +38,7 @@ libxmlsec1_nss_la_SOURCES =\
 	$(NULL)
 
 libxmlsec1_nss_la_LIBADD = \
+	../libxmlsec1.la \
 	$(NSS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \

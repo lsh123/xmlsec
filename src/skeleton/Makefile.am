@@ -25,6 +25,7 @@ libxmlsec1_skeleton_la_SOURCES =\
 	$(NULL)
 
 libxmlsec1_skeleton_la_LIBADD = \
+	../libxmlsec1.la \
 	$(SKELETON_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \

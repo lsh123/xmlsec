@@ -656,33 +656,21 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
 
 /** 
  * xmlSecKeyGenerate:
- * @klass:		the requested key klass name (rsa, dsa, aes, ...).
- * @name: 		the new key name (may be NULL).
+ * @dataId:		the requested key klass (rsa, dsa, aes, ...).
  * @sizeBits:		the new key size (in bits!).
  * @type:		the new key type (session, permanent, ...).
  *
- * Generates new key of requested @klass and @type.
+ * Generates new key of requested klass @dataId and @type.
  *
  * Returns pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecKeyGenerate(const xmlChar* klass, const xmlChar* name, size_t sizeBits, xmlSecKeyDataType type) {
+xmlSecKeyGenerate(xmlSecKeyDataId dataId, size_t sizeBits, xmlSecKeyDataType type) {
     xmlSecKeyPtr key;
     xmlSecKeyDataPtr data;
-    xmlSecKeyDataId dataId;
     int ret;
-    
-    xmlSecAssert2(klass != NULL, NULL);
-    
-    dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), klass, xmlSecKeyDataUsageAny);
-    if(dataId == xmlSecKeyDataIdUnknown) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
-		    "xmlSecKeyDataIdListFindByName",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "klass=%s", klass);
-	return(NULL);    
-    }
+
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
     
     data = xmlSecKeyDataCreate(dataId);
     if(data == NULL) {
@@ -728,18 +716,36 @@ xmlSecKeyGenerate(const xmlChar* klass, const xmlChar* name, size_t sizeBits, xm
 	return(NULL);    
     }
     
-    ret = xmlSecKeySetName(key, name);
-    if(ret < 0) {
+    return(key);
+}
+
+/** 
+ * xmlSecKeyGenerateByName:
+ * @name:		the requested key klass name (rsa, dsa, aes, ...).
+ * @sizeBits:		the new key size (in bits!).
+ * @type:		the new key type (session, permanent, ...).
+ *
+ * Generates new key of requested @klass and @type.
+ *
+ * Returns pointer to newly created key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecKeyGenerateByName(const xmlChar* name, size_t sizeBits, xmlSecKeyDataType type) {
+    xmlSecKeyDataId dataId;
+
+    xmlSecAssert2(name != NULL, NULL);
+    
+    dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), name, xmlSecKeyDataUsageAny);
+    if(dataId == xmlSecKeyDataIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-		    "xmlSecKeySetName",
+		    "xmlSecKey",
+		    "xmlSecKeyDataIdListFindByName",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDestroy(key);
+		    "name=%s", name);
 	return(NULL);    
     }
     
-    return(key);
+    return(xmlSecKeyGenerate(dataId, sizeBits, type));
 }
 
 /**

@@ -9,8 +9,8 @@
  * Example:
  *	./enc1 enc1-tmpl.xml deskey.bin > enc1-res.xml
  *
- * The result could be decrypted with enc3 example:
- *	./enc3 enc1-res.xml deskey.bin
+ * The result could be decrypted with enc4 example:
+ *	./enc4 enc1-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

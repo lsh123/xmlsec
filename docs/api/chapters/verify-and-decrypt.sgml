@@ -254,7 +254,7 @@ done:
     return(res);
 }
 		]]></programlisting>
-	    <simpara><link linkend="xmlsec-example-enc3">Full Program Listing</link></simpara>
+	    <simpara><link linkend="xmlsec-example-enc4">Full Program Listing</link></simpara>
 	    </example>
 	</para>
 	</sect2>

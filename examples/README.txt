@@ -24,7 +24,7 @@ This folder contains XML Security Library examples.
     enc2-res.xml		The result of encryptin enc2-doc.xml by enc2.c
     enc3.c			Decrypting binary data using a signle key
     enc4.c			Decrypting binary data using keys manager
-
+    enc5.c			Decrypting binary file using custom keys manager
 
 
 2. Building Examples 
@@ -58,8 +58,10 @@ folder with any other input files:
     $ ./dsig4 dsig2-res.xml  rsapub.pem
     $ ./enc1  enc1-tmpl.xml  deskey.bin
     $ ./enc2  enc2-doc.xml   deskey.bin 
-    $ ./enc3  enc1-res.xml   deskey.bin
-    $ ./enc3  enc2-res.xml   deskey.bin
     $ ./enc4  enc1-res.xml   deskey.bin
     $ ./enc4  enc2-res.xml   deskey.bin
+    $ ./enc5  enc1-res.xml   deskey.bin
+    $ ./enc5  enc2-res.xml   deskey.bin
+    $ ./enc6  enc1-res.xml
+    $ ./enc6  enc2-res.xml
     

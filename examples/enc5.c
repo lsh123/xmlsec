@@ -1,16 +1,15 @@
 /** 
- * XML Security Library example: Decrypting an encrypted file using a custom keys manager.
+ * XML Security Library example: Decrypting an encrypted file using keys manager.
  * 
- * Decrypts encrypted XML file using a custom files based keys manager.
- * We assume that key's name in <dsig:KeyName/> element is just 
- * file name thay contains the key.
+ * Decrypts encrypted XML file using keys manager and a list of 
+ * DES key from a binary file
  * 
  * Usage: 
- *	enc5 <xml-enc> 
+ *	enc5 <xml-enc> <des-key-file1> [<des-key-file2> [...]] 
  *
  * Example:
- *	./enc5 enc1-res.xml
- *	./enc5 enc2-res.xml
+ *	./enc5 enc1-res.xml deskey.bin
+ *	./enc5 enc2-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -34,8 +33,7 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeyStoreId  files_keys_store_get_klass(void);
-xmlSecKeysMngrPtr create_files_keys_mngr(void);
+xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
 int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int 
@@ -44,9 +42,9 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc != 2) {
+    if(argc != 3) {
 	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <enc-file>\n", argv[0]);
+	fprintf(stderr, "Usage: %s <enc-file> <key-file1> [<key-file2> [...]]\n", argv[0]);
 	return(1);
     }
 
@@ -78,7 +76,7 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = create_files_keys_mngr();
+    mngr = load_des_keys(&(argv[2]), argc - 2);
     if(mngr == NULL) {
 	return(-1);
     }
@@ -107,6 +105,75 @@ main(int argc, char **argv) {
     xmlCleanupParser();
     
     return(0);
+}
+
+/**
+ * load_des_keys:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load DES keys from #files in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_des_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+    
+    assert(files);
+    assert(files_size > 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, "Error: failed to create keys manager.\n");
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) < 0) {
+	fprintf(stderr, "Error: failed to initialize keys manager.\n");
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i < files_size; ++i) {
+	assert(files[i]);
+
+	/* load DES key */
+	key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+	if(key == NULL) {
+    	    fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+
+	/* set key name to the file name, this is just an example! */
+	if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
+    	    fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
+	 */
+	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) < 0) {
+    	    fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
 }
 
 /**
@@ -184,139 +251,5 @@ done:
 	xmlFreeDoc(doc); 
     }
     return(res);
-}
-
-/**
- * create_files_keys_mngr:
- *  
- * Creates a files based keys manager: we assume that key name is 
- * the key file name,
- *
- * Returns pointer to newly created keys manager or NULL if an error occurs.
- */
-xmlSecKeysMngrPtr 
-create_files_keys_mngr(void) {
-    xmlSecKeyStorePtr keysStore;
-    xmlSecKeysMngrPtr mngr;
-
-    /* create files based keys store */
-    keysStore = xmlSecKeyStoreCreate(files_keys_store_get_klass());
-    if(keysStore == NULL) {
-	fprintf(stderr, "Error: failed to create keys store.\n");
-	return(NULL);
-    }
-    
-    /* create keys manager */
-    mngr = xmlSecKeysMngrCreate();
-    if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
-	xmlSecKeyStoreDestroy(keysStore);
-	return(NULL);
-    }
-
-    /* add store to keys manager, from now on keys manager destroys the store if needed */
-    if(xmlSecKeysMngrAdoptKeysStore(mngr, keysStore) < 0) {
-	fprintf(stderr, "Error: failed to add keys store to keys manager.\n");
-	xmlSecKeyStoreDestroy(keysStore);
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
-    }
-    
-    /* initialize crypto library specific data in keys manager */
-    if(xmlSecCryptoKeysMngrInit(mngr) < 0) {
-	fprintf(stderr, "Error: failed to initialize crypto data in keys manager.\n");
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
-    }
-
-    /* set the get key callback */
-    mngr->getKey = xmlSecKeysMngrGetKey;
-    return(mngr);
-}
-
-/****************************************************************************
- *
- * Files Keys Store: we assume that key's name (content of the 
- * <dsig:KeyName/> element is a name of the file with a key.
- * Attention: this probably not a good solution for high traffic systems.
- * 
- ***************************************************************************/
-static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
-								 const xmlChar* name,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static xmlSecKeyStoreKlass files_keys_store_klass = {
-    sizeof(xmlSecKeyStoreKlass),
-    sizeof(xmlSecKeyStore),
-    BAD_CAST "files-based-keys-store",	/* const xmlChar* name; */         
-    NULL,				/* xmlSecKeyStoreInitializeMethod initialize; */
-    NULL,				/* xmlSecKeyStoreFinalizeMethod finalize; */
-    files_keys_store_find_key,		/* xmlSecKeyStoreFindKeyMethod findKey; */
-
-    /* reserved for the future */
-    NULL,				/* void* reserved0; */
-    NULL,				/* void* reserved1; */
-};
-
-/**
- * files_keys_store_get_klass:
- * 
- * The files based keys store klass: we assume that key name is the
- * key file name,
- *
- * Returns files based keys store klass.
- */
-xmlSecKeyStoreId 
-files_keys_store_get_klass(void) {
-    return(&files_keys_store_klass);
-}
-
-/**
- * files_keys_store_find_key:
- * @store:		the pointer to simple keys store.
- * @name:		the desired key name.
- * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> node processing context.
- *  
- * Lookups key in the @store. The caller is responsible for destroying
- * returned key with #xmlSecKeyDestroy function.
- *
- * Returns pointer to key or NULL if key not found or an error occurs.
- */
-static xmlSecKeyPtr
-files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyPtr key;
-    
-    assert(store);
-    assert(keyInfoCtx);
-
-    /* it's possible to do not have the key name or desired key type 
-     * but we could do nothing in this case */
-    if((name == NULL) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataIdUnknown)){
-	return(NULL);
-    }
-    
-    if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
-	/* load key from a pem file, if key is not found then it's an error (is it?) */
-	key = xmlSecCryptoAppPemKeyLoad(name, NULL, NULL, 0);
-	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
-	    return(NULL);
-	}
-    } else {
-	/* otherwise it's a binary key, if key is not found then it's an error (is it?) */
-	key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
-	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
-	    return(NULL);
-	}
-    }
-
-    /* set key name */
-    if(xmlSecKeySetName(key, name) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
-        xmlSecKeyDestroy(key);
-        return(NULL);	
-    }
-
-    return(key);
 }
 

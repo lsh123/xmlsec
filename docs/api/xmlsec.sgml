@@ -52,6 +52,7 @@
 <!ENTITY xmlsec-example-enc3 		SYSTEM "examples/enc3.sgml">
 <!ENTITY xmlsec-example-enc4 		SYSTEM "examples/enc4.sgml">
 <!ENTITY xmlsec-example-enc5 		SYSTEM "examples/enc5.sgml">
+<!ENTITY xmlsec-example-enc6 		SYSTEM "examples/enc6.sgml">
 <!ENTITY xmlsec-example-dsig1-tmpl	SYSTEM "examples/dsig1-tmpl.sgml">
 <!ENTITY xmlsec-example-dsig1-res	SYSTEM "examples/dsig1-res.sgml">
 <!ENTITY xmlsec-example-dsig2-doc	SYSTEM "examples/dsig2-doc.sgml">
@@ -60,6 +61,8 @@
 <!ENTITY xmlsec-example-enc1-res	SYSTEM "examples/enc1-res.sgml">
 <!ENTITY xmlsec-example-enc2-doc	SYSTEM "examples/enc2-doc.sgml">
 <!ENTITY xmlsec-example-enc2-res	SYSTEM "examples/enc2-res.sgml">
+<!ENTITY xmlsec-example-enc3-doc	SYSTEM "examples/enc3-doc.sgml">
+<!ENTITY xmlsec-example-enc3-res	SYSTEM "examples/enc3-res.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -316,9 +319,9 @@ TODO
     &xmlsec-example-dsig4;
     &xmlsec-example-enc1;
     &xmlsec-example-enc2;
-    &xmlsec-example-enc3;
     &xmlsec-example-enc4;
     &xmlsec-example-enc5;
+    &xmlsec-example-enc6;
 
     &xmlsec-example-dsig1-tmpl;
     &xmlsec-example-dsig1-res;

@@ -191,7 +191,7 @@ load_des_keys(char** files, int files_size) {
     return(mngr);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-enc4">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-enc5">Full program listing</link></simpara>
 	    </example>
 	</para>
     </sect2>
@@ -300,6 +300,7 @@ files_keys_store_get_klass(void) {
 static xmlSecKeyPtr
 files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr key;
+    const xmlChar* p;
     
     assert(store);
     assert(keyInfoCtx);
@@ -309,6 +310,16 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     if((name == NULL) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataIdUnknown)){
 	return(NULL);
     }
+
+    /* we don't want to open files in a folder other than "current";
+     * to prevent it limit the characters in the key name to alpha/digit,
+     * '.', '-' or '_'.
+     */
+    for(p = name; (*p) != '\0'; ++p) {
+	if(!isalnum((*p)) && ((*p) != '.') && ((*p) != '-') && ((*p) != '_')) {
+	    return(NULL);
+	}
+    }    
     
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
@@ -336,7 +347,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     return(key);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-enc5">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-enc6">Full program listing</link></simpara>
 	    </example>
 	</para>
     </sect2>    

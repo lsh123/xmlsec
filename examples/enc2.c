@@ -1,5 +1,5 @@
 /** 
- * XML Security Library example: Encrypting data using a template file.
+ * XML Security Library example: Encrypting XML file with a dynamicaly created template.
  * 
  * Encrypts XML file using a dynamicaly created template file and a DES key 
  * from a binary file
@@ -11,7 +11,7 @@
  *	./enc2 enc2-doc.xml deskey.bin > enc2-res.xml
  *
  * The result could be decrypted with enc3 example:
- *	./enc3 enc2-res.xml deskey.bin
+ *	./enc4 enc2-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

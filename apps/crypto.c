@@ -351,7 +351,8 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     char* buf;
     char* p;
     int size;
-
+    int ret;
+    
     xmlSecAssert2(keyKlassAndSize != NULL, NULL);
 
     buf = (char*) xmlStrdup(BAD_CAST keyKlassAndSize);
@@ -380,7 +381,7 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     *(p++) = '\0';
     size = atoi(p);
     
-    key = xmlSecKeyGenerate(BAD_CAST buf, BAD_CAST name, size, type);
+    key = xmlSecKeyGenerateByName(BAD_CAST buf, size, type);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -392,7 +393,20 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
 	xmlFree(buf);
 	return(NULL);	
     }
-    xmlFree(buf);
     
+    ret = xmlSecKeySetName(key, BAD_CAST name);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeySetName",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=\"%s\"", 
+		    xmlSecErrorsSafeString(name));
+	xmlSecKeyDestroy(key);
+	xmlFree(buf);
+	return(NULL);
+    }
+    
+    xmlFree(buf);
     return(key);
 }

@@ -1,3 +1,10 @@
+Thu Nov 28 11:57:17 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: print detailed help report only when
+	user requests it; don't fail if key is not generated
+	when algorithm is disabled
+	
+
 Thu Nov 28 10:44:06 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/transforms.c: fixed a bug in numeric references evaluation 

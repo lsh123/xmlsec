@@ -564,7 +564,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else if((strcmp(argv[pos], "--gen-rsa") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -573,7 +575,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else if((strcmp(argv[pos], "--gen-dsa") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -582,7 +586,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else if((strcmp(argv[pos], "--gen-des3") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -591,7 +597,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else if((strcmp(argv[pos], "--gen-aes128") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -600,7 +608,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else if((strcmp(argv[pos], "--gen-aes192") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -609,7 +619,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else if((strcmp(argv[pos], "--gen-aes256") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -618,7 +630,9 @@ int main(int argc, char **argv) {
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
+		/* ignore error because we just might have the 
+		 algorithm disabled */
+		ret = 0;
 	    }
 	} else 
 	
@@ -709,7 +723,7 @@ int main(int argc, char **argv) {
 	 * Check for error
 	 */
 	if(ret < 0) {
-	    printUsage(argv[1]);
+	    printUsage(NULL);
 	    goto done;	    
 	}
 	++pos;
@@ -731,7 +745,7 @@ int main(int argc, char **argv) {
 		doc = xmlSecParseFile(argv[pos]);
 	        if(doc == NULL) {
 		    fprintf(stderr, "Error: failed to read XML file \"%s\"\n", argv[pos]);
-		    printUsage(argv[1]);
+		    printUsage(NULL);
 	    	    goto done;
 		}
 	
@@ -757,7 +771,7 @@ int main(int argc, char **argv) {
 
 		default:
 		    fprintf(stderr, "Error: unknown command\n");
-	    	    printUsage(argv[1]);
+	    	    printUsage(NULL);
 		    goto done;	    
 		}
 	    }

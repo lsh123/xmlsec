@@ -110,6 +110,8 @@ static int		xmlSecOpenSSLX509DataWriteDerCrl	(xmlSecOpenSSLX509DataPtr openSslDa
 								 size_t* size);
 static int		xmlSecOpenSSLX509DataAddCert		(xmlSecOpenSSLX509DataPtr openSslData,
 								 X509 *cert);
+static int		xmlSecOpenSSLX509DataAddVerifiedCert	(xmlSecOpenSSLX509DataPtr openSslData,
+								 X509 *cert);
 static int		xmlSecOpenSSLX509DataAddCrl		(xmlSecOpenSSLX509DataPtr openSslData,
 								 X509_CRL *crl);
 static xmlSecKeyPtr	 xmlSecOpenSSLX509DataGetKey		(xmlSecOpenSSLX509DataPtr openSslData,
@@ -141,6 +143,72 @@ xmlSecOpenSSLX509DataKlassGet(void) {
     } 
     return(klass);   
 }
+
+int
+xmlSecOpenSSLX509DataAddPemCert(xmlSecOpenSSLX509DataPtr openSslData, const char *filename,
+				xmlSecX509ObjectType type) {
+    X509* cert;
+    X509_CRL* crl;
+    FILE *f;
+    int ret = 0;
+
+    xmlSecAssert2(openSslData != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    
+    f = fopen(filename, "r");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
+	return(-1);    
+    }
+
+    switch(type) {
+    case xmlSecX509ObjectTypeCert:
+    case xmlSecX509ObjectTypeVerifiedCert:
+	cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"PEM_read_X509_AUX(filename=%s)", filename);
+	    fclose(f);
+	    return(-1);    
+	}
+	if(type == xmlSecX509ObjectTypeCert) {
+	    ret = xmlSecOpenSSLX509DataAddCert(openSslData, cert);
+	} else {
+	    ret = xmlSecOpenSSLX509DataAddVerifiedCert(openSslData, cert);
+	}
+	break;
+    case xmlSecX509ObjectTypeCrl:
+	crl = PEM_read_X509_CRL(f, NULL, NULL, NULL);
+	if(crl == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"PEM_read_X509_CRL_AUX(filename=%s)", filename);
+	    fclose(f);
+	    return(-1);    
+	}    	
+	ret = xmlSecOpenSSLX509DataAddCrl(openSslData, crl);
+	break;
+    case xmlSecX509ObjectTypeTrustedCert:
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "xmlSecX509ObjectTypeTrustedCert");
+	fclose(f);
+	return(-1);
+    }
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "type=%d failed", type);
+	fclose(f);
+	return(-1);
+    }
+    fclose(f);
+    return(0);
+}
+
 
 static void
 xmlSecOpenSSLX509DataKlassInit(xmlSecObjKlassPtr klass) {
@@ -592,6 +660,20 @@ xmlSecOpenSSLX509DataAddCert(xmlSecOpenSSLX509DataPtr openSslData, X509 *cert) {
         
     return(0);
 }
+
+static int
+xmlSecOpenSSLX509DataAddVerifiedCert(xmlSecOpenSSLX509DataPtr openSslData, X509 *cert) {
+    xmlSecAssert2(openSslData != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    
+    if(openSslData->verified != NULL) {
+	X509_free(openSslData->verified);
+    }
+    openSslData->verified = cert;
+    
+    return(0);
+}
+
 
 static int
 xmlSecOpenSSLX509DataAddCrl(xmlSecOpenSSLX509DataPtr openSslData, X509_CRL *crl) {
@@ -1693,184 +1775,5 @@ xmlSecOpenSSLX509CtxError(X509_STORE_CTX* xsc) {
 	}		    
     }
 }
-
-
-
-/* todo */
-
-/**
- * xmlSecKeyReadPemCert:
- * @key: the pointer to the #xmlSecKeyValue structure.
- * @filename: the PEM cert file name.
- *
- * Reads the cert from a PEM file and assigns the cert
- * to the key.
- *
- * Returns 0 on success or a negative value otherwise.
- */ 
-int		
-xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
-    int ret;
-
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-
-/* todo
-    if(key->openSslData == NULL) {
-	key->openSslData = xmlSecKeyDataCreate(xmlSecKeyDataX509);
-	if(key->openSslData == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLX509DataCreate");
-	    return(-1);
-	}
-    }    
-    
-    ret = xmlSecOpenSSLX509DataReadPemCert(key->openSslData, filename);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLX509DataReadPemCert(%s) - %d", filename, ret);
-	return(-1);
-    }
-*/    
-    return(0);
-}
-
-/**
- * xmlSecPKCS12ReadKey:
- * @filename: the pkcs12 file name.
- * @pwd: the password for the pkcs12 file.
- *
- * Reads the key from pkcs12 file @filename.
- *
- * Returns the pointer to newly allocated key or NULL if an error occurs.
- */ 
-xmlSecKeyPtr
-xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
-    xmlSecKeyPtr key = NULL;
-    FILE *f;
-    PKCS12 *p12;
-    EVP_PKEY *pKey = NULL;
-    X509 *cert = NULL;
-    STACK_OF(X509) *chain = NULL;
-    int ret;
-
-    xmlSecAssert2(filename != NULL, NULL);
-        
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	return(NULL);
-    }
-    
-    p12 = d2i_PKCS12_fp(f, NULL);
-    if(p12 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "d2i_PKCS12_fp(filename=%s)", filename);
-	fclose(f);    
-	return(NULL);
-    }
-    fclose(f);    
-
-    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PKCS12_verify_mac - %d", ret);
-        PKCS12_free(p12);
-	return(NULL);	
-    }    
-        
-    pKey = NULL;
-    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
-    if((ret < 0) || (pKey == NULL)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PKCS12_parse - %d", ret);
-        PKCS12_free(p12);
-	return(NULL);	
-    }    
-    PKCS12_free(p12);
-    
-    /* todo: should we put the key cert into stack */
-    sk_X509_push(chain, cert);
-    
-    key = xmlSecOpenSSLEvpParseKey(pKey);
-    if(key == NULL) { 
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpParseKey");
-	EVP_PKEY_free(pKey);
-	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
-	return(NULL);	    
-    }   
-    EVP_PKEY_free(pKey); 
-    /* todo: check tha key->value != NULL */
-    key->origin |= xmlSecKeyOriginX509;
-    /* todo: */
-    xmlSecAssert2(key->x509Data != NULL, NULL);
-    ((xmlSecOpenSSLX509DataPtr)(key->x509Data))->certs = chain;
-    return(key);
-}
-
-#if 0
-
-/***********************************************************************
- *
- * X509 Store
- *
- **********************************************************************/
-static int
-xmlSecOpenSSLX509DataReadPemCert(xmlSecOpenSSLX509DataPtr openSslData, const char *filename) {
-    X509 *cert;
-    FILE *f;
-    int ret;
-
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-    
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	return(-1);    
-    }
-    
-    cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
-    if(cert == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PEM_read_X509_AUX(filename=%s)", filename);
-	fclose(f);
-	return(-1);    
-    }    	
-    fclose(f);
-    
-    ret = xmlSecOpenSSLX509DataAddCert(openSslData, cert);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLX509DataAddCert - %d", ret);
-	return(-1);    
-    }
-    return(0);
-}
-
-
-
-
-#endif /* 0 */
-
-
-
-
-
-
 
 #endif /* XMLSEC_NO_X509 */

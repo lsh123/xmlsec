@@ -20,12 +20,14 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 </para>
 
 @keyInfoNode: 
+@keysMngrCtx: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @keysMngr: 
 @context: 
 @keyId: 
 @keyType: 
 @keyUsage: 
-@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecKeyInfoNodeWrite ##### -->
@@ -34,11 +36,13 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 </para>
 
 @keyInfoNode: 
-@keysMngr: 
-@context: 
+@keysMngrCtx: 
 @key: 
 @type: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@keysMngr: 
+@context: 
 
 
 <!-- ##### FUNCTION xmlSecKeyInfoAddKeyName ##### -->

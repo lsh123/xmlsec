@@ -19,6 +19,7 @@ The library initialization/cleanup functions.
 
 </para>
 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecShutdown ##### -->
@@ -26,5 +27,6 @@ The library initialization/cleanup functions.
 
 </para>
 
+@Returns: 
 
 

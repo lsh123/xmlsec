@@ -58,6 +58,9 @@ struct _xmlSecOpenSSLX509Data {
 };
 
 XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecOpenSSLX509DataKlassGet	(void);
+XMLSEC_EXPORT int		xmlSecOpenSSLX509DataAddPemCert(xmlSecOpenSSLX509DataPtr openSslData,
+								 const char *filename,
+								 xmlSecX509ObjectType type);
 
 
 /*********************************************************************
@@ -91,16 +94,6 @@ XMLSEC_EXPORT int		xmlSecOpenSSLX509StoreAddCertsDir(xmlSecOpenSSLX509StorePtr s
 							 	 const char *path);
 
 
-
-
-
-
-/* todo */
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
-								 const char *pwd);
-XMLSEC_EXPORT int		xmlSecKeyReadPemCert		(xmlSecKeyPtr key,
-								 const char *filename);
-    
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

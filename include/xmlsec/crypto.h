@@ -76,6 +76,13 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey	(xmlSecKeysMngrPtr mng
 								 const char *keyPwd,
 								 int privateKey);
 								
+
+#ifndef XMLSEC_NO_X509
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecCryptoPKCS12ReadKey	(const char *filename, 
+								 const char *pwd);
+#endif  /* XMLSEC_NO_X509 */   
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

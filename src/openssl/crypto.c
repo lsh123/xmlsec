@@ -18,6 +18,10 @@
 #include <openssl/pem.h>
 #include <openssl/rand.h>
 #include <openssl/err.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
+#include <openssl/pkcs12.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -28,6 +32,8 @@
 #include <xmlsec/crypto.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/openssl/errors.h>
+#include <xmlsec/openssl/x509.h>
+#include <xmlsec/openssl/evp.h>
 
 static ERR_STRING_DATA xmlSecOpenSSLStrReasons[]= {
   { XMLSEC_ERRORS_R_MALLOC_FAILED,		"failed to allocate memory" },
@@ -263,6 +269,90 @@ xmlSecCryptoAppShutdown(void) {
     return(0);
 }
 
+#ifndef XMLSEC_NO_X509
+/**
+ * xmlSecCryptoPKCS12ReadKey:
+ * @filename: the pkcs12 file name.
+ * @pwd: the password for the pkcs12 file.
+ *
+ * Reads the key from pkcs12 file @filename.
+ *
+ * Returns the pointer to newly allocated key or NULL if an error occurs.
+ */ 
+xmlSecKeyPtr
+xmlSecCryptoPKCS12ReadKey(const char *filename, const char *pwd) {
+    xmlSecKeyPtr key = NULL;
+    FILE *f;
+    PKCS12 *p12;
+    EVP_PKEY *pKey = NULL;
+    X509 *cert = NULL;
+    STACK_OF(X509) *chain = NULL;
+    int ret;
+
+    xmlSecAssert2(filename != NULL, NULL);
+        
+    f = fopen(filename, "r");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
+	return(NULL);
+    }
+    
+    p12 = d2i_PKCS12_fp(f, NULL);
+    if(p12 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "d2i_PKCS12_fp(filename=%s)", filename);
+	fclose(f);    
+	return(NULL);
+    }
+    fclose(f);    
+
+    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
+    if(ret != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PKCS12_verify_mac - %d", ret);
+        PKCS12_free(p12);
+	return(NULL);	
+    }    
+        
+    pKey = NULL;
+    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
+    if((ret < 0) || (pKey == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PKCS12_parse - %d", ret);
+        PKCS12_free(p12);
+	return(NULL);	
+    }    
+    PKCS12_free(p12);
+    
+    /* todo: should we put the key cert into stack */
+    sk_X509_push(chain, cert);
+    
+    key = xmlSecOpenSSLEvpParseKey(pKey);
+    if(key == NULL) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpParseKey");
+	EVP_PKEY_free(pKey);
+	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
+	return(NULL);	    
+    }   
+    EVP_PKEY_free(pKey); 
+    /* todo: check tha key->value != NULL */
+    key->origin |= xmlSecKeyOriginX509;
+    /* todo: */
+    xmlSecAssert2(key->x509Data != NULL, NULL);
+    (xmlSecOpenSSLX509DataCast(key->x509Data))->certs = chain;
+    return(key);
+}
+#endif /* XMLSEC_NO_X509 */
+
+
+
 void 
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 			    int reason, const char* msg) {
@@ -294,6 +384,7 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 	xmlSecErrorsDefaultCallback(file, line, func, reason, msg);
     }
 }
+
 
 /**
  * Random numbers initialization from openssl (apps/app_rand.c)

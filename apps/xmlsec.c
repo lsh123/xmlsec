@@ -979,7 +979,8 @@ int readPemKey(int privateKey, char *param, char *name) {
     p = strtok(NULL, ",");
 #ifndef XMLSEC_NO_X509     
     while((p != NULL) && (privateKey)) {
-	ret = xmlSecKeyReadPemCert(key, p);
+	ret = xmlSecOpenSSLX509DataAddPemCert(xmlSecOpenSSLX509DataCast(key->x509Data),
+						p, xmlSecX509ObjectTypeCert);
 	if(ret < 0){
 	    fprintf(stderr, "Error: failed to load cert from \"%s\"\n", p);
 	    xmlSecKeyDestroy(key);
@@ -1026,7 +1027,7 @@ int readPKCS12Key(char *filename, char *name) {
 #endif /* XMLSEC_CRYPTO_OPENSSL */
     } 
 
-    key = xmlSecPKCS12ReadKey(filename, (global_pwd != NULL) ? global_pwd : pwd);
+    key = xmlSecCryptoPKCS12ReadKey(filename, (global_pwd != NULL) ? global_pwd : pwd);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to load pkcs12 file \"%s\"\n", filename); 
 	return(-1);

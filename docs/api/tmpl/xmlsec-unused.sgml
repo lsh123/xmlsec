@@ -4,6 +4,18 @@
 </para>
 
 
+<!-- ##### MACRO XMLSEC_ERRORS_FUNCTION ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_LIB ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO extern ##### -->
 <para>
 
@@ -16,6 +28,30 @@
 </para>
 
 @id: 
+@Returns: 
+
+<!-- ##### VARIABLE xmlSecAesKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecAesKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecBN2CryptoBinary ##### -->
+<para>
+
+</para>
+
+@a: 
 @Returns: 
 
 <!-- ##### FUNCTION xmlSecBase64CtxInit ##### -->
@@ -112,6 +148,31 @@
 </para>
 
 
+<!-- ##### FUNCTION xmlSecCryptoBinary2BN ##### -->
+<para>
+
+</para>
+
+@str: 
+@a: 
+@Returns: 
+
+<!-- ##### VARIABLE xmlSecDesKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecDesKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
 <!-- ##### STRUCT xmlSecDigestTransformIdStruct ##### -->
 <para>
 
@@ -135,6 +196,74 @@
 @digestSign: 
 @digestVerify: 
 
+<!-- ##### VARIABLE xmlSecDsaKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecDsaKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@dsa: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecErrorsInit ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecErrorsShutdown ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecEvpCipherFinal ##### -->
+<para>
+
+</para>
+
+@cipher: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEvpCipherUpdate ##### -->
+<para>
+
+</para>
+
+@cipher: 
+@buffer: 
+@size: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecFindKeyCallback ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@name: 
+@id: 
+@type: 
+@usage: 
+@Returns: 
+
 <!-- ##### FUNCTION xmlSecFindNodeById ##### -->
 <para>
 
@@ -154,6 +283,89 @@
 @withComments: 
 @Returns: 
 
+<!-- ##### USER_FUNCTION xmlSecGetKeyCallback ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@mngr: 
+@context: 
+@keyId: 
+@type: 
+@usage: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@bitsLen: 
+@Returns: 
+
+<!-- ##### VARIABLE xmlSecHmacKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecHmacKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### MACRO xmlSecKeyCheckId ##### -->
+<para>
+
+</para>
+
+@key: 
+@keyId: 
+
+<!-- ##### MACRO xmlSecKeyCheckTransform ##### -->
+<para>
+
+</para>
+
+@key: 
+@tr: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyCreateMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyDestroyMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyDuplicateMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@Returns: 
+
+<!-- ##### TYPEDEF xmlSecKeyId ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT xmlSecKeyIdStruct ##### -->
 <para>
 
@@ -169,6 +381,194 @@
 @readBin: 
 @writeBin: 
 
+<!-- ##### MACRO xmlSecKeyIdUnknown ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyIsValid ##### -->
+<para>
+
+</para>
+
+@key: 
+
+<!-- ##### MACRO xmlSecKeyOriginAll ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginDefault ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginEncryptedKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginKeyManager ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginKeyName ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginKeyValue ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginPGP ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginRetrievalDocument ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginRetrievalRemote ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginX509 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecKeyReadBin ##### -->
+<para>
+
+</para>
+
+@id: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyReadBinaryMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeyReadXml ##### -->
+<para>
+
+</para>
+
+@id: 
+@node: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyReadXmlMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@node: 
+@Returns: 
+
+<!-- ##### ENUM xmlSecKeyType ##### -->
+<para>
+
+</para>
+
+@xmlSecKeyTypePublic: 
+@xmlSecKeyTypePrivate: 
+@xmlSecKeyTypeAny: 
+
+<!-- ##### FUNCTION xmlSecKeyWriteBin ##### -->
+<para>
+
+</para>
+
+@key: 
+@type: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyWriteBinaryMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@type: 
+@buf: 
+@size: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeyWriteXml ##### -->
+<para>
+
+</para>
+
+@key: 
+@type: 
+@node: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyWriteXmlMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@type: 
+@parent: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeysInit ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecNodeGetBNValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecNodeSetBNValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@addLineBreaks: 
+@Returns: 
+@addLineBreak: 
+
 <!-- ##### FUNCTION xmlSecNodeSetContain ##### -->
 <para>
 
@@ -179,6 +579,133 @@
 @parent: 
 @Returns: 
 
+<!-- ##### VARIABLE xmlSecRsaKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecRsaKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@rsa: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrAddCertsDir ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@path: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrAddKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrDestroy ##### -->
+<para>
+
+</para>
+
+@mngr: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrFindKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@name: 
+@id: 
+@type: 
+@usage: 
+@Returns: 
+@keyType: 
+@keyUsage: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@strict: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPemCert ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@trusted: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPkcs12 ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@name: 
+@filename: 
+@pwd: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrSave ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@type: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrX509Find ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@subjectName: 
+@issuerName: 
+@issuerSerial: 
+@ski: 
+@cert: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrX509Verify ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@cert: 
+@Returns: 
+
 <!-- ##### FUNCTION xmlSecTransformAddKey ##### -->
 <para>
 
@@ -186,6 +713,14 @@
 
 @transform: 
 @key: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecTransformFind ##### -->
+<para>
+
+</para>
+
+@href: 
 @Returns: 
 
 <!-- ##### STRUCT xmlSecTransformIdStruct ##### -->
@@ -200,17 +735,194 @@
 @destroy: 
 @read: 
 
+<!-- ##### FUNCTION xmlSecTransformsInit ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecVerifyKey ##### -->
+<para>
+
+</para>
+
+@key: 
+@name: 
+@id: 
+@type: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataCreateKey ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataDebugDump ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@output: 
+
+<!-- ##### FUNCTION xmlSecX509DataDestroy ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+
+<!-- ##### FUNCTION xmlSecX509DataDup ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataGetCertsNumber ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataGetCrlsNumber ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
 <!-- ##### TYPEDEF xmlSecX509DataPtr ##### -->
 <para>
 
 </para>
 
 
+<!-- ##### FUNCTION xmlSecX509DataReadDerCert ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@buf: 
+@size: 
+@base64: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataReadDerCrl ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@buf: 
+@size: 
+@base64: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataReadPemCert ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@filename: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataWriteDerCert ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@pos: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509DataWriteDerCrl ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@pos: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecX509FindCallback ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@subjectName: 
+@issuerName: 
+@issuerSerial: 
+@ski: 
+@cert: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509StoreAddCertsDir ##### -->
+<para>
+
+</para>
+
+@store: 
+@path: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509StoreCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecX509StoreDestroy ##### -->
+<para>
+
+</para>
+
+@store: 
+
+<!-- ##### FUNCTION xmlSecX509StoreLoadPemCert ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@trusted: 
+@Returns: 
+
 <!-- ##### TYPEDEF xmlSecX509StorePtr ##### -->
 <para>
 
 </para>
 
+
+<!-- ##### USER_FUNCTION xmlSecX509VerifyCallback ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@cert: 
+@Returns: 
 
 <!-- ##### VARIABLE xmlSecXPathAlt ##### -->
 <para>

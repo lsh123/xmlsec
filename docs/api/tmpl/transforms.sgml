@@ -214,27 +214,6 @@ The transforms functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@bitsLen: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@buf: 
-@size: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecTransformXPathAdd ##### -->
 <para>
 
@@ -285,89 +264,6 @@ The transforms functions.
 
 @transformNode: 
 @xslt: 
-@Returns: 
-
-
-<!-- ##### VARIABLE xmlSecAesKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecDesKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecDsaKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecHmacKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecRsaKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecAesKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDesKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecDsaKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@dsa: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecHmacKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecRsaKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@rsa: 
 @Returns: 
 
 

@@ -29,7 +29,6 @@ The ciphers transform.
 @binData: 
 @bufIn: 
 @bufOut: 
-@cipherCtx: 
 @iv: 
 @ivPos: 
 @cipherData: 
@@ -88,26 +87,6 @@ The ciphers transform.
 </para>
 
 @transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEvpCipherUpdate ##### -->
-<para>
-
-</para>
-
-@cipher: 
-@buffer: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEvpCipherFinal ##### -->
-<para>
-
-</para>
-
-@cipher: 
 @Returns: 
 
 

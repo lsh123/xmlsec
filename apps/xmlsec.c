@@ -726,7 +726,7 @@ int main(int argc, const char **argv) {
 	xmlSecAppPrintHelp(subCommand, cmdLineTopics);
 	goto success;
     } else if(command == xmlSecAppCommandVersion) {
-	fprintf(stdout, "%s %s (%s)\n", PACKAGE, VERSION, XMLSEC_CRYPTO);
+	fprintf(stdout, "%s %s (%s)\n", XMLSEC_PACKAGE, XMLSEC_VERSION, XMLSEC_CRYPTO);
 	goto success;
     }
     

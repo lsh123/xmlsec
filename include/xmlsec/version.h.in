@@ -24,6 +24,13 @@ extern "C" {
 #define XMLSEC_VERSION			"@XMLSEC_VERSION@"
 
 /**
+ * XMLSEC_PACKAGE:
+ *
+ * The library packaqge name.
+ */
+#define XMLSEC_PACKAGE			"@XMLSEC_PACKAGE@"
+
+/**
  * XMLSEC_VERSION_MAJOR:
  *
  * The library major version number.

@@ -3,8 +3,6 @@ NULL =
 bin_PROGRAMS = xmlsec1
 
 INCLUDES = \
-    -DPACKAGE=\"@PACKAGE@\" \
-    -DVERSION=\"@VERSION@\" \
     -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\" \
     -I$(top_srcdir)/include \
     $(XMLSEC_DEFINES) \

@@ -244,6 +244,54 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
+ * xmlSecNssGetInternalKeySlot:
+ * 
+ * Returns internal key slot and initializes it if needed.
+ */
+PK11SlotInfo * 
+xmlSecNssGetInternalKeySlot()
+{
+    PK11SlotInfo *slot = NULL;
+    SECStatus rv;
+        
+    slot = PK11_GetInternalKeySlot();
+    if (slot == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "PK11_GetInternalKeySlot",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                "error code=%d", PORT_GetError());
+    	return NULL;
+    }
+
+    if (PK11_NeedUserInit(slot)) {
+        rv = PK11_InitPin(slot, NULL, NULL);
+        if (rv != SECSuccess) {
+     	    xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "PK11_Authenticate",
+		            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		            XMLSEC_ERRORS_NO_MESSAGE);
+            return NULL;
+        }
+    }
+
+    if(PK11_IsLoggedIn(slot, NULL) != PR_TRUE) {
+        rv = PK11_Authenticate(slot, PR_TRUE, NULL);
+        if (rv != SECSuccess) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "PK11_Authenticate",
+		            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		            XMLSEC_ERRORS_NO_MESSAGE);
+            return NULL;
+        }
+    }
+
+    return(slot);
+}
+
+/**
  * xmlSecNssGenerateRandom:
  * @buffer:		the destination buffer.
  * @size:		the numer of bytes to generate.

@@ -1884,14 +1884,14 @@ xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
     /* we're importing a CRL, it is ok to use the internal slot.
      * crlutil does it :)
      */
-    slot = PK11_GetInternalKeySlot();
+    slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "PK11_GetInternalKeySlot",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
-	return NULL;
+                    "xmlSecNssGetInternalKeySlot",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+    		        XMLSEC_ERRORS_NO_MESSAGE);
+    	return NULL;
     }
 
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0)

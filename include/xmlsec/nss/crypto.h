@@ -42,6 +42,8 @@ XMLSEC_CRYPTO_EXPORT void		xmlSecNssErrorsDefaultCallback	(const char* file,
 									int reason, 
 									const char* msg);
 
+XMLSEC_CRYPTO_EXPORT PK11SlotInfo * xmlSecNssGetInternalKeySlot(void);
+
 /********************************************************************
  *
  * AES transforms
@@ -263,6 +265,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
 #define xmlSecNssTransformRsaPkcs1Id \
         xmlSecNssTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
+
+/**
+ * xmlSecNssTransformRsaOaepId:
+ * 
+ * The RSA OAEP key transport transform klass.
+ */
+#define xmlSecNssTransformRsaOaepId \
+        xmlSecNssTransformRsaOaepGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -447,11 +447,11 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     /* we're importing a key about which we know nothing yet, just use the 
      * internal slot 
      */
-    slot = PK11_GetInternalKeySlot();
+    slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "PK11_GetInternalKeySlot",
+		    "xmlSecNssGetInternalKeySlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
@@ -862,12 +862,12 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     /* we're importing a key about which we know nothing yet, just use the 
      * internal slot. We have no criteria to choose a slot. 
      */
-    slot = PK11_GetInternalKeySlot();
+    slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "PK11_GetInternalKeySlot",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "xmlSecNssGetInternalKeySlot",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }

@@ -18,7 +18,7 @@ EXTRA_DIST = \
 	merlin-c14n-three  \
 	$(NULL)
 
-check: $(XMLSEC_APP)
+check: check-km check-dsig check-enc
 	@echo "-------------------------- ATTENTION -----------------------------------"
 	@echo "--- 1) Some of the following tests use resources located on external ---"
 	@echo "--- HTTP servers. If you have no Internet connection or the external ---"
@@ -27,16 +27,28 @@ check: $(XMLSEC_APP)
 	@echo "--- Please, don't be surprised that many XML Encryption tests fails  ---"
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
+
+check-km: $(XMLSEC_APP)
 if XMLSEC_WITH_SKM_TEST
 	@$(top_srcdir)/tests/testKeys.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
+else
+	@echo "Simple Keys Manager support disabled"
 endif 	
+
+check-dsig: $(XMLSEC_APP)
 if XMLSEC_WITH_XMLDSIG_TEST	
 	@$(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
+else
+	@echo "XML DSig support disabled"
 endif	
+
+check-enc: $(XMLSEC_APP)
 if XMLSEC_WITH_XMLENC_TEST
 	@$(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
+else
+	@echo "XML Enc support disabled"
 endif
 

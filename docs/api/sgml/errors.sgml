@@ -81,8 +81,8 @@ void        <link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallb
                                              const char *msg);
 void        <link linkend="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput</link>
                                             (int enabled);
-int         <link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link>             (<link linkend="size-t">size_t</link> pos);
-const char* <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>              (<link linkend="size-t">size_t</link> pos);
+int         <link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link>             (<link linkend="xmlSecSize">xmlSecSize</link> pos);
+const char* <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>              (<link linkend="xmlSecSize">xmlSecSize</link> pos);
 #define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
 #define     <link linkend="xmlSecErrorsSafeString">xmlSecErrorsSafeString</link>          (str)
 #define     <link linkend="XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</link>
@@ -669,7 +669,7 @@ errors callback.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsGetCode">xmlSecErrorsGetCode ()</title>
-<programlisting>int         xmlSecErrorsGetCode             (<link linkend="size-t">size_t</link> pos);</programlisting>
+<programlisting>int         xmlSecErrorsGetCode             (<link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets the known error code at position <parameter>pos</parameter>.</para>
 <para>
@@ -684,7 +684,7 @@ total number of known error codes.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg ()</title>
-<programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="size-t">size_t</link> pos);</programlisting>
+<programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets the known error message at position <parameter>pos</parameter>.</para>
 <para>

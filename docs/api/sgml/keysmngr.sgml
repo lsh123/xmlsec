@@ -466,8 +466,8 @@ the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> 
 <refsect2>
 <title><anchor id="xmlSecKeyStoreKlass">struct xmlSecKeyStoreKlass</title>
 <programlisting>struct xmlSecKeyStoreKlass {
-    size_t				klassSize;
-    size_t				objSize;
+    xmlSecSize				klassSize;
+    xmlSecSize				objSize;
 
     /* data */
     const xmlChar*			name;    
@@ -488,12 +488,12 @@ The keys store id (klass).</para>
 
 </para><variablelist role="struct">
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>klassSize</structfield></term>
 <listitem><simpara>		the store klass size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>objSize</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>objSize</structfield></term>
 <listitem><simpara>		the store obj size.
 </simpara></listitem>
 </varlistentry>

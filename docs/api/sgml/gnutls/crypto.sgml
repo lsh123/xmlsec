@@ -18,13 +18,13 @@ int         <link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link>            
 int         <link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link>            (void);
 int         <link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</link>      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> size);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);
 #define     <link linkend="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass</link>
                                             (void);
 int         <link linkend="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> bufSize);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass</link>
                                             (void);
@@ -38,8 +38,8 @@ int         <link linkend="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet<
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass</link>
                                             (void);
 int         <link linkend="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> bufSize);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass</link>
                                             (void);
@@ -47,8 +47,8 @@ int         <link linkend="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet<
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass</link>
                                             (void);
 int         <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link>      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> bufSize);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
                                             (void);
@@ -118,7 +118,7 @@ Adds GnuTLS specific key data stores in keys manager.</para>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom ()</title>
 <programlisting>int         xmlSecGnuTLSGenerateRandom      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> size);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.</para>
 <para>
@@ -156,8 +156,8 @@ The AES key data klass.</para>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet ()</title>
 <programlisting>int         xmlSecGnuTLSKeyDataAesSet       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of AES key data.</para>
 <para>
@@ -258,8 +258,8 @@ The DES key data klass.</para>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet ()</title>
 <programlisting>int         xmlSecGnuTLSKeyDataDesSet       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of DES key data.</para>
 <para>
@@ -320,8 +320,8 @@ The HMAC key data klass.</para>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet ()</title>
 <programlisting>int         xmlSecGnuTLSKeyDataHmacSet      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of HMAC key data.</para>
 <para>

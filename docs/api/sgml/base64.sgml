@@ -23,19 +23,19 @@ int         <link linkend="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize<
                                              int columns);
 void        <link linkend="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</link>         (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);
 int         <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>           (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                             unsigned char *in,
-                                             <link linkend="size-t">size_t</link> inSize,
-                                             unsigned char *out,
-                                             <link linkend="size-t">size_t</link> outSize);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *in,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> inSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *out,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> outSize);
 int         <link linkend="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</link>            (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                             unsigned char *out,
-                                             <link linkend="size-t">size_t</link> outSize);
-<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBase64Encode">xmlSecBase64Encode</link>              (unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> len,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *out,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> outSize);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBase64Encode">xmlSecBase64Encode</link>              (const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len,
                                              int columns);
 int         <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>              (const <link linkend="xmlChar">xmlChar</link> *str,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> len);
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len);
 </synopsis>
 </refsynopsisdiv>
 
@@ -131,10 +131,10 @@ Frees all the resources allocated by <parameter>ctx</parameter>.</para>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate ()</title>
 <programlisting>int         xmlSecBase64CtxUpdate           (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                             unsigned char *in,
-                                             <link linkend="size-t">size_t</link> inSize,
-                                             unsigned char *out,
-                                             <link linkend="size-t">size_t</link> outSize);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *in,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> inSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *out,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> outSize);</programlisting>
 <para>
 Encodes or decodes the next piece of data from input buffer.</para>
 <para>
@@ -162,8 +162,8 @@ Encodes or decodes the next piece of data from input buffer.</para>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal ()</title>
 <programlisting>int         xmlSecBase64CtxFinal            (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                             unsigned char *out,
-                                             <link linkend="size-t">size_t</link> outSize);</programlisting>
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *out,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> outSize);</programlisting>
 <para>
 Encodes or decodes the last piece of data stored in the context
 and finalizes the result.</para>
@@ -185,8 +185,8 @@ and finalizes the result.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64Encode">xmlSecBase64Encode ()</title>
-<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBase64Encode              (unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> len,
+<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBase64Encode              (const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len,
                                              int columns);</programlisting>
 <para>
 Encodes the data from input buffer and allocates the string for the result.
@@ -212,8 +212,8 @@ or NULL if an error occurs.
 <refsect2>
 <title><anchor id="xmlSecBase64Decode">xmlSecBase64Decode ()</title>
 <programlisting>int         xmlSecBase64Decode              (const <link linkend="xmlChar">xmlChar</link> *str,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> len);</programlisting>
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> len);</programlisting>
 <para>
 Decodes input base64 encoded string and puts result into
 the output buffer.</para>

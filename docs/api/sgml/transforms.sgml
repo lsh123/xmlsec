@@ -79,8 +79,8 @@ int         <link linkend="xmlSecTransformCtxNodesListRead">xmlSecTransformCtxNo
 int         <link linkend="xmlSecTransformCtxPrepare">xmlSecTransformCtxPrepare</link>       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              <link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> inputDataType);
 int         <link linkend="xmlSecTransformCtxBinaryExecute">xmlSecTransformCtxBinaryExecute</link> (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
 int         <link linkend="xmlSecTransformCtxUriExecute">xmlSecTransformCtxUriExecute</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
 int         <link linkend="xmlSecTransformCtxXmlExecute">xmlSecTransformCtxXmlExecute</link>    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -105,8 +105,8 @@ int         <link linkend="xmlSecTransformSetKey">xmlSecTransformSetKey</link>  
 int         <link linkend="xmlSecTransformSetKeyReq">xmlSecTransformSetKeyReq</link>        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
 int         <link linkend="xmlSecTransformVerify">xmlSecTransformVerify</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformVerifyNodeContent">xmlSecTransformVerifyNodeContent</link>
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -117,14 +117,14 @@ int         <link linkend="xmlSecTransformVerifyNodeContent">xmlSecTransformVeri
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformPushBin">xmlSecTransformPushBin</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              int final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformPopBin">xmlSecTransformPopBin</link>           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> maxDataSize,
-                                             <link linkend="size-t">size_t</link> *dataSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformPushXml">xmlSecTransformPushXml</link>          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
@@ -153,14 +153,14 @@ void        <link linkend="xmlSecTransformRemove">xmlSecTransformRemove</link>  
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformDefaultPushBin">xmlSecTransformDefaultPushBin</link>   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              int final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformDefaultPopBin">xmlSecTransformDefaultPopBin</link>    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> maxDataSize,
-                                             <link linkend="size-t">size_t</link> *dataSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         <link linkend="xmlSecTransformDefaultPushXml">xmlSecTransformDefaultPushXml</link>   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
@@ -196,18 +196,18 @@ int         (<link linkend="xmlSecTransformSetKeyRequirementsMethod">*xmlSecTran
 int         (<link linkend="xmlSecTransformSetKeyMethod">*xmlSecTransformSetKeyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
 int         (<link linkend="xmlSecTransformVerifyMethod">*xmlSecTransformVerifyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         (<link linkend="xmlSecTransformPushBinMethod">*xmlSecTransformPushBinMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              int final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         (<link linkend="xmlSecTransformPopBinMethod">*xmlSecTransformPopBinMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> maxDataSize,
-                                             <link linkend="size-t">size_t</link> *dataSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
 int         (<link linkend="xmlSecTransformPushXmlMethod">*xmlSecTransformPushXmlMethod</link>) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
@@ -244,7 +244,7 @@ void        <link linkend="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdL
                                             (void);
 void        <link linkend="xmlSecTransformBase64SetLineSize">xmlSecTransformBase64SetLineSize</link>
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             <link linkend="size-t">size_t</link> lineSize);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> lineSize);
 #define     <link linkend="xmlSecTransformInclC14NId">xmlSecTransformInclC14NId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInclC14NGetKlass">xmlSecTransformInclC14NGetKlass</link>
                                             (void);
@@ -573,7 +573,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataType">xmlSecTransformDataType</title>
-<programlisting>typedef unsigned char				xmlSecTransformDataType;
+<programlisting>typedef xmlSecByte				xmlSecTransformDataType;
 </programlisting>
 <para>
 Transform data type bit mask.</para>
@@ -1093,8 +1093,8 @@ Prepares the transform context for processing data of <parameter>inputDataType</
 <refsect2>
 <title><anchor id="xmlSecTransformCtxBinaryExecute">xmlSecTransformCtxBinaryExecute ()</title>
 <programlisting>int         xmlSecTransformCtxBinaryExecute (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
 <para>
 Processes binary data using transforms chain in the <parameter>ctx</parameter>.</para>
 <para>
@@ -1412,8 +1412,8 @@ Sets the key requirements for <parameter>transform</parameter> in the <parameter
 <refsect2>
 <title><anchor id="xmlSecTransformVerify">xmlSecTransformVerify ()</title>
 <programlisting>int         xmlSecTransformVerify           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Verifies the data with transform's processing results
@@ -1488,8 +1488,8 @@ type (binary or XML).</para>
 <refsect2>
 <title><anchor id="xmlSecTransformPushBin">xmlSecTransformPushBin ()</title>
 <programlisting>int         xmlSecTransformPushBin          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              int final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1519,9 +1519,9 @@ Process binary <parameter>data</parameter> and pushes results to next transform.
 <refsect2>
 <title><anchor id="xmlSecTransformPopBin">xmlSecTransformPopBin ()</title>
 <programlisting>int         xmlSecTransformPopBin           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> maxDataSize,
-                                             <link linkend="size-t">size_t</link> *dataSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Pops data from previous transform in the chain, processes data and 
@@ -1799,8 +1799,8 @@ methods.</para>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPushBin">xmlSecTransformDefaultPushBin ()</title>
 <programlisting>int         xmlSecTransformDefaultPushBin   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              int final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -1831,9 +1831,9 @@ results to next transform.</para>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPopBin">xmlSecTransformDefaultPopBin ()</title>
 <programlisting>int         xmlSecTransformDefaultPopBin    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> maxDataSize,
-                                             <link linkend="size-t">size_t</link> *dataSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Pops data from previous transform in the chain, processes data by calling
@@ -2083,8 +2083,8 @@ The transform specific method to set the key for use.</para>
 <refsect2>
 <title><anchor id="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod ()</title>
 <programlisting>int         (*xmlSecTransformVerifyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 The transform specific method to verify transform processing results
@@ -2112,8 +2112,8 @@ if verification succeeded or <link linkend="xmlSecTransformStatusFail">xmlSecTra
 <refsect2>
 <title><anchor id="xmlSecTransformPushBinMethod">xmlSecTransformPushBinMethod ()</title>
 <programlisting>int         (*xmlSecTransformPushBinMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              int final,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
@@ -2144,9 +2144,9 @@ result to the next transform in the chain.</para>
 <refsect2>
 <title><anchor id="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod ()</title>
 <programlisting>int         (*xmlSecTransformPopBinMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> maxDataSize,
-                                             <link linkend="size-t">size_t</link> *dataSize,
+                                             <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> maxDataSize,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 The transform specific method to pop data from previous transform 
@@ -2245,8 +2245,8 @@ Transform specific method to process a chunk of data.</para>
 <title><anchor id="xmlSecTransformKlass">struct xmlSecTransformKlass</title>
 <programlisting>struct xmlSecTransformKlass {
     /* data */
-    size_t				klassSize;
-    size_t				objSize;
+    xmlSecSize				klassSize;
+    xmlSecSize				objSize;
     const xmlChar*			name;
     const xmlChar*			href;
     xmlSecTransformUsage		usage;
@@ -2282,12 +2282,12 @@ The transform klass desccription structure.</para>
 
 </para><variablelist role="struct">
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>klassSize</structfield></term>
 <listitem><simpara>			the transform klass structure size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>objSize</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>objSize</structfield></term>
 <listitem><simpara>			the transform object size.
 </simpara></listitem>
 </varlistentry>
@@ -2552,7 +2552,7 @@ the encoded content of an element.</para>
 <title><anchor id="xmlSecTransformBase64SetLineSize">xmlSecTransformBase64SetLineSize ()</title>
 <programlisting>void        xmlSecTransformBase64SetLineSize
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             <link linkend="size-t">size_t</link> lineSize);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> lineSize);</programlisting>
 <para>
 Sets the max line size to <parameter>lineSize</parameter>.</para>
 <para>

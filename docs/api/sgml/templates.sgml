@@ -90,11 +90,11 @@
                                              const <link linkend="xmlChar">xmlChar</link> *recipient);
 int         <link linkend="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
-                                             <link linkend="size-t">size_t</link> bitsLen);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bitsLen);
 int         <link linkend="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> size);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);
 int         <link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *xslt);
@@ -676,7 +676,7 @@ NULL if an error occurs.
 <title><anchor id="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength ()</title>
 <programlisting>int         xmlSecTmplTransformAddHmacOutputLength
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
-                                             <link linkend="size-t">size_t</link> bitsLen);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> bitsLen);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-HMACOutputLength">&lt;dsig:HMACOutputLength/&gt;</ulink> child for the HMAC transform 
 node <parameter>node</parameter>.</para>
@@ -696,8 +696,8 @@ node <parameter>node</parameter>.</para>
 <title><anchor id="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam ()</title>
 <programlisting>int         xmlSecTmplTransformAddRsaOaepParam
                                             (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
-                                             unsigned char *buf,
-                                             <link linkend="size-t">size_t</link> size);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-OAEPParam">&lt;enc:OAEPParam/&gt;</ulink> child node in the <parameter>node</parameter>.</para>
 <para>

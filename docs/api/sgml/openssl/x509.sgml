@@ -26,15 +26,15 @@ int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCert">xmlSecOpenSSLKeyDa
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);
 <link linkend="X509-CAPS">X509</link>*       <link linkend="xmlSecOpenSSLKeyDataX509GetCert">xmlSecOpenSSLKeyDataX509GetCert</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> pos);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecOpenSSLKeyDataX509GetCertsSize">xmlSecOpenSSLKeyDataX509GetCertsSize</link>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
+<link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecOpenSSLKeyDataX509GetCertsSize">xmlSecOpenSSLKeyDataX509GetCertsSize</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDataX509AdoptCrl</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CRL-CAPS">X509_CRL</link> *crl);
 <link linkend="X509-CRL-CAPS">X509_CRL</link>*   <link linkend="xmlSecOpenSSLKeyDataX509GetCrl">xmlSecOpenSSLKeyDataX509GetCrl</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> pos);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecOpenSSLKeyDataX509GetCrlsSize">xmlSecOpenSSLKeyDataX509GetCrlsSize</link>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
+<link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecOpenSSLKeyDataX509GetCrlsSize">xmlSecOpenSSLKeyDataX509GetCrlsSize</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 #define     <link linkend="xmlSecOpenSSLKeyDataRawX509CertId">xmlSecOpenSSLKeyDataRawX509CertId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataRawX509CertGetKlass">xmlSecOpenSSLKeyDataRawX509CertGetKlass</link>
@@ -150,7 +150,7 @@ Adds certificate to the X509 key data.</para>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCert">xmlSecOpenSSLKeyDataX509GetCert ()</title>
 <programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> pos);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets a certificate from X509 key data.</para>
 <para>
@@ -168,7 +168,7 @@ number of certificates in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCertsSize">xmlSecOpenSSLKeyDataX509GetCertsSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecOpenSSLKeyDataX509GetCertsSize
+<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecOpenSSLKeyDataX509GetCertsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of certificates in <parameter>data</parameter>.</para>
@@ -203,7 +203,7 @@ Adds CRL to the X509 key data.</para>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCrl">xmlSecOpenSSLKeyDataX509GetCrl ()</title>
 <programlisting><link linkend="X509-CRL-CAPS">X509_CRL</link>*   xmlSecOpenSSLKeyDataX509GetCrl  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> pos);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets a CRL from X509 key data.</para>
 <para>
@@ -221,7 +221,7 @@ number of CRLs in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCrlsSize">xmlSecOpenSSLKeyDataX509GetCrlsSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecOpenSSLKeyDataX509GetCrlsSize
+<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecOpenSSLKeyDataX509GetCrlsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the number of CRLs in <parameter>data</parameter>.</para>

@@ -26,8 +26,8 @@ int         <link linkend="xmlSecEncCtxCopyUserPref">xmlSecEncCtxCopyUserPref</l
 void        <link linkend="xmlSecEncCtxReset">xmlSecEncCtxReset</link>               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);
 int         <link linkend="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt</link>       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
 int         <link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link>          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
@@ -363,8 +363,8 @@ Resets <parameter>encCtx</parameter> object, user settings are not touched.</par
 <title><anchor id="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt ()</title>
 <programlisting>int         xmlSecEncCtxBinaryEncrypt       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
-                                             unsigned char *data,
-                                             <link linkend="size-t">size_t</link> dataSize);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
 <para>
 Encrypts <parameter>data</parameter> according to template <parameter>tmpl</parameter>.</para>
 <para>

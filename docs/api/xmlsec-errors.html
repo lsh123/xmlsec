@@ -60,9 +60,9 @@
 <h1>
 <a name="XMLSEC-ERRORS"></a>errors</h1>
 <div class="REFNAMEDIV">
-<a name="AEN1624"></a><h2>Name</h2>errors -- </div>
+<a name="AEN1643"></a><h2>Name</h2>errors -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN1627"></a><h2>Synopsis</h2>
+<a name="AEN1646"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-errors.html#XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</a>
@@ -132,8 +132,8 @@ void        <a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACK">xmlSecError
                                              const char *msg);
 void        <a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT">xmlSecErrorsDefaultCallbackEnableOutput</a>
                                             (int enabled);
-int         <a href="xmlsec-errors.html#XMLSECERRORSGETCODE">xmlSecErrorsGetCode</a>             (<font>size_t</font> pos);
-const char* <a href="xmlsec-errors.html#XMLSECERRORSGETMSG">xmlSecErrorsGetMsg</a>              (<font>size_t</font> pos);
+int         <a href="xmlsec-errors.html#XMLSECERRORSGETCODE">xmlSecErrorsGetCode</a>             (<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);
+const char* <a href="xmlsec-errors.html#XMLSECERRORSGETMSG">xmlSecErrorsGetMsg</a>              (<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);
 #define     <a href="xmlsec-errors.html#XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</a>
 #define     <a href="xmlsec-errors.html#XMLSECERRORSSAFESTRING">xmlSecErrorsSafeString</a>          (str)
 #define     <a href="xmlsec-errors.html#XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</a>
@@ -149,13 +149,13 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 #define     <a href="xmlsec-errors.html#XMLSECASSERT2">xmlSecAssert2</a>                   ( p, ret )</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN1695"></a><h2>Description</h2>
+<a name="AEN1714"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN1698"></a><h2>Details</h2>
+<a name="AEN1717"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN1700"></a><h3>
+<a name="AEN1719"></a><h3>
 <a name="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS"></a>XMLSEC_ERRORS_R_XMLSEC_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 	1</pre></td></tr></table>
 <p>An XMLSec function failed (error subject is the failed function).</p>
@@ -163,7 +163,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1706"></a><h3>
+<a name="AEN1725"></a><h3>
 <a name="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS"></a>XMLSEC_ERRORS_R_MALLOC_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MALLOC_FAILED		 	2</pre></td></tr></table>
 <p>Failed to allocate memory error.</p>
@@ -171,7 +171,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1712"></a><h3>
+<a name="AEN1731"></a><h3>
 <a name="XMLSEC-ERRORS-R-STRDUP-FAILED-CAPS"></a>XMLSEC_ERRORS_R_STRDUP_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_STRDUP_FAILED		 	3</pre></td></tr></table>
 <p>Failed to duplicate string error.</p>
@@ -179,7 +179,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1718"></a><h3>
+<a name="AEN1737"></a><h3>
 <a name="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS"></a>XMLSEC_ERRORS_R_CRYPTO_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 	4</pre></td></tr></table>
 <p>Crypto (OpenSSL) function failed (error subject is the failed function).</p>
@@ -187,7 +187,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1724"></a><h3>
+<a name="AEN1743"></a><h3>
 <a name="XMLSEC-ERRORS-R-XML-FAILED-CAPS"></a>XMLSEC_ERRORS_R_XML_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XML_FAILED		 	5</pre></td></tr></table>
 <p>LibXML function failed (error subject is the failed function).</p>
@@ -195,7 +195,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1730"></a><h3>
+<a name="AEN1749"></a><h3>
 <a name="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS"></a>XMLSEC_ERRORS_R_XSLT_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_XSLT_FAILED		 	6</pre></td></tr></table>
 <p>LibXSLT function failed (error subject is the failed function).</p>
@@ -203,7 +203,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1736"></a><h3>
+<a name="AEN1755"></a><h3>
 <a name="XMLSEC-ERRORS-R-IO-FAILED-CAPS"></a>XMLSEC_ERRORS_R_IO_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_IO_FAILED		 	7</pre></td></tr></table>
 <p>IO operation failed.</p>
@@ -211,7 +211,7 @@ void        <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>            
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1742"></a><h3>
+<a name="AEN1761"></a><h3>
 <a name="XMLSEC-ERRORS-R-DISABLED-CAPS"></a>XMLSEC_ERRORS_R_DISABLED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DISABLED		 	8</pre></td></tr></table>
 <p>The feature is disabled during compilation.
@@ -221,7 +221,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1748"></a><h3>
+<a name="AEN1767"></a><h3>
 <a name="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS"></a>XMLSEC_ERRORS_R_NOT_IMPLEMENTED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 	9</pre></td></tr></table>
 <p>Feature is not implemented.</p>
@@ -229,7 +229,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1754"></a><h3>
+<a name="AEN1773"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_SIZE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_SIZE		 	11</pre></td></tr></table>
 <p>Invalid size.</p>
@@ -237,7 +237,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1760"></a><h3>
+<a name="AEN1779"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-DATA-CAPS"></a>XMLSEC_ERRORS_R_INVALID_DATA</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_DATA		 	12</pre></td></tr></table>
 <p>Invalid data.</p>
@@ -245,7 +245,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1766"></a><h3>
+<a name="AEN1785"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-RESULT-CAPS"></a>XMLSEC_ERRORS_R_INVALID_RESULT</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_RESULT		 	13</pre></td></tr></table>
 <p>Invalid result.</p>
@@ -253,7 +253,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1772"></a><h3>
+<a name="AEN1791"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_TYPE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TYPE		 	14</pre></td></tr></table>
 <p>Invalid type.</p>
@@ -261,7 +261,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1778"></a><h3>
+<a name="AEN1797"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-OPERATION-CAPS"></a>XMLSEC_ERRORS_R_INVALID_OPERATION</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_OPERATION	 	15</pre></td></tr></table>
 <p>Invalid operation.</p>
@@ -269,7 +269,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1784"></a><h3>
+<a name="AEN1803"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS"></a>XMLSEC_ERRORS_R_INVALID_STATUS</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_STATUS 			16</pre></td></tr></table>
 <p>Invalid status.</p>
@@ -277,7 +277,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1790"></a><h3>
+<a name="AEN1809"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-FORMAT-CAPS"></a>XMLSEC_ERRORS_R_INVALID_FORMAT</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_FORMAT 			17</pre></td></tr></table>
 <p>Invalid format.</p>
@@ -285,7 +285,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1796"></a><h3>
+<a name="AEN1815"></a><h3>
 <a name="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS"></a>XMLSEC_ERRORS_R_DATA_NOT_MATCH</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 	18</pre></td></tr></table>
 <p>The data do not match our expectation.</p>
@@ -293,7 +293,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1802"></a><h3>
+<a name="AEN1821"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-NODE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_NODE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE	 	 	21</pre></td></tr></table>
 <p>Invalid node (error subject is the node name).</p>
@@ -301,7 +301,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1808"></a><h3>
+<a name="AEN1827"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS"></a>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 	22</pre></td></tr></table>
 <p>Invalid node content (error subject is the node name).</p>
@@ -309,7 +309,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1814"></a><h3>
+<a name="AEN1833"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 	23</pre></td></tr></table>
 <p>Invalid node attribute (error subject is the node name).</p>
@@ -317,7 +317,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1820"></a><h3>
+<a name="AEN1839"></a><h3>
 <a name="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE-CAPS"></a>XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE	 	25</pre></td></tr></table>
 <p>Missing node attribute (error subject is the node name).</p>
@@ -325,7 +325,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1826"></a><h3>
+<a name="AEN1845"></a><h3>
 <a name="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS"></a>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 	26</pre></td></tr></table>
 <p>Node already present,</p>
@@ -333,7 +333,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1832"></a><h3>
+<a name="AEN1851"></a><h3>
 <a name="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS"></a>XMLSEC_ERRORS_R_UNEXPECTED_NODE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 	27</pre></td></tr></table>
 <p>Unexpected node (error subject is the node name).</p>
@@ -341,7 +341,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1838"></a><h3>
+<a name="AEN1857"></a><h3>
 <a name="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS"></a>XMLSEC_ERRORS_R_NODE_NOT_FOUND</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 	28</pre></td></tr></table>
 <p>Node not found (error subject is the required node name).</p>
@@ -349,7 +349,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1844"></a><h3>
+<a name="AEN1863"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS"></a>XMLSEC_ERRORS_R_INVALID_TRANSFORM</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 	31</pre></td></tr></table>
 <p>This transform is invlaid here.</p>
@@ -357,7 +357,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1850"></a><h3>
+<a name="AEN1869"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY-CAPS"></a>XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY		32</pre></td></tr></table>
 <p>Key is invalid for this transform.</p>
@@ -365,7 +365,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1856"></a><h3>
+<a name="AEN1875"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_URI_TYPE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_URI_TYPE 	 	33</pre></td></tr></table>
 <p>Invalid URI type.</p>
@@ -373,7 +373,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1862"></a><h3>
+<a name="AEN1881"></a><h3>
 <a name="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED-CAPS"></a>XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED 	34</pre></td></tr></table>
 <p>The transform requires the input document to be the same as context.</p>
@@ -381,7 +381,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1868"></a><h3>
+<a name="AEN1887"></a><h3>
 <a name="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS"></a>XMLSEC_ERRORS_R_TRANSFORM_DISABLED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED		35</pre></td></tr></table>
 <p>The transform is disabled.</p>
@@ -389,7 +389,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1874"></a><h3>
+<a name="AEN1893"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS"></a>XMLSEC_ERRORS_R_INVALID_KEY_DATA</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 	41</pre></td></tr></table>
 <p>Key data is invalid.</p>
@@ -397,7 +397,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1880"></a><h3>
+<a name="AEN1899"></a><h3>
 <a name="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND-CAPS"></a>XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND		42</pre></td></tr></table>
 <p>Data is not found (error subject is the data name).</p>
@@ -405,7 +405,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1886"></a><h3>
+<a name="AEN1905"></a><h3>
 <a name="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST-CAPS"></a>XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST	 	43</pre></td></tr></table>
 <p>The key data is already exist.</p>
@@ -413,7 +413,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1892"></a><h3>
+<a name="AEN1911"></a><h3>
 <a name="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE-CAPS"></a>XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE	 	44</pre></td></tr></table>
 <p>Invalid key size.</p>
@@ -421,7 +421,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1898"></a><h3>
+<a name="AEN1917"></a><h3>
 <a name="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS"></a>XMLSEC_ERRORS_R_KEY_NOT_FOUND</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 	45</pre></td></tr></table>
 <p>Key not found.</p>
@@ -429,7 +429,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1904"></a><h3>
+<a name="AEN1923"></a><h3>
 <a name="XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS"></a>XMLSEC_ERRORS_R_KEYDATA_DISABLED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_KEYDATA_DISABLED		46</pre></td></tr></table>
 <p>The key data type disabled.</p>
@@ -437,7 +437,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1910"></a><h3>
+<a name="AEN1929"></a><h3>
 <a name="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS"></a>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 	51</pre></td></tr></table>
 <p>Max allowed retrievals level reached.</p>
@@ -445,7 +445,7 @@ enable it.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1916"></a><h3>
+<a name="AEN1935"></a><h3>
 <a name="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH-CAPS"></a>XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH	52</pre></td></tr></table>
 <p>The retrieved key data type does not match the one specified 
@@ -454,7 +454,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1923"></a><h3>
+<a name="AEN1942"></a><h3>
 <a name="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS"></a>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 	61</pre></td></tr></table>
 <p>Max EncryptedKey level reached.</p>
@@ -462,7 +462,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1929"></a><h3>
+<a name="AEN1948"></a><h3>
 <a name="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS"></a>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 	71</pre></td></tr></table>
 <p>Certificate verification failed.</p>
@@ -470,7 +470,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1935"></a><h3>
+<a name="AEN1954"></a><h3>
 <a name="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS"></a>XMLSEC_ERRORS_R_CERT_NOT_FOUND</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 	72</pre></td></tr></table>
 <p>Requested certificate is not found.</p>
@@ -478,7 +478,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1941"></a><h3>
+<a name="AEN1960"></a><h3>
 <a name="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS"></a>XMLSEC_ERRORS_R_CERT_REVOKED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_REVOKED		 	73</pre></td></tr></table>
 <p>The certificate is revoked.</p>
@@ -486,7 +486,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1947"></a><h3>
+<a name="AEN1966"></a><h3>
 <a name="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED-CAPS"></a>XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED	 	74</pre></td></tr></table>
 <p>Failed to get certificate issuer.</p>
@@ -494,7 +494,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1953"></a><h3>
+<a name="AEN1972"></a><h3>
 <a name="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID-CAPS"></a>XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID	 	75</pre></td></tr></table>
 <p>&quot;Not valid before&quot; verification failed.</p>
@@ -502,7 +502,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1959"></a><h3>
+<a name="AEN1978"></a><h3>
 <a name="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED-CAPS"></a>XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 	76</pre></td></tr></table>
 <p>&quot;Not valid after&quot; verification failed.</p>
@@ -510,7 +510,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1965"></a><h3>
+<a name="AEN1984"></a><h3>
 <a name="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES-CAPS"></a>XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES 	 	81</pre></td></tr></table>
 <p>The &lt;dsig:Reference&gt; nodes not found.</p>
@@ -518,7 +518,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1971"></a><h3>
+<a name="AEN1990"></a><h3>
 <a name="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS"></a>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 	82</pre></td></tr></table>
 <p>The &lt;dsig:Reference&gt; validation failed.</p>
@@ -526,7 +526,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1977"></a><h3>
+<a name="AEN1996"></a><h3>
 <a name="XMLSEC-ERRORS-R-ASSERTION-CAPS"></a>XMLSEC_ERRORS_R_ASSERTION</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_R_ASSERTION		 	100</pre></td></tr></table>
 <p>Invalid assertion.</p>
@@ -534,7 +534,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1983"></a><h3>
+<a name="AEN2002"></a><h3>
 <a name="XMLSEC-ERRORS-MAX-NUMBER-CAPS"></a>XMLSEC_ERRORS_MAX_NUMBER</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_MAX_NUMBER			256</pre></td></tr></table>
 <p>The maximum xmlsec errors number.</p>
@@ -542,7 +542,7 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1989"></a><h3>
+<a name="AEN2008"></a><h3>
 <a name="XMLSECERRORSCALLBACK"></a>xmlSecErrorsCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecErrorsCallback)         (const char *file,
                                              int line,
@@ -556,38 +556,38 @@ in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod" target="
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1996"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2015"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error location file name (__FILE__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2001"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2020"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error location line number (__LINE__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2006"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2025"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error location function name (__FUNCTION__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2011"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2030"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the error specific error object </p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2016"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2035"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the error specific error subject.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2021"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2040"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error code.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2026"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2045"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the additional error message.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2031"></a><h3>
+<a name="AEN2050"></a><h3>
 <a name="XMLSECERRORSINIT"></a>xmlSecErrorsInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecErrorsInit                (void);</pre></td></tr></table>
 <p>Initializes the errors reporting. It is called from <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a> function.
@@ -596,7 +596,7 @@ and applications must not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2038"></a><h3>
+<a name="AEN2057"></a><h3>
 <a name="XMLSECERRORSSHUTDOWN"></a>xmlSecErrorsShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecErrorsShutdown            (void);</pre></td></tr></table>
 <p>Cleanups the errors reporting. It is called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a> function.
@@ -605,7 +605,7 @@ and applications must not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2045"></a><h3>
+<a name="AEN2064"></a><h3>
 <a name="XMLSECERRORSSETCALLBACK"></a>xmlSecErrorsSetCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecErrorsSetCallback         (<a href="xmlsec-errors.html#XMLSECERRORSCALLBACK">xmlSecErrorsCallback</a> callback);</pre></td></tr></table>
 <p>Sets the errors callback function to <tt class="PARAMETER"><i>callback</i></tt> that will be called 
@@ -613,13 +613,13 @@ every time an error occurs.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2054"><span style="white-space: nowrap"><tt class="PARAMETER"><i>callback</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2073"><span style="white-space: nowrap"><tt class="PARAMETER"><i>callback</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the new errors callback function.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2059"></a><h3>
+<a name="AEN2078"></a><h3>
 <a name="XMLSECERRORSDEFAULTCALLBACK"></a>xmlSecErrorsDefaultCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecErrorsDefaultCallback     (const char *file,
                                              int line,
@@ -634,38 +634,38 @@ error reporting <font>xmlGenericError</font> function.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2067"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2086"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error location file name (__FILE__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2072"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2091"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error location line number (__LINE__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2077"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2096"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error location function name (__FUNCTION__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2082"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2101"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the error specific error object </p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2087"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2106"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the error specific error subject.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2092"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2111"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error code.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2097"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2116"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the additional error message.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2102"></a><h3>
+<a name="AEN2121"></a><h3>
 <a name="XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT"></a>xmlSecErrorsDefaultCallbackEnableOutput ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecErrorsDefaultCallbackEnableOutput
                                             (int enabled);</pre></td></tr></table>
@@ -674,25 +674,25 @@ errors callback.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2109"><span style="white-space: nowrap"><tt class="PARAMETER"><i>enabled</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2128"><span style="white-space: nowrap"><tt class="PARAMETER"><i>enabled</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the flag.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2114"></a><h3>
+<a name="AEN2133"></a><h3>
 <a name="XMLSECERRORSGETCODE"></a>xmlSecErrorsGetCode ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecErrorsGetCode             (<font>size_t</font> pos);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecErrorsGetCode             (<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);</pre></td></tr></table>
 <p>Gets the known error code at position <tt class="PARAMETER"><i>pos</i></tt>.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2123"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pos</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2142"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pos</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error position.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2128"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2147"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>the known error code or 0 if <tt class="PARAMETER"><i>pos</i></tt> is greater than 
 total number of known error codes.</p></td>
 </tr>
@@ -700,19 +700,19 @@ total number of known error codes.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2134"></a><h3>
+<a name="AEN2153"></a><h3>
 <a name="XMLSECERRORSGETMSG"></a>xmlSecErrorsGetMsg ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const char* xmlSecErrorsGetMsg              (<font>size_t</font> pos);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const char* xmlSecErrorsGetMsg              (<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> pos);</pre></td></tr></table>
 <p>Gets the known error message at position <tt class="PARAMETER"><i>pos</i></tt>.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2143"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pos</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2162"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pos</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the error position.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2148"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2167"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>the known error message or NULL if <tt class="PARAMETER"><i>pos</i></tt> is greater than 
 total number of known error codes.</p></td>
 </tr>
@@ -720,7 +720,7 @@ total number of known error codes.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2154"></a><h3>
+<a name="AEN2173"></a><h3>
 <a name="XMLSEC-ERRORS-HERE-CAPS"></a>XMLSEC_ERRORS_HERE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__</pre></td></tr></table>
 <p>The macro that specifies the location (file, line and function)
@@ -729,20 +729,20 @@ for the <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>() function.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2161"></a><h3>
+<a name="AEN2180"></a><h3>
 <a name="XMLSECERRORSSAFESTRING"></a>xmlSecErrorsSafeString()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecErrorsSafeString(str)</pre></td></tr></table>
 <p>Macro. Returns <tt class="PARAMETER"><i>str</i></tt> if it is not NULL or pointer to &quot;NULL&quot; otherwise.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2169"><span style="white-space: nowrap"><tt class="PARAMETER"><i>str</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2188"><span style="white-space: nowrap"><tt class="PARAMETER"><i>str</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the string.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2174"></a><h3>
+<a name="AEN2193"></a><h3>
 <a name="XMLSEC-ERRORS-NO-MESSAGE-CAPS"></a>XMLSEC_ERRORS_NO_MESSAGE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_ERRORS_NO_MESSAGE 		&quot; &quot;</pre></td></tr></table>
 <p>Empty error message &quot; &quot;.</p>
@@ -750,7 +750,7 @@ for the <a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a>() function.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2180"></a><h3>
+<a name="AEN2199"></a><h3>
 <a name="XMLSECERROR"></a>xmlSecError ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecError                     (const char *file,
                                              int line,
@@ -767,55 +767,55 @@ function.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2189"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2208"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the error location filename (__FILE__).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2194"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2213"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the error location line number (__LINE__).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2199"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2218"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the error location function (__FUNCTIION__).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2204"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2223"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the error specific error object </p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2209"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2228"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the error specific error subject. </p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2214"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2233"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the error code.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2219"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2238"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the error message in printf format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2224"><span style="white-space: nowrap"><tt class="PARAMETER"><i>...</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2243"><span style="white-space: nowrap"><tt class="PARAMETER"><i>...</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the parameters for the <tt class="PARAMETER"><i>msg</i></tt>.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2230"></a><h3>
+<a name="AEN2249"></a><h3>
 <a name="XMLSECASSERT"></a>xmlSecAssert()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecAssert( p )</pre></td></tr></table>
 <p>Macro. Verifies that <tt class="PARAMETER"><i>p</i></tt> is true and calls <font>return</font>() otherwise.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2239"><span style="white-space: nowrap"><tt class="PARAMETER"><i>p</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2258"><span style="white-space: nowrap"><tt class="PARAMETER"><i>p</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the expression.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2244"></a><h3>
+<a name="AEN2263"></a><h3>
 <a name="XMLSECASSERT2"></a>xmlSecAssert2()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecAssert2( p, ret )</pre></td></tr></table>
 <p>Macro. Verifies that <tt class="PARAMETER"><i>p</i></tt> is true and calls return(<tt class="PARAMETER"><i>ret</i></tt>) otherwise.</p>
@@ -823,11 +823,11 @@ function.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2253"><span style="white-space: nowrap"><tt class="PARAMETER"><i>p</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2272"><span style="white-space: nowrap"><tt class="PARAMETER"><i>p</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the expression.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2258"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ret</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2277"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ret</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the return value.</p></td>
 </tr>
 </tbody></table>

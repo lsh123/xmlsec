@@ -55,10 +55,10 @@ void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>        
 void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName</link>        (const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
@@ -147,7 +147,7 @@ A decryption key.</para>
     xmlSecKeyDataId			keyId;
     xmlSecKeyDataType			keyType;
     xmlSecKeyUsage			keyUsage;
-    size_t				keyBitsSize;
+    xmlSecSize				keyBitsSize;
 };
 </programlisting>
 <para>
@@ -171,7 +171,7 @@ The key requirements information.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>keyBitsSize</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>keyBitsSize</structfield></term>
 <listitem><simpara>	the desired key size (in bits!).
 </simpara></listitem>
 </varlistentry>
@@ -560,7 +560,7 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 <refsect2>
 <title><anchor id="xmlSecKeyGenerate">xmlSecKeyGenerate ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyGenerate              (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
-                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Generates new key of requested klass <parameter>dataId</parameter> and <parameter>type</parameter>.</para>
@@ -582,7 +582,7 @@ Generates new key of requested klass <parameter>dataId</parameter> and <paramete
 <refsect2>
 <title><anchor id="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyGenerateByName        (const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Generates new key of requested <parameter>klass</parameter> and <parameter>type</parameter>.</para>

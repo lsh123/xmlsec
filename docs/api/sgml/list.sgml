@@ -14,11 +14,10 @@
 
 
 
-typedef     <link linkend="xmlSec">xmlSecPtr</link>;
 struct      <link linkend="xmlSecPtrList">xmlSecPtrList</link>;
 void        <link linkend="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode</link>
                                             (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
-                                             <link linkend="size-t">size_t</link> defInitialSize);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> defInitialSize);
 int         <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
 void        <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>           (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
@@ -28,16 +27,16 @@ void        <link linkend="xmlSecPtrListEmpty">xmlSecPtrListEmpty</link>        
 int         <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>               (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> dst,
                                              <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);
 <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
+<link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
 <link linkend="xmlSecPtr">xmlSecPtr</link>   <link linkend="xmlSecPtrListGetItem">xmlSecPtrListGetItem</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="size-t">size_t</link> pos);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
 int         <link linkend="xmlSecPtrListAdd">xmlSecPtrListAdd</link>                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSec">xmlSecPtr</link> item);
 int         <link linkend="xmlSecPtrListSet">xmlSecPtrListSet</link>                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSec">xmlSecPtr</link> item,
-                                             <link linkend="size-t">size_t</link> pos);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
 int         <link linkend="xmlSecPtrListRemove">xmlSecPtrListRemove</link>             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="size-t">size_t</link> pos);
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);
 void        <link linkend="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump</link>          (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump</link>       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
@@ -73,22 +72,13 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="xmlSecPtr">xmlSecPtr</title>
-<programlisting>typedef void*	xmlSecPtr;
-</programlisting>
-<para>
-Void pointer.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="xmlSecPtrList">struct xmlSecPtrList</title>
 <programlisting>struct xmlSecPtrList {
     xmlSecPtrListId		id;        
 
     xmlSecPtr*			data;
-    size_t			use;
-    size_t			max;
+    xmlSecSize			use;
+    xmlSecSize			max;
     xmlSecAllocMode 		allocMode;
 };
 </programlisting>
@@ -108,12 +98,12 @@ The pointers list.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>use</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>use</structfield></term>
 <listitem><simpara>			the current list size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="size-t">size_t</link> <structfield>max</structfield></term>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>max</structfield></term>
 <listitem><simpara>			the max (allocated) list size.
 </simpara></listitem>
 </varlistentry>
@@ -127,7 +117,7 @@ The pointers list.</para>
 <title><anchor id="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode ()</title>
 <programlisting>void        xmlSecPtrListSetDefaultAllocMode
                                             (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
-                                             <link linkend="size-t">size_t</link> defInitialSize);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> defInitialSize);</programlisting>
 <para>
 Sets new default allocation mode and minimal initial list size.</para>
 <para>
@@ -247,7 +237,7 @@ Creates a new copy of <parameter>list</parameter> and all its items.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListGetSize">xmlSecPtrListGetSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecPtrListGetSize            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
+<programlisting><link linkend="xmlSecSize">xmlSecSize</link>  xmlSecPtrListGetSize            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
 Gets list size.</para>
 <para>
@@ -262,7 +252,7 @@ Gets list size.</para>
 <refsect2>
 <title><anchor id="xmlSecPtrListGetItem">xmlSecPtrListGetItem ()</title>
 <programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   xmlSecPtrListGetItem            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="size-t">size_t</link> pos);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Gets item from the list.</para>
 <para>
@@ -300,7 +290,7 @@ Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.<
 <title><anchor id="xmlSecPtrListSet">xmlSecPtrListSet ()</title>
 <programlisting>int         xmlSecPtrListSet                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSec">xmlSecPtr</link> item,
-                                             <link linkend="size-t">size_t</link> pos);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Sets the value of list item at position <parameter>pos</parameter>. The old value
 is destroyed.</para>
@@ -322,7 +312,7 @@ is destroyed.</para>
 <refsect2>
 <title><anchor id="xmlSecPtrListRemove">xmlSecPtrListRemove ()</title>
 <programlisting>int         xmlSecPtrListRemove             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="size-t">size_t</link> pos);</programlisting>
+                                             <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
 <para>
 Destroys list item at the position <parameter>pos</parameter> and sets it value to NULL.</para>
 <para>

@@ -36,6 +36,7 @@
 <listitem><para><link linkend="xmlSecBufferSetDefaultAllocMode">xmlSecBufferSetDefaultAllocMode</link></para></listitem>
 <listitem><para><link linkend="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize</link></para></listitem>
 <listitem><para><link linkend="xmlSecBufferSetSize">xmlSecBufferSetSize</link></para></listitem>
+<listitem><para><link linkend="xmlSecByte">xmlSecByte</link></para></listitem>
 <listitem><para><link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link></para></listitem>
@@ -576,6 +577,7 @@
 <listitem><para><link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link></para></listitem>
+<listitem><para><link linkend="xmlSecSize">xmlSecSize</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListId">xmlSecStringListId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform</link></para></listitem>

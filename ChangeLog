@@ -1,8 +1,12 @@
+Sun 20 Apr 2003 03:12:02 PM PDT Aleksey Sanin <aleksey@aleksey.com>
+	
+	* docs/*: updated docs with new xmlSecByte and xmlSecSize types
+	* configure.in include/xmlsec/version.h: upgraded version to 1.0.1
+
 Sun 20 Apr 2003 02:57:06 PM PDT Aleksey Sanin <aleksey@aleksey.com>
 
 	* src/* include/* apps/*: replaced 'unsigned char' with xmlSecByte
 	typedefed to 'unsigned char' to make happy OpenBSD on sparc64 
-
 	* examples/*: replaced configure.in with simple Makefile to 
 	prevent problems on different platforms
 

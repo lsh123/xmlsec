@@ -43,8 +43,8 @@ int         <link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link>          
 int         <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlNode">xmlNodePtr</link> newNode);
 int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>         (<link linkend="xmlNode">xmlNodePtr</link> node,
-                                             unsigned char *buffer,
-                                             <link linkend="size-t">size_t</link> size);
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);
 void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
                                              <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> **ids);
@@ -307,8 +307,8 @@ Swaps the content of <parameter>node</parameter> and <parameter>newNode</paramet
 <refsect2>
 <title><anchor id="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer ()</title>
 <programlisting>int         xmlSecReplaceNodeBuffer         (<link linkend="xmlNode">xmlNodePtr</link> node,
-                                             unsigned char *buffer,
-                                             <link linkend="size-t">size_t</link> size);</programlisting>
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.</para>
 <para>

@@ -1,3 +1,7 @@
+Fri Feb 14 12:44:48 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/x509.c: set "verified" cert when loading pkcs12 file.
+
 Wed Feb  5 09:49:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c include/xmlsec/keysmngr.h

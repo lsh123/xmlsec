@@ -135,9 +135,7 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
     }    
     PKCS12_free(p12);
 
-    /* todo: should we put the key cert into stack */
     sk_X509_push(chain, cert);
-
     key = xmlSecParseEvpKey(pKey);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -158,6 +156,7 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 	return(NULL);
     }
     key->x509Data->certs = chain;
+    key->x509Data->verified = cert;
     return(key);
 }
 

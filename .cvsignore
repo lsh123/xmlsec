@@ -30,3 +30,4 @@ xmlsec-*.dbg
 core
 xmlsec.spec
 conftest.o
+*.stamp

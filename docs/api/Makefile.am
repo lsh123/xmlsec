@@ -97,13 +97,15 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
 
 #
-# Create index for all functions. 
-#
-# TODO: process macros and defines correctly
+# Create index for all functions. For macros and defines need to add -CAPS suffix
 #
 xmlsec-index: scan 
-	@grep -h '<NAME>.*</NAME>' xmlsec-*decl.txt | sort -u | \
-		sed -e 's#<NAME>\(.*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#gp' > \
+	@grep -h '<NAME>.*</NAME>' xmlsec-*decl.txt | \
+		grep -v '<NAME>extern</NAME>' | \
+		sort -u | \
+		sed 's#_#-#g' | \
+		sed 's#<NAME>\([^-]*\)-\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1-\2-CAPS\">\1-\2</link></para></listitem>#g' | \
+		sed 's#<NAME>\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#g' > \
 		xmlsec-index.sgml
 
 #

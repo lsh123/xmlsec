@@ -25,4 +25,4 @@ xmlsec-*.dbg
 .kdbgrc.*
 xmlsec.spec
 core
-xmlsec
+xmlsec1

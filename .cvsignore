@@ -18,8 +18,6 @@ update.log
 *.lo
 .libs
 *.la
-xmlsec-config
-xmlsecConf.sh
 COPYING
 .memdump
 conftest
@@ -28,8 +26,14 @@ test.log
 xmlsec-*.dbg
 .kdbgrc.*
 core
-xmlsec.spec
+xmlsec*-config
+xmlsec*.spec
+xmlsec*.pc
+xmlsec*Conf.sh
 conftest.o
 *.stamp
 *.cache
+stamp-h1
+tmp
+xmlsec*.tar.gz
 

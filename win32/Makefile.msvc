@@ -67,7 +67,7 @@ CPPFLAGS = /nologo
 CC = cl.exe
 CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD 
 CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include /I$(XMLSEC_SRCDIR)
-CFLAGS = $(CFLAGS) /DXMLSEC_NO_XPATHAL=1
+CFLAGS = $(CFLAGS) 
 
 
 # The linker and its options.
@@ -77,7 +77,7 @@ LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR)
 LIBS =
 !if "$(STATIC)" == "1"
 CFLAGS = $(CFLAGS) /DLIBXML_STATIC
-LIBS = libeay32.lib libxml2_a.lib iconv_a.lib wsock32.lib user32.lib gdi32.lib
+LIBS = libeay32.lib libxml2_a.lib wsock32.lib user32.lib gdi32.lib
 !else
 LIBS = libeay32.lib libxml2.lib user32.lib gdi32.lib
 !endif
@@ -98,9 +98,7 @@ LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 
 # configurable options
 !if "$(WITH_OPENSSL096)" == "1"
-CFLAGS = $(CFLAGS) /DXMLSEC_NO_AES=1
-!else
-CFLAGS = $(CFLAGS) /DXMLSEC_OPENSSL097=1
+CFLAGS = $(CFLAGS) /DXMLSEC_NO_AES=1 /DXMLSEC_OPENSSL096=1
 !endif
 
 !if "$(WITH_LIBSXSLT)" == "1"
@@ -126,12 +124,14 @@ XMLSEC_OBJS = $(XMLSEC_INTDIR)\aes.obj\
 	$(XMLSEC_INTDIR)\digests.obj \
 	$(XMLSEC_INTDIR)\dsa.obj \
 	$(XMLSEC_INTDIR)\enveloped.obj \
+	$(XMLSEC_INTDIR)\errors.obj \
 	$(XMLSEC_INTDIR)\hmac.obj \
 	$(XMLSEC_INTDIR)\io.obj \
 	$(XMLSEC_INTDIR)\keyinfo.obj \
 	$(XMLSEC_INTDIR)\keys.obj \
 	$(XMLSEC_INTDIR)\keysmngr.obj \
 	$(XMLSEC_INTDIR)\membuf.obj \
+	$(XMLSEC_INTDIR)\nodeset.obj \
 	$(XMLSEC_INTDIR)\ripemd160.obj \
 	$(XMLSEC_INTDIR)\rsa.obj \
 	$(XMLSEC_INTDIR)\sha1.obj \
@@ -142,7 +142,6 @@ XMLSEC_OBJS = $(XMLSEC_INTDIR)\aes.obj\
 	$(XMLSEC_INTDIR)\xmlsec.obj \
 	$(XMLSEC_INTDIR)\xmltree.obj \
 	$(XMLSEC_INTDIR)\xpath.obj \
-	$(XMLSEC_INTDIR)\xpathalt.obj \
 	$(XMLSEC_INTDIR)\xslt.obj 
 
 

@@ -9,7 +9,7 @@ REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
 SET LIBXML2=c:\sdk\libxml2
-REM SET LIBXSLT=c:\sdk\libxslt
+SET LIBXSLT=c:\sdk\libxslt
 SET OPENSSL=c:\sdk\openssl
 SET XMLSEC=c:\sdk\xmlsec
 SET XMLSEC_INCLUDE=%LIBXML2%\include;%LIBXSLT%\include;%OPENSSL%\include

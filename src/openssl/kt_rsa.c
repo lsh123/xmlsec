@@ -521,7 +521,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
         }
 
 	/* for now we support only sha1 */	
-	if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
+	if(strcmp(algorithm, xmlSecHrefSha1) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			xmlSecErrorsSafeString(algorithm),

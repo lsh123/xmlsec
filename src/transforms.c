@@ -815,7 +815,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     }
 
     /* do we have barename or full xpointer? */
-    xptr = xmlStrchr(uri, '#');
+    xptr = (const xmlChar *)strchr((const char*)uri, '#');
     if(xptr == NULL){
         ctx->uri = xmlStrdup(uri);
 	if(ctx->uri == NULL) {
@@ -828,7 +828,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	}
 	/* we are done */
 	return(0);
-    } else if(xmlStrcmp(uri, BAD_CAST "#xpointer(/)") == 0) {
+    } else if(strcmp(uri, "#xpointer(/)") == 0) {
         ctx->xptrExpr = xmlStrdup(uri);
 	if(ctx->xptrExpr == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -876,7 +876,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     }
     
     /* do we have barename or full xpointer? */
-    if((xmlStrncmp(xptr, BAD_CAST "#xpointer(", 10) == 0) || (xmlStrncmp(xptr, BAD_CAST "#xmlns(", 7) == 0)) {
+    if((strncmp(xptr, "#xpointer(", 10) == 0) || (strncmp(xptr, "#xmlns(", 7) == 0)) {
 	++xptr;
 	nodeSetType = xmlSecNodeSetTree;
     } else {

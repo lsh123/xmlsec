@@ -404,17 +404,8 @@ XMLSEC_EXPORT int 		xmlSecErrorsGetCode		(xmlSecSize pos);
 XMLSEC_EXPORT const char* 	xmlSecErrorsGetMsg		(xmlSecSize pos);
 
 
-
-/* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
-#if defined(_MSC_VER) && (_MSC_VER >= 1300) 
-#define __XMLSEC_FUNCTION__  __FUNCTION__
-#endif /* _MSC_VER */
-
-/* fallback for __FUNCTION__ */
-#if !defined(__XMLSEC_FUNCTION__)
-#define __XMLSEC_FUNCTION__  ""
-#endif /*!defined(__XMLSEC_FUNCTION__) */
  
+
 /** 
  * XMLSEC_ERRORS_HERE:
  *
@@ -494,6 +485,14 @@ XMLSEC_EXPORT void xmlSecError				(const char* file,
 	} 
 
 
+/* __FUNCTION__ may not be defined */
+#if defined(_MSC_VER) && (_MSC_VER < 1300) 
+#define __FUNCTION__  ""
+#endif /* _MSC_VER */
+
+#if defined(__SUNPRO_C) && (__SUNPRO_C <= 0x530)
+#define __FUNCTION__  ""
+#endif /* __SUNPRO_C */
 
 #ifdef __cplusplus
 }

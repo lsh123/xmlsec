@@ -12,6 +12,8 @@ scp $rpm_root/SOURCES/$module-$version.tar.gz \
     $rpm_root/SRPMS/$module-$version-*.src.rpm \
     $rpm_root/RPMS/$build_target/$module-$version-*.$build_target.rpm \
     $rpm_root/RPMS/$build_target/$module-devel-$version-*.$build_target.rpm \
+    $rpm_root/RPMS/$build_target/$module-openssl-$version-*.$build_target.rpm \
+    $rpm_root/RPMS/$build_target/$module-openssl-devel-$version-*.$build_target.rpm \
     $rpm_root/RPMS/$build_target/$module-nss-$version-*.$build_target.rpm \
     $rpm_root/RPMS/$build_target/$module-nss-devel-$version-*.$build_target.rpm \
     $remote_root
@@ -21,5 +23,7 @@ ncftpput incoming.redhat.com /libc6 \
     $rpm_root/SRPMS/$module-$version-*.src.rpm \
     $rpm_root/RPMS/$build_target/$module-$version-*.$build_target.rpm \
     $rpm_root/RPMS/$build_target/$module-devel-$version-*.$build_target.rpm \
+    $rpm_root/RPMS/$build_target/$module-openssl-$version-*.$build_target.rpm \
+    $rpm_root/RPMS/$build_target/$module-openssl-devel-$version-*.$build_target.rpm \
     $rpm_root/RPMS/$build_target/$module-nss-$version-*.$build_target.rpm \
     $rpm_root/RPMS/$build_target/$module-nss-devel-$version-*.$build_target.rpm

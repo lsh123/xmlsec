@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-XMLENC"></a>xmlenc</h1>
 <div class="REFNAMEDIV">
-<a name="AEN12995"></a><h2>Name</h2>xmlenc -- </div>
+<a name="AEN13017"></a><h2>Name</h2>xmlenc -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN12998"></a><h2>Synopsis</h2>
+<a name="AEN13020"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a>;
@@ -77,13 +77,13 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
                                              <font>FILE</font> *output);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN13043"></a><h2>Description</h2>
+<a name="AEN13065"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN13046"></a><h2>Details</h2>
+<a name="AEN13068"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN13048"></a><h3>
+<a name="AEN13070"></a><h3>
 <a name="XMLENCCTXMODE"></a>enum xmlEncCtxMode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlEncCtxModeEncryptedData = 0,
@@ -92,7 +92,7 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <p>The <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> mode.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13055"></a><p></p>
+<a name="AEN13077"></a><p></p>
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlEncCtxModeEncryptedData</tt></td>
@@ -108,7 +108,7 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13070"></a><h3>
+<a name="AEN13092"></a><h3>
 <a name="XMLSECENCCTX"></a>struct xmlSecEncCtx</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecEncCtx {
     /* these data user can set before performing the operation */
@@ -150,7 +150,7 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <p>XML Encrypiton context.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13076"></a><p></p>
+<a name="AEN13098"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>userData</i></tt>
@@ -316,7 +316,7 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13224"></a><h3>
+<a name="AEN13246"></a><h3>
 <a name="XMLSECENCCTXCREATE"></a>xmlSecEncCtxCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecEncCtxPtr</font> xmlSecEncCtxCreate          (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre></td></tr></table>
 <p>Creates <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
@@ -324,7 +324,7 @@ The caller is responsible for destroying returend object by calling
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13234"></a><p></p>
+<a name="AEN13256"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -343,13 +343,13 @@ occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13247"></a><h3>
+<a name="AEN13269"></a><h3>
 <a name="XMLSECENCCTXDESTROY"></a>xmlSecEncCtxDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDestroy             (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre></td></tr></table>
 <p>Destroy context object created with <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13255"></a><p></p>
+<a name="AEN13277"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
@@ -360,7 +360,7 @@ occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13265"></a><h3>
+<a name="AEN13287"></a><h3>
 <a name="XMLSECENCCTXINITIALIZE"></a>xmlSecEncCtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxInitialize          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre></td></tr></table>
@@ -369,7 +369,7 @@ The caller is responsible for cleaing up returend object by calling
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13275"></a><p></p>
+<a name="AEN13297"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -392,13 +392,13 @@ The caller is responsible for cleaing up returend object by calling
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13293"></a><h3>
+<a name="AEN13315"></a><h3>
 <a name="XMLSECENCCTXFINALIZE"></a>xmlSecEncCtxFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxFinalize            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre></td></tr></table>
 <p>Cleans up <tt class="PARAMETER"><i>encCtx</i></tt> object.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13301"></a><p></p>
+<a name="AEN13323"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
@@ -409,14 +409,14 @@ The caller is responsible for cleaing up returend object by calling
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13311"></a><h3>
+<a name="AEN13333"></a><h3>
 <a name="XMLSECENCCTXCOPYUSERPREF"></a>xmlSecEncCtxCopyUserPref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxCopyUserPref        (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> dst,
                                              <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> src);</pre></td></tr></table>
 <p>Copies user preference from <tt class="PARAMETER"><i>src</i></tt> context to <tt class="PARAMETER"><i>dst</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13321"></a><p></p>
+<a name="AEN13343"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -439,13 +439,13 @@ The caller is responsible for cleaing up returend object by calling
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13338"></a><h3>
+<a name="AEN13360"></a><h3>
 <a name="XMLSECENCCTXRESET"></a>xmlSecEncCtxReset ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxReset               (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre></td></tr></table>
 <p>Resets <tt class="PARAMETER"><i>encCtx</i></tt> object, user settings are not touched.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13346"></a><p></p>
+<a name="AEN13368"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
@@ -456,7 +456,7 @@ The caller is responsible for cleaing up returend object by calling
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13356"></a><h3>
+<a name="AEN13378"></a><h3>
 <a name="XMLSECENCCTXBINARYENCRYPT"></a>xmlSecEncCtxBinaryEncrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxBinaryEncrypt       (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>xmlNodePtr</font> tmpl,
@@ -465,7 +465,7 @@ The caller is responsible for cleaing up returend object by calling
 <p>Encrypts <tt class="PARAMETER"><i>data</i></tt> according to template <tt class="PARAMETER"><i>tmpl</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13367"></a><p></p>
+<a name="AEN13389"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -498,7 +498,7 @@ The caller is responsible for cleaing up returend object by calling
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13395"></a><h3>
+<a name="AEN13417"></a><h3>
 <a name="XMLSECENCCTXXMLENCRYPT"></a>xmlSecEncCtxXmlEncrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxXmlEncrypt          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>xmlNodePtr</font> tmpl,
@@ -507,7 +507,7 @@ The caller is responsible for cleaing up returend object by calling
 with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13408"></a><p></p>
+<a name="AEN13430"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -535,7 +535,7 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13431"></a><h3>
+<a name="AEN13453"></a><h3>
 <a name="XMLSECENCCTXURIENCRYPT"></a>xmlSecEncCtxUriEncrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxUriEncrypt          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>xmlNodePtr</font> tmpl,
@@ -543,7 +543,7 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target
 <p>Encrypts data from <tt class="PARAMETER"><i>uri</i></tt> according to template <tt class="PARAMETER"><i>tmpl</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13442"></a><p></p>
+<a name="AEN13464"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -571,14 +571,14 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13465"></a><h3>
+<a name="AEN13487"></a><h3>
 <a name="XMLSECENCCTXDECRYPT"></a>xmlSecEncCtxDecrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxDecrypt             (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>xmlNodePtr</font> node);</pre></td></tr></table>
 <p>Decrypts <tt class="PARAMETER"><i>node</i></tt> and if necessary replaces <tt class="PARAMETER"><i>node</i></tt> with decrypted data.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13475"></a><p></p>
+<a name="AEN13497"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -601,14 +601,14 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13494"></a><h3>
+<a name="AEN13516"></a><h3>
 <a name="XMLSECENCCTXDECRYPTTOBUFFER"></a>xmlSecEncCtxDecryptToBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecEncCtxDecryptToBuffer (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>xmlNodePtr</font> node);</pre></td></tr></table>
 <p>Decrypts <tt class="PARAMETER"><i>node</i></tt> data to the <tt class="PARAMETER"><i>encCtx</i></tt> buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13505"></a><p></p>
+<a name="AEN13527"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -631,14 +631,14 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13524"></a><h3>
+<a name="AEN13546"></a><h3>
 <a name="XMLSECENCCTXDEBUGDUMP"></a>xmlSecEncCtxDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDebugDump           (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints the debug information about <tt class="PARAMETER"><i>encCtx</i></tt> to <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13534"></a><p></p>
+<a name="AEN13556"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -656,14 +656,14 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13548"></a><h3>
+<a name="AEN13570"></a><h3>
 <a name="XMLSECENCCTXDEBUGXMLDUMP"></a>xmlSecEncCtxDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDebugXmlDump        (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints the debug information about <tt class="PARAMETER"><i>encCtx</i></tt> to <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN13558"></a><p></p>
+<a name="AEN13580"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

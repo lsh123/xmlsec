@@ -1,13 +1,14 @@
 /** 
- * XML Security Library example: Decrypting an encrypted file.
+ * XML Security Library example: Decrypting an encrypted file using a signle key.
  * 
- * Decrypts encrypted XML file using DES key from a binary file
+ * Decrypts encrypted XML file using a single DES key from a binary file
  * 
  * Usage: 
  *	enc3 <xml-enc> <des-key-file> 
  *
  * Example:
- *	./enc3 ./enc1-res.xml deskey.bin
+ *	./enc3 enc1-res.xml deskey.bin
+ *	./enc3 enc2-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -137,6 +138,12 @@ decrypt_file(const char* enc_file, const char* key_file) {
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+    
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

@@ -19,6 +19,9 @@ XML Security Library example: Simple signature template file.
       </Reference>
     </SignedInfo>
     <SignatureValue/>
+    <KeyInfo>
+	<KeyName/>
+    </KeyInfo>
   </Signature>
 </Envelope>
 

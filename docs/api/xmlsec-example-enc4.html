@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>enc3.c</title>
+<title>enc4.c</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="enc2-res.xml" href="xmlsec-example-enc2-res.html">
-<link rel="NEXT" title="enc4.c" href="xmlsec-example-enc4.html">
+<link rel="PREVIOUS" title="enc3.c" href="xmlsec-example-enc3.html">
+<link rel="NEXT" title="XML Security Library Reference Index" href="xmlsec-index.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,28 +33,29 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc2-res.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc3.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-enc4.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-index.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <h1>
-<a name="XMLSEC-EXAMPLE-ENC3"></a>enc3.c</h1>
+<a name="XMLSEC-EXAMPLE-ENC4"></a>enc4.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15602"></a><h2>Name</h2>enc3.c -- Decrypting an encrypted file using a signle key.</div>
+<a name="AEN15611"></a><h2>Name</h2>enc4.c -- Decrypting an encrypted file using keys manager.</div>
 <div class="REFSECT1">
-<a name="AEN15605"></a><h2>Example: Decrypting an encrypted file using a signle key.</h2>
+<a name="AEN15614"></a><h2>Example: Decrypting an encrypted file using keys manager.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15608"></a><p></p>
+<a name="AEN15617"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * XML Security Library example: Decrypting an encrypted file using a signle key.
+ * XML Security Library example: Decrypting an encrypted file using keys manager.
  * 
- * Decrypts encrypted XML file using a single DES key from a binary file
+ * Decrypts encrypted XML file using keys manager and a list of 
+ * DES key from a binary file
  * 
  * Usage: 
- *	enc3 &lt;xml-enc&gt; &lt;des-key-file&gt; 
+ *	enc3 &lt;xml-enc&gt; &lt;des-key-file1&gt; [&lt;des-key-file2&gt; [...]] 
  *
  * Example:
  *	./enc3 enc1-res.xml deskey.bin
@@ -82,10 +83,13 @@
 #include &lt;xmlsec/xmlenc.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-int decrypt_file(const char* enc_file, const char* key_file);
+xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
+int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int 
 main(int argc, char **argv) {
+    xmlSecKeysMngrPtr mngr;
+
     assert(argv);
 
     if(argc != 3) {
@@ -121,9 +125,19 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(decrypt_file(argv[1], argv[2]) &lt; 0) {
+    /* create keys manager and load keys */
+    mngr = load_des_keys(&amp;(argv[2]), argc - 2);
+    if(mngr == NULL) {
+	return(-1);
+    }
+
+    if(decrypt_file(mngr, argv[1]) &lt; 0) {
+	xmlSecKeysMngrDestroy(mngr);	
 	return(-1);
     }    
+
+    /* destroy keys manager */
+    xmlSecKeysMngrDestroy(mngr);
     
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
@@ -144,9 +158,78 @@ main(int argc, char **argv) {
 }
 
 /**
+ * load_des_keys:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load DES keys from #files in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_des_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+    
+    assert(files);
+    assert(files_size &gt; 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i &lt; files_size; ++i) {
+	assert(files[i]);
+
+	/* load DES key */
+	key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+	if(key == NULL) {
+    	    fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+
+	/* set key name to the file name, this is just an example! */
+	if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
+	 */
+	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
+}
+
+/**
  * decrypt_file:
+ * @mngr:		the pointer to keys manager.
  * @enc_file:		the encrypted XML  file name.
- * @key_file:		the Triple DES key file.
  *
  * Decrypts the XML file #enc_file using DES key from #key_file and 
  * prints results to stdout.
@@ -154,14 +237,14 @@ main(int argc, char **argv) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-decrypt_file(const char* enc_file, const char* key_file) {
+decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
     
+    assert(mngr);
     assert(enc_file);
-    assert(key_file);
 
     /* load template */
     doc = xmlParseFile(enc_file);
@@ -177,23 +260,10 @@ decrypt_file(const char* enc_file, const char* key_file) {
 	goto done;	
     }
 
-    /* create encryption context, we don't need keys manager in this example */
-    encCtx = xmlSecEncCtxCreate(NULL);
+    /* create encryption context */
+    encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
         fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
-	goto done;
-    }
-
-    /* load DES key */
-    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
-    if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-    
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
@@ -238,14 +308,14 @@ done:
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc2-res.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc3.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-enc4.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-index.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>enc2-res.xml</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>enc4.c</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>enc3.c</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Reference Index</b></font></td>
 </tr>
 </table>
 </div>

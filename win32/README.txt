@@ -10,10 +10,11 @@ to build the library using the command-line tools, while various
 subdirectories contain project files for various IDEs.
 
 
-  1. Building from the command-line
-  =================================
+  1. Building the library
+  =============================================
 
-This is the easiest, preferred and currently supported method. 
+Building from command line is the easiest, preferred and the only 
+currently supported method. 
 
 In order to build from the command-line you need to make sure that
 your compiler works from the command line. This is not always the
@@ -89,8 +90,7 @@ here. Please configure the source manually only if you allready know
 what you must do. Otherwise, you have the choice of either getting a
 precompiled binary distribution, or performing the automatic
 configuration.
-
-
+
   1.3 Compiling
   -------------
 
@@ -109,21 +109,60 @@ configure script during the configure stage by typing
 
 That would be it, enjoy.
 
+  2. Building your appliation
+  =============================================
 
-  2. Building with the IDE
-  ========================
+On Windows there is no easy way to automatically configure compilation
+options or paths. You have to do everything manualy. Start up your
+favorite IDE or text editor and read on.
+    
+  2.1 Global Defines.
+  ---------------------------------------------
 
-Each supported IDE has its project files placed in a subdirectory of
-win32. If you use a particular IDE, you should be able to
-instinctively recognise its project files. When you have found your
-favourites, load them into the IDE and do whatever you would do with
-any other project files. If you are a novice and puzzled about how to
-use particular project files with a particular IDE, check for a readme
-file in that IDEs subdirectory. I won't discuss any particular IDE
-here, because I would like to keep this document as general as
-possible, and there is also a chance that support exists for IDEs
-which I have never seen.
+If you want to use automatic crypto library configuration (xmlsec/crypto.h file)
+you need to add one of the following global defines:
+
+    #define XMLSEC_CRYPTO_OPENSSL
+    #define XMLSEC_CRYPTO_GNUTLS
+    #define XMLSEC_CRYPTO_NSS
+
+Also you'll need to define all configuration parameters used during XML Security
+Library compilation (XMLSEC_OPENSSL_096, XMLSEC_NO_AES, XMLSEC_NO_X509,...).
+
+  2.1 Additional Global Defines for static linking.
+  ---------------------------------------------
+
+Also if you (*and only if*) are linking libraries staticaly, you'll need to add following
+global defines:
+
+  2.2 Setting include and library paths.
+  ---------------------------------------------
+
+As usual, you need to have correct include and library paths to xmlsec, libxml,
+libxslt, iconv, openssl or any other library used in your application.
+
+  2.3 Selecting correct Windows runtime libraries.
+  ---------------------------------------------
+
+Windows basically has 6 different C runtimes. The first one is called libc.lib 
+and can only be linked to statically and used only in single-threaded mode.
+The second one is also can only be linked staticaly and used in multi-threaded
+mode. The third one is called msvcrt.dll and can only be linked to dynamically. 
+These three then live in their debug and release incarnations, which results in 
+six C runtimes. The rule is simple: exactly the same runtime must be used 
+throughout the application. Client code *MUST* use the same runtime as XMLSec, 
+LibXML, LibXSLT, OpenSSL or any other library used.
+
+If you downloaded XMLSec, LibXML, LibXSLT and OpenSSL binaries from Igor's 
+page then all libraries are all linked to msvcrt.dll ("Multithreaded DLL" 
+(NOT DEBUG!); /MD compiler switch). The click-next click-finish wizardry 
+from Visual Studio chooses the single-threaded libc.lib as the default 
+when you create a new project. And this causes great problems because 
+you program crashes on first IO operation, first malloc/free from different 
+runtimes or something even more trivial.
+
+Do not forget that if you need a different runtime for some reason, then 
+you MUST recompile not only XMLSec, but LibXML, LibXSLT and OpenSSL as well.
 
 
 March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
-

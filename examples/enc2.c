@@ -8,10 +8,10 @@
  *	enc2 <xml-doc> <des-key-file> 
  *
  * Example:
- *	./enc2 ./enc2-doc.xml ./deskey.bin > ./enc2-res.xml
+ *	./enc2 enc2-doc.xml deskey.bin > enc2-res.xml
  *
  * The result could be decrypted with enc3 example:
- *	./enc3 ./enc2-res.xml ./deskey.bin
+ *	./enc3 enc2-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -111,6 +111,7 @@ int
 encrypt_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
+    xmlNodePtr keyInfoNode = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
     
@@ -139,6 +140,18 @@ encrypt_file(const char* xml_file, const char* key_file) {
 	goto done;   
     }
 
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
+    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
+    if(keyInfoNode == NULL) {
+	fprintf(stderr, "Error: failed to add key info\n");
+	goto done;		
+    }
+
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
+	fprintf(stderr, "Error: failed to add key name\n");
+	goto done;		
+    }
+
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
@@ -150,6 +163,12 @@ encrypt_file(const char* xml_file, const char* key_file) {
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

@@ -7,7 +7,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
 <link rel="PREVIOUS" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
-<link rel="NEXT" title="Keys and keys manager." href="xmlsec-notes-keysmngr.html">
+<link rel="NEXT" title="Keys." href="xmlsec-notes-keys.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -36,7 +36,7 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keys.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <br clear="all"><div class="SECT1">
@@ -134,6 +134,12 @@ verify_file(const char* xml_file, const char* key_file) {
     dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
     if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
@@ -236,6 +242,12 @@ decrypt_file(const char* enc_file, const char* key_file) {
 	goto done;
     }
 
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
         fprintf(stderr,&quot;Error: decryption failed\n&quot;);
@@ -282,11 +294,11 @@ done:
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keys.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Creating dynamic templates.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Keys and keys manager.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Keys.</b></font></td>
 </tr>
 </table>
 </div>

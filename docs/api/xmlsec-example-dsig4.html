@@ -42,17 +42,258 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG4"></a>dsig4.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15517"></a><h2>Name</h2>dsig4.c -- </div>
+<a name="AEN15539"></a><h2>Name</h2>dsig4.c -- Verifying a file using keys manager.</div>
 <div class="REFSECT1">
-<a name="AEN15520"></a><h2>Example: </h2>
+<a name="AEN15542"></a><h2>Example: Verifying a file using keys manager.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15523"></a><p></p>
+<a name="AEN15545"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * TODO
+ * XML Security Library example: Verifying a file using keys manager.
+ *
+ * Verifies a file using keys manager
+ * 
+ * Usage: 
+ *	dsig3 &lt;signed-file&gt; &lt;public-pem-key1&gt; [&lt;public-pem-key2&gt; [...]]
+ *
+ * Example:
+ *	./dsig3 dsig1-res.xml rsapub.pem
+ *	./dsig3 dsig2-res.xml rsapub.pem
+ * 
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ * 
+ * Copyrigth (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
- 
- </pre></td></tr></table>
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+
+#include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
+#include &lt;libxml/parser.h&gt;
+
+#ifndef XMLSEC_NO_XSLT
+#include &lt;libxslt/xslt.h&gt;
+#endif /* XMLSEC_NO_XSLT */
+
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/xmldsig.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
+
+xmlSecKeysMngrPtr load_public_keys(char** files, int files_size);
+int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+
+int 
+main(int argc, char **argv) {
+    xmlSecKeysMngrPtr mngr;
+    
+    assert(argv);
+
+    if(argc &lt; 3) {
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;key-file1&gt; [&lt;key-file2&gt; [...]]\n&quot;, argv[0]);
+	return(1);
+    }
+
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) &lt; 0) {
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* create keys manager and load keys */
+    mngr = load_public_keys(&amp;(argv[2]), argc - 2);
+    if(mngr == NULL) {
+	return(-1);
+    }
+    
+    /* verify file */
+    if(verify_file(mngr, argv[1]) &lt; 0) {
+	xmlSecKeysMngrDestroy(mngr);	
+	return(-1);
+    }    
+    
+    /* destroy keys manager */
+    xmlSecKeysMngrDestroy(mngr);
+    
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+/**
+ * load_public_keys:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load public keys from #files in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_public_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+    
+    assert(files);
+    assert(files_size &gt; 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i &lt; files_size; ++i) {
+	assert(files[i]);
+
+	/* load key */
+	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 0);
+	if(key == NULL) {
+    	    fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+
+	/* set key name to the file name, this is just an example! */
+	if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
+	 */
+	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
+}
+
+/** 
+ * verify_file:
+ * @mngr:		the pointer to keys manager.
+ * @xml_file:		the signed XML file name.
+ *
+ * Verifies XML signature in #xml_file using public key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(mngr);
+    assert(xml_file);
+
+    /* load file */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
+	goto done;	
+    }
+
+    /* create signature context */
+    dsigCtx = xmlSecDSigCtxCreate(mngr);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+	goto done;
+    }
+
+    /* Verify signature */
+    if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,&quot;Error: signature verify\n&quot;);
+	goto done;
+    }
+        
+    /* print verification result to stdout */
+    if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
+	fprintf(stdout, &quot;Signature is OK\n&quot;);
+    } else {
+	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
+    }    
+
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
+</pre></td></tr></table>
 <p></p>
 </div>
 </div>

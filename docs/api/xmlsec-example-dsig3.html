@@ -42,14 +42,14 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG3"></a>dsig3.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15508"></a><h2>Name</h2>dsig3.c -- Verifying a file.</div>
+<a name="AEN15530"></a><h2>Name</h2>dsig3.c -- Verifying a file using a signle key.</div>
 <div class="REFSECT1">
-<a name="AEN15511"></a><h2>Example: Verifying a file.</h2>
+<a name="AEN15533"></a><h2>Example: Verifying a file using a signle key.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15514"></a><p></p>
+<a name="AEN15536"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * XML Security Library example: Verifying a file.
+ * XML Security Library example: Verifying a file using a signle key.
  *
  * Verifies a file using a key from PEM file.
  * 
@@ -57,8 +57,8 @@
  *	dsig3 &lt;signed-file&gt; &lt;pem-key&gt; 
  *
  * Example:
- *	./dsig3 ./dsig1-res.xml rsapub.pem
- *	./dsig3 ./dsig2-res.xml rsapub.pem
+ *	./dsig3 dsig1-res.xml rsapub.pem
+ *	./dsig3 dsig2-res.xml rsapub.pem
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -187,6 +187,12 @@ verify_file(const char* xml_file, const char* key_file) {
     dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
     if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 

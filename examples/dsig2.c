@@ -9,10 +9,10 @@
  *	dsig2 <xml-doc> <pem-key> 
  *
  * Example:
- *	./dsig2 ./dsig2-doc.xml rsakey.pem > dsig2-res.xml
+ *	./dsig2 dsig2-doc.xml rsakey.pem > dsig2-res.xml
  *
  * The result signature could be validated using dsig3 example:
- *	./dsig3 ./dsig2-res.xml ./rsapub.pem
+ *	./dsig3 dsig2-res.xml rsapub.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -113,6 +113,7 @@ sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
+    xmlNodePtr keyInfoNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
     
@@ -150,6 +151,18 @@ sign_file(const char* xml_file, const char* key_file) {
 	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
 	goto done;		
     }
+    
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+	fprintf(stderr, "Error: failed to add key info\n");
+	goto done;		
+    }
+
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
+	fprintf(stderr, "Error: failed to add key name\n");
+	goto done;		
+    }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
@@ -162,6 +175,12 @@ sign_file(const char* xml_file, const char* key_file) {
     dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx->signKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

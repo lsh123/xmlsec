@@ -4,6 +4,9 @@ XML Security Library example: Simple encryption template file.
 -->
 <EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#">
     <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+	<KeyName/>
+    </KeyInfo>   
     <CipherData>
 	<CipherValue></CipherValue>
     </CipherData>

@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Customizing signature and verification process.</title>
+<title>Keys.</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Transforms and transforms chain." href="xmlsec-notes-transforms.html">
-<link rel="NEXT" title="Customizing encryption and decryption process." href="xmlsec-notes-customize-encryption.html">
+<link rel="PREVIOUS" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+<link rel="NEXT" title="Keys manager." href="xmlsec-notes-keysmngr.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,50 +33,55 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-customize-encryption.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
-<a name="XMLSEC-NOTES-CUSOMIZE-SIGNATURE"></a>Customizing signature and verification process.</h1>
-<p>Application may control XML Security Library behavior using 
-	different context objects:
-	    </p>
-<p></p>
-<ul>
-<li><p>		    <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>;
-		</p></li>
-<li><p>		    <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>;
-		</p></li>
-<li><p>		    <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a>;
-		</p></li>
-<li><p>		    <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a>.
-		</p></li>
-</ul>	 
-	New context objects are created for each operation and could not be 
-	reused. XML Security Library also uses context objects to store 
-	temporary data and return additional information to the application.
-	<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN395"></a><p><b>Example 16. SAML signature validation.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
-		</pre></td></tr></table>
+<a name="XMLSEC-NOTES-KEYS"></a>Keys.</h1>
+<p>A key in XML Security Library is a representation of the 
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
+	element and consist of several key data objects. 
+	The &quot;value&quot; key data usually contains raw key material (or handlers to 
+	key material) required to execute particular crypto transform. Other 
+	key data objects may contain any additional information about the key. 
+	All the key data objects in the key are associated with the same key 
+	material. For example, if a DSA key material has both an X509 
+	certificate and a PGP data associated with it then such a key can 
+	have a DSA key &quot;value&quot; and two key data objects for X509 certificate 
+	and PGP key data.
+    </p>
+<div class="FIGURE">
+<a name="AEN306"></a><p><b>Figure 6. The key structure.</b></p>
+<p><img src="images/key.png" align="CENTER"></p>
 </div>
-	</div>
+<p>XML Security Library has several &quot;invisible&quot; key data classes. 
+	These classes never show up in the keys data list of a key but are used for 
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
+	children processing (<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>, 
+	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might 
+	add any new key data objects or replace the default ones.
+    </p>
+<div class="EXAMPLE">
+<a name="AEN312"></a><p><b>Example 11. Loading private key with X509 certificate.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">		TODO
+	</pre></td></tr></table>
+</div>
+</div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-customize-encryption.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Transforms and transforms chain.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Customizing encryption and decryption process.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Verifing and decrypting documents.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Keys manager.</b></font></td>
 </tr>
 </table>
 </div>

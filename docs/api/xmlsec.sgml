@@ -4,6 +4,7 @@
 <!ENTITY chapter-sign-and-encrypt 	SYSTEM "chapters/sign-and-encrypt.sgml">
 <!ENTITY chapter-verify-and-decrypt 	SYSTEM "chapters/verify-and-decrypt.sgml">
 <!ENTITY chapter-creating-templates 	SYSTEM "chapters/creating-templates.sgml">
+<!ENTITY chapter-using-keys		SYSTEM "chapters/using-keys.sgml">
 <!ENTITY chapter-using-keysmngr 	SYSTEM "chapters/using-keysmngr.sgml">
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
@@ -49,6 +50,7 @@
 <!ENTITY xmlsec-example-enc1 		SYSTEM "examples/enc1.sgml">
 <!ENTITY xmlsec-example-enc2 		SYSTEM "examples/enc2.sgml">
 <!ENTITY xmlsec-example-enc3 		SYSTEM "examples/enc3.sgml">
+<!ENTITY xmlsec-example-enc4 		SYSTEM "examples/enc4.sgml">
 <!ENTITY xmlsec-example-dsig1-tmpl	SYSTEM "examples/dsig1-tmpl.sgml">
 <!ENTITY xmlsec-example-dsig1-res	SYSTEM "examples/dsig1-res.sgml">
 <!ENTITY xmlsec-example-dsig2-doc	SYSTEM "examples/dsig2-doc.sgml">
@@ -133,7 +135,9 @@
     &chapter-sign-and-encrypt;
     &chapter-creating-templates;
     &chapter-verify-and-decrypt;
+    &chapter-using-keys;
     &chapter-using-keysmngr;
+    
     <sect1 id="xmlsec-notes-transforms">
 	<title>Transforms and transforms chain.</title>
 	<para>XML Digital Signature and XML Encryption standards are 
@@ -320,6 +324,7 @@ TODO
     &xmlsec-example-enc2-doc;
     &xmlsec-example-enc2-res;
     &xmlsec-example-enc3;
+    &xmlsec-example-enc4;
   </chapter>
   
   <chapter id="xmlsec-index">

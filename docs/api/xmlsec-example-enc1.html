@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-ENC1"></a>enc1.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15526"></a><h2>Name</h2>enc1.c -- Encrypting data using a template file.</div>
+<a name="AEN15548"></a><h2>Name</h2>enc1.c -- Encrypting data using a template file.</div>
 <div class="REFSECT1">
-<a name="AEN15529"></a><h2>Example: Encrypting data using a template file.</h2>
+<a name="AEN15551"></a><h2>Example: Encrypting data using a template file.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15532"></a><p></p>
+<a name="AEN15554"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Encrypting data using a template file.
  * 
@@ -57,7 +57,10 @@
  *	enc1 &lt;xml-tmpl&gt; &lt;des-key-file&gt; 
  *
  * Example:
- *	./enc1 ./enc1-tmpl.xml deskey.bin &gt; enc1-res.xml
+ *	./enc1 enc1-tmpl.xml deskey.bin &gt; enc1-res.xml
+ *
+ * The result could be decrypted with enc3 example:
+ *	./enc3 enc1-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -193,6 +196,12 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 

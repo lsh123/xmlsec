@@ -42,21 +42,24 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-ENC2-RES"></a>enc2-res.xml</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15571"></a><h2>Name</h2>enc2-res.xml -- Original XML doc file before encryption. </div>
+<a name="AEN15593"></a><h2>Name</h2>enc2-res.xml -- Encrypted XML file </div>
 <div class="REFSECT1">
-<a name="AEN15574"></a><h2>Example: Original XML doc file before encryption. </h2>
+<a name="AEN15596"></a><h2>Example: Encrypted XML file </h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15577"></a><p></p>
+<a name="AEN15599"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!-- 
-XML Security Library example: Original XML doc file before encryption. 
+XML Security Library example: Encrypted XML file 
 --&gt;
 &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot; Type=&quot;http://www.w3.org/2001/04/xmlenc#Element&quot;&gt;
 &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
+&lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;KeyName&gt;deskey.bin&lt;/KeyName&gt;
+&lt;/KeyInfo&gt;
 &lt;CipherData&gt;
-&lt;CipherValue&gt;PCv6MH6RMjnk0Gw/nK79aKS3bMp91Sf5ac/SFAxbEKd39CC6O/vIsrKsySpCjPSf
-eWc60Dh8tyMzPWMcw14tdZCQFZttJFTygRI9rbX3lpVV7XVonaqMoA==&lt;/CipherValue&gt;
+&lt;CipherValue&gt;WXlDyktaADlUe+PywKwS3KdKlahCteEKxi/hRlHcXNQlGwNGrYKy8aQ6dLtX1bKg
+IgL/XoAQN3B27zD91b1ZLGh6QQ9CjnVD98+hYJ9TPp4piPnII4vGUA==&lt;/CipherValue&gt;
 &lt;/CipherData&gt;
 &lt;/EncryptedData&gt;</pre></td></tr></table>
 <p></p>

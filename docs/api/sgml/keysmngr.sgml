@@ -263,7 +263,7 @@ an error occurs.
 <title><anchor id="xmlSecKeysMngr">struct xmlSecKeysMngr</title>
 <programlisting>struct xmlSecKeysMngr {	
     xmlSecKeyStorePtr		keysStore;	
-    xmlSecPtrListPtr		storesList;	
+    xmlSecPtrList		storesList;	
     xmlSecGetKeyCallback	getKey;		
 };
 </programlisting>
@@ -282,7 +282,7 @@ The keys manager structure.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <structfield>storesList</structfield></entry>
+<entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>storesList</structfield></entry>
 <entry>			the list of key data stores known to keys manager.
 </entry>
 </row>

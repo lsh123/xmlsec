@@ -104,6 +104,12 @@ sign_file(const char* tmpl_file, const char* key_file) {
 	goto done;
     }
 
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx->signKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+	goto done;
+    }
+
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, node) < 0) {
         fprintf(stderr,"Error: signature failed\n");
@@ -236,6 +242,12 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

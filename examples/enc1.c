@@ -7,7 +7,10 @@
  *	enc1 <xml-tmpl> <des-key-file> 
  *
  * Example:
- *	./enc1 ./enc1-tmpl.xml deskey.bin > enc1-res.xml
+ *	./enc1 enc1-tmpl.xml deskey.bin > enc1-res.xml
+ *
+ * The result could be decrypted with enc3 example:
+ *	./enc3 enc1-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -143,6 +146,12 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

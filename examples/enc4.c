@@ -1,15 +1,16 @@
 /** 
- * XML Security Library example: Verifying a file using keys manager.
- *
- * Verifies a file using keys manager
+ * XML Security Library example: Decrypting an encrypted file using keys manager.
+ * 
+ * Decrypts encrypted XML file using keys manager and a list of 
+ * DES key from a binary file
  * 
  * Usage: 
- *	dsig3 <signed-file> <public-pem-key1> [<public-pem-key2> [...]]
+ *	enc3 <xml-enc> <des-key-file1> [<des-key-file2> [...]] 
  *
  * Example:
- *	./dsig3 dsig1-res.xml rsapub.pem
- *	./dsig3 dsig2-res.xml rsapub.pem
- * 
+ *	./enc3 enc1-res.xml deskey.bin
+ *	./enc3 enc2-res.xml deskey.bin
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
@@ -29,21 +30,21 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
-#include <xmlsec/xmldsig.h>
+#include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_public_keys(char** files, int files_size);
-int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
+int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int 
 main(int argc, char **argv) {
     xmlSecKeysMngrPtr mngr;
-    
+
     assert(argv);
 
-    if(argc < 3) {
+    if(argc != 3) {
 	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <xml-file> <key-file1> [<key-file2> [...]]\n", argv[0]);
+	fprintf(stderr, "Usage: %s <enc-file> <key-file>\n", argv[0]);
 	return(1);
     }
 
@@ -75,17 +76,16 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = load_public_keys(&(argv[2]), argc - 2);
+    mngr = load_des_keys(&(argv[2]), argc - 2);
     if(mngr == NULL) {
 	return(-1);
     }
-    
-    /* verify file */
-    if(verify_file(mngr, argv[1]) < 0) {
+
+    if(decrypt_file(mngr, argv[1]) < 0) {
 	xmlSecKeysMngrDestroy(mngr);	
 	return(-1);
     }    
-    
+
     /* destroy keys manager */
     xmlSecKeysMngrDestroy(mngr);
     
@@ -108,11 +108,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_public_keys:
+ * load_des_keys:
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
  *
- * Creates simple keys manager and load public keys from #files in it.
+ * Creates simple keys manager and load DES keys from #files in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -120,7 +120,7 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr 
-load_public_keys(char** files, int files_size) {
+load_des_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
@@ -146,10 +146,10 @@ load_public_keys(char** files, int files_size) {
     for(i = 0; i < files_size; ++i) {
 	assert(files[i]);
 
-	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 0);
+	/* load DES key */
+	key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", files[i]);
+    	    fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
@@ -176,66 +176,75 @@ load_public_keys(char** files, int files_size) {
     return(mngr);
 }
 
-/** 
- * verify_file:
+/**
+ * decrypt_file:
  * @mngr:		the pointer to keys manager.
- * @xml_file:		the signed XML file name.
+ * @enc_file:		the encrypted XML  file name.
  *
- * Verifies XML signature in #xml_file using public key from #key_file.
+ * Decrypts the XML file #enc_file using DES key from #key_file and 
+ * prints results to stdout.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
+decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
     
     assert(mngr);
-    assert(xml_file);
+    assert(enc_file);
 
-    /* load file */
-    doc = xmlParseFile(xml_file);
+    /* load template */
+    doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
 	goto done;	
     }
     
     /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
 	goto done;	
     }
 
-    /* create signature context */
-    dsigCtx = xmlSecDSigCtxCreate(mngr);
-    if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+    /* create encryption context */
+    encCtx = xmlSecEncCtxCreate(mngr);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
 	goto done;
     }
 
-    /* Verify signature */
-    if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
+        fprintf(stderr,"Error: decryption failed\n");
 	goto done;
     }
         
-    /* print verification result to stdout */
-    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, "Signature is OK\n");
+    /* print decrypted data to stdout */
+    if(encCtx->resultReplaced != 0) {
+	fprintf(stdout, "Decrypted XML data:\n");
+	xmlDocDump(stdout, doc);
     } else {
-	fprintf(stdout, "Signature is INVALID\n");
-    }    
-
+	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
+	if(xmlSecBufferGetData(encCtx->result) != NULL) {
+	    fwrite(xmlSecBufferGetData(encCtx->result), 
+	          1, 
+	          xmlSecBufferGetSize(encCtx->result),
+	          stdout);
+	}
+    }
+    fprintf(stdout, "\n");
+        
     /* success */
     res = 0;
 
 done:    
     /* cleanup */
-    if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
     }
     
     if(doc != NULL) {
@@ -243,5 +252,4 @@ done:
     }
     return(res);
 }
-
 

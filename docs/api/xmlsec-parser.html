@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-PARSER"></a>parser</h1>
 <div class="REFNAMEDIV">
-<a name="AEN7670"></a><h2>Name</h2>parser -- </div>
+<a name="AEN7692"></a><h2>Name</h2>parser -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN7673"></a><h2>Synopsis</h2>
+<a name="AEN7695"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 <font>xmlDocPtr</font>   <a href="xmlsec-parser.html#XMLSECPARSEFILE">xmlSecParseFile</a>                 (const char *filename);
@@ -62,20 +62,20 @@
                                             (void);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN7689"></a><h2>Description</h2>
+<a name="AEN7711"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN7692"></a><h2>Details</h2>
+<a name="AEN7714"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN7694"></a><h3>
+<a name="AEN7716"></a><h3>
 <a name="XMLSECPARSEFILE"></a>xmlSecParseFile ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseFile                 (const char *filename);</pre></td></tr></table>
 <p>Loads XML Doc from file <tt class="PARAMETER"><i>filename</i></tt>. We need a special version because of 
 c14n issue. The code is copied from <font>xmlSAXParseFileWithData</font>() function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7703"></a><p></p>
+<a name="AEN7725"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -93,7 +93,7 @@ c14n issue. The code is copied from <font>xmlSAXParseFileWithData</font>() funct
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7716"></a><h3>
+<a name="AEN7738"></a><h3>
 <a name="XMLSECPARSEMEMORY"></a>xmlSecParseMemory ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseMemory               (unsigned char *buffer,
                                              <font>size_t</font> size,
@@ -102,7 +102,7 @@ c14n issue. The code is copied from <font>xmlSAXParseFileWithData</font>() funct
 c14n issue. The code is copied from <font>xmlSAXParseMemory</font>() function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7725"></a><p></p>
+<a name="AEN7747"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -130,7 +130,7 @@ c14n issue. The code is copied from <font>xmlSAXParseMemory</font>() function.</
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7746"></a><h3>
+<a name="AEN7768"></a><h3>
 <a name="XMLSECPARSEMEMORYEXT"></a>xmlSecParseMemoryExt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseMemoryExt            (unsigned char *prefix,
                                              <font>size_t</font> prefixSize,
@@ -141,7 +141,7 @@ c14n issue. The code is copied from <font>xmlSAXParseMemory</font>() function.</
 <p>Loads XML Doc from 3 chunks of memory: <tt class="PARAMETER"><i>prefix</i></tt>, <tt class="PARAMETER"><i>buffer</i></tt> and <tt class="PARAMETER"><i>postfix</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7759"></a><p></p>
+<a name="AEN7781"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -184,7 +184,7 @@ c14n issue. The code is copied from <font>xmlSAXParseMemory</font>() function.</
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7792"></a><h3>
+<a name="AEN7814"></a><h3>
 <a name="XMLSECTRANSFORMXMLPARSERID"></a>xmlSecTransformXmlParserId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformXmlParserId</pre></td></tr></table>
 <p>The XML Parser transform klass.</p>
@@ -192,14 +192,14 @@ c14n issue. The code is copied from <font>xmlSAXParseMemory</font>() function.</
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7798"></a><h3>
+<a name="AEN7820"></a><h3>
 <a name="XMLSECTRANSFORMXMLPARSERGETKLASS"></a>xmlSecTransformXmlParserGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformXmlParserGetKlass
                                             (void);</pre></td></tr></table>
 <p>The XML parser transform.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7805"></a><p></p>
+<a name="AEN7827"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>

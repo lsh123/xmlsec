@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Keys and keys manager.</title>
+<title>Keys manager.</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+<link rel="PREVIOUS" title="Keys." href="xmlsec-notes-keys.html">
 <link rel="NEXT" title="Transforms and transforms chain." href="xmlsec-notes-transforms.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
@@ -33,7 +33,7 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
@@ -41,35 +41,7 @@
 </table></div>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
-<a name="XMLSEC-NOTES-KEYSMNGR"></a>Keys and keys manager.</h1>
-<p>A key in XML Security Library is a representation of the 
-	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
-	element and consist of several key data objects. 
-	The &quot;value&quot; key data usually contains raw key material (or handlers to 
-	key material) required to execute particular crypto transform. Other 
-	key data objects may contain any additional information about the key. 
-	All the key data objects in the key are associated with the same key 
-	material. For example, if a DSA key material has both an X509 
-	certificate and a PGP data associated with it then such a key can 
-	have a DSA key &quot;value&quot; and two key data objects for X509 certificate 
-	and PGP key data.
-	</p>
-<div class="FIGURE">
-<a name="AEN306"></a><p><b>Figure 6. The key structure.</b></p>
-<p><img src="images/key.png" align="CENTER"></p>
-</div>
-<p>XML Security Library has several &quot;invisible&quot; key data classes. 
-	These classes never show up in the keys data list of a key but are used for 
-	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
-	children processing (<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>, 
-	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might 
-	add any new key data objects or replace the default ones.
-	</p>
-<div class="EXAMPLE">
-<a name="AEN312"></a><p><b>Example 11. Loading private key with X509 certificate.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">		TODO
-	    </pre></td></tr></table>
-</div>
+<a name="XMLSEC-NOTES-KEYSMNGR"></a>Keys manager.</h1>
 <p>Processing some of the key data objects require additional 
 	information which is global across the application (or in the 
 	particular area of the application). For example, X509 certificates 
@@ -77,9 +49,9 @@
 	available. XML Security Library keeps all the common information 
 	for key data processing in a a collection of key data stores called 
 	&quot;keys manager&quot;.
-	</p>
+    </p>
 <div class="FIGURE">
-<a name="AEN316"></a><p><b>Figure 7. The keys manager structure.</b></p>
+<a name="AEN318"></a><p><b>Figure 7. The keys manager structure.</b></p>
 <p><img src="images/keysmngr.png" align="CENTER"></p>
 </div>
 <p>Keys manager has a special &quot;keys store&quot; which lists the keys 
@@ -91,7 +63,7 @@
 	provides default &quot;flat list&quot; based implementation of a simple keys 
 	store. The application can replace it with any other keys store 
 	(for example, based on an SQL database).
-	</p>
+    </p>
 <p>Keys manager is the only object in XML Security Library which 
 	is supposed to be shared by many different operations. Usually keys 
 	manager is initialized once at the application startup and later is 
@@ -101,24 +73,189 @@
 	implemented. In the same time, application can create a new keys 
 	manager each time it needs to perform XML signature, verification, 
 	encryption or decryption.
+    </p>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="AEN324"></a>Simple keys store.</h2>
+<p>XML Security Library has a built-in simple keys store 
+	implemented using a keys list. You can use it in your application
+	if you have a small number of keys. However, this might be not a 
+	best option from performance point of view if you have a lot of keys.
+	In this case, you probably should implement your own keys store
+	using an SQL database or some other keys storage.
 	</p>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN323"></a><p><b>Example 12. Initializing keys manager and loading keys.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
+<a name="AEN328"></a><p><b>Example 12. Initializing keys manager and loading public keys from PEM files.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
+ * load_public_keys:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load public keys from #files in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_public_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+    
+    assert(files);
+    assert(files_size &gt; 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i &lt; files_size; ++i) {
+	assert(files[i]);
+
+	/* load key */
+	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 0);
+	if(key == NULL) {
+    	    fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+
+	/* set key name to the file name, this is just an example! */
+	if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
+	 */
+	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
+}
 		</pre></td></tr></table>
+<p><a href="xmlsec-example-dsig4.html">Full program listing</a></p>
+</div>
+	<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN334"></a><p><b>Example 13. Initializing keys manager and loading DES keys from binary files.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
+ * load_des_keys:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load DES keys from #files in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_des_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+    
+    assert(files);
+    assert(files_size &gt; 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i &lt; files_size; ++i) {
+	assert(files[i]);
+
+	/* load DES key */
+	key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+	if(key == NULL) {
+    	    fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+
+	/* set key name to the file name, this is just an example! */
+	if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
+	 */
+	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
+}
+		</pre></td></tr></table>
+<p><a href="xmlsec-example-enc4.html">Full program listing</a></p>
 </div>
 	</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="AEN339"></a>Implementing a custom keys store.</h2>
+<p>TODO</p>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN343"></a><p><b>Example 14. Initializing keys manager and loading public keys from PEM files.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO		
+		</pre></td></tr></table>
+<p><a href="xmlsec-example-dsig4.html">Full program listing</a></p>
+</div>
+	</div>
+</div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Verifing and decrypting documents.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Keys.</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Transforms and transforms chain.</b></font></td>
 </tr>
 </table>

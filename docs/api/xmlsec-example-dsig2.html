@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG2"></a>dsig2.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15481"></a><h2>Name</h2>dsig2.c -- Signing a file with a dynamicaly created template.</div>
+<a name="AEN15503"></a><h2>Name</h2>dsig2.c -- Signing a file with a dynamicaly created template.</div>
 <div class="REFSECT1">
-<a name="AEN15484"></a><h2>Example: Signing a file with a dynamicaly created template.</h2>
+<a name="AEN15506"></a><h2>Example: Signing a file with a dynamicaly created template.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15487"></a><p></p>
+<a name="AEN15509"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Signing a file with a dynamicaly created template.
  * 
@@ -59,10 +59,10 @@
  *	dsig2 &lt;xml-doc&gt; &lt;pem-key&gt; 
  *
  * Example:
- *	./dsig2 ./dsig2-doc.xml rsakey.pem &gt; dsig2-res.xml
+ *	./dsig2 dsig2-doc.xml rsakey.pem &gt; dsig2-res.xml
  *
  * The result signature could be validated using dsig3 example:
- *	./dsig3 ./dsig2-res.xml ./rsapub.pem
+ *	./dsig3 dsig2-res.xml rsapub.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -163,6 +163,7 @@ sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
+    xmlNodePtr keyInfoNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
     
@@ -200,6 +201,18 @@ sign_file(const char* xml_file, const char* key_file) {
 	fprintf(stderr, &quot;Error: failed to add enveloped transform to reference\n&quot;);
 	goto done;		
     }
+    
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
+	goto done;		
+    }
+
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
+	fprintf(stderr, &quot;Error: failed to add key name\n&quot;);
+	goto done;		
+    }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
@@ -212,6 +225,12 @@ sign_file(const char* xml_file, const char* key_file) {
     dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
     if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 

@@ -1,5 +1,5 @@
 /** 
- * XML Security Library example: Verifying a file.
+ * XML Security Library example: Verifying a file using a signle key.
  *
  * Verifies a file using a key from PEM file.
  * 
@@ -7,8 +7,8 @@
  *	dsig3 <signed-file> <pem-key> 
  *
  * Example:
- *	./dsig3 ./dsig1-res.xml rsapub.pem
- *	./dsig3 ./dsig2-res.xml rsapub.pem
+ *	./dsig3 dsig1-res.xml rsapub.pem
+ *	./dsig3 dsig2-res.xml rsapub.pem
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -137,6 +137,12 @@ verify_file(const char* xml_file, const char* key_file) {
     dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx->signKey, key_file) < 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 

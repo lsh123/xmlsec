@@ -42,18 +42,21 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-ENC1-TMPL"></a>enc1-tmpl.xml</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15535"></a><h2>Name</h2>enc1-tmpl.xml -- Simple encryption template file. </div>
+<a name="AEN15557"></a><h2>Name</h2>enc1-tmpl.xml -- Simple encryption template file. </div>
 <div class="REFSECT1">
-<a name="AEN15538"></a><h2>Example: Simple encryption template file. </h2>
+<a name="AEN15560"></a><h2>Example: Simple encryption template file. </h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15541"></a><p></p>
+<a name="AEN15563"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!-- 
 XML Security Library example: Simple encryption template file. 
 --&gt;
 &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;
     &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
+    &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+	&lt;KeyName/&gt;
+    &lt;/KeyInfo&gt;   
     &lt;CipherData&gt;
 	&lt;CipherValue&gt;&lt;/CipherValue&gt;
     &lt;/CipherData&gt;

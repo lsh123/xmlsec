@@ -1,0 +1,51 @@
+<!-- ##### SECTION Title ##### -->
+version
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO XMLSEC_VERSION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_VERSION_MAJOR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_VERSION_MINOR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_VERSION_SUBMINOR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_VERSION_INFO ##### -->
+<para>
+
+</para>
+
+
+

@@ -1,0 +1,547 @@
+<refentry id="xmlsec-keys">
+<refmeta>
+<refentrytitle>keys</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>keys</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+typedef     <link linkend="xmlSecKeyId">xmlSecKeyId</link>;
+enum        <link linkend="xmlSecKeyType">xmlSecKeyType</link>;
+enum        <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
+typedef     <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link>;
+#define     <link linkend="xmlSecKeyOriginDefault">xmlSecKeyOriginDefault</link>
+#define     <link linkend="xmlSecKeyOriginKeyManager">xmlSecKeyOriginKeyManager</link>
+#define     <link linkend="xmlSecKeyOriginKeyName">xmlSecKeyOriginKeyName</link>
+#define     <link linkend="xmlSecKeyOriginKeyValue">xmlSecKeyOriginKeyValue</link>
+#define     <link linkend="xmlSecKeyOriginRetrievalDocument">xmlSecKeyOriginRetrievalDocument</link>
+#define     <link linkend="xmlSecKeyOriginRetrievalRemote">xmlSecKeyOriginRetrievalRemote</link>
+#define     <link linkend="xmlSecKeyOriginX509">xmlSecKeyOriginX509</link>
+#define     <link linkend="xmlSecKeyOriginPGP">xmlSecKeyOriginPGP</link>
+#define     <link linkend="xmlSecKeyOriginEncryptedKey">xmlSecKeyOriginEncryptedKey</link>
+#define     <link linkend="xmlSecKeyOriginAll">xmlSecKeyOriginAll</link>
+#define     <link linkend="xmlSecKeyIdUnknown">xmlSecKeyIdUnknown</link>
+struct      <link linkend="xmlSecKey">xmlSecKey</link>;
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> origin);
+void        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> origin);
+int         <link linkend="xmlSecVerifyKey">xmlSecVerifyKey</link>                 (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);
+void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+int         <link linkend="xmlSecKeyReadPemCert">xmlSecKeyReadPemCert</link>            (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const char *filename);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecFindKeyCallback">*xmlSecFindKeyCallback</link>)       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);
+<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> (<link linkend="xmlSecX509FindCallback">*xmlSecX509FindCallback</link>) (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
+                                             <link linkend="xmlChar">xmlChar</link> *ski,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);
+int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback</link>)     (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecKeyId">xmlSecKeyId</title>
+<programlisting>typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyType">enum xmlSecKeyType</title>
+<programlisting>typedef enum  {
+    xmlSecKeyTypePublic = 0,
+    xmlSecKeyTypePrivate,
+    xmlSecKeyTypeAny
+} xmlSecKeyType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUsage">enum xmlSecKeyUsage</title>
+<programlisting>typedef enum  {
+    xmlSecKeyUsageAny = 0,
+    xmlSecKeyUsageSign,
+    xmlSecKeyUsageVerify,
+    xmlSecKeyUsageEncrypt,
+    xmlSecKeyUsageDecrypt
+} xmlSecKeyUsage;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOrigin">xmlSecKeyOrigin</title>
+<programlisting>typedef long				xmlSecKeyOrigin;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginDefault">xmlSecKeyOriginDefault</title>
+<programlisting>#define xmlSecKeyOriginDefault			0
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginKeyManager">xmlSecKeyOriginKeyManager</title>
+<programlisting>#define xmlSecKeyOriginKeyManager		1
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginKeyName">xmlSecKeyOriginKeyName</title>
+<programlisting>#define xmlSecKeyOriginKeyName			2 /* useless w/o xmlSecKeyOriginKeyManager */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginKeyValue">xmlSecKeyOriginKeyValue</title>
+<programlisting>#define xmlSecKeyOriginKeyValue			4
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginRetrievalDocument">xmlSecKeyOriginRetrievalDocument</title>
+<programlisting>#define xmlSecKeyOriginRetrievalDocument	8
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginRetrievalRemote">xmlSecKeyOriginRetrievalRemote</title>
+<programlisting>#define xmlSecKeyOriginRetrievalRemote		16
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginX509">xmlSecKeyOriginX509</title>
+<programlisting>#define xmlSecKeyOriginX509			32
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginPGP">xmlSecKeyOriginPGP</title>
+<programlisting>#define xmlSecKeyOriginPGP			64
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginEncryptedKey">xmlSecKeyOriginEncryptedKey</title>
+<programlisting>#define xmlSecKeyOriginEncryptedKey		128
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyOriginAll">xmlSecKeyOriginAll</title>
+<programlisting>#define     xmlSecKeyOriginAll</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyIdUnknown">xmlSecKeyIdUnknown</title>
+<programlisting>#define xmlSecKeyIdUnknown 			NULL
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKey">struct xmlSecKey</title>
+<programlisting>struct xmlSecKey {
+    xmlSecKeyId				id;
+    xmlSecKeyType			type;
+    xmlChar				*name;
+    xmlSecKeyOrigin			origin;
+
+    xmlSecX509DataPtr			x509Data;
+    
+    /* key specific data */
+    void				*keyData;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCreate">xmlSecKeyCreate ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> origin);</programlisting>
+<para>
+Creates new key (wrapper for xmlSecKey::create method)</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDestroy">xmlSecKeyDestroy ()</title>
+<programlisting>void        xmlSecKeyDestroy                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Destroys the key. If the key origin has a KeyManager marker 
+the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zero</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDuplicate">xmlSecKeyDuplicate ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyDuplicate             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> origin);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecVerifyKey">xmlSecVerifyKey ()</title>
+<programlisting>int         xmlSecVerifyKey                 (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDebugDump">xmlSecKeyDebugDump ()</title>
+<programlisting>void        xmlSecKeyDebugDump              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadPemCert">xmlSecKeyReadPemCert ()</title>
+<programlisting>int         xmlSecKeyReadPemCert            (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const char *filename);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetKeyCallback">xmlSecGetKeyCallback ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecFindKeyCallback">xmlSecFindKeyCallback ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecFindKeyCallback)       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509FindCallback">xmlSecX509FindCallback ()</title>
+<programlisting><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> (*xmlSecX509FindCallback) (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
+                                             <link linkend="xmlChar">xmlChar</link> *ski,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry> the keys manager
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry> the application specific context
+</entry></row>
+<row><entry align="right"><parameter>subjectName</parameter>&nbsp;:</entry>
+<entry> subject name string
+</entry></row>
+<row><entry align="right"><parameter>issuerName</parameter>&nbsp;:</entry>
+<entry> issuer name string
+</entry></row>
+<row><entry align="right"><parameter>issuerSerial</parameter>&nbsp;:</entry>
+<entry> issuer serial
+</entry></row>
+<row><entry align="right"><parameter>ski</parameter>&nbsp;:</entry>
+<entry> ski
+</entry></row>
+<row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
+<entry> 
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the certificate that matches given criteria
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509VerifyCallback">xmlSecX509VerifyCallback ()</title>
+<programlisting>int         (*xmlSecX509VerifyCallback)     (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry> the keys manager
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry> the application specific context
+</entry></row>
+<row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
+<entry> the cert to verify
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the cert is trusted, 0 if it is not trusted
+and -1 if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyType</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyUsage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

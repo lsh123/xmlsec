@@ -1,0 +1,1766 @@
+<FUNCTION>
+<NAME>xmlSecBase64CtxCreate</NAME>
+<RETURNS>xmlSecBase64CtxPtr  </RETURNS>
+int encode,int columns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBase64CtxDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecBase64CtxPtr ctx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBase64CtxInit</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBase64CtxPtr ctx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBase64CtxUpdate</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBase64CtxPtr ctx,const unsigned char *in,size_t inLen,unsigned char *out,size_t outLen
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBase64CtxFinal</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecBase64CtxPtr ctx,unsigned char *out,size_t outLen
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBase64Encode</NAME>
+<RETURNS>xmlChar *</RETURNS>
+const unsigned char *buf,size_t len,int columns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBase64Decode</NAME>
+<RETURNS>int 	</RETURNS>
+const xmlChar* str,unsigned char *buf,size_t len
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCryptoBinary2BN</NAME>
+<RETURNS>BIGNUM *</RETURNS>
+const xmlChar *str,BIGNUM **a
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBN2CryptoBinary</NAME>
+<RETURNS>xmlChar *</RETURNS>
+const BIGNUM *a
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeGetBNValue</NAME>
+<RETURNS>BIGNUM *</RETURNS>
+const xmlNodePtr cur,BIGNUM **a
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetBNValue</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr cur,const BIGNUM *a,int addLineBreak
+</FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecBufferedTransformId</NAME>
+typedef const struct _xmlSecBufferedTransformIdStruct	*xmlSecBufferedTransformId;
+</TYPEDEF>
+<USER_FUNCTION>
+<NAME>xmlSecBufferedProcessMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecBufferedTransformPtr transform,
+						 xmlBufferPtr buffer
+</USER_FUNCTION>
+<STRUCT>
+<NAME>xmlSecBufferedTransformIdStruct</NAME>
+struct xmlSecBufferedTransformIdStruct {
+    /* same as xmlSecTransformId */    
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+    
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlSecBinTransform data/methods */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
+            
+    xmlSecBinTransformAddKeyMethod	addBinKey;
+    xmlSecBinTransformReadMethod	readBin;
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;    
+    
+    /* xmlSecBufferedTransform data/methods */
+    xmlSecBufferedProcessMethod		bufferedProcess;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecBufferedTransformRead</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBufferedTransformWrite</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,const unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBufferedTransformFlush</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBufferedDestroy</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecBufferedTransformPtr buffered
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBufferedProcess</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,xmlBufferPtr buffer
+</FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecCipherTransformId</NAME>
+typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
+</TYPEDEF>
+<USER_FUNCTION>
+<NAME>xmlSecCipherUpdateMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecCipherTransformPtr transform,
+						 const unsigned char *buffer,
+						 size_t size
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecCipherFinalMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecCipherTransformPtr transform
+</USER_FUNCTION>
+<STRUCT>
+<NAME>xmlSecCipherTransformIdStruct</NAME>
+struct xmlSecCipherTransformIdStruct {
+    /* same as xmlSecTransformId */    
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+    
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlSecBinTransform data/methods */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
+            
+    xmlSecBinTransformAddKeyMethod	addBinKey;
+    xmlSecBinTransformReadMethod	readBin;
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;    
+    
+    /* xmlSecCipherTransform data/methods */
+    xmlSecCipherUpdateMethod		cipherUpdate;
+    xmlSecCipherFinalMethod		cipherFinal;
+    size_t				keySize;
+    size_t				ivSize;
+    size_t				bufInSize;
+    size_t				bufOutSize;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecCipherTransformRead</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCipherTransformWrite</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,const unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCipherTransformFlush</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEvpCipherUpdate</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecCipherTransformPtr cipher,const unsigned char *buffer,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEvpCipherFinal</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecCipherTransformPtr cipher
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCipherUpdate</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,const unsigned char *buffer,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCipherFinal</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTimerInit</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTimerStart</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTimerEnd</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTimerGet</NAME>
+<RETURNS>double  </RETURNS>
+void
+</FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecDigestTransformId</NAME>
+typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;
+</TYPEDEF>
+<USER_FUNCTION>
+<NAME>xmlSecDigestUpdateMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecDigestTransformPtr transform,
+						 const unsigned char *buffer,
+						 size_t size
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecDigestSignMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecDigestTransformPtr transform,
+						 unsigned char **buffer,
+						 size_t *size
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecDigestVerifyMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecDigestTransformPtr transform,
+						 const unsigned char *buffer,
+						 size_t size
+</USER_FUNCTION>
+<STRUCT>
+<NAME>xmlSecDigestTransformIdStruct</NAME>
+struct xmlSecDigestTransformIdStruct {
+    /* same as xmlSecTransformId */    
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+    
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlSecBinTransform data/methods */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
+            
+    xmlSecBinTransformAddKeyMethod	addBinKey;
+    xmlSecBinTransformReadMethod	readBin;
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;    
+    
+    /* xmlSecDigestTransform data/methods */
+    xmlSecDigestUpdateMethod		digestUpdate;
+    xmlSecDigestSignMethod		digestSign;
+    xmlSecDigestVerifyMethod		digestVerify;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecDigestSignNode</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,xmlNodePtr valueNode,int removeOldContent
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestVerifyNode</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,const xmlNodePtr valueNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestSetPushMode</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformPtr transform,int enabled
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestUpdate</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,const unsigned char *buffer,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestSign</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,unsigned char **buffer,size_t *size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestVerify</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,const unsigned char *buffer,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestTransformRead</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestTransformWrite</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform,const unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDigestTransformFlush</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecBinTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecIOInit</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecIOShutdown</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecInputUri</NAME>
+extern xmlSecTransformId xmlSecInputUri;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecInputUriTransformOpen</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,const char *uri
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCleanupInputCallbacks</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecRegisterDefaultInputCallbacks</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecRegisterInputCallbacks</NAME>
+<RETURNS>int  </RETURNS>
+xmlInputMatchCallback matchFunc,xmlInputOpenCallback openFunc,xmlInputReadCallback readFunc,xmlInputCloseCallback closeFunc
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoNodeRead</NAME>
+<RETURNS>xmlSecKeyPtr  </RETURNS>
+xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr keysMngr,void *context,xmlSecKeyId keyId,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoNodeWrite</NAME>
+<RETURNS>int  </RETURNS>
+xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr keysMngr,void *context,xmlSecKeyPtr key,xmlSecKeyType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoAddKeyName</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr keyInfoNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoAddKeyValue</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr keyInfoNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoAddX509Data</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr keyInfoNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoAddRetrievalMethod</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr keyInfoNode,const xmlChar *uri,const xmlChar *type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecRetrievalMethodAddTransform</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr retrMethod,xmlSecTransformId id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyInfoAddEncryptedKey</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr keyInfoNode,const xmlChar *id,const xmlChar *type,const xmlChar *recipient
+</FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecKeyId</NAME>
+typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
+</TYPEDEF>
+<ENUM>
+<NAME>xmlSecKeyType</NAME>
+typedef enum  {
+    xmlSecKeyTypePublic = 0,
+    xmlSecKeyTypePrivate,
+    xmlSecKeyTypeAny
+} xmlSecKeyType;
+</ENUM>
+<ENUM>
+<NAME>xmlSecKeyUsage</NAME>
+typedef enum  {
+    xmlSecKeyUsageAny = 0,
+    xmlSecKeyUsageSign,
+    xmlSecKeyUsageVerify,
+    xmlSecKeyUsageEncrypt,
+    xmlSecKeyUsageDecrypt
+} xmlSecKeyUsage;
+</ENUM>
+<TYPEDEF>
+<NAME>xmlSecKeyOrigin</NAME>
+typedef long				xmlSecKeyOrigin;
+</TYPEDEF>
+<MACRO>
+<NAME>xmlSecKeyOriginDefault</NAME>
+#define xmlSecKeyOriginDefault			0
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginKeyManager</NAME>
+#define xmlSecKeyOriginKeyManager		1
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginKeyName</NAME>
+#define xmlSecKeyOriginKeyName			2 /* useless w/o xmlSecKeyOriginKeyManager */
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginKeyValue</NAME>
+#define xmlSecKeyOriginKeyValue			4
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginRetrievalDocument</NAME>
+#define xmlSecKeyOriginRetrievalDocument	8
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginRetrievalRemote</NAME>
+#define xmlSecKeyOriginRetrievalRemote		16
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginX509</NAME>
+#define xmlSecKeyOriginX509			32
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginPGP</NAME>
+#define xmlSecKeyOriginPGP			64
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginEncryptedKey</NAME>
+#define xmlSecKeyOriginEncryptedKey		128
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyOriginAll</NAME>
+#define xmlSecKeyOriginAll			\
+	    (xmlSecKeyOriginKeyManager | xmlSecKeyOriginKeyName | \
+	     xmlSecKeyOriginKeyValue | xmlSecKeyOriginKeyValue | \
+	     xmlSecKeyOriginRetrievalDocument | xmlSecKeyOriginRetrievalRemote | \
+	     xmlSecKeyOriginX509 | xmlSecKeyOriginPGP | xmlSecKeyOriginEncryptedKey)		
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyIdUnknown</NAME>
+#define xmlSecKeyIdUnknown 			NULL
+</MACRO>
+<STRUCT>
+<NAME>xmlSecKey</NAME>
+struct xmlSecKey {
+    xmlSecKeyId				id;
+    xmlSecKeyType			type;
+    xmlChar				*name;
+    xmlSecKeyOrigin			origin;
+
+    xmlSecX509DataPtr			x509Data;
+    
+    /* key specific data */
+    void				*keyData;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecKeyCreate</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+xmlSecKeyId id,xmlSecKeyOrigin origin
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecKeyPtr key
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyDuplicate</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+xmlSecKeyPtr key,xmlSecKeyOrigin origin
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecVerifyKey</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,const xmlChar *name,xmlSecKeyId id,xmlSecKeyType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecKeyPtr key,FILE *output
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyReadPemCert</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,const char *filename
+</FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecGetKeyCallback</NAME>
+<RETURNS>xmlSecKeyPtr </RETURNS>
+xmlNodePtr keyInfoNode,
+							 xmlSecKeysMngrPtr mngr,
+							 void *context,
+							 xmlSecKeyId keyId,
+							 xmlSecKeyType type,
+							 xmlSecKeyUsage usage
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecFindKeyCallback</NAME>
+<RETURNS>xmlSecKeyPtr </RETURNS>
+xmlSecKeysMngrPtr mngr,
+							 void *context,
+							 const xmlChar *name,
+							 xmlSecKeyId id, 
+							 xmlSecKeyType type,
+							 xmlSecKeyUsage usage
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecX509FindCallback</NAME>
+<RETURNS>xmlSecX509DataPtr </RETURNS>
+xmlSecKeysMngrPtr mngr,
+							 void *context,
+							 xmlChar *subjectName,
+							 xmlChar *issuerName,
+							 xmlChar *issuerSerial,
+							 xmlChar *ski,
+							 xmlSecX509DataPtr cert
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecX509VerifyCallback</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeysMngrPtr mngr,
+							 void *context,
+    							 xmlSecX509DataPtr cert
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeysMngrGetKey</NAME>
+<RETURNS>xmlSecKeyPtr  </RETURNS>
+xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr mngr,void *context,xmlSecKeyId keyId,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecKeyInifiteRetrivals</NAME>
+#define xmlSecKeyInifiteRetrivals		99999
+</MACRO>
+<USER_FUNCTION>
+<NAME>xmlSecKeyCreateMethod</NAME>
+<RETURNS>xmlSecKeyPtr </RETURNS>
+xmlSecKeyId id
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyDuplicateMethod</NAME>
+<RETURNS>xmlSecKeyPtr </RETURNS>
+xmlSecKeyPtr key
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyDestroyMethod</NAME>
+<RETURNS>void </RETURNS>
+xmlSecKeyPtr key
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyReadXmlMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeyPtr key,
+							 xmlNodePtr node
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyWriteXmlMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeyPtr key,
+							 xmlSecKeyType type,
+							 xmlNodePtr parent
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyReadBinaryMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeyPtr key,
+							 const unsigned char *buf,
+							 size_t size
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyWriteBinaryMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeyPtr key,
+							 xmlSecKeyType type,
+							 unsigned char **buf,
+							 size_t *size
+</USER_FUNCTION>
+<STRUCT>
+<NAME>xmlSecKeyIdStruct</NAME>
+struct xmlSecKeyIdStruct {
+    /* xlmlSecKeyId data */
+    const xmlChar 			*keyValueNodeName;
+    const xmlChar			*keyValueNodeNs;
+    
+    /* xmlSecKeyId methods */
+    xmlSecKeyCreateMethod		create;
+    xmlSecKeyDestroyMethod		destroy;
+    xmlSecKeyDuplicateMethod		duplicate;
+    xmlSecKeyReadXmlMethod		read;
+    xmlSecKeyWriteXmlMethod		write;
+    xmlSecKeyReadBinaryMethod		readBin;
+    xmlSecKeyWriteBinaryMethod		writeBin;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecKeysInit</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecKeyIsValid</NAME>
+#define xmlSecKeyIsValid(key) \
+	((( key ) != NULL) && ((( key )->id) != NULL))
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyCheckId</NAME>
+#define xmlSecKeyCheckId(key, keyId) \
+ 	(xmlSecKeyIsValid(( key )) && \
+	((( key )->id) == ( keyId )))
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyCheckTransform</NAME>
+#define xmlSecKeyCheckTransform(key, tr) \
+ 	(xmlSecKeyIsValid(( key )) && \
+	((((const xmlSecKeyId) (( key )->id->transformId))) == ( tr )))
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecKeyReadXml</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+xmlSecKeyId id,xmlNodePtr node
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyWriteXml</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,xmlSecKeyType type,xmlNodePtr node
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyReadBin</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+xmlSecKeyId id,const unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyWriteBin</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,xmlSecKeyType type,unsigned char **buf,size_t *size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrCreate</NAME>
+<RETURNS>xmlSecKeysMngrPtr 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecKeysMngrPtr mngr
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrFindKey</NAME>
+<RETURNS>xmlSecKeyPtr  </RETURNS>
+xmlSecKeysMngrPtr mngr,void *context,const xmlChar *name,xmlSecKeyId id,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrAddKey</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,xmlSecKeyPtr key
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrLoad</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,const char *uri,int strict
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrSave</NAME>
+<RETURNS>int 	</RETURNS>
+const xmlSecKeysMngrPtr mngr,const char *filename,xmlSecKeyType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrLoadPemKey</NAME>
+<RETURNS>xmlSecKeyPtr  </RETURNS>
+xmlSecKeysMngrPtr mngr,const char *keyfile,const char *keyPwd,pem_password_cb *keyPwdCallback,int privateKey
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrX509Find</NAME>
+<RETURNS>xmlSecX509DataPtr 	</RETURNS>
+xmlSecKeysMngrPtr mngr,void *context,xmlChar *subjectName,xmlChar *issuerName,xmlChar *issuerSerial,xmlChar *ski,xmlSecX509DataPtr cert
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrX509Verify</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,void *context,xmlSecX509DataPtr cert
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrLoadPemCert</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,const char *filename,int trusted
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrAddCertsDir</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,const char *path
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrLoadPkcs12</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,const char* name,const char *filename,const char *pwd
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecMemBuf</NAME>
+extern xmlSecTransformId xmlSecMemBuf;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecMemBufTransformGetBuffer</NAME>
+<RETURNS>xmlBufferPtr 	</RETURNS>
+xmlSecTransformPtr transform,int removeBuffer
+</FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecTransformId</NAME>
+typedef const struct _xmlSecTransformIdStruct *xmlSecTransformId;
+</TYPEDEF>
+<MACRO>
+<NAME>xmlSecTransformUnknown</NAME>
+#define xmlSecTransformUnknown			NULL
+</MACRO>
+<ENUM>
+<NAME>xmlSecTransformStatus</NAME>
+typedef enum  {
+    xmlSecTransformStatusNone = 0,
+    xmlSecTransformStatusOk,
+    xmlSecTransformStatusFail
+} xmlSecTransformStatus;
+</ENUM>
+<VARIABLE>
+<NAME>xmlSecEncAes128Cbc</NAME>
+extern xmlSecTransformId 	xmlSecEncAes128Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncAes192Cbc</NAME>
+extern xmlSecTransformId 	xmlSecEncAes192Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncAes256Cbc</NAME>
+extern xmlSecTransformId 	xmlSecEncAes256Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWAes128</NAME>
+extern xmlSecTransformId 	xmlSecKWAes128;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWAes192</NAME>
+extern xmlSecTransformId 	xmlSecKWAes192;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWAes256</NAME>
+extern xmlSecTransformId 	xmlSecKWAes256;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecAesKey</NAME>
+extern xmlSecKeyId 	 	xmlSecAesKey;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecAesKeyGenerate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,const unsigned char *buf,size_t size
+</FUNCTION>
+<MACRO>
+<NAME>XMLSEC_BASE64_LINESIZE</NAME>
+#define XMLSEC_BASE64_LINESIZE		64
+</MACRO>
+<VARIABLE>
+<NAME>xmlSecEncBase64Encode</NAME>
+extern xmlSecTransformId xmlSecEncBase64Encode;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncBase64Decode</NAME>
+extern xmlSecTransformId xmlSecEncBase64Decode;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecBase64EncodeSetLineSize</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecTransformPtr transform,size_t lineSize
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecC14NInclusive</NAME>
+extern xmlSecTransformId 	xmlSecC14NInclusive;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecC14NInclusiveWithComments</NAME>
+extern xmlSecTransformId 	xmlSecC14NInclusiveWithComments;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecC14NExclusive</NAME>
+extern xmlSecTransformId 	xmlSecC14NExclusive;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecC14NExclusiveWithComments</NAME>
+extern xmlSecTransformId 	xmlSecC14NExclusiveWithComments;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecC14NExclAddInclNamespaces</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr transformNode,const xmlChar *prefixList
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecEncDes3Cbc</NAME>
+extern xmlSecTransformId 	xmlSecEncDes3Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWDes3Cbc</NAME>
+extern xmlSecTransformId 	xmlSecKWDes3Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecDesKey</NAME>
+extern xmlSecKeyId 		xmlSecDesKey;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecDesKeyGenerate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,const unsigned char *buf,size_t size
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecSignDsaSha1</NAME>
+extern xmlSecTransformId 	xmlSecSignDsaSha1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecDsaKey</NAME>
+extern xmlSecKeyId 		xmlSecDsaKey;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecDsaKeyGenerate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,DSA *dsa
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecTransformEnveloped</NAME>
+extern xmlSecTransformId 	xmlSecTransformEnveloped;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecMacHmacSha1</NAME>
+extern xmlSecTransformId 	xmlSecMacHmacSha1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecMacHmacRipeMd160</NAME>
+extern xmlSecTransformId 	xmlSecMacHmacRipeMd160;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecMacHmacMd5</NAME>
+extern xmlSecTransformId 	xmlSecMacHmacMd5;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecHmacKey</NAME>
+extern xmlSecKeyId 		xmlSecHmacKey;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecHmacKeyGenerate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,const unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecHmacAddOutputLength</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr transformNode,size_t bitsLen
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecDigestRipemd160</NAME>
+extern xmlSecTransformId 	xmlSecDigestRipemd160;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecSignRsaSha1</NAME>
+extern xmlSecTransformId 	xmlSecSignRsaSha1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncRsaPkcs1</NAME>
+extern xmlSecTransformId 	xmlSecEncRsaPkcs1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncRsaOaep</NAME>
+extern xmlSecTransformId 	xmlSecEncRsaOaep;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecRsaKey</NAME>
+extern xmlSecKeyId 		xmlSecRsaKey;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecRsaKeyGenerate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,RSA *rsa
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncRsaOaepAddParam</NAME>
+<RETURNS>int  </RETURNS>
+xmlNodePtr transformNode,const unsigned char *buf,size_t size
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecDigestSha1</NAME>
+extern xmlSecTransformId 	xmlSecDigestSha1;
+</VARIABLE>
+<ENUM>
+<NAME>xmlSecXPath2TransformType</NAME>
+typedef enum {
+    xmlSecXPathTransformUnknown = 0,
+    xmlSecXPathTransformIntersect,
+    xmlSecXPathTransformSubtract,
+    xmlSecXPathTransformUnion
+} xmlSecXPath2TransformType;
+</ENUM>
+<VARIABLE>
+<NAME>xmlSecTransformXPath</NAME>
+extern xmlSecTransformId 	xmlSecTransformXPath;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecTransformXPath2</NAME>
+extern xmlSecTransformId 	xmlSecTransformXPath2;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecXPathAlt</NAME>
+extern xmlSecTransformId 	xmlSecXPathAlt;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecTransformXPathAdd</NAME>
+<RETURNS>int  </RETURNS>
+xmlNodePtr transformNode,const xmlChar *expression,const xmlChar **namespaces
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformXPath2Add</NAME>
+<RETURNS>int  </RETURNS>
+xmlNodePtr transformNode,xmlSecXPath2TransformType type,const xmlChar *expression,const xmlChar **namespaces
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecTransformXslt</NAME>
+extern xmlSecTransformId 	xmlSecTransformXslt;
+</VARIABLE>
+<FUNCTION>
+<NAME>xmlSecTransformXsltAdd</NAME>
+<RETURNS>int  </RETURNS>
+xmlNodePtr transformNode,const xmlChar *xslt
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecUsageAny</NAME>
+#define xmlSecUsageAny				0
+</MACRO>
+<MACRO>
+<NAME>xmlSecUsageDSigC14N</NAME>
+#define xmlSecUsageDSigC14N			1
+</MACRO>
+<MACRO>
+<NAME>xmlSecUsageDSigTransform</NAME>
+#define xmlSecUsageDSigTransform		2
+</MACRO>
+<MACRO>
+<NAME>xmlSecUsageDSigDigest</NAME>
+#define xmlSecUsageDSigDigest			4
+</MACRO>
+<MACRO>
+<NAME>xmlSecUsageDSigSignature</NAME>
+#define xmlSecUsageDSigSignature		8
+</MACRO>
+<MACRO>
+<NAME>xmlSecUsageEncryptionMethod</NAME>
+#define xmlSecUsageEncryptionMethod		16
+</MACRO>
+<TYPEDEF>
+<NAME>xmlSecTransformUsage</NAME>
+typedef unsigned long 			xmlSecTransformUsage;
+</TYPEDEF>
+<ENUM>
+<NAME>xmlSecTransformType</NAME>
+typedef enum  {
+    xmlSecTransformTypeBinary,
+    xmlSecTransformTypeXml,
+    xmlSecTransformTypeC14N
+} xmlSecTransformType;
+</ENUM>
+<ENUM>
+<NAME>xmlSecBinTransformSubType</NAME>
+typedef enum  {
+    xmlSecBinTransformSubTypeNone = 0,
+    xmlSecBinTransformSubTypeDigest,
+    xmlSecBinTransformSubTypeCipher,
+    xmlSecBinTransformSubTypeBuffered
+} xmlSecBinTransformSubType;
+</ENUM>
+<ENUM>
+<NAME>xmlSecTransformResult</NAME>
+typedef enum  {
+    xmlSecTransformResultBinary,
+    xmlSecTransformResultXml
+} xmlSecTransformResult;
+</ENUM>
+<USER_FUNCTION>
+<NAME>xmlSecTransformCreateMethod</NAME>
+<RETURNS>xmlSecTransformPtr </RETURNS>
+xmlSecTransformId id
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecTransformDestroyMethod</NAME>
+<RETURNS>void </RETURNS>
+xmlSecTransformPtr transform
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecTransformReadNodeMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecTransformPtr transform,
+							   xmlNodePtr transformNode
+</USER_FUNCTION>
+<STRUCT>
+<NAME>xmlSecTransformIdStruct</NAME>
+struct xmlSecTransformIdStruct {
+    /* data */
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+
+    /* methods */
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+};
+</STRUCT>
+<USER_FUNCTION>
+<NAME>xmlSecBinTransformAddKeyMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecBinTransformPtr transform, 
+							 xmlSecKeyPtr key
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecBinTransformReadMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecBinTransformPtr transform, 
+							 unsigned char *buf, 
+							 size_t size
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecBinTransformWriteMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecBinTransformPtr transform, 
+                                        		 const unsigned char *buf, 
+							 size_t size
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecBinTransformFlushMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecBinTransformPtr transform
+</USER_FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecBinTransformId</NAME>
+typedef const struct _xmlSecBinTransformIdStruct *xmlSecBinTransformId;
+</TYPEDEF>
+<STRUCT>
+<NAME>xmlSecBinTransformIdStruct</NAME>
+struct xmlSecBinTransformIdStruct {
+    /* same as xmlSecTransformId */    
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+    
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlSecBinTransform data/methods */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
+            
+    xmlSecBinTransformAddKeyMethod	addBinKey;
+    xmlSecBinTransformReadMethod	readBin;
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;    
+};
+</STRUCT>
+<USER_FUNCTION>
+<NAME>xmlSecXmlTransformExecuteMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecXmlTransformPtr transform,
+							 xmlDocPtr ctxDoc,
+							 xmlDocPtr *doc,
+							 xmlNodeSetPtr *nodes
+</USER_FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecXmlTransformId</NAME>
+typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;
+</TYPEDEF>
+<STRUCT>
+<NAME>xmlSecXmlTransformIdStruct</NAME>
+struct xmlSecXmlTransformIdStruct {
+    /* same as xmlSecTransformId */ 
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlTransform info */
+    xmlSecXmlTransformExecuteMethod	executeXml;
+};
+</STRUCT>
+<USER_FUNCTION>
+<NAME>xmlSecC14NTransformExecuteMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecC14NTransformPtr transform,
+							 xmlDocPtr doc,
+							 xmlNodeSetPtr nodes,
+							 xmlOutputBufferPtr buffer
+</USER_FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecC14NTransformId</NAME>
+typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;
+</TYPEDEF>
+<STRUCT>
+<NAME>xmlSecC14NTransformIdStruct</NAME>
+struct xmlSecC14NTransformIdStruct {
+    /* same as xmlSecTransformId */ 
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlC14nTransform specific */
+    xmlSecC14NTransformExecuteMethod	executeC14N;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecTransformsInit</NAME>
+<RETURNS>void  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformsNodeRead</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecTransformStatePtr state,xmlNodePtr transformsNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformFind</NAME>
+<RETURNS>xmlSecTransformId 	</RETURNS>
+const xmlChar *href
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformNodeRead</NAME>
+<RETURNS>xmlSecTransformPtr 	</RETURNS>
+xmlNodePtr transformNode,xmlSecTransformUsage usage,int dontDestroy
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformNodeWrite</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr transformNode,xmlSecTransformId id
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecTransformIsValid</NAME>
+#define xmlSecTransformIsValid(transform) \
+	((( transform ) != NULL) && ((( transform )->id) != NULL))
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformCheckType</NAME>
+#define xmlSecTransformCheckType(transform, t) \
+ 	(xmlSecTransformIsValid(( transform )) && \
+	((( transform )->id->type) == ( t )))
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformCheckId</NAME>
+#define xmlSecTransformCheckId(transform, i) \
+ 	(xmlSecTransformIsValid(( transform )) && \
+	((((const xmlSecTransformId) (( transform )->id))) == ( i )))
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecTransformCreate</NAME>
+<RETURNS>xmlSecTransformPtr 	</RETURNS>
+xmlSecTransformId id,xmlSecTransformUsage usage,int dontDestroy
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformPtr transform,int forceDestroy
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformRead</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,xmlNodePtr transformNode
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecBinTransformIdCheckKeyId</NAME>
+#define xmlSecBinTransformIdCheckKeyId(id, kId) \
+	(((id) != NULL) && \
+	 ((id)->type == xmlSecTransformTypeBinary) && \
+	 (((xmlSecBinTransformId)(id))->keyId == kId))
+</MACRO>
+<MACRO>
+<NAME>xmlSecBinTransformIdGetKeyId</NAME>
+#define xmlSecBinTransformIdGetKeyId(id) \
+	((((id) != NULL) && \
+	 ((id)->type == xmlSecTransformTypeBinary)) ? \
+	  ((xmlSecBinTransformId)(id))->keyId : \
+	  xmlSecKeyIdUnknown)
+</MACRO>
+<MACRO>
+<NAME>xmlSecBinTransformCheckSubType</NAME>
+#define xmlSecBinTransformCheckSubType(transform, t) \
+	(xmlSecTransformCheckType(( transform ), xmlSecTransformTypeBinary) && \
+	((((xmlSecBinTransformId)(( transform )->id))->binSubType) == ( t )))
+</MACRO>
+<MACRO>
+<NAME>xmlSecBinTransformIdGetEncKeyType</NAME>
+#define xmlSecBinTransformIdGetEncKeyType(id) \
+	((((id) != NULL) && \
+	 ((id)->type == xmlSecTransformTypeBinary)) ? \
+	  ((xmlSecBinTransformId)(id))->encryption : \
+	  xmlSecKeyTypeAny)
+</MACRO>
+<MACRO>
+<NAME>xmlSecBinTransformIdGetDecKeyType</NAME>
+#define xmlSecBinTransformIdGetDecKeyType(id) \
+	((((id) != NULL) && \
+	 ((id)->type == xmlSecTransformTypeBinary)) ? \
+	  ((xmlSecBinTransformId)(id))->decryption : \
+	  xmlSecKeyTypeAny)
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecTransformAddKey</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,xmlSecKeyPtr key
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformRead</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecTransformPtr transform,unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformWrite</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecTransformPtr transform,const unsigned char *buf,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformFlush</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformAddAfter</NAME>
+<RETURNS>xmlSecTransformPtr 	</RETURNS>
+xmlSecTransformPtr curTransform,xmlSecTransformPtr newTransform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformAddBefore</NAME>
+<RETURNS>xmlSecTransformPtr 	</RETURNS>
+xmlSecTransformPtr curTransform,xmlSecTransformPtr newTransform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformRemove</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformDestroyAll</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecBinTransformSetEncrypt</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformPtr transform,int encrypt
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecXmlTransformExecute</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,xmlDocPtr ctxDoc,xmlDocPtr *doc,xmlNodeSetPtr *nodes
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecXmlTransformSetHere</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformPtr trasnform,xmlNodePtr here
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecC14NTransformExecute</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecTransformPtr transform,xmlDocPtr doc,xmlNodeSetPtr nodes,xmlOutputBufferPtr buffer
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformStateCreate</NAME>
+<RETURNS>xmlSecTransformStatePtr 	</RETURNS>
+xmlDocPtr doc,xmlNodeSetPtr nodeSet,const char *uri
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformStateDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecTransformStatePtr state
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformStateUpdate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecTransformStatePtr state,xmlSecTransformPtr transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformStateFinal</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecTransformStatePtr state,xmlSecTransformResult type
+</FUNCTION>
+<MACRO>
+<NAME>XMLSEC_VERSION</NAME>
+#define XMLSEC_VERSION			"0.0.8"
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_MAJOR</NAME>
+#define XMLSEC_VERSION_MAJOR		0
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_MINOR</NAME>
+#define XMLSEC_VERSION_MINOR		0
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_SUBMINOR</NAME>
+#define XMLSEC_VERSION_SUBMINOR		8
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_INFO</NAME>
+#define XMLSEC_VERSION_INFO		"0:8:0"
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecX509DataCreate</NAME>
+<RETURNS>xmlSecX509DataPtr 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataGetCertsNumber</NAME>
+<RETURNS>size_t 	</RETURNS>
+xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataGetCrlsNumber</NAME>
+<RETURNS>size_t 	</RETURNS>
+xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataReadDerCert</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecX509DataPtr x509Data,xmlChar *buf,size_t size,int base64
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataWriteDerCert</NAME>
+<RETURNS>xmlChar *</RETURNS>
+xmlSecX509DataPtr x509Data,int pos
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataReadDerCrl</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecX509DataPtr x509Data,xmlChar *buf,size_t size,int base64
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataWriteDerCrl</NAME>
+<RETURNS>xmlChar *</RETURNS>
+xmlSecX509DataPtr x509Data,int pos
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataReadPemCert</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecX509DataPtr x509Data,const char *filename
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataDup</NAME>
+<RETURNS>xmlSecX509DataPtr 	</RETURNS>
+xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataCreateKey</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509DataDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecX509DataPtr x509Data,FILE *output
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509StoreCreate</NAME>
+<RETURNS>xmlSecX509StorePtr  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509StoreDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecX509StorePtr store
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509StoreFind</NAME>
+<RETURNS>xmlSecX509DataPtr 	</RETURNS>
+xmlSecX509StorePtr store,xmlChar *subjectName,xmlChar *issuerName,xmlChar *issuerSerial,xmlChar *skit,xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509StoreVerify</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecX509StorePtr store,xmlSecX509DataPtr x509Data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509StoreLoadPemCert</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecX509StorePtr store,const char *filename,int trusted
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecX509StoreAddCertsDir</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecX509StorePtr store,const char *path
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecPKCS12ReadKey</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+const char *filename,const char *pwd
+</FUNCTION>
+<TYPEDEF>
+<NAME>xmlSecX509DataPtr</NAME>
+typedef void* 	xmlSecX509DataPtr;
+</TYPEDEF>
+<TYPEDEF>
+<NAME>xmlSecX509StorePtr</NAME>
+typedef void* 	xmlSecX509StorePtr;
+</TYPEDEF>
+<ENUM>
+<NAME>xmlSecReferenceType</NAME>
+typedef enum  {
+    xmlSecSignedInfoReference,
+    xmlSecManifestReference
+} xmlSecReferenceType;
+</ENUM>
+<FUNCTION>
+<NAME>xmlSecDSigCtxCreate</NAME>
+<RETURNS>xmlSecDSigCtxPtr 	</RETURNS>
+xmlSecKeysMngrPtr keysMngr
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigCtxDestroy</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecDSigCtxPtr ctx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignatureCreate</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignatureDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlNodePtr signNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignatureAddSignedInfo</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr signNode,const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignatureAddKeyInfo</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr signNode,const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignatureAddObject</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr signNode,const xmlChar *id,const xmlChar *mimeType,const xmlChar *encoding
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignedInfoAddC14NMethod</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr signedInfoNode,xmlSecTransformId encMethod
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignedInfoAddSignMethod</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr signedInfoNode,xmlSecTransformId encMethod
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSignedInfoAddReference</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr signedInfoNode,const xmlChar *id,const xmlChar *uri,const xmlChar *type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecReferenceAddDigestMethod</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr refNode,xmlSecTransformId digestMethod
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecReferenceAddTransform</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr refNode,xmlSecTransformId transform
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecObjectAddSignProperties</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr objectNode,const xmlChar *id,const xmlChar *target
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecObjectAddManifest</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr objectNode,const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecManifestAddReference</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr manifestNode,const xmlChar *id,const xmlChar *uri,const xmlChar *type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigValidate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecDSigCtxPtr ctx,void *context,xmlSecKeyPtr key,xmlNodePtr signNode,xmlSecDSigResultPtr *result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigGenerate</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecDSigCtxPtr ctx,void *context,xmlSecKeyPtr key,xmlNodePtr signNode,xmlSecDSigResultPtr *result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigResultCreate</NAME>
+<RETURNS>xmlSecDSigResultPtr  </RETURNS>
+xmlSecDSigCtxPtr ctx,void *context,xmlNodePtr signNode,int sign
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigResultDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecDSigResultPtr result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigResultDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecDSigResultPtr result,FILE *output
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncCtxCreate</NAME>
+<RETURNS>xmlSecEncCtxPtr 	</RETURNS>
+xmlSecKeysMngrPtr keysMngr
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncCtxDestroy</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecEncCtxPtr ctx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncryptMemory</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecEncCtxPtr ctx,void *context,xmlSecKeyPtr key,xmlNodePtr encNode,const unsigned char *buf,size_t size,xmlSecEncResultPtr *result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncryptUri</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecEncCtxPtr ctx,void *context,xmlSecKeyPtr key,xmlNodePtr encNode,const char *uri,xmlSecEncResultPtr *result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncryptXmlNode</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecEncCtxPtr ctx,void *context,xmlSecKeyPtr key,xmlNodePtr encNode,xmlNodePtr src,xmlSecEncResultPtr *result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDecrypt</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecEncCtxPtr ctx,void *context,xmlSecKeyPtr key,xmlNodePtr encDataNode,xmlSecEncResultPtr *result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncResultCreate</NAME>
+<RETURNS>xmlSecEncResultPtr  </RETURNS>
+xmlSecEncCtxPtr ctx,void *context,int encrypt,xmlNodePtr node
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncResultDestroy</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecEncResultPtr result
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncResultDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecEncResultPtr result,FILE *output
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataCreate</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+const xmlChar *id,const xmlChar *type,const xmlChar *mimeType,const xmlChar *encoding
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataDestroy</NAME>
+<RETURNS>void  </RETURNS>
+xmlNodePtr encNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataAddEncMethod</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode,xmlSecTransformId encMethod
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataAddKeyInfo</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataAddEncProperties</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode,const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataAddEncProperty</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode,const xmlChar *id,const xmlChar *target
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataAddCipherValue</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecEncDataAddCipherReference</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode,const xmlChar *uri
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCipherReferenceAddTransform</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr encNode,xmlSecTransformId transform
+</FUNCTION>
+<MACRO>
+<NAME>extern</NAME>
+#define  extern
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecInit</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecShutdown</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecIsHex</NAME>
+#define xmlSecIsHex(c) \
+    (( (('0' <= (c)) && ((c) <= '9')) || \
+       (('a' <= (c)) && ((c) <= 'f')) || \
+       (('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
+</MACRO>
+<MACRO>
+<NAME>xmlSecGetHex</NAME>
+#define xmlSecGetHex(c) \
+    ( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
+    ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
+    ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
+</MACRO>
+<MACRO>
+<NAME>ATTRIBUTE_UNUSED</NAME>
+#define ATTRIBUTE_UNUSED
+</MACRO>
+<MACRO>
+<NAME>ATTRIBUTE_UNUSED</NAME>
+#define ATTRIBUTE_UNUSED
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecParseFile</NAME>
+<RETURNS>xmlDocPtr 	</RETURNS>
+const char *filename
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecParseMemory</NAME>
+<RETURNS>xmlDocPtr 	</RETURNS>
+const unsigned char *buffer,size_t size,int recovery
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecParseMemoryExt</NAME>
+<RETURNS>xmlDocPtr 	</RETURNS>
+const unsigned char *prefix,size_t prefixSize,const unsigned char *buffer,size_t bufferSize,const unsigned char *postfix,size_t postfixSize
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecCheckNodeName</NAME>
+<RETURNS>int 	</RETURNS>
+const xmlNodePtr cur,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecGetNextElementNode</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr cur
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecFindChild</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+const xmlNodePtr parent,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecFindParent</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+const xmlNodePtr cur,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecFindNode</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+const xmlNodePtr parent,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecFindNodeById</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+const xmlNodePtr parent,const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecGetChildNodeSet</NAME>
+<RETURNS>xmlNodeSetPtr 	</RETURNS>
+const xmlNodePtr parent,xmlNodeSetPtr nodeSet,int withComments
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecAddChild</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr parent,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecAddNextSibling</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr node,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecAddPrevSibling</NAME>
+<RETURNS>xmlNodePtr 	</RETURNS>
+xmlNodePtr node,const xmlChar *name,const xmlChar *ns
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecReplaceNode</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr node,xmlNodePtr newNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecReplaceContent</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr node,xmlNodePtr newNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecReplaceNodeBuffer</NAME>
+<RETURNS>int 	</RETURNS>
+xmlNodePtr node,const unsigned char *buffer,size_t size
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecAddIdAttributeName</NAME>
+<RETURNS>int 	</RETURNS>
+const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecClearIdAttributeNames</NAME>
+<RETURNS>void 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecXPathHereFunction</NAME>
+<RETURNS>void  </RETURNS>
+xmlXPathParserContextPtr ctxt,int nargs
+</FUNCTION>

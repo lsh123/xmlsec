@@ -1,0 +1,234 @@
+<refentry id="xmlsec-base64">
+<refmeta>
+<refentrytitle>base64</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>base64</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> <link linkend="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</link>    (int encode,
+                                             int columns);
+void        <link linkend="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</link>          (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);
+int         <link linkend="xmlSecBase64CtxInit">xmlSecBase64CtxInit</link>             (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);
+int         <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>           (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+                                             unsigned char *in,
+                                             <link linkend="size-t">size_t</link> inLen,
+                                             unsigned char *out,
+                                             <link linkend="size-t">size_t</link> outLen);
+int         <link linkend="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</link>            (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+                                             unsigned char *out,
+                                             <link linkend="size-t">size_t</link> outLen);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBase64Encode">xmlSecBase64Encode</link>              (unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> len,
+                                             int columns);
+int         <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>              (const <link linkend="xmlChar">xmlChar</link> *str,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> len);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate ()</title>
+<programlisting><link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> xmlSecBase64CtxCreate    (int encode,
+                                             int columns);</programlisting>
+<para>
+Creates base64 context.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encode</parameter>&nbsp;:</entry>
+<entry>	the encode/decode flag (1 - encode, 0 - decode) 
+</entry></row>
+<row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
+<entry>	the number of columns (lines length) in the output
+	if this parameter is 0 then no line breaks inserted
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>a pointer to newly created base64 context (caller is responsible
+for deleting it using xmlSecBase64CtxDestroy) or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy ()</title>
+<programlisting>void        xmlSecBase64CtxDestroy          (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<para>
+Destroys base64 context.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>	the base64 context
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxInit">xmlSecBase64CtxInit ()</title>
+<programlisting>int         xmlSecBase64CtxInit             (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate ()</title>
+<programlisting>int         xmlSecBase64CtxUpdate           (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+                                             unsigned char *in,
+                                             <link linkend="size-t">size_t</link> inLen,
+                                             unsigned char *out,
+                                             <link linkend="size-t">size_t</link> outLen);</programlisting>
+<para>
+Encodes/decodes the next piece of data from input buffer.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>	the base64 context
+</entry></row>
+<row><entry align="right"><parameter>in</parameter>&nbsp;:</entry>
+<entry>		the input buffer
+</entry></row>
+<row><entry align="right"><parameter>inLen</parameter>&nbsp;:</entry>
+<entry>	the input buffer size
+</entry></row>
+<row><entry align="right"><parameter>out</parameter>&nbsp;:</entry>
+<entry>	the output buffer
+</entry></row>
+<row><entry align="right"><parameter>outLen</parameter>&nbsp;:</entry>
+<entry>	the output buffer size
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes written to output buffer or 
+-1 if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal ()</title>
+<programlisting>int         xmlSecBase64CtxFinal            (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+                                             unsigned char *out,
+                                             <link linkend="size-t">size_t</link> outLen);</programlisting>
+<para>
+Encodes/decodes the last piece of data stored in the context
+and finalizes the result.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>	the base64 context
+</entry></row>
+<row><entry align="right"><parameter>out</parameter>&nbsp;:</entry>
+<entry>	the output buffer
+</entry></row>
+<row><entry align="right"><parameter>outLen</parameter>&nbsp;:</entry>
+<entry>	the output buffer size
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes written to output buffer or 
+-1 if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64Encode">xmlSecBase64Encode ()</title>
+<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBase64Encode              (unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> len,
+                                             int columns);</programlisting>
+<para>
+Encodes the data from input buffer and allocates the string for the result</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>	the input buffer
+</entry></row>
+<row><entry align="right"><parameter>len</parameter>&nbsp;:</entry>
+<entry>	the input buffer size
+</entry></row>
+<row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
+<entry>	the output max line length (if 0 then no line breaks
+	would be inserted)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>newly allocated string with base64 encoded data (caller is 
+responsibe for freeing it) or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64Decode">xmlSecBase64Decode ()</title>
+<programlisting>int         xmlSecBase64Decode              (const <link linkend="xmlChar">xmlChar</link> *str,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Decodes input base64 encoded string and puts result into
+the output buffer.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>str</parameter>&nbsp;:</entry>
+<entry>	the input buffer with base64 encoded string
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>	the output buffer
+</entry></row>
+<row><entry align="right"><parameter>len</parameter>&nbsp;:</entry>
+<entry>	the output buffer size
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes written to the output buffer or 
+-1 if an error occurs 
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,562 @@
+<!-- ##### SECTION Title ##### -->
+transformsInternal
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO xmlSecUsageAny ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecUsageDSigC14N ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecUsageDSigTransform ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecUsageDSigDigest ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecUsageDSigSignature ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecUsageEncryptionMethod ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### TYPEDEF xmlSecTransformUsage ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM xmlSecTransformType ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformTypeBinary: 
+@xmlSecTransformTypeXml: 
+@xmlSecTransformTypeC14N: 
+
+<!-- ##### ENUM xmlSecBinTransformSubType ##### -->
+<para>
+
+</para>
+
+@xmlSecBinTransformSubTypeNone: 
+@xmlSecBinTransformSubTypeDigest: 
+@xmlSecBinTransformSubTypeCipher: 
+@xmlSecBinTransformSubTypeBuffered: 
+
+<!-- ##### ENUM xmlSecTransformResult ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformResultBinary: 
+@xmlSecTransformResultXml: 
+
+<!-- ##### USER_FUNCTION xmlSecTransformCreateMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformDestroyMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+
+
+<!-- ##### USER_FUNCTION xmlSecTransformReadNodeMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@transformNode: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecTransformIdStruct ##### -->
+<para>
+
+</para>
+
+@type: 
+@usage: 
+@href: 
+@create: 
+@destroy: 
+@read: 
+
+<!-- ##### USER_FUNCTION xmlSecBinTransformAddKeyMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@key: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecBinTransformReadMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecBinTransformWriteMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecBinTransformFlushMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF xmlSecBinTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT xmlSecBinTransformIdStruct ##### -->
+<para>
+
+</para>
+
+@type: 
+@usage: 
+@href: 
+@create: 
+@destroy: 
+@read: 
+@keyId: 
+@encryption: 
+@decryption: 
+@binSubType: 
+@addBinKey: 
+@readBin: 
+@writeBin: 
+@flushBin: 
+
+<!-- ##### USER_FUNCTION xmlSecXmlTransformExecuteMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@ctxDoc: 
+@doc: 
+@nodes: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF xmlSecXmlTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT xmlSecXmlTransformIdStruct ##### -->
+<para>
+
+</para>
+
+@type: 
+@usage: 
+@href: 
+@create: 
+@destroy: 
+@read: 
+@executeXml: 
+
+<!-- ##### USER_FUNCTION xmlSecC14NTransformExecuteMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@doc: 
+@nodes: 
+@buffer: 
+@Returns: 
+
+
+<!-- ##### TYPEDEF xmlSecC14NTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT xmlSecC14NTransformIdStruct ##### -->
+<para>
+
+</para>
+
+@type: 
+@usage: 
+@href: 
+@create: 
+@destroy: 
+@read: 
+@executeC14N: 
+
+<!-- ##### FUNCTION xmlSecTransformsInit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformsNodeRead ##### -->
+<para>
+
+</para>
+
+@state: 
+@transformsNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformFind ##### -->
+<para>
+
+</para>
+
+@href: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformNodeRead ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@usage: 
+@dontDestroy: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformNodeWrite ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformIsValid ##### -->
+<para>
+
+</para>
+
+@transform: 
+
+
+<!-- ##### MACRO xmlSecTransformCheckType ##### -->
+<para>
+
+</para>
+
+@transform: 
+@t: 
+
+
+<!-- ##### MACRO xmlSecTransformCheckId ##### -->
+<para>
+
+</para>
+
+@transform: 
+@i: 
+
+
+<!-- ##### FUNCTION xmlSecTransformCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@usage: 
+@dontDestroy: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformDestroy ##### -->
+<para>
+
+</para>
+
+@transform: 
+@forceDestroy: 
+
+
+<!-- ##### FUNCTION xmlSecTransformRead ##### -->
+<para>
+
+</para>
+
+@transform: 
+@transformNode: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecBinTransformIdCheckKeyId ##### -->
+<para>
+
+</para>
+
+@id: 
+@kId: 
+
+
+<!-- ##### MACRO xmlSecBinTransformIdGetKeyId ##### -->
+<para>
+
+</para>
+
+@id: 
+
+
+<!-- ##### MACRO xmlSecBinTransformCheckSubType ##### -->
+<para>
+
+</para>
+
+@transform: 
+@t: 
+
+
+<!-- ##### MACRO xmlSecBinTransformIdGetEncKeyType ##### -->
+<para>
+
+</para>
+
+@id: 
+
+
+<!-- ##### MACRO xmlSecBinTransformIdGetDecKeyType ##### -->
+<para>
+
+</para>
+
+@id: 
+
+
+<!-- ##### FUNCTION xmlSecTransformAddKey ##### -->
+<para>
+
+</para>
+
+@transform: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformRead ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformWrite ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformFlush ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformAddAfter ##### -->
+<para>
+
+</para>
+
+@curTransform: 
+@newTransform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformAddBefore ##### -->
+<para>
+
+</para>
+
+@curTransform: 
+@newTransform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformRemove ##### -->
+<para>
+
+</para>
+
+@transform: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformDestroyAll ##### -->
+<para>
+
+</para>
+
+@transform: 
+
+
+<!-- ##### FUNCTION xmlSecBinTransformSetEncrypt ##### -->
+<para>
+
+</para>
+
+@transform: 
+@encrypt: 
+
+
+<!-- ##### FUNCTION xmlSecXmlTransformExecute ##### -->
+<para>
+
+</para>
+
+@transform: 
+@ctxDoc: 
+@doc: 
+@nodes: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXmlTransformSetHere ##### -->
+<para>
+
+</para>
+
+@trasnform: 
+@here: 
+
+
+<!-- ##### FUNCTION xmlSecC14NTransformExecute ##### -->
+<para>
+
+</para>
+
+@transform: 
+@doc: 
+@nodes: 
+@buffer: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformStateCreate ##### -->
+<para>
+
+</para>
+
+@doc: 
+@nodeSet: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformStateDestroy ##### -->
+<para>
+
+</para>
+
+@state: 
+
+
+<!-- ##### FUNCTION xmlSecTransformStateUpdate ##### -->
+<para>
+
+</para>
+
+@state: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformStateFinal ##### -->
+<para>
+
+</para>
+
+@state: 
+@type: 
+@Returns: 
+
+

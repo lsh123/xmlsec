@@ -1,0 +1,420 @@
+<refentry id="xmlsec-keysmngr">
+<refmeta>
+<refentrytitle>keysmngr</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>keysmngr</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecSimpleKeysMngrCreate">xmlSecSimpleKeysMngrCreate</link>
+                                            (void);
+void        <link linkend="xmlSecSimpleKeysMngrDestroy">xmlSecSimpleKeysMngrDestroy</link>     (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysMngrFindKey">xmlSecSimpleKeysMngrFindKey</link>    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);
+int         <link linkend="xmlSecSimpleKeysMngrAddKey">xmlSecSimpleKeysMngrAddKey</link>      (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecSimpleKeysMngrLoad">xmlSecSimpleKeysMngrLoad</link>        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *uri,
+                                             int strict);
+int         <link linkend="xmlSecSimpleKeysMngrSave">xmlSecSimpleKeysMngrSave</link>        (const <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysMngrLoadPemKey">xmlSecSimpleKeysMngrLoadPemKey</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *keyfile,
+                                             const char *keyPwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback,
+                                             int privateKey);
+<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> <link linkend="xmlSecSimpleKeysMngrX509Find">xmlSecSimpleKeysMngrX509Find</link>
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
+                                             <link linkend="xmlChar">xmlChar</link> *ski,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);
+int         <link linkend="xmlSecSimpleKeysMngrX509Verify">xmlSecSimpleKeysMngrX509Verify</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);
+int         <link linkend="xmlSecSimpleKeysMngrLoadPemCert">xmlSecSimpleKeysMngrLoadPemCert</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             int trusted);
+int         <link linkend="xmlSecSimpleKeysMngrAddCertsDir">xmlSecSimpleKeysMngrAddCertsDir</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *path);
+int         <link linkend="xmlSecSimpleKeysMngrLoadPkcs12">xmlSecSimpleKeysMngrLoadPkcs12</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *name,
+                                             const char *filename,
+                                             const char *pwd);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrCreate">xmlSecSimpleKeysMngrCreate ()</title>
+<programlisting><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> xmlSecSimpleKeysMngrCreate
+                                            (void);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrDestroy">xmlSecSimpleKeysMngrDestroy ()</title>
+<programlisting>void        xmlSecSimpleKeysMngrDestroy     (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrFindKey">xmlSecSimpleKeysMngrFindKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysMngrFindKey    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);</programlisting>
+<para>
+Lookups the first key that does match the given criteria</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyType</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyUsage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrAddKey">xmlSecSimpleKeysMngrAddKey ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrAddKey      (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Adds new key to the key manager</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrLoad">xmlSecSimpleKeysMngrLoad ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrLoad        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *uri,
+                                             int strict);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>strict</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrSave">xmlSecSimpleKeysMngrSave ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrSave        (const <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrLoadPemKey">xmlSecSimpleKeysMngrLoadPemKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysMngrLoadPemKey (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *keyfile,
+                                             const char *keyPwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback,
+                                             int privateKey);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyfile</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyPwd</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyPwdCallback</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>privateKey</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrX509Find">xmlSecSimpleKeysMngrX509Find ()</title>
+<programlisting><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> xmlSecSimpleKeysMngrX509Find
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
+                                             <link linkend="xmlChar">xmlChar</link> *ski,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>subjectName</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>issuerName</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>issuerSerial</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ski</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrX509Verify">xmlSecSimpleKeysMngrX509Verify ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrX509Verify  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             void *context,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrLoadPemCert">xmlSecSimpleKeysMngrLoadPemCert ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrLoadPemCert (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             int trusted);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>trusted</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrAddCertsDir">xmlSecSimpleKeysMngrAddCertsDir ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrAddCertsDir (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *path);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>path</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysMngrLoadPkcs12">xmlSecSimpleKeysMngrLoadPkcs12 ()</title>
+<programlisting>int         xmlSecSimpleKeysMngrLoadPkcs12  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *name,
+                                             const char *filename,
+                                             const char *pwd);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>pwd</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

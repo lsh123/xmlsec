@@ -1,0 +1,103 @@
+<!-- ##### SECTION Title ##### -->
+keyinfo
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecKeyInfoNodeRead ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@keysMngr: 
+@context: 
+@keyId: 
+@keyType: 
+@keyUsage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoNodeWrite ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@keysMngr: 
+@context: 
+@key: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddKeyName ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddKeyValue ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddX509Data ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddRetrievalMethod ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecRetrievalMethodAddTransform ##### -->
+<para>
+
+</para>
+
+@retrMethod: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddEncryptedKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@id: 
+@type: 
+@recipient: 
+@Returns: 
+
+

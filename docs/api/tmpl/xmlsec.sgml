@@ -1,0 +1,60 @@
+<!-- ##### SECTION Title ##### -->
+xmlsec
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO extern ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecInit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecIsHex ##### -->
+<para>
+
+</para>
+
+@c: 
+
+
+<!-- ##### MACRO xmlSecGetHex ##### -->
+<para>
+
+</para>
+
+@c: 
+
+
+<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
+<para>
+
+</para>
+
+
+

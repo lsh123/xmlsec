@@ -1,0 +1,2926 @@
+<HTML
+><HEAD
+><TITLE
+>xmldsig</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Internal Functions Reference"
+HREF="xmlsec-ref-int.html"><LINK
+REL="PREVIOUS"
+TITLE="x509"
+HREF="xmlsec-x509.html"><LINK
+REL="NEXT"
+TITLE="xmlenc"
+HREF="xmlsec-xmlenc.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-x509.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-xmlenc.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-XMLDSIG">xmldsig</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN9258"
+></A
+><H2
+>Name</H2
+>xmldsig&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN9261"><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+enum        <A
+HREF="xmlsec-xmldsig.html#XMLSECREFERENCETYPE"
+>xmlSecReferenceType</A
+>;
+<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE"
+>xmlSecDSigCtxCreate</A
+>        (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> keysMngr);
+void        <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY"
+>xmlSecDSigCtxDestroy</A
+>            (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNATURECREATE"
+>xmlSecSignatureCreate</A
+>           (const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);
+void        <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNATUREDESTROY"
+>xmlSecSignatureDestroy</A
+>          (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNATUREADDSIGNEDINFO"
+>xmlSecSignatureAddSignedInfo</A
+>    (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNATUREADDKEYINFO"
+>xmlSecSignatureAddKeyInfo</A
+>       (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNATUREADDOBJECT"
+>xmlSecSignatureAddObject</A
+>        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *mimeType,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *encoding);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNEDINFOADDC14NMETHOD"
+>xmlSecSignedInfoAddC14NMethod</A
+>   (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signedInfoNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> encMethod);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNEDINFOADDSIGNMETHOD"
+>xmlSecSignedInfoAddSignMethod</A
+>   (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signedInfoNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> encMethod);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECSIGNEDINFOADDREFERENCE"
+>xmlSecSignedInfoAddReference</A
+>    (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signedInfoNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *uri,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *type);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECREFERENCEADDDIGESTMETHOD"
+>xmlSecReferenceAddDigestMethod</A
+>  (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> refNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> digestMethod);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECREFERENCEADDTRANSFORM"
+>xmlSecReferenceAddTransform</A
+>     (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> refNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> transform);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECOBJECTADDSIGNPROPERTIES"
+>xmlSecObjectAddSignProperties</A
+>   (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> objectNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *target);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECOBJECTADDMANIFEST"
+>xmlSecObjectAddManifest</A
+>         (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> objectNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);
+<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  <A
+HREF="xmlsec-xmldsig.html#XMLSECMANIFESTADDREFERENCE"
+>xmlSecManifestAddReference</A
+>      (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> manifestNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *uri,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *type);
+int         <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGVALIDATE"
+>xmlSecDSigValidate</A
+>              (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx,
+                                             void *context,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             <GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> *result);
+int         <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGGENERATE"
+>xmlSecDSigGenerate</A
+>              (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx,
+                                             void *context,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             <GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> *result);
+<GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGRESULTCREATE"
+>xmlSecDSigResultCreate</A
+>  (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx,
+                                             void *context,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             int sign);
+void        <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGRESULTDESTROY"
+>xmlSecDSigResultDestroy</A
+>         (<GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> result);
+void        <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGRESULTDEBUGDUMP"
+>xmlSecDSigResultDebugDump</A
+>       (<GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> result,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN9345"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN9348"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9350"
+></A
+><H3
+><A
+NAME="XMLSECREFERENCETYPE"
+></A
+>enum xmlSecReferenceType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum  {
+    xmlSecSignedInfoReference,
+    xmlSecManifestReference
+} xmlSecReferenceType;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9355"
+></A
+><H3
+><A
+NAME="XMLSECDSIGCTXCREATE"
+></A
+>xmlSecDSigCtxCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> xmlSecDSigCtxCreate        (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> keysMngr);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9363"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>keysMngr</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9376"
+></A
+><H3
+><A
+NAME="XMLSECDSIGCTXDESTROY"
+></A
+>xmlSecDSigCtxDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecDSigCtxDestroy            (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9383"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9392"
+></A
+><H3
+><A
+NAME="XMLSECSIGNATURECREATE"
+></A
+>xmlSecSignatureCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignatureCreate           (const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creates new Signature node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-SIGNATURE"
+>sec-Signature</GTKDOCLINK
+>)
+The application is responsible for inserting the Signature node 
+in the XML document. The mantadory SignatureValue child node
+will be created automatically when Signature node is created</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9401"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to Signature node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9414"
+></A
+><H3
+><A
+NAME="XMLSECSIGNATUREDESTROY"
+></A
+>xmlSecSignatureDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecSignatureDestroy          (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Destroys Signature node by calling <GTKDOCLINK
+HREF="XMLFREENODE"
+>xmlFreeNode</GTKDOCLINK
+>(). You should not call 
+this method if you've inserted Signature node in the XML document!</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9422"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to Signature node</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9431"
+></A
+><H3
+><A
+NAME="XMLSECSIGNATUREADDSIGNEDINFO"
+></A
+>xmlSecSignatureAddSignedInfo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignatureAddSignedInfo    (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds SignedInfo node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-SIGNEDINFO"
+>sec-SignedInfo</GTKDOCLINK
+>)
+to the XML Signature. The application may add additional parameters
+by calling SignedInfo node methods</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9441"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to Signature node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to SignedInfo node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9458"
+></A
+><H3
+><A
+NAME="XMLSECSIGNATUREADDKEYINFO"
+></A
+>xmlSecSignatureAddKeyInfo ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignatureAddKeyInfo       (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds KeyInfo node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-KEYINFO"
+>sec-KeyInfo</GTKDOCLINK
+>)
+to the XML Signature. The application may add additional parameters
+by calling KeyInfo node methods</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9468"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to Signature node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to KeyInfo node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9485"
+></A
+><H3
+><A
+NAME="XMLSECSIGNATUREADDOBJECT"
+></A
+>xmlSecSignatureAddObject ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignatureAddObject        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *mimeType,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *encoding);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds Object node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-OBJECT"
+>sec-Object</GTKDOCLINK
+>)
+to the XML Signature</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9497"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to Signature node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mimeType</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the object mime type (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encoding</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the object encoding (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to Object node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9522"
+></A
+><H3
+><A
+NAME="XMLSECSIGNEDINFOADDC14NMETHOD"
+></A
+>xmlSecSignedInfoAddC14NMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignedInfoAddC14NMethod   (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signedInfoNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> encMethod);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds CanonicalizationMethod node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-CANONICALIZATIONMETHOD"
+>sec-CanonicalizationMethod</GTKDOCLINK
+>)
+to the XML Signature. The application may set additional parameters
+for C14N method by calling corresponding C14N method function.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9532"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signedInfoNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to Signature node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encMethod</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to CanonicalizationMethod node or NULL if an 
+error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9549"
+></A
+><H3
+><A
+NAME="XMLSECSIGNEDINFOADDSIGNMETHOD"
+></A
+>xmlSecSignedInfoAddSignMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignedInfoAddSignMethod   (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signedInfoNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> encMethod);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds SignatureMethod node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-SIGNATUREMETHOD"
+>sec-SignatureMethod</GTKDOCLINK
+>)
+to the XML Signature. The application may set additional parameters
+for result method by calling corresponding result method function.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9559"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signedInfoNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to SignedInfo node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>encMethod</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to SignatureMethod node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9576"
+></A
+><H3
+><A
+NAME="XMLSECSIGNEDINFOADDREFERENCE"
+></A
+>xmlSecSignedInfoAddReference ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecSignedInfoAddReference    (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signedInfoNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *uri,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *type);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds Reference node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-REFERENCE"
+>sec-Reference</GTKDOCLINK
+>)
+to XML Signature. The required child node DigestValue is added
+automatically.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9588"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signedInfoNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to Signature node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the reference node uri (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the reference node type (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to Reference node or NULL if an error occurs&#13;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9613"
+></A
+><H3
+><A
+NAME="XMLSECREFERENCEADDDIGESTMETHOD"
+></A
+>xmlSecReferenceAddDigestMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecReferenceAddDigestMethod  (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> refNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> digestMethod);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds DigestMethod node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-DIGESTMETHOD"
+>sec-DigestMethod</GTKDOCLINK
+>)
+to the Reference node in XML Signature. The application may set additional
+parameters for digest method by calling corresponding method function.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9623"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>refNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to Reference node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>digestMethod</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the digest method id</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to DigestMethod node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9640"
+></A
+><H3
+><A
+NAME="XMLSECREFERENCEADDTRANSFORM"
+></A
+>xmlSecReferenceAddTransform ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecReferenceAddTransform     (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> refNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> transform);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds Transform node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-TRANSFORMS"
+>sec-Transforms</GTKDOCLINK
+>)
+to the Reference node in XML Signature. The application may set additional
+parameters for transform method by calling corresponding method function.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9650"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>refNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to Reference node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform method id</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to Transform node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9667"
+></A
+><H3
+><A
+NAME="XMLSECOBJECTADDSIGNPROPERTIES"
+></A
+>xmlSecObjectAddSignProperties ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecObjectAddSignProperties   (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> objectNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *target);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds SignatureProperties node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-SIGNATUREPROPERTIES"
+>sec-SignatureProperties</GTKDOCLINK
+>)
+to the XML Signature</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9678"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>objectNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to Object node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>target</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the Target  (may be NULL)                                                </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to SignatureProperties node or NULL if an error occurs&#13;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9699"
+></A
+><H3
+><A
+NAME="XMLSECOBJECTADDMANIFEST"
+></A
+>xmlSecObjectAddManifest ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecObjectAddManifest         (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> objectNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds Manifest node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-MANIFEST"
+>sec-Manifest</GTKDOCLINK
+>)
+to the XML Signature</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9709"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>objectNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the  pointer to Object node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to Manifest node or NULL if an error occurs&#13;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9726"
+></A
+><H3
+><A
+NAME="XMLSECMANIFESTADDREFERENCE"
+></A
+>xmlSecManifestAddReference ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+>  xmlSecManifestAddReference      (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> manifestNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *id,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *uri,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *type);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds Reference node (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-REFERENCE"
+>sec-Reference</GTKDOCLINK
+>)
+to Manifest node in XML Signature. The mantadory DigestValue node
+is added automatically</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9738"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>manifestNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the node id (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the reference node uri (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the reference node type (may be NULL)</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to Reference node or NULL if an error occurs</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9763"
+></A
+><H3
+><A
+NAME="XMLSECDSIGVALIDATE"
+></A
+>xmlSecDSigValidate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDSigValidate              (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx,
+                                             void *context,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             <GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> *result);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9773"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>result</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9802"
+></A
+><H3
+><A
+NAME="XMLSECDSIGGENERATE"
+></A
+>xmlSecDSigGenerate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDSigGenerate              (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx,
+                                             void *context,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             <GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> *result);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9812"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>result</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9841"
+></A
+><H3
+><A
+NAME="XMLSECDSIGRESULTCREATE"
+></A
+>xmlSecDSigResultCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> xmlSecDSigResultCreate  (<GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> ctx,
+                                             void *context,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> signNode,
+                                             int sign);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creates new DSig result.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9850"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the DSig context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>context</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the application context</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>signNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the Signature node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>sign</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the sign or verify flag</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>new DSig result or NULL if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9875"
+></A
+><H3
+><A
+NAME="XMLSECDSIGRESULTDESTROY"
+></A
+>xmlSecDSigResultDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecDSigResultDestroy         (<GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> result);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Destroys DSig result</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9882"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>result</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the DSig result</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9891"
+></A
+><H3
+><A
+NAME="XMLSECDSIGRESULTDEBUGDUMP"
+></A
+>xmlSecDSigResultDebugDump ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecDSigResultDebugDump       (<GTKDOCLINK
+HREF="XMLSECDSIGRESULTPTR"
+>xmlSecDSigResultPtr</GTKDOCLINK
+> result,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9899"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>result</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-x509.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-xmlenc.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>x509</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>xmlenc</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

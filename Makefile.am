@@ -21,3 +21,6 @@ EXTRA_DIST = \
 
 api-doc:
 	@cd docs/api;make
+
+api-doc-clean:
+	@cd docs/api;make clean

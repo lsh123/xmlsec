@@ -1,0 +1,538 @@
+<refentry id="xmlsec-xmltree">
+<refmeta>
+<refentrytitle>xmltree</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>xmltree</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseFile">xmlSecParseFile</link>                 (const char *filename);
+<link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>               (unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size,
+                                             int recovery);
+<link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>            (unsigned char *prefix,
+                                             <link linkend="size-t">size_t</link> prefixSize,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> bufferSize,
+                                             unsigned char *postfix,
+                                             <link linkend="size-t">size_t</link> postfixSize);
+int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>             (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecGetNextElementNode">xmlSecGetNextElementNode</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> cur);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindChild">xmlSecFindChild</link>                 (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindParent">xmlSecFindParent</link>                (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNode">xmlSecFindNode</link>                  (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNodeById">xmlSecFindNodeById</link>              (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> <link linkend="xmlSecGetChildNodeSet">xmlSecGetChildNodeSet</link>         (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodeSet,
+                                             int withComments);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChild">xmlSecAddChild</link>                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddNextSibling">xmlSecAddNextSibling</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddPrevSibling">xmlSecAddPrevSibling</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);
+int         <link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link>               (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);
+int         <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);
+int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecAddIdAttributeName">xmlSecAddIdAttributeName</link>        (const <link linkend="xmlChar">xmlChar</link> *id);
+void        <link linkend="xmlSecClearIdAttributeNames">xmlSecClearIdAttributeNames</link>     (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecParseFile">xmlSecParseFile ()</title>
+<programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseFile                 (const char *filename);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecParseMemory">xmlSecParseMemory ()</title>
+<programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseMemory               (unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size,
+                                             int recovery);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>recovery</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecParseMemoryExt">xmlSecParseMemoryExt ()</title>
+<programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseMemoryExt            (unsigned char *prefix,
+                                             <link linkend="size-t">size_t</link> prefixSize,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> bufferSize,
+                                             unsigned char *postfix,
+                                             <link linkend="size-t">size_t</link> postfixSize);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>prefix</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>prefixSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufferSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>postfix</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>postfixSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCheckNodeName">xmlSecCheckNodeName ()</title>
+<programlisting>int         xmlSecCheckNodeName             (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+Checks that the node has a given name and a given namespace href</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
+<entry>
+dis * <parameter>name</parameter>:
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetNextElementNode">xmlSecGetNextElementNode ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecGetNextElementNode        (<link linkend="xmlNodePtr">xmlNodePtr</link> cur);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecFindChild">xmlSecFindChild ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindChild                 (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+Lookups a direct child of the node having given name and namespace href</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecFindParent">xmlSecFindParent ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindParent                (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecFindNode">xmlSecFindNode ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNode                  (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecFindNodeById">xmlSecFindNodeById ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNodeById              (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Lookups the node with attribute "Id" equal to given one in the given 
+node subtree</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetChildNodeSet">xmlSecGetChildNodeSet ()</title>
+<programlisting><link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> xmlSecGetChildNodeSet         (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodeSet,
+                                             int withComments);</programlisting>
+<para>
+Creates a node set that includes all nodes in given subtree</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>nodeSet</parameter>&nbsp;:</entry>
+<entry>
+<parameter>withComments</parameter>
+</entry></row>
+<row><entry align="right"><parameter>withComments</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAddChild">xmlSecAddChild ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChild                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAddNextSibling">xmlSecAddNextSibling ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddNextSibling            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAddPrevSibling">xmlSecAddPrevSibling ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddPrevSibling            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReplaceNode">xmlSecReplaceNode ()</title>
+<programlisting>int         xmlSecReplaceNode               (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReplaceContent">xmlSecReplaceContent ()</title>
+<programlisting>int         xmlSecReplaceContent            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer ()</title>
+<programlisting>int         xmlSecReplaceNodeBuffer         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAddIdAttributeName">xmlSecAddIdAttributeName ()</title>
+<programlisting>int         xmlSecAddIdAttributeName        (const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds ID attribute to the list of known ID attributes
+(hack for specifying ID attributes names for xml documents
+w/o schemas or DTD).</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or -1 for errors.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecClearIdAttributeNames">xmlSecClearIdAttributeNames ()</title>
+<programlisting>void        xmlSecClearIdAttributeNames     (void);</programlisting>
+<para>
+</para>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

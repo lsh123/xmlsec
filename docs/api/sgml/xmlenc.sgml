@@ -1,0 +1,570 @@
+<refentry id="xmlsec-xmlenc">
+<refmeta>
+<refentrytitle>xmlenc</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>xmlenc</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link>          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
+void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx);
+int         <link linkend="xmlSecEncryptMemory">xmlSecEncryptMemory</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
+int         <link linkend="xmlSecEncryptUri">xmlSecEncryptUri</link>                (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const char *uri,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
+int         <link linkend="xmlSecEncryptXmlNode">xmlSecEncryptXmlNode</link>            (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> src,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
+int         <link linkend="xmlSecDecrypt">xmlSecDecrypt</link>                   (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encDataNode,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
+<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> <link linkend="xmlSecEncResultCreate">xmlSecEncResultCreate</link>    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             int encrypt,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+void        <link linkend="xmlSecEncResultDestroy">xmlSecEncResultDestroy</link>          (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result);
+void        <link linkend="xmlSecEncResultDebugDump">xmlSecEncResultDebugDump</link>        (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataCreate">xmlSecEncDataCreate</link>             (const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
+void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncMethod">xmlSecEncDataAddEncMethod</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddKeyInfo">xmlSecEncDataAddKeyInfo</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncProperties">xmlSecEncDataAddEncProperties</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncProperty">xmlSecEncDataAddEncProperty</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddCipherValue">xmlSecEncDataAddCipherValue</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddCipherReference">xmlSecEncDataAddCipherReference</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecCipherReferenceAddTransform">xmlSecCipherReferenceAddTransform</link>
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecEncCtxCreate">xmlSecEncCtxCreate ()</title>
+<programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<para>
+Creates new encryption context.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>new encryption context or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy ()</title>
+<programlisting>void        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncryptMemory">xmlSecEncryptMemory ()</title>
+<programlisting>int         xmlSecEncryptMemory             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncryptUri">xmlSecEncryptUri ()</title>
+<programlisting>int         xmlSecEncryptUri                (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const char *uri,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncryptXmlNode">xmlSecEncryptXmlNode ()</title>
+<programlisting>int         xmlSecEncryptXmlNode            (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> src,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDecrypt">xmlSecDecrypt ()</title>
+<programlisting>int         xmlSecDecrypt                   (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> encDataNode,
+                                             <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encDataNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncResultCreate">xmlSecEncResultCreate ()</title>
+<programlisting><link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> xmlSecEncResultCreate    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
+                                             void *context,
+                                             int encrypt,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encrypt</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncResultDestroy">xmlSecEncResultDestroy ()</title>
+<programlisting>void        xmlSecEncResultDestroy          (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncResultDebugDump">xmlSecEncResultDebugDump ()</title>
+<programlisting>void        xmlSecEncResultDebugDump        (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataCreate">xmlSecEncDataCreate ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataCreate             (const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
+<para>
+Creates new encryption template.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the Id attribute of EncryptedData node (optional)
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the Type attribute of EncryptedData node (optional)
+</entry></row>
+<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
+<entry> the MimeType attribute of EncryptedData node (optional)
+</entry></row>
+<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
+<entry> the Encoding attribute of EncryptedData node (optional)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the new template or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataDestroy">xmlSecEncDataDestroy ()</title>
+<programlisting>void        xmlSecEncDataDestroy            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddEncMethod">xmlSecEncDataAddEncMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncMethod       (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encMethod</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddKeyInfo">xmlSecEncDataAddKeyInfo ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddKeyInfo         (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddEncProperties">xmlSecEncDataAddEncProperties ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncProperties   (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddEncProperty">xmlSecEncDataAddEncProperty ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncProperty     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddCipherValue">xmlSecEncDataAddCipherValue ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddCipherValue     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddCipherReference">xmlSecEncDataAddCipherReference ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddCipherReference (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherReferenceAddTransform">xmlSecCipherReferenceAddTransform ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecCipherReferenceAddTransform
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

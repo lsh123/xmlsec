@@ -1,0 +1,45 @@
+<!-- ##### SECTION Title ##### -->
+debug
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecTimerInit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTimerStart ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTimerEnd ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTimerGet ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+

@@ -1,0 +1,424 @@
+<refentry id="xmlsec-keysInternal">
+<refmeta>
+<refentrytitle>keysInternal</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>keysInternal</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="xmlSecKeyInifiteRetrivals">xmlSecKeyInifiteRetrivals</link>
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyCreateMethod">*xmlSecKeyCreateMethod</link>)       (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyDuplicateMethod">*xmlSecKeyDuplicateMethod</link>)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+void        (<link linkend="xmlSecKeyDestroyMethod">*xmlSecKeyDestroyMethod</link>)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+int         (<link linkend="xmlSecKeyReadXmlMethod">*xmlSecKeyReadXmlMethod</link>)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+int         (<link linkend="xmlSecKeyWriteXmlMethod">*xmlSecKeyWriteXmlMethod</link>)      (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent);
+int         (<link linkend="xmlSecKeyReadBinaryMethod">*xmlSecKeyReadBinaryMethod</link>)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         (<link linkend="xmlSecKeyWriteBinaryMethod">*xmlSecKeyWriteBinaryMethod</link>)   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);
+struct      <link linkend="xmlSecKeyIdStruct">xmlSecKeyIdStruct</link>;
+void        <link linkend="xmlSecKeysInit">xmlSecKeysInit</link>                  (void);
+#define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
+#define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
+#define     <link linkend="xmlSecKeyCheckTransform">xmlSecKeyCheckTransform</link>         (key, tr)
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadXml">xmlSecKeyReadXml</link>               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+int         <link linkend="xmlSecKeyWriteXml">xmlSecKeyWriteXml</link>               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBin">xmlSecKeyReadBin</link>               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecKeyWriteBin">xmlSecKeyWriteBin</link>               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecKeyInifiteRetrivals">xmlSecKeyInifiteRetrivals</title>
+<programlisting>#define xmlSecKeyInifiteRetrivals		99999
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCreateMethod">xmlSecKeyCreateMethod ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyCreateMethod)       (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDuplicateMethod">xmlSecKeyDuplicateMethod ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyDuplicateMethod)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDestroyMethod">xmlSecKeyDestroyMethod ()</title>
+<programlisting>void        (*xmlSecKeyDestroyMethod)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadXmlMethod">xmlSecKeyReadXmlMethod ()</title>
+<programlisting>int         (*xmlSecKeyReadXmlMethod)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteXmlMethod">xmlSecKeyWriteXmlMethod ()</title>
+<programlisting>int         (*xmlSecKeyWriteXmlMethod)      (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadBinaryMethod">xmlSecKeyReadBinaryMethod ()</title>
+<programlisting>int         (*xmlSecKeyReadBinaryMethod)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteBinaryMethod">xmlSecKeyWriteBinaryMethod ()</title>
+<programlisting>int         (*xmlSecKeyWriteBinaryMethod)   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyIdStruct">struct xmlSecKeyIdStruct</title>
+<programlisting>struct xmlSecKeyIdStruct {
+    /* xlmlSecKeyId data */
+    const xmlChar 			*keyValueNodeName;
+    const xmlChar			*keyValueNodeNs;
+    
+    /* xmlSecKeyId methods */
+    xmlSecKeyCreateMethod		create;
+    xmlSecKeyDestroyMethod		destroy;
+    xmlSecKeyDuplicateMethod		duplicate;
+    xmlSecKeyReadXmlMethod		read;
+    xmlSecKeyWriteXmlMethod		write;
+    xmlSecKeyReadBinaryMethod		readBin;
+    xmlSecKeyWriteBinaryMethod		writeBin;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysInit">xmlSecKeysInit ()</title>
+<programlisting>void        xmlSecKeysInit                  (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyIsValid">xmlSecKeyIsValid()</title>
+<programlisting>#define     xmlSecKeyIsValid(key)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCheckId">xmlSecKeyCheckId()</title>
+<programlisting>#define     xmlSecKeyCheckId(key, keyId)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCheckTransform">xmlSecKeyCheckTransform()</title>
+<programlisting>#define     xmlSecKeyCheckTransform(key, tr)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>tr</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadXml">xmlSecKeyReadXml ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadXml               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+Reads the key form XML doc</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteXml">xmlSecKeyWriteXml ()</title>
+<programlisting>int         xmlSecKeyWriteXml               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+Writes the key into XML node and adds it to the list of <parameter>parent</parameter> children
+(if parent is not null).</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadBin">xmlSecKeyReadBin ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadBin               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteBin">xmlSecKeyWriteBin ()</title>
+<programlisting>int         xmlSecKeyWriteBin               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

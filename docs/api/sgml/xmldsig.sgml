@@ -1,0 +1,605 @@
+<refentry id="xmlsec-xmldsig">
+<refmeta>
+<refentrytitle>xmldsig</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>xmldsig</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+enum        <link linkend="xmlSecReferenceType">xmlSecReferenceType</link>;
+<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
+void        <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureCreate">xmlSecSignatureCreate</link>           (const <link linkend="xmlChar">xmlChar</link> *id);
+void        <link linkend="xmlSecSignatureDestroy">xmlSecSignatureDestroy</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureAddSignedInfo">xmlSecSignatureAddSignedInfo</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureAddKeyInfo">xmlSecSignatureAddKeyInfo</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureAddObject">xmlSecSignatureAddObject</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignedInfoAddC14NMethod">xmlSecSignedInfoAddC14NMethod</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignedInfoAddSignMethod">xmlSecSignedInfoAddSignMethod</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignedInfoAddReference">xmlSecSignedInfoAddReference</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecReferenceAddDigestMethod">xmlSecReferenceAddDigestMethod</link>  (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecReferenceAddTransform">xmlSecReferenceAddTransform</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecObjectAddSignProperties">xmlSecObjectAddSignProperties</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecObjectAddManifest">xmlSecObjectAddManifest</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecManifestAddReference">xmlSecManifestAddReference</link>      (<link linkend="xmlNodePtr">xmlNodePtr</link> manifestNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+int         <link linkend="xmlSecDSigValidate">xmlSecDSigValidate</link>              (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             <link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> *result);
+int         <link linkend="xmlSecDSigGenerate">xmlSecDSigGenerate</link>              (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             <link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> *result);
+<link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> <link linkend="xmlSecDSigResultCreate">xmlSecDSigResultCreate</link>  (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             int sign);
+void        <link linkend="xmlSecDSigResultDestroy">xmlSecDSigResultDestroy</link>         (<link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> result);
+void        <link linkend="xmlSecDSigResultDebugDump">xmlSecDSigResultDebugDump</link>       (<link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> result,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecReferenceType">enum xmlSecReferenceType</title>
+<programlisting>typedef enum  {
+    xmlSecSignedInfoReference,
+    xmlSecManifestReference
+} xmlSecReferenceType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate ()</title>
+<programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy ()</title>
+<programlisting>void        xmlSecDSigCtxDestroy            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureCreate">xmlSecSignatureCreate ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureCreate           (const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Creates new &lt;Signature&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Signature">sec-Signature</link>)
+The application is responsible for inserting the &lt;Signature&gt; node 
+in the XML document. The mantadory &lt;SignatureValue&gt; child node
+will be created automatically when &lt;Signature&gt; node is created</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;Signature&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureDestroy">xmlSecSignatureDestroy ()</title>
+<programlisting>void        xmlSecSignatureDestroy          (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);</programlisting>
+<para>
+Destroys &lt;Signature&gt; node by calling <link linkend="xmlFreeNode">xmlFreeNode</link>(). You should not call 
+this method if you've inserted &lt;Signature&gt; node in the XML document!</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;Signature&gt; node
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureAddSignedInfo">xmlSecSignatureAddSignedInfo ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureAddSignedInfo    (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;SignedInfo&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-SignedInfo">sec-SignedInfo</link>)
+to the XML Signature. The application may add additional parameters
+by calling SignedInfo node methods</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;Signature&gt; node
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;SignedInfo&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureAddKeyInfo">xmlSecSignatureAddKeyInfo ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureAddKeyInfo       (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;KeyInfo&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyInfo">sec-KeyInfo</link>)
+to the XML Signature. The application may add additional parameters
+by calling KeyInfo node methods</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;Signature&gt; node
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;KeyInfo&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureAddObject">xmlSecSignatureAddObject ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureAddObject        (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
+<para>
+Adds &lt;Object&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Object">sec-Object</link>)
+to the XML Signature</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;Signature&gt; node
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
+<entry> the object mime type (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
+<entry> the object encoding (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;Object&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignedInfoAddC14NMethod">xmlSecSignedInfoAddC14NMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignedInfoAddC14NMethod   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);</programlisting>
+<para>
+Adds &lt;CanonicalizationMethod&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CanonicalizationMethod">sec-CanonicalizationMethod</link>)
+to the XML Signature. The application may set additional parameters
+for C14N method by calling corresponding C14N method function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signedInfoNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;Signature&gt; node
+</entry></row>
+<row><entry align="right"><parameter>encMethod</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;CanonicalizationMethod&gt; node or NULL if an 
+error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignedInfoAddSignMethod">xmlSecSignedInfoAddSignMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignedInfoAddSignMethod   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);</programlisting>
+<para>
+Adds &lt;SignatureMethod&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-SignatureMethod">sec-SignatureMethod</link>)
+to the XML Signature. The application may set additional parameters
+for result method by calling corresponding result method function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signedInfoNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;SignedInfo&gt; node
+</entry></row>
+<row><entry align="right"><parameter>encMethod</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;SignatureMethod&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignedInfoAddReference">xmlSecSignedInfoAddReference ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignedInfoAddReference    (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<para>
+Adds &lt;Reference&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Reference">sec-Reference</link>)
+to XML Signature. The required child node &lt;DigestValue&gt; is added
+automatically.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signedInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;Signature&gt; node
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the reference node uri (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the reference node type (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;Reference&gt; node or NULL if an error occurs
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReferenceAddDigestMethod">xmlSecReferenceAddDigestMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecReferenceAddDigestMethod  (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethod);</programlisting>
+<para>
+Adds &lt;DigestMethod&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-DigestMethod">sec-DigestMethod</link>)
+to the &lt;Reference&gt; node in XML Signature. The application may set additional
+parameters for digest method by calling corresponding method function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>refNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;Reference&gt; node
+</entry></row>
+<row><entry align="right"><parameter>digestMethod</parameter>&nbsp;:</entry>
+<entry> the digest method id
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;DigestMethod&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReferenceAddTransform">xmlSecReferenceAddTransform ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecReferenceAddTransform     (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
+<para>
+Adds &lt;Transform&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Transforms">sec-Transforms</link>)
+to the &lt;Reference&gt; node in XML Signature. The application may set additional
+parameters for transform method by calling corresponding method function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>refNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;Reference&gt; node
+</entry></row>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the transform method id
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;Transform&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecObjectAddSignProperties">xmlSecObjectAddSignProperties ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecObjectAddSignProperties   (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
+<para>
+Adds &lt;SignatureProperties&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-SignatureProperties">sec-SignatureProperties</link>)
+to the XML Signature</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>objectNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;Object&gt; node
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
+<entry> the Target  (may be NULL)                                                
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;SignatureProperties&gt; node or NULL if an error occurs
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecObjectAddManifest">xmlSecObjectAddManifest ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecObjectAddManifest         (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;Manifest&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Manifest">sec-Manifest</link>)
+to the XML Signature</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>objectNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;Object&gt; node
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;Manifest&gt; node or NULL if an error occurs
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecManifestAddReference">xmlSecManifestAddReference ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecManifestAddReference      (<link linkend="xmlNodePtr">xmlNodePtr</link> manifestNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<para>
+Adds &lt;Reference&gt; node (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Reference">sec-Reference</link>)
+to &lt;Manifest&gt; node in XML Signature. The mantadory &lt;DigestValue&gt; node
+is added automatically</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>manifestNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the reference node uri (may be NULL)
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the reference node type (may be NULL)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to &lt;Reference&gt; node or NULL if an error occurs
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigValidate">xmlSecDSigValidate ()</title>
+<programlisting>int         xmlSecDSigValidate              (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             <link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> *result);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry> 
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigGenerate">xmlSecDSigGenerate ()</title>
+<programlisting>int         xmlSecDSigGenerate              (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             <link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> *result);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigResultCreate">xmlSecDSigResultCreate ()</title>
+<programlisting><link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> xmlSecDSigResultCreate  (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> ctx,
+                                             void *context,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             int sign);</programlisting>
+<para>
+Creates new DSig result.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry> the DSig context
+</entry></row>
+<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
+<entry> the application context
+</entry></row>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the &lt;Signature&gt; node
+</entry></row>
+<row><entry align="right"><parameter>sign</parameter>&nbsp;:</entry>
+<entry> the sign or verify flag
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>new DSig result or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigResultDestroy">xmlSecDSigResultDestroy ()</title>
+<programlisting>void        xmlSecDSigResultDestroy         (<link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> result);</programlisting>
+<para>
+Destroys DSig result</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry> the DSig result
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigResultDebugDump">xmlSecDSigResultDebugDump ()</title>
+<programlisting>void        xmlSecDSigResultDebugDump       (<link linkend="xmlSecDSigResultPtr">xmlSecDSigResultPtr</link> result,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

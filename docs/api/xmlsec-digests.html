@@ -1,0 +1,1878 @@
+<HTML
+><HEAD
+><TITLE
+>digests</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Internal Functions Reference"
+HREF="xmlsec-ref-int.html"><LINK
+REL="PREVIOUS"
+TITLE="debug"
+HREF="xmlsec-debug.html"><LINK
+REL="NEXT"
+TITLE="io"
+HREF="xmlsec-io.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-debug.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-io.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-DIGESTS">digests</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN4724"
+></A
+><H2
+>Name</H2
+>digests&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN4727"><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+typedef     <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID"
+>xmlSecDigestTransformId</A
+>;
+int         (<A
+HREF="xmlsec-digests.html#XMLSECDIGESTUPDATEMETHOD"
+>*xmlSecDigestUpdateMethod</A
+>)     (<GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         (<A
+HREF="xmlsec-digests.html#XMLSECDIGESTSIGNMETHOD"
+>*xmlSecDigestSignMethod</A
+>)       (<GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char **buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> *size);
+int         (<A
+HREF="xmlsec-digests.html#XMLSECDIGESTVERIFYMETHOD"
+>*xmlSecDigestVerifyMethod</A
+>)     (<GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+struct      <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMIDSTRUCT"
+>xmlSecDigestTransformIdStruct</A
+>;
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTSIGNNODE"
+>xmlSecDigestSignNode</A
+>            (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> valueNode,
+                                             int removeOldContent);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTVERIFYNODE"
+>xmlSecDigestVerifyNode</A
+>          (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             const <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> valueNode);
+void        <A
+HREF="xmlsec-digests.html#XMLSECDIGESTSETPUSHMODE"
+>xmlSecDigestSetPushMode</A
+>         (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             int enabled);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTUPDATE"
+>xmlSecDigestUpdate</A
+>              (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTSIGN"
+>xmlSecDigestSign</A
+>                (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char **buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> *size);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTVERIFY"
+>xmlSecDigestVerify</A
+>              (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMREAD"
+>xmlSecDigestTransformRead</A
+>       (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMWRITE"
+>xmlSecDigestTransformWrite</A
+>      (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMFLUSH"
+>xmlSecDigestTransformFlush</A
+>      (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4766"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4769"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4771"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTTRANSFORMID"
+></A
+>xmlSecDigestTransformId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4776"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTUPDATEMETHOD"
+></A
+>xmlSecDigestUpdateMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecDigestUpdateMethod)     (<GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4783"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4804"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTSIGNMETHOD"
+></A
+>xmlSecDigestSignMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecDigestSignMethod)       (<GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char **buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> *size);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4811"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4832"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTVERIFYMETHOD"
+></A
+>xmlSecDigestVerifyMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecDigestVerifyMethod)     (<GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4839"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4860"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTTRANSFORMIDSTRUCT"
+></A
+>struct xmlSecDigestTransformIdStruct</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecDigestTransformIdStruct {
+    /* same as xmlSecTransformId */    
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+    
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlSecBinTransform data/methods */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
+            
+    xmlSecBinTransformAddKeyMethod	addBinKey;
+    xmlSecBinTransformReadMethod	readBin;
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;    
+    
+    /* xmlSecDigestTransform data/methods */
+    xmlSecDigestUpdateMethod		digestUpdate;
+    xmlSecDigestSignMethod		digestSign;
+    xmlSecDigestVerifyMethod		digestVerify;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4865"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTSIGNNODE"
+></A
+>xmlSecDigestSignNode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestSignNode            (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> valueNode,
+                                             int removeOldContent);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Finalizes the digest result, signs it (if necessary), base64 encodes and
+puts in the node content</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4873"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>valueNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>removeOldContent</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4894"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTVERIFYNODE"
+></A
+>xmlSecDigestVerifyNode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestVerifyNode          (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             const <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> valueNode);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the node content, base64 decodes it, finalizes the digest result and
+verifies that it does match with the content of the node.
+This functions returns only operation status (ok, fail). Verification
+status is stored in xmlSecTransform::state variable</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4902"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>valueNode</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4919"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTSETPUSHMODE"
+></A
+>xmlSecDigestSetPushMode ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecDigestSetPushMode         (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             int enabled);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the push more flag. If push mode is enabled then the digest is
+finalized and send to next transform when 
+1) read from previous transform returned 0
+2) flush called</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4926"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>enabled</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4939"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTUPDATE"
+></A
+>xmlSecDigestUpdate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestUpdate              (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Envelope for xmlSecDigestTransformId::digestUpdate</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4947"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4968"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTSIGN"
+></A
+>xmlSecDigestSign ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestSign                (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char **buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> *size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Envelope for xmlSecDigestTransformId::digestSign</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4976"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4997"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTVERIFY"
+></A
+>xmlSecDigestVerify ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestVerify              (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Envelope for xmlSecDigestTransformId::digestVerify
+This functions returns only operation status (ok, fail). Verification
+status is stored in xmlSecTransform::state variable</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5005"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5026"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTTRANSFORMREAD"
+></A
+>xmlSecDigestTransformRead ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestTransformRead       (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads all data from previos transform and digests it. If the 
+push mode enabled then the result is finalized and returned to the caller,
+otherwise we return 0</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5034"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5055"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTTRANSFORMWRITE"
+></A
+>xmlSecDigestTransformWrite ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestTransformWrite      (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Just Updates the digest with the data in the  buffer</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5063"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5084"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTTRANSFORMFLUSH"
+></A
+>xmlSecDigestTransformFlush ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDigestTransformFlush      (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform);</PRE
+></TD
+></TR
+></TABLE
+><P
+>If the push mode enabled then the function finalizes the result,
+writes it to the next trasnform and calls flush for it. Otherwise,
+it just calls flush for next trasnform</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5091"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-debug.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-io.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>debug</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>io</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

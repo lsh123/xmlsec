@@ -1,0 +1,379 @@
+<!-- ##### SECTION Title ##### -->
+transforms
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### TYPEDEF xmlSecTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecTransformUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM xmlSecTransformStatus ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformStatusNone: 
+@xmlSecTransformStatusOk: 
+@xmlSecTransformStatusFail: 
+
+<!-- ##### VARIABLE xmlSecEncAes128Cbc ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecEncAes192Cbc ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecEncAes256Cbc ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecKWAes128 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecKWAes192 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecKWAes256 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecAesKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecAesKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### MACRO XMLSEC_BASE64_LINESIZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### VARIABLE xmlSecEncBase64Encode ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecEncBase64Decode ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecBase64EncodeSetLineSize ##### -->
+<para>
+
+</para>
+
+@transform: 
+@lineSize: 
+
+
+<!-- ##### VARIABLE xmlSecC14NInclusive ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecC14NInclusiveWithComments ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecC14NExclusive ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecC14NExclusiveWithComments ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecC14NExclAddInclNamespaces ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@prefixList: 
+@Returns: 
+
+
+<!-- ##### VARIABLE xmlSecEncDes3Cbc ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecKWDes3Cbc ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecDesKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecDesKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### VARIABLE xmlSecSignDsaSha1 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecDsaKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecDsaKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@dsa: 
+@Returns: 
+
+
+<!-- ##### VARIABLE xmlSecTransformEnveloped ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecMacHmacSha1 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecMacHmacRipeMd160 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecMacHmacMd5 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecHmacKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecHmacKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@bitsLen: 
+@Returns: 
+
+
+<!-- ##### VARIABLE xmlSecDigestRipemd160 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecSignRsaSha1 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecEncRsaPkcs1 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecEncRsaOaep ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecRsaKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecRsaKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@rsa: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### VARIABLE xmlSecDigestSha1 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM xmlSecXPath2TransformType ##### -->
+<para>
+
+</para>
+
+@xmlSecXPathTransformUnknown: 
+@xmlSecXPathTransformIntersect: 
+@xmlSecXPathTransformSubtract: 
+@xmlSecXPathTransformUnion: 
+
+<!-- ##### VARIABLE xmlSecTransformXPath ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecTransformXPath2 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecXPathAlt ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecTransformXPathAdd ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@expression: 
+@namespaces: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformXPath2Add ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@type: 
+@expression: 
+@namespaces: 
+@Returns: 
+
+
+<!-- ##### VARIABLE xmlSecTransformXslt ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecTransformXsltAdd ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@xslt: 
+@Returns: 
+
+

@@ -1,0 +1,56 @@
+<!-- ##### SECTION Title ##### -->
+bn
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecCryptoBinary2BN ##### -->
+<para>
+
+</para>
+
+@str: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBN2CryptoBinary ##### -->
+<para>
+
+</para>
+
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeGetBNValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetBNValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@addLineBreak: 
+@Returns: 
+
+

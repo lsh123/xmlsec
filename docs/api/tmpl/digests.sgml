@@ -1,0 +1,172 @@
+<!-- ##### SECTION Title ##### -->
+digests
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### TYPEDEF xmlSecDigestTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION xmlSecDigestUpdateMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecDigestSignMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecDigestVerifyMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecDigestTransformIdStruct ##### -->
+<para>
+
+</para>
+
+@type: 
+@usage: 
+@href: 
+@create: 
+@destroy: 
+@read: 
+@keyId: 
+@encryption: 
+@decryption: 
+@binSubType: 
+@addBinKey: 
+@readBin: 
+@writeBin: 
+@flushBin: 
+@digestUpdate: 
+@digestSign: 
+@digestVerify: 
+
+<!-- ##### FUNCTION xmlSecDigestSignNode ##### -->
+<para>
+
+</para>
+
+@transform: 
+@valueNode: 
+@removeOldContent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestVerifyNode ##### -->
+<para>
+
+</para>
+
+@transform: 
+@valueNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestSetPushMode ##### -->
+<para>
+
+</para>
+
+@transform: 
+@enabled: 
+
+
+<!-- ##### FUNCTION xmlSecDigestUpdate ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestSign ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestVerify ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestTransformRead ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestTransformWrite ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDigestTransformFlush ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+

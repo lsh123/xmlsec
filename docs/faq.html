@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>XML Security Library: Documentation</title>
+</head>
+  <body>
+           
+<table width="100%">
+        <tbody>
+          <tr>
+         <!-- top navigation menu start -->     
+	 <td valign="Top" align="Left" width="210">
+         <img src="logo.gif" alt="XML Security Library" width="200" height="100">
+          <p>       </p>
+         <ul>
+         <li><a href="index.html">Home</a></li>
+ 	<li><a href="download.html">Download</a></li>
+ 	<li><a href="news.html">News</a></li>
+	<li><a href="documentation.html">Documentation</a></li>
+	<li><a href="faq.html">FAQ</a></li>
+ 	<li><a href="xmldsig.html">XML Digital Signature</a>
+        </li>
+ 	
+        <ul>
+ 	    <li><a href="xmldsig-interop.html">Interop report</a>
+          </li>
+ 	    <li><a href="xmldsig-verifier.html">Online Verifier</a>
+          </li>
+ 	
+        </ul>
+ 	<li><a href="xmlenc.html">XML Encryption</a>
+        </li>
+     	
+        <ul>
+  	    <li><a href="xmlenc-interop.html">Interop report</a>
+             </li>
+         
+        </ul>
+	 	<li><a href="c14n.html">XML Canonicalization</a>
+        </li>
+ 	<li><a href="bugs.html">Reporting Bugs</a>
+        </li>
+        <li><a href="http://www.aleksey.com/pipermail/xmlsec/2002/thread.html">Mailing list</a>
+        </li>
+ 	<br>
+        <br>
+      	<li><a href="http://xmlsoft.org/">LibXML</a>
+        </li>
+ 	<li><a href="http://xmlsoft.org/XSLT/">LibXSLT</a>
+        </li>
+ 	<li><a href="http://www.openssl.org/">OpenSSL</a>
+        </li>
+ 	<br>
+        <br>
+            
+      </ul>
+     </td>
+     <!-- top navigation menu end -->             
+     <td valign="Top" align="Left">
+      <div align="Center">                                          
+      <h1>Frequently Asked Questions</h1>
+      </div>
+      <h3>0. Why have you wrote xmlsec?</h3>
+      Very simple: when I decided to understand the 
+      <a href="http://www.w3.org/Signature/">XML Digital Signature</a>
+      and <a href="http://www.w3.org/Encryption/">XML Encrytpion</a> 
+      specs there were no open source C/C++ implementation available.
+      After spending a couple days trying to install Java implementation
+      (Apache XML Security Suite) I gave up and decided to implement 
+      these specs by myself.
+      <h3>1. License(s).</h3>
+      <h4>1.1. Licensing Terms for xmlsec.</h4>
+      XML Security Library is released under the 
+      <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a>, 
+      see the file Copyright in the distribution for the precise wording.
+      <h4>1.2. Can I embed xmlsec in a proprietary application ?</h4>
+      Yes. The MIT License allows you to also keep proprietary the 
+      changes you made to xmlsec, but it would be graceful to provide 
+      back bug fixes and improvements as patches for possible incorporation 
+      in the main development tree. 
+      <h4>1.3. Can I use xmlsec with a GNU GPL library?</h4>
+      Yes. MIT license is 
+      <a href="http://www.gnu.org/licenses/license-list.html">compatible</a>
+      with GNU GPL library. However, xmlsec is based on 
+      <a href="http://www.openssl.org">OpenSSL</a> and OpenSSL license
+      is <b>not</b> compatible with GNU GPL. In most cases, 
+      this should not cause any problems because of a special 
+      <a href="http://www.gnu.org/licenses/gpl-faq.html#WritingFSWithNFLibs">exception</a>
+      in the GPL.
+      <h3>2. Installation.</h3>
+      <h4>2.1. Where can I get xmlsec?</h4>
+      The original distribution comes from 
+      <a href="http://www.aleksey.com/xmlsec/">XML Security Library page</a>.
+      Also xmlsec is available from 
+      <a href="ftp://rpmfind.net/pub/libxml/xmlsec">rpmfind.net miror</a>.
+      <h4>2.2. How to compile xmlsec?</h4>
+      On Unix just follow the "standard":
+         <blockquote>
+	 <code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br>
+         <code>cd xmlsec-xxxx</code><br>
+         <code>./configure --help</code><br>
+         <code>./configure [possible options] </code><br>
+         <code>make</code><br>
+         <code>make install</code><br>
+         <code>make check</code>
+	 </blockquote>
+      At that point you may have to rerun ldconfig or similar utility to update your 
+      list of installed shared libs.<br>
+      On Windows the process is more complicated. Please check
+      readme file in <code>xmlsec-xxxx/win32</code> folder.
+      <h4>2.3. What other libraries are needed to compile/install xmlsec?</h4>
+      The XML Security Library requires:
+      <ul>
+         <li><a href="http://xmlsoft.org/downloads.html">LibXML</a></li>
+         <li><a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> (optional)</li>
+         <li><a href="http://www.openssl.org/">OpenSSL</a> version 0.9.7 
+	 (prefered) or version 0.9.6c
+         </li>
+      </ul>
+      <h4>2.4. Why does make check fail for some tests?</h4>
+      First of all, some tests <b>must</b> fail! Please read the 
+      messages printed before the tests.<br>
+      If you have other failed tests then the next possible reason
+      is that you use OpenSSL 0.9.6 and some xmlsec features are
+      disabled in this case. Please try to upgrade to OpenSSL 0.9.7
+      and re-configure/re-compile xmlsec.<br>
+      if this does not help then probably there is a bug in the xmlsec
+      or in the xmlsec tests. Please submit the 
+      <a href="http://www.aleksey.com/xmlsec/bugs.html">bug report</a>
+      and I'll try to fix it.
+      <h4>2.5. I get the xmlsec sources from CVS and there is no 
+      configure script. Where can I get it?</h4>
+      The configure (and other Makefiles) are generated. Use the 
+      <code>autogen.sh</code> script to regenerate the configure 
+      and Makefiles, like:
+	<blockquote>   
+    	<code>./autogen.sh --prefix=/usr</code>
+        </blockquote>
+      <h4>2.5. I do not need all these features supported by xmlsec.
+      Can I disable some of them?</h4>
+      Yes, you can. Please run <code>./configure --help</code>
+      for the list of possible configuration options.
+      
+      <p><a href="bugs.html">Aleksey Sanin</a></p>
+      </td>
+  </tr>
+                       
+  </tbody>      
+</table>
+           
+</body>
+</html>

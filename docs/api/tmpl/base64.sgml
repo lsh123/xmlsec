@@ -1,0 +1,89 @@
+<!-- ##### SECTION Title ##### -->
+base64
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecBase64CtxCreate ##### -->
+<para>
+
+</para>
+
+@encode: 
+@columns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64CtxDestroy ##### -->
+<para>
+
+</para>
+
+@ctx: 
+
+
+<!-- ##### FUNCTION xmlSecBase64CtxInit ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64CtxUpdate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@in: 
+@inLen: 
+@out: 
+@outLen: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64CtxFinal ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@out: 
+@outLen: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64Encode ##### -->
+<para>
+
+</para>
+
+@buf: 
+@len: 
+@columns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64Decode ##### -->
+<para>
+
+</para>
+
+@str: 
+@buf: 
+@len: 
+@Returns: 
+
+

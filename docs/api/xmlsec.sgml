@@ -70,7 +70,10 @@
      <ulink url="http://www.openssl.org">OpenSSL</ulink> and 
      <ulink url="http://www.xmlsoft.org">LibXML2</ulink>
      libraries and provides implementation for major XML Security 
-     standards:
+     standards: 
+     <ulink url="http://www.w3.org/Signature/">XML Digital Signature</ulink> 
+     and
+     <ulink url="http://www.w3.org/Encryption/">XML Encrytpion</ulink>.   
     </para>
   </chapter>
 
@@ -79,6 +82,23 @@
     <para>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
+    &xmlsec-xmlsec;
+    &xmlsec-xmldsig;
+    &xmlsec-xmlenc;
+    &xmlsec-debug;
+    &xmlsec-keyinfo;
+    &xmlsec-keys;
+    &xmlsec-keysmngr;
+    &xmlsec-transforms;
+    &xmlsec-version;
+    &xmlsec-x509;
+    &xmlsec-xpath;
+  </chapter>
+  <chapter id="xmlsec-ref-int">
+    <title>XML Security Library Internal Functions Reference</title>
+    <para>This section contains the internal API reference for xmlsec
+    developers. This reference guide is build by extracting comments 
+    from the code sources. </para>
     &xmlsec-base64;
     &xmlsec-bn;
     &xmlsec-buffered;
@@ -101,6 +121,7 @@
     &xmlsec-xmltree;
     &xmlsec-xpath;
   </chapter>
+
 </book>
 
 

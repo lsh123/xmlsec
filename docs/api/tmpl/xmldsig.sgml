@@ -1,0 +1,230 @@
+<!-- ##### SECTION Title ##### -->
+xmldsig
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### ENUM xmlSecReferenceType ##### -->
+<para>
+
+</para>
+
+@xmlSecSignedInfoReference: 
+@xmlSecManifestReference: 
+
+<!-- ##### FUNCTION xmlSecDSigCtxCreate ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxDestroy ##### -->
+<para>
+
+</para>
+
+@ctx: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureDestroy ##### -->
+<para>
+
+</para>
+
+@signNode: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddSignedInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddKeyInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddObject ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddC14NMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@encMethod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddSignMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@encMethod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddReference ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@digestMethod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecObjectAddSignProperties ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@target: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecObjectAddManifest ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecManifestAddReference ##### -->
+<para>
+
+</para>
+
+@manifestNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigValidate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@key: 
+@signNode: 
+@result: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigGenerate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@key: 
+@signNode: 
+@result: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigResultCreate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@signNode: 
+@sign: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigResultDestroy ##### -->
+<para>
+
+</para>
+
+@result: 
+
+
+<!-- ##### FUNCTION xmlSecDSigResultDebugDump ##### -->
+<para>
+
+</para>
+
+@result: 
+@output: 
+
+

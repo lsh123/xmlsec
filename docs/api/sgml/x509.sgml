@@ -1,0 +1,504 @@
+<refentry id="xmlsec-x509">
+<refmeta>
+<refentrytitle>x509</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>x509</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> <link linkend="xmlSecX509DataCreate">xmlSecX509DataCreate</link>      (void);
+void        <link linkend="xmlSecX509DataDestroy">xmlSecX509DataDestroy</link>           (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecX509DataGetCertsNumber">xmlSecX509DataGetCertsNumber</link>    (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecX509DataGetCrlsNumber">xmlSecX509DataGetCrlsNumber</link>     (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+int         <link linkend="xmlSecX509DataReadDerCert">xmlSecX509DataReadDerCert</link>       (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             <link linkend="xmlChar">xmlChar</link> *buf,
+                                             <link linkend="size-t">size_t</link> size,
+                                             int base64);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecX509DataWriteDerCert">xmlSecX509DataWriteDerCert</link>      (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             int pos);
+int         <link linkend="xmlSecX509DataReadDerCrl">xmlSecX509DataReadDerCrl</link>        (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             <link linkend="xmlChar">xmlChar</link> *buf,
+                                             <link linkend="size-t">size_t</link> size,
+                                             int base64);
+<link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecX509DataWriteDerCrl">xmlSecX509DataWriteDerCrl</link>       (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             int pos);
+int         <link linkend="xmlSecX509DataReadPemCert">xmlSecX509DataReadPemCert</link>       (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             const char *filename);
+<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> <link linkend="xmlSecX509DataDup">xmlSecX509DataDup</link>         (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecX509DataCreateKey">xmlSecX509DataCreateKey</link>        (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+void        <link linkend="xmlSecX509DataDebugDump">xmlSecX509DataDebugDump</link>         (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> <link linkend="xmlSecX509StoreCreate">xmlSecX509StoreCreate</link>    (void);
+void        <link linkend="xmlSecX509StoreDestroy">xmlSecX509StoreDestroy</link>          (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store);
+<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> <link linkend="xmlSecX509StoreFind">xmlSecX509StoreFind</link>       (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
+                                             <link linkend="xmlChar">xmlChar</link> *skit,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+int         <link linkend="xmlSecX509StoreVerify">xmlSecX509StoreVerify</link>           (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);
+int         <link linkend="xmlSecX509StoreLoadPemCert">xmlSecX509StoreLoadPemCert</link>      (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             const char *filename,
+                                             int trusted);
+int         <link linkend="xmlSecX509StoreAddCertsDir">xmlSecX509StoreAddCertsDir</link>      (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             const char *path);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecPKCS12ReadKey">xmlSecPKCS12ReadKey</link>            (const char *filename,
+                                             const char *pwd);
+typedef     <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link>;
+typedef     <link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link>;
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecX509DataCreate">xmlSecX509DataCreate ()</title>
+<programlisting><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> xmlSecX509DataCreate      (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataDestroy">xmlSecX509DataDestroy ()</title>
+<programlisting>void        xmlSecX509DataDestroy           (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataGetCertsNumber">xmlSecX509DataGetCertsNumber ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecX509DataGetCertsNumber    (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataGetCrlsNumber">xmlSecX509DataGetCrlsNumber ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecX509DataGetCrlsNumber     (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataReadDerCert">xmlSecX509DataReadDerCert ()</title>
+<programlisting>int         xmlSecX509DataReadDerCert       (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             <link linkend="xmlChar">xmlChar</link> *buf,
+                                             <link linkend="size-t">size_t</link> size,
+                                             int base64);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>base64</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataWriteDerCert">xmlSecX509DataWriteDerCert ()</title>
+<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecX509DataWriteDerCert      (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             int pos);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataReadDerCrl">xmlSecX509DataReadDerCrl ()</title>
+<programlisting>int         xmlSecX509DataReadDerCrl        (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             <link linkend="xmlChar">xmlChar</link> *buf,
+                                             <link linkend="size-t">size_t</link> size,
+                                             int base64);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>base64</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataWriteDerCrl">xmlSecX509DataWriteDerCrl ()</title>
+<programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecX509DataWriteDerCrl       (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             int pos);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataReadPemCert">xmlSecX509DataReadPemCert ()</title>
+<programlisting>int         xmlSecX509DataReadPemCert       (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             const char *filename);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataDup">xmlSecX509DataDup ()</title>
+<programlisting><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> xmlSecX509DataDup         (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataCreateKey">xmlSecX509DataCreateKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecX509DataCreateKey        (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataDebugDump">xmlSecX509DataDebugDump ()</title>
+<programlisting>void        xmlSecX509DataDebugDump         (<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreCreate">xmlSecX509StoreCreate ()</title>
+<programlisting><link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> xmlSecX509StoreCreate    (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreDestroy">xmlSecX509StoreDestroy ()</title>
+<programlisting>void        xmlSecX509StoreDestroy          (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreFind">xmlSecX509StoreFind ()</title>
+<programlisting><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> xmlSecX509StoreFind       (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
+                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
+                                             <link linkend="xmlChar">xmlChar</link> *skit,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>subjectName</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>issuerName</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>issuerSerial</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>skit</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreVerify">xmlSecX509StoreVerify ()</title>
+<programlisting>int         xmlSecX509StoreVerify           (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> x509Data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>x509Data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreLoadPemCert">xmlSecX509StoreLoadPemCert ()</title>
+<programlisting>int         xmlSecX509StoreLoadPemCert      (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             const char *filename,
+                                             int trusted);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>trusted</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreAddCertsDir">xmlSecX509StoreAddCertsDir ()</title>
+<programlisting>int         xmlSecX509StoreAddCertsDir      (<link linkend="xmlSecX509StorePtr">xmlSecX509StorePtr</link> store,
+                                             const char *path);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>path</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPKCS12ReadKey">xmlSecPKCS12ReadKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecPKCS12ReadKey            (const char *filename,
+                                             const char *pwd);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>pwd</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509DataPtr">xmlSecX509DataPtr</title>
+<programlisting>typedef void* 	xmlSecX509DataPtr;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StorePtr">xmlSecX509StorePtr</title>
+<programlisting>typedef void* 	xmlSecX509StorePtr;
+</programlisting>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,318 @@
+<refentry id="xmlsec-ciphers">
+<refmeta>
+<refentrytitle>ciphers</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>ciphers</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+typedef     <link linkend="xmlSecCipherTransformId">xmlSecCipherTransformId</link>;
+int         (<link linkend="xmlSecCipherUpdateMethod">*xmlSecCipherUpdateMethod</link>)     (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         (<link linkend="xmlSecCipherFinalMethod">*xmlSecCipherFinalMethod</link>)      (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform);
+struct      <link linkend="xmlSecCipherTransformIdStruct">xmlSecCipherTransformIdStruct</link>;
+int         <link linkend="xmlSecCipherTransformRead">xmlSecCipherTransformRead</link>       (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecCipherTransformWrite">xmlSecCipherTransformWrite</link>      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecCipherTransformFlush">xmlSecCipherTransformFlush</link>      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform);
+int         <link linkend="xmlSecEvpCipherUpdate">xmlSecEvpCipherUpdate</link>           (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> cipher,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecEvpCipherFinal">xmlSecEvpCipherFinal</link>            (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> cipher);
+int         <link linkend="xmlSecCipherUpdate">xmlSecCipherUpdate</link>              (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecCipherFinal">xmlSecCipherFinal</link>               (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecCipherTransformId">xmlSecCipherTransformId</title>
+<programlisting>typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherUpdateMethod">xmlSecCipherUpdateMethod ()</title>
+<programlisting>int         (*xmlSecCipherUpdateMethod)     (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherFinalMethod">xmlSecCipherFinalMethod ()</title>
+<programlisting>int         (*xmlSecCipherFinalMethod)      (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherTransformIdStruct">struct xmlSecCipherTransformIdStruct</title>
+<programlisting>struct xmlSecCipherTransformIdStruct {
+    /* same as xmlSecTransformId */    
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+    
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
+    
+    /* xmlSecBinTransform data/methods */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
+            
+    xmlSecBinTransformAddKeyMethod	addBinKey;
+    xmlSecBinTransformReadMethod	readBin;
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;    
+    
+    /* xmlSecCipherTransform data/methods */
+    xmlSecCipherUpdateMethod		cipherUpdate;
+    xmlSecCipherFinalMethod		cipherFinal;
+    size_t				keySize;
+    size_t				ivSize;
+    size_t				bufInSize;
+    size_t				bufOutSize;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherTransformRead">xmlSecCipherTransformRead ()</title>
+<programlisting>int         xmlSecCipherTransformRead       (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherTransformWrite">xmlSecCipherTransformWrite ()</title>
+<programlisting>int         xmlSecCipherTransformWrite      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherTransformFlush">xmlSecCipherTransformFlush ()</title>
+<programlisting>int         xmlSecCipherTransformFlush      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEvpCipherUpdate">xmlSecEvpCipherUpdate ()</title>
+<programlisting>int         xmlSecEvpCipherUpdate           (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> cipher,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>cipher</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEvpCipherFinal">xmlSecEvpCipherFinal ()</title>
+<programlisting>int         xmlSecEvpCipherFinal            (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> cipher);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>cipher</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherUpdate">xmlSecCipherUpdate ()</title>
+<programlisting>int         xmlSecCipherUpdate              (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherFinal">xmlSecCipherFinal ()</title>
+<programlisting>int         xmlSecCipherFinal               (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

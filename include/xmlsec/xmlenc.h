@@ -50,19 +50,21 @@ typedef enum {
 struct _xmlSecEncCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;    
     xmlEncCtxMode		mode;
+    xmlSecTransformId		defEncMethodId;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		encTransformCtx;
 
-    xmlSecTransformPtr		encMethod;
-    xmlSecKeyPtr		encKey;
-
     /* these data are returned */
-    xmlSecBufferPtr		result;
     xmlSecTransformOperation	operation;
+    xmlSecBufferPtr		result;
     int				resultBase64Encoded;
     int				resultReplaced;
+    xmlSecTransformPtr		encMethod;
+    xmlSecKeyPtr		encKey;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
@@ -73,7 +75,6 @@ struct _xmlSecEncCtx {
     xmlChar*			carriedKeyName;
 
     /* these are internal data, nobody should change that except us */
-    int				dontDestroyEncMethod;
     xmlNodePtr			encDataNode;
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;

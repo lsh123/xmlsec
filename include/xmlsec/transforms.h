@@ -94,7 +94,7 @@ typedef enum  {
 
 /**************************************************************************
  *
- * TODO: rename local to same document
+ * xmlSecTransformUriType
  *
  *************************************************************************/
 typedef unsigned int				xmlSecTransformUriType;
@@ -163,30 +163,55 @@ typedef unsigned int				xmlSecTransformUsage;
  * xmlSecTransformCtx
  *
  *************************************************************************/
+typedef int  		(*xmlSecTransformCtxPreExecuteCallback)		(xmlSecTransformCtxPtr transformCtx); 
+
 /**
  * xmlSecTransformCtx:
+ * @userData: 		the pointer to user data (xmlsec and xmlsec-crypto never 
+ *			touch this).
+ * @flags: 		the bit mask flags to control transforms execution 
+ *			(reserved for the future).
+ * @flags2: 		the bit mask flags to control transforms execution 
+ * 			(reserved for the future).
+ * @enabledUris: 	the allowed transform data source uri types.
+ * @enabledTransforms: 	the list of enabled transforms; if list is empty (default)
+ *			then all registered transforms are enabled.
+ * @preExecCallback:	the callback called after preparing transform chain
+ *			and right before actual data processing; application
+ *			can use this callback to change transforms parameters,
+ *			insert additional transforms in the chain or do
+ *			additional validation (and abort transform execution 
+ *			if needed).
+ * @result:		the pointer to transforms result buffer.
+ * @uri:		the data source URI without xpointer expression.
+ * @xptrExpr:		the xpointer expression from data source URI (if any).
+ * @first:		the first transform in the chain.
+ * @last:		the last transform in the chain.
+ * @reserved0:		reserved for the future.
+ * @reserved1:		reserved for the future.
  *
- * The transform context.
+ * The transform execution context.
  */
 struct _xmlSecTransformCtx {
     /* user settings */
-    void*				userData;
-    unsigned int			flags;
-    unsigned int			flags2;
-    xmlSecTransformUriType		enabledUris;
-    xmlSecPtrList			enabledTransforms;
-
+    void*					userData;
+    unsigned int				flags;
+    unsigned int				flags2;
+    xmlSecTransformUriType			enabledUris;
+    xmlSecPtrList				enabledTransforms;
+    xmlSecTransformCtxPreExecuteCallback	preExecCallback;
+    
     /* results */
-    xmlSecBufferPtr			result;
-    xmlSecTransformStatus		status;
-    xmlChar*				uri;
-    xmlChar*				xptrExpr;
-    xmlSecTransformPtr			first;
-    xmlSecTransformPtr			last;
+    xmlSecBufferPtr				result;
+    xmlSecTransformStatus			status;
+    xmlChar*					uri;
+    xmlChar*					xptrExpr;
+    xmlSecTransformPtr				first;
+    xmlSecTransformPtr				last;
 
     /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    void*					reserved0;
+    void*					reserved1;
 };
 
 XMLSEC_EXPORT xmlSecTransformCtxPtr	xmlSecTransformCtxCreate    	(void);

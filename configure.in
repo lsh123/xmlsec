@@ -334,7 +334,7 @@ AC_SUBST(XMLSEC_GNUTLS_DEFINES)
 dnl ==========================================================================
 dnl See if we can find NSS
 dnl ==========================================================================
-ac_mozilla_name=mozilla-1.2
+ac_mozilla_name=mozilla-1.3
 ac_nss_lib_dir="/usr/lib /usr/local/lib /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
 ac_nss_inc_dir="/usr/include /usr/local/include /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
     

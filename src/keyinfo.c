@@ -334,14 +334,16 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
 int 
 xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+#ifndef XMLSEC_NO_XMLENC
+    xmlSecEncCtxPtr tmp;
     int ret;
     
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->encCtx == NULL, -1);
 
-#ifndef XMLSEC_NO_XMLENC
-    keyInfoCtx->encCtx = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
-    if(keyInfoCtx->encCtx == NULL) {
+    /* we have to use tmp variable to avoid a recursive loop */ 
+    tmp = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
+    if(tmp == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecEncCtxCreate",
@@ -349,34 +351,37 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    keyInfoCtx->encCtx->mode = xmlEncCtxModeEncryptedKey;
+    tmp->mode = xmlEncCtxModeEncryptedKey;
         
     /* copy user preferences from our current ctx */
     switch(keyInfoCtx->mode) {
 	case xmlSecKeyInfoModeRead:
-	    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
+	    ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoReadCtx), keyInfoCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
 			    "xmlSecKeyInfoCtxCopyUserPref",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecEncCtxDestroy(tmp);
 		return(-1);
 	    }    
 	    break;
 	case xmlSecKeyInfoModeWrite:
-	    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
+	    ret = xmlSecKeyInfoCtxCopyUserPref(&(tmp->keyInfoWriteCtx), keyInfoCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
 			    "xmlSecKeyInfoCtxCopyUserPref",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecEncCtxDestroy(tmp);
 		return(-1);
 	    }
 	    break;
     }    
-    
+    keyInfoCtx->encCtx = tmp;
+        
     return(0);
 #else /* XMLSEC_NO_XMLENC */    
     xmlSecError(XMLSEC_ERRORS_HERE,
@@ -550,7 +555,7 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
 	    keyInfoCtx->maxRetrievalMethodLevel);
-    xmlSecTransformCtxDebugDump(&(keyInfoCtx->retrievalMethodCtx), output);
+    xmlSecTransformCtxDebugXmlDump(&(keyInfoCtx->retrievalMethodCtx), output);
 
 #ifndef XMLSEC_NO_XMLENC
     fprintf(output, "<EncryptedKeyLevel cur=\"%d\" max=\"%d\" />\n",

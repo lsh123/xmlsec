@@ -357,10 +357,12 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(src != NULL, -1);
     
-    dst->userData 	= src->userData;  
-    dst->flags		= src->flags;  
-    dst->flags2		= src->flags2;  
-    dst->enabledUris	= src->enabledUris;
+    dst->userData 	 = src->userData;  
+    dst->flags		 = src->flags;  
+    dst->flags2		 = src->flags2;  
+    dst->enabledUris	 = src->enabledUris;
+    dst->preExecCallback = src->preExecCallback;
+    
     ret = xmlSecPtrListCopy(&(dst->enabledTransforms), &(src->enabledTransforms));
     if(ret < 0) { 
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -756,7 +758,8 @@ int
 xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inputDataType) {
     xmlSecTransformDataType firstType;
     xmlSecTransformPtr transform;
-        
+    int ret;
+    
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
@@ -813,6 +816,21 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
 	    return(-1);
 	}
     }
+
+    /* finally let application a chance to verify that it's ok to execte
+     * this transforms chain */
+    if(ctx->preExecCallback != NULL) {
+	ret = (ctx->preExecCallback)(ctx);
+	if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"ctx->preExecCallback", 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+    	    return(-1);
+	}	
+    }
+
     ctx->status = xmlSecTransformStatusWorking;    
     return(0);
 }
@@ -839,7 +857,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx, const unsigned char* 
 		    "type=bin");
     	return(-1);
     }	
-
+    
     ret = xmlSecTransformPushBin(ctx->first, data, dataSize, 1, ctx);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,

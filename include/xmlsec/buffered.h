@@ -115,6 +115,10 @@ struct _xmlSecBufferedTransform {
     /* xml specific */
     xmlNodePtr				hereNode;
     
+    unsigned char			binBuf[XMLSEC_TRANSFORM_BUFFER_SIZE];
+    size_t				binBufSize;
+    size_t				processed;
+
     void*				reserved0;
     void*				reserved1;
     void*				reserved2;

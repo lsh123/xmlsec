@@ -22,11 +22,12 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/nodeset.h>
 
+#define XMLSEC_TRANSFORM_BUFFER_SIZE			256
 
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
 typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
 typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
-typedef struct _xmlSecTransfomrBinData			xmlSecTransformBinData, *xmlSecTransformBinDataPtr; 
+typedef struct _xmlSecTransformBinData			xmlSecTransformBinData, *xmlSecTransformBinDataPtr; 
 
 
 /**************************************************************************
@@ -111,6 +112,10 @@ struct _xmlSecTransform {
     /* xml specific */
     xmlNodePtr				hereNode;
     
+    unsigned char			binBuf[XMLSEC_TRANSFORM_BUFFER_SIZE];
+    size_t				binBufSize;
+    size_t				processed;
+        
     void*				reserved0;
     void*				reserved1;
     void*				reserved2;
@@ -153,6 +158,14 @@ XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddAfter	(xmlSecTransformPtr cur
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr curTransform,
 								 xmlSecTransformPtr newTransform);
 XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
+
+XMLSEC_EXPORT int			xmlSecTransformDefaultReadBin	(xmlSecTransformPtr transform,
+								 unsigned char *buf,
+								 size_t size);		
+XMLSEC_EXPORT int			xmlSecTransformDefaultWriteBin	(xmlSecTransformPtr transform,
+								 const unsigned char *buf,
+								 size_t size);		
+XMLSEC_EXPORT int			xmlSecTransformDefaultFlushBin	(xmlSecTransformPtr transform);
 
 /**
  * xmlSecTransformIsValid:

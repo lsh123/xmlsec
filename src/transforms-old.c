@@ -1,8 +1,5 @@
 #include <xmlsec/transformsInternal.h>
 
-#define XMLSEC_TRANSFORM_BUFFER_SIZE    1024
-
-
 static xmlSecTransformId xmlSecAllTransformIds[100];
 
 /* internal functions */

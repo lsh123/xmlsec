@@ -93,6 +93,9 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
 
 static xmlSecTransformPtr xmlSecBase64Create		(xmlSecTransformId id);
 static void		xmlSecBase64Destroy		(xmlSecTransformPtr transform);
+static int 		xmlSecBase64ExecuteBin		(xmlSecTransformPtr transform,
+							 xmlSecTransformBinDataPtr in,
+							 xmlSecTransformBinDataPtr out);
 static int  		xmlSecBase64Update		(xmlSecCipherTransformPtr transform, 
 							 const unsigned char *buf, 
 							 size_t size);
@@ -112,7 +115,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
-    NULL,
+    xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
     xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
     xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
@@ -145,7 +148,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
-    NULL,
+    xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
     xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
     xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
@@ -256,17 +259,8 @@ xmlSecBase64Create(xmlSecTransformId id) {
 static void
 xmlSecBase64Destroy(xmlSecTransformPtr transform) {
     xmlSecCipherTransformPtr cipher;
-    
-    xmlSecAssert(transform != NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) &&
-       !xmlSecTransformCheckId(transform, xmlSecEncBase64Decode)) {
 
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
-	return;
-    }
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode));
     
     cipher = (xmlSecCipherTransformPtr) transform;
     if(cipher->reserved0 != NULL) {
@@ -276,6 +270,63 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 		      sizeof(unsigned char) * (XMLSEC_BASE64_INPUT_BUFFER_SIZE + 
 		    			       XMLSEC_BASE64_OUTPUT_BUFFER_SIZE));
     xmlFree(cipher);
+}
+
+static int 
+xmlSecBase64ExecuteBin(xmlSecTransformPtr transform, xmlSecTransformBinDataPtr in,
+			 xmlSecTransformBinDataPtr out) {
+    xmlSecBase64CtxPtr ctx;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode), -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    
+    ctx = (xmlSecBase64CtxPtr)transform->reserved0;
+    xmlSecAssert2(ctx != NULL, -1);
+
+    for(; (in->startPos < in->endPos) && (out->endPos < out->maxSize); ) {
+	xmlSecAssert2(in->buf != NULL, -1);
+	xmlSecAssert2(out->buf != NULL, -1);
+    
+	ret = xmlSecBase64CtxPush(ctx, in->buf + in->startPos, in->endPos - in->startPos);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64CtxPush");
+	    return(-1);
+	}
+	in->startPos += ret;
+
+	ret = xmlSecBase64CtxPop(ctx, out->buf + out->endPos, out->maxSize - out->endPos, 0);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64CtxPop");
+	    return(-1);
+	} else if(ret == 0) {
+	    break;
+	}
+	out->endPos += ret;
+    }
+        
+    if((in->startPos >= in->endPos) && (in->status == xmlSecTransformStatusLastData) && 
+			(out->endPos + 8 < out->maxSize)) {
+	ret = xmlSecBase64CtxPop(ctx, out->buf + out->endPos, out->maxSize - out->endPos, 1);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64CtxPop");
+	    return(-1);
+	}
+	xmlSecAssert2(ctx->outPos == 0, -1);
+	out->endPos += ret;
+	out->status = xmlSecTransformStatusLastData;
+	transform->status = xmlSecTransformStatusOk;
+    } else {
+	out->status = xmlSecTransformStatusMoreData;
+    }
+    return(0);
 }
 
 /**

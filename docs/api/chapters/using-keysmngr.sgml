@@ -1,7 +1,8 @@
     <sect1 id="xmlsec-notes-keysmngr">
         <title>Keys and keys manager.</title>
 	<para>A key in XML Security Library is a representation of the 
-	&lt;dsig:KeyInfo/&gt; element and consist of several key data objects. 
+	<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink>
+	element and consist of several key data objects. 
 	The "value" key data usually contains raw key material (or handlers to 
 	key material) required to execute particular crypto transform. Other 
 	key data objects may contain any additional information about the key. 
@@ -16,9 +17,10 @@
 	    <graphic fileref="images/key.png" align="center" />
 	</figure>	 
 	<para>XML Security Library has several "invisible" key data classes. 
-	These classes never show up in the keys data list of a key but are used 
-	for &lt;dsig:KeyInfo/&gt; children processing (&lt;dsig:KeyName/&gt;, 
-	&lt;dsig:EncryptedKey/&gt;, ...). As with transforms, application might 
+	These classes never show up in the keys data list of a key but are used for 
+	<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink>
+	children processing (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink>, 
+	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might 
 	add any new key data objects or replace the default ones.
 	</para>
 	<para>Processing some of the key data objects require additional 
@@ -36,7 +38,9 @@
 	<para>Keys manager has a special "keys store" which lists the keys 
 	known to the application. This "keys store" is used by XML Security 
 	Library to lookup keys by name, type and crypto algorithm (for example,
-	during &lt;dsig:KeyName/&gt; processing). The XML Security Library 
+	during 
+    	<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink>
+	processing). The XML Security Library 
 	provides default "flat list" based implementation of a simple keys 
 	store. The application can replace it with any other keys store 
 	(for example, based on an SQL database).

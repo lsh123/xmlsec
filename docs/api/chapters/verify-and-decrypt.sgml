@@ -26,8 +26,9 @@
 		functions.
 	    </para></listitem>
 	    <listitem><para>
-		Select start verification &lt;dsig:Signature/&gt; node in 
-		the signed XML document.
+		Select start verification 
+    		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink>
+		node in the signed XML document.
 	    </para></listitem>
 	    <listitem><para>
 		Verify signature by calling <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link> 

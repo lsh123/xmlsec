@@ -195,6 +195,26 @@ TODO
     </sect1>
     <sect1 id="xmlsec-notes-cusomize-signature">
 	<title>Customizing signature and verification process.</title>
+	<para>Application may control XML Security Library behavior using 
+	different context objects:
+	    <itemizedlist>
+		<listitem><para>
+		    <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
+		</para></listitem>
+		<listitem><para>
+		    <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
+		</para></listitem>
+		<listitem><para>
+		    <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
+		</para></listitem>
+		<listitem><para>
+		    <link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>.
+		</para></listitem>
+	    </itemizedlist>	 
+	New context objects are created for each operation and could not be 
+	reused. XML Security Library also uses context objects to store 
+	temporary data and return additional information to the application.
+	</para>
 	<para>
 	     <example>
 		<title>SAML signature validation.</title>

@@ -23,7 +23,8 @@
 	    </para></listitem>
 	    <listitem><para>
 		Create or load signature template and select start
-		&lt;dsig:Signature/&gt; node.
+    		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink>
+		node.
 	    </para></listitem>
 	    <listitem><para>
 		Create signature context <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>
@@ -117,8 +118,8 @@ done:
     return(res);
 }
 		]]></programlisting>
-	    <para><link linkend="xmlsec-example-dsig1">Full program listing</link></para>
-	    <para><link linkend="xmlsec-example-dsig1-tmpl">Simple signature template file</link></para>
+		<simpara><link linkend="xmlsec-example-dsig1">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-dsig1-tmpl">Simple signature template file</link></simpara>
 	    </example>
 	</para>
 	</sect2>

@@ -638,6 +638,18 @@ else
 fi    
 
 dnl ==========================================================================
+dnl See do we need templates tests
+dnl ==========================================================================
+AC_MSG_CHECKING(for templates testing) 
+AC_ARG_ENABLE(skm,   [  --enable-tmpl-tests           enable templates testing in xmlsec utility (yes)])
+if test "$enable_tmpl_tests" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
+    AC_MSG_RESULT(no)
+else
+    AC_MSG_RESULT(yes)
+fi    
+
+dnl ==========================================================================
 dnl Profiling 
 dnl ==========================================================================
 AC_MSG_CHECKING(for profiling) 

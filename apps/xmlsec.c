@@ -63,7 +63,9 @@ static const char helpCommands2[] =
 #ifndef XMLSEC_NO_XMLDSIG
     "  --sign      "	"\tsign data and output XML document\n"
     "  --verify    "	"\tverify signed document\n"
+#ifndef XMLSEC_NO_TMPL_TEST
     "  --sign-tmpl "	"\tcreate and sign dynamicaly generated signature template\n"
+#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
     "  --encrypt   "	"\tencrypt data and output XML document\n"
@@ -700,7 +702,9 @@ static int			xmlSecAppPrepareKeyInfoReadCtx	(xmlSecKeyInfoCtxPtr ctx);
 #ifndef XMLSEC_NO_XMLDSIG
 static int			xmlSecAppSignFile		(const char* filename);
 static int			xmlSecAppVerifyFile		(const char* filename);
+#ifndef XMLSEC_NO_TMPL_TEST
 static int			xmlSecAppSignTmpl		(void);
+#endif /* XMLSEC_NO_TMPL_TEST */
 static int			xmlSecAppPrepareDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 static void			xmlSecAppPrintDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 #endif /* XMLSEC_NO_XMLDSIG */
@@ -708,7 +712,9 @@ static void			xmlSecAppPrintDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 #ifndef XMLSEC_NO_XMLENC
 static int			xmlSecAppEncryptFile		(const char* filename);
 static int			xmlSecAppDecryptFile		(const char* filename);
+#ifndef XMLSEC_NO_TMPL_TEST
 static int			xmlSecAppEncryptTmpl		(void);
+#endif /* XMLSEC_NO_TMPL_TEST */
 static int			xmlSecAppPrepareEncCtx		(xmlSecEncCtxPtr encCtx);
 static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
@@ -840,12 +846,14 @@ int main(int argc, const char **argv) {
 		}
 	    }
 	    break;
+#ifndef XMLSEC_NO_TMPL_TEST
 	case xmlSecAppCommandSignTmpl:
 	    if(xmlSecAppSignTmpl() < 0) {
 		fprintf(stderr, "Error: failed to create and sign template\n");
 		goto fail;
 	    }
 	    break;
+#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
@@ -865,12 +873,14 @@ int main(int argc, const char **argv) {
 		}
 	    }
 	    break;
+#ifndef XMLSEC_NO_TMPL_TEST
 	case xmlSecAppCommandEncryptTmpl:
 	    if(xmlSecAppEncryptTmpl() < 0) {
 		fprintf(stderr, "Error: failed to create and encrypt template\n");
 		goto fail;
 	    }
 	    break;
+#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 	default:
 	    fprintf(stderr, "Error: invalid command %d\n", command);
@@ -1067,6 +1077,7 @@ done:
     return(res);
 }
 
+#ifndef XMLSEC_NO_TMPL_TEST
 static int 
 xmlSecAppSignTmpl(void) {
     xmlDocPtr doc = NULL;
@@ -1182,6 +1193,7 @@ done:
     }
     return(res);
 }
+#endif /* XMLSEC_NO_TMPL_TEST */
 
 static int
 xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
@@ -1414,6 +1426,7 @@ done:
     return(res);
 }
 
+#ifndef XMLSEC_NO_TMPL_TEST
 static int 
 xmlSecAppEncryptTmpl(void) {
     const char* data = "Hello, World!";
@@ -1497,6 +1510,7 @@ done:
     }
     return(res);
 }
+#endif /* XMLSEC_NO_TMPL_TEST */
 
 static int
 xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {    
@@ -2097,6 +2111,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 			xmlSecAppCmdLineTopicX509Certs;
 	return(xmlSecAppCommandVerify);
     } else 
+#ifndef XMLSEC_NO_TMPL_TEST
     if((strcmp(cmd, "sign-tmpl") == 0) || (strcmp(cmd, "--sign-tmpl") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
 			xmlSecAppCmdLineTopicDSigCommon |
@@ -2105,6 +2120,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 			xmlSecAppCmdLineTopicX509Certs;
 	return(xmlSecAppCommandSignTmpl);
     } else 
+#endif /* XMLSEC_NO_TMPL_TEST */
     
 #endif /* XMLSEC_NO_XMLDSIG */
 
@@ -2127,6 +2143,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 	return(xmlSecAppCommandDecrypt);
     } else 
 
+#ifndef XMLSEC_NO_TMPL_TEST
     if((strcmp(cmd, "encrypt-tmpl") == 0) || (strcmp(cmd, "--encrypt-tmpl") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
 			xmlSecAppCmdLineTopicEncCommon |
@@ -2135,6 +2152,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 			xmlSecAppCmdLineTopicX509Certs;
 	return(xmlSecAppCommandEncryptTmpl);
     } else 
+#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 
     if(1) {
@@ -2168,14 +2186,14 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     case xmlSecAppCommandVerify:
 	fprintf(stdout, "%s\n", helpVerify);
         break;
-    case xmlSecAppCommandSignTmpl:
-	fprintf(stdout, "%s\n", helpSignTmpl);
-        break;
     case xmlSecAppCommandEncrypt:
 	fprintf(stdout, "%s\n", helpEncrypt);
         break;
     case xmlSecAppCommandDecrypt:
 	fprintf(stdout, "%s\n", helpDecrypt);
+        break;
+    case xmlSecAppCommandSignTmpl:
+	fprintf(stdout, "%s\n", helpSignTmpl);
         break;
     case xmlSecAppCommandEncryptTmpl:
 	fprintf(stdout, "%s\n", helpEncryptTmpl);

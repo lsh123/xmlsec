@@ -1,3 +1,7 @@
+Fri Jun 21 00:48:52 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* Makefile.am configure.in: added win32 folder to the
+	distribution
+
 2002-06-20  Aleksey Sanin  <aleksey@aleksey.com>
 	* apps/xmlsec.c: added password protected pem files
         support 

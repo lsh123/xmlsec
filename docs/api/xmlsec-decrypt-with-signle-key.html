@@ -107,8 +107,8 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 3) {
-	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s &lt;enc-file&gt; &lt;key-file&gt;\n", argv[0]);
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;enc-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
 	return(1);
     }
 
@@ -123,19 +123,19 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
 	return(-1);
     }
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
 	return(-1);
     }
 
@@ -184,49 +184,49 @@ decrypt_file(const char* enc_file, const char* key_file) {
     /* load template */
     doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, enc_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, enc_file);
 	goto done;	
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
 	goto done;
     }
 
     /* load DES key */
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
     
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+        fprintf(stderr,&quot;Error: decryption failed\n&quot;);
 	goto done;
     }
         
     /* print decrypted data to stdout */
     if(encCtx-&gt;resultReplaced != 0) {
-	fprintf(stdout, "Decrypted XML data:\n");
+	fprintf(stdout, &quot;Decrypted XML data:\n&quot;);
 	xmlDocDump(stdout, doc);
     } else {
-	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx-&gt;result));
+	fprintf(stdout, &quot;Decrypted binary data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
 	if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
 	    fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
 	          1, 
@@ -234,7 +234,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
 	          stdout);
 	}
     }
-    fprintf(stdout, "\n");
+    fprintf(stdout, &quot;\n&quot;);
         
     /* success */
     res = 0;

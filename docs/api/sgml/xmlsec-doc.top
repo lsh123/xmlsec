@@ -14,6 +14,7 @@
 <!ENTITY xmlsec-templates SYSTEM "sgml/templates.sgml">
 <!ENTITY xmlsec-transforms SYSTEM "sgml/transforms.sgml">
 <!ENTITY xmlsec-version SYSTEM "sgml/version.sgml">
+<!ENTITY xmlsec-x509 SYSTEM "sgml/x509.sgml">
 <!ENTITY xmlsec-xkms SYSTEM "sgml/xkms.sgml">
 <!ENTITY xmlsec-xmldsig SYSTEM "sgml/xmldsig.sgml">
 <!ENTITY xmlsec-xmlenc SYSTEM "sgml/xmlenc.sgml">

@@ -83,6 +83,31 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrCertLoadBIO ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@bio: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrAddCertsPath ##### -->
 <para>
 
@@ -106,12 +131,64 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoadBIO ##### -->
+<para>
+
+</para>
+
+@bio: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLAppPkcs12Load ##### -->
 <para>
 
 </para>
 
 @filename: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppPkcs12LoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppPkcs12LoadBIO ##### -->
+<para>
+
+</para>
+
+@bio: 
 @pwd: 
 @pwdCallback: 
 @pwdCallbackCtx: 
@@ -125,6 +202,29 @@ app
 
 @key: 
 @filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyCertLoadBIO ##### -->
+<para>
+
+</para>
+
+@key: 
+@bio: 
 @format: 
 @Returns: 
 

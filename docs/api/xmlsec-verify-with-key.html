@@ -107,8 +107,8 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 3) {
-	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n", argv[0]);
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
 	return(1);
     }
 
@@ -123,19 +123,19 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
 	return(-1);
     }
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
 	return(-1);
     }
 
@@ -183,48 +183,48 @@ verify_file(const char* xml_file, const char* key_file) {
     /* load file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
 	goto done;	
     }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
 	goto done;
     }
 
     /* load public key */
     dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+        fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,"Error: signature verify\n");
+        fprintf(stderr,&quot;Error: signature verify\n&quot;);
 	goto done;
     }
         
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, "Signature is OK\n");
+	fprintf(stdout, &quot;Signature is OK\n&quot;);
     } else {
-	fprintf(stdout, "Signature is INVALID\n");
+	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
     }    
 
     /* success */

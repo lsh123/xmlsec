@@ -99,19 +99,19 @@
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
 	return(-1);
     }
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
 	return(-1);
     }
 		</pre></td></tr></table>

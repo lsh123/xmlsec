@@ -63,8 +63,13 @@ void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>  
 int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBuffer">xmlSecKeyReadBuffer</link>            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             <link linkend="xmlSecBuffer">xmlSecBuffer</link> *buffer);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
                                              const char *filename);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadMemory">xmlSecKeyReadMemory</link>            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize);
 #define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
 #define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
 #define     <link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link>
@@ -622,6 +627,24 @@ Checks whether the <parameter>key</parameter> matches the given criteria.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyReadBuffer">xmlSecKeyReadBuffer ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyReadBuffer            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             <link linkend="xmlSecBuffer">xmlSecBuffer</link> *buffer);</programlisting>
+<para>
+Reads the key value of klass <parameter>dataId</parameter> from a buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dataId</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value data klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>		the buffer that contains the binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyReadBinaryFile        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
                                              const char *filename);</programlisting>
@@ -635,6 +658,28 @@ Reads the key value of klass <parameter>dataId</parameter> from a binary file <p
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
 <listitem><simpara>		the key binary filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadMemory">xmlSecKeyReadMemory ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyReadMemory            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize);</programlisting>
+<para>
+Reads the key value of klass <parameter>dataId</parameter> from a memory block <parameter>data</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dataId</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value data klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the memory containing the key
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara> 		the size of the memory block
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created key or NULL if an error occurs.
 </simpara></listitem></varlistentry>

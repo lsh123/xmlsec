@@ -33,6 +33,17 @@ int         <link linkend="xmlSecOpenSSLAppKeysMngrCertLoad">xmlSecOpenSSLAppKey
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+int         <link linkend="xmlSecOpenSSLAppKeysMngrCertLoadMemory">xmlSecOpenSSLAppKeysMngrCertLoadMemory</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+int         <link linkend="xmlSecOpenSSLAppKeysMngrCertLoadBIO">xmlSecOpenSSLAppKeysMngrCertLoadBIO</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="BIO-CAPS">BIO</link> *bio,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 int         <link linkend="xmlSecOpenSSLAppKeysMngrAddCertsPath">xmlSecOpenSSLAppKeysMngrAddCertsPath</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *path);
@@ -41,12 +52,41 @@ int         <link linkend="xmlSecOpenSSLAppKeysMngrAddCertsPath">xmlSecOpenSSLAp
                                              const char *pwd,
                                              <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
                                              void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppKeyLoadMemory">xmlSecOpenSSLAppKeyLoadMemory</link>  (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppKeyLoadBIO">xmlSecOpenSSLAppKeyLoadBIO</link>     (<link linkend="BIO-CAPS">BIO</link> *bio,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppPkcs12Load">xmlSecOpenSSLAppPkcs12Load</link>     (const char *filename,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppPkcs12LoadMemory">xmlSecOpenSSLAppPkcs12LoadMemory</link>
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppPkcs12LoadBIO">xmlSecOpenSSLAppPkcs12LoadBIO</link>  (<link linkend="BIO-CAPS">BIO</link> *bio,
                                              const char *pwd,
                                              <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
                                              void *pwdCallbackCtx);
 int         <link linkend="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertLoad</link>     (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+int         <link linkend="xmlSecOpenSSLAppKeyCertLoadMemory">xmlSecOpenSSLAppKeyCertLoadMemory</link>
+                                            (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+int         <link linkend="xmlSecOpenSSLAppKeyCertLoadBIO">xmlSecOpenSSLAppKeyCertLoadBIO</link>  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="BIO-CAPS">BIO</link> *bio,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
 </synopsis>
 </refsynopsisdiv>
@@ -204,6 +244,66 @@ untrusted certs in <parameter>store</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeysMngrCertLoadMemory">xmlSecOpenSSLAppKeysMngrCertLoadMemory ()</title>
+<programlisting>int         xmlSecOpenSSLAppKeysMngrCertLoadMemory
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Reads cert from binary buffer <parameter>data</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the flag that indicates is the certificate trusted or not.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeysMngrCertLoadBIO">xmlSecOpenSSLAppKeysMngrCertLoadBIO ()</title>
+<programlisting>int         xmlSecOpenSSLAppKeysMngrCertLoadBIO
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="BIO-CAPS">BIO</link> *bio,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Reads cert from an OpenSSL BIO object and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bio</parameter>&nbsp;:</term>
+<listitem><simpara> 		the certificate BIO.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the flag that indicates is the certificate trusted or not.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecOpenSSLAppKeysMngrAddCertsPath">xmlSecOpenSSLAppKeysMngrAddCertsPath ()</title>
 <programlisting>int         xmlSecOpenSSLAppKeysMngrAddCertsPath
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
@@ -253,6 +353,70 @@ Reads key from the a file.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeyLoadMemory">xmlSecOpenSSLAppKeyLoadMemory ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppKeyLoadMemory  (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key from the memory buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the binary key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the size of binary key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the key file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the key file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the key password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeyLoadBIO">xmlSecOpenSSLAppKeyLoadBIO ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppKeyLoadBIO     (<link linkend="BIO-CAPS">BIO</link> *bio,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key from the an OpenSSL BIO object.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>bio</parameter>&nbsp;:</term>
+<listitem><simpara>		the key BIO.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the key file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the key file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the key password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecOpenSSLAppPkcs12Load">xmlSecOpenSSLAppPkcs12Load ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppPkcs12Load     (const char *filename,
                                              const char *pwd,
@@ -281,6 +445,67 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecOpenSSLAppPkcs12LoadMemory">xmlSecOpenSSLAppPkcs12LoadMemory ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppPkcs12LoadMemory
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key and all associated certificates from the PKCS12 data in memory buffer.
+For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppPkcs12LoadBIO">xmlSecOpenSSLAppPkcs12LoadBIO ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppPkcs12LoadBIO  (<link linkend="BIO-CAPS">BIO</link> *bio,
+                                             const char *pwd,
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
+For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>bio</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 key bio.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertLoad ()</title>
 <programlisting>int         xmlSecOpenSSLAppKeyCertLoad     (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
@@ -295,6 +520,55 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
 <listitem><simpara>		the certificate filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeyCertLoadMemory">xmlSecOpenSSLAppKeyCertLoadMemory ()</title>
+<programlisting>int         xmlSecOpenSSLAppKeyCertLoadMemory
+                                            (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<para>
+Reads the certificate from memory buffer and adds it to key.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeyCertLoadBIO">xmlSecOpenSSLAppKeyCertLoadBIO ()</title>
+<programlisting>int         xmlSecOpenSSLAppKeyCertLoadBIO  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="BIO-CAPS">BIO</link> *bio,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<para>
+Reads the certificate from memory buffer and adds it to key.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bio</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate bio.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&nbsp;:</term>
 <listitem><simpara>		the certificate file format.

@@ -81,13 +81,13 @@
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* load private key, assuming that there is not password */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
     
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
-        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
+        fprintf(stderr,&quot;Error: failed to load pem certificate \&quot;%s\&quot;\n&quot;, cert_file);
 	goto done;
     }
 	    </pre></td></tr></table>
@@ -105,7 +105,7 @@
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
-	fprintf(stderr, "Error: failed to create signature template\n");
+	fprintf(stderr, &quot;Error: failed to create signature template\n&quot;);
 	goto done;		
     }
 
@@ -116,25 +116,25 @@
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
 					NULL, NULL, NULL);
     if(refNode == NULL) {
-	fprintf(stderr, "Error: failed to add reference to signature template\n");
+	fprintf(stderr, &quot;Error: failed to add reference to signature template\n&quot;);
 	goto done;		
     }
 
     /* add enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+	fprintf(stderr, &quot;Error: failed to add enveloped transform to reference\n&quot;);
 	goto done;		
     }
     
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, "Error: failed to add key info\n");
+	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
 	goto done;		
     }
     
     if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
-	fprintf(stderr, "Error: failed to add X509Data node\n");
+	fprintf(stderr, &quot;Error: failed to add X509Data node\n&quot;);
 	goto done;		
     }
 	    </pre></td></tr></table>

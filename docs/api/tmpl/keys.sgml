@@ -303,6 +303,16 @@ keys
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecKeyReadBuffer ##### -->
+<para>
+
+</para>
+
+@dataId: 
+@buffer: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecKeyReadBinaryFile ##### -->
 <para>
 
@@ -310,6 +320,17 @@ keys
 
 @dataId: 
 @filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReadMemory ##### -->
+<para>
+
+</para>
+
+@dataId: 
+@data: 
+@dataSize: 
 @Returns: 
 
 

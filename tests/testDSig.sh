@@ -15,6 +15,11 @@ if [ -n "$DEBUG_MEMORY" ] ; then
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 
+if [ -n "$PERF_TEST" ] ; then 
+    export EXTRA_PARAMS="--repeat $PERF_TEST"
+fi
+
+
 printRes() {
     if [ $? = 0 ]; then
 	echo "   OK"
@@ -35,7 +40,7 @@ execDSigTest() {
     $VALGRIND $xmlsec_app verify $EXTRA_PARAMS $2 $file.xml >> $logfile 2>> $logfile
     printRes 
 
-    if [ -n "$3" ] ; then
+    if [ -n "$3"  -a -z "$PERF_TEST" ] ; then
 	printf "    Create new signature                                 "
 	echo "$xmlsec_app sign $3 $file.tmpl" >> $logfile
 	$VALGRIND $xmlsec_app sign $EXTRA_PARAMS $3 $file.tmpl > $tmpfile 2>> $logfile

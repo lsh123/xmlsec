@@ -915,8 +915,8 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
         
     if((ns != NULL) && (ns->prefix != NULL)) {
 	xmlSecSize len;
-        len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 1;
-
+	
+        len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
         qname = xmlMalloc(len);
         if(qname == NULL) {
   	    xmlSecError(XMLSEC_ERRORS_HERE,

@@ -1,3 +1,7 @@
+2005-03-31  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xmltree.c: fixing warning from Solaris (bug #172201)
+
 2005-03-30  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html docs/news.html

@@ -1,3 +1,8 @@
+Sat 27 Sep 2003 05:23:41 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* examples/ docs/tests/ docs/ : created new xmldsigverify script
+	and upgraded tests
+
 Fri 26 Sep 2003 05:27:08 PM PDT   Aleksey Sanin  <aleksey@aleksey.com>
 	* src/mscrypto/ include/xmlsec/mscrypto/ : added API documentation
 	from Wouter

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Keys xmlns="http://www.aleksey.com/xmlsec/2002">
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-hmac-sha1</KeyName>
+<KeyValue>
+<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">c2VjcmV0</HMACKeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-des</KeyName>
+<KeyValue>
+<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
+zBFljViy/Qhd8AG0vGxf+SekrJ1ttpIz
+</DESKeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-aes128</KeyName>
+<KeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">0Xfy3ES+Fbv/OfWuQHKvPA==</AESKeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-aes192</KeyName>
+<KeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">lk9DyA07xL/m45fUb7zbLoy3c0hLhw80</AESKeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-aes256</KeyName>
+<KeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">fpCPQLCMZCw9WipH8kk1J75CqYgWBhbJDMFPiUS0hzE=</AESKeyValue>
+</KeyValue>
+</KeyInfo>
+</Keys>

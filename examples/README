@@ -38,7 +38,7 @@ This folder contains XML Security Library examples.
     decrypt1.c			Decrypting binary data using a single key
     decrypt2.c			Decrypting binary data using keys manager
     decrypt3.c			Decrypting binary file using custom keys manager
-
+    xmldsigverify.c		CGI script for signatures verifications
 
 2. Building Examples 
 -------------------------

@@ -87,7 +87,7 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 		if(ret != 1) {
 		    xmlSecError(XMLSEC_ERRORS_HERE,
 				XMLSEC_ERRORS_R_CRYPTO_FAILED,
-				"EVP_EncryptInit - %d");
+				"EVP_EncryptInit - %d", ret);
 		    return(-1);    
 		}
 	    }

@@ -348,8 +348,8 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
 		       XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE, NULL);
     if((sig->r == NULL) || (sig->s == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_SIZE,
-		    "size(r)=%d or size(s)=%d > %d", sig->r, sig->s, XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE);
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BN_bin2bn");
 	DSA_SIG_free(sig); 
 	return(-1);
     }

@@ -30,7 +30,7 @@
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/x509.h>
-
+#include <xmlsec/errors.h>
 
 typedef struct _xmlSecX509Data {
     X509		*verified;
@@ -85,7 +85,6 @@ static xmlSecKeyPtr	xmlSecParseEvpKey		(EVP_PKEY *pKey);
 
 xmlSecX509DataPtr	
 xmlSecX509DataCreate(void) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataCreate";
     xmlSecX509DataPtr x509Data;
     
     /*
@@ -93,11 +92,9 @@ xmlSecX509DataCreate(void) {
      */
     x509Data = (xmlSecX509DataPtr) xmlMalloc(sizeof(xmlSecX509Data));
     if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecX509Data malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(x509Data, 0, sizeof(xmlSecX509Data));
@@ -106,16 +103,7 @@ xmlSecX509DataCreate(void) {
 
 void
 xmlSecX509DataDestroy(xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataDestroy";
-    
-    if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
+    xmlSecAssert(x509Data != NULL);    
 
     if(x509Data->certs != NULL) {	
 	sk_X509_pop_free(x509Data->certs, X509_free); 
@@ -132,55 +120,29 @@ xmlSecX509DataDestroy(xmlSecX509DataPtr x509Data) {
 
 size_t			
 xmlSecX509DataGetCertsNumber(xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataGetCertsNumber";
-    
-    if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null\n",
-	    func);	
-#endif 	    
-	return(0);
-    }
+    xmlSecAssert2(x509Data != NULL, 0);
+
     return((x509Data->certs != NULL) ? x509Data->certs->num : 0);
 }
 
 size_t
 xmlSecX509DataGetCrlsNumber(xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataGetCrlsNumber";
-    
-    if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null\n",
-	    func);	
-#endif 	    
-	return(0);
-    }
+    xmlSecAssert2(x509Data != NULL, 0);    
+
     return((x509Data->crls != NULL) ? x509Data->crls->num : 0);
 }
 
 static int
 xmlSecX509DataAddCrl(xmlSecX509DataPtr x509Data, X509_CRL *crl) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataAddCrl";
-
-    if((x509Data == NULL) || (crl == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data or CRL is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
 
     if(x509Data->crls == NULL) {
 	x509Data->crls = sk_X509_CRL_new_null();
 	if(x509Data->crls == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: CRLs stack creation failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"sk_X509_CRL_new_null");
 	    return(-1);	
 	}
     }
@@ -190,25 +152,15 @@ xmlSecX509DataAddCrl(xmlSecX509DataPtr x509Data, X509_CRL *crl) {
 
 static int
 xmlSecX509DataAddCert(xmlSecX509DataPtr x509Data, X509 *cert) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataAddCert";
-
-    if((x509Data == NULL) || (cert == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data or cert is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    
     if(x509Data->certs == NULL) {
 	x509Data->certs = sk_X509_new_null();
 	if(x509Data->certs == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: x509Data certs stack creation failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"sk_X509_new_null");
 	    return(-1);	
 	}
     }
@@ -219,26 +171,16 @@ xmlSecX509DataAddCert(xmlSecX509DataPtr x509Data, X509 *cert) {
 
 xmlSecX509DataPtr
 xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataDup";
     xmlSecX509DataPtr newX509;
     int ret;
-    
-    if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+
+    xmlSecAssert2(x509Data != NULL, NULL);
     
     newX509 = xmlSecX509DataCreate();
     if(newX509 == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create new x509Data data\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataCreate");
 	return(NULL);
     }
     
@@ -254,22 +196,18 @@ xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
 	    cert = ((X509**)(x509Data->certs->data))[i];
 	    newCert = X509_dup(cert);
 	    if(newCert == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: x509Data dup failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "X509_dup");
 		xmlSecX509DataDestroy(newX509);
 		return(NULL);	
 	    }
 	    
 	    ret = xmlSecX509DataAddCert(newX509, newCert);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: x509Data add failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecX509DataAddCert");
 		xmlSecX509DataDestroy(newX509);
 		return(NULL);	
 	    }
@@ -291,22 +229,18 @@ xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
 	    crl = ((X509_CRL**)(x509Data->crls->data))[i];
 	    newCrl = X509_CRL_dup(crl);
 	    if(newCrl == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: x509_CRL dup failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "X509_CRL_dup");
 		xmlSecX509DataDestroy(newX509);
 		return(NULL);	
 	    }
 	    
 	    ret = xmlSecX509DataAddCrl(newX509, newCrl);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: x509_CRL add failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecX509DataAddCrl - %d", ret);
 		xmlSecX509DataDestroy(newX509);
 		return(NULL);	
 	    }
@@ -319,45 +253,25 @@ xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
 
 xmlSecKeyPtr
 xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataCreateKey";
     xmlSecKeyPtr key = NULL;
     EVP_PKEY *pKey = NULL;
-    
-    if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
-    
-    if(x509Data->verified == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: no verified cert is found\n",
-	    func);	
-#endif
-	return(NULL);
-    }
 
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(x509Data->verified != NULL, NULL);
+    
     pKey = X509_get_pubkey(x509Data->verified);
     if(pKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get public key from cert\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_get_pubkey");
 	return(NULL);
     }    
 
     key = xmlSecParseEvpKey(pKey);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create RSA key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecParseEvpKey");
 	EVP_PKEY_free(pKey);
 	return(NULL);	    
     }    
@@ -369,41 +283,29 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 
 xmlSecKeyPtr
 xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecPKCS12ReadKey";
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyPtr key;
     FILE *f;
     PKCS12 *p12;
     EVP_PKEY *pKey = NULL;
     X509 *cert = NULL;
     STACK_OF(X509) *chain = NULL;
     int ret;
-    
-    if(filename == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: filename is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+
+    xmlSecAssert2(filename != NULL, NULL);
         
     f = fopen(filename, "r");
     if(f == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-		"%s: failed to open file %s\n", 
-		func, filename);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
 	return(NULL);
     }
     
     p12 = d2i_PKCS12_fp(f, NULL);
     if(p12 == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-		"%s: failed to read pkcs12 file %s\n", 
-		func, filename);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "d2i_PKCS12_fp(filename=%s)", filename);
 	fclose(f);    
 	return(NULL);
     }
@@ -411,22 +313,18 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 
     ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-	    "%s: failed password verification for pkcs12 file %s\n", 
-	    func, filename);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PKCS12_verify_mac - %d", ret);
         PKCS12_free(p12);
 	return(NULL);	
     }    
         
     ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-	    "%s: failed to parse pkcs12 file %s\n", 
-	    func, filename);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PKCS12_parse - %d", ret);
         PKCS12_free(p12);
 	return(NULL);	
     }    
@@ -437,11 +335,9 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 
     key = xmlSecParseEvpKey(pKey);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create RSA key\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecParseEvpKey");
 	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
 	return(NULL);	    
     }    
@@ -449,11 +345,9 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 
     key->x509Data = xmlSecX509DataCreate();
     if(key->x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create x509 data\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataCreate");
 	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
 	xmlSecKeyDestroy(key);
 	return(NULL);
@@ -465,39 +359,27 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 
 static xmlSecKeyPtr	
 xmlSecParseEvpKey(EVP_PKEY *pKey) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseEvpKey";
     xmlSecKeyPtr key = NULL;
     int ret;
     
-    if(pKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: EVP_PKEY is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(pKey != NULL, NULL);
 
     switch(pKey->type) {	
 #ifndef XMLSEC_NO_RSA    
     case EVP_PKEY_RSA:
 	key = xmlSecKeyCreate(xmlSecRsaKey, xmlSecKeyOriginX509);
 	if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create RSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyCreate");
 	    return(NULL);	    
 	}
 	
 	ret = xmlSecRsaKeyGenerate(key, pKey->pkey.rsa);
 	if(ret < 0) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to set RSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecRsaKeyGenerate");
 	    xmlSecKeyDestroy(key);
 	    return(NULL);	    
 	}
@@ -507,32 +389,26 @@ xmlSecParseEvpKey(EVP_PKEY *pKey) {
     case EVP_PKEY_DSA:
 	key = xmlSecKeyCreate(xmlSecDsaKey, xmlSecKeyOriginX509);
 	if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create DSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyCreate");
 	    return(NULL);	    
 	}
 	
 	ret = xmlSecDsaKeyGenerate(key, pKey->pkey.dsa);
 	if(ret < 0) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to set DSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDsaKeyGenerate");
 	    xmlSecKeyDestroy(key);
 	    return(NULL);	    
 	}
 	break;
 #endif /* XMLSEC_NO_DSA */	
     default:	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the key type %d is not supported\n",
-	    func, pKey->type);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "key type %d not supported", pKey->type);
 	return(NULL);
     }
     
@@ -542,17 +418,9 @@ xmlSecParseEvpKey(EVP_PKEY *pKey) {
 
 void
 xmlSecX509DataDebugDump(xmlSecX509DataPtr x509Data, FILE *output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataDebugDump";
+    xmlSecAssert(x509Data != NULL);
+    xmlSecAssert(output != NULL);
 
-    if((x509Data == NULL) || (output == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data or output is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
-    
     if(x509Data->verified != NULL) {
 	xmlSecX509DebugDump(x509Data->verified, output);
     }
@@ -569,19 +437,12 @@ xmlSecX509DataDebugDump(xmlSecX509DataPtr x509Data, FILE *output) {
 
 static void
 xmlSecX509DebugDump(X509 *cert, FILE *output) { 
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDebugx509Dump";
     char buf[1024];
     BIGNUM *bn = NULL;
+
+    xmlSecAssert(cert != NULL);
+    xmlSecAssert(output != NULL);
     
-    if((output == NULL) || (cert == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: cert or output file is null\n", 
-	    func);	
-#endif
-	return;
-    }
-        
     fprintf(output, "=== X509 Certificate\n");
     fprintf(output, "==== Subject Name: %s\n", 
 	 X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))); 
@@ -601,30 +462,21 @@ xmlSecX509DebugDump(X509 *cert, FILE *output) {
 int
 xmlSecX509DataReadDerCert(xmlSecX509DataPtr x509Data, xmlChar *buf, size_t size,
 			int base64) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataReadDerCert";
     X509 *cert = NULL;
     BIO *mem = NULL;
     int res = -1;
     int ret;
-    
-    if((x509Data == NULL) || (buf == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data or buf is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
 
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
     /* usual trick with base64 decoding "in-place" */
     if(base64) {
 	ret = xmlSecBase64Decode(buf, (unsigned char*)buf, xmlStrlen(buf)); 
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: base64 failed\n",
-		func);	
-#endif	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64Decode - %d", ret);
 	    return(-1);
 	}
 	size = ret;
@@ -632,41 +484,33 @@ xmlSecX509DataReadDerCert(xmlSecX509DataPtr x509Data, xmlChar *buf, size_t size,
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create mem BIO\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_new(BIO_s_mem)");
 	goto done;
     }
     
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mem BIO write failed\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_write(BIO_s_mem)");
 	goto done;
     }
 
     cert = d2i_X509_bio(mem, NULL);
     if(cert == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read cert from mem BIO\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "d2i_X509_bio");
 	goto done;
     }
 
     ret = xmlSecX509DataAddCert(x509Data, cert);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add cert\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataAddCert - %d", ret);
 	goto done;
     }
     cert = NULL;
@@ -684,39 +528,24 @@ done:
 
 xmlChar*		
 xmlSecX509DataWriteDerCert(xmlSecX509DataPtr x509Data, int pos) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataWriteDerCert";
     xmlChar *res = NULL;
     BIO *mem = NULL;
     unsigned char *p = NULL;
     long size;
     X509 *cert;
-    
-    if((x509Data == NULL) || (pos < 0)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null or pos < 0\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
 
-    if((x509Data->certs == NULL) || (x509Data->certs->num <= pos)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data cerst is null or pos is greater than size\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(x509Data->certs != NULL, NULL);
+    xmlSecAssert2(x509Data->certs->num > pos, NULL);
+    xmlSecAssert2(pos >= 0 , NULL);
+    
     cert = ((X509**)(x509Data->certs->data))[pos];
 	
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create mem BIO\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_new(BIO_s_mem)");
 	goto done;
     }
 
@@ -726,21 +555,17 @@ xmlSecX509DataWriteDerCert(xmlSecX509DataPtr x509Data, int pos) {
         
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to get buffer from bio\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_get_mem_data");
 	goto done;
     }
     
     res = xmlSecBase64Encode(p, size, 0);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 encode failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	goto done;
     }    
     
@@ -756,30 +581,21 @@ done:
 int
 xmlSecX509DataReadDerCrl(xmlSecX509DataPtr x509Data, xmlChar *buf, size_t size, 
 			int base64) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataReadDerCrl";
     X509_CRL *crl = NULL;
     BIO *mem = NULL;
     int res = -1;
     int ret;
-    
-    if((x509Data == NULL) || (buf == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data or buf is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
 
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
     /* usual trick with base64 decoding "in-place" */
     if(base64) {
 	ret = xmlSecBase64Decode(buf, (unsigned char*)buf, xmlStrlen(buf)); 
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: base64 failed\n",
-		func);	
-#endif	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64Decode - %d" ,ret);
 	    return(-1);
 	}
 	size = ret;
@@ -787,41 +603,33 @@ xmlSecX509DataReadDerCrl(xmlSecX509DataPtr x509Data, xmlChar *buf, size_t size,
 
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create mem BIO\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_new(BIO_s_mem)");
 	goto done;
     }
     
     ret = BIO_write(mem, buf, size);
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mem BIO write failed\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_write(BIO_s_mem)");
 	goto done;
     }
 
     crl = d2i_X509_CRL_bio(mem, NULL);
     if(crl == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read crl from mem BIO\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "d2i_X509_CRL_bio");
 	goto done;
     }
 
     ret = xmlSecX509DataAddCrl(x509Data, crl);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add crl\n",
-	    func);	
-#endif	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataAddCrl - %d", ret);
 	goto done;
     }
     crl = NULL;
@@ -839,39 +647,24 @@ done:
 
 xmlChar*		
 xmlSecX509DataWriteDerCrl(xmlSecX509DataPtr x509Data, int pos) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataWriteDerCrl";
     xmlChar *res = NULL;
     BIO *mem = NULL;
     unsigned char *p = NULL;
     long size;
     X509_CRL *crl;
-    
-    if((x509Data == NULL) || (pos < 0)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data is null or pos < 0\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
 
-    if((x509Data->crls == NULL) || (x509Data->crls->num <= pos)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data cerst is null or pos is greater than size\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(x509Data->crls != NULL, NULL);
+    xmlSecAssert2(x509Data->crls->num  > pos, NULL);
+    xmlSecAssert2(pos >= 0, NULL);
+    
     crl = ((X509_CRL**)(x509Data->crls->data))[pos];
-	
+
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create mem BIO\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_new(BIO_s_mem)");
 	goto done;
     }
 
@@ -881,21 +674,17 @@ xmlSecX509DataWriteDerCrl(xmlSecX509DataPtr x509Data, int pos) {
         
     size = BIO_get_mem_data(mem, &p);
     if((size <= 0) || (p == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to get buffer from bio\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_get_mem_data");
 	goto done;
     }
     
     res = xmlSecBase64Encode(p, size, 0);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 encode failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	goto done;
     }    
     
@@ -910,37 +699,26 @@ done:
 
 int
 xmlSecX509DataReadPemCert(xmlSecX509DataPtr x509Data, const char *filename) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataWriteDerCrl";
     X509 *cert;
     FILE *f;
     int ret;
-    
-    if((x509Data == NULL) || (filename == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509Data or filename is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
 
+    xmlSecAssert2(x509Data != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    
     f = fopen(filename, "r");
     if(f == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to open file \"%s\"\n",
-	    func, filename);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
 	return(-1);    
     }
     
     cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
     if(cert == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to read cert file \"%s\"\n",
-	    func, filename);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PEM_read_X509_AUX(filename=%s)", filename);
 	fclose(f);
 	return(-1);    
     }    	
@@ -948,11 +726,9 @@ xmlSecX509DataReadPemCert(xmlSecX509DataPtr x509Data, const char *filename) {
     
     ret = xmlSecX509DataAddCert(x509Data, cert);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add cert\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataAddCert - %d", ret);
 	return(-1);    
     }
     return(0);
@@ -965,58 +741,47 @@ xmlSecX509DataReadPemCert(xmlSecX509DataPtr x509Data, const char *filename) {
  */
 xmlSecX509StorePtr	
 xmlSecX509StoreCreate(void) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreCreate";
     xmlSecX509StorePtr store;
     
     store = (xmlSecX509StorePtr)xmlMalloc(sizeof(xmlSecX509Store));
     if(store == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate xmlSecX509Store\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(store, 0, sizeof(xmlSecX509Store));
 
     store->xst = X509_STORE_new();
     if(store->xst == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create x509 store\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_new");
 	xmlSecX509StoreDestroy(store);
 	return(NULL);
     }
     if(!X509_STORE_set_default_paths(store->xst)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to set default paths\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_set_default_paths");
 	xmlSecX509StoreDestroy(store);
 	return(NULL);
     }
 	
     store->untrusted = sk_X509_new_null();
     if(store->untrusted == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create known certs store\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "sk_X509_new_null");
 	xmlSecX509StoreDestroy(store);
 	return(NULL);
     }    
 
     store->crls = sk_X509_CRL_new_null();
     if(store->crls == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create crls store\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "sk_X509_CRL_new_null");
 	xmlSecX509StoreDestroy(store);
 	return(NULL);
     }    
@@ -1025,16 +790,8 @@ xmlSecX509StoreCreate(void) {
 
 void
 xmlSecX509StoreDestroy(xmlSecX509StorePtr store) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreDestroy";
+    xmlSecAssert(store != NULL);
 
-    if(store == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: store is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
     if(store->xst != NULL) {
 	X509_STORE_free(store->xst);
     }
@@ -1052,17 +809,10 @@ xmlSecX509StoreDestroy(xmlSecX509StorePtr store) {
 
 int
 xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreVerify";
     int ret;
-    
-    if((store == NULL) || (x509Data == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: store or x509Data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(x509Data != NULL, -1);
     
     /*
      * verify all crls in the X509Data (if any) and remove
@@ -1081,11 +831,9 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		sk_delete(x509Data->crls, i);
 		X509_CRL_free(crl); 
 	    } else {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: CRL verification failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "xmlSecX509StoreVerifyCRL - %d", ret);
 		return(-1);
 	    }
 	}
@@ -1101,11 +849,9 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 	 */ 
         certs = sk_X509_dup(x509Data->certs);
 	if(certs == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to dup certs\n",
-	        func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"sk_X509_dup");
 	    return(-1);
         }
 	if(store->untrusted != NULL) {
@@ -1123,11 +869,9 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		    sk_X509_delete(certs, i);
 		    continue;
 		} else if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: cert verification against crls list failed\n",
-			func);	
-#endif 	    	
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSec509VerifyCertAgainstCrls - %d", ret);
 		    sk_X509_free(certs);
 		    return(-1);
 		}
@@ -1138,11 +882,9 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		    sk_X509_delete(certs, i);
 		    continue;
 		} else if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: cert verification against local crls list failed\n",
-			func);	
-#endif 	    	
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSec509VerifyCertAgainstCrls - %d", ret);
 		    sk_X509_free(certs);
 		    return(-1);
 		}
@@ -1157,13 +899,6 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
     
 		X509_STORE_CTX_init (&xsc, store->xst, cert, certs);
 		ret = X509_verify_cert(&xsc); 
-		if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: cert verification failed (X509_STORE_CTX.error=%d)\n",
-			func, xsc.error);
-#endif	    	
-		}
 		X509_STORE_CTX_cleanup (&xsc);  
 
 		if(ret == 1) {
@@ -1171,11 +906,9 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		    sk_X509_free(certs);
 		    return(1);
 		} else if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: certificate verification error\n",
-		        func);	
-#endif
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"X509_verify_cert - %d", ret);
 		    sk_X509_free(certs);
 		    return(-1);
 		}
@@ -1190,39 +923,28 @@ xmlSecX509DataPtr
 xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName, 
 		 xmlChar *issuerName,  xmlChar *issuerSerial, xmlChar *ski,
 		 xmlSecX509DataPtr x509Data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreFind";
     X509 *cert = NULL;
     int ret;
 
-    if((store == NULL) || (store->untrusted == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: store or untrusted certs list is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(store->untrusted != NULL, NULL);
 
     cert = xmlSecX509Find(store->untrusted, subjectName, issuerName, issuerSerial, ski);
     if(cert != NULL) {
 	if(x509Data == NULL) {
 	    x509Data = xmlSecX509DataCreate();
 	    if(x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to create X509Data object\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecX509DataCreate");
 		return(NULL);
 	    }
 	}
 	ret = xmlSecX509DataAddCert(x509Data, cert = X509_dup(cert));
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to add cert\n",
-	        func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataAddCert - %d", ret);
 	    if(cert != NULL) X509_free(cert);
 	    return(NULL);	
 	}
@@ -1232,61 +954,42 @@ xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName,
 }
 
 int
-xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, int trusted) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreLoadPemCert";
+xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, 
+			   int trusted) {
     int ret;
-    
-    if((store == NULL) || (filename == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: store or filename is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
 
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    
     if(trusted) {
         X509_LOOKUP *lookup = NULL; 
 
 	lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_file());
 	if(lookup == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: x509 file lookup creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"X509_STORE_add_lookup");
 	    return(-1);
 	}
 
 	ret = X509_LOOKUP_load_file(lookup, filename, X509_FILETYPE_PEM);
 	if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: x509 file \"%s\" load failed\n", 
-		func, filename);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"X509_LOOKUP_load_file(%s) - %d", filename, ret);
 	    return(-1);
 	}
     } else {
         FILE *f;
 	X509 *cert;
     
-	if(store->untrusted == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: untrusted certs stack is NULL\n",
-		func);	
-#endif 	    
-	    return(-1);
-	}
+	xmlSecAssert2(store->untrusted != NULL, -1);
     
 	f = fopen(filename, "r");
 	if(f == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: unable to open file \"%s\" \n",
-		func, filename);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_IO_FAILED,
+			"fopen(\"%s\", \"r\"), errno=%d", filename, errno);
 	    return(-1);
 	}
     
@@ -1294,11 +997,9 @@ xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, int t
 	fclose(f);
 
 	if(cert == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read cert from file \"%s\" \n",
-		func, filename);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"PEM_read_X509(filename=\"%s\")", filename);
 	    return(-1);
 	}    
 	
@@ -1309,25 +1010,17 @@ xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, int t
 
 int
 xmlSecX509StoreAddCertsDir(xmlSecX509StorePtr store, const char *path) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreAddCertsDir";
     X509_LOOKUP *lookup = NULL;
-    
-    if((store == NULL) || (store->xst == NULL) || (path == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: store or filename is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
 
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(store->xst != NULL, -1);
+    xmlSecAssert2(path != NULL, -1);
+    
     lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: x509 hash dir lookup creation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_add_lookup");
 	return(-1);
     }    
     X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
@@ -1337,50 +1030,38 @@ xmlSecX509StoreAddCertsDir(xmlSecX509StorePtr store, const char *path) {
 
 static int
 xmlSecX509StoreVerifyCRL(xmlSecX509StorePtr store, X509_CRL *crl ) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreVerifyCRL";
     X509_STORE_CTX xsc; 
     X509_OBJECT xobj;
     EVP_PKEY *pkey;
     int ret;  
-    
-    if((crl == NULL) || (store == NULL) || (store->xst == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: crl or store is null\n",
-	    func);
-#endif	    	
-	return(-1);
-    }
 
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(store->xst != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    
     X509_STORE_CTX_init(&xsc, store->xst, NULL, NULL);
     ret = X509_STORE_get_by_subject(&xsc, X509_LU_X509, 
 				    X509_CRL_get_issuer(crl), &xobj);
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Error getting CRL issuer certificate\n",
-	    func);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_get_by_subject - %d", ret);
 	return(-1);
     }
     pkey = X509_get_pubkey(xobj.data.x509);
     X509_OBJECT_free_contents(&xobj);
     if(pkey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Error getting CRL issuer public key\n",
-	    func);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_get_pubkey");
 	return(-1);
     }
     ret = X509_CRL_verify(crl, pkey);
     EVP_PKEY_free(pkey);    
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: crl verification failed (%d)\n",
-	    func, xsc.error);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_CRL_verify - %d", ret);
     }
     X509_STORE_CTX_cleanup (&xsc);  
     return((ret == 1) ? 1 : 0);
@@ -1406,19 +1087,11 @@ static X509*
 xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
 			xmlChar *issuerName, xmlChar *issuerSerial,
 			xmlChar *ski) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509Find";
     X509 *cert = NULL;
     int i;
-    
-    if(certs == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: certs is null\n",
-	    func);	
-#endif 	    
-	return(NULL);    
-    }
 
+    xmlSecAssert2(certs != NULL, NULL);
+    
     /* todo: may be this is not the fastest way to search certs */
     if(subjectName != NULL) {
 	X509_NAME *nm;
@@ -1426,11 +1099,9 @@ xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
 
 	nm = xmlSecX509NameRead(subjectName, xmlStrlen(subjectName));
 	if(nm == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: subject name parsing failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509NameRead");
 	    return(NULL);    
 	}
 
@@ -1451,30 +1122,24 @@ xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
 
 	nm = xmlSecX509NameRead(issuerName, xmlStrlen(issuerName));
 	if(nm == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: issuer name parsing failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509NameRead");
 	    return(NULL);    
 	}
 		
 	bn = BN_new();
 	if(bn == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: BIGNUM creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"BN_new");
 	    X509_NAME_free(nm);
 	    return(NULL);    
 	}
 	if(BN_dec2bn(&bn, (char*)issuerSerial) == 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: BIGNUM parsing failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"BN_dec2bn");
 	    BN_free(bn);
 	    X509_NAME_free(nm);
 	    return(NULL);    
@@ -1482,11 +1147,9 @@ xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
 	
 	serial = BN_to_ASN1_INTEGER(bn, NULL);
 	if(serial == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: ASN1_INTEGER parsing failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"BN_to_ASN1_INTEGER");
 	    BN_free(bn);
 	    X509_NAME_free(nm);
 	    return(NULL);    
@@ -1518,11 +1181,9 @@ xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
 	/* our usual trick with base64 decode */
 	len = xmlSecBase64Decode(ski, (unsigned char*)ski, xmlStrlen(ski));
 	if(len < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to base64 decode ski\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64Decode");
 	    return(NULL);    	
 	}
 	for(i = 0; i < certs->num; ++i) {
@@ -1553,18 +1214,11 @@ xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
  */
 static X509*
 xmlSecX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509FindNextChainCert";
     unsigned long certSubjHash;
     int i;
-    
-    if((chain == NULL) || (cert == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: chain or cert is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(chain != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
     
     certSubjHash = X509_subject_name_hash(cert);
     for(i = 0; i < chain->num; ++i) {
@@ -1584,21 +1238,14 @@ xmlSecX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
  */
 static int
 xmlSec509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSec509VerifyCertAgainstCrls";
     X509_NAME *issuer;
     X509_CRL *crl = NULL;
     X509_REVOKED *revoked;
     int i, n;
     int ret;  
-    
-    if((cert == NULL) || (crls == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: X509_STORE or cert is null\n",
-	    func);
-#endif	    	
-	return(-1);
-    }
+
+    xmlSecAssert2(crls != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
     
     /*
      * Try to retrieve a CRL corresponding to the issuer of
@@ -1633,11 +1280,9 @@ xmlSec509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
     for (i = 0; i < n; i++) {
         revoked = (X509_REVOKED *)sk_value(X509_CRL_get_REVOKED(crl), i);
         if (ASN1_INTEGER_cmp(revoked->serialNumber, X509_get_serialNumber(cert)) == 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: certificate is revoked\n",
-	        func);
-#endif	    	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CERT_REVOKED,
+			NULL);
 	    return(0);
         }
     }
@@ -1652,20 +1297,19 @@ xmlSec509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
  */       
 static X509_NAME *
 xmlSecX509NameRead(unsigned char *str, int len) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509NameRead";
     unsigned char name[256];
     unsigned char value[256];
     int nameLen, valueLen;
     X509_NAME *nm;
     int type = MBSTRING_ASC;
+
+    xmlSecAssert2(str != NULL, NULL);
     
     nm = X509_NAME_new();
     if(nm == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create X509_NAME\n",
-	    func);	
-#endif 		    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_NAME_new");
 	return(NULL);
     }
     
@@ -1677,11 +1321,9 @@ xmlSecX509NameRead(unsigned char *str, int len) {
 
 	nameLen = xmlSecX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);	
 	if(nameLen < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: name read failed\n",
-		func);	
-#endif 		    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509NameStringRead - %d", nameLen);
 	    X509_NAME_free(nm);
 	    return(NULL);
 	}
@@ -1692,11 +1334,9 @@ xmlSecX509NameRead(unsigned char *str, int len) {
 		valueLen = xmlSecX509NameStringRead(&str, &len, 
 					value, sizeof(value), '"', 1);	
 		if(valueLen < 0) {
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: failed to read quoted value\n",
-			func);	
-#endif 		    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecX509NameStringRead - %d", valueLen);
 		    X509_NAME_free(nm);
 		    return(NULL);
     		}
@@ -1705,11 +1345,9 @@ xmlSecX509NameRead(unsigned char *str, int len) {
 		    ++str; --len;
 		}
 		if((len > 0) && ((*str) != ',')) {
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: comma is expected\n",
-			func);	
-#endif 		    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_INVALID_DATA,
+				"comma is expected");
 		    X509_NAME_free(nm);
 		    return(NULL);
 		}
@@ -1718,23 +1356,19 @@ xmlSecX509NameRead(unsigned char *str, int len) {
 		}
 		type = MBSTRING_ASC;
 	    } else if((*str) == '#') {
-		    /* TODO: read octect values */
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: reading octect values is not implemented yet\n",
-			func);	
-#endif 		    
+		/* TODO: read octect values */
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "reading octect values is not implemented yet");
     	        X509_NAME_free(nm);
 		return(NULL);
 	    } else {
 		valueLen = xmlSecX509NameStringRead(&str, &len, 
 					value, sizeof(value), ',', 1);	
 		if(valueLen < 0) {
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: failed to read string value\n",
-			func);	
-#endif 		    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecX509NameStringRead - %d", valueLen);
     	    	    X509_NAME_free(nm);
 		    return(NULL);
     		}
@@ -1765,8 +1399,11 @@ static int
 xmlSecX509NameStringRead(unsigned char **str, int *strLen, 
 			unsigned char *res, int resLen,
 			unsigned char delim, int ingoreTrailingSpaces) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509NameStringRead";
     unsigned char *p, *q, *nonSpace; 
+
+    xmlSecAssert2(str != NULL, -1);
+    xmlSecAssert2(strLen != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
     
     p = (*str);
     nonSpace = q = res;
@@ -1779,22 +1416,18 @@ xmlSecX509NameStringRead(unsigned char **str, int *strLen,
 	    nonSpace = q;    
 	    if(xmlSecIsHex((*p))) {
 		if((p - (*str) + 1) >= (*strLen)) {
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: two hex digits expected\n",
-			func);	
-#endif 		    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_INVALID_DATA,
+				"two hex digits expected");
 	    	    return(-1);
 		}
 		*(q++) = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
 		p += 2;
 	    } else {
 		if(((++p) - (*str)) >= (*strLen)) {
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: escaped symbol missed\n",
-			func);	
-#endif 		    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_INVALID_DATA,
+				"escaped symbol missed");
 		    return(-1);
 		}
 		*(q++) = *(p++); 
@@ -1802,11 +1435,9 @@ xmlSecX509NameStringRead(unsigned char **str, int *strLen,
 	}	    
     }
     if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer is too small\n",
-	    func);	
-#endif 		    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "buffer is too small");
 	return(-1);
     }
     (*strLen) -= (p - (*str));
@@ -1820,6 +1451,9 @@ int xmlSecX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
 	int i,j;
 	X509_NAME_ENTRY *na,*nb;
 
+	xmlSecAssert2(a != NULL, -1);
+	xmlSecAssert2(b != NULL, 1);
+	
 	if (sk_X509_NAME_ENTRY_num(a->entries)
 	    != sk_X509_NAME_ENTRY_num(b->entries))
 		return sk_X509_NAME_ENTRY_num(a->entries)
@@ -1859,33 +1493,25 @@ int xmlSecX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
  */
 static int		
 xmlSecX509NamesCompare(X509_NAME *a, X509_NAME *b) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509NamesCompare";
     X509_NAME *a1 = NULL;
     X509_NAME *b1 = NULL;
     int ret;
     
+    xmlSecAssert2(a != NULL, -1);    
+    xmlSecAssert2(b != NULL, 1);    
     
-    if(a != NULL) {
-	a1 = X509_NAME_dup(a);
-    }
+    a1 = X509_NAME_dup(a);
     if(a1 == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-		"%s: X509_NAME_dup(a) failed\n",
-		func);	
-#endif 		    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_NAME_dup");
         return(-1);
     }
-    if(b != NULL) {
-	b1 = X509_NAME_dup(b);
-    }
+    b1 = X509_NAME_dup(b);
     if(b1 == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-		"%s: X509_NAME_dup(b) failed\n",
-		func);	
-#endif 		
-	X509_NAME_free(a1);    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_NAME_dup");
         return(1);
     }
         
@@ -1913,6 +1539,9 @@ xmlSecX509NamesCompare(X509_NAME *a, X509_NAME *b) {
  */
 static int 
 xmlSecX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, const X509_NAME_ENTRY **b) {
+    xmlSecAssert2(a != NULL, -1);
+    xmlSecAssert2(b != NULL, 1);
+
     return(OBJ_cmp((*a)->object, (*b)->object));
 }
 

@@ -231,7 +231,7 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     ptr->data = buffer = xmlGetProp(node, BAD_CAST "PrefixList");
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 		    "<InclusiveNamespaces /> node has no PrefixList attribute");
 	return(-1);
     }

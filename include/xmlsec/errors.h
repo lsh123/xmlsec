@@ -35,17 +35,19 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 15	/* "key data is invalid" */
 #define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 16	/* "invalid key size" */
 #define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 17	/* "invalid key origin" */
+#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 14	/* "key not found" */
 
 #define XMLSEC_ERRORS_R_INVALID_SIZE		 21	/* "invalid size" */
 #define XMLSEC_ERRORS_R_INVALID_DATA		 22	/* "invalid data" */
 #define XMLSEC_ERRORS_R_INVALID_TYPE		 22	/* "invalid type" */
+#define XMLSEC_ERRORS_R_INVALID_USAGE		 22	/* "invalid usage" */
 #define XMLSEC_ERRORS_R_INVALID_NODE	 	 26	/* "invalid node" */
+#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 26	/* "invalid nodes set" */
 #define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 23	/* "invalid node content" */
-#define XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE	 24	/* "invalid node attribute" */
+#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 24	/* "invalid node attribute" */
 #define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 25	/* "node already present" */
 #define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 27	/* "same document required" */
 #define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 28	/* "node not found" */
-
 
 #define XMLSEC_ERRORS_R_ASSERTION		 31	/* "assertion" */
 #define XMLSEC_ERRORS_R_DISABLED		 32	/* "disabled" */
@@ -53,7 +55,8 @@ extern "C" {
 #define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 41	/* "max retrievals level reached" */
 #define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 42	/* "cert verification failed" */
 #define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 43	/* "cert not found" */
-#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 44	/* "key not found" */
+#define XMLSEC_ERRORS_R_CERT_REVOKED		 43	/* "cert revoked" */
+#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 45	/* "invalid reference" */
 
 /**
  * Error function
@@ -66,8 +69,14 @@ extern "C" {
 #define XMLSEC_ERRORS_HERE	__FILE__,__LINE__,__FUNCTION__
 
 
+#ifdef __GNUC__
+XMLSEC_EXPORT void xmlSecError	(const char* file, int line, const char* func,
+				 int reason, const char* msg, ...)
+				__attribute__ ((format (printf, 5, 6)));
+#else /* __GNUC__ */
 XMLSEC_EXPORT void xmlSecError	(const char* file, int line, const char* func,
 				 int reason, const char* msg, ...);
+#endif /* __GNUC__ */
 
 /**
  * Assertions
@@ -87,6 +96,7 @@ XMLSEC_EXPORT void xmlSecError	(const char* file, int line, const char* func,
 			"%s", #p); \
 	    return(ret); \
 	} 
+
 
 #ifdef __cplusplus
 }

@@ -21,9 +21,9 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/transforms.h>
-
 #include <xmlsec/io.h>
 #include <xmlsec/membuf.h>
+#include <xmlsec/errors.h>
 
 #define XMLSEC_TRANSFORM_BUFFER_SIZE    1024
 
@@ -162,39 +162,29 @@ void xmlSecTransformsInit(void) {
  *
  */
 int
-xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, xmlNodePtr transformsNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformsNodeRead";
+xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, 
+			 xmlNodePtr transformsNode) {
     xmlNodePtr cur;
     xmlSecTransformPtr transform;
     int ret;    
-        
-    if((state == NULL) || (transformsNode == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state or transformsNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+
+    xmlSecAssert2(state != NULL, -1);        
+    xmlSecAssert2(transformsNode != NULL, -1);
     
     cur = xmlSecGetNextElementNode(transformsNode->children);
     while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transform", xmlSecDSigNs)) {
 	transform = xmlSecTransformNodeRead(cur, xmlSecUsageDSigTransform, 0);
 	if(transform == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read \"Transform\"\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformNodeRead");
 	    return(-1);
 	}
 	ret = xmlSecTransformStateUpdate(state, transform);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add \"Transform\"\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate");
 	    xmlSecTransformDestroy(transform, 1);
 	    return(-1);
 	}
@@ -202,11 +192,9 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, xmlNodePtr transformsNod
     }
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }    
     return(0);
@@ -228,60 +216,44 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, xmlNodePtr transformsNod
 xmlSecTransformPtr	
 xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
 			int dontDestroy) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformNodeRead";
     xmlChar *href;
     xmlSecTransformId id;
     xmlSecTransformPtr transform;
     int ret;
     
-    if(transformNode == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transformNode is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(transformNode != NULL, NULL);
     
     href = xmlGetProp(transformNode, BAD_CAST "Algorithm");
     if(href == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: \"Algorithm\" is required attribute for any transform node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+		    "Algorithm");
 	return(NULL);		
     }
     
     id = xmlSecTransformFind(href);    
     if(id == xmlSecTransformUnknown) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id \"%s\" is unknown\n", 
-	    func, href);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformFind(href=\"%s\")", href);
 	xmlFree(href);
 	return(NULL);		
     }
     
     transform = xmlSecTransformCreate(id, usage, dontDestroy);
     if(!xmlSecTransformIsValid(transform)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create transform for id \"%s\"\n", 
-	    func, href);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreate(href=\"%s\")", href);
 	xmlFree(href);
 	return(NULL);		
     }
     
     ret = xmlSecTransformRead(transform, transformNode);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed read transform for id \"%s\"\n", 
-	    func, href);
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformRead - %d", ret);
 	xmlSecTransformDestroy(transform, 1);
 	xmlFree(href);
 	return(NULL);		
@@ -300,24 +272,13 @@ xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
  */
 int
 xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformNodeWrite";
-    
-    if((transformNode == NULL) && (id == xmlSecTransformUnknown)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transformNode is null or transform is invalid\n", 
-	    func);	
-#endif
-	return(-1);	
-    }
-
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(id != NULL, -1);
     
     if(xmlSetProp(transformNode, BAD_CAST "Algorithm", id->href) == NULL) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to set \"Algorithm\" attribute for transform node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlSetProp(Algorithm)");
 	return(-1);	
     }
 
@@ -337,6 +298,8 @@ xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
 xmlSecTransformId
 xmlSecTransformFind(const xmlChar* href) {
     xmlSecTransformId *ptr;
+
+    xmlSecAssert2(href != NULL, NULL);
     
     ptr = xmlSecAllTransforms;
     while((*ptr) != xmlSecTransformUnknown) {
@@ -345,7 +308,12 @@ xmlSecTransformFind(const xmlChar* href) {
 	}
 	++ptr;
     }
-    return(NULL);
+    
+    /* not found */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		"href=%s", href);    
+    return(xmlSecTransformUnknown);
 }
 
 /**
@@ -363,35 +331,25 @@ xmlSecTransformFind(const xmlChar* href) {
 xmlSecTransformPtr	
 xmlSecTransformCreate(xmlSecTransformId id, xmlSecTransformUsage usage, 
 		      int dontDestroy) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreate";
     xmlSecTransformPtr transform;
     
-    if((id == xmlSecTransformUnknown) || (id->create == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform id or create method is null\n",
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->create != NULL, NULL);
 
     if((id->usage & usage) != usage) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id could not be used as %d\n", 
-	    func, usage);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_USAGE,
+		    "transform usage=0x%08x, requested usage %0x08x", 
+		    (unsigned)id->usage, (unsigned)usage);
 	return(NULL);		
     }
 
         
     transform = id->create(id);
     if(transform == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform creation failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->create");
 	return(NULL);	
     }
     transform->dontDestroy = dontDestroy;
@@ -407,14 +365,14 @@ xmlSecTransformCreate(xmlSecTransformId id, xmlSecTransformUsage usage,
  */
 void
 xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformDestroy";
+    xmlSecAssert(transform != NULL);
+    xmlSecAssert(transform->id != NULL);
+    xmlSecAssert(transform->id->destroy != NULL);
     
-    if((!xmlSecTransformIsValid(transform)) || (transform->id->destroy == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or destroy function is missed!\n",
-	    func);	
-#endif
+    if(!xmlSecTransformIsValid(transform)){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return;
     }
     
@@ -441,14 +399,14 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
  */
 int
 xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformRead";
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(transformNode != NULL, -1);
 
     if(!xmlSecTransformIsValid(transform)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(-1);
     }
     if(transform->id->read != NULL) {
@@ -467,15 +425,15 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  */
 int
 xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformAddKey";
     xmlSecBinTransformId id;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
         
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(-1);
     }
 
@@ -495,15 +453,15 @@ xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 int
 xmlSecBinTransformRead(xmlSecTransformPtr transform, 
 		       unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformRead";
     xmlSecBinTransformId id;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(-1);
     }
     
@@ -522,15 +480,15 @@ xmlSecBinTransformRead(xmlSecTransformPtr transform,
 int
 xmlSecBinTransformWrite(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformWrite";
     xmlSecBinTransformId id;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(-1);
     }
     
@@ -549,15 +507,14 @@ xmlSecBinTransformWrite(xmlSecTransformPtr transform,
  */
 int
 xmlSecBinTransformFlush(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformFlush";
     xmlSecBinTransformId id;
     
+    xmlSecAssert2(transform != NULL, -1);
+
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(-1);
     }
     
@@ -576,17 +533,17 @@ xmlSecBinTransformFlush(xmlSecTransformPtr transform) {
 xmlSecTransformPtr	
 xmlSecBinTransformAddAfter(xmlSecTransformPtr curTransform, 
 			xmlSecTransformPtr newTransform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformAddAfter";
     xmlSecBinTransformPtr c;
     xmlSecBinTransformPtr n;
+
+    xmlSecAssert2(newTransform != NULL, NULL);
     
     if(((curTransform != NULL) && !xmlSecTransformCheckType(curTransform, xmlSecTransformTypeBinary)) ||
        !xmlSecTransformCheckType(newTransform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: new transform is invalid\n",
-	    func);	
-#endif
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(NULL);
     }
 
@@ -613,17 +570,17 @@ xmlSecBinTransformAddAfter(xmlSecTransformPtr curTransform,
 xmlSecTransformPtr	
 xmlSecBinTransformAddBefore(xmlSecTransformPtr curTransform, 
 			    xmlSecTransformPtr newTransform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformAddBefore";
     xmlSecBinTransformPtr c;
     xmlSecBinTransformPtr n;
 
+    xmlSecAssert2(newTransform != NULL, NULL);
+
     if(((curTransform != NULL) && !xmlSecTransformCheckType(curTransform, xmlSecTransformTypeBinary)) ||
        !xmlSecTransformCheckType(newTransform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: new transform is invalid\n",
-	    func);	
-#endif
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(NULL);
     }
 
@@ -651,15 +608,14 @@ xmlSecBinTransformAddBefore(xmlSecTransformPtr curTransform,
  */
 void
 xmlSecBinTransformRemove(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformRemove";
     xmlSecBinTransformPtr t;
     
+    xmlSecAssert(transform != NULL);
+    
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return;
     }
 
@@ -680,15 +636,14 @@ xmlSecBinTransformRemove(xmlSecTransformPtr transform) {
  */
 void
 xmlSecBinTransformDestroyAll(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformDestroyAll";
     xmlSecBinTransformPtr t;
 
+    xmlSecAssert(transform != NULL);
+
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return;
     }
     
@@ -704,15 +659,14 @@ xmlSecBinTransformDestroyAll(xmlSecTransformPtr transform) {
 
 void	
 xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformSetEncrypt";
     xmlSecBinTransformPtr t;
 
+    xmlSecAssert(transform != NULL);
+
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return;
     }
     
@@ -732,15 +686,16 @@ xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
 int
 xmlSecXmlTransformExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
 			  xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXmlTransformExecute";
     xmlSecXmlTransformId id;
     
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2((*doc) != NULL, -1);
+
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeXml)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeXml");
 	return(-1);
     }
     
@@ -764,16 +719,16 @@ int
 xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
 			   xmlDocPtr doc, xmlSecNodeSetPtr nodes,
 			   xmlOutputBufferPtr buffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformExecute";
     xmlSecC14NTransformId id;  
+
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
     
     if(transform != NULL) {
 	if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeC14N)) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: transform is invalid\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+			"xmlSecTransformTypeC14N");
 	    return(-1);
 	}
 	id = ((xmlSecC14NTransformId)(transform->id));
@@ -800,31 +755,28 @@ xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
  *
  */
 xmlSecTransformStatePtr	
-xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet, const char *uri) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateCreate";
+xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet, 
+			   const char *uri) {
     xmlSecTransformStatePtr state;
     int ret;
+
     /*
      * Allocate a new xmlSecTransformState and fill the fields.
      */
     state = (xmlSecTransformStatePtr) xmlMalloc(sizeof(xmlSecTransformState));
     if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecTransformState malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(state, 0, sizeof(xmlSecTransformState));
     
     state->curBuf = xmlBufferCreate();
     if(state->curBuf == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: unable to create memory buffer\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlBufferCreate");
 	xmlSecTransformStateDestroy(state);
         return(NULL);
     }
@@ -833,11 +785,9 @@ xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet, const char *
     state->initNodeSet = nodeSet;
     ret = xmlSecTransformStateParseUri(state, uri);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: uri parsing failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateParseUri(%s)", (uri != NULL) ? uri : "NULL");
 	xmlSecTransformStateDestroy(state);
     	return(NULL);
     }
@@ -853,16 +803,8 @@ xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet, const char *
  */
 void
 xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateDestroy";
+    xmlSecAssert(state != NULL);
 
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null\n",
-	    func);	
-#endif
-	return;
-    }
     xmlSecTransformStateDestroyCurrentDoc(state);
     if(state->curBuf != NULL) {
 	xmlBufferEmpty(state->curBuf);
@@ -890,48 +832,45 @@ xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
  * applied immidiatelly!
  */
 int
-xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateUpdate";
+xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, 
+			   xmlSecTransformPtr transform) {
     int ret;
+
+    xmlSecAssert2(state != NULL, -1);
+    xmlSecAssert2(transform != NULL, -1);
     
-    if((state == NULL) || !xmlSecTransformIsValid(transform)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state or transform is null\n",
-	    func);	
-#endif
+    if(!xmlSecTransformIsValid(transform)){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(-1);
     }
     
     switch(transform->id->type) {
     case xmlSecTransformTypeBinary:     	
 	    /* simply add transform to the chain */
-    	    transform = xmlSecBinTransformAddAfter(state->curFirstBinTransform, 
+	transform = xmlSecBinTransformAddAfter(state->curFirstBinTransform, 
 					     transform);
-	    if(transform == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to add trasnform\n",
-		    func);	
-#endif
-		return(-1);
-	    }
-	    if(state->curFirstBinTransform == NULL) {
-		state->curFirstBinTransform = transform;
-	    }
-	    state->curLastBinTransform = transform;
-	    break;
+	if(transform == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBinTransformAddAfter");
+	    return(-1);
+	}
+	if(state->curFirstBinTransform == NULL) {
+	    state->curFirstBinTransform = transform;
+	}
+	state->curLastBinTransform = transform;
+	break;
     case xmlSecTransformTypeXml: {
 	xmlDocPtr doc;
 	xmlSecNodeSetPtr nodes;
 	
         ret = xmlSecTransformCreateXml(state);
         if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-            xmlGenericError(xmlGenericErrorContext,
-        	"%s: xml doc creation failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreateXml - %d", ret);
 	    return(-1);
 	}
 	
@@ -940,11 +879,9 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr tra
 	
 	ret = xmlSecXmlTransformExecute(transform, state->initDoc, &doc, &nodes);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-            xmlGenericError(xmlGenericErrorContext,
-        	"%s: xml transform failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecXmlTransformExecute - %d", ret);
 	    return(-1);
 	}
 	xmlSecTransformDestroy(transform, 0);
@@ -962,21 +899,17 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr tra
     case xmlSecTransformTypeC14N:
 	ret = xmlSecTransformCreateXml(state);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: xml doc creation failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreateXml - %d", ret);
 	    return(-1);
 	}
 	state->curC14NTransform = transform;
 	break;
     default:
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unknown transform type %d\n",
-	    func, transform->id->type);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "transform type %d", transform->id->type);
 	return(-1);	    
     }
     return(0);
@@ -989,18 +922,11 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr tra
  * @type:
  */
 int
-xmlSecTransformStateFinal(xmlSecTransformStatePtr state, xmlSecTransformResult type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateFinal";
+xmlSecTransformStateFinal(xmlSecTransformStatePtr state, 
+			  xmlSecTransformResult type) {
     int ret;
-    
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(state != NULL, -1);
     
     switch(type) {
     case xmlSecTransformResultBinary:
@@ -1010,20 +936,16 @@ xmlSecTransformStateFinal(xmlSecTransformStatePtr state, xmlSecTransformResult t
 	ret = xmlSecTransformCreateXml(state);
 	break;
     default:
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unknown result type %d\n",
-	    func, type);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "result type %d", type);
 	return(-1);	
     }    
 
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create result of type %d\n",
-	    func, type);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreateBin or xmlSecTransformCreateXml - %d", ret);
 	return(-1);	
     }
     return(0);
@@ -1064,17 +986,9 @@ xmlSecTransformStateFinal(xmlSecTransformStatePtr state, xmlSecTransformResult t
  */
 static int 
 xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateParseUri";
     const char* xptr;
-    
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(state != NULL, -1);
     
     if(uri == NULL) {
 	state->curDoc 	  = state->initDoc;
@@ -1086,32 +1000,26 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 				xmlDocGetRootElement(state->initDoc), 
 				0, 0);
 	if(state->curNodeSet == NULL){
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create node set\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecNodeSetGetChildren");
 	    return(-1);
 	}
     } else if((xptr = strchr(uri, '#')) == NULL) {
         state->initUri = (char*)xmlStrdup(BAD_CAST uri);
 	if(state->initUri == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to duplicate uri \"%s\"\n",
-		func, uri);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"xmlStrdup");
 	    return(-1);
 	}
 	/* simple URI -- do not load document for now */
     } else {
     	state->initUri = (char*)xmlStrndup(BAD_CAST uri, xptr - uri);
 	if(state->initUri == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to duplicate uri \"%s\"\n",
-		func, uri);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"xmlStrndup");
 	    return(-1);
 	}
 	
@@ -1119,11 +1027,9 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 	if(strlen(state->initUri) > 0) {
 	    state->curDoc = xmlSecParseFile(state->initUri); 
 	    if(state->curDoc == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to load uri=\"%s\"\n",
-		    func, state->initUri);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecParseFile(%s)", state->initUri);
 		return(-1);	    
 	    }
 	} else {
@@ -1143,32 +1049,27 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 				    xmlDocGetRootElement(state->curDoc), 
 				    NULL);
 	    if(ctxt == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to create xpointer context\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XML_FAILED,
+			    "xmlXPtrNewContext");
 		return(-1);	    
 	    }
 	    
 	    /* evaluate expression but skip '#' */
 	    res = xmlXPtrEval(BAD_CAST (xptr + 1), ctxt);
 	    if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to evaluate xpointer\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XML_FAILED,
+			    "xmlXPtrEval(%s)", xptr + 1);
 		xmlXPathFreeContext(ctxt);
 		return(-1);	    
 	    }
 
 	    if((res->nodesetval == NULL) || (res->nodesetval->nodeNr == 0)) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: the evaluated xpointer \"%s\" nodes set is empty (probably it's an error!)\n",
-		    func, xptr);	
-#endif
+		/* TODO: it is warning, not an error! */
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_NODESET,
+			    "empty");
 	    }
 
 	    if(strncmp(xptr, "#xpointer(", 10) == 0) {
@@ -1180,11 +1081,9 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 					    res->nodesetval,
 					    type);
 	    if(state->curNodeSet == NULL){
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to create node set\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecNodeSetCreate");	    
 		xmlXPathFreeObject(res);
 		xmlXPathFreeContext(ctxt);
 		return(-1);
@@ -1208,16 +1107,7 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
  */
 static void 
 xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateDestroyCurrentDoc";
-
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null\n",
-	    func);	
-#endif
-	return;
-    }
+    xmlSecAssert(state != NULL);
 
     if((state->curDoc != NULL) && (state->curDoc != state->initDoc)) {
         xmlFreeDoc(state->curDoc);
@@ -1241,22 +1131,14 @@ xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateXml";
     int ret;
 
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(state != NULL, -1);
     
     if((state->curDoc == NULL) && (state->initUri == NULL)) { 
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: both curDoc and uri are null\n",
-	    func);
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+    		    "both doc and uri are null");
         return(-1);
     }
 
@@ -1264,11 +1146,9 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
 	/* load XML document directly from file */
 	state->curDoc = xmlSecParseFile(state->initUri);
 	if(state->curDoc == NULL) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: unable to load xml file \"%s\"\n", 
-	        func, state->initUri);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecParseFile(%s)", state->initUri);
 	    return(-1);
 	}
 	state->curNodeSet = NULL;
@@ -1279,22 +1159,18 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
          */
         ret = xmlSecTransformCreateBin(state);
         if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to dump results to memory\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreateBin - %d", ret);
 	    return(-1);
 	}
 	/* parse XML doc from memory */
 	state->curDoc = xmlSecParseMemory(xmlBufferContent(state->curBuf), 
 		    			  xmlBufferLength(state->curBuf), 1);
 	if(state->curDoc == NULL) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to load xml from memory\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecParseMemory");
 	    return(-1);	    
 	}
 	/* do not forget to empty buffer! */
@@ -1316,35 +1192,25 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
  */
 static int 
 xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateBin";
     int ret;
     
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(state != NULL, -1);
     
     if(state->curDoc != NULL) {
         ret = xmlSecTransformCreateBinFromXml(state);
     } else if(state->initUri != NULL) {
         ret = xmlSecTransformCreateBinFromUri(state);
     } else {
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: both doc and uri are null\n",
-	    func);
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+    		    "both doc and uri are null");
 	return(-1);
     }
     
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to dump results to memory\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreateBinFromXml or xmlSecTransformCreateBinFromUri - %d", ret);
         return(-1);
     }
     return(0);
@@ -1359,38 +1225,27 @@ xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateBinFromXml";
     xmlSecTransformPtr buffer;
     xmlOutputBufferPtr output;
     int ret;
-    
-    if((state == NULL) || (state->curDoc == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state or curDoc is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(state != NULL, -1);
+    xmlSecAssert2(state->curDoc != NULL, -1);
     
     /* first of all, add the memory buffer at the end */
     buffer = xmlSecTransformCreate(xmlSecMemBuf, 0, 0);
     if(buffer == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create memory buffer\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreate(xmlSecMemBuf)");
 	return(-1);	
     }
     
     
     if(xmlSecBinTransformAddAfter(state->curLastBinTransform, buffer) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to add memory buffer to the chain\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformAddAfter");
 	xmlSecTransformDestroy(buffer, 1);
 	return(-1);
     }
@@ -1402,11 +1257,9 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
 				  (xmlOutputCloseCallback)xmlSecBinTransformFlush, 
 				  (void*)state->curFirstBinTransform, NULL);
     if(output == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s:  failed to create output buffer\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlOutputBufferCreateIO");
 	return(-1);
     }
 
@@ -1446,11 +1299,9 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
 	}
     }    
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: c14n id failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformPreBase64Decode or xmlSecC14NTransformExecute - %d", ret);
 	xmlOutputBufferClose(output);
 	return(-1);	
     }
@@ -1458,11 +1309,9 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
     /* flush data in the buffer by closing it */    
     ret = xmlOutputBufferClose(output);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer flush failed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlOutputBufferClose");
 	return(-1);	
     }
 
@@ -1489,48 +1338,35 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateBinFromUri";
     xmlSecTransformPtr ptr;
     unsigned char buffer[XMLSEC_TRANSFORM_BUFFER_SIZE];
     int ret;
 
-    if((state == NULL) || (state->initUri == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state or initUrl is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(state != NULL, -1);
+    xmlSecAssert2(state->initUri != NULL, -1);
 
     /* add the uri load at the beginning */
     ptr = xmlSecTransformCreate(xmlSecInputUri, 0, 0);
     if(ptr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create uri transform\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreate(xmlSecInputUri)");
 	return(-1);	
     }    
     
     ret = xmlSecInputUriTransformOpen(ptr, state->initUri);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to open uri \"%s\"\n",
-	    func, state->initUri);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecInputUriTransformOpen(%s) - %d", state->initUri, ret);
 	xmlSecTransformDestroy(ptr, 1);
 	return(-1);	
     }
     
     if(xmlSecBinTransformAddBefore(state->curFirstBinTransform, ptr) == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to add uri transform\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformAddBefore");
 	xmlSecTransformDestroy(ptr, 1);
 	return(-1);
     }
@@ -1543,11 +1379,9 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
     do {
 	ret = xmlSecBinTransformRead(state->curLastBinTransform, buffer, XMLSEC_TRANSFORM_BUFFER_SIZE);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read from binary trasnforms chain\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBinTransformRead - %d", ret);
 	    return(-1);
 	} else if(ret > 0) {
 	    xmlBufferAdd(state->curBuf, buffer, ret);
@@ -1583,20 +1417,16 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
  *
  */
 static int
-xmlSecTransformPreBase64DecodeWalk(xmlSecNodeSetPtr nodeSet, xmlNodePtr cur, xmlNodePtr parent, void* data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformPreBase64DecodeWalk";
-
-    if((nodeSet == NULL) || (cur == NULL) || (data == NULL)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: cur or data is null\n",
-	    func);
-#endif	    
-	return(-1);
-    }    
+xmlSecTransformPreBase64DecodeWalk(xmlSecNodeSetPtr nodeSet, xmlNodePtr cur, 
+				   xmlNodePtr parent ATTRIBUTE_UNUSED, 
+				   void* data) {
+    xmlSecAssert2(nodeSet != NULL, -1);
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
 
     if(cur->type == XML_TEXT_NODE) {
-	xmlOutputBufferWriteString((xmlOutputBufferPtr)data, (char*)(cur->content)); 
+	xmlOutputBufferWriteString((xmlOutputBufferPtr)data, 
+				    (char*)(cur->content)); 
     }
     return(0);
 }
@@ -1604,26 +1434,17 @@ xmlSecTransformPreBase64DecodeWalk(xmlSecNodeSetPtr nodeSet, xmlNodePtr cur, xml
 static int 
 xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet, 
 			       xmlOutputBufferPtr output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformPreBase64Decode";
     xmlNodePtr cur;
     int ret;
 
-    if((node == NULL) || (output == NULL)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: cur or output is null\n",
-	    func);
-#endif	    
-	return(-1);
-    }    
-    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(output != NULL, -1);
+
     if(nodeSet != NULL) {
 	if(xmlSecNodeSetWalk(nodeSet, xmlSecTransformPreBase64DecodeWalk, output) < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: node set walk function failed\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecNodeSetWalk");
 	    return(-1);
 	}
     } else if(node->type == XML_ELEMENT_NODE) {
@@ -1631,11 +1452,9 @@ xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet,
 	while(cur != NULL) {
 	    ret = xmlSecTransformPreBase64Decode(cur, NULL, output);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: recursion failed\n",
-		    func);
-#endif	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecTransformPreBase64Decode - %d", ret);
 		return(-1);
 	    }
 	}

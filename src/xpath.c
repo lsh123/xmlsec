@@ -939,7 +939,7 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
         xpath2Type = xmlGetProp(node, BAD_CAST "Filter");
         if(xpath2Type == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE,
+			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 			"Filter not present" );
 	    return(-1);
         }
@@ -952,7 +952,7 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 	    data->xpath2Type = xmlSecXPathTransformUnion;
 	} else {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE,
+			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 			"Filter=%s", xpath2Type);
 	    xmlFree(xpath2Type);
 	    return(-1);

@@ -28,13 +28,13 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
 #include <xmlsec/membuf.h>
-
 #include <xmlsec/xmldsig.h>
+#include <xmlsec/errors.h>
 
-#define xmlSecDSigResultIsValid(result) \
-	    ((( result ) != NULL) && ((result)->ctx != NULL))
 #define xmlSecDSigResultGetKeyCallback(result) \
-	    ( ( xmlSecDSigResultIsValid((result)) ) ? \
+	    ( ( ((result) != NULL) && \
+	        ((result)->ctx != NULL) && \
+		((result)->ctx->keysMngr != NULL) ) ? \
 		((result)->ctx->keysMngr->getKey) : \
 		NULL )
 
@@ -99,25 +99,20 @@ static const xmlChar*		xmlSecDSigIds[] = { BAD_CAST "Id", NULL };
  */
 xmlNodePtr
 xmlSecSignatureCreate(const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureCreate";
     xmlNodePtr signNode;
     xmlNodePtr cur;
     
     signNode = xmlNewNode(NULL, BAD_CAST "Signature");
     if(signNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create new node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNode(Signature)");
 	return(NULL);	            
     }
     if(xmlNewNs(signNode, xmlSecDSigNs, NULL) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add namespace\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNs(xmlSecDSigNs)");
 	xmlFreeNode(signNode);
 	return(NULL);	        	
     }
@@ -130,11 +125,9 @@ xmlSecSignatureCreate(const xmlChar *id) {
      */    
     cur = xmlSecAddChild(signNode, BAD_CAST "SignatureValue", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add SignatureValue\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(SignatureValue)");
 	xmlFreeNode(signNode);
 	return(NULL);	        	
     }
@@ -151,16 +144,8 @@ xmlSecSignatureCreate(const xmlChar *id) {
  */
 void
 xmlSecSignatureDestroy(xmlNodePtr signNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureDestroy";
-    
-    if(signNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Signature node is null\n", 
-	    func);	
-#endif
-	return;    
-    }
+    xmlSecAssert(signNode != NULL);
+
     xmlUnlinkNode(signNode);
     xmlFreeNode(signNode);	
 }
@@ -178,26 +163,16 @@ xmlSecSignatureDestroy(xmlNodePtr signNode) {
  */
 xmlNodePtr
 xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureAddSignedInfo";
     xmlNodePtr res;
     xmlNodePtr tmp;
     
-    if(signNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Signature node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(signNode != NULL, NULL);
 
     res = xmlSecFindChild(signNode, BAD_CAST "SignedInfo", xmlSecDSigNs);
     if(res != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the SignedInfo node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "SignedInfo");
 	return(NULL);	
     }
     
@@ -208,11 +183,9 @@ xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
 	res = xmlSecAddPrevSibling(tmp, BAD_CAST "SignedInfo", xmlSecDSigNs);
     }    
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add SignedInfo node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(SignedInfo)");
 	return(NULL);	        	
     }
     if(id != NULL) {
@@ -234,26 +207,16 @@ xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
  */
 xmlNodePtr
 xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureAddKeyInfo";
     xmlNodePtr res;
     xmlNodePtr tmp;
     
-    if(signNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Signature node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(signNode != NULL, NULL);
 
     res = xmlSecFindChild(signNode, BAD_CAST "KeyInfo", xmlSecDSigNs);
     if(res != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the KeyInfo node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "KeyInfo");
 	return(NULL);	
     }
     
@@ -264,11 +227,9 @@ xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 	res = xmlSecAddPrevSibling(tmp, BAD_CAST "KeyInfo", xmlSecDSigNs);
     }    
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add KeyInfo node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(KeyInfo)");
 	return(NULL);	        	
     }
     if(id != NULL) {
@@ -292,25 +253,15 @@ xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 xmlNodePtr
 xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *mimeType,
 		 const xmlChar *encoding) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureAddObject";
     xmlNodePtr res;
 
-    if(signNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Signature node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(signNode != NULL, NULL);
     
     res = xmlSecAddChild(signNode, BAD_CAST "Object", xmlSecDSigNs);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add Object node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Object)");
 	return(NULL);	        	
     }
     if(id != NULL) {
@@ -339,27 +290,17 @@ xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *
  */
 xmlNodePtr
 xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nMethod) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoAddC14NMethod";
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
-    
-    if(signedInfoNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SignedInfo node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+
+    xmlSecAssert2(signedInfoNode != NULL, NULL);
     
     res = xmlSecFindChild(signedInfoNode, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs);
     if(res != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CanonicalizationMethod node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "CanonicalizationMethod");
 	return(NULL);    
     }
     
@@ -370,21 +311,17 @@ xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nM
 	res = xmlSecAddPrevSibling(tmp, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs);
     }    
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add CanonicalizationMethod node\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(CanonicalizationMethod)");
 	return(NULL);	        	
     }
     
     ret = xmlSecTransformNodeWrite(res, c14nMethod);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: c14n method write failed\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite(c14nMethod) - %d", ret);
 	xmlUnlinkNode(res);
 	xmlFreeNode(res);
 	return(NULL);	
@@ -406,27 +343,17 @@ xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nM
  */
 xmlNodePtr
 xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signMethod) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoAddSignMethod";
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
     
-    if(signedInfoNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SignedInfo node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(signedInfoNode != NULL, NULL);
     
     res = xmlSecFindChild(signedInfoNode, BAD_CAST "SignatureMethod", xmlSecDSigNs);
     if(res != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SignatureMethod node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "SignatureMethod");
 	return(NULL);    
     }
     
@@ -437,21 +364,17 @@ xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signM
 	res = xmlSecAddPrevSibling(tmp, BAD_CAST "SignatureMethod", xmlSecDSigNs);
     }    
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add SignatureMethod node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(SignatureMethod)");
 	return(NULL);	        	
     }
     
     ret = xmlSecTransformNodeWrite(res, signMethod);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: sign method write failed\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite(signMethod) - %d", ret);
 	xmlUnlinkNode(res);
 	xmlFreeNode(res);
 	return(NULL);	
@@ -476,26 +399,16 @@ xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signM
 xmlNodePtr	
 xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const xmlChar *uri,
 		    const xmlChar *type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoAddReference";
     xmlNodePtr res;
     xmlNodePtr cur;
     
-    if(signedInfoNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SignedInfo node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(signedInfoNode != NULL, NULL);
     
     res = xmlSecAddChild(signedInfoNode, BAD_CAST "Reference", xmlSecDSigNs);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add Reference node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Reference)");
 	return(NULL);	        	
     }
 
@@ -514,11 +427,9 @@ xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const
      */    
     cur = xmlSecAddChild(res, BAD_CAST "DigestValue", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add DigestValue\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(DigestValue)");
 	xmlUnlinkNode(res);
 	xmlFreeNode(res);
 	return(NULL);	        	
@@ -541,27 +452,18 @@ xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const
  */
 xmlNodePtr
 xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMethod) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceAddDigestMethod";
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
     
-    if(refNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Reference node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(refNode != NULL, NULL);
+    xmlSecAssert2(digestMethod != NULL, NULL);
 
     res = xmlSecFindChild(refNode, BAD_CAST "DigestMethod", xmlSecDSigNs);
     if(res != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the DigestMethod node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "DigestMethod");
 	return(NULL);	
     }
     
@@ -572,21 +474,17 @@ xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMetho
 	res = xmlSecAddPrevSibling(tmp, BAD_CAST "DigestMethod", xmlSecDSigNs);
     }    
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add DigestMethod node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(DigestMethod)");
 	return(NULL);	        	
     }
 
     ret = xmlSecTransformNodeWrite(res, digestMethod);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest method write failed\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite(digestMethod) - %d", ret);
 	xmlUnlinkNode(res);
 	xmlFreeNode(res);
 	return(NULL);	
@@ -607,19 +505,12 @@ xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMetho
  */
 xmlNodePtr
 xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceAddTransform";
     xmlNodePtr res;
     xmlNodePtr transformsNode;
     int ret;
     
-    if(refNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Reference node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(refNode != NULL, NULL);
+    xmlSecAssert2(transform != NULL, NULL);
 
     transformsNode = xmlSecFindChild(refNode, BAD_CAST "Transforms", xmlSecDSigNs);
     if(transformsNode == NULL) {
@@ -633,32 +524,26 @@ xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
 	    transformsNode = xmlSecAddPrevSibling(tmp, BAD_CAST "Transforms", xmlSecDSigNs);
 	}    
 	if(transformsNode == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add Transforms node\n", 
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(Transforms)");
 	    return(NULL);	        	
 	}
     }
 
     res = xmlSecAddChild(transformsNode, BAD_CAST "Transform", xmlSecDSigNs);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add Transform node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Transform)");
 	return(NULL);	        	
     }
 
     ret = xmlSecTransformNodeWrite(res, transform);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform method write failed\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite - %d", ret);
 	xmlUnlinkNode(res);
 	xmlFreeNode(res);
 	return(NULL);	
@@ -680,24 +565,15 @@ xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
  */
 xmlNodePtr		
 xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xmlChar *target) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecObjectAddSignProperties";
     xmlNodePtr res;
 
-    if(objectNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Object node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
-    res = xmlSecAddChild(objectNode, BAD_CAST "Manifest", xmlSecDSigNs);
+    xmlSecAssert2(objectNode != NULL, NULL);
+
+    res = xmlSecAddChild(objectNode, BAD_CAST "SignatureProperties", xmlSecDSigNs);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add Manifest node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(SignatureProperties)");
 	return(NULL);	        	
     }
     if(id != NULL) {
@@ -723,25 +599,15 @@ xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xm
  */
 xmlNodePtr
 xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecObjectAddManifest";
     xmlNodePtr res;
 
-    if(objectNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Object node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(objectNode != NULL, NULL);
 
     res = xmlSecAddChild(objectNode, BAD_CAST "Manifest", xmlSecDSigNs);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add Manifest node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Manifest)");
 	return(NULL);	        	
     }
     if(id != NULL) {
@@ -765,26 +631,16 @@ xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
  */
 xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id, 
 		  const xmlChar *uri, const xmlChar *type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecManifestAddReference";
     xmlNodePtr res;
     xmlNodePtr cur;
     
-    if(manifestNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: Manifest node is null\n", 
-	    func);	
-#endif
-	return(NULL);    
-    }
+    xmlSecAssert2(manifestNode != NULL, NULL);
     
     res = xmlSecAddChild(manifestNode, BAD_CAST "Reference", xmlSecDSigNs);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add Reference node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Reference)");
 	return(NULL);	        	
     }
 
@@ -803,11 +659,9 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id
      */    
     cur = xmlSecAddChild(res, BAD_CAST "DigestValue", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add DigestValue\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(DigestValue)");
 	xmlUnlinkNode(res);
 	xmlFreeNode(res);
 	return(NULL);	        	
@@ -829,26 +683,18 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id
 int
 xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigValidate";
     xmlSecDSigResultPtr res;    
     int ret;
-    
-    if((ctx == NULL) || (signNode == NULL) || (result == NULL))  {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context, result or signNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
-    (*result) = NULL;
-    
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(signNode != NULL, -1);
+    xmlSecAssert2(result != NULL, -1);
+
+    (*result) = NULL;    
     if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecDSigNs)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: signNode is not a Signature node\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Signature");
 	return(-1);	    
     }
     
@@ -857,11 +703,9 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     
     res = xmlSecDSigResultCreate(ctx, context, signNode, 0);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to create new result\n", 
-	    func);	
-#endif	
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDSigResultCreate");
 	return(-1);
     }
 
@@ -871,11 +715,9 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
     ret = xmlSecSignatureRead(signNode, 0, res);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: Signature read failed\n", 
-	    func);	
-#endif			
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSignatureRead - %d", ret);
         xmlSecDSigResultDestroy(res);
 	return(-1);	    		
     }
@@ -895,27 +737,19 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 int
 xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigGenerate";
     xmlSecDSigResultPtr res;
     int ret;
     
-    if((ctx == NULL) || (signNode == NULL) || (result == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context, signNode or result is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(signNode != NULL, -1);
+    xmlSecAssert2(result != NULL, -1);
 
     (*result) = NULL;
     
     if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecDSigNs)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: signNode is not a Signature node\n", 
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Signature");
 	return(-1);	    
     }
 
@@ -925,11 +759,9 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     
     res = xmlSecDSigResultCreate(ctx, context, signNode, 1);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to create new result\n", 
-	    func);	
-#endif	
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDSigResultCreate");
 	return(-1);
     }
 
@@ -939,11 +771,9 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     
     ret = xmlSecSignatureRead(signNode, 1, res);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: Signature read failed\n", 
-	    func);	
-#endif			
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSignatureRead - %d", ret);
         xmlSecDSigResultDestroy(res);
 	return(-1);	    		
     }
@@ -972,28 +802,19 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 xmlSecDSigResultPtr	
 xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context, 
 		       xmlNodePtr signNode, int sign) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultCreate";
     xmlSecDSigResultPtr result;
     
-    if((ctx == NULL) || (signNode == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or signNode is null\n", 
-	    func);	
-#endif
-	return(NULL);	    
-    }
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(signNode != NULL, NULL);
 
     /*
      * Allocate a new xmlSecSignature and fill the fields.
      */
     result = (xmlSecDSigResultPtr) xmlMalloc(sizeof(xmlSecDSigResult));
     if(result == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecSignature malloc failed\n",
-	    func);	
-#endif 	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(result, 0, sizeof(xmlSecDSigResult));
@@ -1014,16 +835,7 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
  */
 void
 xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultDestroy";
-    
-    if(result == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or doc is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+    xmlSecAssert(result != NULL);
 
     /* destroy firstSignRef if needed */
     if(result->firstSignRef != NULL) {
@@ -1056,16 +868,9 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
  */
 void
 xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultDebugDump";
-    
-    if((output == NULL) || (result == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or output file is null\n", 
-	    func);	
-#endif
-	return;
-    }
+
+    xmlSecAssert(result != NULL);
+    xmlSecAssert(output != NULL);
     
     fprintf(output, "= XMLDSig Result (%s)\n", 
 	    (result->sign) ? "generate" : "validate");
@@ -1107,18 +912,11 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
  *
  */
 static xmlSecReferenceResultPtr
-xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, xmlSecReferenceResultPtr ref) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultAddSignedInfoRef";
-    
-    if(!xmlSecDSigResultIsValid(result) || (ref == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or reference is null\n", 
-	    func);	
-#endif
-	return(NULL);	    
-    }
-    
+xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, 
+				 xmlSecReferenceResultPtr ref) {
+    xmlSecAssert2(result != NULL, NULL);
+    xmlSecAssert2(result->ctx != NULL, NULL);
+    xmlSecAssert2(ref != NULL, NULL);
     
     /* add to the list */
     ref->prev = result->lastSignRef;
@@ -1141,17 +939,9 @@ xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, xmlSecReferenceResu
  */
 static xmlSecReferenceResultPtr
 xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResultPtr ref) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultAddManifestRef";
-    
-    if(!xmlSecDSigResultIsValid(result) || (ref == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or reference is null\n", 
-	    func);	
-#endif
-	return(NULL);	    
-    }
-    
+    xmlSecAssert2(result != NULL, NULL);
+    xmlSecAssert2(result->ctx != NULL, NULL);
+    xmlSecAssert2(ref != NULL, NULL);
     
     /* add to the list */
     ref->prev = result->lastManifestRef;
@@ -1180,7 +970,6 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
  */
 xmlSecDSigCtxPtr		
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigCtxCreate";
     xmlSecDSigCtxPtr ctx;
     
     /*
@@ -1188,11 +977,9 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
      */
     ctx = (xmlSecDSigCtxPtr) xmlMalloc(sizeof(xmlSecDSigCtx));
     if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecDSigCtx malloc failed\n",
-	    func);	
-#endif 	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
@@ -1214,17 +1001,9 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
  *
  */
 void
-xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigCtxDestroy";
-    
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {    
+    xmlSecAssert(ctx != NULL);
+
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     xmlFree(ctx);
 }
@@ -1265,7 +1044,6 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
  */
 static int			
 xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureRead";
     xmlNodePtr signedInfoNode;
     xmlNodePtr signatureValueNode;
     xmlNodePtr keyInfoNode;
@@ -1273,24 +1051,17 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     xmlNodePtr cur;
     int ret;
     
-    if(!xmlSecDSigResultIsValid(result) || (signNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or signNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(result != NULL, -1);
+    xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(signNode != NULL, -1);
     
     cur = xmlSecGetNextElementNode(signNode->children);
     
     /* first node is required SignedInfo */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignedInfo", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"SignedInfo\" missed\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "SignedInfo");
         return(-1);
     }
     signedInfoNode = cur;
@@ -1298,11 +1069,9 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
 
     /* next node is required SignatureValue */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureValue", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"SignatureValue\" missed\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "SignatureValue");
 	return(-1);
     }
     signatureValueNode = cur;
@@ -1328,11 +1097,9 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
 	if(result->ctx->processManifests) {
 	    ret = xmlSecObjectRead(cur, sign, result);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-		 xmlGenericError(xmlGenericErrorContext,
-		    "%s: unexpected node found \"%s\"\n",
-		    func, cur->name);
-#endif		
+    		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecObjectRead - %d", ret);
 		return(-1);	    	    
 	    }
 	}
@@ -1340,11 +1107,9 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     }
     
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-	 xmlGenericError(xmlGenericErrorContext,
-	    "%s: unexpected node found \"%s\"\n",
-	    func, cur->name);
-#endif		
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }
 
@@ -1352,11 +1117,9 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     ret = xmlSecSignedInfoRead(signedInfoNode, sign, signatureValueNode, 
 				keyInfoNode, result);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	 xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read SignedInfo node\n",
-	    func);
-#endif		
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSignedInfoRead - %d", ret);
 	return(-1);	
     }				
     
@@ -1397,52 +1160,42 @@ static int
 xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign, 
 		xmlSecTransformPtr c14nMethod, xmlSecTransformPtr signMethod, 
 		xmlNodePtr signatureValueNode, xmlSecDSigResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoCalculate";
     xmlSecNodeSetPtr nodeSet = NULL;
     xmlSecTransformStatePtr state = NULL;
     xmlSecTransformPtr memBuffer = NULL;
     int res = -1;
     int ret;
     
-    if(!xmlSecDSigResultIsValid(result) || (signedInfoNode == NULL) || 
-      (c14nMethod == NULL) || (signMethod == NULL) || (signatureValueNode == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or something else is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(result != NULL, -1);
+    xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(signedInfoNode != NULL, -1);
+    xmlSecAssert2(c14nMethod != NULL, -1);
+    xmlSecAssert2(signMethod != NULL, -1);
+    xmlSecAssert2(signatureValueNode != NULL, -1);
     
     /* this should be done in different way if C14N is binary! */
     nodeSet = xmlSecNodeSetGetChildren(signedInfoNode->doc, 
 					signedInfoNode, 1, 0);
     if(nodeSet == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create signedinfo nodes set\n",
-	    func);	
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetGetChildren");
 	goto done;
     }
 
     state = xmlSecTransformStateCreate(signedInfoNode->doc, nodeSet, NULL);
     if(state == NULL){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create transforms state\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateCreate");
 	goto done;
     }	
 
     ret = xmlSecTransformStateUpdate(state, c14nMethod);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add c14n method\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateUpdate");
 	goto done;
     }
 
@@ -1452,20 +1205,16 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     if(result->ctx->storeSignatures || result->ctx->fakeSignatures) {
 	memBuffer = xmlSecTransformCreate(xmlSecMemBuf, 0, 1);
 	if(memBuffer == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create mem buffer\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecMemBuf)");
 	    goto done;
 	}
 	ret = xmlSecTransformStateUpdate(state, memBuffer);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add mem buffer\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate - %d", ret);
 	    goto done;
 	}
     }
@@ -1473,41 +1222,33 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     if(!(result->ctx->fakeSignatures)) {
 	ret = xmlSecTransformStateUpdate(state, signMethod);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add sign method\n",
-		func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate - %d", ret);
 	    goto done;
 	}
         ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to finalize transforms\n",
-		func);
-#endif
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateFinal - %d" , ret);
 	    goto done;
 	}
     
 	if(sign) {
 	    ret = xmlSecDigestSignNode(signMethod, signatureValueNode, 1);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to sign node\n",
-		    func);
-#endif
+    		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecDigestSignNode - %d", ret);
 		goto done;	
 	    }
 	} else {
 	    ret = xmlSecDigestVerifyNode(signMethod, signatureValueNode);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext,
-	    	    "%s: failed to verify node\n",
-		    func);
-#endif
+    		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecDigestVerifyNode - %d", ret);
 		goto done;	
 	    }
 	}
@@ -1579,60 +1320,48 @@ static int
 xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	   	      xmlNodePtr signatureValueNode, xmlNodePtr keyInfoNode,
 		      xmlSecDSigResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoRead";
     xmlSecTransformPtr c14nMethod = NULL;
     xmlSecTransformPtr signMethod = NULL;
     xmlNodePtr cur;
     xmlSecReferenceResultPtr ref;
     int ret;
     int res = -1;
+
+    xmlSecAssert2(result != NULL, -1);
+    xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(signedInfoNode != NULL, -1);
+    xmlSecAssert2(signatureValueNode != NULL, -1);
     
-    if(!xmlSecDSigResultIsValid(result) || (signedInfoNode == NULL) || (signatureValueNode == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or signedInfoNode or signatureValueNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
     cur = xmlSecGetNextElementNode(signedInfoNode->children);
     
     /* first node is required CanonicalizationMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"CanonicalizationMethod\" missed\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "CanonicalizationMethod");
 	goto done;
     }
     c14nMethod = xmlSecTransformNodeRead(cur, xmlSecUsageDSigC14N, 1);
     if(c14nMethod == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read \"CanonicalizationMethod\"\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeRead(c14nNode)");
 	goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required SignatureMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureMethod", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"SignatureMethod\" missed\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,	
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "SignatureMethod");
 	goto done;
     }
     signMethod = xmlSecTransformNodeRead(cur, xmlSecUsageDSigSignature, 1);
     if(signMethod == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read \"SignatureMethod\"\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeRead(SignatureMethod Node)");
 	goto done;
     }
     result->signMethod = signMethod->id;
@@ -1659,20 +1388,16 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 					keyUsage); 
     }    
     if(result->key == NULL) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to find key\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+		    NULL);
 	goto done;
     }
     ret = xmlSecTransformAddKey(signMethod, result->key);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add key\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformAddKey - %d", ret);
 	goto done;
     }
     if(sign && (keyInfoNode != NULL)) {
@@ -1682,11 +1407,9 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 		    	result->key, 
 			xmlSecBinTransformIdGetDecKeyType(result->signMethod));
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to write \"KeyInfo\"\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyInfoNodeWrite - %d", ret);
 	    goto done;
 	}	
     }
@@ -1696,42 +1419,34 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	ref = xmlSecReferenceCreate(xmlSecSignedInfoReference, 
 				     result->ctx, cur);
 	if(ref == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create reference\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecReferenceCreate");
 	    goto done;
 	}
 	
 	ret = xmlSecReferenceRead(ref, cur, sign);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read \"Reference\"\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecReferenceRead - %d", ret);
 	    xmlSecReferenceDestroy(ref);
 	    goto done;
 	}
 	
 	if(xmlSecDSigResultAddSignedInfoRef(result, ref) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add reference\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDSigResultAddSignedInfoRef");
 	    xmlSecReferenceDestroy(ref);
 	    goto done;
 	}	
 
 
 	if((!sign) && (ref->result != xmlSecTransformStatusOk)) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to validate \"Reference\"\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,
+			NULL);
 	    /* "soft" error */
 	    res = 0;
 	    goto done;
@@ -1740,20 +1455,16 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     }
     
     if(result->firstSignRef == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: no firstSignRef found\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Reference");
 	goto done;
     }
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node \"%s\"\n",
-	    func, cur->name);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	goto done;
     }
 
@@ -1762,11 +1473,9 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 				    c14nMethod, signMethod, 
 				    signatureValueNode, result);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to calculate result\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSignedInfoCalculate - %d", ret);
 	goto done;
     }				    
     
@@ -1827,7 +1536,6 @@ done:
  */
 static int
 xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceRead";
     xmlNodePtr cur;
     xmlSecTransformStatePtr state = NULL;
     xmlSecTransformPtr digestMethod = NULL;
@@ -1836,14 +1544,9 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     int res = -1;
     int ret;
  
-    if((ref == NULL) || (self == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: ref or self is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(ref != NULL, -1);
+    xmlSecAssert2(self != NULL, -1);
+
     cur = xmlSecGetNextElementNode(self->children);
     
     /* read attributes first */
@@ -1853,11 +1556,9 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 
     state = xmlSecTransformStateCreate(self->doc, NULL, (char*)ref->uri);
     if(state == NULL){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create transforms state\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateCreate");
 	goto done;
     }	
 
@@ -1865,11 +1566,9 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecDSigNs)) {
 	ret = xmlSecTransformsNodeRead(state, cur);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read \"Transforms\"\n",
-		func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformsNodeRead - %d", ret);
 	    goto done;
 	}	
 	cur = xmlSecGetNextElementNode(cur->next);
@@ -1881,49 +1580,39 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     if(ref->ctx->storeReferences) {
 	memBuffer = xmlSecTransformCreate(xmlSecMemBuf, 0, 1);
 	if(memBuffer == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create mem buffer\n",
-		func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecMemBuf)");
 	    goto done;
 	}
 	ret = xmlSecTransformStateUpdate(state, memBuffer);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add mem buffer\n",
-		func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate - %d", ret);
 	    goto done;
 	}
     }
      
     /* next node is required DigestMethod */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestMethod", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"DigestMethod\" missed\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "DigestMethod");
 	goto done;
     }
     digestMethod = xmlSecTransformNodeRead(cur, xmlSecUsageDSigDigest, 1);
     if(digestMethod == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read \"digestMethod\"\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeRead(digestMethodNode)");
 	goto done;
     }
     ret = xmlSecTransformStateUpdate(state, digestMethod);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add \"digestMethod\"\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateUpdate(digestMethod)");
 	goto done;
     }
     ref->digestMethod = digestMethod->id;
@@ -1931,53 +1620,43 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 
     /* next node is required DigestValue */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestValue", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"DigestValue\" missed\n",
-	    func);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "DigestValue");
 	goto done;
     }
     digestValueNode = cur;
     cur = xmlSecGetNextElementNode(cur->next);     
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node \"%s\"\n",
-	    func, cur->name);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	goto done;
     }
     
     ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize transforms\n",
-	    func);
-#endif
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateFinal");
 	goto done;
     }
     
     if(sign) {
 	ret = xmlSecDigestSignNode(digestMethod, digestValueNode, 1);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to sign node\n",
-		func);
-#endif
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDigestSignNode");
 	    goto done;	
 	}
     } else {
 	ret = xmlSecDigestVerifyNode(digestMethod, digestValueNode);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to verify node\n",
-		func);
-#endif
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDigestVerifyNode - %d", ret);
 	    goto done;	
 	}
     }
@@ -2013,28 +1692,19 @@ done:
  */
 static xmlSecReferenceResultPtr	
 xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr self) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceCreate";
     xmlSecReferenceResultPtr ref;
         
-    if((ctx == NULL) || (self == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or node is null\n", 
-	    func);	
-#endif
-	return(NULL);	    
-    }
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(self != NULL, NULL);
 
     /*
      * Allocate a new xmlSecReference and fill the fields.
      */
     ref = (xmlSecReferenceResultPtr) xmlMalloc(sizeof(xmlSecReferenceResult));
     if(ref == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecReference malloc failed\n",
-	    func);	
-#endif 	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(ref, 0, sizeof(xmlSecReferenceResult));
@@ -2054,16 +1724,7 @@ xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr
  */
 static void			
 xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceDestroy";
-    
-    if(ref == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: reference is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+    xmlSecAssert(ref != NULL);
     
     /* destroy all strings */
     if(ref->uri) {
@@ -2101,16 +1762,8 @@ xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
  */
 static void
 xmlSecReferenceDestroyAll(xmlSecReferenceResultPtr ref) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceDestroyAll";
-    
-    if(ref == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: reference is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+    xmlSecAssert(ref != NULL);
+
     while(ref->next != NULL) {
 	xmlSecReferenceDestroy(ref->next);
     }    
@@ -2128,16 +1781,8 @@ xmlSecReferenceDestroyAll(xmlSecReferenceResultPtr ref) {
  */
 static void
 xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigReferenceDebugDumpAll";
-    
-    if((output == NULL) || (ref == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: reference or output file is null\n", 
-	    func);	
-#endif
-	return;
-    }
+    xmlSecAssert(ref != NULL);
+    xmlSecAssert(output != NULL);
 
     fprintf(output, "=== REFERENCE \n");
     fprintf(output, "==== ref type: %s\n", 
@@ -2171,17 +1816,10 @@ xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
  */
 static void
 xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigReferenceDebugDumpAll";
     xmlSecReferenceResultPtr ptr;
-    
-    if((output == NULL) || (ref == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: reference or output file is null\n", 
-	    func);	
-#endif
-	return;
-    }
+
+    xmlSecAssert(ref != NULL);
+    xmlSecAssert(output != NULL);
     
     ptr = ref->prev;
     while(ptr != NULL) {
@@ -2228,29 +1866,21 @@ xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
  */
 static int
 xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecObjectRead";
     xmlNodePtr cur;
     int ret;
     
-    if(!xmlSecDSigResultIsValid(result) || (objectNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or objectNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
-
+    xmlSecAssert2(result != NULL, -1);
+    xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(objectNode != NULL, -1);
+    
     cur = xmlSecGetNextElementNode(objectNode->children);
     while(cur != NULL) {
 	if(xmlSecCheckNodeName(cur, BAD_CAST "Manifest", xmlSecDSigNs)) {
 	    ret = xmlSecManifestRead(cur, sign, result);
 	    if(ret < 0){
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: Manifest read failed\n", 
-		    func);	
-#endif
+    		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecManifestRead - %d", ret);
 		return(-1);	    
 	    }
 	}
@@ -2294,50 +1924,38 @@ xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
  */
 static int
 xmlSecManifestRead(xmlNodePtr manifestNode, int sign, xmlSecDSigResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecManifestRead";
     xmlNodePtr cur;
     xmlSecReferenceResultPtr ref;
     int ret;
     
-    if(!xmlSecDSigResultIsValid(result) || (manifestNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result or manifestNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(result != NULL, -1);
+    xmlSecAssert2(result->ctx != NULL, -1);
+    xmlSecAssert2(manifestNode != NULL, -1);
 
     cur = xmlSecGetNextElementNode(manifestNode->children);
     while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecDSigNs)) { 
 	ref = xmlSecReferenceCreate(xmlSecManifestReference, 
 				     result->ctx, cur);
 	if(ref == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create reference\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecReferenceCreate");
 	    return(-1);
 	}
 	
 	ret = xmlSecReferenceRead(ref, cur, sign);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read \"Reference\"\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecReferenceRead - %d", ret);
 	    xmlSecReferenceDestroy(ref);
 	    return(-1);
 	}
 	
 	if(xmlSecDSigResultAddManifestRef(result, ref) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add reference\n",
-	        func);
-#endif	    
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDSigResultAddManifestRef");
 	    xmlSecReferenceDestroy(ref);
 	    return(-1);
 	}	
@@ -2345,11 +1963,9 @@ xmlSecManifestRead(xmlNodePtr manifestNode, int sign, xmlSecDSigResultPtr result
     }
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node \"%s\"\n",
-	    func, cur->name);
-#endif	    
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }    
     return(0);

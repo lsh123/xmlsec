@@ -1192,7 +1192,7 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	    if(ret <= 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "RSA_public_encrypt - %d");
+			    "RSA_public_encrypt - %d", ret);
 		return(-1);	
 	    }
 	}

@@ -29,8 +29,8 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/io.h>
-
 #include <xmlsec/xmlenc.h>
+#include <xmlsec/errors.h>
 
 const xmlChar xmlSecEncTypeElement[] = "http://www.w3.org/2001/04/xmlenc#Element";
 const xmlChar xmlSecEncTypeContent[] = "http://www.w3.org/2001/04/xmlenc#Content";
@@ -104,7 +104,6 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
  */
 xmlSecEncCtxPtr		
 xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncCtxCreate";
     xmlSecEncCtxPtr ctx;
     
     /*
@@ -112,11 +111,9 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
      */
     ctx = (xmlSecEncCtxPtr) xmlMalloc(sizeof(xmlSecEncCtx));
     if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecEncCtx malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecEncCtx) = %d bytes", sizeof(xmlSecEncCtx));
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecEncCtx));
@@ -133,15 +130,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
  */
 void
 xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncCtxDestroy";
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+    xmlSecAssert(ctx != NULL);
     
     memset(ctx, 0, sizeof(xmlSecEncCtx));
     xmlFree(ctx);
@@ -165,26 +154,21 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
 xmlNodePtr		
 xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
 		    const xmlChar *mimeType, const xmlChar *encoding) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataCreate";
     xmlNodePtr encNode;
     xmlNodePtr cipherData;
     
     encNode = xmlNewNode(NULL, BAD_CAST "EncryptedData");
     if(encNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create new node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNode(EncryptedData)");
 	return(NULL);	        
     }
     
     if(xmlNewNs(encNode, xmlSecEncNs, NULL) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add namespace\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNs(xmlSecEncNs)");
 	return(NULL);	        	
     }
     
@@ -203,11 +187,9 @@ xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
     
     cipherData = xmlSecAddChild(encNode,  BAD_CAST "CipherData", xmlSecEncNs);
     if(cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add CipherData\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(CipherData)");
 	return(NULL);	        	
     }
     
@@ -222,16 +204,7 @@ xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
  */
 void
 xmlSecEncDataDestroy(xmlNodePtr encNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataDestroy";
-        
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return;	        
-    }
+    xmlSecAssert(encNode != NULL);
 
     xmlUnlinkNode(encNode);
     xmlFreeNode(encNode);
@@ -245,27 +218,18 @@ xmlSecEncDataDestroy(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddEncMethod";
     xmlNodePtr encMethod;
     xmlNodePtr tmp;
     int ret;
-    
-    if((encNode == NULL) || (encMethodId == xmlSecTransformUnknown)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null or transform unknown\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+
+    xmlSecAssert2(encNode != NULL, NULL);
+    xmlSecAssert2(encMethodId != NULL, NULL);
     
     encMethod = xmlSecFindChild(encNode, BAD_CAST "EncryptionMethod", xmlSecEncNs);
     if(encMethod != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the EncryptionMethod node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "EncryptionMethod");
 	return(NULL);	
     }
     
@@ -276,21 +240,17 @@ xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
 	encMethod = xmlSecAddPrevSibling(tmp,  BAD_CAST "EncryptionMethod", xmlSecEncNs);
     }    
     if(encMethod == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create EncryptionMethod node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(EncryptionMethod)");
 	return(NULL);	
     }
     
     ret = xmlSecTransformNodeWrite(encMethod, encMethodId);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: enc method write failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite(encMethod) - %d", ret);
 	xmlUnlinkNode(encMethod);
 	xmlFreeNode(encMethod);
 	return(NULL);	
@@ -306,27 +266,17 @@ xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
  */
 xmlNodePtr
 xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddKeyInfo";
     xmlNodePtr keyInfo;
     xmlNodePtr prev;
     xmlNodePtr tmp;
         
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+    xmlSecAssert2(encNode != NULL, NULL);
 
     keyInfo = xmlSecFindChild(encNode, BAD_CAST "KeyInfo", xmlSecDSigNs);
     if(keyInfo != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the KeyInfo node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "KeyInfo");
 	return(NULL);	
     }
     
@@ -340,11 +290,9 @@ xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
 	keyInfo = xmlSecAddPrevSibling(tmp, BAD_CAST "KeyInfo", xmlSecDSigNs);
     }
     if(keyInfo == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create keyInfo node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(KeyInfo)");
 	return(NULL);	
     }
     return(keyInfo);
@@ -358,35 +306,23 @@ xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddEncProperties";
     xmlNodePtr encProps;
-        
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+
+    xmlSecAssert2(encNode != NULL, NULL);
 
     encProps = xmlSecFindChild(encNode, BAD_CAST "EncryptionProperties", xmlSecEncNs);
     if(encProps != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the EncryptionProperties node is already there\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "EncryptionProperties");
 	return(NULL);	
     }
 
     encProps = xmlSecAddChild(encNode, BAD_CAST "EncryptionProperties", xmlSecEncNs);
     if(encProps == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create EncryptionProperties node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(EncryptionProperties)");
 	return(NULL);	
     }
     if(id != NULL) {
@@ -404,39 +340,27 @@ xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
  */
 xmlNodePtr	
 xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id,  const xmlChar *target) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddEncProperty";
     xmlNodePtr encProp;
     xmlNodePtr encProps;
         
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+    xmlSecAssert2(encNode != NULL, NULL);
 
     encProps = xmlSecFindChild(encNode, BAD_CAST "EncryptionProperties", xmlSecEncNs);
     if(encProps == NULL) {
 	encProps = xmlSecEncDataAddEncProperties(encNode, NULL);
 	if(encProps == NULL) { 
-#ifdef XMLSEC_DEBUG
-            xmlGenericError(xmlGenericErrorContext,
-		"%s: the EncryptionProperties node creatin failed\n", 
-	        func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecEncDataAddEncProperties");
 	    return(NULL);	
 	}
     }
 
     encProp = xmlSecAddChild(encProps, BAD_CAST "EncryptionProperty", xmlSecEncNs);
     if(encProp == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create EncryptionProperty node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(EncryptionProperty)");
 	return(NULL);	
     }
     if(id != NULL) {
@@ -457,57 +381,41 @@ xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id,  const xmlCha
  */
 xmlNodePtr
 xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddCipherValue";
     xmlNodePtr cipherData;
     xmlNodePtr cipherValue;
     xmlNodePtr tmp;
         
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+    xmlSecAssert2(encNode != NULL, NULL);
 
     cipherData = xmlSecFindChild(encNode, BAD_CAST "CipherData", xmlSecEncNs);
     if(cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherData node is not found\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "CipherData");
 	return(NULL);	
     }
 
     tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherValue", xmlSecEncNs);
     if(tmp != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherValue node is already present\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "CipherValue");
 	return(NULL);	
     }
 
     tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherReference", xmlSecEncNs);
     if(tmp != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherReference node is already present\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "CipherReference");
 	return(NULL);	
     }
 
     cipherValue = xmlSecAddChild(cipherData, BAD_CAST "CipherValue", xmlSecEncNs);
     if(cipherValue == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create CipherValue node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(CipherValue)");
 	return(NULL);	
     }    
         
@@ -522,57 +430,41 @@ xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddCipherReference";
     xmlNodePtr cipherRef;
     xmlNodePtr cipherData;    
     xmlNodePtr tmp;
     
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+    xmlSecAssert2(encNode != NULL, NULL);
 
     cipherData = xmlSecFindChild(encNode, BAD_CAST "CipherData", xmlSecEncNs);
     if(cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherData node is not found\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "CipherData");
 	return(NULL);	
     }
 
     tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherValue", xmlSecEncNs);
     if(tmp != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherValue node is already present\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "CipherValue");
 	return(NULL);	
     }
 
     tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherReference", xmlSecEncNs);
     if(tmp != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherReference node is already present\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "CipherReference");
 	return(NULL);	
     }
 
     cipherRef = xmlSecAddChild(cipherData, BAD_CAST "CipherReference", xmlSecEncNs);
     if(cipherRef == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create CipherValue node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(CipherReference)");
 	return(NULL);	
     }    
     
@@ -590,40 +482,30 @@ xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  *
  */
 xmlNodePtr
-xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, xmlSecTransformId transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherReferenceAddTransform";
+xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, 
+				  xmlSecTransformId transform) {
     xmlNodePtr cipherData;
     xmlNodePtr cipherRef;    
     xmlNodePtr transforms;
     xmlNodePtr cipherRefTransform;
     int ret;
-    
-    if((encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: template is null\n", 
-	    func);	
-#endif
-	return(NULL);	        
-    }
+
+    xmlSecAssert2(encNode != NULL, NULL);
+    xmlSecAssert2(transform != NULL, NULL);    
 
     cipherData = xmlSecFindChild(encNode, BAD_CAST "CipherData", xmlSecEncNs);
     if(cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherData node is not found\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "CipherData");
 	return(NULL);	
     }
 
     cipherRef = xmlSecFindChild(cipherData, BAD_CAST "CipherReference", xmlSecEncNs);
     if(cipherRef == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherReference node is not found\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "CipherReference");
 	return(NULL);	
     }
 
@@ -631,32 +513,26 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, xmlSecTransformId transfor
     if(transforms == NULL) {
 	transforms = xmlSecAddChild(cipherRef, BAD_CAST "Transforms", xmlSecEncNs);
 	if(transforms == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create Transforms node\n", 
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(Transforms)");
 	    return(NULL);	
 	}
     }
     
     cipherRefTransform = xmlSecAddChild(transforms,  BAD_CAST "Transform", xmlSecDSigNs);
     if(cipherRefTransform == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create Transform node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Transform)");
 	return(NULL);	
     }
     
     ret = xmlSecTransformNodeWrite(cipherRefTransform, transform);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: enc method write failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeWrite(cipherRefTransform) - %d", ret);
 	return(NULL);	
     }
     
@@ -678,28 +554,19 @@ int
 xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptMemory";
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     int ret;
-    
-    if((ctx == NULL) || (encNode == NULL) || (buf == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context, encNode or buff is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
 
+    xmlSecAssert2(encNode != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);    
+    xmlSecAssert2(buf != NULL, -1);    
     
     res = xmlSecEncResultCreate(ctx, context, 1, encNode);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create result object\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncResultCreate");
 	return(-1);	    		
     }
     if(key != NULL) {
@@ -714,11 +581,9 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
      */    
     state = xmlSecEncStateCreate(ctx, encNode, 1, res);
     if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create encryption state\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateCreate");
 	xmlSecEncResultDestroy(res);
 	return(-1);	    
     }
@@ -726,22 +591,18 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     /* encrypt the data */
     ret = xmlSecBinTransformWrite((xmlSecTransformPtr)state->first, buf, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to encrypt the buffer\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformWrite - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
     }
     ret = xmlSecBinTransformFlush((xmlSecTransformPtr)state->first);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize encryption\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformFlush - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -749,11 +610,9 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
     ret = xmlSecEncStateWriteResult(state, encNode, res); 			
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: finalization failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateWriteResult - %d", ret);
 	xmlSecEncStateDestroy(state);
 	xmlSecEncResultDestroy(res); 
 	return(-1);	    
@@ -779,29 +638,21 @@ int
 xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptUri";
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     xmlSecTransformPtr inputUri = NULL;
     unsigned char buf[1024];
     int ret;
 
-    if((ctx == NULL) || (encNode == NULL) || (uri == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context, encNode or uri is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(encNode != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);    
+    xmlSecAssert2(uri != NULL, -1);    
 
     res = xmlSecEncResultCreate(ctx, context, 1, encNode);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create result object\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncResultCreate");
 	return(-1);	    		
     }
     if(key != NULL) {
@@ -816,11 +667,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
      */    
     state = xmlSecEncStateCreate(ctx, encNode, 1, res);
     if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create encryption state\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateCreate");
 	xmlSecEncResultDestroy(res);
 	return(-1);	    
     }
@@ -828,11 +677,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     /* add the uri load at the beginning */
     inputUri = xmlSecTransformCreate(xmlSecInputUri, 0, 0);
     if(inputUri == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create uri transform\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreate");
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	
@@ -840,11 +687,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     
     ret = xmlSecInputUriTransformOpen(inputUri, uri);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to open uri \"%s\"\n",
-	    func, uri);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecInputUriTransformOpen(%s) - %d", uri, ret);
 	xmlSecTransformDestroy(inputUri, 1);	
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
@@ -853,11 +698,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     
     ret = xmlSecEncStateAddFirstTransform(state, inputUri);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add uri transform\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateAddFirstTransform - %d", ret);
 	xmlSecTransformDestroy(inputUri, 1);	
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
@@ -869,11 +712,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	ret = xmlSecBinTransformRead((xmlSecTransformPtr)state->last, buf, sizeof(buf));
     } while(ret > 0);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to encrypt the buffer\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformRead - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -881,11 +722,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
     ret = xmlSecEncStateWriteResult(state, encNode, res); 			
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: finalization failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateWriteResult - %d", ret);
 	xmlSecEncStateDestroy(state);
 	xmlSecEncResultDestroy(res); 
 	return(-1);	    
@@ -911,28 +750,20 @@ int
 xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptXmlNode";
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     xmlBufferPtr buffer = NULL;
     int ret;
 
-    if((ctx == NULL) || (encNode == NULL) || (src == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context, encNode or src is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(encNode != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);    
+    xmlSecAssert2(src != NULL, -1);    
 
     res = xmlSecEncResultCreate(ctx, context, 1, encNode);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create result object\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncResultCreate");
 	return(-1);	    		
     }
     if(key != NULL) {
@@ -947,22 +778,18 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
      */    
     state = xmlSecEncStateCreate(ctx, encNode, 1, res);
     if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create encryption state\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateCreate");
 	xmlSecEncResultDestroy(res);
 	return(-1);	    
     }
 
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: output buffer creation failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlBufferCreate");
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -986,11 +813,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	    ptr = ptr->next;
 	}
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the type \"%s\" is unknown\n", 
-	    func, res->type);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "type \"%s\" is unknown", res->type);	
 	xmlBufferFree(buffer);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
@@ -1003,22 +828,18 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 				  xmlBufferLength(buffer));
     xmlBufferFree(buffer); buffer = NULL;
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to encrypt the buffer\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformWrite - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
     }
     ret = xmlSecBinTransformFlush((xmlSecTransformPtr)state->first);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize encryption\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformFlush - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -1026,11 +847,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
     ret = xmlSecEncStateWriteResult(state, encNode, res); 			
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: finalization failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateWriteResult - %d", ret);
 	xmlSecEncStateDestroy(state);
 	xmlSecEncResultDestroy(res); 
 	return(-1);	    
@@ -1040,11 +859,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	if(xmlStrEqual(res->type, xmlSecEncTypeElement)) {
 	    ret = xmlSecReplaceNode(src, encNode);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: node replacement failed\n", 
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecReplaceNode - %d", ret);
 		xmlSecEncStateDestroy(state);
 		xmlSecEncResultDestroy(res); 
 		return(-1);
@@ -1053,11 +870,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	} else if(xmlStrEqual(res->type, xmlSecEncTypeContent)) {
 	    ret = xmlSecReplaceContent(src, encNode);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: content replacement failed\n", 
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecReplaceContent - %d", ret);
 		xmlSecEncStateDestroy(state);
 		xmlSecEncResultDestroy(res); 
 		return(-1);
@@ -1092,28 +907,19 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 int
 xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDecrypt";
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
     int ret;
-    
-    if((ctx == NULL) || (encNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or encNode is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
-    
+
+    xmlSecAssert2(encNode != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);    
+
     /* first of all, create result and encryption state objects */
     res = xmlSecEncResultCreate(ctx, context, 0, encNode);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create result object\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncResultCreate");
 	return(-1);	    		
     }
     if(key != NULL) {
@@ -1125,21 +931,17 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
     state = xmlSecEncStateCreate(ctx, encNode, 0, res);
     if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create encryption state\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateCreate");
 	xmlSecEncResultDestroy(res);
 	return(-1);	    
     }
     
     if(state->cipherDataNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: CipherData node is not found\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "CipherData");
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    	
 	return(-1);	    	
@@ -1147,11 +949,9 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     
     ret = xmlSecCipherDataNodeRead(state->cipherDataNode, state, res);
     if((ret < 0) || (res->buffer == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get CipherData node content\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCipherDataNodeRead - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    	
 	return(-1);	    	
@@ -1163,11 +963,9 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 				    xmlBufferContent(res->buffer),  
 				    xmlBufferLength(res->buffer));
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to replace node\n", 
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecReplaceNodeBuffer - %d", ret);
 		xmlSecEncResultDestroy(res);
 		xmlSecEncStateDestroy(state);    
 		return(-1);	    	
@@ -1179,11 +977,9 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 				       xmlBufferContent(res->buffer),
 				       xmlBufferLength(res->buffer));
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to replace content\n", 
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecReplaceNodeBuffer - %d", ret);
 		xmlSecEncResultDestroy(res);
 		xmlSecEncStateDestroy(state);    
 		return(-1);	    	
@@ -1216,29 +1012,21 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  */ 
 static xmlSecEncStatePtr
 xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateCreate";
     xmlSecEncStatePtr state;
     int ret;
 
-    if((ctx == NULL) || (encNode == NULL) || (result == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encNode node, context or result is null\n", 
-	    func);	
-#endif
-	return(NULL);
-    }
+    xmlSecAssert2(encNode != NULL, NULL);
+    xmlSecAssert2(ctx != NULL, NULL);    
+    xmlSecAssert2(result != NULL, NULL);    
 
     /*
      * Allocate a new xmlSecEncState and fill the fields.
      */
     state = (xmlSecEncStatePtr) xmlMalloc(sizeof(xmlSecEncState));
     if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecEncState malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecEncState) = %d bytes", sizeof(xmlSecEncState));
 	return(NULL);
     }
     memset(state, 0, sizeof(xmlSecEncState));
@@ -1249,11 +1037,9 @@ xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSe
     /*  read and update the Encryption Method and KeyInfo */
     ret = xmlSecEncryptedDataNodeRead(encNode, state, result);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read EncryptedData\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncryptedDataNodeRead - %d", ret);
 	xmlSecEncStateDestroy(state);
 	return(NULL);	    	
     }
@@ -1269,16 +1055,8 @@ xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSe
  */ 
 static void
 xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateDestroy";
-    if(state == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
-    
+    xmlSecAssert(state != NULL);
+
     if(state->first != NULL) {
 	xmlSecBinTransformDestroyAll((xmlSecTransformPtr)state->first);
     } else if(state->last != NULL) {
@@ -1298,26 +1076,18 @@ xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
 static int
 xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
 		       xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateWriteResult";
     int ret;
     
-    if((encNode == NULL) || (state == NULL) || (result == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encNode, state or result is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(encNode != NULL, -1);
+    xmlSecAssert2(state != NULL, -1);    
+    xmlSecAssert2(result != NULL, -1);    
 
     /* update template */
     result->buffer = xmlSecMemBufTransformGetBuffer((xmlSecTransformPtr)state->last, 1);
     if(result->buffer == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get memory buffer\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecMemBufTransformGetBuffer");
 	xmlSecEncResultDestroy(result);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -1327,11 +1097,9 @@ xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
 				xmlBufferContent(result->buffer), 
 				xmlBufferLength(result->buffer));
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to write CipherData node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCipherDataNodeWrite - %d", ret);
 	xmlSecEncResultDestroy(result);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -1347,15 +1115,16 @@ xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
  *
  */
 static int
-xmlSecEncStateAddTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateAddTransform";
+xmlSecEncStateAddTransform(xmlSecEncStatePtr state, 
+			    xmlSecTransformPtr transform) {
 
-    if((state == NULL) || !xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null or transform is invalid\n", 
-	    func);	
-#endif
+    xmlSecAssert2(state != NULL, -1);    
+    xmlSecAssert2(transform != NULL, -1);    
+
+    if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(-1);	    
     }
     if(state->last == NULL) {
@@ -1364,11 +1133,9 @@ xmlSecEncStateAddTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform
 					 transform) != NULL) {
 	 state->last = (xmlSecBinTransformPtr)transform;
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add transform\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformAddAfter");
 	return(-1);	    
     }
     return(0);
@@ -1383,14 +1150,13 @@ xmlSecEncStateAddTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform
  */
 static int
 xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateAddFirstTransform";
+    xmlSecAssert2(state != NULL, -1);    
+    xmlSecAssert2(transform != NULL, -1);    
 
-    if((state == NULL) || !xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state is null or transform is invalid\n", 
-	    func);	
-#endif
+    if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformTypeBinary");
 	return(-1);	    
     }
     if(state->first == NULL) {
@@ -1399,11 +1165,9 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
 					  transform) != NULL) {
 	 state->first = (xmlSecBinTransformPtr)transform;
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add transform\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformAddBefore");
 	return(-1);	    
     }
     return(0);
@@ -1421,28 +1185,18 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
  */ 		
 xmlSecEncResultPtr		
 xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncResultCreate";
     xmlSecEncResultPtr result;
-    
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n", 
-	    func);	
-#endif
-	return(NULL);	    
-    }
+
+    xmlSecAssert2(ctx != NULL, NULL);    
     
     /*
      * Allocate a new xmlSecEncResult and fill the fields.
      */
     result = (xmlSecEncResultPtr) xmlMalloc(sizeof(xmlSecEncResult));
     if(result == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecEncResult malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecEncResult) = %d bytes", sizeof(xmlSecEncResult));
 	return(NULL);
     }
     memset(result, 0, sizeof(xmlSecEncResult));
@@ -1463,15 +1217,7 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePt
  */ 		
 void
 xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncResultDestroy";
-    if(result == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+    xmlSecAssert(result != NULL);
     
     if(result->key != NULL) {
 	xmlSecKeyDestroy(result->key);
@@ -1508,16 +1254,8 @@ xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
  */
 void
 xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncResultDebugDump";
-
-    if(result == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+    xmlSecAssert(result != NULL);
+    xmlSecAssert(output != NULL);
 
     if(result->encrypt) {    
         fprintf(output, "= ENCRYPTION RESULT\n");
@@ -1560,20 +1298,14 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
  */
 static int
 xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptedDataNodeRead";
     xmlNodePtr cur;
     xmlNodePtr keyInfoNode = NULL;
     xmlSecTransformPtr encryptionMethod = NULL;
     int ret;
-    
-    if((state == NULL) || (encNode == NULL) || (result == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: state or encNode node is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+
+    xmlSecAssert2(encNode != NULL, -1);
+    xmlSecAssert2(state!= NULL, -1);    
+    xmlSecAssert2(result != NULL, -1);
 
     result->id = xmlGetProp(encNode, BAD_CAST "Id");
     result->type = xmlGetProp(encNode, BAD_CAST "Type");
@@ -1590,28 +1322,22 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	encryptionMethod = xmlSecTransformCreate(state->ctx->encryptionMethod,
 						xmlSecUsageEncryptionMethod, 0);
     } else {
-#ifdef XMLSEC_DEBUG
-	 xmlGenericError(xmlGenericErrorContext,
-	    "%s: EncryptionMethod not specified\n",
-	    func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+		    "encryption method not specified");
 	return(-1);
     }
     if(encryptionMethod == NULL) {
-#ifdef XMLSEC_DEBUG
-         xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to read or create EncryptionMethod\n",
-	    func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformNodeRead(EncMethod) or xmlSecTransformCreate");
 	return(-1);
     }    
     ret = xmlSecEncStateAddTransform(state, encryptionMethod);
     if(ret < 0) {    
-#ifdef XMLSEC_DEBUG
-         xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add EncryptionMethod\n",
-	    func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateAddTransform - %d", ret);
 	xmlSecTransformDestroy(encryptionMethod, 1); 
 	return(-1);
     }
@@ -1645,20 +1371,16 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 					keyUsage); 
     }    
     if(result->key == NULL) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to find encryption key\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+		    NULL);
 	return(-1);
     }
     ret = xmlSecTransformAddKey(encryptionMethod, result->key);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add key\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformAddKey - %d", ret);
 	return(-1);
     }
     if(result->encrypt && (keyInfoNode != NULL)) {
@@ -1668,22 +1390,18 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 		    	result->key, 
 			xmlSecBinTransformIdGetDecKeyType(result->encryptionMethod));
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to write \"KeyInfo\"\n",
-	        func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyInfoNodeWrite - %d", ret);
 	    return(-1);
 	}	
     }
 
     /* next is required CipherData node */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CipherData", xmlSecEncNs))) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"CipherData\" missed\n",
-	    func);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "CipherData");
 	return(-1);
     }
     state->cipherDataNode = cur;
@@ -1701,20 +1419,16 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	
 	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0, 0);
 	if(base64 == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create base64 encode transform\n",
-		func);
-#endif	    	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecEncBase64Encode)");
 	    return(-1);
 	}
 	ret = xmlSecEncStateAddTransform(state, base64);
 	if(ret < 0) {    
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-    		"%s: failed to add Base64 encrypt\n",
-		func);
-#endif		
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecEncStateAddTransform(xmlSecEncBase64Encode) - %d", ret);
 	    xmlSecTransformDestroy(base64, 1); 
 	    return(-1);
 	}
@@ -1722,20 +1436,16 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	/* add mem buf at the end */
 	memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0, 0);
 	if(memBuf == NULL) {
-#ifdef XMLSEC_DEBUG    
-    	    xmlGenericError(xmlGenericErrorContext,
-    		"%s: failed to create memBuf encode transform\n",
-		func);
-#endif	    	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecMemBuf)");
 	    return(-1);
 	}
 	ret = xmlSecEncStateAddTransform(state, memBuf);
         if(ret < 0) {    
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-    		"%s: failed to add Base64 encrypt\n",
-		func);
-#endif		
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecEncStateAddTransform(xmlSecMemBuf) - %d", ret);
 	    xmlSecTransformDestroy(memBuf, 1); 
 	    return(-1);
 	}
@@ -1744,11 +1454,9 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 /*    
     TODO: add support for other nodes
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-	 xmlGenericError(xmlGenericErrorContext,
-	    "%s: unexpected node found\n",
-	    func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }
 */        
@@ -1760,18 +1468,12 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 static int
 xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state, 
 			 xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherDataNodeRead";
     xmlNodePtr cur;
     int ret;
-    
-    if((state == NULL) || (cipherDataNode == NULL) || (result == NULL)){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: state, node or ctx is null\n",
-	    func);
-#endif	    
-	return(-1);
-    }
+
+    xmlSecAssert2(cipherDataNode != NULL, -1);
+    xmlSecAssert2(state!= NULL, -1);    
+    xmlSecAssert2(result != NULL, -1);
     
     cur = xmlSecGetNextElementNode(cipherDataNode->children);
 
@@ -1779,33 +1481,27 @@ xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state,
     if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "CipherValue", xmlSecEncNs))) {
 	ret = xmlSecCipherValueNodeRead(cur, state, result);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read CipherValue node\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecCipherValueNodeRead - %d", ret);
 	    return(-1);
 	}
 	cur = xmlSecGetNextElementNode(cur->next);	
     } else if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "CipherReference",  xmlSecEncNs))) { 
 	ret = xmlSecCipherReferenceNodeRead(cur, state, result);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read CipherReference node\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecCipherReferenceNodeRead - %d", ret);
 	    return(-1);
 	}
 	cur = xmlSecGetNextElementNode(cur->next);	
     }
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node \"%s\"\n",
-	    func, cur->name);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }
     return(0);
@@ -1822,27 +1518,18 @@ xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state,
 static int
 xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 		      const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED ="xmlSecCipherDataNodeWrite";
     xmlNodePtr cur; 
 
-    if((cipherDataNode == NULL) || (buf == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: cipherDataNode or buf is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
+    xmlSecAssert2(cipherDataNode != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);    
 
     cur = xmlSecGetNextElementNode(cipherDataNode->children);
     if(cur == NULL) {
 	cur = xmlSecAddChild(cipherDataNode, BAD_CAST "CipherValue", xmlSecEncNs);
 	if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to create CipherValue node\n", 
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(CipherValue)");
 	    return(-1);	    	    
 	}
         xmlNodeSetContent(cur, BAD_CAST "\n");
@@ -1859,11 +1546,9 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 	cur = xmlSecGetNextElementNode(cur->next);
     }
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node \"%s\"\n",
-	    func, cur->name);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }
     return(0);
@@ -1873,39 +1558,29 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 static int
 xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state, 
 			  xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherValueNodeRead";
     xmlSecTransformPtr base64;
     xmlSecTransformPtr memBuf;
     xmlChar *content;
     int ret;
-    
-    if((state == NULL) || (cipherValueNode == NULL) || (result == NULL)){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: state, node or ctx is null\n",
-	    func);
-#endif	    
-	return(-1);
-    }
 
+    xmlSecAssert2(cipherValueNode != NULL, -1);
+    xmlSecAssert2(state!= NULL, -1);    
+    xmlSecAssert2(result != NULL, -1);
+    
     /* first transform for decryption is base64 decode */	
     base64 = xmlSecTransformCreate(xmlSecEncBase64Decode, 0, 0);
     if(base64 == NULL) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create base64 dencode transform\n",
-	    func);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreate(xmlSecEncBase64Decode)");
 	return(-1);
     }
 
     ret = xmlSecEncStateAddFirstTransform(state, base64);
     if(ret < 0) {    
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add Base64 decode\n",
-	    func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateAddFirstTransform(xmlSecEncBase64Decode) - %d", ret);
 	xmlSecTransformDestroy(base64, 1); 
 	return(-1);
     }
@@ -1914,20 +1589,16 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     /* add mem buf at the end */
     memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0, 0);
     if(memBuf == NULL) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create memBuf encode transform\n",
-	    func);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformCreate(xmlSecMemBuf)");
 	return(-1);
     }
     ret = xmlSecEncStateAddTransform(state, memBuf);
     if(ret < 0) {    
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to add Base64 encrypt\n",
-	    func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncStateAddFirstTransform(xmlSecMemBuf) - %d", ret);
 	xmlSecTransformDestroy(memBuf, 1); 
 	return(-1);
     }
@@ -1936,11 +1607,9 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     /* get node content */
     content = xmlNodeGetContent(cipherValueNode);
     if(content == NULL) {
-#ifdef XMLSEC_DEBUG    
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to get node content\n",
-	    func);
-#endif	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "xmlNodeGetContent(cipherValueNode)");
 	return(-1);
     }
 	
@@ -1948,11 +1617,9 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     ret = xmlSecBinTransformWrite((xmlSecTransformPtr)state->first, 
 				  content, xmlStrlen(content));
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to decrypt the data\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformWrite - %d", ret);
 	xmlFree(content);
 	return(-1);	    	
     }
@@ -1960,22 +1627,18 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     /* flush everything */
     ret = xmlSecBinTransformFlush((xmlSecTransformPtr)state->first);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize encryption\n", 
-    	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformWFlush - %d", ret);
 	xmlFree(content);
         return(-1);	    	
     }
 
     result->buffer = xmlSecMemBufTransformGetBuffer((xmlSecTransformPtr)state->last, 1);
     if(result->buffer == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get buffer\n", 
-    	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecMemBufTransformGetBuffer");
 	xmlFree(content);
         return(-1);	    	
     }
@@ -1987,32 +1650,24 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
 static int			
 xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr state, 
 			      xmlSecEncResultPtr result) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherReferenceNodeRead";
     xmlSecBinTransformPtr transform;
     xmlSecTransformStatePtr transState = NULL;
     xmlNodePtr cur;
     xmlChar *uri = NULL;
     int res = -1;
     int ret;
+
+    xmlSecAssert2(cipherReferenceNode != NULL, -1);
+    xmlSecAssert2(state!= NULL, -1);    
+    xmlSecAssert2(result != NULL, -1);
     
-    if((state == NULL) || (cipherReferenceNode == NULL) || (result == NULL)){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: state, cipherReferenceNode or ctx is null\n",
-	    func);
-#endif	    
-	return(-1);
-    }
-    cur = xmlSecGetNextElementNode(cipherReferenceNode->children); 
-    
+    cur = xmlSecGetNextElementNode(cipherReferenceNode->children);     
     uri = xmlGetProp(cipherReferenceNode, BAD_CAST "URI");
     transState = xmlSecTransformStateCreate(cipherReferenceNode->doc, NULL, (char*)uri);
     if(transState == NULL){
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create transforms state\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateCreate");
 	goto done;
     }	
     
@@ -2020,21 +1675,17 @@ xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr 
     if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecEncNs)) {
 	ret = xmlSecTransformsNodeRead(transState, cur);
 	if(ret < 0){
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read \"Transforms\"\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformsNodeRead - %d", ret);
 	    goto done;
 	}	
 	cur = xmlSecGetNextElementNode(cur->next);
     }
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: found unexpected node\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	goto done;
     }
 
@@ -2049,11 +1700,9 @@ xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr 
 	
 	ret = xmlSecTransformStateUpdate(transState, (xmlSecTransformPtr)transform);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: found unexpected node\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "xmlSecTransformStateUpdate - %d", ret);
 	    xmlSecBinTransformDestroyAll((xmlSecTransformPtr)transform);
 	    goto done;
 	}
@@ -2061,11 +1710,9 @@ xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr 
     state->last = NULL;
     ret = xmlSecTransformStateFinal(transState, xmlSecTransformResultBinary);
     if((ret < 0) || (transState->curBuf == NULL)){
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize transforms\n",
-	    func);
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateFinal - %d", ret);
 	goto done;
     }
     result->buffer = transState->curBuf;

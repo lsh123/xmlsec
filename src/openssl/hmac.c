@@ -38,9 +38,10 @@
  * <xmlsec:HMACKeyValue> processing
  *
  *************************************************************************/
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataHmacValueCreate	(xmlSecKeyDataId id);
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataHmacValueDuplicate	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataHmacValueDestroy	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataHmacValueInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataHmacValueDuplicate	(xmlSecKeyDataPtr dst,
+								 xmlSecKeyDataPtr src);
+static void		xmlSecOpenSSLKeyDataHmacValueFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLKeyDataHmacValueXmlRead	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
@@ -62,14 +63,17 @@ static int		xmlSecOpenSSLKeyDataHmacValueBinWrite	(xmlSecKeyDataId id,
 static int		xmlSecOpenSSLKeyDataHmacValueGenerate	(xmlSecKeyDataPtr data,
 								 size_t sizeBits);
 
-static xmlSecKeyDataType	xmlSecOpenSSLKeyDataHmacValueGetType	(xmlSecKeyDataPtr data);
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataHmacValueGetType	(xmlSecKeyDataPtr data);
 static size_t		xmlSecOpenSSLKeyDataHmacValueGetSize	(xmlSecKeyDataPtr data);
 static void		xmlSecOpenSSLKeyDataHmacValueDebugDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
 static void		xmlSecOpenSSLKeyDataHmacValueDebugXmlDump(xmlSecKeyDataPtr data,
 								 FILE* output);
 
-static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     xmlSecNameHMACKeyValue,
     xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
@@ -79,9 +83,9 @@ static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacValueKlass = {
     xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataHmacValueCreate,	/* xmlSecKeyDataCreateMethod create; */
+    xmlSecOpenSSLKeyDataHmacValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataHmacValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataHmacValueDestroy,	/* xmlSecKeyDataDestroyMethod destroy; */
+    xmlSecOpenSSLKeyDataHmacValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataHmacValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -123,25 +127,26 @@ xmlSecOpenSSLKeyDataHmacValueSet(xmlSecKeyDataPtr data, const unsigned char* buf
     return(0);    
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataHmacValueCreate(xmlSecKeyDataId id) {
-    xmlSecAssert2(id == xmlSecKeyDataHmacValueId, NULL);
+static int
+xmlSecOpenSSLKeyDataHmacValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), -1);
     
-    return(xmlSecKeyDataBinaryValueCreate(id));
+    return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataHmacValueDuplicate(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), NULL);
-    
-    return(xmlSecKeyDataBinaryValueDuplicate(data));
+static int	
+xmlSecOpenSSLKeyDataHmacValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataHmacValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataHmacValueId), -1);
+
+    return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
-xmlSecOpenSSLKeyDataHmacValueDestroy(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataHmacValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId));
     
-    xmlSecKeyDataBinaryValueDestroy(data);
+    xmlSecKeyDataBinaryValueFinalize(data);
 }
 
 static int

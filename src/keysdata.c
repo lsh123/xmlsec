@@ -192,32 +192,34 @@ xmlSecKeyDataIdsFindByName(const xmlChar* name, xmlSecKeyDataUsage usage) {
 xmlSecKeyDataPtr	
 xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
     xmlSecKeyDataPtr data;
-    
+    int ret;
+        
     xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(id->create != NULL, NULL);
-    
-    data = id->create(id);
+    xmlSecAssert2(id->objSize > 0, NULL);
+        
+    /* Allocate a new xmlSecKeyData and fill the fields. */
+    data = (xmlSecKeyDataPtr)xmlMalloc(id->objSize);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "id->create");
-	return(NULL);	
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", id->objSize); 
+	return(NULL);
     }
+    memset(data, 0, id->objSize);    
+    data->id = id;
+
+    if(id->initialize != NULL) {
+	ret = (id->initialize)(data);
+        if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"id->initialize");
+	    xmlSecKeyDataDestroy(data);
+	    return(NULL);
+	}
+    }
+    
     return(data);
-}
-
-/**
- * xmlSecKeyDataDestroy:
- * @data: the pointer to the #xmlSecKeyData structure.
- *
- * Destroys the data and frees all allocated memory. 
- */
-void
-xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));    
-    xmlSecAssert(data->id->destroy != NULL);    
-
-    data->id->destroy(data);
 }
 
 /**
@@ -232,20 +234,50 @@ xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
 xmlSecKeyDataPtr	
 xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
     xmlSecKeyDataPtr newData;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
     xmlSecAssert2(data->id->duplicate != NULL, NULL);
-    
-    newData = data->id->duplicate(data);
+
+    newData = xmlSecKeyDataCreate(data->id);
+    if(newData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataCreate"); 
+	return(NULL);
+    }
+
+    ret = (data->id->duplicate)(newData, data);
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "id->duplicate");
+	xmlSecKeyDataDestroy(newData);
 	return(NULL);	
     }
     
     return(newData);
 }
+
+/**
+ * xmlSecKeyDataDestroy:
+ * @data: the pointer to the #xmlSecKeyData structure.
+ *
+ * Destroys the data and frees all allocated memory. 
+ */
+void
+xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataIsValid(data));    
+    xmlSecAssert(data->id->objSize > 0);
+
+    
+    if(data->id->finalize != NULL) { 
+	(data->id->finalize)(data);
+    }
+    memset(data, 0, data->id->objSize);
+    xmlFree(data);
+}
+
 
 /**
  * xmlSecKeyDataXmlRead:
@@ -421,74 +453,50 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  * xmlSecKeyDataBinary methods
  *
  *************************************************************************/
-xmlSecKeyDataPtr 
-xmlSecKeyDataBinaryValueCreate(xmlSecKeyDataId id) {
-    xmlSecKeyDataPtr data;
-
-    xmlSecAssert2(id != xmlSecKeyDataIdUnknown, NULL);
+int
+xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
         
-    /* Allocate a new xmlSecKeyData and fill the fields. */
-    data = (xmlSecKeyDataPtr)xmlMalloc(sizeof(xmlSecKeyData));
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecKeyData)=%d", 
-		    sizeof(xmlSecKeyData));
-	return(NULL);
-    }
-    memset(data, 0, sizeof(xmlSecKeyData));    
-    data->id = id;
-    
     /* create buffer */
+    xmlSecAssert2(data->reserved0 == NULL, -1);
     data->reserved0 = xmlBufferCreate();
     if(data->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlBufferCreate");
-	xmlSecKeyDataDestroy(data);
-	return(NULL);
+	return(-1);
     }
     
-    return(data);    
+    return(0);    
 }
 
-xmlSecKeyDataPtr 
-xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr data) {
+int
+xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlBufferPtr buffer;
-    xmlSecKeyDataPtr newData;
     int ret;
     
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-    xmlSecAssert2(buffer != NULL, NULL);
+    xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
 
-    /* create object */
-    newData = xmlSecKeyDataCreate(data->id);
-    if(newData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
-	return(NULL);
-    }
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(src);
+    xmlSecAssert2(buffer != NULL, -1);
     
     /* copy data */
-    ret = xmlSecKeyDataBinaryValueSetBuffer(newData,
+    ret = xmlSecKeyDataBinaryValueSetBuffer(dst,
 		    xmlBufferContent(buffer),
 		    xmlBufferLength(buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeyDataBinaryValueSetBuffer");
-	xmlSecKeyDataDestroy(newData);
-	return(NULL);
+	return(-1);
     }
 
-    return(newData);
+    return(0);
 }
 
 void 
-xmlSecKeyDataBinaryValueDestroy(xmlSecKeyDataPtr data) {
+xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     
     /* destroy buffer */
@@ -496,10 +504,8 @@ xmlSecKeyDataBinaryValueDestroy(xmlSecKeyDataPtr data) {
 	/* zero buffer before destroying */
 	xmlBufferEmpty((xmlBufferPtr)(data->reserved0));
 	xmlBufferFree((xmlBufferPtr)(data->reserved0));
+	data->reserved0 = NULL;
     }
-
-    memset(data, 0, sizeof(xmlSecKeyData));
-    xmlFree(data);
 }
 
 int 
@@ -857,17 +863,33 @@ xmlSecKeyDataPtrListGetKlass(void) {
 xmlSecKeyDataStorePtr	
 xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     xmlSecKeyDataStorePtr store;
-    
+    int ret;
+        
     xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(id->create != NULL, NULL);
-    
-    store = id->create(id);
+    xmlSecAssert2(id->objSize > 0, NULL);
+        
+    /* Allocate a new xmlSecKeyDataStore and fill the fields. */
+    store = (xmlSecKeyDataStorePtr)xmlMalloc(id->objSize);
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "id->create");
-	return(NULL);	
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", id->objSize); 
+	return(NULL);
     }
+    memset(store, 0, id->objSize);    
+    store->id = id;
+
+    if(id->initialize != NULL) {
+	ret = (id->initialize)(store);
+        if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"id->initialize");
+	    xmlSecKeyDataStoreDestroy(store);
+	    return(NULL);
+	}
+    }
+    
     return(store);
 }
 
@@ -880,9 +902,13 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
 void
 xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
     xmlSecAssert(xmlSecKeyDataStoreIsValid(store));    
-    xmlSecAssert(store->id->destroy != NULL);    
-
-    store->id->destroy(store);
+    xmlSecAssert2(store->id->objSize > 0, NULL);
+    
+    if(store->id->finalize != NULL) {  
+        (store->id->finalize)(store);
+    }
+    memset(store, 0, store->id->objSize);
+    xmlFree(store);
 }
 
 int 

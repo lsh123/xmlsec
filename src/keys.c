@@ -629,7 +629,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * Keys list
  *
  **********************************************************************/
-static const struct _xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
+static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
     (xmlSecPtrDestroyItemMethod)xmlSecKeyDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
     (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */

@@ -196,7 +196,10 @@ static int			xmlSecKeyDataNameXmlWrite	(xmlSecKeyDataId id,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static const struct _xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
+static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     BAD_CAST "KeyName",
     xmlSecKeyDataUsageKeyInfoNode, 		/* xmlSecKeyDataUsage usage; */
@@ -337,7 +340,10 @@ static int			xmlSecKeyDataValueXmlWrite	(xmlSecKeyDataId id,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static const struct _xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
+static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     BAD_CAST "KeyValue",
     xmlSecKeyDataUsageKeyInfoNode, 		/* xmlSecKeyDataUsage usage; */
@@ -487,7 +493,10 @@ static int			xmlSecKeyDataRetrievalMethodXmlWrite(xmlSecKeyDataId id,
 
 
 
-static const struct _xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
+static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     xmlSecNameRetrievalMethod,
     xmlSecKeyDataUsageKeyInfoNode, 		/* xmlSecKeyDataUsage usage; */
@@ -766,7 +775,10 @@ static int			xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id,
 
 
 
-static const struct _xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
+static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     xmlSecNameEncryptedKey,
     xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 		

@@ -16,7 +16,7 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 
 typedef void*	xmlSecPtr;
-typedef const struct _xmlSecPtrListKlass	*xmlSecPtrListId;
+typedef const struct _xmlSecPtrListKlass	xmlSecPtrListKlass, *xmlSecPtrListId;
 typedef struct _xmlSecPtrList 			xmlSecPtrList, *xmlSecPtrListPtr;
 
 

@@ -212,22 +212,25 @@ xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
  * Simple Keys Store
  *
  ***************************************************************************/
-static xmlSecKeyDataStorePtr	xmlSecSimpleKeysStoreCreate	(xmlSecKeyDataStoreId id);
-static void			xmlSecSimpleKeysStoreDestroy	(xmlSecKeyDataStorePtr store);
+static int			xmlSecSimpleKeysStoreInitialize	(xmlSecKeyDataStorePtr store);
+static void			xmlSecSimpleKeysStoreFinalize	(xmlSecKeyDataStorePtr store);
 static int			xmlSecSimpleKeysStoreFind	(xmlSecKeyDataStorePtr store,
 								 xmlSecKeyPtr key,
 								 const xmlChar** params,
 								 size_t paramsSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static const struct _xmlSecKeyDataStoreKlass xmlSecSimpleKeysStoreKlass = {
+static xmlSecKeyDataStoreKlass xmlSecSimpleKeysStoreKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     BAD_CAST "simple-keys-store",	/* const xmlChar* name; */ 
         
     /* constructors/destructor */
-    xmlSecSimpleKeysStoreCreate,	/* xmlSecKeyDataStoreCreateMethod create; */
-    xmlSecSimpleKeysStoreDestroy,	/* xmlSecKeyDataStoreDestroyMethod destroy; */
-    xmlSecSimpleKeysStoreFind,	/* xmlSecKeyDataStoreFindMethod find; */
+    xmlSecSimpleKeysStoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
+    xmlSecSimpleKeysStoreFinalize,	/* xmlSecKeyDataStoreFinalizeMethod finalize; */
+    xmlSecSimpleKeysStoreFind,		/* xmlSecKeyDataStoreFindMethod find; */
 };
 
 /*
@@ -511,28 +514,15 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 
 }
 
-static xmlSecKeyDataStorePtr 
-xmlSecSimpleKeysStoreCreate(xmlSecKeyDataStoreId id) {
-    xmlSecKeyDataStorePtr store;
-    
-    xmlSecAssert2(id == xmlSecSimpleKeysStoreId, NULL);
+static int
+xmlSecSimpleKeysStoreInitialize(xmlSecKeyDataStorePtr store) {
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
 
-    /* Allocate a new xmlSecKeyDataStore and fill the fields. */
-    store = (xmlSecKeyDataStorePtr)xmlMalloc(sizeof(xmlSecKeyDataStore));
-    if(store == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecKeyDataStore)=%d", 
-		    sizeof(xmlSecKeyDataStore));
-	return(NULL);
-    }
-    memset(store, 0, sizeof(xmlSecKeyDataStore));
-    store->id = id;
-    return(store);    
+    return(0);    
 }
 
 static void
-xmlSecSimpleKeysStoreDestroy(xmlSecKeyDataStorePtr store) {
+xmlSecSimpleKeysStoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecPtrListPtr list;
     
     xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId));
@@ -541,9 +531,8 @@ xmlSecSimpleKeysStoreDestroy(xmlSecKeyDataStorePtr store) {
     list = xmlSecSimpleKeysStoreGetList(store);
     if(list != NULL) {
 	xmlSecPtrListDestroy(list);
+	store->reserved0 = NULL;
     }
-    memset(store, 0, sizeof(xmlSecKeyDataStore));    
-    xmlFree(store);
 }
 
 static int

@@ -426,4 +426,71 @@ xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
 
 
 
+/**
+ * xmlSecTransformDefaultReadBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
+ *
+ * Reads chunk of data from the transform (wrapper transform specific
+ * readBin() function).
+ *
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
+ */
+int
+xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform, 
+		       unsigned char *buf, size_t size) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    if(transform->id->readBin != NULL) {
+	return((transform->id->readBin)(transform, buf, size));
+    }
+    return(0);
+}
+
+/**
+ * xmlSecTransformDefaultWriteBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the input data buffer.
+ * @size: the input data size.
+ *
+ * Writes data to the transform (wrapper to the transform specific
+ * writeBin() function).
+ * 
+ * Returns 0 if success or a negative value otherwise.
+ */
+int
+xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform, 
+			const unsigned char *buf, size_t size) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    if(transform->id->writeBin != NULL) {
+	return((transform->id->writeBin)(transform, buf, size));
+    }
+    return(0);
+}
+
+/**
+ * xmlSecTransformDefaultFlushBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * Finalizes writing (wrapper for transform specific flushBin() method). 
+ *
+ * Returns 0 if success or negative value otherwise.
+ */
+int
+xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+
+    if(transform->id->flushBin != NULL) {
+	return((transform->id->flushBin)(transform));
+    }
+    return(0);
+}
+
+
+
 #include "transforms-old.c"

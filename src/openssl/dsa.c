@@ -106,9 +106,10 @@
  * by this the P, Q and G are *required*!
  *
  *************************************************************************/
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataDsaValueCreate	(xmlSecKeyDataId id);
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataDsaValueDuplicate	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataDsaValueDestroy	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataDsaValueInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataDsaValueDuplicate	(xmlSecKeyDataPtr dst,
+								 xmlSecKeyDataPtr src);
+static void		xmlSecOpenSSLKeyDataDsaValueFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLKeyDataDsaValueXmlRead	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
@@ -127,7 +128,10 @@ static void		xmlSecOpenSSLKeyDataDsaValueDebugDump	(xmlSecKeyDataPtr data,
 static void		xmlSecOpenSSLKeyDataDsaValueDebugXmlDump(xmlSecKeyDataPtr data,
 								 FILE* output);
 static DSA*		xmlSecOpenSSLDsaDup			(DSA* dsa);
-static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     xmlSecNameDSAKeyValue,
     xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
@@ -137,9 +141,9 @@ static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaValueKlass = {
     xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataDsaValueCreate,		/* xmlSecKeyDataCreateMethod create; */
+    xmlSecOpenSSLKeyDataDsaValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataDsaValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataDsaValueDestroy,	/* xmlSecKeyDataDestroyMethod destroy; */
+    xmlSecOpenSSLKeyDataDsaValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataDsaValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
@@ -231,58 +235,34 @@ xmlSecOpenSSLDsaDup(DSA* dsa) {
     return(newDsa);
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataDsaValueCreate(xmlSecKeyDataId id) {
-    xmlSecKeyDataPtr data;
-    
-    xmlSecAssert2(id == xmlSecKeyDataDsaValueId, NULL);
-        
-    /* Allocate a new xmlSecKeyData and fill the fields. */
-    data = (xmlSecKeyDataPtr)xmlMalloc(sizeof(xmlSecKeyData));
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecKeyData)=%d", 
-		    sizeof(xmlSecKeyData));
-	return(NULL);
-    }
-    memset(data, 0, sizeof(xmlSecKeyData));    
-    data->id = id;
+static int
+xmlSecOpenSSLKeyDataDsaValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), -1);
 
-    return(data);
+    return(0);
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataDsaValueDuplicate(xmlSecKeyDataPtr data) {
-    xmlSecKeyDataPtr newData;
+static int
+xmlSecOpenSSLKeyDataDsaValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataDsaValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataDsaValueId), -1);
 
-    /* create object */
-    newData = xmlSecKeyDataCreate(data->id);
-    if(newData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
-	return(NULL);
-    }
-    
-    /* copy data */
-    ret = xmlSecOpenSSLKeyDataDsaValueSet(newData, xmlSecOpenSSLKeyDataDsaValueGet(data));
+    /* copy data */    
+    ret = xmlSecOpenSSLKeyDataDsaValueSet(dst, xmlSecOpenSSLKeyDataDsaValueGet(src));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLKeyDataDsaValueSet");
-	xmlSecKeyDataDestroy(newData);
-	return(NULL);
+	return(-1);
     }
 
-    return(newData);
+    return(0);
 }
 
 static void
-xmlSecOpenSSLKeyDataDsaValueDestroy(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataDsaValueFinalize(xmlSecKeyDataPtr data) {
     int ret;
     
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId));
@@ -293,11 +273,7 @@ xmlSecOpenSSLKeyDataDsaValueDestroy(xmlSecKeyDataPtr data) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLKeyDataDsaValueSet");
-	/* continue destructor */
     }
-
-    memset(data, 0, sizeof(xmlSecKeyData));
-    xmlFree(data);
 }
 
 static int

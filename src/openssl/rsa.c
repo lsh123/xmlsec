@@ -79,9 +79,10 @@
  *
  *************************************************************************/
 
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataRsaValueCreate	(xmlSecKeyDataId id);
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataRsaValueDuplicate	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataRsaValueDestroy	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataRsaValueInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataRsaValueDuplicate	(xmlSecKeyDataPtr dst,
+								 xmlSecKeyDataPtr src);
+static void		xmlSecOpenSSLKeyDataRsaValueFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLKeyDataRsaValueXmlRead	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
@@ -100,7 +101,10 @@ static void		xmlSecOpenSSLKeyDataRsaValueDebugDump	(xmlSecKeyDataPtr data,
 static void		xmlSecOpenSSLKeyDataRsaValueDebugXmlDump(xmlSecKeyDataPtr data,
 								 FILE* output);
 static RSA*		xmlSecOpenSSLRsaDup			(RSA* rsa);
-static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     xmlSecNameRSAKeyValue,
     xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
@@ -110,9 +114,9 @@ static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaValueKlass = {
     xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataRsaValueCreate,		/* xmlSecKeyDataCreateMethod create; */
+    xmlSecOpenSSLKeyDataRsaValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataRsaValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataRsaValueDestroy,	/* xmlSecKeyDataDestroyMethod destroy; */
+    xmlSecOpenSSLKeyDataRsaValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataRsaValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
@@ -198,58 +202,34 @@ xmlSecOpenSSLRsaDup(RSA* rsa) {
     return(newRsa);
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataRsaValueCreate(xmlSecKeyDataId id) {
-    xmlSecKeyDataPtr data;
-    
-    xmlSecAssert2(id == xmlSecKeyDataRsaValueId, NULL);
-        
-    /* Allocate a new xmlSecKeyData and fill the fields. */
-    data = (xmlSecKeyDataPtr)xmlMalloc(sizeof(xmlSecKeyData));
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecKeyData)=%d", 
-		    sizeof(xmlSecKeyData));
-	return(NULL);
-    }
-    memset(data, 0, sizeof(xmlSecKeyData));    
-    data->id = id;
+static int
+xmlSecOpenSSLKeyDataRsaValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), -1);
 
-    return(data);
+    return(0);
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataRsaValueDuplicate(xmlSecKeyDataPtr data) {
-    xmlSecKeyDataPtr newData;
+static int
+xmlSecOpenSSLKeyDataRsaValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataRsaValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataRsaValueId), -1);
 
-    /* create object */
-    newData = xmlSecKeyDataCreate(data->id);
-    if(newData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
-	return(NULL);
-    }
-    
     /* copy data */
-    ret = xmlSecOpenSSLKeyDataRsaValueSet(newData, xmlSecOpenSSLKeyDataRsaValueGet(data));
+    ret = xmlSecOpenSSLKeyDataRsaValueSet(dst, xmlSecOpenSSLKeyDataRsaValueGet(src));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLKeyDataRsaValueSet");
-	xmlSecKeyDataDestroy(newData);
-	return(NULL);
+	return(-1);
     }
 
-    return(newData);
+    return(0);
 }
 
 static void
-xmlSecOpenSSLKeyDataRsaValueDestroy(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataRsaValueFinalize(xmlSecKeyDataPtr data) {
     int ret;
     
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId));
@@ -260,11 +240,7 @@ xmlSecOpenSSLKeyDataRsaValueDestroy(xmlSecKeyDataPtr data) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLKeyDataRsaValueSet");
-	/* continue destructor */
     }
-
-    memset(data, 0, sizeof(xmlSecKeyData));
-    xmlFree(data);
 }
 
 static int
@@ -356,7 +332,7 @@ xmlSecOpenSSLKeyDataRsaValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(data == NULL ) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
+		    "xmlSecKeyDataInitialize");
 	RSA_free(rsa);
 	return(-1);
     }

@@ -44,9 +44,10 @@
  * <xmlsec:AESKeyValue> processing
  *
  *************************************************************************/
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataAesValueCreate	(xmlSecKeyDataId id);
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataAesValueDuplicate	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataAesValueDestroy	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataAesValueInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataAesValueDuplicate	(xmlSecKeyDataPtr dst,
+								 xmlSecKeyDataPtr src);
+static void		xmlSecOpenSSLKeyDataAesValueFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLKeyDataAesValueXmlRead	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
@@ -75,7 +76,10 @@ static void		xmlSecOpenSSLKeyDataAesValueDebugDump	(xmlSecKeyDataPtr data,
 static void		xmlSecOpenSSLKeyDataAesValueDebugXmlDump(xmlSecKeyDataPtr data,
 								 FILE* output);
 
-static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+    
     /* data */
     xmlSecNameAESKeyValue,
     xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
@@ -85,9 +89,9 @@ static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesValueKlass = {
     xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataAesValueCreate,		/* xmlSecKeyDataCreateMethod create; */
+    xmlSecOpenSSLKeyDataAesValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataAesValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataAesValueDestroy,	/* xmlSecKeyDataDestroyMethod destroy; */
+    xmlSecOpenSSLKeyDataAesValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataAesValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -130,25 +134,26 @@ xmlSecOpenSSLKeyDataAesValueSet(xmlSecKeyDataPtr data, const unsigned char* buf,
     return(0);    
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataAesValueCreate(xmlSecKeyDataId id) {
-    xmlSecAssert2(id == xmlSecKeyDataAesValueId, NULL);
+static int
+xmlSecOpenSSLKeyDataAesValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataAesValueId), -1);
     
-    return(xmlSecKeyDataBinaryValueCreate(id));
+    return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataAesValueDuplicate(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataAesValueId), NULL);
+static int
+xmlSecOpenSSLKeyDataAesValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataAesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataAesValueId), -1);
     
-    return(xmlSecKeyDataBinaryValueDuplicate(data));
+    return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
-xmlSecOpenSSLKeyDataAesValueDestroy(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataAesValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataAesValueId));
     
-    xmlSecKeyDataBinaryValueDestroy(data);
+    xmlSecKeyDataBinaryValueFinalize(data);
 }
 
 static int

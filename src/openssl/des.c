@@ -41,9 +41,10 @@
  * <xmlsec:DESKeyValue> processing
  *
  *************************************************************************/
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataDesValueCreate	(xmlSecKeyDataId id);
-static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataDesValueDuplicate	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataDesValueDestroy	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataDesValueInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataDesValueDuplicate	(xmlSecKeyDataPtr dst,
+								 xmlSecKeyDataPtr src);
+static void		xmlSecOpenSSLKeyDataDesValueFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLKeyDataDesValueXmlRead	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
@@ -65,14 +66,17 @@ static int		xmlSecOpenSSLKeyDataDesValueBinWrite	(xmlSecKeyDataId id,
 static int		xmlSecOpenSSLKeyDataDesValueGenerate	(xmlSecKeyDataPtr data,
 								 size_t sizeBits);
 
-static xmlSecKeyDataType	xmlSecOpenSSLKeyDataDesValueGetType	(xmlSecKeyDataPtr data);
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataDesValueGetType	(xmlSecKeyDataPtr data);
 static size_t		xmlSecOpenSSLKeyDataDesValueGetSize	(xmlSecKeyDataPtr data);
 static void		xmlSecOpenSSLKeyDataDesValueDebugDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
 static void		xmlSecOpenSSLKeyDataDesValueDebugXmlDump(xmlSecKeyDataPtr data,
 								 FILE* output);
 
-static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
     /* data */
     xmlSecNameDESKeyValue,
     xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
@@ -82,9 +86,9 @@ static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesValueKlass = {
     xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataDesValueCreate,		/* xmlSecKeyDataCreateMethod create; */
+    xmlSecOpenSSLKeyDataDesValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataDesValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataDesValueDestroy,	/* xmlSecKeyDataDestroyMethod destroy; */
+    xmlSecOpenSSLKeyDataDesValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataDesValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
@@ -126,25 +130,26 @@ xmlSecOpenSSLKeyDataDesValueSet(xmlSecKeyDataPtr data, const unsigned char* buf,
     return(0);    
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataDesValueCreate(xmlSecKeyDataId id) {
-    xmlSecAssert2(id == xmlSecKeyDataDesValueId, NULL);
+static int
+xmlSecOpenSSLKeyDataDesValueInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDesValueId), -1);
     
-    return(xmlSecKeyDataBinaryValueCreate(id));
+    return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
-static xmlSecKeyDataPtr	
-xmlSecOpenSSLKeyDataDesValueDuplicate(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDesValueId), NULL);
+static int
+xmlSecOpenSSLKeyDataDesValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataDesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataDesValueId), -1);
     
-    return(xmlSecKeyDataBinaryValueDuplicate(data));
+    return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
-xmlSecOpenSSLKeyDataDesValueDestroy(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataDesValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataDesValueId));
     
-    xmlSecKeyDataBinaryValueDestroy(data);
+    xmlSecKeyDataBinaryValueFinalize(data);
 }
 
 static int

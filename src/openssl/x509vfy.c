@@ -44,16 +44,19 @@
  * xmlSecOpenSSLKeyDataStoreX509Id:
  *
  ***************************************************************************/
-static xmlSecKeyDataStorePtr	xmlSecOpenSSLX509StoreCreate	(xmlSecKeyDataStoreId id);
-static void			xmlSecOpenSSLX509StoreDestroy	(xmlSecKeyDataStorePtr store);
+static int		xmlSecOpenSSLX509StoreInitialize	(xmlSecKeyDataStorePtr store);
+static void		xmlSecOpenSSLX509StoreFinalize		(xmlSecKeyDataStorePtr store);
 
-static const struct _xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
+static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
+    sizeof(xmlSecKeyDataStoreKlass),
+    sizeof(xmlSecKeyDataStore),
+
     /* data */
     BAD_CAST "openssl-x509-store",	/* const xmlChar* name; */ 
         
     /* constructors/destructor */
-    xmlSecOpenSSLX509StoreCreate,	/* xmlSecKeyDataStoreCreateMethod create; */
-    xmlSecOpenSSLX509StoreDestroy,	/* xmlSecKeyDataStoreDestroyMethod destroy; */
+    xmlSecOpenSSLX509StoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
+    xmlSecOpenSSLX509StoreFinalize,	/* xmlSecKeyDataStoreFinalizeMethod finalize; */
     NULL,				/* xmlSecKeyDataStoreFindMethod find; */
 };
 
@@ -344,38 +347,25 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 }
 
 
-static xmlSecKeyDataStorePtr 
-xmlSecOpenSSLX509StoreCreate(xmlSecKeyDataStoreId id) {
-    xmlSecKeyDataStorePtr store;
-    
-    xmlSecAssert2(id == xmlSecOpenSSLX509StoreId, NULL);
-
-    /* Allocate a new xmlSecKeyDataStore and fill the fields. */
-    store = (xmlSecKeyDataStorePtr)xmlMalloc(sizeof(xmlSecKeyDataStore));
-    if(store == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecKeyDataStore)=%d", 
-		    sizeof(xmlSecKeyDataStore));
-	return(NULL);
-    }
-    memset(store, 0, sizeof(xmlSecKeyDataStore));
-    store->id = id;
+static int
+xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
+    xmlSecAssert2(store->reserved0 == NULL, -1);
+    xmlSecAssert2(store->reserved1 == NULL, -1);
+    xmlSecAssert2(store->reserved2 == NULL, -1);
     
     store->reserved0 = X509_STORE_new();
     if(xmlSecOpenSSLX509StoreGet(store) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "X509_STORE_new");
-	xmlSecKeyDataStoreDestroy(store);
-	return(NULL);
+	return(-1);
     }
     if(!X509_STORE_set_default_paths(xmlSecOpenSSLX509StoreGet(store))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "X509_STORE_set_default_paths");
-	xmlSecKeyDataStoreDestroy(store);
-	return(NULL);
+	return(-1);
     }
     xmlSecOpenSSLX509StoreGet(store)->depth = 9; /* the default cert verification path in openssl */	
 	
@@ -384,8 +374,7 @@ xmlSecOpenSSLX509StoreCreate(xmlSecKeyDataStoreId id) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "sk_X509_new_null");
-	xmlSecKeyDataStoreDestroy(store);
-	return(NULL);
+	return(-1);
     }    
 
     store->reserved2 = sk_X509_CRL_new_null();
@@ -393,15 +382,14 @@ xmlSecOpenSSLX509StoreCreate(xmlSecKeyDataStoreId id) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "sk_X509_CRL_new_null");
-	xmlSecKeyDataStoreDestroy(store);
-	return(NULL);
+	return(-1);
     }    
     
-    return(store);    
+    return(0);    
 }
 
 static void
-xmlSecOpenSSLX509StoreDestroy(xmlSecKeyDataStorePtr store) {
+xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId));
     
     if(xmlSecOpenSSLX509StoreGet(store) != NULL) {
@@ -413,8 +401,9 @@ xmlSecOpenSSLX509StoreDestroy(xmlSecKeyDataStorePtr store) {
     if(xmlSecOpenSSLX509StoreCrls(store) != NULL) {
 	sk_X509_CRL_pop_free(xmlSecOpenSSLX509StoreCrls(store), X509_CRL_free);
     }
-    memset(store, 0, sizeof(xmlSecKeyDataStore));    
-    xmlFree(store);
+    store->reserved0 = NULL;
+    store->reserved1 = NULL;
+    store->reserved2 = NULL;
 }
 
 

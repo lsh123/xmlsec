@@ -23,7 +23,7 @@ extern "C" {
 #include <xmlsec/nodeset.h>
 
 
-typedef const struct _xmlSecTransformKlass		*xmlSecTransformId;
+typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
 typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
 typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
 typedef struct _xmlSecTransfomrBinData			xmlSecTransformBinData, *xmlSecTransformBinDataPtr; 
@@ -62,8 +62,9 @@ typedef enum  {
  */
 struct _xmlSecTransformBinData {
     unsigned char*		buf;
-    size_t			useSize;
     size_t			maxSize;
+    size_t			startPos;
+    size_t			endPos;
     xmlSecTransformStatus	status;
 };
 

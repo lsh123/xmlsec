@@ -19,10 +19,10 @@ extern "C" {
 /**
  * Forward declarations
  */
-typedef const struct _xmlSecKeyDataKlass 	*xmlSecKeyDataId; 
+typedef const struct _xmlSecKeyDataKlass 	xmlSecKeyDataKlass, *xmlSecKeyDataId; 
 typedef struct _xmlSecKeyData 			xmlSecKeyData, *xmlSecKeyDataPtr; 
 
-typedef const struct _xmlSecKeyDataStoreKlass 	*xmlSecKeyDataStoreId; 
+typedef const struct _xmlSecKeyDataStoreKlass 	xmlSecKeyDataStoreKlass, *xmlSecKeyDataStoreId; 
 typedef struct _xmlSecKeyDataStore		xmlSecKeyDataStore, *xmlSecKeyDataStorePtr; 
 
 typedef struct _xmlSecKeyInfoCtx  		xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr; 
@@ -188,15 +188,15 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
 #define xmlSecKeyDataIdUnknown 			NULL
 
 /** 
- * xmlSecKeyDataCreateMethod:
- * @id: the data id.
+ * xmlSecKeyDataInitMethod:
+ * @data: the data.
  *
  * KeyData specific creation method.
  *
  * Returns the pointer to newly created #xmlSecKeyData structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyDataPtr	(*xmlSecKeyDataCreateMethod)	(xmlSecKeyDataId id);
+typedef int			(*xmlSecKeyDataInitMethod)	(xmlSecKeyDataPtr data);
 
 /** 
  * xmlSecKeyDataDuplicateMethod:
@@ -207,15 +207,16 @@ typedef xmlSecKeyDataPtr	(*xmlSecKeyDataCreateMethod)	(xmlSecKeyDataId id);
  * Returns the pointer to newly created #xmlSecKeyData structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyDataPtr	(*xmlSecKeyDataDuplicateMethod)	(xmlSecKeyDataPtr data);
+typedef int			(*xmlSecKeyDataDuplicateMethod)	(xmlSecKeyDataPtr dst,
+								 xmlSecKeyDataPtr src);
 
 /** 
- * xmlSecKeyDataDestroyMethod:
+ * xmlSecKeyDataFinalizeMethod:
  * @data: the data.
  *
  * KeyData specific destroy method.
  */
-typedef void			(*xmlSecKeyDataDestroyMethod)	(xmlSecKeyDataPtr data);
+typedef void			(*xmlSecKeyDataFinalizeMethod)	(xmlSecKeyDataPtr data);
 
 /** 
  * xmlSecKeyDataXmlReadMethod:
@@ -342,6 +343,9 @@ typedef void			(*xmlSecKeyDataDebugDumpMethod)	(xmlSecKeyDataPtr data,
  * The data id.
  */
 struct _xmlSecKeyDataKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
     /* data */
     const xmlChar*			name;    
     xmlSecKeyDataUsage			usage;
@@ -350,9 +354,9 @@ struct _xmlSecKeyDataKlass {
     const xmlChar*			dataNodeNs;
     
     /* constructors/destructor */
-    xmlSecKeyDataCreateMethod		create;
+    xmlSecKeyDataInitMethod		initialize;
     xmlSecKeyDataDuplicateMethod	duplicate;
-    xmlSecKeyDataDestroyMethod		destroy;
+    xmlSecKeyDataFinalizeMethod		finalize;
     xmlSecKeyDataGenerateMethod		generate;
     
     /* get info */
@@ -385,31 +389,32 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataPtrListGetKlass		(void);
  * xmlSecKeyDataBinary
  *
  *************************************************************************/
-XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataBinaryValueCreate	(xmlSecKeyDataId id);
-XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDestroy	(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueXmlRead	(xmlSecKeyDataId id,
-								 xmlSecKeyPtr key,
-								 xmlNodePtr node,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id,
-								 xmlSecKeyPtr key,
-								 xmlNodePtr node,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinRead	(xmlSecKeyDataId id,
-								 xmlSecKeyPtr key,
-								 const unsigned char* buf,
-								 size_t bufSize,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id,
-								 xmlSecKeyPtr key,
-								 unsigned char** buf,
-								 size_t* bufSize,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data,
-								 FILE* output);
-XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data,
-								 FILE* output);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueInitialize	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueDuplicate	(xmlSecKeyDataPtr dst,
+									xmlSecKeyDataPtr src);
+XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueFinalize	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueXmlRead		(xmlSecKeyDataId id,
+								         xmlSecKeyPtr key,
+									 xmlNodePtr node,
+								         xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueXmlWrite	(xmlSecKeyDataId id,
+									 xmlSecKeyPtr key,
+									 xmlNodePtr node,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinRead		(xmlSecKeyDataId id,
+									 xmlSecKeyPtr key,
+									 const unsigned char* buf,
+									 size_t bufSize,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinWrite	(xmlSecKeyDataId id,
+									 xmlSecKeyPtr key,
+									 unsigned char** buf,
+									 size_t* bufSize,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugDump	(xmlSecKeyDataPtr data,
+									FILE* output);
+XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugXmlDump	(xmlSecKeyDataPtr data,
+									 FILE* output);
 
 XMLSEC_EXPORT size_t		xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlBufferPtr	xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data);
@@ -477,23 +482,23 @@ XMLSEC_EXPORT int		xmlSecKeyDataStoreFind		(xmlSecKeyDataStorePtr store,
 #define xmlSecKeyDataStoreIdUnknown 			NULL
 
 /** 
- * xmlSecKeyDataStoreCreateMethod:
- * @id: the data store id.
+ * xmlSecKeyDataStoreInitializeMethod:
+ * @data: the data store.
  *
  * KeyDataStore specific creation method.
  *
  * Returns the pointer to newly created #xmlSecKeyDataStore structure
  * or NULL if an error occurs.
  */
-typedef xmlSecKeyDataStorePtr	(*xmlSecKeyDataStoreCreateMethod)(xmlSecKeyDataStoreId id);
+typedef int			(*xmlSecKeyDataStoreInitializeMethod)	(xmlSecKeyDataStorePtr store);
 
 /** 
- * xmlSecKeyDataStoreDestroyMethod:
+ * xmlSecKeyDataStoreFinalizeMethod:
  * @data: the data store.
  *
  * KeyDataStore specific destroy method.
  */
-typedef void			(*xmlSecKeyDataStoreDestroyMethod)(xmlSecKeyDataStorePtr store);
+typedef void			(*xmlSecKeyDataStoreFinalizeMethod)	(xmlSecKeyDataStorePtr store);
 
 /** 
  * xmlSecKeyDataStoreFindMethod:
@@ -520,12 +525,15 @@ typedef int			(*xmlSecKeyDataStoreFindMethod)	(xmlSecKeyDataStorePtr store,
  * The data id.
  */
 struct _xmlSecKeyDataStoreKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
     /* data */
     const xmlChar*			name;    
         
     /* constructors/destructor */
-    xmlSecKeyDataStoreCreateMethod	create;
-    xmlSecKeyDataStoreDestroyMethod	destroy;
+    xmlSecKeyDataStoreInitializeMethod	initialize;
+    xmlSecKeyDataStoreFinalizeMethod	finalize;
     xmlSecKeyDataStoreFindMethod	find;
 };
 

@@ -35,12 +35,12 @@
 static int	xmlSecMSCryptoSymKeyDataInitialize	(xmlSecKeyDataPtr data);
 static int	xmlSecMSCryptoSymKeyDataDuplicate	(xmlSecKeyDataPtr dst,
 							 xmlSecKeyDataPtr src);
-static void	xmlSecMSCryptoSymKeyDataFinalize		(xmlSecKeyDataPtr data);
+static void	xmlSecMSCryptoSymKeyDataFinalize	(xmlSecKeyDataPtr data);
 static int	xmlSecMSCryptoSymKeyDataXmlRead		(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
 							 xmlNodePtr node,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int	xmlSecMSCryptoSymKeyDataXmlWrite		(xmlSecKeyDataId id,
+static int	xmlSecMSCryptoSymKeyDataXmlWrite	(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
 							 xmlNodePtr node,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -49,16 +49,16 @@ static int	xmlSecMSCryptoSymKeyDataBinRead		(xmlSecKeyDataId id,
 							 const unsigned char* buf,
 							 size_t bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int	xmlSecMSCryptoSymKeyDataBinWrite		(xmlSecKeyDataId id,
+static int	xmlSecMSCryptoSymKeyDataBinWrite	(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
 							 unsigned char** buf,
 							 size_t* bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int	xmlSecMSCryptoSymKeyDataGenerate		(xmlSecKeyDataPtr data,
+static int	xmlSecMSCryptoSymKeyDataGenerate	(xmlSecKeyDataPtr data,
 							 size_t sizeBits,
 							 xmlSecKeyDataType type);
 
-static xmlSecKeyDataType xmlSecMSCryptoSymKeyDataGetType	(xmlSecKeyDataPtr data);
+static xmlSecKeyDataType xmlSecMSCryptoSymKeyDataGetType(xmlSecKeyDataPtr data);
 static size_t	xmlSecMSCryptoSymKeyDataGetSize		(xmlSecKeyDataPtr data);
 static void	xmlSecMSCryptoSymKeyDataDebugDump	(xmlSecKeyDataPtr data,
 							 FILE* output);
@@ -163,7 +163,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
 									/* xmlSecKeyDataUsage usage; */
     xmlSecHrefDESKeyValue,			/* const xmlChar* href; */
     xmlSecNodeDESKeyValue,			/* const xmlChar* dataNodeName; */
-    xmlSecNs,						/* const xmlChar* dataNodeNs; */
+    xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
     xmlSecMSCryptoSymKeyDataInitialize,		/* xmlSecKeyDataInitializeMethod initialize; */
@@ -174,7 +174,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
     /* get info */
     xmlSecMSCryptoSymKeyDataGetType, 		/* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoSymKeyDataGetSize,		/* xmlSecKeyDataGetSizeMethod getSize; */
-	NULL,									/* xmlSecKeyDataGetIdentifier getIdentifier; */
+	NULL,					/* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCryptoSymKeyDataXmlRead,		/* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -253,8 +253,8 @@ xmlSecMSCryptoSymKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecMSCryptoSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    const unsigned char* buf, size_t bufSize,
-				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+				const unsigned char* buf, size_t bufSize,
+				xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataKlassCheck(id), -1);
     
     return(xmlSecKeyDataBinaryValueBinRead(id, key, buf, bufSize, keyInfoCtx));
@@ -262,8 +262,8 @@ xmlSecMSCryptoSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecMSCryptoSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    unsigned char** buf, size_t* bufSize,
-				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+				 unsigned char** buf, size_t* bufSize,
+				 xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataKlassCheck(id), -1);
     
     return(xmlSecKeyDataBinaryValueBinWrite(id, key, buf, bufSize, keyInfoCtx));

@@ -1,0 +1,69 @@
+9/3/2003
+	Apparently there is no native support for RSA OAEP in MS
+	Crypto API. MS indicates that they will support this in the
+	near future.
+
+	Interoperatibility tests are done with success for 3des,
+	RSA-PKCS1 keytransport, SHA1, RSA-SHA1 signning and verifying
+	against the OpenSSL library.
+
+8/31/2003
+	First initiall release for the mscrypto support in xmlsec lib.
+	What is in the code so far:
+
+	- SHA1 hashing (tested, and tested against OpenSSL)
+	- Symmetric encryption: 3des-cbc (tested), AES128, AES192, AES256
+	  (untested).
+	- RSA-SHA1 signatures (tested)
+	- RSA keys (not direct RSA keys yet, but only through MS
+	  Certificatestore) (tested)
+	  - x509 certificates (and CRL support), partly, the loading
+	    and keyinfo parts are partly done. (partly tested)
+	    - x509 certificate verification. Untested, and very
+	      limited at this moment.
+	- KeyManager implementation. Wrapper for simplekeystore, with
+	  backup search facility to the MS Certificate store. Very 
+	  limited search capabilities at this time, certificates in
+	  MS certificate store can only be found with their 'friendly 
+	  name' (which is the CN of the subject dn, as far as I know).
+	- RSA-PKCS1 keytransport. Only the creation (encryption) part is
+	  tested.
+
+	What will be in the code soon as far as I'm concerned:
+	- RSA-OAEP keytransport
+	- DSA signatures
+	- Better search facilities for finding certificates in the MS
+	  certificate store.
+	- ???
+
+	What is still missing then:
+	- HMAC support
+	- AES/3des key transport
+	- direct keys (without ms certificate store certificates) support.
+	- ???
+
+WHAT VERSION OF WINDOWS?
+------------------------
+
+The xmlsec-mscrypto lib is developed on a windows XP machine with
+Visual Studio .NET. The MS Crypto API has been evolving a lot with the
+new releases of windows and internet explorer. MS CryptoAPI libraries
+are distributed with ie and with the windows OS. Full functionality
+will only be achieved on windows XP. AES is for example not supported
+on pre XP versions of windows (workarounds for this are possible, I
+believe). Direct RSA de/encryption, used by xmlsec-mscrypto, is only
+possible from Win 2000 (possibly also with a newer version of ie, with
+strong encryption patch installed). It's very likely more of these
+issues are lying around, and until it is tested on older windows
+systems it is uncertain what will work.
+
+KEYS MANAGER with MS Certificate store support. 
+-----------------------------------------------
+
+xmlsec-mscrypto keys manager uses a custom keys store. This store is
+based upon the simple keys store, found in the xmlsec core library. If
+keys are not found in the simple keys store, than MS Certificate store
+is used to lookup keys. The certificate store is only used on a
+READONLY base, so it is not possible to store keys via the keys store
+into the MS certificate store. There are enough other tools that can
+do that for you.

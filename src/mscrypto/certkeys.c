@@ -58,7 +58,7 @@ struct _xmlSecMSCryptoKeyDataCtx {
     ((xmlSecMSCryptoKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
 static int		xmlSecMSCryptoKeyDataInitialize	(xmlSecKeyDataPtr data);
-static int		xmlSecMSCryptoKeyDataDuplicate	(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+int     		xmlSecMSCryptoKeyDataDuplicate	(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
 static void		xmlSecMSCryptoKeyDataFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecMSCryptoKeyDataGetSize	(xmlSecKeyDataPtr data);
 
@@ -127,7 +127,7 @@ xmlSecMSCryptoKeyDataInitialize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-static int 
+int 
 xmlSecMSCryptoKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecMSCryptoKeyDataCtxPtr ctxDst;
     xmlSecMSCryptoKeyDataCtxPtr ctxSrc;
@@ -324,25 +324,25 @@ xmlSecKeyDataPtr xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert) {
  *
  *************************************************************************/
 
-static int xmlSecMSCryptoKeyDataRsaInitialize(xmlSecKeyDataPtr data);
-static int xmlSecMSCryptoKeyDataRsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static int      xmlSecMSCryptoKeyDataRsaInitialize(xmlSecKeyDataPtr data);
+static int      xmlSecMSCryptoKeyDataRsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
 static void	xmlSecMSCryptoKeyDataRsaFinalize(xmlSecKeyDataPtr data);
-static int xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id,
-										   xmlSecKeyPtr key,
-										   xmlNodePtr node,
-										   xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id,
-											xmlSecKeyPtr key,
-											xmlNodePtr node,
-											xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data,
-											xmlSecSize sizeBits,
-											xmlSecKeyDataType type);
+static int      xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id,
+		        			xmlSecKeyPtr key,
+						xmlNodePtr node,
+						xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int      xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id,
+		        			 xmlSecKeyPtr key,
+					         xmlNodePtr node,
+                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int      xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data,
+					         xmlSecSize sizeBits,
+					         xmlSecKeyDataType type);
 
-static xmlSecKeyDataType xmlSecMSCryptoKeyDataRsaGetType(xmlSecKeyDataPtr data);
-static xmlSecSize xmlSecMSCryptoKeyDataRsaGetSize(xmlSecKeyDataPtr data);
-static void	xmlSecMSCryptoKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output);
-static void	xmlSecMSCryptoKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output);
+static xmlSecKeyDataType    xmlSecMSCryptoKeyDataRsaGetType(xmlSecKeyDataPtr data);
+static xmlSecSize           xmlSecMSCryptoKeyDataRsaGetSize(xmlSecKeyDataPtr data);
+static void	            xmlSecMSCryptoKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output);
+static void	            xmlSecMSCryptoKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output);
 
 static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
     sizeof(xmlSecKeyDataKlass),

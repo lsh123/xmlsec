@@ -287,29 +287,29 @@ xmlSecMSCryptoAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
 
     while(1) {
         ret = fread(buf, 1, sizeof(buf), f);
-	if (ret > 0) {
-		xmlSecBufferAppend(&buffer, buf, ret);
-	} else if(ret == 0) {
-		break;
-	} else {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
-			    "fread",
-			    XMLSEC_ERRORS_R_IO_FAILED,
-			    "filename=%s", 
-			    xmlSecErrorsSafeString(filename));
-		fclose(f);
-		xmlSecBufferFinalize(&buffer);
-		return(NULL);
-	}
+        if (ret > 0) {
+            xmlSecBufferAppend(&buffer, buf, ret);
+        } else if(ret == 0) {
+            break;
+        } else {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "fread",
+                        XMLSEC_ERRORS_R_IO_FAILED,
+                        "filename=%s", 
+                        xmlSecErrorsSafeString(filename));
+            fclose(f);
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
     }
     fclose(f);    
 
     switch (format) {
     case xmlSecKeyDataFormatDer:
 	pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			xmlSecBufferGetData(&buffer),
-			xmlSecBufferGetSize(&buffer));
+			                     xmlSecBufferGetData(&buffer),
+			                     xmlSecBufferGetSize(&buffer));
 	xmlSecBufferFinalize(&buffer);
 	if (NULL == pCert) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,

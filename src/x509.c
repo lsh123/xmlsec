@@ -21,6 +21,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
@@ -29,18 +30,296 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/errors.h>
 
-static int	xmlSecKeyDataX509ObjReadBase64Xml		(xmlSecKeyDataPtr data, 
-								 xmlSecKeyDataX509ObjType type,
+
+
+/*********************************************************************
+ *
+ * X509 data storage
+ *
+ *********************************************************************/
+xmlSecObjKlassPtr
+xmlSecX509StoreKlassGet(void) {
+    static xmlSecObjKlassPtr klass = NULL;
+    static xmlSecX509StoreKlass kklass;
+    
+    if(klass == NULL) {
+	static xmlSecObjKlassInfo kklassInfo = {
+	    /* klass data */
+	    sizeof(xmlSecX509StoreKlass),
+	    "xmlSecX509Store",
+	    NULL, 			/* xmlSecObjKlassInitMethod */
+	    NULL,			/* xmlSecObjKlassFinalizeMethod */
+	    
+	    /* obj info */
+	    sizeof(xmlSecX509Store),
+	    NULL,			/* xmlSecObjKlassConstructorMethod */
+	    NULL,			/* xmlSecObjKlassDuplicatorMethod */
+	    NULL,			/* xmlSecObjKlassDestructorMethod */
+	};
+	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
+    				       &kklassInfo, xmlSecObjKlassId); 
+    } 
+    return(klass);   
+}
+
+int
+xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlSecX509DataPtr data,
+			 xmlSecKeysMngrCtxPtr keysMngrCtx,
+			 xmlChar *subjectName, xmlChar *issuerName, 
+			 xmlChar *issuerSerial, xmlChar *ski) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(store);
+    xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(storeKlass != NULL, -1);
+	
+    if(storeKlass->find != NULL) {
+	return(storeKlass->find(store, data, keysMngrCtx, subjectName, issuerName, issuerSerial, ski));
+    }
+    
+    return(0);
+}
+
+int
+xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(store);
+    xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(storeKlass != NULL, -1);
+	
+    if(storeKlass->verify != NULL) {
+	return(storeKlass->verify(store, data, keysMngrCtx));
+    }
+    
+    return(0);
+}
+
+
+/*********************************************************************
+ *
+ * X509 Data 
+ *
+ *********************************************************************/
+static void		xmlSecX509DataKlassInit			(xmlSecObjKlassPtr klass);
+static void		xmlSecX509DataDebugDump			(xmlSecObjPtr obj, 
+								 FILE* output, 
+								 size_t level);
+static void		xmlSecX509DataDebugXmlDump		(xmlSecObjPtr obj, 
+								 FILE* output, 
+								 size_t level);
+static void		xmlSecX509DataObjectsDebugDump		(xmlSecX509DataPtr data, 
+								 xmlSecX509ObjectType type,
+								 const xmlChar* name,
+								 FILE* output, 
+								 size_t level);
+static void		xmlSecX509DataObjectsDebugXmlDump	(xmlSecX509DataPtr data, 
+							         xmlSecX509ObjectType type,
+								 const xmlChar* name,
+								 FILE* output, 
+								 size_t level);
+static int		xmlSecX509DataReadXml			(xmlSecSObjPtr sobj,
+								 xmlSecObjPtr ctx,
 								 xmlNodePtr node);
-static int	xmlSecKeyDataX509ObjWriteBase64Xml		(xmlSecKeyDataPtr data, 
-								 xmlSecKeyDataX509ObjType type,
+static int		xmlSecX509DataWriteXml			(xmlSecSObjPtr sobj,
+								 xmlSecObjPtr ctx,
+								 xmlNodePtr node);
+static int		xmlSecX509DataObjectsReadBase64Xml	(xmlSecX509DataPtr data, 
+								 xmlSecX509ObjectType type,
+								 xmlNodePtr node);
+static int		xmlSecX509DataObjectsWriteBase64Xml	(xmlSecX509DataPtr data, 
+								 xmlSecX509ObjectType type,
 								 xmlNodePtr node,
 								 const xmlChar* nodeName,
 								 const xmlChar* nsName);
-static xmlSecKeyPtr xmlSecKeyDataX509IssuerSerialNodeRead	(xmlSecKeyDataPtr data, 
+static int		xmlSecX509DataIssuerSerialNodeRead	(xmlSecX509DataPtr data, 
 								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-							         xmlNodePtr serialNode);
+							         xmlNodePtr node);
+static int		xmlSecX509DataSubjectNameNodeRead	(xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+							         xmlNodePtr node);
+static int		xmlSecX509DataSkiNodeRead		(xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+							         xmlNodePtr node);
 
+xmlSecObjKlassPtr
+xmlSecX509DataKlassGet(void) {
+    static xmlSecObjKlassPtr klass = NULL;
+    static xmlSecX509DataKlass kklass;
+    
+    if(klass == NULL) {
+	static xmlSecObjKlassInfo kklassInfo = {
+	    /* klass data */
+	    sizeof(xmlSecX509DataKlass),
+	    "xmlSecX509Data",
+	    xmlSecX509DataKlassInit, /* xmlSecObjKlassInitMethod */
+	    NULL,			/* xmlSecObjKlassFinalizeMethod */
+	    
+	    /* obj info */
+	    sizeof(xmlSecX509Data),
+	    NULL, 			/* xmlSecObjKlassConstructorMethod */
+	    NULL,			/* xmlSecObjKlassDuplicatorMethod */
+	    NULL			/* xmlSecObjKlassDestructorMethod */
+	};
+	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
+    				       &kklassInfo, xmlSecSObjKlassId); 
+    } 
+    return(klass);   
+}
+
+
+int
+xmlSecX509DataAddObject(xmlSecX509DataPtr data, const unsigned char* buf, size_t size,
+			    xmlSecX509ObjectType type) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(data);
+    xmlSecX509DataKlassPtr dataKlass = xmlSecX509DataKlassCast(klass);
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataKlass != NULL, -1);
+	
+    if(dataKlass->addObject != NULL) {
+	return(dataKlass->addObject(data, buf, size, type));
+    }
+    
+    return(0);
+}
+
+int
+xmlSecX509DataGetObject(xmlSecX509DataPtr data, unsigned char** buf, size_t* size,
+			    xmlSecX509ObjectType type, size_t pos) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(data);
+    xmlSecX509DataKlassPtr dataKlass = xmlSecX509DataKlassCast(klass);
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataKlass != NULL, -1);
+	
+    if(dataKlass->getObject != NULL) {
+	return(dataKlass->getObject(data, buf, size, type, pos));
+    }
+    
+    return(0);
+}
+
+xmlChar*		
+xmlSecX509DataGetObjectName(xmlSecX509DataPtr data, xmlSecX509ObjectType type, size_t pos) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(data);
+    xmlSecX509DataKlassPtr dataKlass = xmlSecX509DataKlassCast(klass);
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataKlass != NULL, NULL);
+	
+    if(dataKlass->getObjectName != NULL) {
+	return(dataKlass->getObjectName(data, type, pos));
+    }
+    
+    return(NULL);
+}
+
+static void
+xmlSecX509DataKlassInit(xmlSecObjKlassPtr klass) {
+    xmlSecSObjKlassPtr sobjKlass = (xmlSecSObjKlassPtr)klass;
+
+    xmlSecAssert(sobjKlass != NULL);
+    
+    klass->debugDump 	= xmlSecX509DataDebugDump;
+    klass->debugXmlDump = xmlSecX509DataDebugXmlDump;
+    sobjKlass->nodeName	= xmlSecNameX509Data;
+    sobjKlass->nodeNs	= xmlSecNsDSig;
+    sobjKlass->typeHref	= xmlSecHrefRetrievalMethodTypeX509Data;
+    sobjKlass->readXml	= xmlSecX509DataReadXml;
+    sobjKlass->writeXml	= xmlSecX509DataWriteXml;
+}
+
+static void
+xmlSecX509DataDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecX509DataPtr data = xmlSecX509DataCast(obj);
+    
+    xmlSecAssert(output != NULL);
+    xmlSecAssert(data != NULL);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "x509 data:\n");
+
+    xmlSecX509DataObjectsDebugDump(data, xmlSecX509ObjectTypeCert, 
+			    BAD_CAST "x509 certificates", output, level + 1);
+    xmlSecX509DataObjectsDebugDump(data, xmlSecX509ObjectTypeVerifiedCert, 
+			    BAD_CAST "x509 verified certificates", output, level + 1);
+    xmlSecX509DataObjectsDebugDump(data, xmlSecX509ObjectTypeTrustedCert, 
+			    BAD_CAST "x509 trusted certificates", output, level + 1);
+    xmlSecX509DataObjectsDebugDump(data, xmlSecX509ObjectTypeCrl, 
+			    BAD_CAST "x509 crls", output, level + 1);
+}
+
+static void
+xmlSecX509DataDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecX509DataPtr data = xmlSecX509DataCast(obj);
+    
+    xmlSecAssert(output != NULL);
+    xmlSecAssert(data != NULL);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "<X509Data>\n");
+
+    xmlSecX509DataObjectsDebugXmlDump(data, xmlSecX509ObjectTypeCert, 
+			    BAD_CAST "X509Certificates", output, level + 1);
+    xmlSecX509DataObjectsDebugXmlDump(data, xmlSecX509ObjectTypeVerifiedCert, 
+			    BAD_CAST "X509VerifiedCertificates", output, level + 1);
+    xmlSecX509DataObjectsDebugXmlDump(data, xmlSecX509ObjectTypeTrustedCert, 
+			    BAD_CAST "X509TrustedCertificates", output, level + 1);
+    xmlSecX509DataObjectsDebugXmlDump(data, xmlSecX509ObjectTypeCrl, 
+			    BAD_CAST "X509Crls", output, level + 1);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "</X509Data>\n");
+}
+
+static void
+xmlSecX509DataObjectsDebugDump(xmlSecX509DataPtr data, xmlSecX509ObjectType type,
+				const xmlChar* name, FILE* output, size_t level) {
+    xmlChar* objName;
+    size_t i;
+    
+    xmlSecAssert(data != NULL);
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(output != NULL);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "%s:\n", name);
+    for(i = 0; ; ++i) {
+	objName = xmlSecX509DataGetObjectName(data, i, type);
+	if(objName == NULL) {
+	    break;
+	}
+	xmlSecObjDebugIndent(output, level + 1);
+        fprintf(output, "%s\n", objName);
+	xmlFree(objName);
+    }
+}
+
+static void
+xmlSecX509DataObjectsDebugXmlDump(xmlSecX509DataPtr data, xmlSecX509ObjectType type,
+				const xmlChar* name, FILE* output, size_t level) {
+    xmlChar* objName;
+    size_t i;
+
+    xmlSecAssert(data != NULL);
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(output != NULL);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "<%s>\n", name);
+    for(i = 0; ; ++i) {
+	objName = xmlSecX509DataGetObjectName(data, i, type);
+	if(objName == NULL) {
+	    break;
+	}
+	xmlSecObjDebugIndent(output, level + 1);
+        fprintf(output, "<Name>%s</Name>\n", objName);
+	xmlFree(objName);
+    }
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "</%s>\n", name);
+}
 
 /**
  * The X509Data  Element (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
@@ -122,43 +401,36 @@ static xmlSecKeyPtr xmlSecKeyDataX509IssuerSerialNodeRead	(xmlSecKeyDataPtr data
  *    <!ELEMENT X509Certificate (#PCDATA) >
  *    <!ELEMENT X509CRL (#PCDATA) >
  */
-xmlSecKeyPtr
-xmlSecKeyDataX509ReadXml(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx, xmlNodePtr node) {
+static int
+xmlSecX509DataReadXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
+    xmlSecX509DataPtr data = xmlSecX509DataCast(sobj);
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(ctx);
     xmlNodePtr cur;
-    xmlSecKeyPtr key = NULL;
-    xmlSecKeyDataPtr data = NULL;
-    int ret = 0;
+    int ret;
+            
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
 
-    xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
-    xmlSecAssert2(node != NULL, NULL);
+    /* reset the current key */
+    xmlSecKeysMngrCtxSetCurKey(keysMngrCtx, NULL);
     
-    if(id->type != xmlSecKeyDataTypeX509) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(NULL);	
-    }
-
-    /* todo: shouldn't we use keysMngrCtx->curX509Data instead? */    
-    data = xmlSecKeyDataCreate(id);
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
-	goto done;
-    }
-    
-    /* first read all certs and crls */       
+    /* read all certs and crls into the data object */ 
+    ret = 0;
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "X509Certificate", xmlSecDSigNs)) {
-	    ret = xmlSecKeyDataX509ObjReadBase64Xml(data, xmlSecKeyDataX509ObjTypeCert,
-						    cur);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509CRL", xmlSecDSigNs)) {
-	    ret = xmlSecKeyDataX509ObjReadBase64Xml(data, xmlSecKeyDataX509ObjTypeCrl,
-						    cur);
+	if(xmlSecCheckNodeName(cur, BAD_CAST "X509Certificate", xmlSecNsDSig)) {
+	    ret = xmlSecX509DataObjectsReadBase64Xml(data, xmlSecX509ObjectTypeCert, cur);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509CRL", xmlSecNsDSig)) {
+	    ret = xmlSecX509DataObjectsReadBase64Xml(data, xmlSecX509ObjectTypeCrl, cur);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerSerial", xmlSecNsDSig)) {
+	    ret = xmlSecX509DataIssuerSerialNodeRead(data, keysMngrCtx, cur);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SubjectName", xmlSecNsDSig)) {
+	    ret = xmlSecX509DataSubjectNameNodeRead(data, keysMngrCtx, cur);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SKI", xmlSecNsDSig)) {
+	    ret = xmlSecX509DataSkiNodeRead(data, keysMngrCtx, cur);	
 	} else {
 	    /* laxi schema validation: ignore unknown nodes */	    
 	}
@@ -166,281 +438,78 @@ xmlSecKeyDataX509ReadXml(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx, x
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"node=\"%s\" - %d", node->name, ret);
-	    goto done;
+	    return(-1);
 	}
 	cur = xmlSecGetNextElementNode(cur->next);
     }
     
-    /* search cert by subject name, serial, ski */
-    cur = xmlSecGetNextElementNode(node->children);
-    while((key == NULL) && (cur != NULL)) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerSerial", xmlSecDSigNs)) {
-	    key = xmlSecKeyDataX509IssuerSerialNodeRead(data, keysMngrCtx, cur);
-#if 0
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SubjectName", xmlSecDSigNs)) {
-	    ret = xmlSecX509SubjectNameNodeRead(cur, x509Data, keysMngrCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SKI", xmlSecDSigNs)) {
-	    ret = xmlSecX509SKINodeRead(cur, x509Data, keysMngrCtx);	
-#endif
-	} else {
-	    /* laxi schema validation: ignore unknown nodes */	    
-	}
-	cur = xmlSecGetNextElementNode(cur->next);
-    }
-    
-    /* we've not found key using subject, issuer serial or ski, try to get it directly */
-    if(key == NULL) {
-	key = xmlSecKeyDataX509GetKey(data, keysMngrCtx);
-    }
-    
-    if((key != NULL) && (xmlSecKeyCheck(key, NULL, keysMngrCtx->keyId, keysMngrCtx->keyType) != 1)) {
+    ret = xmlSecX509StoreVerify(keysMngrCtx->keysMngr->x509Store, data, keysMngrCtx);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_INVALID_KEY,
-			" ");
-	xmlSecKeyDestroy(key);
-	key = NULL;
-	goto done;
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509StoreVerify - %d", ret);
+	return(-1);
     }
-
-    /* todo: set key name */    
-done:
-    if(data != NULL) {
-	xmlSecKeyDataDestroy(data);
-    }
-    return(key);
+    
+    return(0);
 }
 
-int
-xmlSecKeyDataX509WriteXml(xmlSecKeyPtr key, xmlSecKeysMngrCtxPtr keysMngrCtx, 
-			xmlNodePtr node) {
+static int
+xmlSecX509DataWriteXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
+    xmlSecX509DataPtr data = xmlSecX509DataCast(sobj);
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(ctx);
     int ret;
-    xmlSecAssert2(key != NULL, -1);
+        
+    xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(keysMngrCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
-    
+
     /* remove all existing content */
     xmlNodeSetContent(node, NULL);
 
-    if(key->x509Data != NULL) {
-	/* 
-	 * write all object types one after another except trusted certs
-	 * todo: support for cert subj, ski, etc.
-	 */
-	ret = xmlSecKeyDataX509ObjWriteBase64Xml(key->x509Data, xmlSecKeyDataX509ObjTypeCert,
-			node, BAD_CAST "X509Certificate", xmlSecDSigNs);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataX509ObjTypeCert) - %d", ret);
-	    return(-1);	
-	}
-	
-	ret = xmlSecKeyDataX509ObjWriteBase64Xml(key->x509Data, xmlSecKeyDataX509ObjTypeVerifiedCert,
-			node, BAD_CAST "X509Certificate", xmlSecDSigNs);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataX509ObjTypeVerifiedCert) - %d", ret);
-	    return(-1);	
-	}
-	
-	ret = xmlSecKeyDataX509ObjWriteBase64Xml(key->x509Data, xmlSecKeyDataX509ObjTypeCrl,
-			node, BAD_CAST "X509CRL", xmlSecDSigNs);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataX509ObjTypeCrl) - %d", ret);
-	    return(-1);	
-	}
-    }
-    
-    return(0);
-}
-
-xmlSecKeyPtr
-xmlSecKeyDataX509ReadBinary(xmlSecKeyDataId id, xmlSecKeysMngrCtxPtr keysMngrCtx,
-			const unsigned char *buf, size_t size) {
-    xmlSecKeyPtr key = NULL;
-    xmlSecKeyDataPtr data = NULL;
-    int ret;
-
-    xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(buf != NULL, NULL);
-    
-    if(id->type != xmlSecKeyDataTypeX509) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(NULL);	
-    }
-    
-    /* todo: shouldn't we use keysMngrCtx->curX509Data instead? */    
-    data = xmlSecKeyDataCreate(id);
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataCreate");
-	goto done;
-    }
-
-    ret = xmlSecKeyDataX509AddObj(data, buf, size, xmlSecKeyDataX509ObjTypeCert);
+    /* 
+     * write all object types one after another except trusted certs
+     * todo: support for cert subj, ski, etc.
+     */
+    ret = xmlSecX509DataObjectsWriteBase64Xml(data, xmlSecX509ObjectTypeCert,
+		    node, BAD_CAST "X509Certificate", xmlSecNsDSig);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataX509AddObj - %d", ret);
-	goto done;
+		    "xmlSecX509DataObjectsWriteBase64Xml(xmlSecX509ObjectTypeCert) - %d", ret);
+	return(-1);	
     }
-    
-    key = xmlSecKeyDataX509GetKey(data, keysMngrCtx);
-    if((key != NULL) && (xmlSecKeyCheck(key, NULL, keysMngrCtx->keyId, keysMngrCtx->keyType) != 1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    " ");
-	xmlSecKeyDestroy(key);
-	key = NULL;
-	goto done;
-    }
-    /* todo: set key name */    
-
-done:
-    if(data != NULL) {
-	xmlSecKeyDataDestroy(data);
-    }
-    return(key);
-}
-
-int
-xmlSecKeyDataX509WriteBinary(xmlSecKeyPtr key, xmlSecKeysMngrCtxPtr keysMngrCtx,
-			    unsigned char **buf, size_t *size) {
-    int ret;
-    
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(keysMngrCtx != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(size != NULL, -1);
-    
-    if(key->x509Data == NULL) {
-        (*buf) = NULL;
-	(*size) = 0;
-        return(0);
-    }
-    
-    /* we try to write the first verified cert */
-    ret = xmlSecKeyDataX509GetObj(key->x509Data, buf, size, 
-			xmlSecKeyDataX509ObjTypeVerifiedCert, 0);
+	
+    ret = xmlSecX509DataObjectsWriteBase64Xml(data, xmlSecX509ObjectTypeVerifiedCert,
+		    node, BAD_CAST "X509Certificate", xmlSecNsDSig);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataX509GetObj - %d", ret);
+		    "xmlSecX509DataObjectsWriteBase64Xml(xmlSecX509ObjectTypeVerifiedCert) - %d", ret);
 	return(-1);	
     }
+	
+    ret = xmlSecX509DataObjectsWriteBase64Xml(data, xmlSecX509ObjectTypeCrl,
+		    node, BAD_CAST "X509CRL", xmlSecNsDSig);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataObjectsWriteBase64Xml(xmlSecX509ObjectTypeCrl) - %d", ret);
+	return(-1);	
+    }
+    
     return(0);
 }
 
-xmlSecKeyPtr	
-xmlSecKeyDataX509GetKey(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlSecKeyDataX509Id x509DataId;
-
-    xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(NULL);	
-    }
-    x509DataId = (xmlSecKeyDataX509Id)data->id;
-    if(x509DataId->getKey != NULL) {
-	return(x509DataId->getKey(data, keysMngrCtx));
-    }    
-    return(NULL);
-}
-
-xmlSecKeyPtr	
-xmlSecKeyDataX509FindCert(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx,
-			xmlChar *subjectName, xmlChar *issuerName,
-			xmlChar *issuerSerial, xmlChar *ski) {
-    xmlSecKeyDataX509Id x509DataId;
-
-    xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(NULL);	
-    }
-    x509DataId = (xmlSecKeyDataX509Id)data->id;
-    if(x509DataId->findCert != NULL) {
-	return(x509DataId->findCert(data, keysMngrCtx, subjectName, issuerName,
-				    issuerSerial, ski));
-    }    
-    return(NULL);
-}
-
-int
-xmlSecKeyDataX509AddObj(xmlSecKeyDataPtr data, const unsigned char* buf, size_t size,
-			xmlSecKeyDataX509ObjType type) {
-    xmlSecKeyDataX509Id x509DataId;
-
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(-1);	
-    }
-    x509DataId = (xmlSecKeyDataX509Id)data->id;
-    if(x509DataId->addObj != NULL) {
-	return(x509DataId->addObj(data, buf, size, type));
-    }    
-    return(0);
-}
-
-int
-xmlSecKeyDataX509GetObj(xmlSecKeyDataPtr data, unsigned char** buf, size_t* size,
-			xmlSecKeyDataX509ObjType type, size_t pos) {
-    xmlSecKeyDataX509Id x509DataId;
-    
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(size != NULL, -1);
-    
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(-1);	
-    }
-    x509DataId = (xmlSecKeyDataX509Id)data->id;
-    if(x509DataId->getObj != NULL) {
-	return(x509DataId->getObj(data, buf, size, type, pos));
-    }
-    return(0);
-}
-
-
-static int	
-xmlSecKeyDataX509ObjReadBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjType type,
-			xmlNodePtr node) {
+static int
+xmlSecX509DataObjectsReadBase64Xml(xmlSecX509DataPtr data, xmlSecX509ObjectType type,
+				xmlNodePtr node) {
     xmlChar* buf = NULL;
     size_t size = 0;
     int ret;	
 
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
-
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(-1);	
-    }
 
     buf = xmlNodeGetContent(node);
     if(buf == NULL) {
@@ -461,11 +530,11 @@ xmlSecKeyDataX509ObjReadBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjTyp
     }
     size = ret;
     
-    ret = xmlSecKeyDataX509AddObj(data, (unsigned char*)buf, size, type);
+    ret = xmlSecX509DataAddObject(data, (unsigned char*)buf, size, type);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataX509AddObj - %d", ret);
+		    "xmlSecKeyDataX509AddObject - %d", ret);
 	xmlFree(buf);
 	return(-1);
     } 
@@ -474,8 +543,8 @@ xmlSecKeyDataX509ObjReadBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjTyp
 }
 
 static int
-xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjType type,
-			xmlNodePtr node, const xmlChar* nodeName, const xmlChar* nsName) {
+xmlSecX509DataObjectsWriteBase64Xml(xmlSecX509DataPtr data, xmlSecX509ObjectType type,
+				xmlNodePtr node, const xmlChar* nodeName, const xmlChar* nsName) {
     xmlNodePtr cur;
     size_t pos;
     int ret;
@@ -484,24 +553,17 @@ xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjTy
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(nodeName != NULL, -1);
 
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(-1);	
-    }
-
     for(pos = 0; ; ++pos) {
 	xmlChar* base64Buf = NULL;
 	unsigned char* buf = NULL;
 	size_t size = 0;
 	
 	/* get the object from the x509 data */
-	ret = xmlSecKeyDataX509GetObj(data, &buf, &size, type, pos);
+	ret = xmlSecX509DataGetObject(data, &buf, &size, type, pos);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataX509GetObj(type=%d) - %d", type, ret);    
+			"xmlSecX509DataGetObject(type=%d) - %d", type, ret);    
 	    return(-1);	
 	} else if(ret == 0) {
 	    /* no more objects of this type */
@@ -539,28 +601,24 @@ xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjTy
     return(0);
 }
 
-static xmlSecKeyPtr 
-xmlSecKeyDataX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx, 
-			    xmlNodePtr serialNode) {
-    xmlSecKeyPtr key = NULL;
+static int
+xmlSecX509DataIssuerSerialNodeRead(xmlSecX509DataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx,
+				xmlNodePtr node) {
     xmlChar *issuerName = NULL;
     xmlChar *issuerSerial = NULL;
     xmlNodePtr cur;
-
-    xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(serialNode != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-
-    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecKeyDataTypeX509");
-	return(-1);	
-    }
+    int res = -1;
+    int ret;
+        
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
 
     /* the first is required node X509IssuerName */
-    cur = xmlSecGetNextElementNode(serialNode->children);
-    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerName", xmlSecDSigNs)) {
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerName", xmlSecNsDSig)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
 		    "X509IssuerName");
@@ -576,7 +634,7 @@ xmlSecKeyDataX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPt
 
     /* next is required node X509SerialNumber */
     cur = xmlSecGetNextElementNode(cur->next); 
-    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509SerialNumber", xmlSecDSigNs)) {
+    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509SerialNumber", xmlSecNsDSig)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
 		    "X509SerialNumber");
@@ -599,9 +657,18 @@ xmlSecKeyDataX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPt
 	goto done;
     }
         
-    /* search for a cert with key */
-    key = xmlSecKeyDataX509FindCert(data, keysMngrCtx, NULL, 
-				    issuerName, issuerSerial, NULL);
+    /* search for a cert and add it to the data */
+    ret = xmlSecX509StoreFind(keysMngrCtx->keysMngr->x509Store, data, 
+		    keysMngrCtx,  NULL, issuerName, issuerSerial, NULL);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509StoreFind(issuerName=\"%s\", issuerSerial=\"%s\" - %d", 
+		    issuerName, issuerSerial, ret);
+	goto done;
+    }
+    res = 0;
+
 done:
     if(issuerSerial != NULL) {
 	xmlFree(issuerSerial);
@@ -609,80 +676,205 @@ done:
     if(issuerName != NULL) {
 	xmlFree(issuerName);    
     }	
-    return(key);
+    return(res);
 }
 
-
-#endif /* XMLSEC_NO_X509 */
-
-
-
-#if 0
-/* X509Data node */
-
 static int
-xmlSecX509SKINodeRead(xmlNodePtr skiNode, xmlSecX509DataPtr x509Data,
-		      xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlChar *ski;
-
-    xmlSecAssert2(x509Data != NULL, -1);
-    xmlSecAssert2(skiNode != NULL, -1);
+xmlSecX509DataSubjectNameNodeRead(xmlSecX509DataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx,
+				xmlNodePtr node) {
+    xmlChar *subject = NULL;
+    int res = -1;
+    int ret;
+        
+    xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(keysMngrCtx != NULL, -1);
     xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
-    xmlSecAssert2(keysMngrCtx->keysMngr->findX509 != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
 
-    ski = xmlNodeGetContent(skiNode);
+    subject = xmlNodeGetContent(node);
+    if(subject == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509SubjectName");    
+	goto done;
+    }
+        
+    /* search for a cert and add it to the data */
+    ret = xmlSecX509StoreFind(keysMngrCtx->keysMngr->x509Store, data, 
+		    keysMngrCtx,  subject, NULL, NULL, NULL);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509StoreFind(subject=\"%s\") - %d", subject, ret);
+	goto done;
+    }
+    res = 0;
+
+done:
+    if(subject != NULL) {
+	xmlFree(subject);
+    }
+    return(res);
+}
+
+static int
+xmlSecX509DataSkiNodeRead(xmlSecX509DataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx,
+				xmlNodePtr node) {
+    xmlChar *ski = NULL;
+    int res = -1;
+    int ret;
+        
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    ski = xmlNodeGetContent(node);
     if(ski == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    "X509Ski");
-	return(-1);
+		    "X509SKI");    
+	goto done;
     }
-
-    x509Data = (keysMngrCtx->keysMngr->findX509)(keysMngrCtx, NULL, NULL, NULL, ski, x509Data);
-    if((x509Data == NULL) && (keysMngrCtx->keysMngr->failIfCertNotFound)){
+        
+    /* search for a cert and add it to the data */
+    ret = xmlSecX509StoreFind(keysMngrCtx->keysMngr->x509Store, data, 
+		    keysMngrCtx, NULL, NULL, NULL, ski);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    " ");
-	xmlFree(ski);
-	return(-1);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509StoreFind(ski=\"%s\") - %d", ski, ret);
+	goto done;
     }
-    xmlFree(ski);
+    res = 0;
 
-    return(0);
+done:
+    if(ski != NULL) {
+	xmlFree(ski);
+    }
+    return(res);
+}
+
+
+/*********************************************************************
+ *
+ * X509 Certificate
+ *
+ *********************************************************************/
+static void		xmlSecX509CertificateKlassInit		(xmlSecObjKlassPtr klass);
+static int		xmlSecX509CertificateReadBinary		(xmlSecSObjPtr sobj,
+								 xmlSecObjPtr ctx,
+								 const unsigned char *buf,
+								 size_t size);
+static int		xmlSecX509CertificateWriteBinary	(xmlSecSObjPtr sobj,
+								 xmlSecObjPtr ctx,
+								 xmlSecBufferPtr buf);
+
+
+xmlSecObjKlassPtr
+xmlSecX509CertificateKlassGet(void) {
+    static xmlSecObjKlassPtr klass = NULL;
+    static xmlSecX509CertificateKlass kklass;
+    
+    if(klass == NULL) {
+	static xmlSecObjKlassInfo kklassInfo = {
+	    /* klass data */
+	    sizeof(xmlSecX509CertificateKlass),
+	    "xmlSecX509Certificate",
+	    xmlSecX509CertificateKlassInit, /* xmlSecObjKlassInitMethod */
+	    NULL,			/* xmlSecObjKlassFinalizeMethod */
+	    
+	    /* obj info */
+	    sizeof(xmlSecX509Certificate),
+	    NULL, 			/* xmlSecObjKlassConstructorMethod */
+	    NULL,			/* xmlSecObjKlassDuplicatorMethod */
+	    NULL			/* xmlSecObjKlassDestructorMethod */
+	};
+	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
+    				       &kklassInfo, xmlSecSObjKlassId); 
+    } 
+    return(klass);   
+}
+
+static void
+xmlSecX509CertificateKlassInit(xmlSecObjKlassPtr klass) {
+    xmlSecSObjKlassPtr sobjKlass = (xmlSecSObjKlassPtr)klass;
+
+    xmlSecAssert(sobjKlass != NULL);
+    
+    sobjKlass->typeHref	  = xmlSecHrefRetrievalMethodTypeRawX509Cert;    
+    sobjKlass->readBinary = xmlSecX509CertificateReadBinary;
+    sobjKlass->writeBinary= xmlSecX509CertificateWriteBinary;
 }
 
 static int
-xmlSecX509SubjectNameNodeRead(xmlNodePtr subjectNode, xmlSecX509DataPtr x509Data,
-			      xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlChar *subjectName;
-
-    xmlSecAssert2(x509Data != NULL, -1);
-    xmlSecAssert2(subjectNode != NULL, -1);
+xmlSecX509CertificateReadBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx,
+				const unsigned char *buf, size_t size) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(sobj);
+    xmlSecX509CertificateKlassPtr certKlass = xmlSecX509CertificateKlassCast(klass);
+    xmlSecX509CertificatePtr cert = xmlSecX509CertificateCast(sobj);
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(ctx);
+    xmlSecX509DataPtr data = NULL;
+    int res = -1;
+    int ret;
+            
+    xmlSecAssert2(certKlass != NULL, -1);
+    xmlSecAssert2(certKlass->x509DataKlass != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(keysMngrCtx != NULL, -1);
     xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
-    xmlSecAssert2(keysMngrCtx->keysMngr->findX509 != NULL, -1);
-        
-    subjectName = xmlNodeGetContent(subjectNode);
-    if(subjectName == NULL) {
+    xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    data = (xmlSecX509DataPtr)xmlSecObjNew(certKlass->x509DataKlass);
+    if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    "X509Subject");
-	return(-1);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecObjNew(certKlass->x509DataKlass)");
+	goto done;
     }
 
-    x509Data = (keysMngrCtx->keysMngr->findX509)(keysMngrCtx, subjectName, 
-				    NULL, NULL, NULL, x509Data);
-    if((x509Data == NULL) && (keysMngrCtx->keysMngr->failIfCertNotFound)){
+    ret = xmlSecX509DataAddObject(data, buf, size, xmlSecX509ObjectTypeCert);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    " ");
-	xmlFree(subjectName);
-	return(-1);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataAddObject - %d", ret);
+	goto done;
     }
-    xmlFree(subjectName);
-    return(0);
+
+    ret = xmlSecX509StoreVerify(keysMngrCtx->keysMngr->x509Store, data, keysMngrCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509StoreVerify - %d", ret);
+	return(-1);
+    }    
+
+    res = 0;
+    
+done:
+    if(data != NULL) {
+	xmlSecObjDelete(xmlSecObjCast(data));
+    }
+    return(res);    
 }
 
+static int
+xmlSecX509CertificateWriteBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx,
+				xmlSecBufferPtr buf) {
+    xmlSecX509CertificatePtr cert = xmlSecX509CertificateCast(sobj);
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(ctx);
 
-#endif
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
+    xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    /* todo */
+    return(0);				
+}
+
+#endif /* XMLSEC_NO_X509 */

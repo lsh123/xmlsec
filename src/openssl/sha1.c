@@ -17,6 +17,7 @@
 #include <openssl/sha.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -42,7 +43,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */
-    xmlSecDigestSha1Href, 		/* xmlChar *href; */
+    xmlSecHrefDigestSha1, 		/* xmlChar *href; */
     
     xmlSecDigestSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecDigestSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */

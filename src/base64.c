@@ -16,6 +16,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
@@ -127,7 +128,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecBase64DecodeHref,		/* const xmlChar href; */
+    xmlSecHrefBase64Decode,		/* const xmlChar href; */
 
     xmlSecBase64Create, 		/* xmlSecTransformCreateMethod create; */
     xmlSecBase64Destroy,		/* xmlSecTransformDestroyMethod destroy; */

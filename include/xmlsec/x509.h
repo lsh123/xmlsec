@@ -18,142 +18,173 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/object.h>
-#include <xmlsec/keys.h>
+#include <xmlsec/serializable.h>
+#include <xmlsec/keysInternal.h>
 
-typedef struct _xmlSecX509MngrKlass		xmlSecX509MngrKlass,
-						*xmlSecX509MngrKlassPtr;
-typedef struct _xmlSecX509Mngr			xmlSecX509Mngr,
-						*xmlSecX509MngrPtr;
-typedef struct _xmlSecX509CtxKlass		xmlSecX509CtxKlass,
-						*xmlSecX509CtxKlassPtr;
-typedef struct _xmlSecX509Ctx			xmlSecX509Ctx,
-						*xmlSecX509CtxPtr;
+typedef struct _xmlSecX509StoreKlass		xmlSecX509StoreKlass,
+						*xmlSecX509StoreKlassPtr;
+typedef struct _xmlSecX509Store			xmlSecX509Store,
+						*xmlSecX509StorePtr;
+typedef struct _xmlSecX509DataKlass		xmlSecX509DataKlass,
+						*xmlSecX509DataKlassPtr;
+typedef struct _xmlSecX509Data			xmlSecX509Data,
+						*xmlSecX509DataPtr;
+typedef struct _xmlSecX509CertificateKlass	xmlSecX509CertificateKlass,
+						*xmlSecX509CertificateKlassPtr;
+typedef struct _xmlSecX509Certificate		xmlSecX509Certificate,
+						*xmlSecX509CertificatePtr;
 
-
-/***************************************************************************
- *
- * xmlSecKeyDataX509
- *
- **************************************************************************/
 typedef enum {
-    xmlSecKeyDataX509ObjTypeCert,
-    xmlSecKeyDataX509ObjTypeVerifiedCert,
-    xmlSecKeyDataX509ObjTypeTrustedCert,
-    xmlSecKeyDataX509ObjTypeCrl
-} xmlSecKeyDataX509ObjType;
+    xmlSecX509ObjectTypeCert,
+    xmlSecX509ObjectTypeVerifiedCert,
+    xmlSecX509ObjectTypeTrustedCert,
+    xmlSecX509ObjectTypeCrl
+} xmlSecX509ObjectType;
 
-typedef xmlSecKeyPtr	(*xmlSecKeyDataX509GetKeyMethod)	(xmlSecKeyDataPtr data,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+/*********************************************************************
+ *
+ * X509 data storage
+ *
+ *********************************************************************/
+#define xmlSecX509StoreKlassId 				xmlSecX509StoreKlassGet()
+#define xmlSecX509StoreKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecX509StoreKlassId, xmlSecX509StoreKlassPtr)
+#define xmlSecX509StoreKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecX509StoreKlassId)
+#define xmlSecX509StoreCast(obj) 			xmlSecObjCastMacro((obj), xmlSecX509StoreKlassId, xmlSecX509StorePtr)
+#define xmlSecX509StoreCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecX509StoreKlassId)
+
 /**
- * xmlSecKeyDataX509FindCertMethod:
- * @data: the key data pointer
- * @mngr: the keys manager.
- * @subjectName: the subject name string.
- * @issuerName: the issuer name string.
- * @issuerSerial: the issuer serial.
- * @ski: the SKI string.
+ * xmlSecX509StoreFindMethod:
  *
- * Searches for matching certificate in the x509 data and keys manager.
+ * Searches for key.
  *
- * Returns the pointer to key that matches given criteria or NULL 
- * if an error occurs or certificate not found.
+ * Returns the pointer to key or NULL if the key is not found or 
+ * an error occurs.
  */
-typedef xmlSecKeyPtr	(*xmlSecKeyDataX509FindCertMethod)	(xmlSecKeyDataPtr data,
+typedef int 		(*xmlSecX509StoreFindMethod)		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data,
 								 xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 xmlChar *subjectName,
 								 xmlChar *issuerName,
 								 xmlChar *issuerSerial,
 								 xmlChar *ski);
+typedef int	 	(*xmlSecX509StoreVerifyMethod)		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
 
-typedef int		(*xmlSecKeyDataX509AddObjMethod)	(xmlSecKeyDataPtr data,
+
+struct _xmlSecX509StoreKlass {
+    xmlSecObjKlass			parent;
+    
+    xmlSecX509StoreFindMethod		find;
+    xmlSecX509StoreVerifyMethod		verify;
+};
+
+struct _xmlSecX509Store {
+    xmlSecObj				parent;
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecX509StoreKlassGet		(void);
+XMLSEC_EXPORT int	 	xmlSecX509StoreFind		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski);
+XMLSEC_EXPORT int	 	xmlSecX509StoreVerify		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+
+
+/*********************************************************************
+ *
+ * X509 data storage
+ *
+ *********************************************************************/
+#define xmlSecX509DataKlassId 				xmlSecX509DataKlassGet()
+#define xmlSecX509DataKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecX509DataKlassId, xmlSecX509DataKlassPtr)
+#define xmlSecX509DataKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecX509DataKlassId)
+#define xmlSecX509DataCast(obj) 			xmlSecObjCastMacro((obj), xmlSecX509DataKlassId, xmlSecX509DataPtr)
+#define xmlSecX509DataCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecX509DataKlassId)
+
+
+typedef int		(*xmlSecX509DataAddObjectMethod)	(xmlSecX509DataPtr data,
 								 const unsigned char* buf,
 								 size_t size,
-								 xmlSecKeyDataX509ObjType type);
+								 xmlSecX509ObjectType type);
 /**
- * xmlSecKeyDataX509GetObjMethod:
+ * xmlSecX509DataGetObjectMethod:
  * @pos: the object position (for cert objects, if the @pos is 0
  * then the cert containig the key MUST be returned).
  *
  * Returns 1 if the object returned, 0 if there are no more
  * objects of this type and a negative value if an error occurs.
  */
-typedef int		(*xmlSecKeyDataX509GetObjMethod)	(xmlSecKeyDataPtr data,
+typedef int		(*xmlSecX509DataGetObjectMethod)	(xmlSecX509DataPtr data,
 								 unsigned char** buf,
 								 size_t* size,
-								 xmlSecKeyDataX509ObjType type,
+								 xmlSecX509ObjectType type,
+								 size_t pos);
+typedef xmlChar*	(*xmlSecX509DataGetObjectNameMethod)	(xmlSecX509DataPtr data,
+								 xmlSecX509ObjectType type,
 								 size_t pos);
 
 
-typedef struct _xmlSecKeyDataX509IdStruct	xmlSecKeyDataX509IdStruct,
-						*xmlSecKeyDataX509Id;
-struct _xmlSecKeyDataX509IdStruct {
-    /* same as xmlSecDataId */
-    xmlSecKeyDataType			type;
-    const xmlChar*			childNodeName;
-    const xmlChar*			childNodeNs;
-    xmlSecKeyOrigin			origin; 
+struct _xmlSecX509DataKlass {
+    xmlSecSObjKlass			parent;
     
-    xmlSecKeyDataCreateMethod		create;
-    xmlSecKeyDataDestroyMethod		destroy;
-    xmlSecKeyDataDuplicateMethod	duplicate;
-    xmlSecKeyDataReadXmlMethod		read;
-    xmlSecKeyDataWriteXmlMethod		write;
-    xmlSecKeyDataReadBinaryMethod	readBin;
-    xmlSecKeyDataWriteBinaryMethod	writeBin;
-
-    /* new in xmlSecKeyDataX509Id */
-    xmlSecKeyDataX509GetKeyMethod	getKey;
-    xmlSecKeyDataX509FindCertMethod	findCert;
-    xmlSecKeyDataX509AddObjMethod	addObj;
-    xmlSecKeyDataX509GetObjMethod	getObj;
+    xmlSecX509DataAddObjectMethod	addObject;
+    xmlSecX509DataGetObjectMethod	getObject;
+    xmlSecX509DataGetObjectNameMethod	getObjectName;
 };
 
+struct _xmlSecX509Data {
+    xmlSecSObj				parent;
 
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509ReadXml	(xmlSecKeyDataId id,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecKeyDataX509WriteXml	(xmlSecKeyPtr key,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlNodePtr parent);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509ReadBinary	(xmlSecKeyDataId id,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 const unsigned char *buf,
-								 size_t size);
-XMLSEC_EXPORT int		xmlSecKeyDataX509WriteBinary	(xmlSecKeyPtr key,
-						    		 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 unsigned char **buf,
-								 size_t *size);
+};
 
-
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509GetKey		(xmlSecKeyDataPtr data,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509FindCert	(xmlSecKeyDataPtr data,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlChar *subjectName,
-								 xmlChar *issuerName,
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-XMLSEC_EXPORT int 		xmlSecKeyDataX509AddObj		(xmlSecKeyDataPtr data,
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecX509DataKlassGet		(void);
+XMLSEC_EXPORT int 		xmlSecX509DataAddObject		(xmlSecX509DataPtr data,
 								 const unsigned char* buf,
 								 size_t size,
-								 xmlSecKeyDataX509ObjType type);
-XMLSEC_EXPORT int		xmlSecKeyDataX509GetObj		(xmlSecKeyDataPtr data,
+								 xmlSecX509ObjectType type);
+XMLSEC_EXPORT int		xmlSecX509DataGetObject		(xmlSecX509DataPtr data,
 								 unsigned char** buf,
 								 size_t* size,
-								 xmlSecKeyDataX509ObjType type,
+								 xmlSecX509ObjectType type,
+								 size_t pos);
+XMLSEC_EXPORT xmlChar*		xmlSecX509DataGetObjectName	(xmlSecX509DataPtr data,
+								 xmlSecX509ObjectType type,
 								 size_t pos);
 
 
+/*********************************************************************
+ *
+ * X509 Certificate
+ *
+ *********************************************************************/
+#define xmlSecX509CertificateKlassId 			xmlSecX509CertificateKlassGet()
+#define xmlSecX509CertificateKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecX509CertificateKlassId, xmlSecX509CertificateKlassPtr)
+#define xmlSecX509CertificateKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecX509CertificateKlassId)
+#define xmlSecX509CertificateCast(obj) 			xmlSecObjCastMacro((obj), xmlSecX509CertificateKlassId, xmlSecX509CertificatePtr)
+#define xmlSecX509CertificateCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecX509CertificateKlassId)
 
+struct _xmlSecX509CertificateKlass {
+    xmlSecSObjKlass			parent;
+    xmlSecObjKlassPtr			x509DataKlass;
+};
 
+struct _xmlSecX509Certificate {
+    xmlSecSObj				parent;
+};
 
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecX509CertificateKlassGet	(void);
 
+#else /* XMLSEC_NO_X509 */
 
-
-
-
-
-
+typedef void*					*xmlSecX509StorePtr;
+typedef void*					*xmlSecX509DataPtr;
+typedef void*					*xmlSecX509CertificatePtr;
 
 #endif /* XMLSEC_NO_X509 */
 

@@ -27,10 +27,12 @@ keys.c \
 keysmngr.c \
 keyvalue.c \
 list.c \
+map.c \
 membuf.c \
 nodeset.c \
 object.c \
 serializable.c \
+strings.c \
 transforms.c \
 x509.c \
 xmldsig.c \

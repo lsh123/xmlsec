@@ -236,7 +236,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
     memcpy(&keysMngr, mngr, sizeof(keysMngr));
     keysMngr.allowedOrigins = xmlSecKeyOriginAll;
     cur = xmlSecGetNextElementNode(root->children);
-    while(xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs)) {  
+    while(xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecNsDSig)) {  
 	key = xmlSecKeyInfoNodeRead(cur, &keysMngr, NULL, xmlSecKeyValueIdUnknown,
 				    xmlSecKeyValueTypeAny, xmlSecKeyUsageAny, 0);
 	if(key == NULL) {
@@ -330,7 +330,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	return(-1);
     }
     for(i = 0; i < keysData->curSize; ++i) {
-	cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecDSigNs);
+	cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecNsDSig);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -339,7 +339,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	    return(-1);
 	}
 	
-	if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecDSigNs) == NULL) {
+	if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecNsDSig) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecAddChild(\"KeyName\")");
@@ -347,7 +347,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	    return(-1);
 	}
 
-	if(xmlSecAddChild(cur, BAD_CAST "KeyValue", xmlSecDSigNs) == NULL) {
+	if(xmlSecAddChild(cur, BAD_CAST "KeyValue", xmlSecNsDSig) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecAddChild(\"KeyValue\")");
@@ -357,7 +357,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 
 #ifndef XMLSEC_NO_X509
 	if((keysData->keys[i]->x509Data != NULL)){
-	    if(xmlSecAddChild(cur, BAD_CAST "X509Data", xmlSecDSigNs) == NULL) {
+	    if(xmlSecAddChild(cur, BAD_CAST "X509Data", xmlSecNsDSig) == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecAddChild(\"X509Data\")");

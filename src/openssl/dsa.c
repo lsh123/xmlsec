@@ -21,6 +21,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -68,8 +69,8 @@ static int		xmlSecDsaKeyValueWrite	(xmlSecKeyValuePtr key,
 
 xmlSecKeyValueIdStruct xmlSecDsaKeyValueId = {
     /* xlmlSecKeyId data  */
-    xmlSecDsaKeyValueName,		/* const xmlChar *keyValueNodeName; */
-    xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
+    xmlSecNameDsaKeyValue,		/* const xmlChar *keyValueNodeName; */
+    xmlSecNsDSig, 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyValueId methods */
     xmlSecDsaKeyValueCreate,		/* xmlSecKeyValueCreateMethod create; */    
@@ -88,7 +89,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignDsaSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    xmlSecSignDsaSha1Href, 		/* xmlChar *href; */
+    xmlSecHrefSignDsaSha1, 		/* xmlChar *href; */
     
     xmlSecSignDsaSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecSignDsaSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */

@@ -95,7 +95,11 @@ typedef int		(*xmlSecSObjWriteBinaryMethod)		(xmlSecSObjPtr sobj,
 								 xmlSecBufferPtr buf);
 struct _xmlSecSObjKlass {
     xmlSecObjKlass			parent;
-    
+
+    const xmlChar*			nodeName;
+    const xmlChar*			nodeNs;
+    const xmlChar*			typeHref;
+
     xmlSecSObjReadXmlMethod		readXml;
     xmlSecSObjWriteXmlMethod		writeXml;
     xmlSecSObjReadBinaryMethod		readBinary;

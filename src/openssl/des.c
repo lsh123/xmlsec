@@ -22,6 +22,7 @@
 #include <openssl/sha.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -68,7 +69,7 @@ static  int			xmlSecDesKeyValueWriteBinary	(xmlSecKeyValuePtr key,
 								 size_t *size);
 xmlSecKeyValueIdStruct xmlSecDesKeyValueId = {
     /* xlmlSecKeyId data  */
-    xmlSecDesKeyValueName,		/* const xmlChar *keyValueNodeName; */
+    xmlSecNameDesKeyValue,		/* const xmlChar *keyValueNodeName; */
     xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyValueId methods */
@@ -98,7 +99,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecEncDes3CbcHref, 		/* const xmlChar href; */
+    xmlSecHrefEncDes3Cbc, 		/* const xmlChar href; */
 
     xmlSecDesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecDesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -158,7 +159,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecKWDes3CbcHref, 		/* const xmlChar href; */
+    xmlSecHrefKWDes3Cbc, 		/* const xmlChar href; */
 
     xmlSecDes3KWCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecDes3KWDestroy,		/* xmlSecTransformDestroyMethod destroy; */

@@ -17,6 +17,7 @@
 #include <openssl/ripemd.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -42,7 +43,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestRipemd160Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */
-    xmlSecDigestRipemd160Href, 		/* xmlChar *href; */
+    xmlSecHrefDigestRipemd160, 		/* xmlChar *href; */
     
     xmlSecDigestRipemd160Create,	/* xmlSecTransformCreateMethod create; */
     xmlSecDigestRipemd160Destroy,	/* xmlSecTransformDestroyMethod destroy; */

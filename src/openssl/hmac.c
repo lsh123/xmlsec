@@ -21,6 +21,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -87,7 +88,7 @@ static  int		xmlSecHmacKeyValueWriteBinary	(xmlSecKeyValuePtr key,
 							 size_t *size);
 xmlSecKeyValueIdStruct xmlSecHmacKeyValueId = {
     /* xlmlSecKeyId data  */
-    xmlSecHmacKeyValueName,		/* const xmlChar *keyValueNodeName; */
+    xmlSecNameHmacKeyValue,		/* const xmlChar *keyValueNodeName; */
     xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyValueId methods */
@@ -111,7 +112,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    xmlSecMacHmacSha1Href, 		/* xmlChar *href; */
+    xmlSecHrefMacHmacSha1, 		/* xmlChar *href; */
     
     xmlSecMacHmacCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecMacHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -143,7 +144,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacMd5Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    xmlSecMacHmacMd5Href, 		/* xmlChar *href; */
+    xmlSecHrefMacHmacMd5, 		/* xmlChar *href; */
     
     xmlSecMacHmacCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecMacHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -174,7 +175,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacRipeMd160Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    xmlSecMacHmacRipeMd160Href, 	/* xmlChar *href; */
+    xmlSecHrefMacHmacRipeMd160, 	/* xmlChar *href; */
     
     xmlSecMacHmacCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecMacHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -317,7 +318,7 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     digest = (xmlSecDigestTransformPtr)transform;
     
     cur = xmlSecGetNextElementNode(transformNode->children); 
-    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "HMACOutputLength", xmlSecDSigNs)) {  
+    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "HMACOutputLength", xmlSecNsDSig)) {  
 	xmlChar *content;
         int res = 0;
 	

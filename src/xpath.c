@@ -18,6 +18,7 @@
 #include <libxml/xpointer.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -87,7 +88,7 @@ struct _xmlSecXmlTransformIdStruct xmlSecTransformXPathId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPathTransformHref, 		/* const xmlChar *href; */
+    xmlSecHrefXPathTransform, 		/* const xmlChar *href; */
 
     xmlSecTransformXPathCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecTransformXPathDestroy,	/* xmlSecTransformDestroyMethod destroy; */
@@ -102,7 +103,7 @@ struct _xmlSecXmlTransformIdStruct xmlSecTransformXPath2Id = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPath2TransformHref, 		/* const xmlChar *href; */
+    xmlSecHrefXPath2Transform, 		/* const xmlChar *href; */
 
     xmlSecTransformXPathCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecTransformXPathDestroy,	/* xmlSecTransformDestroyMethod destroy; */
@@ -117,7 +118,7 @@ struct _xmlSecXmlTransformIdStruct xmlSecTransformXPointerId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPointerNs, /* const xmlChar *href; */
+    xmlSecNsXPointer, /* const xmlChar *href; */
 
     xmlSecTransformXPathCreate,		/* xmlSecTransformCreateMethod create; */
     xmlSecTransformXPathDestroy,	/* xmlSecTransformDestroyMethod destroy; */
@@ -246,7 +247,7 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
     
     /* There is only one required node XPath*/
     cur = xmlSecGetNextElementNode(transformNode->children);  
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "XPath");
@@ -364,10 +365,10 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
     /* There are only XPath nodes */
     cur = xmlSecGetNextElementNode(transformNode->children);  
     while(cur != NULL) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecXPath2Ns)) {
+	if(xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecNsXPath2)) {
 	    xpathType = xmlSecXPathTypeXPath2;
 #ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecXPath2Ns)) {
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecNsXPath2)) {
 	    xpathType = xmlSecXPathTypeXPointer2;
 #endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
 	} else {
@@ -477,7 +478,7 @@ xmlSecTransformXPointerReadNode(xmlSecTransformPtr transform, xmlNodePtr transfo
     
     /* There is only one required node XPointer*/
     cur = xmlSecGetNextElementNode(transformNode->children);  
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecXPointerNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecNsXPointer))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "XPointer");
@@ -661,7 +662,7 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     	    return(-1);
         }
 	/* we could not exceed buffer size because we just allocated it */
-        sprintf((char*)data->expr, (char*)xpathPattern, (char*)expr);	
+        sprintf((char*)data->expr, (char*)xpathPattern, expr);	
         xmlFree(expr);
 	break;
     case xmlSecXPathTypeXPath2:

@@ -21,6 +21,7 @@
 #include <libxml/parser.h> 
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
@@ -109,10 +110,10 @@ xmlSecSignatureCreate(const xmlChar *id) {
 		    "xmlNewNode(Signature)");
 	return(NULL);	            
     }
-    if(xmlNewNs(signNode, xmlSecDSigNs, NULL) == NULL) {
+    if(xmlNewNs(signNode, xmlSecNsDSig, NULL) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewNs(xmlSecDSigNs)");
+		    "xmlNewNs(xmlSecNsDSig)");
 	xmlFreeNode(signNode);
 	return(NULL);	        	
     }
@@ -123,7 +124,7 @@ xmlSecSignatureCreate(const xmlChar *id) {
     /**
      * Add SignatureValue node
      */    
-    cur = xmlSecAddChild(signNode, BAD_CAST "SignatureValue", xmlSecDSigNs);
+    cur = xmlSecAddChild(signNode, BAD_CAST "SignatureValue", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -167,7 +168,7 @@ xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
     
     xmlSecAssert2(signNode != NULL, NULL);
 
-    res = xmlSecFindChild(signNode, BAD_CAST "SignedInfo", xmlSecDSigNs);
+    res = xmlSecFindChild(signNode, BAD_CAST "SignedInfo", xmlSecNsDSig);
     if(res != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -177,9 +178,9 @@ xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
     
     tmp = xmlSecGetNextElementNode(signNode->children);
     if(tmp == NULL) {
-	res = xmlSecAddChild(signNode, BAD_CAST "SignedInfo", xmlSecDSigNs);
+	res = xmlSecAddChild(signNode, BAD_CAST "SignedInfo", xmlSecNsDSig);
     } else {
-	res = xmlSecAddPrevSibling(tmp, BAD_CAST "SignedInfo", xmlSecDSigNs);
+	res = xmlSecAddPrevSibling(tmp, BAD_CAST "SignedInfo", xmlSecNsDSig);
     }    
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -210,7 +211,7 @@ xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
     
     xmlSecAssert2(signNode != NULL, NULL);
 
-    res = xmlSecFindChild(signNode, BAD_CAST "KeyInfo", xmlSecDSigNs);
+    res = xmlSecFindChild(signNode, BAD_CAST "KeyInfo", xmlSecNsDSig);
     if(res != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -218,11 +219,11 @@ xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 	return(NULL);	
     }
     
-    tmp = xmlSecFindChild(signNode, BAD_CAST "Object", xmlSecDSigNs);
+    tmp = xmlSecFindChild(signNode, BAD_CAST "Object", xmlSecNsDSig);
     if(tmp == NULL) {
-	res = xmlSecAddChild(signNode, BAD_CAST "KeyInfo", xmlSecDSigNs);
+	res = xmlSecAddChild(signNode, BAD_CAST "KeyInfo", xmlSecNsDSig);
     } else {
-	res = xmlSecAddPrevSibling(tmp, BAD_CAST "KeyInfo", xmlSecDSigNs);
+	res = xmlSecAddPrevSibling(tmp, BAD_CAST "KeyInfo", xmlSecNsDSig);
     }    
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -255,7 +256,7 @@ xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *
 
     xmlSecAssert2(signNode != NULL, NULL);
     
-    res = xmlSecAddChild(signNode, BAD_CAST "Object", xmlSecDSigNs);
+    res = xmlSecAddChild(signNode, BAD_CAST "Object", xmlSecNsDSig);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -293,7 +294,7 @@ xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nM
 
     xmlSecAssert2(signedInfoNode != NULL, NULL);
     
-    res = xmlSecFindChild(signedInfoNode, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs);
+    res = xmlSecFindChild(signedInfoNode, BAD_CAST "CanonicalizationMethod", xmlSecNsDSig);
     if(res != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -303,9 +304,9 @@ xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nM
     
     tmp = xmlSecGetNextElementNode(signedInfoNode->children);
     if(tmp == NULL) {
-	res = xmlSecAddChild(signedInfoNode, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs);
+	res = xmlSecAddChild(signedInfoNode, BAD_CAST "CanonicalizationMethod", xmlSecNsDSig);
     } else {
-	res = xmlSecAddPrevSibling(tmp, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs);
+	res = xmlSecAddPrevSibling(tmp, BAD_CAST "CanonicalizationMethod", xmlSecNsDSig);
     }    
     if(res == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -347,7 +348,7 @@ xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode,
     
     xmlSecAssert2(signedInfoNode != NULL, NULL);
     
-    res = xmlSecFindChild(signedInfoNode, BAD_CAST "SignatureMethod", xmlSecDSigNs);
+    res = xmlSecFindChild(signedInfoNode, BAD_CAST "SignatureMethod", xmlSecNsDSig);
     if(res != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -355,11 +356,11 @@ xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode,
 	return(NULL);    
     }
     
-    tmp = xmlSecFindChild(signedInfoNode, BAD_CAST "Reference", xmlSecDSigNs);
+    tmp = xmlSecFindChild(signedInfoNode, BAD_CAST "Reference", xmlSecNsDSig);
     if(tmp == NULL) {
-	res = xmlSecAddChild(signedInfoNode, BAD_CAST "SignatureMethod", xmlSecDSigNs);
+	res = xmlSecAddChild(signedInfoNode, BAD_CAST "SignatureMethod", xmlSecNsDSig);
     } else {
-	res = xmlSecAddPrevSibling(tmp, BAD_CAST "SignatureMethod", xmlSecDSigNs);
+	res = xmlSecAddPrevSibling(tmp, BAD_CAST "SignatureMethod", xmlSecNsDSig);
     }    
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -402,7 +403,7 @@ xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id,
     
     xmlSecAssert2(signedInfoNode != NULL, NULL);
     
-    res = xmlSecAddChild(signedInfoNode, BAD_CAST "Reference", xmlSecDSigNs);
+    res = xmlSecAddChild(signedInfoNode, BAD_CAST "Reference", xmlSecNsDSig);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -423,7 +424,7 @@ xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id,
     /**
      * Add DigestValue node
      */    
-    cur = xmlSecAddChild(res, BAD_CAST "DigestValue", xmlSecDSigNs);
+    cur = xmlSecAddChild(res, BAD_CAST "DigestValue", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -457,7 +458,7 @@ xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMetho
     xmlSecAssert2(refNode != NULL, NULL);
     xmlSecAssert2(digestMethod != NULL, NULL);
 
-    res = xmlSecFindChild(refNode, BAD_CAST "DigestMethod", xmlSecDSigNs);
+    res = xmlSecFindChild(refNode, BAD_CAST "DigestMethod", xmlSecNsDSig);
     if(res != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -465,11 +466,11 @@ xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMetho
 	return(NULL);	
     }
     
-    tmp = xmlSecFindChild(refNode, BAD_CAST "DigestValue", xmlSecDSigNs);
+    tmp = xmlSecFindChild(refNode, BAD_CAST "DigestValue", xmlSecNsDSig);
     if(tmp == NULL) {
-	res = xmlSecAddChild(refNode, BAD_CAST "DigestMethod", xmlSecDSigNs);
+	res = xmlSecAddChild(refNode, BAD_CAST "DigestMethod", xmlSecNsDSig);
     } else {
-	res = xmlSecAddPrevSibling(tmp, BAD_CAST "DigestMethod", xmlSecDSigNs);
+	res = xmlSecAddPrevSibling(tmp, BAD_CAST "DigestMethod", xmlSecNsDSig);
     }    
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -509,16 +510,16 @@ xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
     xmlSecAssert2(refNode != NULL, NULL);
     xmlSecAssert2(transform != NULL, NULL);
 
-    transformsNode = xmlSecFindChild(refNode, BAD_CAST "Transforms", xmlSecDSigNs);
+    transformsNode = xmlSecFindChild(refNode, BAD_CAST "Transforms", xmlSecNsDSig);
     if(transformsNode == NULL) {
 	xmlNodePtr tmp;
 	/* need to create Transforms node first */
 	
 	tmp = xmlSecGetNextElementNode(refNode->children);
 	if(tmp == NULL) {
-	    transformsNode = xmlSecAddChild(refNode, BAD_CAST "Transforms", xmlSecDSigNs);
+	    transformsNode = xmlSecAddChild(refNode, BAD_CAST "Transforms", xmlSecNsDSig);
 	} else {
-	    transformsNode = xmlSecAddPrevSibling(tmp, BAD_CAST "Transforms", xmlSecDSigNs);
+	    transformsNode = xmlSecAddPrevSibling(tmp, BAD_CAST "Transforms", xmlSecNsDSig);
 	}    
 	if(transformsNode == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -528,7 +529,7 @@ xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
 	}
     }
 
-    res = xmlSecAddChild(transformsNode, BAD_CAST "Transform", xmlSecDSigNs);
+    res = xmlSecAddChild(transformsNode, BAD_CAST "Transform", xmlSecNsDSig);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -565,7 +566,7 @@ xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xm
 
     xmlSecAssert2(objectNode != NULL, NULL);
 
-    res = xmlSecAddChild(objectNode, BAD_CAST "SignatureProperties", xmlSecDSigNs);
+    res = xmlSecAddChild(objectNode, BAD_CAST "SignatureProperties", xmlSecNsDSig);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -597,7 +598,7 @@ xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
 
     xmlSecAssert2(objectNode != NULL, NULL);
 
-    res = xmlSecAddChild(objectNode, BAD_CAST "Manifest", xmlSecDSigNs);
+    res = xmlSecAddChild(objectNode, BAD_CAST "Manifest", xmlSecNsDSig);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -632,7 +633,7 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode,
     
     xmlSecAssert2(manifestNode != NULL, NULL);
     
-    res = xmlSecAddChild(manifestNode, BAD_CAST "Reference", xmlSecDSigNs);
+    res = xmlSecAddChild(manifestNode, BAD_CAST "Reference", xmlSecNsDSig);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -653,7 +654,7 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode,
     /**
      * Add DigestValue node
      */    
-    cur = xmlSecAddChild(res, BAD_CAST "DigestValue", xmlSecDSigNs);
+    cur = xmlSecAddChild(res, BAD_CAST "DigestValue", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -697,7 +698,7 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, xmlSecKeyPtr key,
     xmlSecAssert2(result != NULL, -1);
 
     (*result) = NULL;    
-    if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecDSigNs)) {
+    if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecNsDSig)) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Signature");
@@ -759,7 +760,7 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, xmlSecKeyPtr key,
 
     (*result) = NULL;
     
-    if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecDSigNs)) {
+    if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecNsDSig)) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Signature");
@@ -1103,7 +1104,7 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     cur = xmlSecGetNextElementNode(signNode->children);
     
     /* first node is required SignedInfo */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignedInfo", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignedInfo", xmlSecNsDSig))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "SignedInfo");
@@ -1113,7 +1114,7 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required SignatureValue */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureValue", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureValue", xmlSecNsDSig))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "SignatureValue");
@@ -1123,7 +1124,7 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is optional KeyInfo */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecNsDSig))) {
 	keyInfoNode = cur;
 	cur = xmlSecGetNextElementNode(cur->next);
     } else{
@@ -1133,7 +1134,7 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     
     /* next nodes are optional Object */
     firstObjectNode = NULL;
-    while((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Object", xmlSecDSigNs))) {
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Object", xmlSecNsDSig))) {
 	if(firstObjectNode == NULL) {
 	    firstObjectNode = cur;
 	}
@@ -1372,7 +1373,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     cur = xmlSecGetNextElementNode(signedInfoNode->children);
     
     /* first node is required CanonicalizationMethod */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CanonicalizationMethod", xmlSecNsDSig))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "CanonicalizationMethod");
@@ -1388,7 +1389,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required SignatureMethod */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureMethod", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureMethod", xmlSecNsDSig))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,	
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "SignatureMethod");
@@ -1451,7 +1452,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     }
     
     /* next is Reference nodes (at least one must present!) */
-    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecDSigNs)) {
+    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecNsDSig)) {
 	ref = xmlSecReferenceCreate(xmlSecSignedInfoReference, 
 				     result->ctx, cur);
 	if(ref == NULL) {
@@ -1596,7 +1597,7 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     }	
 
     /* first is optional Transforms node */
-    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecDSigNs)) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecNsDSig)) {
 	ret = xmlSecTransformsNodeRead(state, cur);
 	if(ret < 0){
     	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1628,7 +1629,7 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     }
      
     /* next node is required DigestMethod */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestMethod", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestMethod", xmlSecNsDSig))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "DigestMethod");
@@ -1652,7 +1653,7 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required DigestValue */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestValue", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestValue", xmlSecNsDSig))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "DigestValue");
@@ -1948,7 +1949,7 @@ xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
     
     cur = xmlSecGetNextElementNode(objectNode->children);
     while(cur != NULL) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "Manifest", xmlSecDSigNs)) {
+	if(xmlSecCheckNodeName(cur, BAD_CAST "Manifest", xmlSecNsDSig)) {
 	    ret = xmlSecManifestRead(cur, sign, result);
 	    if(ret < 0){
     		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -2003,7 +2004,7 @@ xmlSecManifestRead(xmlNodePtr manifestNode, int sign, xmlSecDSigResultPtr result
     xmlSecAssert2(manifestNode != NULL, -1);
 
     cur = xmlSecGetNextElementNode(manifestNode->children);
-    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecDSigNs)) { 
+    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecNsDSig)) { 
 	ref = xmlSecReferenceCreate(xmlSecManifestReference, 
 				     result->ctx, cur);
 	if(ref == NULL) {

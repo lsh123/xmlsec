@@ -49,6 +49,7 @@
 #include <libxml/xpointer.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/transforms.h>
@@ -205,7 +206,7 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
     xmlSecAssert2(transformsNode != NULL, -1);
     
     cur = xmlSecGetNextElementNode(transformsNode->children);
-    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transform", xmlSecDSigNs)) {
+    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transform", xmlSecNsDSig)) {
 	transform = xmlSecTransformNodeRead(cur, xmlSecUsageDSigTransform, 0);
 	if(transform == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1557,7 +1558,7 @@ xmlSecTransformHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(bitsLen > 0, -1);
 
-    node = xmlSecFindChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
+    node = xmlSecFindChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecNsDSig);
     if(node != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -1565,7 +1566,7 @@ xmlSecTransformHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
 	return(-1);
     }
     
-    node = xmlSecAddChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
+    node = xmlSecAddChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecNsDSig);
     if(node == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1599,7 +1600,7 @@ xmlSecTransformRsaOaepAddParam(xmlNodePtr transformNode,
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
-    oaepParamNode = xmlSecFindChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
+    oaepParamNode = xmlSecFindChild(transformNode, BAD_CAST "OAEPParam", xmlSecNsEnc);
     if(oaepParamNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -1607,7 +1608,7 @@ xmlSecTransformRsaOaepAddParam(xmlNodePtr transformNode,
 	return(-1);    
     }
 
-    oaepParamNode = xmlSecAddChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
+    oaepParamNode = xmlSecAddChild(transformNode, BAD_CAST "OAEPParam", xmlSecNsEnc);
     if(oaepParamNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1648,7 +1649,7 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
     xmlSecAssert2(expression != NULL, -1);
     
 
-    xpathNode = xmlSecFindChild(transformNode, BAD_CAST "XPath", xmlSecDSigNs);
+    xpathNode = xmlSecFindChild(transformNode, BAD_CAST "XPath", xmlSecNsDSig);
     if(xpathNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -1656,7 +1657,7 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	return(-1);    
     }
 
-    xpathNode = xmlSecAddChild(transformNode, BAD_CAST "XPath", xmlSecDSigNs);
+    xpathNode = xmlSecAddChild(transformNode, BAD_CAST "XPath", xmlSecNsDSig);
     if(xpathNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1721,7 +1722,7 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
 
-    xpathNode = xmlSecAddChild(transformNode, BAD_CAST "XPath", xmlSecXPath2Ns);
+    xpathNode = xmlSecAddChild(transformNode, BAD_CAST "XPath", xmlSecNsXPath2);
     if(xpathNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1801,7 +1802,7 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
     xmlSecAssert2(expression != NULL, -1);
     xmlSecAssert2(transformNode != NULL, -1);
 
-    xpointerNode = xmlSecFindChild(transformNode, BAD_CAST "XPointer", xmlSecXPointerNs);
+    xpointerNode = xmlSecFindChild(transformNode, BAD_CAST "XPointer", xmlSecNsXPointer);
     if(xpointerNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -1809,7 +1810,7 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	return(-1);    
     }
 
-    xpointerNode = xmlSecAddChild(transformNode, BAD_CAST "XPointer", xmlSecXPointerNs);
+    xpointerNode = xmlSecAddChild(transformNode, BAD_CAST "XPointer", xmlSecNsXPointer);
     if(xpointerNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

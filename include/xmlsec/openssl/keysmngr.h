@@ -16,37 +16,9 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/object.h>
+#include <xmlsec/crypto.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/openssl/x509.h>
-
-
-typedef struct _xmlSecOpenSSLKeysMngrKlass	xmlSecOpenSSLKeysMngrKlass,
-						*xmlSecOpenSSLKeysMngrKlassPtr;
-typedef struct _xmlSecOpenSSLKeysMngr		xmlSecOpenSSLKeysMngr,
-						*xmlSecOpenSSLKeysMngrPtr;
-/*********************************************************************
- *
- * OpenSSL Keys Manager
- *
- *********************************************************************/
-#define xmlSecOpenSSLKeysMngrKlassId 			xmlSecOpenSSLKeysMngrKlassGet()
-#define xmlSecOpenSSLKeysMngrKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecOpenSSLKeysMngrKlassId, xmlSecOpenSSLKeysMngrKlassPtr)
-#define xmlSecOpenSSLKeysMngrKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecOpenSSLKeysMngrKlassId)
-#define xmlSecOpenSSLKeysMngrCast(obj) 			xmlSecObjCastMacro((obj), xmlSecOpenSSLKeysMngrKlassId, xmlSecOpenSSLKeysMngrPtr)
-#define xmlSecOpenSSLKeysMngrCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecOpenSSLKeysMngrKlassId)
-
-struct _xmlSecOpenSSLKeysMngrKlass {
-    xmlSecSimpleKeysMngrKlass		parent;
-};
-
-struct _xmlSecOpenSSLKeysMngr {
-    xmlSecSimpleKeysMngr		parent;
-    
-    xmlSecOpenSSLX509StorePtr		x509Store;
-};
-
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecOpenSSLKeysMngrKlassGet	(void);
 
 
 

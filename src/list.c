@@ -67,7 +67,13 @@ xmlSecPtr
 xmlSecListGetData(xmlSecListPtr list, size_t pos) {
     xmlSecAssert2(list != NULL, NULL);
     
-    return((pos < list->size) ? list->data[pos] : NULL);
+    if(pos < list->size) {
+	xmlSecAssert2(list->data != NULL, NULL);
+
+	return(list->data[pos]);
+    }
+    
+    return(NULL);
 }
 
 size_t
@@ -141,7 +147,7 @@ xmlSecListRemove(xmlSecListPtr list, size_t pos) {
     size_t i;
     
     xmlSecAssert(list != NULL);
-    xmlSecAssert2(pos < list->size, -1);
+    xmlSecAssert(pos < list->size);
     
     if(list->size > 0) {
 	for(i = list->size - 1; i > pos ; --i) {

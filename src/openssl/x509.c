@@ -27,6 +27,7 @@
 #include <openssl/pem.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
@@ -121,7 +122,7 @@ xmlSecKeyDataX509IdStruct xmlSecOpenSSLKeyDataX509Id = {
     /* same as xmlSecDataId */
     xmlSecKeyDataTypeX509,		/* xmlSecKeyDataType type; */
     BAD_CAST "X509Data",		/* const xmlChar* childNodeName; */
-    xmlSecDSigNs,			/* const xmlChar* childNodeNs; */
+    xmlSecNsDSig,			/* const xmlChar* childNodeNs; */
     xmlSecKeyOriginX509,		/* xmlSecKeyOrigin origin; */
     
     xmlSecOpenSSLKeyDataX509Create,	/* xmlSecKeyDataCreateMethod create; */

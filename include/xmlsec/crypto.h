@@ -14,6 +14,7 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
 
 /**
@@ -66,9 +67,10 @@ XMLSEC_EXPORT int		xmlSecCryptoAppShutdown		(void);
 
 
 
+XMLSEC_EXPORT xmlSecKeysMngrPtr xmlSecCryptoAppKeysMngrCreate	(void);
+
 
 /* todo: check these functions */
-XMLSEC_EXPORT xmlSecKeysMngrPtr xmlSecSimpleKeysMngrCreate	(void);
 XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey	(xmlSecKeysMngrPtr mngr,
 								 const char *keyfile,
 								 const char *keyPwd,

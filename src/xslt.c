@@ -46,6 +46,7 @@
 #include <libxslt/xsltutils.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -71,7 +72,7 @@ static const struct _xmlSecBinTransformIdStruct xmlSecTransformXsltId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecTransformXsltHref, 		/* const xmlChar href; */
+    xmlSecHrefTransformXslt, 		/* const xmlChar href; */
 
     xmlSecTransformXsltCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecTransformXsltDestroy,		/* xmlSecTransformDestroyMethod destroy; */

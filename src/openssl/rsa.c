@@ -22,6 +22,7 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -71,8 +72,8 @@ static int		xmlSecRsaKeyValueWrite	(xmlSecKeyValuePtr key,
 
 xmlSecKeyValueIdStruct xmlSecRsaKeyValueId = {
     /* xlmlSecKeyId data  */
-    xmlSecRsaKeyValueName,		/* const xmlChar *keyValueNodeName; */
-    xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
+    xmlSecNameRsaKeyValue,			/* const xmlChar *keyValueNodeName; */
+    xmlSecNsDSig, 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyValueId methods */
     xmlSecRsaKeyValueCreate,		/* xmlSecKeyValueCreateMethod create; */    
@@ -93,7 +94,7 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignRsaSha1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageDSigSignature,		/* xmlSecTransformUsage usage; */
-    xmlSecSignRsaSha1Href, 		/* xmlChar *href; */
+    xmlSecHrefSignRsaSha1, 		/* xmlChar *href; */
     
     xmlSecSignRsaSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecSignRsaSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -131,7 +132,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaPkcs1Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecEncRsaPkcs1Href, 		/* const xmlChar href; */
+    xmlSecHrefEncRsaPkcs1, 		/* const xmlChar href; */
 
     xmlSecRsaPkcs1Create, 		/* xmlSecTransformCreateMethod create; */
     xmlSecRsaPkcs1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -168,7 +169,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaOaepId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecEncRsaOaepHref, 		/* const xmlChar href; */
+    xmlSecHrefEncRsaOaep, 		/* const xmlChar href; */
 
     xmlSecRsaOaepCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecRsaOaepDestroy,		/* xmlSecTransformDestroyMethod destroy; */

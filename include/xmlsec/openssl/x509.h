@@ -24,51 +24,81 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
+typedef struct _xmlSecOpenSSLX509StoreKlass		xmlSecOpenSSLX509StoreKlass,
+							*xmlSecOpenSSLX509StoreKlassPtr;
 typedef struct _xmlSecOpenSSLX509Store			xmlSecOpenSSLX509Store,
 							*xmlSecOpenSSLX509StorePtr;
 
-typedef struct _xmlSecOpenSSLKeyDataX509		xmlSecOpenSSLKeyDataX509,
-							*xmlSecOpenSSLKeyDataX509Ptr;
+typedef struct _xmlSecOpenSSLX509DataKlass		xmlSecOpenSSLX509DataKlass,
+							*xmlSecOpenSSLX509DataKlassPtr;
+typedef struct _xmlSecOpenSSLX509Data			xmlSecOpenSSLX509Data,
+							*xmlSecOpenSSLX509DataPtr;
 
-/**
- * xmlSecOpenSSLKeyDataX509:
- * @verified: the cert that contains this key.
- * @certs: the certs list used to verify the @verified cert.
- * @crls: the crls list present in the key data.
+
+
+/*********************************************************************
  *
- * XML DSig data for the key.
- */
-struct _xmlSecOpenSSLKeyDataX509 {
-    xmlSecKeyDataX509Id	id;
-    
-    X509		*verified;
-    STACK_OF(X509) 	*certs;
-    STACK_OF(X509_CRL)  *crls;
+ * OpenSSL X509 data storage
+ *
+ *********************************************************************/
+#define xmlSecOpenSSLX509StoreKlassId 			xmlSecOpenSSLX509StoreKlassGet()
+#define xmlSecOpenSSLX509StoreKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecOpenSSLX509StoreKlassId, xmlSecOpenSSLX509StoreKlassPtr)
+#define xmlSecOpenSSLX509StoreKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecOpenSSLX509StoreKlassId)
+#define xmlSecOpenSSLX509StoreCast(obj) 		xmlSecObjCastMacro((obj), xmlSecOpenSSLX509StoreKlassId, xmlSecOpenSSLX509StorePtr)
+#define xmlSecOpenSSLX509StoreCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecOpenSSLX509StoreKlassId)
+
+struct _xmlSecOpenSSLX509StoreKlass {
+    xmlSecX509StoreKlass			parent;
 };
 
 struct _xmlSecOpenSSLX509Store {
-    X509_STORE		*xst;
-    STACK_OF(X509)	*untrusted;
-    STACK_OF(X509_CRL)	*crls;
+    xmlSecX509Store				parent;
+
+    X509_STORE*					xst;
+    STACK_OF(X509)*				untrusted;
+    STACK_OF(X509_CRL)*				crls;
 };
 
-XMLSEC_EXPORT xmlSecOpenSSLX509StorePtr xmlSecOpenSSLX509StoreCreate(void);
-XMLSEC_EXPORT void		xmlSecOpenSSLX509StoreDestroy	(xmlSecOpenSSLX509StorePtr store);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecOpenSSLX509StoreFind	(xmlSecOpenSSLX509StorePtr store,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlSecKeyDataPtr data,
-								 xmlChar *subjectName, 	
-								 xmlChar *issuerName, 
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecOpenSSLX509StoreGetKey	(xmlSecOpenSSLX509StorePtr store,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecOpenSSLX509StoreKlassGet	(void);
 XMLSEC_EXPORT int		xmlSecOpenSSLX509StoreLoadPemCert(xmlSecOpenSSLX509StorePtr store,
 								 const char *filename,
 								 int trusted);
 XMLSEC_EXPORT int		xmlSecOpenSSLX509StoreAddCertsDir(xmlSecOpenSSLX509StorePtr store, 
 							 	 const char *path);
+
+
+/*********************************************************************
+ *
+ * OpenSSL X509 data
+ *
+ *********************************************************************/
+#define xmlSecOpenSSLX509DataKlassId 			xmlSecOpenSSLX509DataKlassGet()
+#define xmlSecOpenSSLX509DataKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecOpenSSLX509DataKlassId, xmlSecOpenSSLX509DataKlassPtr)
+#define xmlSecOpenSSLX509DataKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecOpenSSLX509DataKlassId)
+#define xmlSecOpenSSLX509DataCast(obj) 			xmlSecObjCastMacro((obj), xmlSecOpenSSLX509DataKlassId, xmlSecOpenSSLX509DataPtr)
+#define xmlSecOpenSSLX509DataCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecOpenSSLX509DataKlassId)
+
+struct _xmlSecOpenSSLX509DataKlass {
+    xmlSecX509DataKlass				parent;
+};
+
+struct _xmlSecOpenSSLX509Data {
+    xmlSecX509Data				parent;
+
+    X509*					verified;
+    STACK_OF(X509)*				certs;
+    STACK_OF(X509_CRL)*				crls;
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecOpenSSLX509DataKlassGet	(void);
+
+
+
+
+
+
+
+/* todo */
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
 								 const char *pwd);
 XMLSEC_EXPORT int		xmlSecKeyReadPemCert		(xmlSecKeyPtr key,

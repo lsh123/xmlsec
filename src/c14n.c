@@ -17,6 +17,7 @@
 #include <libxml/c14n.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
@@ -36,7 +37,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveTransformId 
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecC14NInclusiveTransformHref, 	/* const xmlChar href; */
+    xmlSecHrefC14NInclusiveTransform, 	/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -51,7 +52,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveWithComments
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecC14NInclusiveWithCommentsTransformHref,	/* const xmlChar href; */
+    xmlSecHrefC14NInclusiveWithCommentsTransform,	/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -66,7 +67,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NExclusiveTransformId 
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecC14NExclusiveTransformHref, 		/* const xmlChar href; */
+    xmlSecHrefC14NExclusiveTransform, 		/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -81,7 +82,7 @@ static const struct _xmlSecC14NTransformIdStruct xmlSecC14NExclusiveWithComments
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecUsageDSigC14N | xmlSecUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecC14NExclusiveWithCommentsTransformHref, 	/* const xmlChar href; */
+    xmlSecHrefC14NExclusiveWithCommentsTransform, 	/* const xmlChar href; */
 
     xmlSecC14NTransformCreate, 		/* xmlSecTransformCreateMethod create; */
     xmlSecC14NTransformDestroy,		/* xmlSecTransformDestroyMethod destroy; */
@@ -202,10 +203,7 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     }
 
     /* TODO: throw an error if any other children is present */
-    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
-    if(node == NULL) {
-	node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NWithCommentsNs);
-    }
+    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
     if(node == NULL) {
 	/* no namespaces :( */
 	return(0);
@@ -330,7 +328,7 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
     xmlSecAssert2(transformNode != NULL, -1);    
     xmlSecAssert2(prefixList != NULL, -1);
 
-    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
+    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
     if(node != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -338,7 +336,7 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
 	return(-1);
     }
     
-    node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
+    node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
     if(node == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

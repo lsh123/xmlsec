@@ -18,10 +18,13 @@ keyvalue.h \
 keysInternal.h \
 keysmngr.h \
 list.h \
+map.h \
 membuf.h \
 nodeset.h \
 object.h \
+pgp.h \
 serializable.h \
+strings.h \
 transforms.h \
 transformsInternal.h \
 version.h \

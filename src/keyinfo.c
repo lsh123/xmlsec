@@ -48,6 +48,8 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
+#include <xmlsec/serializable.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -102,7 +104,7 @@ xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
         
-    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "KeyName", xmlSecDSigNs);
+    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "KeyName", xmlSecNsDSig);
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -110,7 +112,7 @@ xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
 	return(NULL);	
     }
     
-    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "KeyName", xmlSecDSigNs); 
+    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "KeyName", xmlSecNsDSig); 
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -136,7 +138,7 @@ xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
 
-    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "KeyValue", xmlSecDSigNs);
+    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "KeyValue", xmlSecNsDSig);
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -144,7 +146,7 @@ xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
 	return(NULL);	
     }
     
-    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "KeyValue", xmlSecDSigNs); 
+    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "KeyValue", xmlSecNsDSig); 
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -170,7 +172,7 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
     
     xmlSecAssert2(keyInfoNode != NULL, NULL);
         
-    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "X509Data", xmlSecDSigNs);
+    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "X509Data", xmlSecNsDSig);
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -178,7 +180,7 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 	return(NULL);	
     }
     
-    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "X509Data", xmlSecDSigNs); 
+    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "X509Data", xmlSecNsDSig); 
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -207,7 +209,7 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
         
-    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "RetrievalMethod", xmlSecDSigNs);
+    cur = xmlSecFindChild(keyInfoNode, BAD_CAST "RetrievalMethod", xmlSecNsDSig);
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
@@ -215,7 +217,7 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 	return(NULL);	
     }
     
-    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "RetrievalMethod", xmlSecDSigNs); 
+    cur = xmlSecAddChild(keyInfoNode, BAD_CAST "RetrievalMethod", xmlSecNsDSig); 
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -254,9 +256,9 @@ xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
     xmlSecAssert2(retrMethod != NULL, NULL);
     xmlSecAssert2(transform != NULL, NULL);
         
-    transforms = xmlSecFindChild(retrMethod, BAD_CAST "Transforms", xmlSecDSigNs);
+    transforms = xmlSecFindChild(retrMethod, BAD_CAST "Transforms", xmlSecNsDSig);
     if(transforms == NULL) {
-	transforms = xmlSecAddChild(retrMethod, BAD_CAST "Transforms", xmlSecDSigNs);
+	transforms = xmlSecAddChild(retrMethod, BAD_CAST "Transforms", xmlSecNsDSig);
 	if(transforms == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -266,7 +268,7 @@ xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
     }
     
     
-    cur = xmlSecAddChild(transforms, BAD_CAST "Transform", xmlSecDSigNs); 
+    cur = xmlSecAddChild(transforms, BAD_CAST "Transform", xmlSecNsDSig); 
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -308,7 +310,7 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
     xmlSecAssert2(keyInfoNode != NULL, NULL);
 
     /* we allow multiple encrypted key elements */
-    encKey = xmlSecAddChild(keyInfoNode, BAD_CAST "EncryptedKey", xmlSecEncNs); 
+    encKey = xmlSecAddChild(keyInfoNode, BAD_CAST "EncryptedKey", xmlSecNsEnc); 
     if(encKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -327,7 +329,7 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 	xmlSetProp(encKey, BAD_CAST "Recipient", recipient);
     }
 
-    cipherData = xmlSecAddChild(encKey,  BAD_CAST "CipherData", xmlSecEncNs);
+    cipherData = xmlSecAddChild(encKey,  BAD_CAST "CipherData", xmlSecNsEnc);
     if(cipherData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -393,19 +395,23 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrCtxPtr keysMngrCtx,
     ret = 0;
     cur = xmlSecGetNextElementNode(keyInfoNode->children);
     while(cur != NULL) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "KeyName", xmlSecDSigNs)) {
+	if(xmlSecCheckNodeName(cur, BAD_CAST "KeyName", xmlSecNsDSig)) {
 	    ret = xmlSecKeyNameNodeWrite(cur, key, keysMngrCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "KeyValue", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "KeyValue", xmlSecNsDSig)) {
 	    ret = xmlSecKeyValueNodeWrite(cur, key, type);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509Data", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509Data", xmlSecNsDSig)) {
 #ifndef XMLSEC_NO_X509
-	    ret = xmlSecKeyDataWriteXml(xmlSecKeyDataX509, key, keysMngrCtx, cur);
+	    if(key->x509Data != NULL) {
+		ret = xmlSecSObjWriteXml(xmlSecSObjCast(key->x509Data),
+					     xmlSecObjCast(keysMngrCtx),
+					     cur);
+	    }
 #else  /* XMLSEC_NO_X509 */ 
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_DISABLED,
 			"X509");
 #endif /* XMLSEC_NO_X509 */
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "EncryptedKey", xmlSecEncNs)) {
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "EncryptedKey", xmlSecNsEnc)) {
 #ifndef XMLSEC_NO_XMLENC
 	    ret = xmlSecEncryptedKeyNodeWrite(cur, keysMngrCtx, key, type);
 #else  /* XMLSEC_NO_XMLENC */
@@ -413,6 +419,8 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrCtxPtr keysMngrCtx,
 			XMLSEC_ERRORS_R_DISABLED,
 			"XML Encryption");
 #endif /* XMLSEC_NO_XMLENC */
+	} else {
+	    /* do nothing - laxi schema validation */
 	}
 	/* TODO: add retrieval method, etc. */
 
@@ -439,22 +447,23 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeysMngrCtxPtr keysMngrCtx) {
     
     key = NULL;
     while ((key == NULL) && (cur != NULL)) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "KeyName", xmlSecDSigNs)) { 
+	if(xmlSecCheckNodeName(cur, BAD_CAST "KeyName", xmlSecNsDSig)) { 
 	    key = xmlSecKeyNameNodeRead(cur, keysMngrCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "KeyValue", xmlSecDSigNs)) {
-
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "KeyValue", xmlSecNsDSig)) {
 	    key = xmlSecKeyValueNodeRead(cur, keysMngrCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "RetrievalMethod", xmlSecDSigNs)){
-		key = xmlSecRetrievalMethodNodeRead(cur, keysMngrCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509Data", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "RetrievalMethod", xmlSecNsDSig)){
+	    key = xmlSecRetrievalMethodNodeRead(cur, keysMngrCtx);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509Data", xmlSecNsDSig)) {
 #ifndef XMLSEC_NO_X509
-		key = xmlSecKeyDataReadXml(xmlSecKeyDataX509, keysMngrCtx, cur);
+/* todo
+	    key = xmlSecKeyDataReadXml(xmlSecKeyDataX509, keysMngrCtx, cur);
+*/	    
 #else  /* XMLSEC_NO_X509 */ 
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_DISABLED,
 			    "X509");
 #endif /* XMLSEC_NO_X509 */
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "EncryptedKey", xmlSecEncNs)) {
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "EncryptedKey", xmlSecNsEnc)) {
 #ifndef XMLSEC_NO_XMLENC
 		key = xmlSecEncryptedKeyNodeRead(cur, keysMngrCtx);
 #else  /* XMLSEC_NO_XMLENC */
@@ -462,6 +471,8 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeysMngrCtxPtr keysMngrCtx) {
 			    XMLSEC_ERRORS_R_DISABLED,
 			    "XML Encryption");
 #endif /* XMLSEC_NO_XMLENC */
+	} else {
+	    /* do nothing - laxi schema validation */
 	}
 	/* TODO: add more nodes (pgp, spki, etc) */
 	
@@ -709,7 +720,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeysMngrCtxP
     }	
 
     /* first is optional Transforms node */
-    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecDSigNs)) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecNsDSig)) {
 	ret = xmlSecTransformsNodeRead(state, cur);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -752,6 +763,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeysMngrCtxP
     } else {
 	/* special case: raw DER x509  certificate */
 #ifndef XMLSEC_NO_X509
+/* todo:
 	res = xmlSecKeyDataReadBinary(xmlSecKeyDataRawX509, keysMngrCtx,
 				(unsigned char*)xmlBufferContent(state->curBuf),
 	                    	xmlBufferLength(state->curBuf));
@@ -761,6 +773,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeysMngrCtxP
 			"xmlSecKeyDataReadBinary(xmlSecKeyDataRawX509)");
 	    goto done;
 	}
+*/	
 #else  /* XMLSEC_NO_X509 */
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_DISABLED,
@@ -941,7 +954,7 @@ xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node,
     cur = xmlSecGetNextElementNode(node->children);
     
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "P");
@@ -957,7 +970,7 @@ xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node,
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Q");
@@ -973,7 +986,7 @@ xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node,
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "G");
@@ -1002,7 +1015,7 @@ xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node,
     }
 
     /* next is Y node. */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Y");
@@ -1017,7 +1030,7 @@ xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node,
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "J", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "J", xmlSecNsDSig))) {
         /* next is J node - optional */
 	ret = xmlSecGetBase64NodeContent(cur, jValue, jSize);
 	if(ret < 0) {
@@ -1030,12 +1043,12 @@ xmlSecKeyInfoReadDSAKeyValueNode(xmlNodePtr node,
     }
     
     /* todo: add support for seed */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Seed", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Seed", xmlSecNsDSig))) {
 	cur = xmlSecGetNextElementNode(cur->next);  
     }
 
     /* todo: add support for pgencounter */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PgenCounter", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PgenCounter", xmlSecNsDSig))) {
 	cur = xmlSecGetNextElementNode(cur->next);  
     }
 
@@ -1093,7 +1106,7 @@ xmlSecKeyInfoWriteDSAKeyValueNode(xmlNodePtr node,
     xmlNodeSetContent(node, NULL);
     
     /* first is P node */
-    cur = xmlSecAddChild(node, BAD_CAST "P", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, BAD_CAST "P", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1109,7 +1122,7 @@ xmlSecKeyInfoWriteDSAKeyValueNode(xmlNodePtr node,
     }
     
     /* Q node */
-    cur = xmlSecAddChild(node, BAD_CAST "Q", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, BAD_CAST "Q", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1125,7 +1138,7 @@ xmlSecKeyInfoWriteDSAKeyValueNode(xmlNodePtr node,
     }
 
     /* G node */
-    cur = xmlSecAddChild(node, BAD_CAST "G", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, BAD_CAST "G", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1159,7 +1172,7 @@ xmlSecKeyInfoWriteDSAKeyValueNode(xmlNodePtr node,
     }
 
     /* Y node */
-    cur = xmlSecAddChild(node, BAD_CAST "Y", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, BAD_CAST "Y", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1176,7 +1189,7 @@ xmlSecKeyInfoWriteDSAKeyValueNode(xmlNodePtr node,
 
     /* J node */
     if((jValue != NULL) && (jSize > 0)) {
-	cur = xmlSecAddChild(node, BAD_CAST "J", xmlSecDSigNs);
+	cur = xmlSecAddChild(node, BAD_CAST "J", xmlSecNsDSig);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1255,7 +1268,7 @@ xmlSecKeyInfoReadRSAKeyValueNode(xmlNodePtr node,
     cur = xmlSecGetNextElementNode(node->children);
     
     /* first is Modulus node. */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "Modulus", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "Modulus", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Modulus");
@@ -1271,7 +1284,7 @@ xmlSecKeyInfoReadRSAKeyValueNode(xmlNodePtr node,
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is Exponent node. */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Exponent", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Exponent", xmlSecNsDSig))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Exponent");
@@ -1340,7 +1353,7 @@ xmlSecKeyInfoWriteRSAKeyValueNode(xmlNodePtr node,
     xmlNodeSetContent(node, NULL);
     
     /* first is Modulus node */
-    cur = xmlSecAddChild(node, BAD_CAST "Modulus", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, BAD_CAST "Modulus", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1356,7 +1369,7 @@ xmlSecKeyInfoWriteRSAKeyValueNode(xmlNodePtr node,
     }
     
     /* Exponent node */
-    cur = xmlSecAddChild(node, BAD_CAST "Exponent", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, BAD_CAST "Exponent", xmlSecNsDSig);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

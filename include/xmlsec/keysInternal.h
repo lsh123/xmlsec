@@ -17,9 +17,11 @@ extern "C" {
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/x509.h>
+#include <xmlsec/object.h>
+
+typedef struct _xmlSecKeysMngrCtx		xmlSecKeysMngrCtx,
+						*xmlSecKeysMngrCtxPtr;
+
 
     
 #ifdef __cplusplus

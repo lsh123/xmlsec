@@ -20,6 +20,7 @@
 #include <openssl/rand.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -69,7 +70,7 @@ static  int			xmlSecAesKeyValueWriteBinary	(xmlSecKeyValuePtr key,
 								 size_t *size);
 xmlSecKeyValueIdStruct xmlSecAesKeyValueId = {
     /* xlmlSecKeyId data  */
-    xmlSecAesKeyValueName,	/* const xmlChar *keyValueNodeName; */
+    xmlSecNameAesKeyValue,	/* const xmlChar *keyValueNodeName; */
     xmlSecNs, 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyValueId methods */
@@ -99,7 +100,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecEncAes128CbcHref, 		/* const xmlChar href; */
+    xmlSecHrefEncAes128Cbc, 		/* const xmlChar href; */
 
     xmlSecAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecAesDestroy,			/* xmlSecTransformDestroyMethod aestroy; */
@@ -131,7 +132,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecEncAes192CbcHref,		/* const xmlChar href; */
+    xmlSecHrefEncAes192Cbc,		/* const xmlChar href; */
 
     xmlSecAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecAesDestroy,			/* xmlSecTransformDestroyMethod aestroy; */
@@ -163,7 +164,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecEncAes256CbcHref,		/* const xmlChar href; */
+    xmlSecHrefEncAes256Cbc,		/* const xmlChar href; */
 
     xmlSecAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecAesDestroy,			/* xmlSecTransformDestroyMethod aestroy; */
@@ -214,7 +215,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes128Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecKWAes128CbcHref, 		/* const xmlChar href; */
+    xmlSecHrefKWAes128Cbc, 		/* const xmlChar href; */
 
     xmlSecKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -240,7 +241,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes192Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecKWAes192CbcHref, 		/* const xmlChar href; */
+    xmlSecHrefKWAes192Cbc, 		/* const xmlChar href; */
 
     xmlSecKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
@@ -265,7 +266,7 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes256Id = {
     /* same as xmlSecTransformId */    
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecKWAes256CbcHref, 		/* const xmlChar href; */
+    xmlSecHrefKWAes256Cbc, 		/* const xmlChar href; */
 
     xmlSecKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
     xmlSecKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */

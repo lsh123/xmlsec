@@ -17,6 +17,7 @@
 #include <libxml/xpathInternals.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -38,7 +39,7 @@ struct _xmlSecXmlTransformIdStruct xmlSecTransformEnvelopedId = {
     /* same as xmlSecTransformId */ 
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecTransformEnvelopedHref,	/* const xmlChar *href; */
+    xmlSecHrefTransformEnveloped,	/* const xmlChar *href; */
 
     xmlSecTransformEnvelopedCreate,	/* xmlSecTransformCreateMethod create; */
     xmlSecTransformEnvelopedDestroy,	/* xmlSecTransformDestroyMethod destroy; */
@@ -177,7 +178,7 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 	return(-1);
     }
 
-    signature = xmlSecFindParent(xmlTransform->here, BAD_CAST "Signature", xmlSecDSigNs);
+    signature = xmlSecFindParent(xmlTransform->here, BAD_CAST "Signature", xmlSecNsDSig);
     if(signature == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,

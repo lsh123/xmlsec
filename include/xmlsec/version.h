@@ -14,12 +14,12 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#define XMLSEC_VERSION			"0.0.7"
+#define XMLSEC_VERSION			"0.0.8"
 #define XMLSEC_VERSION_MAJOR		0
 #define XMLSEC_VERSION_MINOR		0
-#define XMLSEC_VERSION_SUBMINOR		7
+#define XMLSEC_VERSION_SUBMINOR		8
 
-#define XMLSEC_VERSION_INFO		"0:7:0"
+#define XMLSEC_VERSION_INFO		"0:8:0"
 
 
 #ifdef __cplusplus

@@ -170,9 +170,9 @@
 	</code></blockquote>
       If you are using XML Security Library in your application (not the xmlsec
       command line utility!) then you can do a "hack" and tell LibXML2 (and
-      XMLSec) which attributes are ID attributes by calling <code>xmlAddID</code>
-      function. However, this might make you signature non-interoperable
-      with other XMLDSig implementations.
+      XMLSec) which attributes are ID attributes without providing a DTD
+      by calling <code>xmlAddID</code> function. However, this might 
+      make you signature non-interoperable with other XMLDSig implementations.
       <h4>3.3. I have a document signed with a certificate that is now expired.
       Can I verify this signature using XML Security Library?</h4>
       Yes, you can. However, you need to be carefull. Most likely you

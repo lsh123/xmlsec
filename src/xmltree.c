@@ -709,7 +709,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
 	
 	tmpLen = xmlStrlen(prefix) + xmlStrlen(res) + 1;
 	tmp = xmlMalloc(tmpLen + 1);
-	if(res == NULL) {
+	if(tmp == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		        NULL,
 			"xmlMalloc",
@@ -719,7 +719,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
 	    return(NULL);
 	}
 	
-	xmlSecStrPrintf(res, tmpLen, BAD_CAST "%s%s", prefix, res);
+	xmlSecStrPrintf(tmp, tmpLen, BAD_CAST "%s%s", prefix, res);
 	xmlFree(res);
 	res = tmp;    
     } else {

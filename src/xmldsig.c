@@ -1404,7 +1404,8 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     }
     
     /* this should be done in different way if C14N is binary! */
-    nodeSet = xmlSecNodeSetGetChilds(signedInfoNode->doc, signedInfoNode, 1, 0);
+    nodeSet = xmlSecNodeSetGetChildren(signedInfoNode->doc, 
+					signedInfoNode, 1, 0);
     if(nodeSet == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,

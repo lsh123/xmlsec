@@ -1,0 +1,147 @@
+<!-- ##### SECTION Title ##### -->
+nodeset
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### ENUM xmlSecNodeSetType ##### -->
+<para>
+
+</para>
+
+@xmlSecNodeSetNormal: 
+@xmlSecNodeSetInvert: 
+@xmlSecNodeSetTree: 
+@xmlSecNodeSetTreeWithoutComments: 
+@xmlSecNodeSetTreeInvert: 
+@xmlSecNodeSetTreeWithoutCommentsInvert: 
+@xmlSecNodeSetList: 
+
+<!-- ##### ENUM xmlSecNodeSetOp ##### -->
+<para>
+
+</para>
+
+@xmlSecNodeSetIntersection: 
+@xmlSecNodeSetSubtraction: 
+@xmlSecNodeSetUnion: 
+
+<!-- ##### STRUCT xmlSecNodeSet ##### -->
+<para>
+
+</para>
+
+@nodes: 
+@doc: 
+@type: 
+@op: 
+@next: 
+@prev: 
+@children: 
+
+<!-- ##### USER_FUNCTION xmlSecNodeSetWalkCallback ##### -->
+<para>
+
+</para>
+
+@nset: 
+@cur: 
+@parent: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetCreate ##### -->
+<para>
+
+</para>
+
+@doc: 
+@nodes: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetDestroy ##### -->
+<para>
+
+</para>
+
+@nset: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetContain ##### -->
+<para>
+
+</para>
+
+@nset: 
+@node: 
+@parent: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetAdd ##### -->
+<para>
+
+</para>
+
+@nset: 
+@newNSet: 
+@op: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetAddList ##### -->
+<para>
+
+</para>
+
+@nset: 
+@newNSet: 
+@op: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetGetChildren ##### -->
+<para>
+
+</para>
+
+@doc: 
+@parent: 
+@withComments: 
+@invert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetWalk ##### -->
+<para>
+
+</para>
+
+@nset: 
+@func: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetDebugDump ##### -->
+<para>
+
+</para>
+
+@nset: 
+@output: 
+
+

@@ -51,12 +51,6 @@ struct _xmlSecXmlTransformIdStruct xmlSecTransformEnvelopedId = {
 
 xmlSecTransformId xmlSecTransformEnveloped = (xmlSecTransformId)(&xmlSecTransformEnvelopedId);
 
-static const xmlChar envelopedXPath[] = 
-				"(//. | //@* | //namespace::*)" 
-			        "[count(ancestor-or-self::dsig:Signature | "
-				"here()/ancestor::dsig:Signature[1]) > "
-				"count(ancestor-or-self::dsig:Signature)]";
-
 /****************************************************************************
  *
  * Enveloped transform 
@@ -175,112 +169,6 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
  * MUST produce output in exactly the same manner as the XPath transform 
  * parameterized by the XPath expression above.
  */
-#ifdef XMLSEC_NO_OPT_ENVELOPED
-static int
-xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
-			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
-    xmlSecXmlTransformPtr xmlTransform;
-    xmlXPathObjectPtr xpath; 
-    xmlXPathContextPtr ctx; 
-    xmlsecNodeSetPtr res;
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
-       (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or something else is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }    
-    xmlTransform = (xmlSecXmlTransformPtr)transform;
-
-    if((*doc) != ctxDoc) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: enveloped transform works only on the same document\n",
-	    func);	
-#endif
-	return(-1);
-    }
-
-    /**
-     * Create Enveloped context
-     */
-    ctx = xmlXPathNewContext(*doc);
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xpath context is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
-    
-    xmlXPathRegisterFunc(ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
-    ctx->here = xmlTransform->here;
-    ctx->xptr = 1;
-
-    /*
-     * Register namespace xmlDSig namespace
-     */
-    if(xmlXPathRegisterNs(ctx, BAD_CAST "dsig", xmlSecDSigNs) != 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-	    "%s: unable to register NS with prefix=\"dsig\"\n",
-	    func);
-#endif
-	xmlXPathFreeContext(ctx); 	     
-	return(-1);
-    }
-        
-    /*  
-     * Evaluate xpath
-     */
-    xpath = xmlXPathEvalExpression(envelopedXPath, ctx);
-    if(xpath == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-	    "%s: xpath eval failed\n",
-	    func);
-#endif
-	xmlXPathFreeContext(ctx); 
-        return(-1);
-    }
-
-    res = xmlSecNodeSetCreate((*doc), xpath->nodesetval, xmlSecNodeSetNormal);
-    if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-	    "%s node set creation failed\n",
-	    func);
-#endif
-	xmlXPathFreeObject(xpath);     
-	xmlXPathFreeContext(ctx); 
-        return(-1);
-    }
-    xpath->nodesetval = NULL;
-
-    (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
-    if((*nodes) == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add subset\n",
-	        func);	
-#endif
-	xmlSecNodeSetDestroy(res);
-	xmlXPathFreeObject(xpath);     
-	xmlXPathFreeContext(ctx); 
-	return(-1);
-    }
-    
-    /* free everything we do not need */
-    xmlXPathFreeContext(ctx);      
-    xmlXPathFreeObject(xpath);     
-    return(0);
-}
-#else /* XMLSEC_NO_OPT_ENVELOPED */
 
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
@@ -321,7 +209,7 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 	return(-1);
     }
     
-    res = xmlSecNodeSetGetChilds((*doc), signature, 1, 1);
+    res = xmlSecNodeSetGetChildren((*doc), signature, 1, 1);
     if(res == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -331,7 +219,7 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 	return(-1);
     }
 
-    (*nodes) = xmlSecNodeSetAddSubSet((*nodes), res, xmlSecNodeSetIntersection);
+    (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,
@@ -344,7 +232,5 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     return(0);
 }
 
-
-#endif /* XMLSEC_NO_OPT_ENVELOPED */
 
 

@@ -11,6 +11,7 @@
 <!ENTITY xmlsec-keysInternal SYSTEM "sgml/keysInternal.sgml">
 <!ENTITY xmlsec-keysmngr SYSTEM "sgml/keysmngr.sgml">
 <!ENTITY xmlsec-membuf SYSTEM "sgml/membuf.sgml">
+<!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
 <!ENTITY xmlsec-transforms SYSTEM "sgml/transforms.sgml">
 <!ENTITY xmlsec-transformsInternal SYSTEM "sgml/transformsInternal.sgml">
 <!ENTITY xmlsec-version SYSTEM "sgml/version.sgml">
@@ -103,23 +104,13 @@
     &xmlsec-bn;
     &xmlsec-buffered;
     &xmlsec-ciphers;
-    &xmlsec-debug;
     &xmlsec-digests;
     &xmlsec-io;
-    &xmlsec-keyinfo;
-    &xmlsec-keys;
     &xmlsec-keysInternal;
-    &xmlsec-keysmngr;
     &xmlsec-membuf;
-    &xmlsec-transforms;
+    &xmlsec-nodeset;
     &xmlsec-transformsInternal;
-    &xmlsec-version;
-    &xmlsec-x509;
-    &xmlsec-xmldsig;
-    &xmlsec-xmlenc;
-    &xmlsec-xmlsec;
     &xmlsec-xmltree;
-    &xmlsec-xpath;
   </chapter>
 
 </book>

@@ -1,3 +1,10 @@
+Tue Aug  6 09:51:54 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* docs/api: updated docs with new stuff
+	* man/xmlsec-config.1: fixed minor problems in help file
+	* include/xmlsec/nodeset.h src/enveloped.c src/nodeset.c
+	src/transforms.c src/xmldsig.c src/xpath.c: changed new
+	functions names
+	
 Mon Aug  5 22:55:05 2002  Aleksey Sanin <aleksey@aleksey.com>
 
 	* Makefile.am tests/testDSig.sh tests/testEnc.sh: added

@@ -26,7 +26,7 @@ typedef enum {
     xmlSecNodeSetTreeWithoutComments,
     xmlSecNodeSetTreeInvert,
     xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetSubSet
+    xmlSecNodeSetList
 } xmlSecNodeSetType;
 
 typedef enum {
@@ -62,10 +62,10 @@ XMLSEC_EXPORT int		xmlSecNodeSetContain	(xmlSecNodeSetPtr nset,
 XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetAdd	(xmlSecNodeSetPtr nset,
 							 xmlSecNodeSetPtr newNSet,
 							 xmlSecNodeSetOp op);
-XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetAddSubSet	(xmlSecNodeSetPtr nset,
+XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetAddList	(xmlSecNodeSetPtr nset,
 							 xmlSecNodeSetPtr newNSet,
 							 xmlSecNodeSetOp op);
-XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetGetChilds	(xmlDocPtr doc,
+XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetGetChildren(xmlDocPtr doc,
 							 const xmlNodePtr parent,
 							 int withComments,
 							 int invert);

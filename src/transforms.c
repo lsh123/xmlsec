@@ -1092,7 +1092,7 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 	 * TODO: optimize! 
 	 */
 	state->curDoc = state->initDoc;
-	state->curNodeSet = xmlSecNodeSetGetChilds(state->initDoc, 
+	state->curNodeSet = xmlSecNodeSetGetChildren(state->initDoc, 
 				xmlDocGetRootElement(state->initDoc), 
 				0, 0);
 	if((state->curNodeSet == NULL) || (state->curNodeSet->nodes == NULL)){
@@ -1179,7 +1179,7 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
     }
     
 
-    state->curNodeSet = xmlSecNodeSetGetChilds(state->curDoc, cur, withComments, 0);
+    state->curNodeSet = xmlSecNodeSetGetChildren(state->curDoc, cur, withComments, 0);
     if((state->curNodeSet == NULL)|| (state->curNodeSet->nodes == NULL)) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,

@@ -214,7 +214,6 @@ xmlSecDigestSha1
 xmlSecXPath2TransformType
 xmlSecTransformXPath
 xmlSecTransformXPath2
-xmlSecXPathAlt
 xmlSecTransformXPathAdd
 xmlSecTransformXPath2Add
 xmlSecTransformXslt
@@ -385,7 +384,6 @@ xmlSecFindChild
 xmlSecFindParent
 xmlSecFindNode
 xmlSecFindNodeById
-xmlSecGetChildNodeSet
 xmlSecAddChild
 xmlSecAddNextSibling
 xmlSecAddPrevSibling
@@ -399,5 +397,21 @@ xmlSecClearIdAttributeNames
 <SECTION>
 <FILE>xpath</FILE>
 xmlSecXPathHereFunction
+</SECTION>
+
+<SECTION>
+<FILE>nodeset</FILE>
+xmlSecNodeSetType
+xmlSecNodeSetOp
+xmlSecNodeSet
+xmlSecNodeSetWalkCallback
+xmlSecNodeSetCreate
+xmlSecNodeSetDestroy
+xmlSecNodeSetContain
+xmlSecNodeSetAdd
+xmlSecNodeSetAddList
+xmlSecNodeSetGetChildren
+xmlSecNodeSetWalk
+xmlSecNodeSetDebugDump
 </SECTION>
 

@@ -100,7 +100,7 @@ xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr paren
 		return(0);
 	    }
 	    break;
-	case xmlSecNodeSetSubSet:
+	case xmlSecNodeSetList:
 	    return(xmlSecNodeSetContain(nset->children, node, parent));
 	default:
 	    break;
@@ -235,8 +235,8 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetO
 }
 
 xmlSecNodeSetPtr	
-xmlSecNodeSetAddSubSet(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetAddSubSet";
+xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetAddList";
     xmlSecNodeSetPtr tmp1, tmp2;
     
     if(newNSet == NULL) {
@@ -248,7 +248,7 @@ xmlSecNodeSetAddSubSet(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNo
 	return(NULL);
     }   
     
-    tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetSubSet);
+    tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetList);
     if(tmp1 == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -400,8 +400,8 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
 }
 
 xmlSecNodeSetPtr	
-xmlSecNodeSetGetChilds(xmlDocPtr doc, const xmlNodePtr parent, int withComments, int invert) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetGetChilds";
+xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComments, int invert) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetGetChildren";
     xmlNodeSetPtr nodes;
     xmlSecNodeSetType type;
         
@@ -472,8 +472,8 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     case xmlSecNodeSetTreeWithoutCommentsInvert:
 	fprintf(output, "(xmlSecNodeSetTreeWithoutCommentsInvert)\n");
 	break;
-    case xmlSecNodeSetSubSet:
-	fprintf(output, "(xmlSecNodeSetSubSet)\n");
+    case xmlSecNodeSetList:
+	fprintf(output, "(xmlSecNodeSetList)\n");
 	fprintf(output, ">>>\n");
 	xmlSecNodeSetDebugDump(nset->children, output);
 	fprintf(output, "<<<\n");

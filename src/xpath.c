@@ -532,7 +532,7 @@ xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 	return(-1);
     }
 
-    (*nodes) = xmlSecNodeSetAddSubSet((*nodes), res, xmlSecNodeSetIntersection);
+    (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,
@@ -596,7 +596,7 @@ xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 	return(-1);
     }
 
-    (*nodes) = xmlSecNodeSetAddSubSet((*nodes), res, xmlSecNodeSetIntersection);
+    (*nodes) = xmlSecNodeSetAddList((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,

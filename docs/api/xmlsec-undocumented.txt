@@ -1,6 +1,6 @@
-24% symbol docs coverage.
-76 symbols documented.
-243 not documented.
+23% symbol docs coverage.
+75 symbols documented.
+254 not documented.
 
 
 XMLSEC_BASE64_LINESIZE
@@ -159,6 +159,18 @@ xmlSecMacHmacRipeMd160
 xmlSecMacHmacSha1
 xmlSecMemBuf
 xmlSecMemBufTransformGetBuffer
+xmlSecNodeSet
+xmlSecNodeSetAdd
+xmlSecNodeSetAddList
+xmlSecNodeSetContain
+xmlSecNodeSetCreate
+xmlSecNodeSetDebugDump
+xmlSecNodeSetDestroy
+xmlSecNodeSetGetChildren
+xmlSecNodeSetOp
+xmlSecNodeSetType
+xmlSecNodeSetWalk
+xmlSecNodeSetWalkCallback
 xmlSecPKCS12ReadKey
 xmlSecParseFile
 xmlSecParseMemory
@@ -240,7 +252,6 @@ xmlSecX509StorePtr
 xmlSecX509StoreVerify
 xmlSecX509VerifyCallback
 xmlSecXPath2TransformType
-xmlSecXPathAlt
 xmlSecXmlTransformExecute
 xmlSecXmlTransformExecuteMethod
 xmlSecXmlTransformId

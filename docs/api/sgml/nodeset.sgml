@@ -1,0 +1,336 @@
+<refentry id="xmlsec-nodeset">
+<refmeta>
+<refentrytitle>nodeset</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>nodeset</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+enum        <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link>;
+enum        <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link>;
+struct      <link linkend="xmlSecNodeSet">xmlSecNodeSet</link>;
+int         (<link linkend="xmlSecNodeSetWalkCallback">*xmlSecNodeSetWalkCallback</link>)    (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             void *data);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetCreate">xmlSecNodeSetCreate</link>        (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
+                                             <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);
+void        <link linkend="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</link>            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);
+int         <link linkend="xmlSecNodeSetContain">xmlSecNodeSetContain</link>            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAdd">xmlSecNodeSetAdd</link>           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
+                                             <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAddList">xmlSecNodeSetAddList</link>       (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
+                                             <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);
+<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren</link>   (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
+                                             const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             int withComments,
+                                             int invert);
+int         <link linkend="xmlSecNodeSetWalk">xmlSecNodeSetWalk</link>               (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> func,
+                                             void *data);
+void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>          (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecNodeSetType">enum xmlSecNodeSetType</title>
+<programlisting>typedef enum {
+    xmlSecNodeSetNormal = 0,
+    xmlSecNodeSetInvert,
+    xmlSecNodeSetTree,
+    xmlSecNodeSetTreeWithoutComments,
+    xmlSecNodeSetTreeInvert,
+    xmlSecNodeSetTreeWithoutCommentsInvert,
+    xmlSecNodeSetList
+} xmlSecNodeSetType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetOp">enum xmlSecNodeSetOp</title>
+<programlisting>typedef enum {
+    xmlSecNodeSetIntersection = 0,
+    xmlSecNodeSetSubtraction,
+    xmlSecNodeSetUnion
+} xmlSecNodeSetOp;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSet">struct xmlSecNodeSet</title>
+<programlisting>struct xmlSecNodeSet {
+    xmlNodeSetPtr	nodes;
+    xmlDocPtr		doc;
+    xmlSecNodeSetType	type;
+    xmlSecNodeSetOp	op;
+    
+    xmlSecNodeSetPtr	next;
+    xmlSecNodeSetPtr	prev;
+    xmlSecNodeSetPtr	children;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback ()</title>
+<programlisting>int         (*xmlSecNodeSetWalkCallback)    (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             void *data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetCreate">xmlSecNodeSetCreate ()</title>
+<programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetCreate        (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
+                                             <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy ()</title>
+<programlisting>void        xmlSecNodeSetDestroy            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetContain">xmlSecNodeSetContain ()</title>
+<programlisting>int         xmlSecNodeSetContain            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetAdd">xmlSecNodeSetAdd ()</title>
+<programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetAdd           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
+                                             <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>newNSet</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>op</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetAddList">xmlSecNodeSetAddList ()</title>
+<programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetAddList       (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
+                                             <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>newNSet</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>op</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetGetChildren">xmlSecNodeSetGetChildren ()</title>
+<programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetGetChildren   (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
+                                             const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+                                             int withComments,
+                                             int invert);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>withComments</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>invert</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetWalk">xmlSecNodeSetWalk ()</title>
+<programlisting>int         xmlSecNodeSetWalk               (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> func,
+                                             void *data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump ()</title>
+<programlisting>void        xmlSecNodeSetDebugDump          (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -111,17 +111,6 @@ xmltree
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGetChildNodeSet ##### -->
-<para>
-
-</para>
-
-@parent: 
-@nodeSet: 
-@withComments: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecAddChild ##### -->
 <para>
 

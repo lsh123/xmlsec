@@ -315,7 +315,6 @@ transforms
 
 </para>
 
-@xmlSecXPathTransformUnknown: 
 @xmlSecXPathTransformIntersect: 
 @xmlSecXPathTransformSubtract: 
 @xmlSecXPathTransformUnion: 
@@ -327,12 +326,6 @@ transforms
 
 
 <!-- ##### VARIABLE xmlSecTransformXPath2 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecXPathAlt ##### -->
 <para>
 
 </para>

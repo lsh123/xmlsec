@@ -22,13 +22,6 @@ typedef const struct _xmlSecPtrListKlass			xmlSecPtrListKlass,
 								*xmlSecPtrListId;
 typedef struct _xmlSecPtrList 					xmlSecPtrList, 
 								*xmlSecPtrListPtr;
-/**
- * xmlSecPtr:
- *
- * Void pointer.
- */
-typedef void*	xmlSecPtr;
-
 
 /**
  * xmlSecPtrList:
@@ -44,13 +37,13 @@ struct _xmlSecPtrList {
     xmlSecPtrListId		id;        
 
     xmlSecPtr*			data;
-    size_t			use;
-    size_t			max;
+    xmlSecSize			use;
+    xmlSecSize			max;
     xmlSecAllocMode 		allocMode;
 };
 
 XMLSEC_EXPORT void		xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode,
-								 size_t defInitialSize);
+								 xmlSecSize defInitialSize);
 
 
 XMLSEC_EXPORT int		xmlSecPtrListInitialize		(xmlSecPtrListPtr list,
@@ -64,16 +57,16 @@ XMLSEC_EXPORT int		xmlSecPtrListCopy		(xmlSecPtrListPtr dst,
 								 xmlSecPtrListPtr src);
 XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate		(xmlSecPtrListPtr list);
 
-XMLSEC_EXPORT size_t		xmlSecPtrListGetSize		(xmlSecPtrListPtr list);
+XMLSEC_EXPORT xmlSecSize	xmlSecPtrListGetSize		(xmlSecPtrListPtr list);
 XMLSEC_EXPORT xmlSecPtr		xmlSecPtrListGetItem		(xmlSecPtrListPtr list,
-							         size_t pos);
+							         xmlSecSize pos);
 XMLSEC_EXPORT int		xmlSecPtrListAdd		(xmlSecPtrListPtr list,
 								 xmlSecPtr item);
 XMLSEC_EXPORT int		xmlSecPtrListSet		(xmlSecPtrListPtr list,
 								 xmlSecPtr item,
-								 size_t pos);
+								 xmlSecSize pos);
 XMLSEC_EXPORT int		xmlSecPtrListRemove		(xmlSecPtrListPtr list,
-							    	 size_t pos);
+							    	 xmlSecSize pos);
 XMLSEC_EXPORT void		xmlSecPtrListDebugDump		(xmlSecPtrListPtr list,
     								 FILE* output);
 XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,

@@ -120,7 +120,7 @@ xmlSecIOCallbackPtrListGetKlass(void) {
 static xmlSecIOCallbackPtr 
 xmlSecIOCallbackPtrListFind(xmlSecPtrListPtr list, const char* uri) {
     xmlSecIOCallbackPtr callbacks;
-    size_t i, size;
+    xmlSecSize i, size;
 
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecIOCallbackPtrListId), NULL);
     xmlSecAssert2(uri != NULL, NULL);
@@ -326,14 +326,14 @@ static int		xmlSecTransformInputURIInitialize	(xmlSecTransformPtr transform);
 static void		xmlSecTransformInputURIFinalize		(xmlSecTransformPtr transform);
 static int		xmlSecTransformInputURIPopBin		(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t maxDataSize,
-								 size_t* dataSize,
+								 xmlSecSize maxDataSize,
+								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformInputUriSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformInputUriSize,		/* xmlSecSize objSize */
 
     BAD_CAST "input-uri",			/* const xmlChar* name; */
     NULL,					/* const xmlChar* href; */
@@ -463,7 +463,7 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
 static int 
 xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, unsigned char* data,
-			      size_t maxDataSize, size_t* dataSize, 
+			      xmlSecSize maxDataSize, xmlSecSize* dataSize, 
 			      xmlSecTransformCtxPtr transformCtx) {
     xmlSecInputURICtxPtr ctx;
 

@@ -1,3 +1,8 @@
+Sun 20 Apr 2003 02:37:41 PM PDT Aleksey Sanin <aleksey@aleksey.com>
+	
+	* src/* include/* apps/*: replaced size_t with xmlSecSize
+	typedefed to 'unsigned int' to make happy OpenBSD on sparc64 
+
 Sat Apr 19 01:08:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/kw_des.c src/openssl/signatures.c: 

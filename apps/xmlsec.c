@@ -1018,7 +1018,7 @@ done:
     /* print debug info if requested */
     if(repeats <= 1) {
 	xmlSecDSigReferenceCtxPtr dsigRefCtx;
-	size_t good, i, size;
+	xmlSecSize good, i, size;
 	FILE* f;
         
 	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));

@@ -1289,7 +1289,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  * Returns 0 on success and a negatie value otherwise.
  */
 int
-xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
+xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bitsLen) {
     xmlNodePtr cur;
     char buf[32];
 
@@ -1334,7 +1334,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, size_t bitsLen)
  */
 int  	
 xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, 
-			const unsigned char *buf, size_t size) {
+			const unsigned char *buf, xmlSecSize size) {
     xmlNodePtr oaepParamNode;
     xmlChar *base64;
 

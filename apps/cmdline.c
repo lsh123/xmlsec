@@ -104,7 +104,7 @@ xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
 void 
 xmlSecAppCmdLineParamsListClean(xmlSecAppCmdLineParamPtr* params) {
     xmlSecAppCmdLineValuePtr tmp;
-    size_t i;
+    xmlSecSize i;
     
     assert(params != NULL);
     
@@ -121,7 +121,7 @@ void
 xmlSecAppCmdLineParamsListPrint(xmlSecAppCmdLineParamPtr* params,
 				xmlSecAppCmdLineParamTopic topics,
 				FILE* output) {
-    size_t i;
+    xmlSecSize i;
 
     assert(params != NULL);
     assert(output != NULL);
@@ -183,7 +183,7 @@ xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
 static xmlSecAppCmdLineParamPtr	
 xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLineParamTopic topics,
 				const char* name) {
-    size_t i;
+    xmlSecSize i;
     int canHaveNameString;
 
     assert(params != NULL);

@@ -33,7 +33,7 @@ struct _xmlSecGnuTLSDigestCtx {
     int			digest;
     GcryMDHd		digestCtx;
     unsigned char 	dgst[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
-    size_t		dgstSize;	/* dgst size in bytes */
+    xmlSecSize		dgstSize;	/* dgst size in bytes */
 };	    
 
 /******************************************************************************
@@ -52,7 +52,7 @@ static int 	xmlSecGnuTLSDigestInitialize		(xmlSecTransformPtr transform);
 static void 	xmlSecGnuTLSDigestFinalize		(xmlSecTransformPtr transform);
 static int	xmlSecGnuTLSDigestVerify		(xmlSecTransformPtr transform, 
 							 const unsigned char* data, 
-							 size_t dataSize,
+							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int 	xmlSecGnuTLSDigestExecute		(xmlSecTransformPtr transform, 
 							 int last, 
@@ -129,7 +129,7 @@ xmlSecGnuTLSDigestFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecGnuTLSDigestVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, size_t dataSize,
+			const unsigned char* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSDigestCtxPtr ctx;
     
@@ -193,7 +193,7 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     }
     
     if(transform->status == xmlSecTransformStatusWorking) {
-	size_t inSize;
+	xmlSecSize inSize;
 
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
@@ -267,8 +267,8 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGnuTLSSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSDigestSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecGnuTLSDigestSize,			/* xmlSecSize objSize */
 
     /* data */
     xmlSecNameSha1,				/* const xmlChar* name; */

@@ -400,8 +400,8 @@ XMLSEC_EXPORT void 		xmlSecErrorsDefaultCallback	(const char* file,
 XMLSEC_EXPORT void 		xmlSecErrorsDefaultCallbackEnableOutput
 								(int enabled);
 
-XMLSEC_EXPORT int 		xmlSecErrorsGetCode		(size_t pos);
-XMLSEC_EXPORT const char* 	xmlSecErrorsGetMsg		(size_t pos);
+XMLSEC_EXPORT int 		xmlSecErrorsGetCode		(xmlSecSize pos);
+XMLSEC_EXPORT const char* 	xmlSecErrorsGetMsg		(xmlSecSize pos);
 
 
  

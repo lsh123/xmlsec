@@ -90,7 +90,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
+xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {	
     int ret;
     
     xmlSecAssert2(buffer != NULL, -1);

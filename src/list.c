@@ -21,10 +21,10 @@
 
 
 static int		xmlSecPtrListEnsureSize			(xmlSecPtrListPtr list,
-								 size_t size);
+								 xmlSecSize size);
 								 
 static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
-static size_t gInitialSize = 64;
+static xmlSecSize gInitialSize = 64;
 
 /** 
  * xmlSecPtrListSetDefaultAllocMode:
@@ -34,7 +34,7 @@ static size_t gInitialSize = 64;
  * Sets new default allocation mode and minimal initial list size.
  */
 void 
-xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, size_t defInitialSize) {
+xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInitialSize) {
     xmlSecAssert(defInitialSize > 0);
     
     gAllocMode = defAllocMode;
@@ -143,7 +143,7 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
 
     if(list->id->destroyItem != NULL) {
-	size_t pos;
+	xmlSecSize pos;
 	
 	for(pos = 0; pos < list->use; ++pos) {
 	    xmlSecAssert(list->data != NULL);
@@ -174,7 +174,7 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
  */
 int
 xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
-    size_t i;
+    xmlSecSize i;
     int ret;
     
     xmlSecAssert2(xmlSecPtrListIsValid(dst), -1);
@@ -261,7 +261,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
  * 
  * Returns the number of itmes in @list.
  */
-size_t	
+xmlSecSize	
 xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), 0);
     
@@ -279,7 +279,7 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
  * than the number of items in the list or an error occurs.
  */
 xmlSecPtr 
-xmlSecPtrListGetItem(xmlSecPtrListPtr list, size_t pos) {
+xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
     xmlSecAssert2(list->data != NULL, NULL);
     xmlSecAssert2(pos < list->use, NULL);
@@ -328,7 +328,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, size_t pos) {
+xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     xmlSecAssert2(list->data != NULL, -1);
     xmlSecAssert2(pos < list->use, -1);
@@ -350,7 +350,7 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, size_t pos) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecPtrListRemove(xmlSecPtrListPtr list, size_t pos) {
+xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     xmlSecAssert2(list->data != NULL, -1);
     xmlSecAssert2(pos < list->use, -1);
@@ -379,7 +379,7 @@ xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
 
     fprintf(output, "=== list size: %d\n", list->use);    
     if(list->id->debugDumpItem != NULL) {
-	size_t pos;
+	xmlSecSize pos;
 	
 	for(pos = 0; pos < list->use; ++pos) {
 	    xmlSecAssert(list->data != NULL);
@@ -404,7 +404,7 @@ xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     
     fprintf(output, "<List size=\"%d\">\n", list->use);    
     if(list->id->debugXmlDumpItem != NULL) {
-	size_t pos;
+	xmlSecSize pos;
 	
 	for(pos = 0; pos < list->use; ++pos) {
 	    xmlSecAssert(list->data != NULL);
@@ -417,9 +417,9 @@ xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
 }
 
 static int 
-xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
+xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
     xmlSecPtr* newData;
-    size_t newSize = 0;
+    xmlSecSize newSize = 0;
 
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     

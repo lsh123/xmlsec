@@ -343,7 +343,7 @@ xmlSecKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xml
  */
 int
 xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-		    const unsigned char* buf, size_t bufSize, 
+		    const unsigned char* buf, xmlSecSize bufSize, 
 		    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(id != NULL, -1);
     xmlSecAssert2(id->binRead != NULL, -1);
@@ -367,7 +367,7 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int
 xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-		    unsigned char** buf, size_t* bufSize, 
+		    unsigned char** buf, xmlSecSize* bufSize, 
 		    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(id != NULL, -1);
     xmlSecAssert2(id->binWrite != NULL, -1);
@@ -388,7 +388,7 @@ xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits, 
+xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, 
 		      xmlSecKeyDataType type) {
     int ret;
 
@@ -432,7 +432,7 @@ xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
  *
  * Returns key data size (in bits).
  */
-size_t
+xmlSecSize
 xmlSecKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(data->id->getSize != NULL, 0);
@@ -601,7 +601,7 @@ int
 xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
 				xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* str;
-    size_t len;
+    xmlSecSize len;
     xmlSecKeyDataPtr data;
     int ret;
     
@@ -649,7 +649,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	}
 	
 	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
-	if((buffer != NULL) && ((size_t)xmlSecBufferGetSize(buffer) != len)) {
+	if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != len)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -791,7 +791,7 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int 
 xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-				const unsigned char* buf, size_t bufSize, 
+				const unsigned char* buf, xmlSecSize bufSize, 
 				xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data;
     int ret;
@@ -817,7 +817,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	}
 	
 	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
-	if((buffer != NULL) && ((size_t)xmlSecBufferGetSize(buffer) != bufSize)) {
+	if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != bufSize)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -901,7 +901,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int 
 xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-				unsigned char** buf, size_t* bufSize, 
+				unsigned char** buf, xmlSecSize* bufSize, 
 				xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
@@ -993,7 +993,7 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  *
  * Returns binary key data size in bits.
  */
-size_t
+xmlSecSize
 xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
     xmlSecBufferPtr buffer;
 
@@ -1036,7 +1036,7 @@ xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
  */
 int
 xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, 
-			const unsigned char* buf, size_t bufSize) {
+			const unsigned char* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
@@ -1113,7 +1113,7 @@ xmlSecKeyDataIdListGetKlass(void) {
  */
 int 
 xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
-    size_t i, size;
+    xmlSecSize i, size;
     
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), 0);
     xmlSecAssert2(dataId != NULL, 0);
@@ -1143,7 +1143,7 @@ xmlSecKeyDataId
 xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
 			    const xmlChar* nodeNs, xmlSecKeyDataUsage usage) {
     xmlSecKeyDataId dataId;
-    size_t i, size;
+    xmlSecSize i, size;
     
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
     xmlSecAssert2(nodeName != NULL, xmlSecKeyDataIdUnknown);
@@ -1177,7 +1177,7 @@ xmlSecKeyDataId
 xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
 			    xmlSecKeyDataUsage usage) {
     xmlSecKeyDataId dataId;
-    size_t i, size;
+    xmlSecSize i, size;
     
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
     xmlSecAssert2(href != NULL, xmlSecKeyDataIdUnknown);
@@ -1210,7 +1210,7 @@ xmlSecKeyDataId
 xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name, 
 			    xmlSecKeyDataUsage usage) {
     xmlSecKeyDataId dataId;
-    size_t i, size;
+    xmlSecSize i, size;
     
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
     xmlSecAssert2(name != NULL, xmlSecKeyDataIdUnknown);
@@ -1239,7 +1239,7 @@ xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
 void 
 xmlSecKeyDataIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecKeyDataId dataId;
-    size_t i, size;
+    xmlSecSize i, size;
     
     xmlSecAssert(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId));
     xmlSecAssert(output != NULL);
@@ -1269,7 +1269,7 @@ xmlSecKeyDataIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
 void 
 xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecKeyDataId dataId;
-    size_t i, size;
+    xmlSecSize i, size;
 
     xmlSecAssert(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId));
     xmlSecAssert(output != NULL);

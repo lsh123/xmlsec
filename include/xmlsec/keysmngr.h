@@ -207,8 +207,8 @@ typedef xmlSecKeyPtr		(*xmlSecKeyStoreFindKeyMethod)	(xmlSecKeyStorePtr store,
  * The keys store id (klass).
  */
 struct _xmlSecKeyStoreKlass {
-    size_t				klassSize;
-    size_t				objSize;
+    xmlSecSize				klassSize;
+    xmlSecSize				objSize;
 
     /* data */
     const xmlChar*			name;    

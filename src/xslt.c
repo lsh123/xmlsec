@@ -59,7 +59,7 @@ static int 		xmlSecXsltReadNode			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 static int 		xmlSecXsltPushBin			(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 int final,
 							         xmlSecTransformCtxPtr transformCtx);
 static int  		xmlSecXsltExecute			(xmlSecTransformPtr transform, 
@@ -70,8 +70,8 @@ static int		xmlSecXslProcess			(xmlSecBufferPtr in,
 								 xsltStylesheetPtr stylesheet);
 static xmlSecTransformKlass xmlSecXsltKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecXsltSize,				/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecXsltSize,				/* xmlSecSize objSize */
 
     xmlSecNameXslt,				/* const xmlChar* name; */
     xmlSecHrefXslt, 				/* const xmlChar* href; */
@@ -235,7 +235,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
 
 static int 
 xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
-				size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+				xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;
     int ret;
     
@@ -382,7 +382,7 @@ static int
 xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;
     xmlSecBufferPtr in, out;
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);

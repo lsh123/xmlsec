@@ -46,8 +46,8 @@ static int  		xmlSecTransformMemBufExecute		(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformMemBufSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformMemBufSize,			/* xmlSecSize objSize */
 
     xmlSecNameMemBuf,				/* const xmlChar* name; */
     NULL,					/* const xmlChar* href; */
@@ -141,7 +141,7 @@ static int
 xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecBufferPtr buffer;
     xmlSecBufferPtr in, out;
-    size_t inSize;
+    xmlSecSize inSize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);

@@ -458,7 +458,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, 
-			const unsigned char *buffer, size_t size) {
+			const unsigned char *buffer, xmlSecSize size) {
     static const char dummyPrefix[] = "<dummy>";
     static const char dummyPostfix[] = "</dummy>";
     xmlDocPtr doc;

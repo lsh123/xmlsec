@@ -108,10 +108,10 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNod
  *
  **********************************************************************/ 
 XMLSEC_EXPORT int	xmlSecTmplTransformAddHmacOutputLength	(xmlNodePtr transformNode,
-								 size_t bitsLen);
+								 xmlSecSize bitsLen);
 XMLSEC_EXPORT int  	xmlSecTmplTransformAddRsaOaepParam	(xmlNodePtr transformNode,
 								 const unsigned char *buf,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT int	xmlSecTmplTransformAddXsltStylesheet	(xmlNodePtr transformNode, 
 								 const xmlChar *xslt);
 XMLSEC_EXPORT int	xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,

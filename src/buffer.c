@@ -27,7 +27,7 @@
  *
  ****************************************************************************/
 static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
-static size_t gInitialSize = 1024;
+static xmlSecSize gInitialSize = 1024;
 
 /**
  * xmlSecBufferSetDefaultAllocMode:
@@ -37,7 +37,7 @@ static size_t gInitialSize = 1024;
  * Sets new global default allocation mode and minimal intial size.
  */
 void 
-xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, size_t defInitialSize) {
+xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInitialSize) {
     xmlSecAssert(defInitialSize > 0);
     
     gAllocMode = defAllocMode;
@@ -55,7 +55,7 @@ xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, size_t defInitialS
  * Returns pointer to newly allocated buffer or NULL if an error occurs.
  */
 xmlSecBufferPtr 
-xmlSecBufferCreate(size_t size) {
+xmlSecBufferCreate(xmlSecSize size) {
     xmlSecBufferPtr buf;
     int ret;
     
@@ -107,7 +107,7 @@ xmlSecBufferDestroy(xmlSecBufferPtr buf) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferInitialize(xmlSecBufferPtr buf, size_t size) {
+xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
     xmlSecAssert2(buf != NULL, -1);
 
     buf->data = NULL;
@@ -180,7 +180,7 @@ xmlSecBufferGetData(xmlSecBufferPtr buf) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferSetData(xmlSecBufferPtr buf, const unsigned char* data, size_t size) {
+xmlSecBufferSetData(xmlSecBufferPtr buf, const unsigned char* data, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buf != NULL, -1);
@@ -214,7 +214,7 @@ xmlSecBufferSetData(xmlSecBufferPtr buf, const unsigned char* data, size_t size)
  *
  * Returns the current data size.
  */
-size_t 
+xmlSecSize 
 xmlSecBufferGetSize(xmlSecBufferPtr buf) {
     xmlSecAssert2(buf != NULL, 0);
 
@@ -232,7 +232,7 @@ xmlSecBufferGetSize(xmlSecBufferPtr buf) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferSetSize(xmlSecBufferPtr buf, size_t size) {
+xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buf != NULL, -1);
@@ -260,7 +260,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, size_t size) {
  *
  * Returns the maximum (allocated) buffer size.
  */
-size_t 
+xmlSecSize 
 xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
     xmlSecAssert2(buf != NULL, 0);
 
@@ -278,9 +278,9 @@ xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
+xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
     unsigned char* newData;
-    size_t newSize = 0;
+    xmlSecSize newSize = 0;
     
     xmlSecAssert2(buf != NULL, -1);
     if(size <= buf->maxSize) {
@@ -332,7 +332,7 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferAppend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) {
+xmlSecBufferAppend(xmlSecBufferPtr buf, const unsigned char* data, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buf != NULL, -1);
@@ -368,7 +368,7 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) 
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecBufferPrepend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) {
+xmlSecBufferPrepend(xmlSecBufferPtr buf, const unsigned char* data, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buf != NULL, -1);
@@ -404,7 +404,7 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const unsigned char* data, size_t size)
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferRemoveHead(xmlSecBufferPtr buf, size_t size) {
+xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
     xmlSecAssert2(buf != NULL, -1);
     
     if(size < buf->size) {
@@ -432,7 +432,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, size_t size) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBufferRemoveTail(xmlSecBufferPtr buf, size_t size) {
+xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
     xmlSecAssert2(buf != NULL, -1);
 
     if(size < buf->size) {
@@ -460,7 +460,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, size_t size) {
 int 
 xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     xmlChar* content;
-    size_t size;
+    xmlSecSize size;
     int ret;
     
     xmlSecAssert2(buf != NULL, -1);
@@ -555,7 +555,7 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
  ************************************************************************/ 
 static int	xmlSecBufferIOWrite				(xmlSecBufferPtr buf,
 								 const unsigned char *data,
-								 size_t size);		
+								 xmlSecSize size);		
 static int	xmlSecBufferIOClose				(xmlSecBufferPtr buf);
 
 /**
@@ -577,7 +577,7 @@ xmlSecBufferCreateOutputBuffer(xmlSecBufferPtr buf) {
 }
 
 static int 
-xmlSecBufferIOWrite(xmlSecBufferPtr buf, const unsigned char *data, size_t size) {
+xmlSecBufferIOWrite(xmlSecBufferPtr buf, const unsigned char *data, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buf != NULL, -1);

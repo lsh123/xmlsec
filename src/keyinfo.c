@@ -1035,7 +1035,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
 static int			xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId,
 								 xmlSecKeyPtr key,
 								 const xmlChar* buffer,
-								 size_t bufferSize,
+								 xmlSecSize bufferSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /** 
@@ -1230,7 +1230,7 @@ xmlSecKeyDataRetrievalMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
 
 static int
 xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr key,
-					  const xmlChar* buffer, size_t bufferSize,
+					  const xmlChar* buffer, xmlSecSize bufferSize,
 					  xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlDocPtr doc;
     xmlNodePtr cur;
@@ -1474,7 +1474,7 @@ static int
 xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyInfoCtx keyInfoCtx2;
     unsigned char *keyBuf = NULL;
-    size_t keySize = 0;
+    xmlSecSize keySize = 0;
     int res = -1;
     int ret;
 

@@ -78,7 +78,7 @@ xmlSecGnuTLSBlockCipherCtxInit(xmlSecGnuTLSBlockCipherCtxPtr ctx,
     
     if(encrypt) {
 	unsigned char* iv;
-    	size_t outSize;
+    	xmlSecSize outSize;
 	
 	/* allocate space for IV */	
 	outSize = xmlSecBufferGetSize(out);
@@ -107,7 +107,7 @@ xmlSecGnuTLSBlockCipherCtxInit(xmlSecGnuTLSBlockCipherCtxPtr ctx,
     } else {
 	/* if we don't have enough data, exit and hope that 
 	 * we'll have iv next time */
-	if(xmlSecBufferGetSize(in) < (size_t)blockLen) {
+	if(xmlSecBufferGetSize(in) < (xmlSecSize)blockLen) {
 	    return(0);
 	}
 	xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
@@ -145,7 +145,7 @@ xmlSecGnuTLSBlockCipherCtxUpdate(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 				  int encrypt,
 				  const xmlChar* cipherName,
 				  xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, inBlocks, outSize;
+    xmlSecSize inSize, inBlocks, outSize;
     int blockLen;
     unsigned char* outBuf;
     int ret;
@@ -164,18 +164,18 @@ xmlSecGnuTLSBlockCipherCtxUpdate(xmlSecGnuTLSBlockCipherCtxPtr ctx,
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
     
-    if(inSize < (size_t)blockLen) {
+    if(inSize < (xmlSecSize)blockLen) {
 	return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / ((size_t)blockLen);
+        inBlocks = inSize / ((xmlSecSize)blockLen);
     } else {
 	/* we want to have the last block in the input buffer 
 	 * for padding check */
-        inBlocks = (inSize - 1) / ((size_t)blockLen);
+        inBlocks = (inSize - 1) / ((xmlSecSize)blockLen);
     }
-    inSize = inBlocks * ((size_t)blockLen);
+    inSize = inBlocks * ((xmlSecSize)blockLen);
 
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
@@ -244,7 +244,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 				 int encrypt,
 				 const xmlChar* cipherName,
 				 xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     int blockLen, outLen = 0;
     unsigned char* inBuf;
     unsigned char* outBuf;
@@ -265,7 +265,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (size_t)blockLen, -1);        
+        xmlSecAssert2(inSize < (xmlSecSize)blockLen, -1);        
     
 	/* create padding */
         ret = xmlSecBufferSetMaxSize(in, blockLen);
@@ -280,14 +280,14 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 	inBuf = xmlSecBufferGetData(in);
 
 	/* create random padding */
-	if((size_t)blockLen > (inSize + 1)) {
+	if((xmlSecSize)blockLen > (inSize + 1)) {
     	    gcry_randomize(inBuf + inSize, blockLen - inSize - 1, 
 			GCRY_STRONG_RANDOM); /* as usual, we are paranoid */
 	}
 	inBuf[blockLen - 1] = blockLen - inSize;
 	inSize = blockLen;
     } else {
-	if(inSize != (size_t)blockLen) {
+	if(inSize != (xmlSecSize)blockLen) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(cipherName),
 			NULL,
@@ -547,7 +547,7 @@ static int
 xmlSecGnuTLSBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecGnuTLSBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
-    size_t keySize;
+    xmlSecSize keySize;
     int ret;
     
     xmlSecAssert2(xmlSecGnuTLSBlockCipherCheckId(transform), -1);
@@ -692,8 +692,8 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  ********************************************************************/
 static xmlSecTransformKlass xmlSecGnuTLSAes128CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecGnuTLSBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes128Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes128Cbc,			/* const xmlChar* href; */
@@ -731,8 +731,8 @@ xmlSecGnuTLSTransformAes128CbcGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecGnuTLSAes192CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecGnuTLSBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes192Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes192Cbc,			/* const xmlChar* href; */
@@ -770,8 +770,8 @@ xmlSecGnuTLSTransformAes192CbcGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecGnuTLSAes256CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecGnuTLSBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes256Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes256Cbc,			/* const xmlChar* href; */
@@ -812,8 +812,8 @@ xmlSecGnuTLSTransformAes256CbcGetKlass(void) {
 #ifndef XMLSEC_NO_DES
 static xmlSecTransformKlass xmlSecGnuTLSDes3CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecGnuTLSBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameDes3Cbc,				/* const xmlChar* name; */
     xmlSecHrefDes3Cbc, 				/* const xmlChar* href; */

@@ -61,8 +61,8 @@ static int		xmlSecTransformC14NPushXml	(xmlSecTransformPtr transform,
 							 xmlSecTransformCtxPtr transformCtx);
 static int		xmlSecTransformC14NPopBin	(xmlSecTransformPtr transform, 
 							 unsigned char* data,
-							 size_t maxDataSize,
-							 size_t* dataSize,
+							 xmlSecSize maxDataSize,
+							 xmlSecSize* dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int		xmlSecTransformC14NExecute	(xmlSecTransformId id, 
 							 xmlSecNodeSetPtr nodes, 
@@ -285,7 +285,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 
 static int 
 xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
-			    size_t maxDataSize, size_t* dataSize,
+			    xmlSecSize maxDataSize, xmlSecSize* dataSize,
 			    xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr nsList;
     xmlSecBufferPtr out;
@@ -359,7 +359,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
     }
     
     if(transform->status == xmlSecTransformStatusWorking) {
-	size_t outSize;
+	xmlSecSize outSize;
 	
 	/* return chunk after chunk */
 	outSize = xmlSecBufferGetSize(out);
@@ -455,8 +455,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
 
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformC14NSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformC14NSize,			/* xmlSecSize objSize */
 
     xmlSecNameC14N,				/* const xmlChar* name; */
     xmlSecHrefC14N, 				/* const xmlChar* href; */
@@ -497,8 +497,8 @@ xmlSecTransformInclC14NGetKlass(void) {
  
 static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformC14NSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformC14NSize,			/* xmlSecSize objSize */
 
     /* same as xmlSecTransformId */    
     xmlSecNameC14NWithComments,			/* const xmlChar* name; */
@@ -540,8 +540,8 @@ xmlSecTransformInclC14NWithCommentsGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformC14NSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformC14NSize,			/* xmlSecSize objSize */
 
     xmlSecNameExcC14N,				/* const xmlChar* name; */
     xmlSecHrefExcC14N,				/* const xmlChar* href; */
@@ -581,8 +581,8 @@ xmlSecTransformExclC14NGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformC14NSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformC14NSize,			/* xmlSecSize objSize */
 
     xmlSecNameExcC14NWithComments,		/* const xmlChar* name; */
     xmlSecHrefExcC14NWithComments,		/* const xmlChar* href; */
@@ -622,8 +622,8 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecTransformC14NSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecTransformC14NSize,			/* xmlSecSize objSize */
 
     BAD_CAST "remove-xml-tags-transform",	/* const xmlChar* name; */
     NULL, 					/* const xmlChar* href; */

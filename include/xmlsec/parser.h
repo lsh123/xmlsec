@@ -23,14 +23,14 @@ extern "C" {
 
 XMLSEC_EXPORT xmlDocPtr		xmlSecParseFile		(const char *filename);
 XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemory	(const unsigned char *buffer, 
-							 size_t size,
+							 xmlSecSize size,
 							 int recovery);
 XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix, 
-							 size_t prefixSize,
+							 xmlSecSize prefixSize,
 							 const unsigned char *buffer, 
-							 size_t bufferSize, 
+							 xmlSecSize bufferSize, 
 							 const unsigned char *postfix, 
-							 size_t postfixSize);
+							 xmlSecSize postfixSize);
 
 
 /**

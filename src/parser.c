@@ -53,7 +53,7 @@ static int		xmlSecParserInitialize			(xmlSecTransformPtr transform);
 static void		xmlSecParserFinalize			(xmlSecTransformPtr transform);
 static int 		xmlSecParserPushBin			(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 int final,
 							         xmlSecTransformCtxPtr transformCtx);
 static int 		xmlSecParserPopXml			(xmlSecTransformPtr transform, 
@@ -62,8 +62,8 @@ static int 		xmlSecParserPopXml			(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecParserKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecParserSize,				/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecParserSize,				/* xmlSecSize objSize */
 
     BAD_CAST "xml-parser",			/* const xmlChar* name; */
     NULL,					/* const xmlChar* href; */
@@ -132,7 +132,7 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
 
 static int 
 xmlSecParserPushBin(xmlSecTransformPtr transform, const unsigned char* data,
-				size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+				xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecParserCtxPtr ctx;
     int ret;
     
@@ -375,11 +375,11 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
  *************************************************************************/
 typedef struct _xmlSecExtMemoryParserCtx {
     const unsigned char 	*prefix; 
-    size_t 			prefixSize;
+    xmlSecSize 			prefixSize;
     const unsigned char 	*buffer;
-    size_t			bufferSize;
+    xmlSecSize			bufferSize;
     const unsigned char 	*postfix;
-    size_t 			postfixSize;
+    xmlSecSize 			postfixSize;
 } xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
 
 /** 
@@ -443,9 +443,9 @@ xmlSecParseFile(const char *filename) {
  * Returns pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
-xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
-		     const unsigned char *buffer, size_t bufferSize, 
-		     const unsigned char *postfix, size_t postfixSize) {
+xmlSecParseMemoryExt(const unsigned char *prefix, xmlSecSize prefixSize,
+		     const unsigned char *buffer, xmlSecSize bufferSize, 
+		     const unsigned char *postfix, xmlSecSize postfixSize) {
     xmlParserCtxtPtr ctxt = NULL;
     xmlDocPtr doc = NULL;
     int ret;
@@ -536,7 +536,7 @@ done:
  * Returns pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
-xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
+xmlSecParseMemory(const unsigned char *buffer, xmlSecSize size, int recovery) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
 

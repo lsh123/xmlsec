@@ -21,12 +21,31 @@ extern "C" {
 #include <xmlsec/exports.h>
 #include <xmlsec/strings.h>
 
-XMLSEC_EXPORT int	xmlSecInit			(void);
-XMLSEC_EXPORT int	xmlSecShutdown			(void);
+/***********************************************************************
+ *
+ * Basic types
+ *
+ ***********************************************************************/
+/**
+ * xmlSecPtr:
+ *
+ * Void pointer.
+ */
+typedef void*					xmlSecPtr;
 
 /**
- * Forward declarations
+ * xmlSecSize:
+ *
+ * Size of something.
  */
+typedef unsigned int				xmlSecSize;
+
+
+/***********************************************************************
+ *
+ * Forward declarations
+ *
+ ***********************************************************************/
 typedef struct _xmlSecKeyData 			xmlSecKeyData, *xmlSecKeyDataPtr; 
 typedef struct _xmlSecKeyDataStore		xmlSecKeyDataStore, *xmlSecKeyDataStorePtr; 
 typedef struct _xmlSecKeyInfoCtx  		xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr; 
@@ -43,6 +62,9 @@ typedef struct _xmlSecDSigCtx 			xmlSecDSigCtx, *xmlSecDSigCtxPtr;
 #ifndef XMLSEC_NO_XMLENC
 typedef struct _xmlSecEncCtx 			xmlSecEncCtx, *xmlSecEncCtxPtr; 
 #endif /* XMLSEC_NO_XMLENC */
+
+XMLSEC_EXPORT int	xmlSecInit		(void);
+XMLSEC_EXPORT int	xmlSecShutdown		(void);
 
 /**
  * ATTRIBUTE_UNUSED:

@@ -170,7 +170,7 @@ xmlSecKeysMngrGetKeysStore(xmlSecKeysMngrPtr mngr) {
 int
 xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store) {
     xmlSecKeyDataStorePtr tmp;
-    size_t pos, size;
+    xmlSecSize pos, size;
     
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataStoreIsValid(store), -1);
@@ -200,7 +200,7 @@ xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store
 xmlSecKeyDataStorePtr 
 xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
     xmlSecKeyDataStorePtr tmp;
-    size_t pos, size;
+    xmlSecSize pos, size;
     
     xmlSecAssert2(mngr != NULL, NULL);
     xmlSecAssert2(id != xmlSecKeyDataStoreIdUnknown, NULL);
@@ -529,14 +529,14 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     xmlSecKeyInfoCtx keyInfoCtx;
     xmlSecPtrListPtr list;
     xmlSecKeyPtr key;
-    size_t i, keysSize;    
+    xmlSecSize i, keysSize;    
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;
     xmlSecKeyDataPtr data;
     xmlSecPtrListPtr idsList;
     xmlSecKeyDataId dataId;
-    size_t idsSize, j;
+    xmlSecSize idsSize, j;
     int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
@@ -729,7 +729,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecPtrListPtr list;
     xmlSecKeyPtr key;
-    size_t pos, size;
+    xmlSecSize pos, size;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecSimpleKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);

@@ -133,7 +133,7 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 			    int reason, const char* msg) {
     if(xmlSecPrintErrorMessages) {    
 	const char* error_msg = NULL;
-	size_t i;
+	xmlSecSize i;
 
 	for(i = 0; (i < XMLSEC_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(i) != NULL); ++i) {
 	    if(xmlSecErrorsGetCode(i) == reason) {
@@ -176,7 +176,7 @@ xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
  * total number of known error codes.
  */
 int 
-xmlSecErrorsGetCode(size_t pos) {
+xmlSecErrorsGetCode(xmlSecSize pos) {
     /* could not use asserts here! */
     if(pos < sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])) {
 	return(xmlSecErrorsTable[pos].errorCode);
@@ -194,7 +194,7 @@ xmlSecErrorsGetCode(size_t pos) {
  * total number of known error codes.
  */
 const char* 
-xmlSecErrorsGetMsg(size_t pos) {
+xmlSecErrorsGetMsg(xmlSecSize pos) {
     /* could not use asserts here! */
     if(pos < sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])) {
 	return(xmlSecErrorsTable[pos].errorMsg);

@@ -53,40 +53,40 @@ typedef enum {
  */
 struct _xmlSecBuffer {
     unsigned char* 	data;
-    size_t 		size;
-    size_t		maxSize;
+    xmlSecSize 		size;
+    xmlSecSize		maxSize;
     xmlSecAllocMode 	allocMode;
 };
 
 XMLSEC_EXPORT void		xmlSecBufferSetDefaultAllocMode	(xmlSecAllocMode defAllocMode,
-								 size_t defInitialSize);
+								 xmlSecSize defInitialSize);
 
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecBufferCreate		(size_t size);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecBufferCreate		(xmlSecSize size);
 XMLSEC_EXPORT void		xmlSecBufferDestroy		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferInitialize		(xmlSecBufferPtr buf,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT void		xmlSecBufferFinalize		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT unsigned char*	xmlSecBufferGetData		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferSetData		(xmlSecBufferPtr buf,
 								 const unsigned char* data,
-								 size_t size);
-XMLSEC_EXPORT size_t		xmlSecBufferGetSize		(xmlSecBufferPtr buf);
+								 xmlSecSize size);
+XMLSEC_EXPORT xmlSecSize	xmlSecBufferGetSize		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferSetSize		(xmlSecBufferPtr buf,
-								 size_t size);
-XMLSEC_EXPORT size_t		xmlSecBufferGetMaxSize		(xmlSecBufferPtr buf);
+								 xmlSecSize size);
+XMLSEC_EXPORT xmlSecSize	xmlSecBufferGetMaxSize		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferSetMaxSize		(xmlSecBufferPtr buf,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT void		xmlSecBufferEmpty		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferAppend		(xmlSecBufferPtr buf,
 								 const unsigned char* data,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT int		xmlSecBufferPrepend		(xmlSecBufferPtr buf,
 								 const unsigned char* data,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT int		xmlSecBufferRemoveHead		(xmlSecBufferPtr buf,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT int		xmlSecBufferRemoveTail		(xmlSecBufferPtr buf,
-								 size_t size);
+								 xmlSecSize size);
 XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,

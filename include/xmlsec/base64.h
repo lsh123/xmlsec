@@ -42,22 +42,22 @@ XMLSEC_EXPORT int		xmlSecBase64CtxInitialize	(xmlSecBase64CtxPtr ctx,
 XMLSEC_EXPORT void		xmlSecBase64CtxFinalize		(xmlSecBase64CtxPtr ctx);
 XMLSEC_EXPORT int 		xmlSecBase64CtxUpdate		(xmlSecBase64CtxPtr ctx,
 								 const unsigned char *in, 
-						    		 size_t inSize, 
+						    		 xmlSecSize inSize, 
 								 unsigned char *out,
-								 size_t outSize);
+								 xmlSecSize outSize);
 XMLSEC_EXPORT int		xmlSecBase64CtxFinal		(xmlSecBase64CtxPtr ctx,
 								 unsigned char *out,
-								 size_t outSize);
+								 xmlSecSize outSize);
 
 /**
  * Standalone routine to do base64 encode/decode "at once"
  */
 XMLSEC_EXPORT xmlChar*		xmlSecBase64Encode		(const unsigned char *buf,
-								 size_t len,
+								 xmlSecSize len,
 								 int columns);
 XMLSEC_EXPORT int		xmlSecBase64Decode		(const xmlChar* str,
 								 unsigned char *buf,
-								 size_t len);
+								 xmlSecSize len);
 
 #ifdef __cplusplus
 }

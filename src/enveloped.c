@@ -35,8 +35,8 @@ static int 	xmlSecTransformEnvelopedExecute		(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    sizeof(xmlSecTransform),			/* xmlSecSize objSize */
 
     xmlSecNameEnveloped,			/* const xmlChar* name; */
     xmlSecHrefEnveloped,			/* const xmlChar* href; */

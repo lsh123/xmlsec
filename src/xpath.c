@@ -306,7 +306,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
 		    	   xmlNodePtr hereNode, xmlSecNodeSetPtr nodes) {
     xmlSecXPathDataPtr data;
     xmlSecNodeSetPtr res, tmp, tmp2;
-    size_t pos;
+    xmlSecSize pos;
     
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), NULL);
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) > 0, NULL);
@@ -461,8 +461,8 @@ static int 		xmlSecTransformXPathNodeRead	(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecXPathTransformSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecXPathTransformSize,			/* xmlSecSize objSize */
 
     xmlSecNameXPath,				/* const xmlChar* name; */
     xmlSecXPathNs, 				/* const xmlChar* href; */
@@ -607,8 +607,8 @@ static int 		xmlSecTransformXPath2NodeRead	(xmlSecTransformPtr transform,
 							 xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecXPathTransformSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecXPathTransformSize,			/* xmlSecSize objSize */
 
     xmlSecNameXPath2,				/* const xmlChar* name; */
     xmlSecXPath2Ns, 				/* const xmlChar* href; */
@@ -752,8 +752,8 @@ static int 		xmlSecTransformXPointerNodeRead	(xmlSecTransformPtr transform,
 							 xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecXPathTransformSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecXPathTransformSize,			/* xmlSecSize objSize */
 
     xmlSecNameXPointer,				/* const xmlChar* name; */
     xmlSecXPointerNs, 				/* const xmlChar* href; */

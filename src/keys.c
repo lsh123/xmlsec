@@ -459,7 +459,7 @@ xmlSecKeyGetData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
 	return(key->value);
     } else if(key->dataList != NULL) {
 	xmlSecKeyDataPtr tmp;
-	size_t pos, size;
+	xmlSecSize pos, size;
 	
 	size = xmlSecPtrListGetSize(key->dataList);
 	for(pos = 0; pos < size; ++pos) {
@@ -533,7 +533,7 @@ xmlSecKeyEnsureData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
 int 
 xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
     xmlSecKeyDataPtr tmp;
-    size_t pos, size;
+    xmlSecSize pos, size;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
@@ -665,7 +665,7 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
  * Returns pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecKeyGenerate(xmlSecKeyDataId dataId, size_t sizeBits, xmlSecKeyDataType type) {
+xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType type) {
     xmlSecKeyPtr key;
     xmlSecKeyDataPtr data;
     int ret;
@@ -730,7 +730,7 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, size_t sizeBits, xmlSecKeyDataType typ
  * Returns pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecKeyGenerateByName(const xmlChar* name, size_t sizeBits, xmlSecKeyDataType type) {
+xmlSecKeyGenerateByName(const xmlChar* name, xmlSecSize sizeBits, xmlSecKeyDataType type) {
     xmlSecKeyDataId dataId;
 
     xmlSecAssert2(name != NULL, NULL);

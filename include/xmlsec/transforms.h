@@ -347,7 +347,7 @@ XMLSEC_EXPORT int			xmlSecTransformCtxPrepare	(xmlSecTransformCtxPtr ctx,
 									 xmlSecTransformDataType inputDataType);
 XMLSEC_EXPORT int			xmlSecTransformCtxBinaryExecute	(xmlSecTransformCtxPtr ctx, 
 									 const unsigned char* data, 
-									 size_t dataSize);
+									 xmlSecSize dataSize);
 XMLSEC_EXPORT int 			xmlSecTransformCtxUriExecute	(xmlSecTransformCtxPtr ctx, 
 									 const xmlChar* uri);
 XMLSEC_EXPORT int			xmlSecTransformCtxXmlExecute	(xmlSecTransformCtxPtr ctx, 
@@ -418,7 +418,7 @@ XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform,
 								 xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int  			xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, 
 								 xmlNodePtr node,
@@ -428,13 +428,13 @@ XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformGetDataType(xmlSecTransform
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPushBin	(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPopBin	(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t maxDataSize,
-								 size_t* dataSize,
+								 xmlSecSize maxDataSize,
+								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPushXml	(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr nodes,
@@ -529,13 +529,13 @@ XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTr
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t maxDataSize,
-								 size_t* dataSize,
+								 xmlSecSize maxDataSize,
+								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr nodes,
@@ -661,7 +661,7 @@ typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform,
  */
 typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 /**
  * xmlSecTransformPushBinMethod:
@@ -679,7 +679,7 @@ typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform,
  */
 typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
 /**
@@ -698,8 +698,8 @@ typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform,
  */
 typedef int		(*xmlSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t maxDataSize,
-								 size_t* dataSize,
+								 xmlSecSize maxDataSize,
+								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 /**
  * xmlSecTransformPushXmlMethod:
@@ -771,8 +771,8 @@ typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform,
  */
 struct _xmlSecTransformKlass {
     /* data */
-    size_t				klassSize;
-    size_t				objSize;
+    xmlSecSize				klassSize;
+    xmlSecSize				objSize;
     const xmlChar*			name;
     const xmlChar*			href;
     xmlSecTransformUsage		usage;
@@ -858,7 +858,7 @@ XMLSEC_EXPORT void		xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list,
 	xmlSecTransformBase64GetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
 XMLSEC_EXPORT void 		xmlSecTransformBase64SetLineSize	(xmlSecTransformPtr transform,
-									 size_t lineSize);
+									 xmlSecSize lineSize);
 /**
  * xmlSecTransformInclC14NId:
  * 

@@ -130,7 +130,7 @@ XMLSEC_EXPORT void		xmlSecEncCtxReset		(xmlSecEncCtxPtr encCtx);
 XMLSEC_EXPORT int		xmlSecEncCtxBinaryEncrypt	(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
 								 const unsigned char* data,
-								 size_t dataSize);
+								 xmlSecSize dataSize);
 XMLSEC_EXPORT int		xmlSecEncCtxXmlEncrypt		(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
 								 xmlNodePtr node);

@@ -257,10 +257,10 @@ XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataCreate		(xmlSecKeyDataId id);
 XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataDuplicate		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT void		xmlSecKeyDataDestroy		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int		xmlSecKeyDataGenerate		(xmlSecKeyDataPtr data,
-								 size_t sizeBits,
+								 xmlSecSize sizeBits,
 								 xmlSecKeyDataType type);
 XMLSEC_EXPORT xmlSecKeyDataType	xmlSecKeyDataGetType		(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT size_t		xmlSecKeyDataGetSize		(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecSize	xmlSecKeyDataGetSize		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT const xmlChar*	xmlSecKeyDataGetIdentifier	(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT void		xmlSecKeyDataDebugDump		(xmlSecKeyDataPtr data,
 								 FILE *output);
@@ -277,12 +277,12 @@ XMLSEC_EXPORT int		xmlSecKeyDataXmlWrite		(xmlSecKeyDataId id,
 XMLSEC_EXPORT int		xmlSecKeyDataBinRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 const unsigned char* buf,
-								 size_t bufSize,
+								 xmlSecSize bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 unsigned char** buf,
-								 size_t* bufSize,
+								 xmlSecSize* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /**
@@ -429,7 +429,7 @@ typedef int			(*xmlSecKeyDataXmlWriteMethod)	(xmlSecKeyDataId id,
 typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 const unsigned char* buf,
-								 size_t bufSize,
+								 xmlSecSize bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 /** 
  * xmlSecKeyDataBinWriteMethod:
@@ -446,7 +446,7 @@ typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
 typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 unsigned char** buf,
-								 size_t* bufSize,
+								 xmlSecSize* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /** 
@@ -460,7 +460,7 @@ typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
  * Returns 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataGenerateMethod)	(xmlSecKeyDataPtr data,
-								 size_t sizeBits,
+								 xmlSecSize sizeBits,
 								 xmlSecKeyDataType type);
 
 /** 
@@ -481,7 +481,7 @@ typedef xmlSecKeyDataType	(*xmlSecKeyDataGetTypeMethod)	(xmlSecKeyDataPtr data);
  *
  * Returns the key size in bits.
  */
-typedef size_t			(*xmlSecKeyDataGetSizeMethod)	(xmlSecKeyDataPtr data);
+typedef xmlSecSize		(*xmlSecKeyDataGetSizeMethod)	(xmlSecKeyDataPtr data);
 
 /** 
  * xmlSecKeyDataGetIdentifierMethod:
@@ -532,8 +532,8 @@ typedef void			(*xmlSecKeyDataDebugDumpMethod)	(xmlSecKeyDataPtr data,
  * The data id (klass).
  */
 struct _xmlSecKeyDataKlass {
-    size_t				klassSize;
-    size_t				objSize;
+    xmlSecSize				klassSize;
+    xmlSecSize				objSize;
 
     /* data */
     const xmlChar*			name;    
@@ -651,23 +651,23 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueXmlWrite	(xmlSecKeyDataId id,
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinRead		(xmlSecKeyDataId id,
 									 xmlSecKeyPtr key,
 									 const unsigned char* buf,
-									 size_t bufSize,
+									 xmlSecSize bufSize,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinWrite	(xmlSecKeyDataId id,
 									 xmlSecKeyPtr key,
 									 unsigned char** buf,
-									 size_t* bufSize,
+									 xmlSecSize* bufSize,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugDump	(xmlSecKeyDataPtr data,
 									FILE* output);
 XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugXmlDump	(xmlSecKeyDataPtr data,
 									 FILE* output);
 
-XMLSEC_EXPORT size_t		xmlSecKeyDataBinaryValueGetSize		(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecSize	xmlSecKeyDataBinaryValueGetSize		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlSecBufferPtr	xmlSecKeyDataBinaryValueGetBuffer	(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueSetBuffer	(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
-									 size_t bufSize);
+									 xmlSecSize bufSize);
 
 /**************************************************************************
  *
@@ -780,8 +780,8 @@ typedef void			(*xmlSecKeyDataStoreFinalizeMethod)	(xmlSecKeyDataStorePtr store)
  * The data store id (klass).
  */
 struct _xmlSecKeyDataStoreKlass {
-    size_t				klassSize;
-    size_t				objSize;
+    xmlSecSize				klassSize;
+    xmlSecSize				objSize;
 
     /* data */
     const xmlChar*			name;    

@@ -77,6 +77,7 @@ echo "--- testEnc started ($timestamp)"
 echo "--- log file is $logfile"
 echo "--- testEnc started ($timestamp)" >> $logfile
 
+
 execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
@@ -277,8 +278,6 @@ execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
-
-    
 #01-phaos-xmlenc-3/enc-element-3des-ka-dh.xml
 #01-phaos-xmlenc-3/enc-element-aes128-ka-dh.xml
 #01-phaos-xmlenc-3/enc-element-aes192-ka-dh.xml
@@ -286,6 +285,17 @@ execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
 
 #01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256.xml
 #01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512.xml
+
+# test dynamic encryption
+echo "Dynamic encryption template"
+printf "    Encrypt template                                     "
+echo "$xmlsec_app encrypt-tmpl --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app encrypt-tmpl $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+printRes
+printf "    Decrypt document                                     "
+echo "$xmlsec_app decrypt --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app decrypt $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
+printRes
 
 
 echo "--------- Negative Testing: Following tests MUST FAIL ----------"

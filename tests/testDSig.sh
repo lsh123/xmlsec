@@ -65,6 +65,7 @@ echo "--- testDSig started ($timestamp)"
 echo "--- log file is $logfile"
 echo "--- testDSig started ($timestamp)" >> $logfile
 
+
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
     "--privkey $topfolder/keys/dsakey.pem" \
@@ -208,13 +209,14 @@ execDSigTest "merlin-xpath-filter2-three/sign-spec" \
 # test dynamic signature
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
-echo "$xmlsec_app sign-tmpl --hmackey $topfolder/keys/hmackey.bin --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app sign-tmpl $EXTRA_PARAMS --hmackey $topfolder/keys/hmackey.bin --output $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app sign-tmpl --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app sign-tmpl $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
 printRes
 printf "    Verify new signature                                 "
-echo "$xmlsec_app verify --hmackey $topfolder/keys/hmackey.bin $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app verify $EXTRA_PARAMS --hmackey $topfolder/keys/hmackey.bin $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app verify --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app verify $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
 printRes
+
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \

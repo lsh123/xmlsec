@@ -95,6 +95,10 @@ static const char helpEncrypt[] =
     "Usage: xmlsec encrypt [<options>] <file>\n"
     "Encrypts data and creates XML Encryption using template file <file>\n";
 
+static const char helpEncryptTmpl[] =     
+    "Usage: xmlsec encrypt [<options>]\n"
+    "Creates a simple dynamic template and calculates XML Encryption\n";
+
 static const char helpDecrypt[] =     
     "Usage: xmlsec decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
@@ -381,10 +385,9 @@ static xmlSecAppCmdLineParam printDebugParam = {
     xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
     "--print-debug",
     NULL,   
-    "--print-debug <file>"
-    "\n\tprint debug information to <file> (use \"-\" as <file> to print"
-    "\n\tdebug information to stdout)",
-    xmlSecAppCmdLineParamTypeString,
+    "--print-debug"
+    "\n\tprint debug information to stdout",
+    xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };    
@@ -393,10 +396,9 @@ static xmlSecAppCmdLineParam printXmlDebugParam = {
     xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
     "--print-xml-debug",
     NULL,   
-    "--print-xml-debug <file>"
-    "\n\tprint debug information in xml format to <file> (use \"-\" as"
-    "\n\t<file> to print debug information to stdout)",
-    xmlSecAppCmdLineParamTypeString,
+    "--print-xml-debug"
+    "\n\tprint debug information to stdout in xml format",
+    xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };    
@@ -644,7 +646,8 @@ typedef enum {
     xmlSecAppCommandVerify,
     xmlSecAppCommandSignTmpl,
     xmlSecAppCommandEncrypt,
-    xmlSecAppCommandDecrypt
+    xmlSecAppCommandDecrypt,
+    xmlSecAppCommandEncryptTmpl
 } xmlSecAppCommand;
 
 typedef struct _xmlSecAppXmlData				xmlSecAppXmlData,
@@ -683,6 +686,7 @@ static void			xmlSecAppPrintDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 #ifndef XMLSEC_NO_XMLENC
 static int			xmlSecAppEncryptFile		(const char* filename);
 static int			xmlSecAppDecryptFile		(const char* filename);
+static int			xmlSecAppEncryptTmpl		(void);
 static int			xmlSecAppPrepareEncCtx		(xmlSecEncCtxPtr encCtx);
 static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
@@ -831,6 +835,12 @@ int main(int argc, const char **argv) {
 		    fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
+	    }
+	    break;
+	case xmlSecAppCommandEncryptTmpl:
+	    if(xmlSecAppEncryptTmpl() < 0) {
+		fprintf(stderr, "Error: failed to create and encrypt template\n");
+		goto fail;
 	    }
 	    break;
 #endif /* XMLSEC_NO_XMLENC */
@@ -1061,6 +1071,17 @@ xmlSecAppSignTmpl(void) {
     }
     xmlDocSetRootElement(doc, cur);
     
+    /* set hmac signature length */
+    cur = xmlSecTmplSignatureGetSignMethodNode(xmlDocGetRootElement(doc));
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to find SignatureMethod node\n");
+	goto done;
+    }
+    if(xmlSecTmplTransformAddHmacOutputLength(cur, 93) < 0) {
+	fprintf(stderr, "Error: failed to set hmac length\n");
+	goto done;
+    }
+    
     cur = xmlSecTmplSignatureAddReference(xmlDocGetRootElement(doc), 
 				    xmlSecTransformSha1Id, 
 				    BAD_CAST "ref1", NULL, NULL);
@@ -1088,6 +1109,17 @@ xmlSecAppSignTmpl(void) {
 	goto done;
     }
     xmlNodeSetContent(cur, BAD_CAST "This is signed data");
+
+    /* add key information */
+    cur = xmlSecTmplSignatureEnsureKeyInfo(xmlDocGetRootElement(doc), NULL);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to add KeyInfo node\n");
+	goto done;	
+    }
+    if(xmlSecTmplKeyInfoAddKeyName(cur, NULL) == NULL) {
+	fprintf(stderr, "Error: failed to add KeyName node\n");
+	goto done;	
+    }
     
     /* sign */
     start_time = clock();
@@ -1184,29 +1216,11 @@ xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     
     /* print debug info if requested */
     if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
-	FILE* f;
-	
-	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printDebugParam));
-	if(f != NULL) {
-	    xmlSecDSigCtxDebugDump(dsigCtx, f);
-	    xmlSecAppCloseFile(f);
-	} else {
-	    fprintf(stderr,"Error: failed to open file \"%s\" to print debug info\n",
-		    xmlSecAppCmdLineParamGetString(&printDebugParam));
-	}
+	xmlSecDSigCtxDebugDump(dsigCtx, stdout);
     }
     
     if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
-	FILE* f;
-	
-	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
-	if(f != NULL) {
-	    xmlSecDSigCtxDebugXmlDump(dsigCtx, f);
-	    xmlSecAppCloseFile(f);
-	} else {
-	    fprintf(stderr,"Error: failed to open file \"%s\" to print xml debug info\n",
-		    xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
-	}
+	xmlSecDSigCtxDebugXmlDump(dsigCtx, stdout);
     }
 }
 
@@ -1371,6 +1385,90 @@ done:
     return(res);
 }
 
+static int 
+xmlSecAppEncryptTmpl(void) {
+    const char* data = "Hello, World!";
+    xmlSecEncCtx encCtx;
+    xmlDocPtr doc = NULL;
+    xmlNodePtr cur;
+    clock_t start_time;
+    int res = -1;
+
+    if(xmlSecEncCtxInitialize(&encCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: enc context initialization failed\n");
+	return(-1);
+    }
+    if(xmlSecAppPrepareEncCtx(&encCtx) < 0) {
+	fprintf(stderr, "Error: enc context preparation failed\n");
+	goto done;
+    }
+
+    /* prepare template */
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+	fprintf(stderr, "Error: failed to create doc\n");
+	goto done;
+    }
+
+    cur = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId, 
+				  NULL, NULL, NULL, NULL);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to encryption template\n");
+	goto done;	
+    }
+    xmlDocSetRootElement(doc, cur);
+
+    if(xmlSecTmplEncDataEnsureCipherValue(xmlDocGetRootElement(doc)) == NULL) {
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
+	goto done;	
+    }
+
+    /* add key information */
+    cur = xmlSecTmplEncDataEnsureKeyInfo(xmlDocGetRootElement(doc), NULL);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to add KeyInfo node\n");
+	goto done;	
+    }
+    if(xmlSecTmplKeyInfoAddKeyName(cur, NULL) == NULL) {
+	fprintf(stderr, "Error: failed to add KeyName node\n");
+	goto done;	
+    }
+
+    /* encrypt */
+    start_time = clock();            
+    if(xmlSecEncCtxBinaryEncrypt(&encCtx, xmlDocGetRootElement(doc), 
+				(const unsigned char*)data, strlen(data)) < 0) {
+	fprintf(stderr, "Error: failed to encrypt data\n");
+	goto done;	
+    }
+    total_time += clock() - start_time;    
+    
+    /* print out result only once per execution */
+    if(repeats <= 1) {
+	if(encCtx.resultReplaced) {
+	    if(xmlSecAppWriteResult(doc, NULL) < 0) {
+		goto done;
+	    }
+	} else {
+	    if(xmlSecAppWriteResult(NULL, encCtx.result) < 0) {
+		goto done;
+	    }
+	}	
+    }
+    res = 0;    
+
+done:
+    /* print debug info if requested */
+    if(repeats <= 1) {
+    	xmlSecAppPrintEncCtx(&encCtx);
+    }
+    xmlSecEncCtxFinalize(&encCtx);
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
+    }
+    return(res);
+}
+
 static int
 xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {    
     if(encCtx == NULL) {
@@ -1414,29 +1512,11 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
     
     /* print debug info if requested */
     if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
-	FILE* f;
-	
-	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printDebugParam));
-	if(f != NULL) {
-	    xmlSecEncCtxDebugDump(encCtx, f);
-	    xmlSecAppCloseFile(f);
-	} else {
-	    fprintf(stderr,"Error: failed to open file \"%s\" to print debug info\n",
-		    xmlSecAppCmdLineParamGetString(&printDebugParam));
-	}
+	xmlSecEncCtxDebugDump(encCtx, stdout);
     }
     
     if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
-	FILE* f;
-	
-	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
-	if(f != NULL) {
-	    xmlSecEncCtxDebugXmlDump(encCtx, f);
-	    xmlSecAppCloseFile(f);
-	} else {
-	    fprintf(stderr,"Error: failed to open file \"%s\" to print xml debug info\n",
-		    xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
-	}
+	xmlSecEncCtxDebugXmlDump(encCtx, stdout);
     }
 }
 
@@ -1966,6 +2046,15 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 			xmlSecAppCmdLineTopicX509Certs;
 	return(xmlSecAppCommandDecrypt);
     } else 
+
+    if((strcmp(cmd, "encrypt-tmpl") == 0) || (strcmp(cmd, "--encrypt-tmpl") == 0)) {
+	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicEncCommon |
+			xmlSecAppCmdLineTopicEncEncrypt |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
+	return(xmlSecAppCommandEncryptTmpl);
+    } else 
 #endif /* XMLSEC_NO_XMLENC */
 
     if(1) {
@@ -2001,6 +2090,9 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandDecrypt:
 	fprintf(stdout, "%s\n", helpDecrypt);
+        break;
+    case xmlSecAppCommandEncryptTmpl:
+	fprintf(stdout, "%s\n", helpEncryptTmpl);
         break;
     }
     if(topics != 0) {

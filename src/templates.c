@@ -332,6 +332,99 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
 }
 
 /**
+ * xmlSecTmplSignatureAddObject:
+ * @signNode: 		the pointer to <dsig:Signature/> node.
+ * @id: 		the node id (may be NULL).
+ * @mimeType: 		the object mime type (may be NULL).
+ * @encoding: 		the object encoding (may be NULL).
+ *
+ * Adds <dsig:Object/> node to the <dsig:Signature/> node @signNode. 
+ *
+ * Returns the pointer to newly created <dsig:Object/> node or NULL 
+ * if an error occurs.
+ */
+xmlNodePtr
+xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, 
+			 const xmlChar *mimeType, const xmlChar *encoding) {
+    xmlNodePtr res;
+
+    xmlSecAssert2(signNode != NULL, NULL);
+    
+    res = xmlSecAddChild(signNode, xmlSecNodeObject, xmlSecDSigNs);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeObject));
+	return(NULL);	        	
+    }
+    if(id != NULL) {
+	xmlSetProp(res, xmlSecAttrId, id);
+    }
+    if(mimeType != NULL) {
+	xmlSetProp(res, xmlSecAttrMimeType, mimeType);
+    }
+    if(encoding != NULL) {
+	xmlSetProp(res, xmlSecAttrEncoding, encoding);
+    }
+    return(res);        
+}
+
+/** 
+ * xmlSecTmplSignatureGetSignMethodNode:
+ * @signNode:		the pointer to <dsig:Signature /> node.
+ *
+ * Gets pointer to <dsig:SignatureMethod/> child of <dsig:KeyInfo/> node.
+ *
+ * Returns pointer to <dsig:SignatureMethod /> node or NULL if an error occurs.
+ */
+xmlNodePtr 
+xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
+    xmlNodePtr signedInfoNode;
+    
+    xmlSecAssert2(signNode == NULL, NULL);
+    
+    signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
+    if(signedInfoNode == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);	
+    }
+    return(xmlSecFindChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs));
+}
+
+/** 
+ * xmlSecTmplSignatureGetC14NMethodNode:
+ * @signNode:		the pointer to <dsig:Signature /> node.
+ *
+ * Gets pointer to <dsig:CanonicalizationMethod/> child of <dsig:KeyInfo/> node.
+ *
+ * Returns pointer to <dsig:CanonicalizationMethod /> node or NULL if an error occurs.
+ */
+xmlNodePtr 
+xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
+    xmlNodePtr signedInfoNode;
+    
+    xmlSecAssert2(signNode == NULL, NULL);
+    
+    signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
+    if(signedInfoNode == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);	
+    }
+    return(xmlSecFindChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs));
+}
+
+/**
  * xmlSecTmplReferenceAddTransform:
  * @referenceNode: 		the pointer to <dsig:Reference/> node.
  * @transformId: 		the transform method id.
@@ -398,48 +491,6 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
 
     return(res);    
 }
-
-/**
- * xmlSecTmplSignatureAddObject:
- * @signNode: 		the pointer to <dsig:Signature/> node.
- * @id: 		the node id (may be NULL).
- * @mimeType: 		the object mime type (may be NULL).
- * @encoding: 		the object encoding (may be NULL).
- *
- * Adds <dsig:Object/> node to the <dsig:Signature/> node @signNode. 
- *
- * Returns the pointer to newly created <dsig:Object/> node or NULL 
- * if an error occurs.
- */
-xmlNodePtr
-xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, 
-			 const xmlChar *mimeType, const xmlChar *encoding) {
-    xmlNodePtr res;
-
-    xmlSecAssert2(signNode != NULL, NULL);
-    
-    res = xmlSecAddChild(signNode, xmlSecNodeObject, xmlSecDSigNs);
-    if(res == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecAddChild",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeObject));
-	return(NULL);	        	
-    }
-    if(id != NULL) {
-	xmlSetProp(res, xmlSecAttrId, id);
-    }
-    if(mimeType != NULL) {
-	xmlSetProp(res, xmlSecAttrMimeType, mimeType);
-    }
-    if(encoding != NULL) {
-	xmlSetProp(res, xmlSecAttrEncoding, encoding);
-    }
-    return(res);        
-}
-
 
 /**
  * xmlSecTmplObjectAddSignProperties:
@@ -892,6 +943,21 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
     }
     
     return(res);
+}
+
+/** 
+ * xmlSecTmplEncDataGetEncMethodNode:
+ * @encNode:		the pointer to <enc:EcnryptedData /> node.
+ *
+ * Gets pointer to <enc:EncrytpionMethod/> node.
+ *
+ * Returns pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
+ */
+xmlNodePtr 
+xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
+    xmlSecAssert2(encNode == NULL, NULL);
+
+    return(xmlSecFindChild(encNode, xmlSecNodeEncryptionMethod, xmlSecEncNs));
 }
 
 /** 

@@ -33,12 +33,15 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureAddReference	(xmlNodePtr signNode,
 								 const xmlChar *id, 
 								 const xmlChar *uri,
 								 const xmlChar *type);
-XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceAddTransform	(xmlNodePtr referenceNode,
-								 xmlSecTransformId transformId);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureAddObject		(xmlNodePtr signNode,
 								 const xmlChar *id,
 								 const xmlChar *mimeType,
 								 const xmlChar *encoding);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureGetSignMethodNode	(xmlNodePtr signNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureGetC14NMethodNode	(xmlNodePtr signNode);
+
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceAddTransform	(xmlNodePtr referenceNode,
+								 xmlSecTransformId transformId);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplObjectAddSignProperties	(xmlNodePtr objectNode,
 								 const xmlChar *id,
 								 const xmlChar *target);							 							 
@@ -49,6 +52,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplManifestAddReference		(xmlNodePtr manifestNod
 								 const xmlChar *id, 
 								 const xmlChar *uri,
 								 const xmlChar *type);
+
 /** 
  * <enc:EncryptedData> node
  */
@@ -68,6 +72,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataAddEncProperty	(xmlNodePtr encNode,
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataEnsureCipherValue	(xmlNodePtr encNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataEnsureCipherReference	(xmlNodePtr encNode,
 								 const xmlChar *uri);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataGetEncMethodNode	(xmlNodePtr encNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform	(xmlNodePtr cipherReferenceNode,
 								 xmlSecTransformId transformId);
 

@@ -3,7 +3,7 @@
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-hmac-sha1</KeyName>
 <KeyValue>
-<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">jZUb/wELgQFu1XMAzF5vSF6Z6xddtNca</HMACKeyValue>
+<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">ZRncW35hz5Rgwhuj1aI2q5T8D1cG+S/q</HMACKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -11,17 +11,17 @@
 <KeyValue>
 <RSAKeyValue>
 <Modulus>
-s35dbdHGtJf+Xmzo1o9UW3S/Q9mzV2Yuib+u+YncXsmG2FAIhMPfSPAQFxelNyfN
-Buuyi4WG0VIZbO6CTUyD+J5EyEGOvIIwWHEBHS0R+s/7vqRatk73zxSaOUbPyDmn
-FBxdWcPHhMZ9IcRqCQ02Nb6xVh1TR2QI3cxGhhqQTO8=
+s+fkIUqruXmLcfHOzMEMZEF847iJc5+s0XCWLr/KKuZK1VOe8AEBOPHhHNWSyxkg
+uXuatQZxtJL+jjKyvrBpL+2eR4XnxJL1QybuErIfA7KvecWXklVtn1NxLQkS1Gv/
+Z+8G6awA8lU9z3fOc5VpMzBoq9XZkXrua5mnEfBD6gs=
 </Modulus>
 <Exponent>
 Aw==
 </Exponent>
 <PrivateExponent xmlns="http://www.aleksey.com/xmlsec/2002">
-d6mTnovZzbqplEibObTi56MqLTvM5O7JsSp0plvoPzEEkDVbAy0/hfVgD2UYz2/e
-BJ0hslkEi4wQ80msM4hX+fWQUcXrWe90qkVcr7aS6sv50x8GUVcrWIEiSl/bCbgr
-MD4keJ/VWmaxl9yFNrHzKhqiuMLUIFzgS3XMrcQD91s=
+d+/ta4cdJlEHoUvfMytdmCuol9BbompzNksOydUxce7cjje/SqtWJfaWEzkMh2YV
+0P0RzgRLzbdUXsx3KcrwyX+sc7/c2xBSEobBuVvUtSJSUwF5Z+ye6vw8ZyNDOJzB
+N+eP9kffwZ8QlZBGvkhilywmwgKDKwFo9LmZqkgVMks=
 </PrivateExponent>
 </RSAKeyValue>
 </KeyValue>
@@ -31,25 +31,25 @@ MD4keJ/VWmaxl9yFNrHzKhqiuMLUIFzgS3XMrcQD91s=
 <KeyValue>
 <DSAKeyValue>
 <P>
-25Z+0KuwxMR8JPeTfDcl4+Ss3d67rJcQRPxYHUZ5Ty7GBk82+KRUN+/EItUZNqM7
-V3xnwTKNWMph1ZnVTdYGOT5o4ew+wSD1pLX3klI41B+featCroLSqkwqGsgh4zOq
-VDGNWxylwMFuQ8MwFYcWqS/b6td8CZoSpdMGprkrUZc=
+mmnlR2tn52bnMYXPaRJ4TkQuxEBD1O/vCVSMyPFKdWYADBRMw+bJnlBQibYPMZc3
+xSXhQyEf0ZcxHgMTcrU2vksfr2OnpLLQMv58e8Yx4NFJv7eWG1ShZh+t/1Irmd7O
+sxmAAKuCRZikGGFeM1kx3CgXoE4a3cnI5E4DyQogBy0=
 </P>
 <Q>
-i9+wj9hRdAYtMaWoKhiqYcYE6xs=
+/LiZBxVw4VZwuAKIllAJLPradw0=
 </Q>
 <G>
-ZBT8rkKV8/PLkW8ODRBtXwwgMFbM6nJoEwwxHFXreUaEf3lS+JcLYSHj2d4Sszmj
-bbShFuQBrs2lC9GSsvdmm+0fU930OtXiAAmDQ4YLwcREEIkatiRc2pjkQTV0HFr4
-zCYGojH4Zr1eYM59bsJmNOkuiwDT6mggm0ZWvIoIEB8=
+Qgghex4z72Pt9w2j+heQZ/qN9ZprFMqsH8ClpcrHw2P/XDd8Thy00BXuqs/e3YUj
+mCYx0+QL/irjRrNVlYnMh9/JqZwjRBZU5fqeFH4RWcrb9qiNlqt35BKxAwViCxQY
+6CPaT+e9ZnPFhTRhXD1UGNb37MmZvPQTwuP7JuaCh1s=
 </G>
 <X xmlns="http://www.aleksey.com/xmlsec/2002">
-UWimMytrRyDaP+oWeoa6p47uSjE=
+D22BbdVudhqfk2EdArdvmqJAwf8=
 </X>
 <Y>
-iTbh+zF+pIqOCj/KIs8Iu9BUjctJR+KjPTdB9S+GfqRrmIpCJJjy7cWk2PZu79Qb
-u1UhNtPEBtg75HiYGgPcdHWJ1bBQWNn9dk2FJnDs2QYdW+SjdHbe+h539OkDEEu9
-4EOCDFlc6LexJmvcjuWdTsykpsgXBCeaoT5rzmdvWBI=
+Gacsy9PD8YCMZvN+nJBpU2vzy9JGMD9bS5jGIMFuTwW5LykMLhb35Rjng+W0m+Ie
+ig1kdLgRThaIuQ73i2ItadEI4/wg/wSsW1d1eQ5pSujNgufA5E6IIZ046aAZMuIA
+EZAN1je+6k7fhlo7rN2dueMjIdr17bLq+2GzHE7lTWM=
 </Y>
 </DSAKeyValue>
 </KeyValue>
@@ -57,25 +57,25 @@ u1UhNtPEBtg75HiYGgPcdHWJ1bBQWNn9dk2FJnDs2QYdW+SjdHbe+h539OkDEEu9
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-des</KeyName>
 <KeyValue>
-<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">B7FlJe17fom61+YeUBheo8Sf+9e7IW/Z</DESKeyValue>
+<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">4IBHDSY+eaMo8RI416JOhXkOgdsgyibd</DESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes128</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">PYrNj6aYiuBOrKuOtHRJYA==</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">rWxinjn55VWHCdQ5qwyhTQ==</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes192</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">9B9LiVXDBFhJoDAf9sgA6eKzG4G5LYDr</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">oWiaJC5mxYzbmr5Z1BBAPWvVkl0p7+c9</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes256</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">PVLLexlimV7Uea0wn8W4vPwqdUeG8aXizLzPm8HHfcU=</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">vsYCpSV6BO+I7qGETzh/qHJkbstKrl/BGEtyALTirSM=</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 </Keys>

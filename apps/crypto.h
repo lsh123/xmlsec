@@ -4,7 +4,7 @@
  *
  * See Copyright for the status of this software.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_APPS_CRYPTO_H__
 #define __XMLSEC_APPS_CRYPTO_H__    

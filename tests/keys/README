@@ -27,13 +27,15 @@ README
 	    -out ca2cert.pem -infiles ca2req.pem
     > openssl verify -CAfile cacert.pem ca2cert.pem
 
- C. Sign DSA key with second level CA
+ C. Generate and sign DSA key with second level CA
+    > penssl dsaparam -out dsakey.pem -genkey 512
     > openssl req -new -key dsakey.pem -out dsareq.pem
     > openssl ca -cert ca2cert.pem -keyfile ca2key.pem \
 	    -out dsacert.pem -infiles dsareq.pem
     > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
 
- D. Sign RSA key with second level CA
+ D. Generate and sign RSA key with second level CA
+    > openssl genrsa -out rsakey.pem
     > openssl req -new -key rsakey.pem -out rsareq.pem
     > openssl ca -cert ca2cert.pem -keyfile ca2key.pem \
 	    -out rsacert.pem -infiles rsareq.pem

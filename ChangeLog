@@ -1,3 +1,8 @@
+Thu 15 Aug 2002 08:14:50 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* tests/keys/README: applied patch from <xafilac@gmx.de>
+	(bug #90824)
+	
 Wed Aug 14 19:38:56 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* NEWS README: minor updates

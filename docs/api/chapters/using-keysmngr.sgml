@@ -115,7 +115,7 @@ load_keys(char** files, int files_size) {
     return(mngr);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-dsig4">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-verify2">Full program listing</link></simpara>
 	    </example>
 	</para>
     </sect2>
@@ -332,7 +332,7 @@ done:
 }
 
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-enc3">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-encrypt3">Full program listing</link></simpara>
 	    </example>
 	</para>
     </sect2>
@@ -421,7 +421,7 @@ load_des_keys(char** files, int files_size) {
     return(mngr);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-enc5">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-decrypt2">Full program listing</link></simpara>
 	    </example>
 	</para>
     </sect2>
@@ -581,7 +581,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     return(key);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-enc6">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-decrypt3">Full program listing</link></simpara>
 	    </example>
 	</para>
     </sect2>    

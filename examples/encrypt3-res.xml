@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+XML Security Library example: XML doc file encrypted with a session DES key (encrypt3 example). 
+-->
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>rsakey.pem</KeyName>
+</KeyInfo>
+<CipherData>
+<CipherValue>IPiEu9Nv+EsGyvVeXO9nl5iZhhi+uzQH1I3/DTs3+eamBvioyaawRIlvTql7LYL5
+Mi91Qs8ozfW/fWZ8zB8AE2PosaX37SqiuEta68+65/Ed4v1rkGN0Awux8+gJqJmp
+c2kJhzAoQIAIGAW4nTGP9tl9QUHfwKh2KPA104vezk70ijvF7TrbTmhdfmULAuWK
+Tbsg8sXAPhGmPh5KckM2Xe387iPh4ue2+2TGdWqwXygVdvIUIbcIMq6F+/mWlcmf
+Gs5FVI7CTjaLmeyO4ho+FGmicmqH2hEkZW0a2ktDh4BU/MxYF6L7oayrVWDGp2IH
+dzQAwUT2qJcFjElO8xUz3g==</CipherValue>
+</CipherData>
+</EncryptedKey>
+</KeyInfo>
+<CipherData>
+<CipherValue>xrfPSA+BEI+8ca23RN34gtee5lOMx8Cn+ZGWyxitiktdZ1+XREH+57li63VutCwp
+s6ifbZgXIBsFdxPpMBUFlyTWAAO+NLooIwGoczXi14z62lHr7Ck6FA==</CipherValue>
+</CipherData>
+</EncryptedData>

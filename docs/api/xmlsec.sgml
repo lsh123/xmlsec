@@ -43,26 +43,26 @@
 <!ENTITY xmlsec-nss-crypto 		SYSTEM "sgml/nss/crypto.sgml">
 <!ENTITY xmlsec-nss-symbols		SYSTEM "sgml/nss/symbols.sgml">
 
-<!ENTITY xmlsec-example-dsig1 		SYSTEM "examples/dsig1.sgml">
-<!ENTITY xmlsec-example-dsig2 		SYSTEM "examples/dsig2.sgml">
-<!ENTITY xmlsec-example-dsig3 		SYSTEM "examples/dsig3.sgml">
-<!ENTITY xmlsec-example-dsig4 		SYSTEM "examples/dsig4.sgml">
-<!ENTITY xmlsec-example-enc1 		SYSTEM "examples/enc1.sgml">
-<!ENTITY xmlsec-example-enc2 		SYSTEM "examples/enc2.sgml">
-<!ENTITY xmlsec-example-enc3 		SYSTEM "examples/enc3.sgml">
-<!ENTITY xmlsec-example-enc4 		SYSTEM "examples/enc4.sgml">
-<!ENTITY xmlsec-example-enc5 		SYSTEM "examples/enc5.sgml">
-<!ENTITY xmlsec-example-enc6 		SYSTEM "examples/enc6.sgml">
-<!ENTITY xmlsec-example-dsig1-tmpl	SYSTEM "examples/dsig1-tmpl.sgml">
-<!ENTITY xmlsec-example-dsig1-res	SYSTEM "examples/dsig1-res.sgml">
-<!ENTITY xmlsec-example-dsig2-doc	SYSTEM "examples/dsig2-doc.sgml">
-<!ENTITY xmlsec-example-dsig2-res	SYSTEM "examples/dsig2-res.sgml">
-<!ENTITY xmlsec-example-enc1-tmpl	SYSTEM "examples/enc1-tmpl.sgml">
-<!ENTITY xmlsec-example-enc1-res	SYSTEM "examples/enc1-res.sgml">
-<!ENTITY xmlsec-example-enc2-doc	SYSTEM "examples/enc2-doc.sgml">
-<!ENTITY xmlsec-example-enc2-res	SYSTEM "examples/enc2-res.sgml">
-<!ENTITY xmlsec-example-enc3-doc	SYSTEM "examples/enc3-doc.sgml">
-<!ENTITY xmlsec-example-enc3-res	SYSTEM "examples/enc3-res.sgml">
+<!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
+<!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
+<!ENTITY xmlsec-example-verify1 		SYSTEM "examples/verify1.sgml">
+<!ENTITY xmlsec-example-verify2 		SYSTEM "examples/verify2.sgml">
+<!ENTITY xmlsec-example-encrypt1 		SYSTEM "examples/encrypt1.sgml">
+<!ENTITY xmlsec-example-encrypt2 		SYSTEM "examples/encrypt2.sgml">
+<!ENTITY xmlsec-example-encrypt3 		SYSTEM "examples/encrypt3.sgml">
+<!ENTITY xmlsec-example-decrypt1 		SYSTEM "examples/decrypt1.sgml">
+<!ENTITY xmlsec-example-decrypt2 		SYSTEM "examples/decrypt2.sgml">
+<!ENTITY xmlsec-example-decrypt3 		SYSTEM "examples/decrypt3.sgml">
+<!ENTITY xmlsec-example-sign1-tmpl	SYSTEM "examples/sign1-tmpl.sgml">
+<!ENTITY xmlsec-example-sign1-res	SYSTEM "examples/sign1-res.sgml">
+<!ENTITY xmlsec-example-sign2-doc	SYSTEM "examples/sign2-doc.sgml">
+<!ENTITY xmlsec-example-sign2-res	SYSTEM "examples/sign2-res.sgml">
+<!ENTITY xmlsec-example-encrypt1-tmpl	SYSTEM "examples/encrypt1-tmpl.sgml">
+<!ENTITY xmlsec-example-encrypt1-res	SYSTEM "examples/encrypt1-res.sgml">
+<!ENTITY xmlsec-example-encrypt2-doc	SYSTEM "examples/encrypt2-doc.sgml">
+<!ENTITY xmlsec-example-encrypt2-res	SYSTEM "examples/encrypt2-res.sgml">
+<!ENTITY xmlsec-example-encrypt3-doc	SYSTEM "examples/encrypt3-doc.sgml">
+<!ENTITY xmlsec-example-encrypt3-res	SYSTEM "examples/encrypt3-res.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -313,27 +313,27 @@ TODO
     <para>This section contains several examples of using XML Security Library
 	to sign, veiryf, encrypt or decrypt XML documents.</para>
 
-    &xmlsec-example-dsig1;
-    &xmlsec-example-dsig2;
-    &xmlsec-example-dsig3;
-    &xmlsec-example-dsig4;
-    &xmlsec-example-enc1;
-    &xmlsec-example-enc2;
-    &xmlsec-example-enc3;
-    &xmlsec-example-enc4;
-    &xmlsec-example-enc5;
-    &xmlsec-example-enc6;
+    &xmlsec-example-sign1;
+    &xmlsec-example-sign2;
+    &xmlsec-example-verify1;
+    &xmlsec-example-verify2;
+    &xmlsec-example-encrypt1;
+    &xmlsec-example-encrypt2;
+    &xmlsec-example-encrypt3;
+    &xmlsec-example-decrypt1;
+    &xmlsec-example-decrypt2;
+    &xmlsec-example-decrypt3;
 
-    &xmlsec-example-dsig1-tmpl;
-    &xmlsec-example-dsig1-res;
-    &xmlsec-example-dsig2-doc;
-    &xmlsec-example-dsig2-res;
-    &xmlsec-example-enc1-tmpl;
-    &xmlsec-example-enc1-res;
-    &xmlsec-example-enc2-doc;
-    &xmlsec-example-enc2-res;
-    &xmlsec-example-enc3-doc;
-    &xmlsec-example-enc3-res;
+    &xmlsec-example-sign1-tmpl;
+    &xmlsec-example-sign1-res;
+    &xmlsec-example-sign2-doc;
+    &xmlsec-example-sign2-res;
+    &xmlsec-example-encrypt1-tmpl;
+    &xmlsec-example-encrypt1-res;
+    &xmlsec-example-encrypt2-doc;
+    &xmlsec-example-encrypt2-res;
+    &xmlsec-example-encrypt3-doc;
+    &xmlsec-example-encrypt3-res;
   </chapter>
   
   <chapter id="xmlsec-index">

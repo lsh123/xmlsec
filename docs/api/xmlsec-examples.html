@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="PREVIOUS" title="crypto" href="xmlsec-nss-crypto.html">
-<link rel="NEXT" title="dsig1.c" href="xmlsec-example-dsig1.html">
+<link rel="NEXT" title="sign1.c" href="xmlsec-example-sign1.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -35,7 +35,7 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-dsig1.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-sign1.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <div class="CHAPTER">
@@ -44,45 +44,45 @@
 <div class="TOC"><dl>
 <dt><b>Table of Contents</b></dt>
 <dt>
-<a href="xmlsec-example-dsig1.html">dsig1.c</a> -- Signing a template file.</dt>
+<a href="xmlsec-example-sign1.html">sign1.c</a> -- Signing a template file.</dt>
 <dt>
-<a href="xmlsec-example-dsig2.html">dsig2.c</a> -- Signing a file with a dynamicaly created template.</dt>
+<a href="xmlsec-example-sign2.html">sign2.c</a> -- Signing a file with a dynamicaly created template.</dt>
 <dt>
-<a href="xmlsec-example-dsig3.html">dsig3.c</a> -- Verifying a file using a signle key.</dt>
+<a href="xmlsec-example-verify1.html">verify1.c</a> -- Verifying a file using a signle key.</dt>
 <dt>
-<a href="xmlsec-example-dsig4.html">dsig4.c</a> -- Verifying a file using keys manager.</dt>
+<a href="xmlsec-example-verify2.html">verify2.c</a> -- Verifying a file using keys manager.</dt>
 <dt>
-<a href="xmlsec-example-enc1.html">enc1.c</a> -- Encrypting data using a template file.</dt>
+<a href="xmlsec-example-encrypt1.html">encrypt1.c</a> -- Encrypting data using a template file.</dt>
 <dt>
-<a href="xmlsec-example-enc2.html">enc2.c</a> -- Encrypting XML file with a dynamicaly created template.</dt>
+<a href="xmlsec-example-encrypt2.html">encrypt2.c</a> -- Encrypting XML file with a dynamicaly created template.</dt>
 <dt>
-<a href="xmlsec-example-enc3.html">enc3.c</a> -- Encrypting XML file with a session key and dynamicaly created template.</dt>
+<a href="xmlsec-example-encrypt3.html">encrypt3.c</a> -- Encrypting XML file with a session key and dynamicaly created template.</dt>
 <dt>
-<a href="xmlsec-example-enc4.html">enc4.c</a> -- Decrypting an encrypted file using a signle key.</dt>
+<a href="xmlsec-example-decrypt1.html">decrypt1.c</a> -- Decrypting an encrypted file using a signle key.</dt>
 <dt>
-<a href="xmlsec-example-enc5.html">enc5.c</a> -- Decrypting an encrypted file using keys manager.</dt>
+<a href="xmlsec-example-decrypt2.html">decrypt2.c</a> -- Decrypting an encrypted file using keys manager.</dt>
 <dt>
-<a href="xmlsec-example-enc6.html">enc6.c</a> -- Decrypting an encrypted file using a custom keys manager.</dt>
+<a href="xmlsec-example-decrypt3.html">decrypt3.c</a> -- Decrypting an encrypted file using a custom keys manager.</dt>
 <dt>
-<a href="xmlsec-example-dsig1-tmpl.html">dsig1-tmpl.xml</a> -- Simple signature template file for dsig1 example. </dt>
+<a href="xmlsec-example-sign1-tmpl.html">sign1-tmpl.xml</a> -- Simple signature template file for sign1 example. </dt>
 <dt>
-<a href="xmlsec-example-dsig1-res.html">dsig1-res.xml</a> -- Signed file (dsig1 example). </dt>
+<a href="xmlsec-example-sign1-res.html">sign1-res.xml</a> -- Signed file (sign1 example). </dt>
 <dt>
-<a href="xmlsec-example-dsig2-doc.html">dsig2-doc.xml</a> -- Original XML doc file for dsig2 example. </dt>
+<a href="xmlsec-example-sign2-doc.html">sign2-doc.xml</a> -- Original XML doc file for sign2 example. </dt>
 <dt>
-<a href="xmlsec-example-dsig2-res.html">dsig2-res.xml</a> -- Signed XML doc file (dsig2 example). </dt>
+<a href="xmlsec-example-sign2-res.html">sign2-res.xml</a> -- Signed XML doc file (sign2 example). </dt>
 <dt>
-<a href="xmlsec-example-enc1-tmpl.html">enc1-tmpl.xml</a> -- Simple encryption template file for enc1 example. </dt>
+<a href="xmlsec-example-encrypt1-tmpl.html">encrypt1-tmpl.xml</a> -- Simple encryption template file for encrypt1 example. </dt>
 <dt>
-<a href="xmlsec-example-enc1-res.html">enc1-res.xml</a> -- Encrypted binary data (enc1 example).</dt>
+<a href="xmlsec-example-encrypt1-res.html">encrypt1-res.xml</a> -- Encrypted binary data (encrypt1 example).</dt>
 <dt>
-<a href="xmlsec-example-enc2-doc.html">enc2-doc.xml</a> -- Original XML doc file before encryption (enc2 example). </dt>
+<a href="xmlsec-example-encrypt2-doc.html">encrypt2-doc.xml</a> -- Original XML doc file before encryption (encrypt2 example). </dt>
 <dt>
-<a href="xmlsec-example-enc2-res.html">enc2-res.xml</a> -- Encrypted XML file (enc2 example). </dt>
+<a href="xmlsec-example-encrypt2-res.html">encrypt2-res.xml</a> -- Encrypted XML file (encrypt2 example). </dt>
 <dt>
-<a href="xmlsec-example-enc3-doc.html">enc3-doc.xml</a> -- Original XML doc file before encryption (enc3 example). </dt>
+<a href="xmlsec-example-encrypt3-doc.html">encrypt3-doc.xml</a> -- Original XML doc file before encryption (encrypt3 example). </dt>
 <dt>
-<a href="xmlsec-example-enc3-res.html">enc3-res.xml</a> -- XML doc file encrypted with a session DES key (enc3 example). </dt>
+<a href="xmlsec-example-encrypt3-res.html">encrypt3-res.xml</a> -- XML doc file encrypted with a session DES key (encrypt3 example). </dt>
 </dl></div>
 <p>This section contains several examples of using XML Security Library
 	to sign, veiryf, encrypt or decrypt XML documents.</p>
@@ -93,11 +93,11 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-dsig1.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-sign1.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>crypto</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>dsig1.c</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>sign1.c</b></font></td>
 </tr>
 </table>
 </div>

@@ -134,8 +134,8 @@ done:
     return(res);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-dsig1">Full program listing</link></simpara>
-		<simpara><link linkend="xmlsec-example-dsig1-tmpl">Simple signature template file</link></simpara>
+		<simpara><link linkend="xmlsec-example-sign1">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-sign1-tmpl">Simple signature template file</link></simpara>
 	    </example>
 	</para>
 	</sect2>
@@ -275,8 +275,8 @@ done:
     return(res);
 }
 		]]></programlisting>
-		<simpara><link linkend="xmlsec-example-enc1">Full program listing</link></simpara>
-		<simpara><link linkend="xmlsec-example-enc1-tmpl">Simple encryption template file</link></simpara>
+		<simpara><link linkend="xmlsec-example-encrypt1">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-encrypt1-tmpl">Simple encryption template file</link></simpara>
 	    </example>
 	</para>
 	</sect2>

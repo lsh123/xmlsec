@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+XML Security Library example: Signed XML doc file (sign2 example). 
+-->
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<SignedInfo>
+<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+<Reference>
+<Transforms>
+<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+</Transforms>
+<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+<DigestValue>HjY8ilZAIEM2tBbPn5mYO1ieIX4=</DigestValue>
+</Reference>
+</SignedInfo>
+<SignatureValue>SIaj/6KY3C1SmDXU2++Gm31U1xTadFp04WhBgfsJFbxrL+q7GKSKN9kfQ+UpN9+i
+D5fWmuavXEHe4Gw6RMaMEkq2URQo7F68+d5J/ajq8/l4n+xE6/reGScVwT6L4dEP
+XXVJcAi2ZnQ3O7GTNvNGCPibL9mUcyCWBFZ92Uemtc/vJFCQ7ZyKMdMfACgxOwyN
+T/9971oog241/2doudhonc0I/3mgPYWkZdX6yvr62mEjnG+oUZkhWYJ4ewZJ4hM4
+JjbFqZO+OEzDRSbw3DkmuBA/mtlx+3t13SESfEub5hqoMdVmtth/eTb64dsPdl9r
+3k1ACVX9f8aHfQQdJOmLFQ==</SignatureValue>
+<KeyInfo>
+<KeyName>rsakey.pem</KeyName>
+</KeyInfo>
+</Signature></Envelope>

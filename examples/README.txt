@@ -8,26 +8,26 @@ This folder contains XML Security Library examples.
     rsakey.pem			Private PEM key file
     rsapub.pem			Public PEM key file
     deskey.bin			A DES keys
-    dsig1.c			Signing with a template file
-    dsig1-tmpl.xml		An example template file for dsig1 example
-    dsig1-res.xml		The result of processing dsig1_tmpl.xml by dsig1.c
-    dsig2.c			Signing a file with a dynamicaly created template
-    dsig2-doc.xml		An example XML file for signing by dsig2.c
-    dsig2-res.xml		The result of signing dsig2-doc.xml by dsig2.c
-    dsig3.c			Verifying a signed document with a single key
-    dsig4.c			Verifying a signed document using keys manager
-    enc1.c			Encrypting binary data with a template file
-    enc1-res.xml		An example template file for enc1.c
-    enc1-tmpl.xml		The result of processing enc1_tmpl.xml by enc1.c
-    enc2.c			Encrypting XML file using a dynamicaly created template
-    enc2-doc.xml		An example XML file for encryption by enc2.c
-    enc2-res.xml		The result of encryptin enc2-doc.xml by enc2.c
-    enc2.c			Encrypting XML file using a session DES key
-    enc2-doc.xml		An example XML file for encryption by enc3.c
-    enc2-res.xml		The result of encryptin enc3-doc.xml by enc3.c
-    enc4.c			Decrypting binary data using a signle key
-    enc5.c			Decrypting binary data using keys manager
-    enc6.c			Decrypting binary file using custom keys manager
+    sign1.c			Signing with a template file
+    sign1-tmpl.xml		An example template file for sign1 example
+    sign1-res.xml		The result of processing sign1_tmpl.xml by sign1.c
+    sign2.c			Signing a file with a dynamicaly created template
+    sign2-doc.xml		An example XML file for signing by sign2.c
+    sign2-res.xml		The result of signing sign2-doc.xml by sign2.c
+    verify1.c			Verifying a signed document with a single key
+    verify2.c			Verifying a signed document using keys manager
+    encrypt1.c			Encrypting binary data with a template file
+    encrypt1-res.xml		An example template file for encrypt1.c
+    encrypt1-tmpl.xml		The result of processing encrypt1_tmpl.xml by encrypt1.c
+    encrypt2.c			Encrypting XML file using a dynamicaly created template
+    encrypt2-doc.xml		An example XML file for encryption by encrypt2.c
+    encrypt2-res.xml		The result of encryptin encrypt2-doc.xml by encrypt2.c
+    encrypt2.c			Encrypting XML file using a session DES key
+    encrypt2-doc.xml		An example XML file for encryption by encrypt3.c
+    encrypt2-res.xml		The result of encryptin encrypt3-doc.xml by encrypt3.c
+    decrypt1.c			Decrypting binary data using a signle key
+    decrypt2.c			Decrypting binary data using keys manager
+    decrypt3.c			Decrypting binary file using custom keys manager
 
 
 2. Building Examples 
@@ -53,19 +53,20 @@ Other platforms:
 The following are just examples and you can use the programs from this
 folder with any other input files:
     
-    $ ./dsig1 dsig1-tmpl.xml rsakey.pem
-    $ ./dsig2 dsig2-doc.xml  rsakey.pem
-    $ ./dsig3 dsig1-res.xml  rsapub.pem
-    $ ./dsig3 dsig2-res.xml  rsapub.pem
-    $ ./dsig4 dsig1-res.xml  rsapub.pem
-    $ ./dsig4 dsig2-res.xml  rsapub.pem
-    $ ./enc1  enc1-tmpl.xml  deskey.bin
-    $ ./enc2  enc2-doc.xml   deskey.bin 
-    $ ./enc4  enc1-res.xml   deskey.bin
-    $ ./enc4  enc2-res.xml   deskey.bin
-    $ ./enc5  enc1-res.xml   deskey.bin
-    $ ./enc5  enc2-res.xml   deskey.bin
-    $ ./enc6  enc1-res.xml
-    $ ./enc6  enc2-res.xml
-    $ ./enc6  enc3-res.xml
+	./sign1    sign1-tmpl.xml    rsakey.pem
+	./sign2    sign2-doc.xml     rsakey.pem
+	./verify1  sign1-res.xml     rsapub.pem
+	./verify1  sign2-res.xml     rsapub.pem
+	./verify2  sign1-res.xml     rsapub.pem
+	./verify2  sign2-res.xml     rsapub.pem
+	./encrypt1 encrypt1-tmpl.xml deskey.bin
+	./encrypt2 encrypt2-doc.xml  deskey.bin 
+	./encrypt3 encrypt3-doc.xml  rsakey.pem
+	./decrypt1 encrypt1-res.xml  deskey.bin
+	./decrypt1 encrypt2-res.xml  deskey.bin
+	./decrypt2 encrypt1-res.xml  deskey.bin
+	./decrypt2 encrypt2-res.xml  deskey.bin
+	./decrypt3 encrypt1-res.xml
+	./decrypt3 encrypt2-res.xml
+	./decrypt3 encrypt3-res.xml
     

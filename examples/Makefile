@@ -2,8 +2,10 @@
 #
 #
 PROGRAMS	 = \
-	dsig1 dsig2 dsig3 dsig4 \
-	enc1 enc2 enc3 enc4 enc5 enc6
+	sign1 sign2 \
+	verify1 verify2 \
+	encrypt1 encrypt2 encrypt3 \
+	decrypt1 decrypt2 decrypt3
 
 cc	 	 = gcc
 CC	 	 = gcc
@@ -22,19 +24,19 @@ clean:
 	@rm -rf $(PROGRAMS)
 
 check: $(PROGRAMS)
-	./dsig1 dsig1-tmpl.xml rsakey.pem
-	./dsig2 dsig2-doc.xml  rsakey.pem
-	./dsig3 dsig1-res.xml  rsapub.pem
-	./dsig3 dsig2-res.xml  rsapub.pem
-	./dsig4 dsig1-res.xml  rsapub.pem
-	./dsig4 dsig2-res.xml  rsapub.pem
-	./enc1  enc1-tmpl.xml  deskey.bin
-	./enc2  enc2-doc.xml   deskey.bin 
-	./enc3	enc3-doc.xml   rsakey.pem
-	./enc4  enc1-res.xml   deskey.bin
-	./enc4  enc2-res.xml   deskey.bin
-	./enc5  enc1-res.xml   deskey.bin
-	./enc5  enc2-res.xml   deskey.bin
-	./enc6  enc1-res.xml
-	./enc6  enc2-res.xml
-	./enc6  enc3-res.xml
+	./sign1    sign1-tmpl.xml    rsakey.pem
+	./sign2    sign2-doc.xml     rsakey.pem
+	./verify1  sign1-res.xml     rsapub.pem
+	./verify1  sign2-res.xml     rsapub.pem
+	./verify2  sign1-res.xml     rsapub.pem
+	./verify2  sign2-res.xml     rsapub.pem
+	./encrypt1 encrypt1-tmpl.xml deskey.bin
+	./encrypt2 encrypt2-doc.xml  deskey.bin 
+	./encrypt3 encrypt3-doc.xml  rsakey.pem
+	./decrypt1 encrypt1-res.xml  deskey.bin
+	./decrypt1 encrypt2-res.xml  deskey.bin
+	./decrypt2 encrypt1-res.xml  deskey.bin
+	./decrypt2 encrypt2-res.xml  deskey.bin
+	./decrypt3 encrypt1-res.xml
+	./decrypt3 encrypt2-res.xml
+	./decrypt3 encrypt3-res.xml

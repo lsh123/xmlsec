@@ -134,7 +134,7 @@ done:
     return(res);
 }
 		]]></programlisting>
-	    <simpara><link linkend="xmlsec-example-dsig3">Full Program Listing</link></simpara>
+	    <simpara><link linkend="xmlsec-example-verify1">Full Program Listing</link></simpara>
 	    </example>
 	</para>
 	</sect2>
@@ -254,7 +254,7 @@ done:
     return(res);
 }
 		]]></programlisting>
-	    <simpara><link linkend="xmlsec-example-enc4">Full Program Listing</link></simpara>
+	    <simpara><link linkend="xmlsec-example-decrypt1">Full Program Listing</link></simpara>
 	    </example>
 	</para>
 	</sect2>

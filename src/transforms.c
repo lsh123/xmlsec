@@ -358,7 +358,7 @@ xmlSecTransformExecuteXml(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
  *
  * Executes the C14N @transform and returns result in the @buffer
  * (wrapper for transform specific executeC14n() method). If the 
- * @trnaform is NULL then the default #xmlSecC14NInclusive 
+ * @trnaform is NULL then the default #xmlSecTransformInclC14NId
  * transform is executed.
  *
  * Returns 0 on success or a negative value otherwise.
@@ -377,7 +377,7 @@ xmlSecTransformExecuteC14N(xmlSecTransformPtr transform,
 	xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
 	id = transform->id;
     } else {
-	id = xmlSecC14NInclusive; /* the default c14n transform */
+	id = xmlSecTransformInclC14NId; /* the default c14n transform */
     }
     
     if(id->executeC14N != NULL) {

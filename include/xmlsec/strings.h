@@ -165,6 +165,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefExcC14NWithComments[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNsExcC14N[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNsExcC14NWithComments[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeInclusiveNamespaces[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrPrefixList[];
+
 /*************************************************************************
  *
  * DES strings

@@ -647,8 +647,46 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPath2GetKlass		(void);
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPointerGetKlass		(void);
 
 
+/********************************************************************
+ *
+ * C14N transforms 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformInclC14NId:
+ * 
+ * The regular (inclusive) C14N without comments transform id.
+ */
+#define xmlSecTransformInclC14NId \
+	xmlSecTransformInclC14NGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NGetKlass		(void);
 
-#include "transforms-old.h"
+/**
+ * xmlSecTransformInclC14NWithCommentsId:
+ * 
+ * The regular (inclusive) C14N with comments transform id.
+ */
+#define xmlSecTransformInclC14NWithCommentsId \
+	xmlSecTransformInclC14NWithCommentsGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NWithCommentsGetKlass		(void);
+
+/**
+ * xmlSecTransformExclC14NId
+ * 
+ * The exclusive C14N without comments transform id.
+ */
+#define xmlSecTransformExclC14NId \
+	xmlSecTransformExclC14NGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NGetKlass		(void);
+
+/**
+ * xmlSecTransformExclC14NWithCommentsId:
+ * 
+ * The exclusive C14N with comments transform id.
+ */
+#define xmlSecTransformExclC14NWithCommentsId \
+	xmlSecTransformExclC14NWithCommentsGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NWithCommentsGetKlass		(void);
 
 #ifdef __cplusplus
 }

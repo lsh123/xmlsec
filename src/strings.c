@@ -124,6 +124,8 @@ const xmlChar xmlSecHrefExcC14NWithComments[]	= "http://www.w3.org/2001/10/xml-e
 const xmlChar xmlSecNsExcC14N[]			= "http://www.w3.org/2001/10/xml-exc-c14n#";
 const xmlChar xmlSecNsExcC14NWithComments[]	= "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
 
+const xmlChar xmlSecNodeInclusiveNamespaces[]	= "InclusiveNamespaces";
+const xmlChar xmlSecAttrPrefixList[]		= "PrefixList";
 /*************************************************************************
  *
  * DES strings

@@ -166,7 +166,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
 			"xmlSecKey",
 			"xmlStrdup",
 		        XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d", xmlStrlen(keySrc->name));
+			"len=%d", xmlStrlen(keySrc->name));
 	    return(-1);	
         }
     }

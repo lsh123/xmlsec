@@ -49,7 +49,7 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
     if(list->max > 0) {
 	xmlSecAssert(list->data != NULL);
 
-	memset(list->data, 0, sizeof(xmlSecPtrList) * list->use);
+	memset(list->data, 0, sizeof(xmlSecPtr) * list->use);
 	xmlFree(list->data);
     }
     memset(list, 0, sizeof(xmlSecPtrList));    
@@ -256,18 +256,17 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
     
     if(size < list->max) {
 	return(0);
-    } else {
-        size += 16;
     }
     
-    tmp = xmlRealloc(list->data, sizeof(xmlSecPtrList) * size);
+    /* TODO: add memory allocation strategy */
+    tmp = xmlRealloc(list->data, sizeof(xmlSecPtr) * size);
     if(tmp == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlRealloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecPtrList)*%d=%d", 
-		    size, sizeof(xmlSecPtrList) * size);
+		    "sizeof(xmlSecPtr)*%d=%d", 
+		    size, sizeof(xmlSecPtr) * size);
 	return(-1);
     }
     

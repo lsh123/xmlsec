@@ -54,40 +54,40 @@ xmlSecTransformsInit(void) {
 
 
     /* c14n methods */
-    if(xmlSecTransformRegister(xmlSecC14NInclusive) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformInclC14NId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecC14NInclusive)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NId)));
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecC14NInclusiveWithComments) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformInclC14NWithCommentsId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecC14NInclusiveWithComments)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NWithCommentsId)));
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecC14NExclusive) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformExclC14NId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecC14NExclusive)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformExclC14NId)));
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecC14NExclusiveWithComments) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformExclC14NWithCommentsId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecC14NExclusiveWithComments)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformExclC14NWithCommentsId)));
 	return(-1);
     }
 

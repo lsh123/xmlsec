@@ -105,7 +105,7 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 
 void 
 xmlSecNodeSetDocDestroy(xmlSecNodeSetPtr nset) {
-    xmlSecAssert2(nset != NULL, 0);
+    xmlSecAssert(nset != NULL);
     
     nset->destroyDoc = 1;
 }

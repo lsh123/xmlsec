@@ -84,56 +84,89 @@ xmlSecOpenSSLAppShutdown(void) {
 }
 
 /**
- * xmlSecOpenSSLAppPemKeyLoad:
- * @filename:		the PEM key filename.
+ * xmlSecOpenSSLAppKeyLoad:
+ * @filename:		the key filename.
+ * @format:		the key file format.
  * @pwd:		the PEM key file password.
  * @pwdCallback:	the PEM key password callback.
  * @pwdCallbackCtx:	the user context for password callback.
  *
- * Reads key from the PEM file.
+ * Reads key from the a file.
  *
  * Returns pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppPemKeyLoad(const char *filename, const char *pwd, 
-			   pem_password_cb *pwdCallback, 
-			   void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
+			const char *pwd, pem_password_cb *pwdCallback, 
+			void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data;
-    EVP_PKEY *pKey = NULL;    
-    FILE *f;
+    EVP_PKEY* pKey = NULL;    
+    BIO* bio;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
-    
-    f = fopen(filename, "r");
-    if(f == NULL) {
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    bio = BIO_new_file(filename, "rb");
+    if(bio == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "fopen",
-		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "BIO_new_file",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "filename=%s;errno=%d", 
-		    xmlSecErrorsSafeString(filename), errno);
+		    xmlSecErrorsSafeString(filename), 
+		    errno);
 	return(NULL);    
     }
-
-    /* try to read private key first */    
-    pKey = PEM_read_PrivateKey(f, NULL, pwdCallback, (void*)pwd);
-    if(pKey == NULL) {
-	/* go to start of the file and try to read public key */
-	rewind(f); 
-	pKey = PEM_read_PUBKEY(f, NULL, pwdCallback, (void*)pwd);
-	if(pKey == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"PEM_read_PrivateKey and PEM_read_PUBKEY",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"file=%s", xmlSecErrorsSafeString(filename));
-	    fclose(f);
-	    return(NULL);
+    
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+        /* try to read private key first */    
+	pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCallback, (void*)pwd);
+        if(pKey == NULL) {
+    	    /* go to start of the file and try to read public key */
+	    BIO_reset(bio); 
+	    pKey = PEM_read_bio_PUBKEY(bio, NULL, pwdCallback, (void*)pwd);
+	    if(pKey == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "PEM_read_bio_PrivateKey and PEM_read_bio_PUBKEY",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "file=%s", xmlSecErrorsSafeString(filename));
+		BIO_free(bio);
+		return(NULL);
+	    }
 	}
-    }
-    fclose(f);
+	break;
+    case xmlSecKeyDataFormatDer:
+        /* try to read private key first */    
+	pKey = d2i_PrivateKey_bio(bio, NULL);
+        if(pKey == NULL) {
+    	    /* go to start of the file and try to read public key */
+	    BIO_reset(bio); 
+	    pKey = d2i_PUBKEY_bio(bio, NULL);
+	    if(pKey == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "d2i_PrivateKey_bio and d2i_PUBKEY_bio",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "file=%s", xmlSecErrorsSafeString(filename));
+		BIO_free(bio);
+		return(NULL);
+	    }
+	}
+	break;
+    default:
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_FORMAT,
+		    "format=%d", format); 
+	BIO_free(bio);
+	return(NULL);
+    }        	
+    BIO_free(bio);
 
     data = xmlSecOpenSSLEvpKeyAdopt(pKey);
     if(data == NULL) {

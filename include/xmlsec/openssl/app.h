@@ -50,7 +50,8 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr
 /** 
  * Keys
  */
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppPemKeyLoad	(const char *filename, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppKeyLoad		(const char *filename, 
+									 xmlSecKeyDataFormat format,
 									 const char *pwd,
 									 pem_password_cb *pwdCallback,
 									 void* pwdCallbackCtx);

@@ -48,7 +48,8 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecGnuTLSAppKeysMngrAddCertsPath	(xmlSecKeysMngrPtr 
 /** 
  * Keys
  */
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppPemKeyLoad		(const char *filename, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoad		(const char *filename, 
+									 xmlSecKeyDataFormat format,
 									 const char *pwd,
 									 void *pwdCallback,
 									 void* pwdCallbackCtx);

@@ -61,16 +61,17 @@ xmlSecGnuTLSAppShutdown(void) {
 }
 
 xmlSecKeyPtr
-xmlSecGnuTLSAppPemKeyLoad(const char *filename, 
-			  const char *pwd ATTRIBUTE_UNUSED, 
-			  void* pwdCallback ATTRIBUTE_UNUSED, 
-			  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
+			const char *pwd ATTRIBUTE_UNUSED, 
+			void* pwdCallback ATTRIBUTE_UNUSED, 
+			void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
     
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecGnuTLSAppPemKeyLoad",
+		"xmlSecGnuTLSAppPemLoad",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(NULL);
@@ -78,7 +79,8 @@ xmlSecGnuTLSAppPemKeyLoad(const char *filename,
 
 #ifndef XMLSEC_NO_X509
 int		
-xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
+xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, 
+			  xmlSecKeyDataFormat format) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
@@ -122,7 +124,8 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  */
 int
 xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
-				xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
+				xmlSecKeyDataFormat format, 
+				xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);

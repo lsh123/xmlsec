@@ -145,7 +145,7 @@ load_rsa_keys(char* key_file) {
     }    
     
     /* load private RSA key */
-    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
         fprintf(stderr,"Error: failed to load rsa key from file \"%s\"\n", key_file);
         xmlSecKeysMngrDestroy(mngr);

@@ -35,7 +35,7 @@
 	    <title>Loading private key and X509 certificate.</title>
 	    <programlisting><![CDATA[
     /* load private key, assuming that there is not password */
-    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
 	goto done;

@@ -100,16 +100,17 @@ xmlSecNssAppShutdown(void) {
 }
 
 xmlSecKeyPtr
-xmlSecNssAppPemKeyLoad(const char *filename, 
-		       const char *pwd ATTRIBUTE_UNUSED, 
-		       void* pwdCallback ATTRIBUTE_UNUSED, 
-		       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
+		    const char *pwd ATTRIBUTE_UNUSED, 
+		    void* pwdCallback ATTRIBUTE_UNUSED, 
+		    void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
     
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecNssAppPemKeyLoad",
+		"xmlSecNssAppPemLoad",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(NULL);
@@ -161,7 +162,8 @@ xmlSecNssAppPkcs12Load(const char *filename,
  */
 int
 xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
-			     xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
+			     xmlSecKeyDataFormat format, 
+			     xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);

@@ -103,8 +103,8 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
 
 int 
 xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
-						const char* files, const char* pwd, 
-						const char* name) {
+					     const char* files, const char* pwd, 
+					     const char* name) {
     xmlSecKeyPtr key;
     int ret;
 
@@ -112,11 +112,11 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(files != NULL, -1);
 
     /* first is the key file */
-    key = xmlSecCryptoAppPemKeyLoad(files, pwd, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(files, xmlSecKeyDataFormatPem, pwd, NULL, NULL);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecCryptoAppPemKeyLoad",
+		    "xmlSecCryptoAppKeyLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=%s", 
 		    xmlSecErrorsSafeString(files));

@@ -127,7 +127,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/pkgconfig/xmlsec1.pc
 %{prefix}/lib/xmlsec1Conf.sh
 %{prefix}/share/doc/xmlsec1/* 
-%doc AUTHORS ChangeLog NEWS README Copyright
+%doc AUTHORS HACKING ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec1-config.1*
 
 %files nss

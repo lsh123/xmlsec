@@ -1,3 +1,9 @@
+Mon Aug  4 14:47:02 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am xmlsec.spec.in: added HACKING file to the distribution
+	* docs/download.html docs/index.html docs/news.html: updated docs 
+	for new 1.1.0 release
+
 Wed Jul 30 18:35:15 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* xmlsec-gnutls.pc.in xmlsec-nss.pc.in xmlsec-openssl.pc.in: and

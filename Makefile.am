@@ -29,6 +29,7 @@ EXTRA_DIST = \
 	NEWS \
 	ChangeLog \
 	Copyright \
+	HACKING \
 	xmlsec-openssl.pc.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in\
 	xmlsec-config.in \
 	xmlsecConf.sh.in \

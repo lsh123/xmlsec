@@ -53,12 +53,12 @@
 	encrypted document.
     	  </p>
 <div class="FIGURE">
-<a name="AEN179"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
+<a name="AEN182"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
 <p><img src="images/verif-dec-model.png" align="CENTER"></p>
 </div>	 
 	<br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN182"></a>Verifying a signed document</h2>
+<a name="AEN185"></a>Verifying a signed document</h2>
 <p>The typical siganture verification process includes following steps:
 	  </p>
 <p></p>
@@ -89,7 +89,7 @@
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN211"></a><p><b>Example 6. Verifying a document.</b></p>
+<a name="AEN214"></a><p><b>Example 6. Verifying a document.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -161,7 +161,7 @@ done:
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN216"></a>Decrypting an encrypted document</h2>
+<a name="AEN219"></a>Decrypting an encrypted document</h2>
 <p>The typical decryption process includes following steps:
 	  </p>
 <p></p>
@@ -188,7 +188,7 @@ done:
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN241"></a><p><b>Example 7. Decrypting a document.</b></p>
+<a name="AEN244"></a><p><b>Example 7. Decrypting a document.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
 decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;

@@ -237,7 +237,7 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the &lt;dsig:KeyInfo/&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -246,7 +246,7 @@ Reads the &lt;dsig:KeyInfo/&gt; node <parameter>keyInfoNode</parameter> and extr
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to &lt;dsig:KeyInfo/&gt; node.
+<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
 <entry>
@@ -284,7 +284,7 @@ The keys manager structure.</para>
 </row>
 <row>
 <entry><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link> <structfield>getKey</structfield></entry>
-<entry> 			the callback used to read &lt;dsig:KeyInfo/&gt; node.
+<entry> 			the callback used to read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -293,7 +293,7 @@ The keys manager structure.</para>
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -302,7 +302,7 @@ Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extra
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+<entry> the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
 <entry> 

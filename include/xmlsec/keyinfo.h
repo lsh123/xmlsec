@@ -1,7 +1,8 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * KeyInfo node processing
+ * <dsig:KeyInfo> element processing 
+ * (http://www.w3.org/TR/xmlSec-core/#sec-KeyInfo:
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -168,8 +169,9 @@ typedef enum {
  *			processing level (see @maxRetrievalMethodLevel).
  * @curEncryptedKeyLevel: the current <enc:EncryptedKey /> element
  *			processing level (see @maxEncryptedKeyLevel).
+ * @keyReq:		the current key requirements.
+ * @reserved0:		reserved for the future.
  * @reserved1:		reserved for the future.
- * @reserved2:		reserved for the future.
  *
  * The <dsig:KeyInfo /> reading or writing context.
  */

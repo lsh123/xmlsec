@@ -1,8 +1,8 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * XMLDsig:KeyInfo node processing
- * http://www.w3.org/TR/xmlSec-core/#sec-KeyInfo
+ * <dsig:KeyInfo/> element processing 
+ * (http://www.w3.org/TR/xmlSec-core/#sec-KeyInfo:
  *
  * The KeyInfo Element
  *
@@ -66,11 +66,12 @@
  *************************************************************************/
 /**
  * xmlSecKeyInfoNodeRead:
- * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
- * @keyInfoCtx: the pointer to #xmlSecKeyInfoCtx structure.
+ * @keyInfoNode: 	the pointer to <dsig:KeyInfo/> node.
+ * @key:		the pointer to result key object.
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Parses the <dsig:KeyInfo> element and extracts the key (with required 
- * id, type and usage).
+ * Parses the <dsig:KeyInfo/> element #keyInfoNode, extracts the key data
+ * and stores into #key.
  *
  * Returns 0 on success or -1 if an error occurs.
  */
@@ -138,11 +139,11 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
 
 /**
  * xmlSecKeyInfoNodeWrite:
- * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
- * @key: the key.
- * @keyInfoCtx: the pointer to #xmlSecKeyInfoCtx structure.
+ * @keyInfoNode: 	the pointer to <dsig:KeyInfo/> node.
+ * @key:		the pointer to key object.
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Writes the key into the <dsig:KeyInfo> template @keyInfoNode.
+ * Writes the #key into the <dsig:KeyInfo/> element template #keyInfoNode.
  *
  * Returns 0 on success or -1 if an error occurs.
  */
@@ -210,6 +211,16 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
  * KeyInfo context
  *
  *************************************************************************/
+/**
+ * xmlSecKeyInfoCtxCreate:
+ * @keysMngr: 		the pointer to keys manager (may be NULL).
+ *
+ * Allocates and initializes <dsig:KeyInfo/> element processing context.
+ * Caller is responsible for freeing it by calling #xmlSecKeyInfoCtxDestroy 
+ * function.
+ *
+ * Returns pointer to newly allocated object or NULL if an error occurs.
+ */
 xmlSecKeyInfoCtxPtr 
 xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     xmlSecKeyInfoCtxPtr keyInfoCtx;
@@ -240,6 +251,12 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     return(keyInfoCtx);
 }
 
+/** 
+ * xmlSecKeyInfoCtxDestroy:
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Destroys #keyInfoCtx object created with #xmlSecKeyInfoCtxCreate function.
+ */
 void 
 xmlSecKeyInfoCtxDestroy(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert(keyInfoCtx != NULL);
@@ -248,6 +265,16 @@ xmlSecKeyInfoCtxDestroy(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlFree(keyInfoCtx);
 }
 
+/** 
+ * xmlSecKeyInfoCtxInitialize:
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ * @keysMngr: 		the pointer to keys manager (may be NULL).
+ *
+ * Initializes <dsig:KeyInfo/> element processing context. Caller is 
+ * responsible for cleaning it up by #xmlSecKeyInfoCtxFinalize function.
+ * 
+ * Returns 0 on success and a negative value if an error occurs.
+ */
 int 
 xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr keysMngr) {
     int ret;
@@ -299,6 +326,13 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     return(0);
 }
 
+/** 
+ * xmlSecKeyInfoCtxFinalize:
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Cleans up the #keyInfoCtx initialized with #xmlSecKeyInfoCtxInitialize
+ * function.
+ */
 void 
 xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert(keyInfoCtx != NULL);
@@ -316,6 +350,12 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
 }
 
+/** 
+ * xmlSecKeyInfoCtxReset:
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ * 
+ * Resets the #keyInfoCtx state. User settings are not changed.
+ */
 void 
 xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert(keyInfoCtx != NULL);
@@ -333,6 +373,15 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyReqReset(&(keyInfoCtx->keyReq));
 }
 
+/** 
+ * xmlSecKeyInfoCtxCreateEncCtx:
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ * 
+ * Creates encryption context form processing <enc:EncryptedKey/> child
+ * of <dsig:KeyInfo/> element.
+ * 
+ * Returns 0 on success and a negative value if an error occurs.
+ */
 int 
 xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #ifndef XMLSEC_NO_XMLENC
@@ -394,6 +443,15 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 #endif /* XMLSEC_NO_XMLENC */    
 }
 
+/** 
+ * xmlSecKeyInfoCtxCopyUserPref:
+ * @dst:		the pointer to destination context object.
+ * @src:		the pointer to source context object.
+ *
+ * Copies user preferences from #src context to #dst context.
+ *  
+ * Returns 0 on success and a negative value if an error occurs.
+ */
 int 
 xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     int ret;
@@ -468,6 +526,13 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     return(0);
 }
 
+/** 
+ * xmlSecKeyInfoCtxDebugDump:
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ * @output:		the output file pointer.
+ *
+ * Prints user settings and current context state to #output.
+ */
 void 
 xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     xmlSecAssert(keyInfoCtx != NULL);
@@ -505,6 +570,13 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 #endif /* XMLSEC_NO_XMLENC */
 }
 
+/** 
+ * 
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ * @output:		the output file pointer.
+ *
+ * Prints user settings and current context state in XML format to #output. 
+ */
 void 
 xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     xmlSecAssert(keyInfoCtx != NULL);
@@ -555,7 +627,7 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 
 /**************************************************************************
  *
- * <dsig:KeyName> processing
+ * <dsig:KeyName/> processing
  *
  *************************************************************************/
 static int			xmlSecKeyDataNameXmlRead	(xmlSecKeyDataId id,
@@ -604,6 +676,22 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecKeyDataNameGetKlass:
+ *
+ * The <dsig:KeyName/> element key data klass 
+ * (http://www.w3.org/TR/xmldsig-core/#sec-KeyName):
+ *
+ * The KeyName element contains a string value (in which white space is 
+ * significant) which may be used by the signer to communicate a key 
+ * identifier to the recipient. Typically, KeyName contains an identifier 
+ * related to the key pair used to sign the message, but it may contain 
+ * other protocol-related information that indirectly identifies a key pair. 
+ * (Common uses of KeyName include simple string names for keys, a key index, 
+ * a distinguished name (DN), an email address, etc.) 
+ *
+ * Returns the <dsig:KeyName/> element processing key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecKeyDataNameGetKlass(void) {
     return(&xmlSecKeyDataNameKlass);
@@ -687,32 +775,7 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 
 /**************************************************************************
  *
- * <dsig:KeyValue> processing
- *
- *
- * http://www.w3.org/TR/xmldsig-core/#sec-KeyValue
- *
- * The KeyValue element contains a single public key that may be useful in 
- * validating the signature. Structured formats for defining DSA (REQUIRED) 
- * and RSA (RECOMMENDED) public keys are defined in Signature Algorithms 
- * (section 6.4). The KeyValue element may include externally defined 
- * public keys values represented as PCDATA or element types from an external 
- * namespace.
- *
- * Schema Definition:
- *
- * <element name="KeyValue" type="ds:KeyValueType"/> 
- *   <complexType name="KeyValueType" mixed="true">
- *     <choice>
- *       <element ref="ds:DSAKeyValue"/>
- *       <element ref="ds:RSAKeyValue"/>
- *       <any namespace="##other" processContents="lax"/>
- *     </choice>
- *   </complexType>
- *    
- * DTD:
- *  
- * <!ELEMENT KeyValue (#PCDATA|DSAKeyValue|RSAKeyValue %KeyValue.ANY;)* >
+ * <dsig:KeyValue/> processing
  *
  *************************************************************************/
 static int			xmlSecKeyDataValueXmlRead	(xmlSecKeyDataId id,
@@ -761,6 +824,17 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecKeyDataValueGetKlass:
+ *
+ * The <dsig:KeyValue/> element key data klass 
+ * (http://www.w3.org/TR/xmldsig-core/#sec-KeyValue):
+ *
+ * The KeyValue element contains a single public key that may be useful in 
+ * validating the signature. 
+ * 
+ * Returns the <dsig:KeyValue/> element processing key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecKeyDataValueGetKlass(void) {
     return(&xmlSecKeyDataValueKlass);
@@ -823,7 +897,7 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 	return(-1);	
     }
 
-    /* <dsig:KeyValue> might have only one node */
+    /* <dsig:KeyValue/> might have only one node */
     cur = xmlSecGetNextElementNode(cur->next);  
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -899,7 +973,7 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
 
 /**************************************************************************
  *
- * <dsig:RetrievalMethod> processing
+ * <dsig:RetrievalMethod/> processing
  *
  *************************************************************************/
 static int			xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id,
@@ -956,6 +1030,24 @@ static int			xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId,
 								 size_t bufferSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+/** 
+ * xmlSecKeyDataRetrievalGetKlass:
+ *
+ * The <dsig:RetrievalMethod/> element key data klass 
+ * (http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod):
+ * A RetrievalMethod element within KeyInfo is used to convey a reference to 
+ * KeyInfo information that is stored at another location. For example, 
+ * several signatures in a document might use a key verified by an X.509v3 
+ * certificate chain appearing once in the document or remotely outside the 
+ * document; each signature's KeyInfo can reference this chain using a single 
+ * RetrievalMethod element instead of including the entire chain with a 
+ * sequence of X509Certificate elements.
+ *
+ * RetrievalMethod uses the same syntax and dereferencing behavior as 
+ * Reference's URI and The Reference Processing Model.
+ * 
+ * Returns the <dsig:RetrievalMethod/> element processing key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecKeyDataRetrievalMethodGetKlass(void) {
     return(&xmlSecKeyDataRetrievalMethodKlass);
@@ -1227,7 +1319,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 #ifndef XMLSEC_NO_XMLENC
 /**************************************************************************
  *
- * <enc:EncryptedKey> processing
+ * <enc:EncryptedKey/> processing
  *
  *************************************************************************/
 static int	xmlSecKeyDataEncryptedKeyXmlRead	(xmlSecKeyDataId id,
@@ -1279,6 +1371,22 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecKeyDataEncryptedKeyGetKlass:
+ *
+ * The <enc:EncryptedKey/> element key data klass 
+ * (http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey):
+ *
+ * The EncryptedKey element is used to transport encryption keys from 
+ * the originator to a known recipient(s). It may be used as a stand-alone 
+ * XML document, be placed within an application document, or appear inside 
+ * an EncryptedData element as a child of a ds:KeyInfo element. The key value 
+ * is always encrypted to the recipient(s). When EncryptedKey is decrypted the 
+ * resulting octets are made available to the EncryptionMethod algorithm 
+ * without any additional processing.
+ * 
+ * Returns the <enc:EncryptedKey/> element processing key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecKeyDataEncryptedKeyGetKlass(void) {
     return(&xmlSecKeyDataEncryptedKeyKlass);

@@ -16,6 +16,7 @@
 
 int         <link linkend="xmlSecOpenSSLInit">xmlSecOpenSSLInit</link>               (void);
 int         <link linkend="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown</link>           (void);
+int         <link linkend="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit</link>       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom</link>     (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
                                              <link linkend="size-t">size_t</link> sizeBytes);
 #define     <link linkend="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</link>
@@ -138,6 +139,10 @@ void        <link linkend="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErro
 <refsect2>
 <title><anchor id="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown ()</title>
 <programlisting>int         xmlSecOpenSSLShutdown           (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit ()</title>
+<programlisting>int         xmlSecOpenSSLKeysMngrInit       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom ()</title>

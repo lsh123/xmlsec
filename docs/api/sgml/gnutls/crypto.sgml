@@ -16,6 +16,7 @@
 
 int         <link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link>                (void);
 int         <link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link>            (void);
+int         <link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link>        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</link>      (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
                                              <link linkend="size-t">size_t</link> sizeBytes);
 #define     <link linkend="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</link>
@@ -83,6 +84,10 @@ int         <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSe
 <refsect2>
 <title><anchor id="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown ()</title>
 <programlisting>int         xmlSecGnuTLSShutdown            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit ()</title>
+<programlisting>int         xmlSecGnuTLSKeysMngrInit        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom ()</title>

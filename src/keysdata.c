@@ -292,7 +292,7 @@ xmlSecKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xml
  * @key: the key.
  * @buf: the input buffer.
  * @bufSize: the buffer size.
- * @keyInfoCtx: the <dsig:KeyInfo> node processing context
+ * @keyInfoCtx: the <dsig:KeyInfo/> node processing context
  *
  * Reads the data from binary buffer @buf.
  * 
@@ -314,7 +314,7 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsigned char* 
  * @key: the key.
  * @buf: the output buffer.
  * @bufSize: the buffer size.
- * @keyInfoCtx: the <dsig:KeyInfo> node processing context
+ * @keyInfoCtx: the <dsig:KeyInfo/> node processing context
  *
  * Writes the data to a binary buffer. 
  * 

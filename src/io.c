@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Input Uri transform
+ * Input uri transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -52,7 +52,7 @@ static int xmlSecIOCallbackInitialized = 0;
 /**
  * xmlSecIOInit:
  *
- * The IO initialization (called from xmlSecInit() function).
+ * The IO initialization (called from #xmlSecInit function).
  * Applications should not call this function directly.
  */ 
 void
@@ -72,7 +72,7 @@ xmlSecIOInit(void) {
 /**
  * xmlSecIOShutdown:
  *
- * The IO clenaup (called from xmlSecShutdown() function).
+ * The IO clenaup (called from #xmlSecShutdown function).
  * Applications should not call this function directly.
  */ 
 void
@@ -141,10 +141,10 @@ xmlSecIORegisterDefaultCallbacks(void) {
 
 /**
  * xmlSecIORegisterCallbacks:
- * @matchFunc:  the xmlInputMatchCallback.
- * @openFunc:  the xmlInputOpenCallback.
- * @readFunc:  the xmlInputReadCallback.
- * @closeFunc:  the xmlInputCloseCallback.
+ * @matchFunc:  	the protocol match callback.
+ * @openFunc:  		the open stream callback.
+ * @readFunc:  		the read from stream callback.
+ * @closeFunc:  	the close stream callback.
  *
  * Register a new set of I/O callback for handling parser input.
  *
@@ -229,6 +229,13 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformInputURIGetKlass:
+ *
+ * The input uri transform klass. Reads binary data from an uri.
+ *
+ * Returns input URI transform id.
+ */
 xmlSecTransformId 
 xmlSecTransformInputURIGetKlass(void) {
     return(&xmlSecTransformInputURIKlass);
@@ -236,8 +243,8 @@ xmlSecTransformInputURIGetKlass(void) {
 
 /** 
  * xmlSecTransformInputURIOpen:
- * @transform: the pointer to IO transform.
- * @uri: the URL to open.
+ * @transform: 		the pointer to IO transform.
+ * @uri: 		the URL to open.
  *
  * Opens the given @uri for reading.
  *
@@ -308,9 +315,6 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     return(0);
 }
 
-/** 
- * xmlSecTransformInputURIInitialize:
- */
 static int
 xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
     xmlSecInputURICtxPtr ctx;
@@ -324,9 +328,6 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
-/** 
- * xmlSecTransformInputURIFinalilze:
- */
 static void
 xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
     xmlSecInputURICtxPtr ctx;
@@ -374,7 +375,4 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, unsigned char* data,
     }
     return(0);
 }
-
-
-
 

@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Enveloped transform
+ * Enveloped transform.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -63,7 +63,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
 /**
  * xmlSecTransformEnvelopedGetKlass:
  *
- * http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature
+ * The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature):
  *
  * An enveloped signature transform T removes the whole Signature element 
  * containing T from the digest calculation of the Reference element 
@@ -84,6 +84,8 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  * expression evaluator to create this transform. However, this transform 
  * MUST produce output in exactly the same manner as the XPath transform 
  * parameterized by the XPath expression above.
+ *
+ * Returns enveloped transform id.
  */
 xmlSecTransformId 
 xmlSecTransformEnvelopedGetKlass(void) {
@@ -134,7 +136,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 	return(-1);
     }
 
-    /* intersect <dsig:Signature> node children with input nodes (if exist) */
+    /* intersect <dsig:Signature/> node children with input nodes (if exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

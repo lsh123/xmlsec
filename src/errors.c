@@ -1,6 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Error codes and error reporting functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -74,7 +75,7 @@ int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed
 /** 
  * xmlSecErrorsInit:
  *
- * Initializes the errors reporting. It is called from xmlSecInit() function.
+ * Initializes the errors reporting. It is called from #xmlSecInit function.
  * and applications must not call this function directly.
  */
 void 
@@ -84,7 +85,7 @@ xmlSecErrorsInit(void) {
 /** 
  * xmlSecErrorsShutdown:
  *
- * Cleanups the errors reporting. It is called from xmlSecShutdown() function.
+ * Cleanups the errors reporting. It is called from #xmlSecShutdown function.
  * and applications must not call this function directly.
  */
 void 
@@ -93,9 +94,9 @@ xmlSecErrorsShutdown(void) {
 
 /**
  * xmlSecErrorsSetCallback:
- * @callback: the errors callback function.
+ * @callback: 		the new errors callback function.
  *
- * Sets the errors callback function @callback that will be called 
+ * Sets the errors callback function to #callback that will be called 
  * every time an error occurs.
  */
 void 
@@ -105,6 +106,16 @@ xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
 
 /**
  * xmlSecErrorsDefaultCallback:
+ * @file:		the error location file name (__FILE__ macro).
+ * @line:		the error location line number (__LINE__ macro).
+ * @func:		the error location function name (__FUNCTION__ macro).
+ * @errorObject:	the error specific error object 
+ * @errorSubject:	the error specific error subject.
+ * @reason:		the error code.
+ * @msg:		the additional error message.
+ *
+ * The default error reporting callback that utilizes LibXML
+ * error reporting #xmlGenericError function.
  */
 void 
 xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
@@ -133,6 +144,15 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
     }
 }
 
+/**
+ * xmlSecErrorsGetCode:
+ * @pos:		the error position.
+ * 
+ * Gets the known error code at position #pos.
+ *
+ * Returns the known error code or 0 if #pos is greater than 
+ * total number of known error codes.
+ */
 int 
 xmlSecErrorsGetCode(size_t pos) {
     /* could not use asserts here! */
@@ -142,6 +162,15 @@ xmlSecErrorsGetCode(size_t pos) {
     return(0);
 }
 
+/**
+ * xmlSecErrorsGetMsg:
+ * @pos:		the error position.
+ *
+ * Gets the known error message at position #pos.
+ *
+ * Returns the known error message or NULL if #pos is greater than 
+ * total number of known error codes.
+ */
 const char* 
 xmlSecErrorsGetMsg(size_t pos) {
     /* could not use asserts here! */
@@ -151,6 +180,11 @@ xmlSecErrorsGetMsg(size_t pos) {
     return(NULL);
 }
 
+/**
+ * xmlSecErrorGetEmptyMessage:
+ * 
+ * Returns empty error message string.
+ */
 const char* 
 xmlSecErrorGetEmptyMessage(void) {
     static const char emptyMessage[] = " ";
@@ -159,14 +193,18 @@ xmlSecErrorGetEmptyMessage(void) {
 
 /**
  * xmlSecError:
- * @file: the error origin filename (__FILE__).
- * @line: the error origin line number (__LINE__).
- * @func: the error origin function (__FUNCTIION__).
- * @reason: the error code.
- * @msg: the error message in printf format.
- * @...: the parameters for the @msg.
+ * @file: 		the error location filename (__FILE__).
+ * @line: 		the error location line number (__LINE__).
+ * @func: 		the error location function (__FUNCTIION__).
+ * @errorObject:	the error specific error object 
+ * @errorSubject:	the error specific error subject. 
+ * @reason: 		the error code.
+ * @msg: 		the error message in printf format.
+ * @...: 		the parameters for the @msg.
  *
- * Reports an error.
+ * Reports an error to the default (#xmlSecErrorsDefaultCallback) or 
+ * application specific callback installed using #xmlSecErrorsSetCallback 
+ * function.
  */
 void	
 xmlSecError(const char* file, int line, const char* func, 

@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * C14N transforms
+ * Canonicalization transforms.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -201,7 +201,6 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
 
     return(0);    
 }
-
 
 static int 
 xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
@@ -483,6 +482,15 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformInclC14NGetKlass:
+ *
+ * Inclusive (regular) canonicalization that omits comments transform klass
+ * (http://www.w3.org/TR/xmldsig-core/#sec-c14nAlg and 
+ * http://www.w3.org/TR/2001/REC-xml-c14n-20010315).
+ *
+ * Returns c14n transform id.
+ */
 xmlSecTransformId 
 xmlSecTransformInclC14NGetKlass(void) {
     return(&xmlSecTransformInclC14NKlass);
@@ -517,6 +525,15 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformInclC14NWithCommentsGetKlass:
+ *
+ * Inclusive (regular) canonicalization that includes comments transform klass
+ * (http://www.w3.org/TR/xmldsig-core/#sec-c14nAlg and 
+ * http://www.w3.org/TR/2001/REC-xml-c14n-20010315).
+ *
+ * Returns c14n with comments transform id.
+ */
 xmlSecTransformId 
 xmlSecTransformInclC14NWithCommentsGetKlass(void) {
     return(&xmlSecTransformInclC14NWithCommentsKlass);
@@ -550,6 +567,14 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecTransformExclC14NGetKlass:
+ * 
+ * Exclusive canoncicalization that ommits comments transform klass
+ * (http://www.w3.org/TR/xml-exc-c14n/).
+ * 
+ * Returns exclusive c14n transform id.
+ */
 xmlSecTransformId 
 xmlSecTransformExclC14NGetKlass(void) {
     return(&xmlSecTransformExclC14NKlass);
@@ -583,6 +608,14 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecTransformExclC14NWithCommentsGetKlass:
+ * 
+ * Exclusive canoncicalization that includes comments transform klass
+ * (http://www.w3.org/TR/xml-exc-c14n/).
+ * 
+ * Returns exclusive c14n with comments transform id.
+ */
 xmlSecTransformId 
 xmlSecTransformExclC14NWithCommentsGetKlass(void) {
     return(&xmlSecTransformExclC14NWithCommentsKlass);
@@ -619,8 +652,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
 /**
  * xmlSecTransformRemoveXmlTagsGetKlass:
  *
- * http://www.w3.org/TR/xmldsig-core/#sec-Base-64:
- *
+ * The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64):
  * Base64 transform requires an octet stream for input. If an XPath node-set 
  * (or sufficiently functional alternative) is given as input, then it is 
  * converted to an octet stream by performing operations logically equivalent 
@@ -631,6 +663,8 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
  * automatically strips away the start and end tags of the identified element 
  * and any of its descendant elements as well as any descendant comments and 
  * processing instructions. The output of this transform is an octet stream.
+ *
+ * Returns "remove xml tags" transform id.
  */
 xmlSecTransformId 
 xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {

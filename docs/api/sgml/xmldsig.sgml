@@ -112,7 +112,7 @@ XML Digital signature processing status.</para>
 <programlisting>#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS			0x00000001
 </programlisting>
 <para>
-If this flag is set then &lt;dsig:Manifests/&gt; nodes will not be processed.</para>
+If this flag is set then <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifests">&lt;dsig:Manifests/&gt;</ulink> nodes will not be processed.</para>
 <para>
 
 </para></refsect2>
@@ -121,8 +121,8 @@ If this flag is set then &lt;dsig:Manifests/&gt; nodes will not be processed.</p
 <programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES		0x00000002
 </programlisting>
 <para>
-If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
-of &lt;dsig:KeyInfo/&gt; element will be stored in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>.</para>
+If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> child
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>.</para>
 <para>
 
 </para></refsect2>
@@ -131,8 +131,8 @@ of &lt;dsig:KeyInfo/&gt; element will be stored in <link linkend="xmlSecDSigCtx"
 <programlisting>#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES		0x00000004
 </programlisting>
 <para>
-If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
-of &lt;dsig:Manifest/&gt; element will be stored in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>.</para>
+If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> child
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifest">&lt;dsig:Manifest/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>.</para>
 <para>
 
 </para></refsect2>
@@ -141,7 +141,7 @@ of &lt;dsig:Manifest/&gt; element will be stored in <link linkend="xmlSecDSigCtx
 <programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE			0x00000008
 </programlisting>
 <para>
-If this flag is set then pre-signature buffer for &lt;dsig:SignedInfo/&gt;
+If this flag is set then pre-signature buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink>
 element processing will be stored in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>.</para>
 <para>
 
@@ -218,22 +218,22 @@ XML DSig processing context.</para>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>transformCtx</structfield></entry>
-<entry>		the &lt;dsig:SignedInfo/&gt; node processing context.
+<entry>		the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node processing context.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> <structfield>enabledReferenceUris</structfield></entry>
-<entry>	the URI types allowed for &lt;dsig:Reference/&gt; node.
+<entry>	the URI types allowed for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>enabledReferenceTransforms</structfield></entry>
-<entry>	the list of transforms allowed in &lt;dsig:Reference/&gt; node.
+<entry>	the list of transforms allowed in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link> <structfield>referencePreExecuteCallback</structfield></entry>
-<entry>the callback for &lt;dsig:Reference/&gt; node processing.
+<entry>the callback for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node processing.
 </entry>
 </row>
 <row>
@@ -270,7 +270,7 @@ XML DSig processing context.</para>
 </row>
 <row>
 <entry><link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link> <structfield>status</structfield></entry>
-<entry>			the &lt;dsig:Signatuire/&gt; procesisng status.
+<entry>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signatuire">&lt;dsig:Signatuire/&gt;</ulink> procesisng status.
 </entry>
 </row>
 <row>
@@ -291,22 +291,22 @@ XML DSig processing context.</para>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>signValueNode</structfield></entry>
-<entry>		the pointer to &lt;dsig:SignatureValue/&gt; node.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry>				the pointer to Id attribute of &lt;dsig:Signature/&gt; node.
+<entry>				the pointer to Id attribute of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>signedInfoReferences</structfield></entry>
-<entry>	the list of references in &lt;dsig:SignedInfo/&gt; node.		
+<entry>	the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node.		
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>manifestReferences</structfield></entry>
-<entry>		the list of references in &lt;dsig:Manifest/&gt; nodes.
+<entry>		the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifest">&lt;dsig:Manifest/&gt;</ulink> nodes.
 </entry>
 </row>
 <row>
@@ -502,8 +502,8 @@ XML DSig processing context.</para>
 } xmlSecDSigReferenceOrigin;
 </programlisting>
 <para>
-The possible &lt;dsig:Reference/&gt; node locations: in the &lt;dsig:SignedInfo/&gt; 
-node or in the &lt;dsig:Manifest/&gt; node.</para>
+The possible <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node locations: in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> 
+node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifest">&lt;dsig:Manifest/&gt;</ulink> node.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="enum">
@@ -543,7 +543,7 @@ node or in the &lt;dsig:Manifest/&gt; node.</para>
 };
 </programlisting>
 <para>
-The &lt;dsig:Reference/&gt; processing context.</para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> processing context.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="struct">
@@ -553,12 +553,12 @@ The &lt;dsig:Reference/&gt; processing context.</para>
 <tbody>
 <row>
 <entry><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <structfield>dsigCtx</structfield></entry>
-<entry>			the pointer to "parent" &lt;dsig:Signature/&gt; processing context.
+<entry>			the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> <structfield>origin</structfield></entry>
-<entry>			the signature origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt;).
+<entry>			the signature origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifest">&lt;dsig:Manifest/&gt;</ulink>).
 </entry>
 </row>
 <row>
@@ -591,17 +591,17 @@ The &lt;dsig:Reference/&gt; processing context.</para>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry>				the &lt;dsig:Reference/&gt; node ID attribute. 
+<entry>				the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node ID attribute. 
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>uri</structfield></entry>
-<entry>			the &lt;dsig:Reference/&gt; node URI attribute. 
+<entry>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node URI attribute. 
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></entry>
-<entry>			the &lt;dsig:Reference/&gt; node Type attribute. 
+<entry>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node Type attribute. 
 </entry>
 </row>
 <row>

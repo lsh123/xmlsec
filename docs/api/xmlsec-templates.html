@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-TEMPLATES"></a>templates</h1>
 <div class="REFNAMEDIV">
-<a name="AEN7421"></a><h2>Name</h2>templates -- </div>
+<a name="AEN7586"></a><h2>Name</h2>templates -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN7424"></a><h2>Synopsis</h2>
+<a name="AEN7589"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 <font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLSIGNATURECREATE">xmlSecTmplSignatureCreate</a>       (<font>xmlDocPtr</font> doc,
@@ -146,26 +146,26 @@ int         <a href="xmlsec-templates.html#XMLSECTMPLTRANSFORMADDXPOINTER">xmlSe
                                              const <font>xmlChar</font> **nsList);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN7562"></a><h2>Description</h2>
+<a name="AEN7727"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN7565"></a><h2>Details</h2>
+<a name="AEN7730"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN7567"></a><h3>
+<a name="AEN7732"></a><h3>
 <a name="XMLSECTMPLSIGNATURECREATE"></a>xmlSecTmplSignatureCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureCreate       (<font>xmlDocPtr</font> doc,
                                              <font>xmlSecTransformId</font> c14nMethodId,
                                              <font>xmlSecTransformId</font> signMethodId,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
-<p>Creates new &lt;dsig:Signature/&gt; node with the mandatory &lt;dsig:SignedInfo/&gt;, 
-&lt;dsig:CanonicalizationMethod/&gt;, &lt;dsig:SignatureMethod/&gt; and 
-&lt;dsig:SignatureValue/&gt; children and sub-children. 
+<p>Creates new <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a>, 
+<a href="http://www.w3.org/TR/xmldsig-core/#sec_CanonicalizationMethod" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a>, <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureMethod" target="_top">&lt;dsig:SignatureMethod/&gt;</a> and 
+<a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a> children and sub-children. 
 The application is responsible for inserting the returned node
 in the XML document.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7578"></a><p></p>
+<a name="AEN7748"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -193,7 +193,7 @@ in the XML document.</p>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Signature/&gt; node or NULL if an 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node or NULL if an 
 error occurs.</td>
 </tr>
 </tbody></table>
@@ -202,21 +202,21 @@ error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7604"></a><h3>
+<a name="AEN7775"></a><h3>
 <a name="XMLSECTMPLSIGNATUREENSUREKEYINFO"></a>xmlSecTmplSignatureEnsureKeyInfo ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureEnsureKeyInfo
                                             (<font>xmlNodePtr</font> signNode,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
-<p>Adds (if necessary) &lt;dsig:KeyInfo/&gt; node to the &lt;dsig:Signature/&gt; 
+<p>Adds (if necessary) <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> 
 node <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7614"></a><p></p>
+<a name="AEN7787"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>signNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the  pointer to &lt;dsig:Signature/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the  pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -226,7 +226,7 @@ node <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:KeyInfo&gt; node or NULL if an 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node or NULL if an 
 error occurs.</td>
 </tr>
 </tbody></table>
@@ -235,24 +235,24 @@ error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7631"></a><h3>
+<a name="AEN7806"></a><h3>
 <a name="XMLSECTMPLSIGNATUREADDREFERENCE"></a>xmlSecTmplSignatureAddReference ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureAddReference (<font>xmlNodePtr</font> signNode,
                                              <font>xmlSecTransformId</font> digestMethodId,
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *uri,
                                              const <font>xmlChar</font> *type);</pre></td></tr></table>
-<p>Adds &lt;dsig:Reference/&gt; node with given URI (<tt class="PARAMETER"><i>uri</i></tt>), Id (<tt class="PARAMETER"><i>id</i></tt>) and 
-Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required children &lt;dsig:DigestMethod/&gt; and
-&lt;dsig:DigestValue/&gt; to the &lt;dsig:SignedInfo/&gt; child of <tt class="PARAMETER"><i>signNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node with given URI (<tt class="PARAMETER"><i>uri</i></tt>), Id (<tt class="PARAMETER"><i>id</i></tt>) and 
+Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required children <a href="http://www.w3.org/TR/xmldsig-core/#sec_DigestMethod" target="_top">&lt;dsig:DigestMethod/&gt;</a> and
+<a href="http://www.w3.org/TR/xmldsig-core/#sec_DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> child of <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7647"></a><p></p>
+<a name="AEN7826"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>signNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;dsig:Signature/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -277,7 +277,7 @@ Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required childr
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Reference/&gt; node or NULL 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node or NULL 
 if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -286,21 +286,21 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7676"></a><h3>
+<a name="AEN7857"></a><h3>
 <a name="XMLSECTMPLSIGNATUREADDOBJECT"></a>xmlSecTmplSignatureAddObject ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureAddObject    (<font>xmlNodePtr</font> signNode,
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *mimeType,
                                              const <font>xmlChar</font> *encoding);</pre></td></tr></table>
-<p>Adds &lt;dsig:Object/&gt; node to the &lt;dsig:Signature/&gt; node <tt class="PARAMETER"><i>signNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Object" target="_top">&lt;dsig:Object/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7688"></a><p></p>
+<a name="AEN7871"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>signNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;dsig:Signature/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -320,7 +320,7 @@ if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Object/&gt; node or NULL 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Object" target="_top">&lt;dsig:Object/&gt;</a> node or NULL 
 if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -329,24 +329,24 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7713"></a><h3>
+<a name="AEN7898"></a><h3>
 <a name="XMLSECTMPLSIGNATUREGETSIGNMETHODNODE"></a>xmlSecTmplSignatureGetSignMethodNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureGetSignMethodNode
                                             (<font>xmlNodePtr</font> signNode);</pre></td></tr></table>
-<p>Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
+<p>Gets pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureMethod" target="_top">&lt;dsig:SignatureMethod/&gt;</a> child of <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7721"></a><p></p>
+<a name="AEN7908"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>signNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;dsig:Signature /&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature%20" target="_top">&lt;dsig:Signature /&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureMethod%20" target="_top">&lt;dsig:SignatureMethod /&gt;</a> node or NULL if an error occurs.</td>
 </tr>
 </tbody></table>
 <p></p>
@@ -354,24 +354,24 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7734"></a><h3>
+<a name="AEN7923"></a><h3>
 <a name="XMLSECTMPLSIGNATUREGETC14NMETHODNODE"></a>xmlSecTmplSignatureGetC14NMethodNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureGetC14NMethodNode
                                             (<font>xmlNodePtr</font> signNode);</pre></td></tr></table>
-<p>Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
+<p>Gets pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_CanonicalizationMethod" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a> child of <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7742"></a><p></p>
+<a name="AEN7933"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>signNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;dsig:Signature /&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature%20" target="_top">&lt;dsig:Signature /&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_CanonicalizationMethod%20" target="_top">&lt;dsig:CanonicalizationMethod /&gt;</a> node or NULL if an error occurs.</td>
 </tr>
 </tbody></table>
 <p></p>
@@ -379,19 +379,19 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7755"></a><h3>
+<a name="AEN7948"></a><h3>
 <a name="XMLSECTMPLREFERENCEADDTRANSFORM"></a>xmlSecTmplReferenceAddTransform ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplReferenceAddTransform (<font>xmlNodePtr</font> referenceNode,
                                              <font>xmlSecTransformId</font> transformId);</pre></td></tr></table>
-<p>Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <tt class="PARAMETER"><i>referenceNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node <tt class="PARAMETER"><i>referenceNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7765"></a><p></p>
+<a name="AEN7960"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>referenceNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;dsig:Reference/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -401,7 +401,7 @@ if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node or NULL if an 
 error occurs.</td>
 </tr>
 </tbody></table>
@@ -410,21 +410,21 @@ error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7782"></a><h3>
+<a name="AEN7979"></a><h3>
 <a name="XMLSECTMPLOBJECTADDSIGNPROPERTIES"></a>xmlSecTmplObjectAddSignProperties ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplObjectAddSignProperties
                                             (<font>xmlNodePtr</font> objectNode,
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *target);</pre></td></tr></table>
-<p>Adds &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node <tt class="PARAMETER"><i>objectNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureProperties" target="_top">&lt;dsig:SignatureProperties/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Object" target="_top">&lt;dsig:Object/&gt;</a> node <tt class="PARAMETER"><i>objectNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7793"></a><p></p>
+<a name="AEN7992"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>objectNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the  pointer to &lt;dsig:Object/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the  pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Object" target="_top">&lt;dsig:Object/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -439,7 +439,7 @@ error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:SignatureProperties/&gt; node or NULL 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureProperties" target="_top">&lt;dsig:SignatureProperties/&gt;</a> node or NULL 
 if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -448,19 +448,19 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7814"></a><h3>
+<a name="AEN8015"></a><h3>
 <a name="XMLSECTMPLOBJECTADDMANIFEST"></a>xmlSecTmplObjectAddManifest ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplObjectAddManifest     (<font>xmlNodePtr</font> objectNode,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
-<p>Adds &lt;dsig:Manifest/&gt; node to the &lt;dsig:Object/&gt; node <tt class="PARAMETER"><i>objectNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Object" target="_top">&lt;dsig:Object/&gt;</a> node <tt class="PARAMETER"><i>objectNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7824"></a><p></p>
+<a name="AEN8027"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>objectNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the  pointer to &lt;dsig:Object&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the  pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Object" target="_top">&lt;dsig:Object/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -470,7 +470,7 @@ if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Manifest/&gt; node or NULL 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node or NULL 
 if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -479,24 +479,24 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7841"></a><h3>
+<a name="AEN8046"></a><h3>
 <a name="XMLSECTMPLMANIFESTADDREFERENCE"></a>xmlSecTmplManifestAddReference ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplManifestAddReference  (<font>xmlNodePtr</font> manifestNode,
                                              <font>xmlSecTransformId</font> digestMethodId,
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *uri,
                                              const <font>xmlChar</font> *type);</pre></td></tr></table>
-<p>Adds &lt;dsig:Reference/&gt; node with specified URI (<tt class="PARAMETER"><i>uri</i></tt>), Id (<tt class="PARAMETER"><i>id</i></tt>) and 
-Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required children &lt;dsig:DigestMethod/&gt; and
-&lt;dsig:DigestValue/&gt; to the &lt;dsig:Manifest/&gt; node <tt class="PARAMETER"><i>manifestNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node with specified URI (<tt class="PARAMETER"><i>uri</i></tt>), Id (<tt class="PARAMETER"><i>id</i></tt>) and 
+Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required children <a href="http://www.w3.org/TR/xmldsig-core/#sec_DigestMethod" target="_top">&lt;dsig:DigestMethod/&gt;</a> and
+<a href="http://www.w3.org/TR/xmldsig-core/#sec_DigestValue" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node <tt class="PARAMETER"><i>manifestNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7857"></a><p></p>
+<a name="AEN8066"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>manifestNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:Manifest/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -521,7 +521,7 @@ Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required childr
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Reference/&gt; node or NULL 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node or NULL 
 if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -530,7 +530,7 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7886"></a><h3>
+<a name="AEN8097"></a><h3>
 <a name="XMLSECTMPLENCDATACREATE"></a>xmlSecTmplEncDataCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataCreate         (<font>xmlDocPtr</font> doc,
                                              <font>xmlSecTransformId</font> encMethodId,
@@ -538,10 +538,10 @@ if an error occurs.</td>
                                              const <font>xmlChar</font> *type,
                                              const <font>xmlChar</font> *mimeType,
                                              const <font>xmlChar</font> *encoding);</pre></td></tr></table>
-<p>Creates new &lt;enc:EncryptedData /&gt; node for encryption template.</p>
+<p>Creates new <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData%20" target="_top">&lt;enc:EncryptedData /&gt;</a> node for encryption template.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7899"></a><p></p>
+<a name="AEN8111"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -578,7 +578,7 @@ if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer newly created  &lt;enc:EncryptedData/&gt; node or NULL 
+<td width="80%" align="LEFT" valign="TOP">the pointer newly created  <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node or NULL 
 if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -587,19 +587,19 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7933"></a><h3>
+<a name="AEN8146"></a><h3>
 <a name="XMLSECTMPLENCDATAENSUREKEYINFO"></a>xmlSecTmplEncDataEnsureKeyInfo ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureKeyInfo  (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
-<p>Adds &lt;dsig:KeyInfo/&gt; to the  &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> to the  <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7943"></a><p></p>
+<a name="AEN8158"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;enc:EncryptedData/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -609,7 +609,7 @@ if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:KeyInfo/&gt; node or 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node or 
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -618,21 +618,21 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7960"></a><h3>
+<a name="AEN8177"></a><h3>
 <a name="XMLSECTMPLENCDATAENSUREENCPROPERTIES"></a>xmlSecTmplEncDataEnsureEncProperties ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureEncProperties
                                             (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
-<p>Adds &lt;enc:EncryptionProperties/&gt; node to the &lt;enc:EncryptedData/&gt; 
+<p>Adds <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionProperties" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node to the <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> 
 node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7970"></a><p></p>
+<a name="AEN8189"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;enc:EncryptedData/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -642,7 +642,7 @@ node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:EncryptionProperties/&gt; node or 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionProperties" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node or 
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -651,22 +651,22 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7987"></a><h3>
+<a name="AEN8208"></a><h3>
 <a name="XMLSECTMPLENCDATAADDENCPROPERTY"></a>xmlSecTmplEncDataAddEncProperty ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataAddEncProperty (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *target);</pre></td></tr></table>
-<p>Adds &lt;enc:EncryptionProperty/&gt; node (and the parent 
-&lt;enc:EncryptionProperties/&gt; node if required) to the 
-&lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionProperty" target="_top">&lt;enc:EncryptionProperty/&gt;</a> node (and the parent 
+<a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionProperties" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node if required) to the 
+<a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7998"></a><p></p>
+<a name="AEN8222"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;enc:EncryptedData/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -681,7 +681,7 @@ NULL if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:EncryptionProperty/&gt; node or 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionProperty" target="_top">&lt;enc:EncryptionProperty/&gt;</a> node or 
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -690,24 +690,24 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8019"></a><h3>
+<a name="AEN8245"></a><h3>
 <a name="XMLSECTMPLENCDATAENSURECIPHERVALUE"></a>xmlSecTmplEncDataEnsureCipherValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureCipherValue
                                             (<font>xmlNodePtr</font> encNode);</pre></td></tr></table>
-<p>Adds &lt;enc:CipherValue/&gt; to the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> to the <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8028"></a><p></p>
+<a name="AEN8256"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;enc:EncryptedData/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:CipherValue/&gt; node or 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node or 
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -716,21 +716,21 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8041"></a><h3>
+<a name="AEN8271"></a><h3>
 <a name="XMLSECTMPLENCDATAENSURECIPHERREFERENCE"></a>xmlSecTmplEncDataEnsureCipherReference ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureCipherReference
                                             (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *uri);</pre></td></tr></table>
-<p>Adds &lt;enc:CipherReference/&gt; node with specified URI attribute <tt class="PARAMETER"><i>uri</i></tt>
-to the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherReference" target="_top">&lt;enc:CipherReference/&gt;</a> node with specified URI attribute <tt class="PARAMETER"><i>uri</i></tt>
+to the <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8052"></a><p></p>
+<a name="AEN8284"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;enc:EncryptedData/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -740,7 +740,7 @@ to the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;enc:CipherReference/&gt; node or 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherReference" target="_top">&lt;enc:CipherReference/&gt;</a> node or 
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -749,24 +749,24 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8069"></a><h3>
+<a name="AEN8303"></a><h3>
 <a name="XMLSECTMPLENCDATAGETENCMETHODNODE"></a>xmlSecTmplEncDataGetEncMethodNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataGetEncMethodNode
                                             (<font>xmlNodePtr</font> encNode);</pre></td></tr></table>
-<p>Gets pointer to &lt;enc:EncrytpionMethod/&gt; node.</p>
+<p>Gets pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncrytpionMethod" target="_top">&lt;enc:EncrytpionMethod/&gt;</a> node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8077"></a><p></p>
+<a name="AEN8312"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;enc:EcnryptedData /&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EcnryptedData%20" target="_top">&lt;enc:EcnryptedData /&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionMethod%20" target="_top">&lt;enc:EncryptionMethod /&gt;</a> node or NULL if an error occurs.</td>
 </tr>
 </tbody></table>
 <p></p>
@@ -774,22 +774,22 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8090"></a><h3>
+<a name="AEN8327"></a><h3>
 <a name="XMLSECTMPLCIPHERREFERENCEADDTRANSFORM"></a>xmlSecTmplCipherReferenceAddTransform ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplCipherReferenceAddTransform
                                             (<font>xmlNodePtr</font> cipherReferenceNode,
                                              <font>xmlSecTransformId</font> transformId);</pre></td></tr></table>
-<p>Adds &lt;dsig:Transform/&gt; node (and the parent &lt;dsig:Transforms/&gt; node)
-with specified transform methods <tt class="PARAMETER"><i>transform</i></tt> to the &lt;enc:CipherReference/&gt;
-child node of the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node (and the parent <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transforms" target="_top">&lt;dsig:Transforms/&gt;</a> node)
+with specified transform methods <tt class="PARAMETER"><i>transform</i></tt> to the <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherReference" target="_top">&lt;enc:CipherReference/&gt;</a>
+child node of the <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8101"></a><p></p>
+<a name="AEN8342"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>cipherReferenceNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;enc:CipherReference/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherReference" target="_top">&lt;enc:CipherReference/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -799,7 +799,7 @@ child node of the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNo
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Transform/&gt; node or 
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node or 
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -808,19 +808,19 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8118"></a><h3>
+<a name="AEN8361"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDKEYNAME"></a>xmlSecTmplKeyInfoAddKeyName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddKeyName     (<font>xmlNodePtr</font> keyInfoNode,
                                              const <font>xmlChar</font> *name);</pre></td></tr></table>
-<p>Adds &lt;dsig:KeyName/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8128"></a><p></p>
+<a name="AEN8373"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:KeyInfo/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -830,7 +830,7 @@ NULL if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:KeyName/&gt; node or
+<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyName" target="_top">&lt;dsig:KeyName/&gt;</a> node or
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -839,23 +839,23 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8145"></a><h3>
+<a name="AEN8392"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDKEYVALUE"></a>xmlSecTmplKeyInfoAddKeyValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddKeyValue    (<font>xmlNodePtr</font> keyInfoNode);</pre></td></tr></table>
-<p>Adds &lt;dsig:KeyValue/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue" target="_top">&lt;dsig:KeyValue/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8154"></a><p></p>
+<a name="AEN8403"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:KeyInfo/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:KeyValue/&gt; node or
+<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue" target="_top">&lt;dsig:KeyValue/&gt;</a> node or
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -864,23 +864,23 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8167"></a><h3>
+<a name="AEN8418"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDX509DATA"></a>xmlSecTmplKeyInfoAddX509Data ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddX509Data    (<font>xmlNodePtr</font> keyInfoNode);</pre></td></tr></table>
-<p>Adds &lt;dsig:X509Data/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8176"></a><p></p>
+<a name="AEN8429"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:KeyInfo/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:X509Data/&gt; node or
+<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node or
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -889,21 +889,21 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8189"></a><h3>
+<a name="AEN8444"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDRETRIEVALMETHOD"></a>xmlSecTmplKeyInfoAddRetrievalMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddRetrievalMethod
                                             (<font>xmlNodePtr</font> keyInfoNode,
                                              const <font>xmlChar</font> *uri,
                                              const <font>xmlChar</font> *type);</pre></td></tr></table>
-<p>Adds &lt;dsig:RetrievalMethod/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8200"></a><p></p>
+<a name="AEN8457"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:KeyInfo/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -918,7 +918,7 @@ NULL if an error occurs.</td>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:RetrievalMethod/&gt; node or
+<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node or
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -927,21 +927,21 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8221"></a><h3>
+<a name="AEN8480"></a><h3>
 <a name="XMLSECTMPLRETRIEVALMETHODADDTRANSFORM"></a>xmlSecTmplRetrievalMethodAddTransform ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplRetrievalMethodAddTransform
                                             (<font>xmlNodePtr</font> retrMethodNode,
                                              <font>xmlSecTransformId</font> transformId);</pre></td></tr></table>
-<p>Adds &lt;dsig:Transform/&gt; node (and the parent &lt;dsig:Transforms/&gt; node
-if required) to the &lt;dsig:RetrievalMethod/&gt; node <tt class="PARAMETER"><i>retrMethod</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node (and the parent <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transforms" target="_top">&lt;dsig:Transforms/&gt;</a> node
+if required) to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node <tt class="PARAMETER"><i>retrMethod</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8231"></a><p></p>
+<a name="AEN8493"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>retrMethodNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:RetrievalMethod/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -951,7 +951,7 @@ if required) to the &lt;dsig:RetrievalMethod/&gt; node <tt class="PARAMETER"><i>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:dsig:Transforms/&gt; node or
+<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created <a href="http://www.w3.org/TR/xmldsig-core/#sec_dsig:Transforms" target="_top">&lt;dsig:dsig:Transforms/&gt;</a> node or
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -960,7 +960,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8248"></a><h3>
+<a name="AEN8512"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDENCRYPTEDKEY"></a>xmlSecTmplKeyInfoAddEncryptedKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddEncryptedKey
                                             (<font>xmlNodePtr</font> keyInfoNode,
@@ -968,16 +968,16 @@ NULL if an error occurs.</td>
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *type,
                                              const <font>xmlChar</font> *recipient);</pre></td></tr></table>
-<p>Adds &lt;enc:EncryptedKey/&gt; node with given attributes to 
-the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
+<p>Adds <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node with given attributes to 
+the <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8261"></a><p></p>
+<a name="AEN8527"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:KeyInfo/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1002,7 +1002,7 @@ the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;enc:EncryptedKey/&gt; node or
+<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node or
 NULL if an error occurs.</td>
 </tr>
 </tbody></table>
@@ -1011,21 +1011,21 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8290"></a><h3>
+<a name="AEN8558"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDHMACOUTPUTLENGTH"></a>xmlSecTmplTransformAddHmacOutputLength ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddHmacOutputLength
                                             (<font>xmlNodePtr</font> transformNode,
                                              <font>size_t</font> bitsLen);</pre></td></tr></table>
-<p>Creates &lt;dsig:HMACOutputLength&gt;child for the HMAC transform 
+<p>Creates <a href="http://www.w3.org/TR/xmldsig-core/#sec_HMACOutputLength" target="_top">&lt;dsig:HMACOutputLength/&gt;</a> child for the HMAC transform 
 node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8299"></a><p></p>
+<a name="AEN8568"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:Transform/&gt; node</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1043,21 +1043,21 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8316"></a><h3>
+<a name="AEN8586"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDRSAOAEPPARAM"></a>xmlSecTmplTransformAddRsaOaepParam ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddRsaOaepParam
                                             (<font>xmlNodePtr</font> transformNode,
                                              unsigned char *buf,
                                              <font>size_t</font> size);</pre></td></tr></table>
-<p>Creates &lt;enc:OAEPParam/&gt; child node in the <tt class="PARAMETER"><i>node</i></tt>.</p>
+<p>Creates <a href="http://www.w3.org/TR/xmlenc-core/#sec_OAEPParam" target="_top">&lt;enc:OAEPParam/&gt;</a> child node in the <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8325"></a><p></p>
+<a name="AEN8596"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:Transform/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1080,7 +1080,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8346"></a><h3>
+<a name="AEN8618"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXSLTSTYLESHEET"></a>xmlSecTmplTransformAddXsltStylesheet ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXsltStylesheet
                                             (<font>xmlNodePtr</font> transformNode,
@@ -1088,12 +1088,12 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p>Writes the XSLT transform expression to the <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8355"></a><p></p>
+<a name="AEN8627"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:Transform/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1111,7 +1111,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8372"></a><h3>
+<a name="AEN8645"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDC14NINCLNAMESPACES"></a>xmlSecTmplTransformAddC14NInclNamespaces ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddC14NInclNamespaces
                                             (<font>xmlNodePtr</font> transformNode,
@@ -1119,12 +1119,12 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p>Adds &quot;inclusive&quot; namespaces to the ExcC14N transform node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8381"></a><p></p>
+<a name="AEN8654"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to &lt;dsig:Transform/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1144,21 +1144,21 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8399"></a><h3>
+<a name="AEN8673"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXPATH"></a>xmlSecTmplTransformAddXPath ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXPath     (<font>xmlNodePtr</font> transformNode,
                                              const <font>xmlChar</font> *expression,
                                              const <font>xmlChar</font> **nsList);</pre></td></tr></table>
-<p>Writes XPath transform infromation to the &lt;dsig:Transform/&gt; node 
+<p>Writes XPath transform infromation to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node 
 <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8409"></a><p></p>
+<a name="AEN8684"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to the &lt;dsig:Transform/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1182,22 +1182,22 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8430"></a><h3>
+<a name="AEN8706"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXPATH2"></a>xmlSecTmplTransformAddXPath2 ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXPath2    (<font>xmlNodePtr</font> transformNode,
                                              const <font>xmlChar</font> *type,
                                              const <font>xmlChar</font> *expression,
                                              const <font>xmlChar</font> **nsList);</pre></td></tr></table>
-<p>Writes XPath2 transform infromation to the &lt;dsig:Transform/&gt; node 
+<p>Writes XPath2 transform infromation to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node 
 <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8441"></a><p></p>
+<a name="AEN8718"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to the &lt;dsig:Transform/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1226,21 +1226,21 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN8466"></a><h3>
+<a name="AEN8744"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXPOINTER"></a>xmlSecTmplTransformAddXPointer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXPointer  (<font>xmlNodePtr</font> transformNode,
                                              const <font>xmlChar</font> *expression,
                                              const <font>xmlChar</font> **nsList);</pre></td></tr></table>
-<p>Writes XPoniter transform infromation to the &lt;dsig:Transform/&gt; node 
+<p>Writes XPoniter transform infromation to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node 
 <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN8476"></a><p></p>
+<a name="AEN8755"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>transformNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 	the pointer to the &lt;dsig:Transform/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the pointer to the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

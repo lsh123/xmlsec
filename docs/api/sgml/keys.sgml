@@ -61,6 +61,8 @@ void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>  
 int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             const char *filename);
 #define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
 #define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
 #define     <link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link>
@@ -692,6 +694,28 @@ key type is <parameter>type</parameter>).</para>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the key satisfies the given criteria or 0 otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadBinaryFile        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             const char *filename);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

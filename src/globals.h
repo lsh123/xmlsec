@@ -1,7 +1,7 @@
 /*
- * XML Security Library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * globals.h: internal header only used during the compilation
+ * Internal header only used during the compilation,
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -16,4 +16,4 @@
 
 #define IN_XMLSEC
 
-#endif /* ! __XMLSEC_GLOBALS_H__ */
+#endif /* __XMLSEC_GLOBALS_H__ */

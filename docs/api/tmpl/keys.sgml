@@ -293,6 +293,16 @@ keys
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecKeyReadBinaryFile ##### -->
+<para>
+
+</para>
+
+@dataId: 
+@filename: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecKeyIsValid ##### -->
 <para>
 

@@ -16,6 +16,7 @@
 
 int         <link linkend="xmlSecNssInit">xmlSecNssInit</link>                   (void);
 int         <link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link>               (void);
+int         <link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link>           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link>         (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
                                              <link linkend="size-t">size_t</link> sizeBytes);
 #define     <link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link>
@@ -81,6 +82,10 @@ int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</lin
 <refsect2>
 <title><anchor id="xmlSecNssShutdown">xmlSecNssShutdown ()</title>
 <programlisting>int         xmlSecNssShutdown               (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit ()</title>
+<programlisting>int         xmlSecNssKeysMngrInit           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom ()</title>

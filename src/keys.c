@@ -697,10 +697,10 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 
 /**
  * xmlSecKeysMngrGetKey:
- * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @keyInfoNode: the pointer to <dsig:KeyInfo/> node.
  * @keyInfoCtx: 
  * 
- * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
+ * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
  *
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.

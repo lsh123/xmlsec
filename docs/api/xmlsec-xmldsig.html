@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-XMLDSIG"></a>xmldsig</h1>
 <div class="REFNAMEDIV">
-<a name="AEN11570"></a><h2>Name</h2>xmldsig -- </div>
+<a name="AEN11862"></a><h2>Name</h2>xmldsig -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN11573"></a><h2>Synopsis</h2>
+<a name="AEN11865"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS">xmlSecDSigStatus</a>;
@@ -93,13 +93,13 @@ void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDEBUGXMLDUMP">xml
                                             (void);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN11636"></a><h2>Description</h2>
+<a name="AEN11928"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN11639"></a><h2>Details</h2>
+<a name="AEN11931"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN11641"></a><h3>
+<a name="AEN11933"></a><h3>
 <a name="XMLSECDSIGSTATUS"></a>enum xmlSecDSigStatus</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlSecDSigStatusUnknown = 0,
@@ -109,7 +109,7 @@ void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDEBUGXMLDUMP">xml
 <p>XML Digital signature processing status.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11647"></a><p></p>
+<a name="AEN11939"></a><p></p>
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecDSigStatusUnknown</tt></td>
@@ -129,42 +129,42 @@ void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDEBUGXMLDUMP">xml
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11664"></a><h3>
+<a name="AEN11956"></a><h3>
 <a name="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS-CAPS"></a>XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS			0x00000001</pre></td></tr></table>
-<p>If this flag is set then &lt;dsig:Manifests/&gt; nodes will not be processed.</p>
+<p>If this flag is set then <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifests" target="_top">&lt;dsig:Manifests/&gt;</a> nodes will not be processed.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11670"></a><h3>
+<a name="AEN11963"></a><h3>
 <a name="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS"></a>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES		0x00000002</pre></td></tr></table>
-<p>If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
-of &lt;dsig:KeyInfo/&gt; element will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>.</p>
+<p>If this flag is set then pre-digest buffer for <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> child
+of <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> element will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11677"></a><h3>
+<a name="AEN11972"></a><h3>
 <a name="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS"></a>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES		0x00000004</pre></td></tr></table>
-<p>If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
-of &lt;dsig:Manifest/&gt; element will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>.</p>
+<p>If this flag is set then pre-digest buffer for <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> child
+of <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> element will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11684"></a><h3>
+<a name="AEN11981"></a><h3>
 <a name="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS"></a>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE			0x00000008</pre></td></tr></table>
-<p>If this flag is set then pre-signature buffer for &lt;dsig:SignedInfo/&gt;
+<p>If this flag is set then pre-signature buffer for <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a>
 element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11691"></a><h3>
+<a name="AEN11989"></a><h3>
 <a name="XMLSECDSIGCTX"></a>struct xmlSecDSigCtx</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecDSigCtx {
     /* these data user can set before performing the operation */
@@ -201,7 +201,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <p>XML DSig processing context.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11697"></a><p></p>
+<a name="AEN11995"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>userData</i></tt>
@@ -235,25 +235,25 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a> <tt class="STRUCTFIELD"><i>transformCtx</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the &lt;dsig:SignedInfo/&gt; node processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> node processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMURITYPE">xmlSecTransformUriType</a> <tt class="STRUCTFIELD"><i>enabledReferenceUris</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">	the URI types allowed for &lt;dsig:Reference/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">	the URI types allowed for <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecPtrListPtr</font> <tt class="STRUCTFIELD"><i>enabledReferenceTransforms</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">	the list of transforms allowed in &lt;dsig:Reference/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">	the list of transforms allowed in <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREEXECUTECALLBACK">xmlSecTransformCtxPreExecuteCallback</a> <tt class="STRUCTFIELD"><i>referencePreExecuteCallback</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">the callback for &lt;dsig:Reference/&gt; node processing.</td>
+<td width="80%" align="LEFT" valign="TOP">the callback for <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node processing.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -297,7 +297,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS">xmlSecDSigStatus</a> <tt class="STRUCTFIELD"><i>status</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the &lt;dsig:Signatuire/&gt; procesisng status.</td>
+<td width="80%" align="LEFT" valign="TOP">			the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signatuire" target="_top">&lt;dsig:Signatuire/&gt;</a> procesisng status.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -322,25 +322,25 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>signValueNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;dsig:SignatureValue/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>id</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">				the pointer to Id attribute of &lt;dsig:Signature/&gt; node.</td>
+<td width="80%" align="LEFT" valign="TOP">				the pointer to Id attribute of <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <tt class="STRUCTFIELD"><i>signedInfoReferences</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">	the list of references in &lt;dsig:SignedInfo/&gt; node.		</td>
+<td width="80%" align="LEFT" valign="TOP">	the list of references in <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> node.		</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <tt class="STRUCTFIELD"><i>manifestReferences</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the list of references in &lt;dsig:Manifest/&gt; nodes.</td>
+<td width="80%" align="LEFT" valign="TOP">		the list of references in <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> nodes.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
@@ -358,12 +358,12 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11826"></a><h3>
+<a name="AEN12133"></a><h3>
 <a name="XMLSECDSIGCTXCREATE"></a>xmlSecDSigCtxCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecDSigCtxPtr</font> xmlSecDSigCtxCreate        (<font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11833"></a><p></p>
+<a name="AEN12140"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -381,12 +381,12 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11846"></a><h3>
+<a name="AEN12153"></a><h3>
 <a name="XMLSECDSIGCTXDESTROY"></a>xmlSecDSigCtxDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDestroy            (<font>xmlSecDSigCtxPtr</font> dsigCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11852"></a><p></p>
+<a name="AEN12159"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>dsigCtx</i></tt> :</td>
@@ -397,13 +397,13 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11861"></a><h3>
+<a name="AEN12168"></a><h3>
 <a name="XMLSECDSIGCTXINITIALIZE"></a>xmlSecDSigCtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxInitialize         (<font>xmlSecDSigCtxPtr</font> dsigCtx,
                                              <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11868"></a><p></p>
+<a name="AEN12175"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -426,12 +426,12 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11885"></a><h3>
+<a name="AEN12192"></a><h3>
 <a name="XMLSECDSIGCTXFINALIZE"></a>xmlSecDSigCtxFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxFinalize           (<font>xmlSecDSigCtxPtr</font> dsigCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11891"></a><p></p>
+<a name="AEN12198"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>dsigCtx</i></tt> :</td>
@@ -442,13 +442,13 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11900"></a><h3>
+<a name="AEN12207"></a><h3>
 <a name="XMLSECDSIGCTXSIGN"></a>xmlSecDSigCtxSign ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxSign               (<font>xmlSecDSigCtxPtr</font> dsigCtx,
                                              <font>xmlNodePtr</font> tmpl);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11907"></a><p></p>
+<a name="AEN12214"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -471,13 +471,13 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11924"></a><h3>
+<a name="AEN12231"></a><h3>
 <a name="XMLSECDSIGCTXVERIFY"></a>xmlSecDSigCtxVerify ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxVerify             (<font>xmlSecDSigCtxPtr</font> dsigCtx,
                                              <font>xmlNodePtr</font> node);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11931"></a><p></p>
+<a name="AEN12238"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -500,12 +500,12 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11948"></a><h3>
+<a name="AEN12255"></a><h3>
 <a name="XMLSECDSIGCTXPRESIGNBUFFER"></a>xmlSecDSigCtxPreSignBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecDSigCtxPreSignBuffer  (<font>xmlSecDSigCtxPtr</font> dsigCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11955"></a><p></p>
+<a name="AEN12262"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -523,13 +523,13 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11968"></a><h3>
+<a name="AEN12275"></a><h3>
 <a name="XMLSECDSIGCTXDEBUGDUMP"></a>xmlSecDSigCtxDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDebugDump          (<font>xmlSecDSigCtxPtr</font> dsigCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11975"></a><p></p>
+<a name="AEN12282"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -547,13 +547,13 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11988"></a><h3>
+<a name="AEN12295"></a><h3>
 <a name="XMLSECDSIGCTXDEBUGXMLDUMP"></a>xmlSecDSigCtxDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDebugXmlDump       (<font>xmlSecDSigCtxPtr</font> dsigCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11995"></a><p></p>
+<a name="AEN12302"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -571,17 +571,17 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12008"></a><h3>
+<a name="AEN12315"></a><h3>
 <a name="XMLSECDSIGREFERENCEORIGIN"></a>enum xmlSecDSigReferenceOrigin</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum  {
     xmlSecDSigReferenceOriginSignedInfo,
     xmlSecDSigReferenceOriginManifest
 } xmlSecDSigReferenceOrigin;</pre></td></tr></table>
-<p>The possible &lt;dsig:Reference/&gt; node locations: in the &lt;dsig:SignedInfo/&gt; 
-node or in the &lt;dsig:Manifest/&gt; node.</p>
+<p>The possible <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node locations: in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> 
+node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12014"></a><p></p>
+<a name="AEN12324"></a><p></p>
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecDSigReferenceOriginSignedInfo</tt></td>
@@ -597,7 +597,7 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12027"></a><h3>
+<a name="AEN12337"></a><h3>
 <a name="XMLSECDSIGREFERENCECTX"></a>struct xmlSecDSigReferenceCtx</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecDSigReferenceCtx {
     xmlSecDSigCtxPtr		dsigCtx;
@@ -616,22 +616,22 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
     void*			reserved0;
     void*			reserved1;    
 };</pre></td></tr></table>
-<p>The &lt;dsig:Reference/&gt; processing context.</p>
+<p>The <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> processing context.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12033"></a><p></p>
+<a name="AEN12344"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecDSigCtxPtr</font> <tt class="STRUCTFIELD"><i>dsigCtx</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the pointer to &quot;parent&quot; &lt;dsig:Signature/&gt; processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">			the pointer to &quot;parent&quot; <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> <tt class="STRUCTFIELD"><i>origin</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the signature origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt;).</td>
+<td width="80%" align="LEFT" valign="TOP">			the signature origin (<a href="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> or <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target="_top">&lt;dsig:Manifest/&gt;</a>).</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -670,19 +670,19 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>id</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">				the &lt;dsig:Reference/&gt; node ID attribute. </td>
+<td width="80%" align="LEFT" valign="TOP">				the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node ID attribute. </td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>uri</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the &lt;dsig:Reference/&gt; node URI attribute. </td>
+<td width="80%" align="LEFT" valign="TOP">			the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node URI attribute. </td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>type</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the &lt;dsig:Reference/&gt; node Type attribute. </td>
+<td width="80%" align="LEFT" valign="TOP">			the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node Type attribute. </td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
@@ -700,14 +700,14 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12098"></a><h3>
+<a name="AEN12415"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXCREATE"></a>xmlSecDSigReferenceCtxCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecDSigReferenceCtxPtr</font> xmlSecDSigReferenceCtxCreate
                                             (<font>xmlSecDSigCtxPtr</font> dsigCtx,
                                              <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> origin);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12106"></a><p></p>
+<a name="AEN12423"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -730,12 +730,12 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12123"></a><h3>
+<a name="AEN12440"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXDESTROY"></a>xmlSecDSigReferenceCtxDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDestroy   (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12129"></a><p></p>
+<a name="AEN12446"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>dsigRefCtx</i></tt> :</td>
@@ -746,7 +746,7 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12138"></a><h3>
+<a name="AEN12455"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXINITIALIZE"></a>xmlSecDSigReferenceCtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigReferenceCtxInitialize
                                             (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
@@ -754,7 +754,7 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
                                              <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> origin);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12146"></a><p></p>
+<a name="AEN12463"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -782,12 +782,12 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12167"></a><h3>
+<a name="AEN12484"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXFINALIZE"></a>xmlSecDSigReferenceCtxFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxFinalize  (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12173"></a><p></p>
+<a name="AEN12490"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>dsigRefCtx</i></tt> :</td>
@@ -798,7 +798,7 @@ node or in the &lt;dsig:Manifest/&gt; node.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12182"></a><h3>
+<a name="AEN12499"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXPROCESSNODE"></a>xmlSecDSigReferenceCtxProcessNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigReferenceCtxProcessNode
                                             (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
@@ -835,7 +835,7 @@ DTD:
 		Type    CDATA   <font>IMPLIED</font>&gt;</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12197"></a><p></p>
+<a name="AEN12514"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -858,13 +858,13 @@ DTD:
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12214"></a><h3>
+<a name="AEN12531"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXPREDIGESTBUFFER"></a>xmlSecDSigReferenceCtxPreDigestBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecDSigReferenceCtxPreDigestBuffer
                                             (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12221"></a><p></p>
+<a name="AEN12538"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -882,13 +882,13 @@ DTD:
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12234"></a><h3>
+<a name="AEN12551"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXDEBUGDUMP"></a>xmlSecDSigReferenceCtxDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDebugDump (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12241"></a><p></p>
+<a name="AEN12558"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -906,14 +906,14 @@ DTD:
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12254"></a><h3>
+<a name="AEN12571"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXDEBUGXMLDUMP"></a>xmlSecDSigReferenceCtxDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDebugXmlDump
                                             (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12261"></a><p></p>
+<a name="AEN12578"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -931,7 +931,7 @@ DTD:
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12274"></a><h3>
+<a name="AEN12591"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXLISTID"></a>xmlSecDSigReferenceCtxListId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecDSigReferenceCtxListId</pre></td></tr></table>
 <p>The references list klass.</p>
@@ -939,13 +939,13 @@ DTD:
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN12280"></a><h3>
+<a name="AEN12597"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXLISTGETKLASS"></a>xmlSecDSigReferenceCtxListGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecDSigReferenceCtxListGetKlass
                                             (void);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN12286"></a><p></p>
+<a name="AEN12603"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>

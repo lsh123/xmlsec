@@ -76,12 +76,12 @@ The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
 <tbody>
 <row>
 <entry><literal>xmlEncCtxModeEncryptedData</literal></entry>
-<entry>	the &lt;enc:EncryptedData/&gt; element procesing.
+<entry>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element procesing.
 </entry>
 </row>
 <row>
 <entry><literal>xmlEncCtxModeEncryptedKey</literal></entry>
-<entry>	the &lt;enc:EncryptedKey/&gt; element processing.
+<entry>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -173,7 +173,7 @@ XML Encrypiton context.</para>
 <row>
 <entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>defEncMethodId</structfield></entry>
 <entry>		the default encryption method (used if
-			&lt;enc:EncryptionMethod/&gt; node is not present).
+			<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node is not present).
 </entry>
 </row>
 <row>
@@ -199,8 +199,8 @@ XML Encrypiton context.</para>
 </row>
 <row>
 <entry>int <structfield>resultReplaced</structfield></entry>
-<entry>		the flag: if set then resulted &lt;enc:EncryptedData/&gt;
-			or &lt;enc:EncryptedKey/&gt; node is added to the document.
+<entry>		the flag: if set then resulted <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node is added to the document.
 </entry>
 </row>
 <row>
@@ -210,57 +210,57 @@ XML Encrypiton context.</para>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry>				the ID attribute of &lt;enc:EncryptedData/&gt;
-			or &lt;enc:EncryptedKey/&gt; node.
+<entry>				the ID attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></entry>
-<entry>			the Type attribute of &lt;enc:EncryptedData/&gt;
-			or &lt;enc:EncryptedKey/&gt; node.
+<entry>			the Type attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>mimeType</structfield></entry>
-<entry>			the MimeType attribute of &lt;enc:EncryptedData/&gt;
-			or &lt;enc:EncryptedKey/&gt; node.
+<entry>			the MimeType attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>encoding</structfield></entry>
-<entry>			the Encoding attributeof &lt;enc:EncryptedData/&gt;
-			or &lt;enc:EncryptedKey/&gt; node. 
+<entry>			the Encoding attributeof <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node. 
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>recipient</structfield></entry>
-<entry>			the Recipient attribute of &lt;enc:EncryptedKey/&gt; node..
+<entry>			the Recipient attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node..
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>carriedKeyName</structfield></entry>
-<entry>		the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node.
+<entry>		the CarriedKeyName attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>encDataNode</structfield></entry>
-<entry>		the pointer to &lt;enc:EncryptedData/&gt;
-			or &lt;enc:EncryptedKey/&gt; node.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>encMethodNode</structfield></entry>
-<entry>		the pointer to &lt;enc:EncryptionMethod/&gt; node.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>keyInfoNode</structfield></entry>
-<entry>		the pointer to &lt;enc:KeyInfo/&gt; node.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_KeyInfo">&lt;enc:KeyInfo/&gt;</ulink> node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>cipherValueNode</structfield></entry>
-<entry>		the pointer to &lt;enc:CipherValue/&gt; node.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_CipherValue">&lt;enc:CipherValue/&gt;</ulink> node.
 </entry>
 </row>
 <row>

@@ -65,10 +65,13 @@ base64
 
 @ctx: 
 @in: 
-@inLen: 
+@inSize: 
 @out: 
-@outLen: 
+@outSize: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@outLen: 
+@inLen: 
 
 
 <!-- ##### FUNCTION xmlSecBase64CtxFinal ##### -->
@@ -78,8 +81,10 @@ base64
 
 @ctx: 
 @out: 
-@outLen: 
+@outSize: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@outLen: 
 
 
 <!-- ##### FUNCTION xmlSecBase64Encode ##### -->

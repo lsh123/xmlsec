@@ -100,8 +100,12 @@
 <listitem><para><link linkend="xmlSecCryptoAppSimpleKeysMngrLoad">xmlSecCryptoAppSimpleKeysMngrLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecCryptoAppSimpleKeysMngrSave">xmlSecCryptoAppSimpleKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecCryptoAppSimpleKeysMngrSave">xmlSecCryptoAppSimpleKeysMngrSave</link></para></listitem>
+<listitem><para><link linkend="xmlSecCryptoGenerateRandom">xmlSecCryptoGenerateRandom</link></para></listitem>
+<listitem><para><link linkend="xmlSecCryptoGenerateRandom">xmlSecCryptoGenerateRandom</link></para></listitem>
 <listitem><para><link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link></para></listitem>
@@ -356,6 +360,8 @@
 <listitem><para><link linkend="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link></para></listitem>
+<listitem><para><link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass</link></para></listitem>
@@ -868,6 +874,8 @@
 <listitem><para><link linkend="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformAes128CbcGetKlass">xmlSecNssTransformAes128CbcGetKlass</link></para></listitem>
@@ -1008,6 +1016,8 @@
 <listitem><para><link linkend="xmlSecOpenSSLKeyDataX509GetKlass">xmlSecOpenSSLKeyDataX509GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue</link></para></listitem>

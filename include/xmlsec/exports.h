@@ -1,6 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Export macro declarations for Win32 platform.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

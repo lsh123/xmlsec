@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Crypto engine selector
+ * Crypto engine selection.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

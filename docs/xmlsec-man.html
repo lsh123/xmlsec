@@ -1,1 +1,225 @@
- <HTML><HEAD><TITLE>Manpage of XMLSEC</TITLE> </HEAD><BODY> <H1>XMLSEC</H1> Section:  User Commands  ( 1 )<BR>Updated: March 2003<BR><A HREF="#index">Index</A> <A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>  <A NAME="lbAB">&nbsp;</A> <H2>NAME</H2>  xmlsec - manual page for xmlsec 0.2.0-openssl <A NAME="lbAC">&nbsp;</A> <H2>SYNOPSIS</H2>  <B>xmlsec</B>  <I>&lt;command&gt; </I>[<I>&lt;options&gt;</I>] [<I>&lt;file&gt;</I>] <A NAME="lbAD">&nbsp;</A> <H2>DESCRIPTION</H2>  xmlsec is a command line tool for singining, verifying, encrypting and decrypting XML documents. The allowed &lt;command&gt; values are: <DL COMPACT> <DT><B>--help</B><DD> display this help information and exit <DT><B>--help-all</B><DD> display help information for all commands/options and exit <DT><B>--help-</B>&lt;cmd&gt;<DD> display help information for command &lt;cmd&gt; and exit <DT><B>--version</B><DD> print version information and exit <DT><B>--keys</B><DD> keys XML file manipulation <DT><B>--sign</B><DD> sign data and output XML document <DT><B>--verify</B><DD> verify signed document <DT><B>--sign-tmpl</B><DD> create and sign dynamicaly generated signature template <DT><B>--encrypt</B><DD> encrypt data and output XML document <DT><B>--decrypt</B><DD> decrypt data from XML document </DL> <A NAME="lbAE">&nbsp;</A> <H2>OPTIONS</H2>  <DL COMPACT> <DT> <B>--ignore-manifests</B> <DT><DD> <DD>do not process &lt;dsig:Manifest&gt; elements <DT> <B>--store-references</B> <DT><DD> <DD>store and print the result of &lt;dsig:Reference/&gt; element processing just before calculating digest <DT> <B>--store-signatures</B> <DT><DD> <DD>store and print the result of &lt;dsig:Signature&gt; processing just before calculating signature <DT> <B>--enabled-reference-uris</B> &lt;list&gt; <DT><DD> <DD>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;dsig:Reference&gt; element <DT> <B>--binary-data</B> &lt;file&gt; <DT><DD> <DD>binary &lt;file&gt; to encrypt <DT> <B>--xml-data</B> &lt;file&gt; <DT><DD> <DD>XML &lt;file&gt; to encrypt <DT> <B>--enabled-cipher-reference-uris</B> &lt;list&gt; <DT><DD> <DD>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;enc:CipherReference&gt; element <DT> <B>--session-key</B> &lt;keyKlass&gt;-&lt;keySize&gt; <DT><DD> <DD>generate new session &lt;keyKlass&gt; key of &lt;keySize&gt; bits size (for example, &quot;--session des-192&quot; generates a new 192 bits DES key for DES3 encryption) <DT> <B>--output</B> &lt;filename&gt; <DT><DD> <DD>write result document to file &lt;filename&gt; <DT> <B>--print-debug</B> <DT><DD> <DD>print debug information to stdout <DT> <B>--print-xml-debug</B> <DT><DD> <DD>print debug information to stdout in xml format <DT> <B>--dtd-file</B> &lt;file&gt; <DT><DD> <DD>load the specified file as the DTD <DT> <B>--node-id</B> &lt;id&gt; <DT><DD> <DD>set the operation start point to the node with given &lt;id&gt; <DT> <B>--node-name</B> [&lt;namespace-uri&gt;:]&lt;name&gt; <DT><DD> <DD>set the operation start point to the first node with given &lt;name&gt; and &lt;namespace&gt; URI <DT> <B>--node-xpath</B> &lt;expr&gt; <DT><DD> <DD>set the operation start point to the first node selected by the specified XPath expression <DT> <B>--enabled-key-data</B> &lt;list&gt; <DT><DD> <DD>comma separated list of enabled key data (list of registered key data klasses is available with &quot;--list-key-data&quot; command); by default, all registered key data are enabled <DT> <B>--enabled-retrieval-uris</B> &lt;list&gt; <DT><DD> <DD>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;dsig:RetrievalMethod&gt; element. <DT> <B>--gen-key[</B>:&lt;name&gt;] &lt;keyKlass&gt;-&lt;keySize&gt; <DT><DD> <DD>generate new &lt;keyKlass&gt; key of &lt;keySize&gt; bits size, set the key name to &lt;name&gt; and add the result to keys manager (for example, &quot;--gen:mykey rsa-1024&quot; generates a new 1024 bits RSA key and sets it's name to &quot;mykey&quot;) <DT> <B>--keys-file</B> &lt;file&gt; <DT><DD> <DD>load keys from XML file <DT> <B>--privkey[</B>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <DT><DD> <DD>load private key from PEM file and certificates that verify this key <DT> <B>--pubkey[</B>:&lt;name&gt;] &lt;file&gt; <DT><DD> <DD>load public key from PEM file <DT> <B>--aeskey[</B>:&lt;name&gt;] &lt;file&gt; <DT><DD> <DD>load AES key from binary file &lt;file&gt; <DT> <B>--deskey[</B>:&lt;name&gt;] &lt;file&gt; <DT><DD> <DD>load DES key from binary file &lt;file&gt; <DT> <B>--hmackey[</B>:&lt;name&gt;] &lt;file&gt; <DT><DD> <DD>load HMAC key from binary file &lt;file&gt; <DT> <B>--pwd</B> &lt;password&gt; <DT><DD> <DD>the password to use for reading keys and certs <DT> <B>--crypto-config</B> <DT><DD> <DD>path to crypto engine configuration <DT> <B>--repeat</B> &lt;number&gt; <DT><DD> <DD>repeat the operation &lt;number&gt; times <DT> <B>--disable-error-msgs</B> <DT><DD> <DD>do not print xmlsec error messages <DT> <B>--print-crypto-error-msgs</B> <DT><DD> <DD>print openssl errors stack at the end <DT> <B>--help</B> <DT><DD> <DD>print help information about the command </DL> <A NAME="lbAF">&nbsp;</A> <H2>AUTHOR</H2>  Written by Aleksey Sanin &lt;<A HREF="mailto:aleksey@aleksey.com">aleksey@aleksey.com</A>&gt;. <A NAME="lbAG">&nbsp;</A> <H2>REPORTING BUGS</H2>  Report bugs to <A HREF="http://www.aleksey.com/xmlsec/bugs.html">http://www.aleksey.com/xmlsec/bugs.html</A> <A NAME="lbAH">&nbsp;</A> <H2>COPYRIGHT</H2>  Copyright &#169; 2002-2003 Aleksey Sanin. <BR>  This is free software: see the source for copying information. <A NAME="lbAI">&nbsp;</A> <H2>SEE ALSO</H2>  The full documentation for <B>xmlsec</B>  is maintained as a Texinfo manual.  If the <B>info</B>  and <B>xmlsec</B>  programs are properly installed at your site, the command <DL COMPACT> <DT><DD> <B>info xmlsec</B>  </DL> <P>  should give you access to the complete manual. <P>  <HR> <A NAME="index">&nbsp;</A><H2>Index</H2> <DL> <DT><A HREF="#lbAB">NAME</A><DD> <DT><A HREF="#lbAC">SYNOPSIS</A><DD> <DT><A HREF="#lbAD">DESCRIPTION</A><DD> <DT><A HREF="#lbAE">OPTIONS</A><DD> <DT><A HREF="#lbAF">AUTHOR</A><DD> <DT><A HREF="#lbAG">REPORTING BUGS</A><DD> <DT><A HREF="#lbAH">COPYRIGHT</A><DD> <DT><A HREF="#lbAI">SEE ALSO</A><DD> </DL> <HR> This document was created by <A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>, using the manual pages.<BR> Time: 09:23:06 GMT, March 26, 2003 </BODY> </HTML> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Manpage of XMLSEC</title>
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<li><a href="c14n.html">XML Canonicalization</a></li>
+<li><a href="bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<h1>XMLSEC</h1>
+<p> Section:  User Commands  ( 1 )<br>Updated: March 2003<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a>
+</p>
+<hr>
+<a name="lbAB"> </a><h2>NAME</h2>
+<p>  xmlsec - manual page for xmlsec 0.2.0-openssl <a name="lbAC"> </a> </p>
+<h2>SYNOPSIS</h2>
+<b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;file&gt;</i>] <a name="lbAD"> </a> </p>
+<h2>DESCRIPTION</h2>
+<p>  xmlsec is a command line tool for singining, verifying, encrypting and decrypting XML documents. The allowed &lt;command&gt; values are: </p>
+<dl compact>
+<dt><b>--help</b></dt>
+<dd> display this help information and exit </dd>
+<dt><b>--help-all</b></dt>
+<dd> display help information for all commands/options and exit </dd>
+<dt>
+<b>--help-</b>&lt;cmd&gt;</dt>
+<dd> display help information for command &lt;cmd&gt; and exit </dd>
+<dt><b>--version</b></dt>
+<dd> print version information and exit </dd>
+<dt><b>--keys</b></dt>
+<dd> keys XML file manipulation </dd>
+<dt><b>--sign</b></dt>
+<dd> sign data and output XML document </dd>
+<dt><b>--verify</b></dt>
+<dd> verify signed document </dd>
+<dt><b>--sign-tmpl</b></dt>
+<dd> create and sign dynamicaly generated signature template </dd>
+<dt><b>--encrypt</b></dt>
+<dd> encrypt data and output XML document </dd>
+<dt><b>--decrypt</b></dt>
+<dd> decrypt data from XML document </dd>
+</dl>
+<a name="lbAE"> </a><h2>OPTIONS</h2>
+<dl compact>
+<dt> <b>--ignore-manifests</b> <dt></dt>
+</dt>
+<dd> <dd>do not process &lt;dsig:Manifest&gt; elements </dd>
+</dd>
+<dt> <b>--store-references</b> <dt></dt>
+</dt>
+<dd> <dd>store and print the result of &lt;dsig:Reference/&gt; element processing just before calculating digest </dd>
+</dd>
+<dt> <b>--store-signatures</b> <dt></dt>
+</dt>
+<dd> <dd>store and print the result of &lt;dsig:Signature&gt; processing just before calculating signature </dd>
+</dd>
+<dt> <b>--enabled-reference-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;dsig:Reference&gt; element </dd>
+</dd>
+<dt> <b>--binary-data</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>binary &lt;file&gt; to encrypt </dd>
+</dd>
+<dt> <b>--xml-data</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>XML &lt;file&gt; to encrypt </dd>
+</dd>
+<dt> <b>--enabled-cipher-reference-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;enc:CipherReference&gt; element </dd>
+</dd>
+<dt> <b>--session-key</b> &lt;keyKlass&gt;-&lt;keySize&gt; <dt></dt>
+</dt>
+<dd> <dd>generate new session &lt;keyKlass&gt; key of &lt;keySize&gt; bits size (for example, &quot;--session des-192&quot; generates a new 192 bits DES key for DES3 encryption) </dd>
+</dd>
+<dt> <b>--output</b> &lt;filename&gt; <dt></dt>
+</dt>
+<dd> <dd>write result document to file &lt;filename&gt; </dd>
+</dd>
+<dt> <b>--print-debug</b> <dt></dt>
+</dt>
+<dd> <dd>print debug information to stdout </dd>
+</dd>
+<dt> <b>--print-xml-debug</b> <dt></dt>
+</dt>
+<dd> <dd>print debug information to stdout in xml format </dd>
+</dd>
+<dt> <b>--dtd-file</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load the specified file as the DTD </dd>
+</dd>
+<dt> <b>--node-id</b> &lt;id&gt; <dt></dt>
+</dt>
+<dd> <dd>set the operation start point to the node with given &lt;id&gt; </dd>
+</dd>
+<dt> <b>--node-name</b> [&lt;namespace-uri&gt;:]&lt;name&gt; <dt></dt>
+</dt>
+<dd> <dd>set the operation start point to the first node with given &lt;name&gt; and &lt;namespace&gt; URI </dd>
+</dd>
+<dt> <b>--node-xpath</b> &lt;expr&gt; <dt></dt>
+</dt>
+<dd> <dd>set the operation start point to the first node selected by the specified XPath expression </dd>
+</dd>
+<dt> <b>--enabled-key-data</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of enabled key data (list of registered key data klasses is available with &quot;--list-key-data&quot; command); by default, all registered key data are enabled </dd>
+</dd>
+<dt> <b>--enabled-retrieval-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;dsig:RetrievalMethod&gt; element. </dd>
+</dd>
+<dt> <b>--gen-key[</b>:&lt;name&gt;] &lt;keyKlass&gt;-&lt;keySize&gt; <dt></dt>
+</dt>
+<dd> <dd>generate new &lt;keyKlass&gt; key of &lt;keySize&gt; bits size, set the key name to &lt;name&gt; and add the result to keys manager (for example, &quot;--gen:mykey rsa-1024&quot; generates a new 1024 bits RSA key and sets it's name to &quot;mykey&quot;) </dd>
+</dd>
+<dt> <b>--keys-file</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load keys from XML file </dd>
+</dd>
+<dt> <b>--privkey[</b>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <dt></dt>
+</dt>
+<dd> <dd>load private key from PEM file and certificates that verify this key </dd>
+</dd>
+<dt> <b>--pubkey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load public key from PEM file </dd>
+</dd>
+<dt> <b>--aeskey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load AES key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--deskey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load DES key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--hmackey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load HMAC key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--pwd</b> &lt;password&gt; <dt></dt>
+</dt>
+<dd> <dd>the password to use for reading keys and certs </dd>
+</dd>
+<dt> <b>--crypto-config</b> <dt></dt>
+</dt>
+<dd> <dd>path to crypto engine configuration </dd>
+</dd>
+<dt> <b>--repeat</b> &lt;number&gt; <dt></dt>
+</dt>
+<dd> <dd>repeat the operation &lt;number&gt; times </dd>
+</dd>
+<dt> <b>--disable-error-msgs</b> <dt></dt>
+</dt>
+<dd> <dd>do not print xmlsec error messages </dd>
+</dd>
+<dt> <b>--print-crypto-error-msgs</b> <dt></dt>
+</dt>
+<dd> <dd>print openssl errors stack at the end </dd>
+</dd>
+<dt> <b>--help</b> <dt></dt>
+</dt>
+<dd> <dd>print help information about the command </dd>
+</dd>
+</dl>
+<a name="lbAF"> </a><h2>AUTHOR</h2>
+<p>  Written by Aleksey Sanin &lt;<a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a>&gt;. <a name="lbAG"> </a> </p>
+<h2>REPORTING BUGS</h2>
+<p>  Report bugs to <a href="http://www.aleksey.com/xmlsec/bugs.html">http://www.aleksey.com/xmlsec/bugs.html</a> <a name="lbAH"> </a> </p>
+<h2>COPYRIGHT</h2>
+<p>  Copyright © 2002-2003 Aleksey Sanin. <br>  This is free software: see the source for copying information. <a name="lbAI"> </a> </p>
+<h2>SEE ALSO</h2>
+<p>  The full documentation for <b>xmlsec</b>  is maintained as a Texinfo manual.  If the <b>info</b>  and <b>xmlsec</b>  programs are properly installed at your site, the command </p>
+<dl compact>
+<dt></dt>
+<dd> <b>info xmlsec</b>  </dd>
+</dl>
+<p>  should give you access to the complete manual. </p>
+<p>  </p>
+<hr>
+<a name="index"> </a><h2>Index</h2>
+<dl>
+<dt><a href="#lbAB">NAME</a></dt>
+<dd> </dd>
+<dt><a href="#lbAC">SYNOPSIS</a></dt>
+<dd> </dd>
+<dt><a href="#lbAD">DESCRIPTION</a></dt>
+<dd> </dd>
+<dt><a href="#lbAE">OPTIONS</a></dt>
+<dd> </dd>
+<dt><a href="#lbAF">AUTHOR</a></dt>
+<dd> </dd>
+<dt><a href="#lbAG">REPORTING BUGS</a></dt>
+<dd> </dd>
+<dt><a href="#lbAH">COPYRIGHT</a></dt>
+<dd> </dd>
+<dt><a href="#lbAI">SEE ALSO</a></dt>
+<dd> </dd>
+</dl>
+<hr>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 09:23:06 GMT, March 26, 2003 </p>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

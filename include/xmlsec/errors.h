@@ -1,6 +1,7 @@
 /** 
- * XMLSec library Error codes
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Error codes and error reporting functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -285,13 +286,15 @@ extern "C" {
  *******************************************************************/ 
 /**
  * xmlSecErrorsCallback:
- * @file: the error origin filename (__FILE__).
- * @line: the error origin line number (__LINE__).
- * @func: the error origin function (__FUNCTIION__).
- * @reason: the error code.
- * @msg: the error message.
+ * @file:		the error location file name (__FILE__ macro).
+ * @line:		the error location line number (__LINE__ macro).
+ * @func:		the error location function name (__FUNCTION__ macro).
+ * @errorObject:	the error specific error object 
+ * @errorSubject:	the error specific error subject.
+ * @reason:		the error code.
+ * @msg:		the additional error message.
  *
- * The errors reporting callback function typedef.
+ * The errors reporting callback function.
  */
 typedef void (*xmlSecErrorsCallback) 			(const char* file, 
 						         int line, 

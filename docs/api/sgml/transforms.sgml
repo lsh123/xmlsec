@@ -1259,7 +1259,7 @@ The transform structure.</para>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>hereNode</structfield></entry>
-<entry>		the pointer to transform's &lt;dsig:Transform /&gt; node.
+<entry>		the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Transform ">&lt;dsig:Transform /&gt;</ulink> node.
 </entry>
 </row>
 <row>
@@ -1357,7 +1357,7 @@ Reads transform from the <parameter>node</parameter> as follows:
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the pointer to the &lt;dsig:Transform&gt; node.
+<entry> the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
 <entry>
@@ -2196,7 +2196,7 @@ the <link linkend="node">node</link>.</para>
 <entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>			the pointer to &lt;dsig:Transform/&gt; node.
+<entry>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
 <entry>		the pointer to transform context object.
@@ -2223,7 +2223,7 @@ The transform specific method to write transform information to an XML node <lin
 <entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>			the pointer to &lt;dsig:Transform/&gt; node.
+<entry>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
 <entry>		the pointer to transform context object.
@@ -2792,15 +2792,20 @@ The base64 encode transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformBase64GetKlass
                                             (void);</programlisting>
 <para>
+The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64">sec-Base-64</link>).
+The normative specification for base64 decoding transforms is RFC 2045
+(http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has 
+no content. The input is decoded by the algorithms. This transform is 
+useful if an application needs to sign the raw data associated with 
+the encoded content of an element.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>base64 transform id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2809,7 +2814,7 @@ The base64 encode transform klass.</para>
                                             (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="size-t">size_t</link> lineSize);</programlisting>
 <para>
-Sets the max line size to <parameter>lineSize</parameter>.</para>
+Sets the max line size to <link linkend="lineSize">lineSize</link>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2818,10 +2823,10 @@ Sets the max line size to <parameter>lineSize</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to BASE64 encode transform.
+<entry> 		the pointer to BASE64 encode transform.
 </entry></row>
 <row><entry align="right"><parameter>lineSize</parameter>&nbsp;:</entry>
-<entry> the new max line size.
+<entry> 		the new max line size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2837,15 +2842,17 @@ The regular (inclusive) C14N without comments transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14NGetKlass
                                             (void);</programlisting>
 <para>
+Inclusive (regular) canonicalization that omits comments transform klass
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg">sec-c14nAlg</link> and 
+http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>c14n transform id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2861,15 +2868,17 @@ The regular (inclusive) C14N with comments transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14NWithCommentsGetKlass
                                             (void);</programlisting>
 <para>
+Inclusive (regular) canonicalization that includes comments transform klass
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg">sec-c14nAlg</link> and 
+http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>c14n with comments transform id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2885,15 +2894,16 @@ The exclusive C14N without comments transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformExclC14NGetKlass
                                             (void);</programlisting>
 <para>
+Exclusive canoncicalization that ommits comments transform klass
+(http://www.w3.org/TR/xml-exc-c14n/).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>exclusive c14n transform id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2909,15 +2919,16 @@ The exclusive C14N with comments transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformExclC14NWithCommentsGetKlass
                                             (void);</programlisting>
 <para>
+Exclusive canoncicalization that includes comments transform klass
+(http://www.w3.org/TR/xml-exc-c14n/).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>exclusive c14n with comments transform id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2931,7 +2942,7 @@ The exclusive C14N with comments transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformEnvelopedGetKlass
                                             (void);</programlisting>
 <para>
-http://www.w3.org/TR/xmldsig-core/<link linkend="sec-EnvelopedSignature">sec-EnvelopedSignature</link>
+The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-EnvelopedSignature">sec-EnvelopedSignature</link>):
 </para>
 <para>
 An enveloped signature transform T removes the whole Signature element 
@@ -2961,9 +2972,7 @@ parameterized by the XPath expression above.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>enveloped transform id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

@@ -233,7 +233,7 @@ The key data usage is unknown.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyInfoNodeRead		0x00001
 </programlisting>
 <para>
-The key data could be read from a &lt;dsig:KeyInfo/&gt; child.</para>
+The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -242,7 +242,7 @@ The key data could be read from a &lt;dsig:KeyInfo/&gt; child.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyInfoNodeWrite		0x00002
 </programlisting>
 <para>
-The key data could be written to a &lt;dsig:KeyInfo /&gt; child.</para>
+The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -251,7 +251,7 @@ The key data could be written to a &lt;dsig:KeyInfo /&gt; child.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyValueNodeRead		0x00004
 </programlisting>
 <para>
-The key data could be read from a &lt;dsig:KeyValue /&gt; child.</para>
+The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -260,7 +260,7 @@ The key data could be read from a &lt;dsig:KeyValue /&gt; child.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyValueNodeWrite		0x00008
 </programlisting>
 <para>
-The key data could be written to a &lt;dsig:KeyValue /&gt; child.</para>
+The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -269,7 +269,7 @@ The key data could be written to a &lt;dsig:KeyValue /&gt; child.</para>
 <programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeXml	0x00010
 </programlisting>
 <para>
-The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
+The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
 in XML format.</para>
 <para>
 
@@ -279,7 +279,7 @@ in XML format.</para>
 <programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeBin	0x00020
 </programlisting>
 <para>
-The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
+The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
 in binary format.</para>
 <para>
 
@@ -297,7 +297,7 @@ Any key data usage.</para>
 <title><anchor id="xmlSecKeyDataUsageKeyInfoNode">xmlSecKeyDataUsageKeyInfoNode</title>
 <programlisting>#define     xmlSecKeyDataUsageKeyInfoNode</programlisting>
 <para>
-The key data could be read and written from/to a &lt;dsig:KeyInfo /&gt; child.</para>
+The key data could be read and written from/to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -305,7 +305,7 @@ The key data could be read and written from/to a &lt;dsig:KeyInfo /&gt; child.</
 <title><anchor id="xmlSecKeyDataUsageKeyValueNode">xmlSecKeyDataUsageKeyValueNode</title>
 <programlisting>#define     xmlSecKeyDataUsageKeyValueNode</programlisting>
 <para>
-The key data could be read and written from/to a &lt;dsig:KeyValue /&gt; child.</para>
+The key data could be read and written from/to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -313,7 +313,7 @@ The key data could be read and written from/to a &lt;dsig:KeyValue /&gt; child.<
 <title><anchor id="xmlSecKeyDataUsageRetrievalMethodNode">xmlSecKeyDataUsageRetrievalMethodNode</title>
 <programlisting>#define     xmlSecKeyDataUsageRetrievalMethodNode</programlisting>
 <para>
-The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
+The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
 in any format.</para>
 <para>
 
@@ -764,7 +764,7 @@ Reads the data from binary buffer <parameter>buf</parameter>.</para>
 <entry> the buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> the &lt;dsig:KeyInfo&gt; node processing context
+<entry> the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -984,7 +984,7 @@ Key data specific method for reading XML node.</para>
 <entry> 		the pointer to data's value XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the &lt;dsig:KeyInfo/&gt; node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1048,7 +1048,7 @@ Key data specific method for reading binary buffer.</para>
 <entry>		the buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the &lt;dsig:KeyInfo/&gt; node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>

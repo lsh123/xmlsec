@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Base64 encode/decode transform
+ * Base64 encode/decode transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -42,12 +42,12 @@ XMLSEC_EXPORT int		xmlSecBase64CtxInitialize	(xmlSecBase64CtxPtr ctx,
 XMLSEC_EXPORT void		xmlSecBase64CtxFinalize		(xmlSecBase64CtxPtr ctx);
 XMLSEC_EXPORT int 		xmlSecBase64CtxUpdate		(xmlSecBase64CtxPtr ctx,
 								 const unsigned char *in, 
-						    		 size_t inLen, 
+						    		 size_t inSize, 
 								 unsigned char *out,
-								 size_t outLen);
+								 size_t outSize);
 XMLSEC_EXPORT int		xmlSecBase64CtxFinal		(xmlSecBase64CtxPtr ctx,
 								 unsigned char *out,
-								 size_t outLen);
+								 size_t outSize);
 
 /**
  * Standalone routine to do base64 encode/decode "at once"

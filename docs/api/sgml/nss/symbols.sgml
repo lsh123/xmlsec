@@ -16,6 +16,8 @@
 
 #define     <link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link>
 #define     <link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link>
+#define     <link linkend="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</link>
+#define     <link linkend="xmlSecCryptoGenerateRandom">xmlSecCryptoGenerateRandom</link>
 #define     <link linkend="xmlSecKeyDataAesId">xmlSecKeyDataAesId</link>
 #define     <link linkend="xmlSecKeyDataDesId">xmlSecKeyDataDesId</link>
 #define     <link linkend="xmlSecKeyDataDsaId">xmlSecKeyDataDsaId</link>
@@ -76,6 +78,16 @@
 <refsect2>
 <title><anchor id="xmlSecCryptoShutdown">xmlSecCryptoShutdown</title>
 <programlisting>#define xmlSecCryptoShutdown			xmlSecNssShutdown
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoKeysMngrInit">xmlSecCryptoKeysMngrInit</title>
+<programlisting>#define xmlSecCryptoKeysMngrInit		xmlSecNssKeysMngrInit
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoGenerateRandom">xmlSecCryptoGenerateRandom</title>
+<programlisting>#define xmlSecCryptoGenerateRandom		xmlSecNssGenerateRandom
 </programlisting>
 </refsect2>
 <refsect2>

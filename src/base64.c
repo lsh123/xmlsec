@@ -1,7 +1,7 @@
 /**
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Base64 encode/decode transform
+ * Base64 encode/decode transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -93,10 +93,6 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
  * Base64 Context
  *
  ***********************************************************************/
-
-/**
- * xmlSecBase64CtxEncode:
- */
 static int
 xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
     xmlSecAssert2(ctx != NULL, -1);    
@@ -153,9 +149,6 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
     return(ctx->outPos);
 }
 
-/**
- * xmlSecBase64CtxDecode:
- */
 static int
 xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {    
     xmlSecAssert2(ctx != NULL, -1);
@@ -296,10 +289,10 @@ xmlSecBase64CtxPop(xmlSecBase64CtxPtr ctx, unsigned char* out, size_t outSize, i
 
 /**
  * xmlSecBase64CtxCreate:
- * @encode: the encode/decode flag (1 - encode, 0 - decode) 
- * @columns: the max line length.
+ * @encode:		the encode/decode flag (1 - encode, 0 - decode) 
+ * @columns: 		the max line length.
  *
- * Creates new base64 context.
+ * Allocates and initializes new base64 context.
  *
  * Returns a pointer to newly created #xmlSecBase64Ctx structure
  * or NULL if an error occurs.
@@ -338,7 +331,7 @@ xmlSecBase64CtxCreate(int encode, int columns) {
 
 /**
  * xmlSecBase64CtxDestroy:
- * @ctx: the pointer to #xmlSecBase64Ctx structure.
+ * @ctx: 		the pointer to #xmlSecBase64Ctx structure.
  * 
  * Destroys base64 context.
  */
@@ -350,6 +343,16 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
     xmlFree(ctx);
 }
 
+/**
+ * xmlSecBase64CtxInitialize:
+ * @ctx:		the pointer to #xmlSecBase64Ctx structure,
+ * @encode:		the encode/decode flag (1 - encode, 0 - decode) 
+ * @columns: 		the max line length.
+ *
+ * Initializes new base64 context.
+ *
+ * Returns 0 on success and a negative value otherwise.
+ */
 int 
 xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -362,6 +365,12 @@ xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
     return(0);
 }
 
+/**
+ * xmlSecBase64CtxFinalize:
+ * @ctx:		the pointer to #xmlSecBase64Ctx structure,
+ *
+ * Frees all the resources allocated by #ctx.
+ */
 void 
 xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
@@ -371,13 +380,13 @@ xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
 
 /**
  * xmlSecBase64CtxUpdate:
- * @ctx: the pointer to #xmlSecBase64Ctx structure
- * @in:	the input buffer
- * @inLen: the input buffer size
- * @out: the output buffer
- * @outLen: the output buffer size
+ * @ctx: 		the pointer to #xmlSecBase64Ctx structure
+ * @in:			the input buffer
+ * @inSize: 		the input buffer size
+ * @out: 		the output buffer
+ * @outSize: 		the output buffer size
  *
- * Encodes/decodes the next piece of data from input buffer.
+ * Encodes or decodes the next piece of data from input buffer.
  * 
  * Returns the number of bytes written to output buffer or 
  * -1 if an error occurs.
@@ -430,11 +439,11 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 
 /**
  * xmlSecBase64CtxFinal:
- * @ctx: the pointer to #xmlSecBase64Ctx structure
- * @out: the output buffer
- * @outLen: the output buffer size
+ * @ctx: 		the pointer to #xmlSecBase64Ctx structure
+ * @out: 		the output buffer
+ * @outSize: 		the output buffer size
  *
- * Encodes/decodes the last piece of data stored in the context
+ * Encodes or decodes the last piece of data stored in the context
  * and finalizes the result.
  *
  * Returns the number of bytes written to output buffer or 
@@ -442,22 +451,22 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
  */
 int
 xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx, 
-		    unsigned char *out, size_t outLen) {
+		    unsigned char *out, size_t outSize) {
     size_t outPos;
     int ret;
         
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);    
-    xmlSecAssert2(outLen > 0, -1);    
+    xmlSecAssert2(outSize > 0, -1);    
 
-    for(outPos = 0; (outPos < outLen); ) {
-	ret = xmlSecBase64CtxPop(ctx, out + outPos, outLen - outPos, 1);
+    for(outPos = 0; (outPos < outSize); ) {
+	ret = xmlSecBase64CtxPop(ctx, out + outPos, outSize - outPos, 1);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			"xmlSecBase64Ctx",
 			"xmlSecBase64CtxPop",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", outLen - outPos);
+			"%d", outSize - outPos);
 	    return(-1);
 	} else if(ret == 0) {
 	    break;
@@ -466,18 +475,18 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
     }
 	    
     /* copy to out put buffer */
-    if(outPos >= outLen) {
+    if(outPos >= outSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    "xmlSecBase64Ctx",
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "buffer is too small (%d > %d)", 
-		    outPos, outLen); 
+		    outPos, outSize); 
 	return(-1);
     }	    
 
     /* add \0 */
-    if((outPos + 1) < outLen) {
+    if((outPos + 1) < outSize) {
 	out[outPos] = '\0';
     }
     return(outPos);
@@ -485,10 +494,10 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
 
 /**
  * xmlSecBase64Encode:
- * @buf: the input buffer.
- * @len: the input buffer size.
- * @columns: the output max line length (if 0 then no line breaks
- *           would be inserted)
+ * @buf: 		the input buffer.
+ * @len: 		the input buffer size.
+ * @columns: 		the output max line length (if 0 then no line breaks
+ *          		would be inserted)
  *
  * Encodes the data from input buffer and allocates the string for the result.
  * The caller is responsible for freeing returned buffer using
@@ -566,9 +575,9 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
 
 /**
  * xmlSecBase64Decode:
- * @str: the input buffer with base64 encoded string
- * @buf: the output buffer
- * @len: the output buffer size
+ * @str: 		the input buffer with base64 encoded string
+ * @buf: 		the output buffer
+ * @len: 		the output buffer size
  *
  * Decodes input base64 encoded string and puts result into
  * the output buffer.
@@ -671,6 +680,18 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformBase64GetKlass:
+ *
+ * The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64).
+ * The normative specification for base64 decoding transforms is RFC 2045
+ * (http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has 
+ * no content. The input is decoded by the algorithms. This transform is 
+ * useful if an application needs to sign the raw data associated with 
+ * the encoded content of an element.
+ *
+ * Returns base64 transform id.
+ */
 xmlSecTransformId 
 xmlSecTransformBase64GetKlass(void) {
     return(&xmlSecBase64Klass);
@@ -678,10 +699,10 @@ xmlSecTransformBase64GetKlass(void) {
 
 /**
  * xmlSecTransformBase64SetLineSize:
- * @transform: the pointer to BASE64 encode transform.
- * @lineSize: the new max line size.
+ * @transform: 		the pointer to BASE64 encode transform.
+ * @lineSize: 		the new max line size.
  *
- * Sets the max line size to @lineSize.
+ * Sets the max line size to #lineSize.
  */
 void
 xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
@@ -695,9 +716,6 @@ xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, size_t lineSize) 
     ctx->columns = lineSize;    
 }
 
-/**
- * xmlSecBase64Initialize:
- */
 static int
 xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     xmlSecBase64CtxPtr ctx;
@@ -722,9 +740,6 @@ xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
-/**
- * xmlSecBase64Finalize:
- */
 static void
 xmlSecBase64Finalize(xmlSecTransformPtr transform) {
     xmlSecBase64CtxPtr ctx;

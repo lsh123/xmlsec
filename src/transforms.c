@@ -1208,7 +1208,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform) {
 /** 
  * xmlSecTransformNodeRead:
  * @transform: the pointer to #xmlSecTransform structure.
- * @node: the pointer to the <dsig:Transform> node.
+ * @node: the pointer to the <dsig:Transform/> node.
  *
  * Reads transform from the @node as follows:
  *    1) reads "Algorithm" attribute;

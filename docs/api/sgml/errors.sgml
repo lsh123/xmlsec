@@ -509,7 +509,7 @@ Feature is not implemented.</para>
                                              int reason,
                                              const char *msg);</programlisting>
 <para>
-The errors reporting callback function typedef.</para>
+The errors reporting callback function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -518,32 +518,32 @@ The errors reporting callback function typedef.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
-<entry> the error origin filename (__FILE__).
+<entry>		the error location file name (__FILE__ macro).
 </entry></row>
 <row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
-<entry> the error origin line number (__LINE__).
+<entry>		the error location line number (__LINE__ macro).
 </entry></row>
 <row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry> the error origin function (__FUNCTIION__).
+<entry>		the error location function name (__FUNCTION__ macro).
 </entry></row>
 <row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the error specific error object 
 </entry></row>
 <row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the error specific error subject.
 </entry></row>
 <row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
-<entry> the error code.
+<entry>		the error code.
 </entry></row>
 <row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
-<entry> the error message.
+<entry>		the additional error message.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsInit">xmlSecErrorsInit ()</title>
 <programlisting>void        xmlSecErrorsInit                (void);</programlisting>
 <para>
-Initializes the errors reporting. It is called from <link linkend="xmlSecInit">xmlSecInit</link>() function.
+Initializes the errors reporting. It is called from <link linkend="xmlSecInit">xmlSecInit</link> function.
 and applications must not call this function directly.</para>
 <para>
 
@@ -552,7 +552,7 @@ and applications must not call this function directly.</para>
 <title><anchor id="xmlSecErrorsShutdown">xmlSecErrorsShutdown ()</title>
 <programlisting>void        xmlSecErrorsShutdown            (void);</programlisting>
 <para>
-Cleanups the errors reporting. It is called from <link linkend="xmlSecShutdown">xmlSecShutdown</link>() function.
+Cleanups the errors reporting. It is called from <link linkend="xmlSecShutdown">xmlSecShutdown</link> function.
 and applications must not call this function directly.</para>
 <para>
 
@@ -561,7 +561,7 @@ and applications must not call this function directly.</para>
 <title><anchor id="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback ()</title>
 <programlisting>void        xmlSecErrorsSetCallback         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);</programlisting>
 <para>
-Sets the errors callback function <parameter>callback</parameter> that will be called 
+Sets the errors callback function to <link linkend="callback">callback</link> that will be called 
 every time an error occurs.</para>
 <para>
 
@@ -571,7 +571,7 @@ every time an error occurs.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>callback</parameter>&nbsp;:</entry>
-<entry> the errors callback function.
+<entry> 		the new errors callback function.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -584,7 +584,8 @@ every time an error occurs.</para>
                                              int reason,
                                              const char *msg);</programlisting>
 <para>
-</para>
+The default error reporting callback that utilizes LibXML
+error reporting <link linkend="xmlGenericError">xmlGenericError</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -593,50 +594,32 @@ every time an error occurs.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the error location file name (__FILE__ macro).
 </entry></row>
 <row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the error location line number (__LINE__ macro).
 </entry></row>
 <row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the error location function name (__FUNCTION__ macro).
 </entry></row>
 <row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the error specific error object 
 </entry></row>
 <row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the error specific error subject.
 </entry></row>
 <row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the error code.
 </entry></row>
 <row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the additional error message.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsGetCode">xmlSecErrorsGetCode ()</title>
 <programlisting>int         xmlSecErrorsGetCode             (<link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg ()</title>
-<programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="size-t">size_t</link> pos);</programlisting>
+Gets the known error code at position <link linkend="pos">pos</link>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -645,11 +628,29 @@ every time an error occurs.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the error position.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error code or 0 if <link linkend="pos">pos</link> is greater than 
+total number of known error codes.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg ()</title>
+<programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="size-t">size_t</link> pos);</programlisting>
+<para>
+Gets the known error message at position <link linkend="pos">pos</link>.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>		the error position.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error message or NULL if <link linkend="pos">pos</link> is greater than 
+total number of known error codes.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -689,15 +690,15 @@ for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
 <title><anchor id="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage ()</title>
 <programlisting>const char* xmlSecErrorGetEmptyMessage      (void);</programlisting>
 <para>
+</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>empty error message string.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -711,7 +712,9 @@ for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
                                              const char *msg,
                                              ...);</programlisting>
 <para>
-Reports an error.</para>
+Reports an error to the default (<link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback</link>) or 
+application specific callback installed using <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link> 
+function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -720,28 +723,28 @@ Reports an error.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
-<entry> the error origin filename (__FILE__).
+<entry> 		the error location filename (__FILE__).
 </entry></row>
 <row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
-<entry> the error origin line number (__LINE__).
+<entry> 		the error location line number (__LINE__).
 </entry></row>
 <row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry> the error origin function (__FUNCTIION__).
+<entry> 		the error location function (__FUNCTIION__).
 </entry></row>
 <row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the error specific error object 
 </entry></row>
 <row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the error specific error subject. 
 </entry></row>
 <row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
-<entry> the error code.
+<entry> 		the error code.
 </entry></row>
 <row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
-<entry> the error message in printf format.
+<entry> 		the error message in printf format.
 </entry></row>
 <row><entry align="right"><parameter>...</parameter>&nbsp;:</entry>
-<entry> the parameters for the <parameter>msg</parameter>.
+<entry> 		the parameters for the <parameter>msg</parameter>.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

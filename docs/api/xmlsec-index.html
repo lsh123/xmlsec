@@ -145,8 +145,12 @@
 <li><p><font>xmlSecCryptoAppSimpleKeysMngrLoad</font></p></li>
 <li><p><font>xmlSecCryptoAppSimpleKeysMngrSave</font></p></li>
 <li><p><font>xmlSecCryptoAppSimpleKeysMngrSave</font></p></li>
+<li><p><font>xmlSecCryptoGenerateRandom</font></p></li>
+<li><p><font>xmlSecCryptoGenerateRandom</font></p></li>
 <li><p><font>xmlSecCryptoInit</font></p></li>
 <li><p><font>xmlSecCryptoInit</font></p></li>
+<li><p><font>xmlSecCryptoKeysMngrInit</font></p></li>
+<li><p><font>xmlSecCryptoKeysMngrInit</font></p></li>
 <li><p><font>xmlSecCryptoShutdown</font></p></li>
 <li><p><font>xmlSecCryptoShutdown</font></p></li>
 <li><p><a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a></p></li>
@@ -401,6 +405,8 @@
 <li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACID">xmlSecGnuTLSKeyDataHmacId</a></p></li>
 <li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACSET">xmlSecGnuTLSKeyDataHmacSet</a></p></li>
 <li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACSET">xmlSecGnuTLSKeyDataHmacSet</a></p></li>
+<li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYSMNGRINIT">xmlSecGnuTLSKeysMngrInit</a></p></li>
+<li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYSMNGRINIT">xmlSecGnuTLSKeysMngrInit</a></p></li>
 <li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSSHUTDOWN">xmlSecGnuTLSShutdown</a></p></li>
 <li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSSHUTDOWN">xmlSecGnuTLSShutdown</a></p></li>
 <li><p><a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS">xmlSecGnuTLSTransformAes128CbcGetKlass</a></p></li>
@@ -761,8 +767,8 @@
 <li><p><a href="xmlsec-keys.html#XMLSECKEYPTRLISTGETKLASS">xmlSecKeyPtrListGetKlass</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYPTRLISTID">xmlSecKeyPtrListId</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYPTRLISTID">xmlSecKeyPtrListId</a></p></li>
-<li><p><font>xmlSecKeyReadBinaryFile</font></p></li>
-<li><p><font>xmlSecKeyReadBinaryFile</font></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYREADBINARYFILE">xmlSecKeyReadBinaryFile</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYREADBINARYFILE">xmlSecKeyReadBinaryFile</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQCOPY">xmlSecKeyReqCopy</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQCOPY">xmlSecKeyReqCopy</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE">xmlSecKeyReqFinalize</a></p></li>
@@ -913,6 +919,8 @@
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACID">xmlSecNssKeyDataHmacId</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACSET">xmlSecNssKeyDataHmacSet</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACSET">xmlSecNssKeyDataHmacSet</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYSMNGRINIT">xmlSecNssKeysMngrInit</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYSMNGRINIT">xmlSecNssKeysMngrInit</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSSHUTDOWN">xmlSecNssShutdown</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSSHUTDOWN">xmlSecNssShutdown</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES128CBCGETKLASS">xmlSecNssTransformAes128CbcGetKlass</a></p></li>
@@ -1053,6 +1061,8 @@
 <li><p><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKLASS">xmlSecOpenSSLKeyDataX509GetKlass</a></p></li>
 <li><p><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ID">xmlSecOpenSSLKeyDataX509Id</a></p></li>
 <li><p><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ID">xmlSecOpenSSLKeyDataX509Id</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYSMNGRINIT">xmlSecOpenSSLKeysMngrInit</a></p></li>
+<li><p><a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLKEYSMNGRINIT">xmlSecOpenSSLKeysMngrInit</a></p></li>
 <li><p><a href="xmlsec-openssl-bn.html#XMLSECOPENSSLNODEGETBNVALUE">xmlSecOpenSSLNodeGetBNValue</a></p></li>
 <li><p><a href="xmlsec-openssl-bn.html#XMLSECOPENSSLNODEGETBNVALUE">xmlSecOpenSSLNodeGetBNValue</a></p></li>
 <li><p><a href="xmlsec-openssl-bn.html#XMLSECOPENSSLNODESETBNVALUE">xmlSecOpenSSLNodeSetBNValue</a></p></li>

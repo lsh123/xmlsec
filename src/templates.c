@@ -35,7 +35,7 @@ static int 		xmlSecTmplNodeWriteNsList	(xmlNodePtr parentNode,
 							 const xmlChar** namespaces);
 /**************************************************************************
  *
- * <dsig:Signature> node
+ * <dsig:Signature/> node
  *
  **************************************************************************/
 /**
@@ -179,7 +179,7 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * Adds (if necessary) <dsig:KeyInfo/> node to the <dsig:Signature/> 
  * node @signNode. 
  *
- * Returns the pointer to newly created <dsig:KeyInfo> node or NULL if an 
+ * Returns the pointer to newly created <dsig:KeyInfo/> node or NULL if an 
  * error occurs.
  */
 xmlNodePtr
@@ -531,7 +531,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
 
 /**
  * xmlSecTmplObjectAddManifest:
- * @objectNode: 	the  pointer to <dsig:Object> node.
+ * @objectNode: 	the  pointer to <dsig:Object/> node.
  * @id: 		the node id (may be NULL).
  *
  * Adds <dsig:Manifest/> node to the <dsig:Object/> node @objectNode.
@@ -584,7 +584,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
 
 /**************************************************************************
  *
- * <enc:EncryptedData> node
+ * <enc:EncryptedData/> node
  *
  **************************************************************************/
 /** 
@@ -1280,7 +1280,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  * @transformNode: 	the pointer to <dsig:Transform/> node
  * @bitsLen: 		the required length in bits
  *
- * Creates <dsig:HMACOutputLength>child for the HMAC transform 
+ * Creates <dsig:HMACOutputLength/> child for the HMAC transform 
  * node @node.
  *
  * Returns 0 on success and a negatie value otherwise.

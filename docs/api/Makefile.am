@@ -23,6 +23,12 @@ all: sgml html clean-sources
 html: sgml xmlsec.sgml xmlsec-index
 	gtkdoc-mkhtml xmlsec xmlsec.sgml
 	
+
+#
+# Prepeare sgml files from sources for each library. We are also
+# doing some "magic" here by automatically adding links to XML DSig and 
+# XML Enc specification
+#
 sgml: templates
 	@gtkdoc-mkdb --module=xmlsec --main-sgml-file xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
@@ -39,6 +45,14 @@ sgml: templates
 		    --tmpl-dir=tmpl/nss --output-dir=sgml/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
+	@(for i in `find sgml -name "*.sgml" -print` ; do \
+	    cat $$i | \
+		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec_\2\">\1\2\3</ulink>!g' | \
+		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec_\2\">\1\2\3</ulink>!g' > \
+		$$i.tmp; \
+		mv -f $$i.tmp $$i; \
+	done);
+	
 templates: scan
 	@gtkdoc-mktmpl --module=xmlsec 
 	
@@ -55,7 +69,11 @@ scan: doc_sources example_sources
 	@gtkdoc-scan --module=xmlsec-nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
-		
+
+#
+# Prepare source files by coping them to "code" folder and 
+# removing XMLSEC_EXPORT_* stuff that makes gtkdoc crazy
+#
 doc_sources: $(DOC_SOURCE_FILES)
 	@(for i in $(DOC_SOURCE_FILES) ; do \
 	    folder_name=`echo $$i | sed 's#$(TOP)/##' | sed 's#/[^/]*$$##'`; \
@@ -76,11 +94,15 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
 	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
 
+#
+# Create index for all functions. 
+#
+# TODO: process macros and defines correctly
+#
 xmlsec-index: scan 
 	@grep -h '<NAME>.*</NAME>' xmlsec-*decl.txt | sort -u | \
 		sed -e 's#<NAME>\(.*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#gp' > \
 		xmlsec-index.sgml
-
 
 #
 # The following code converts C example file to sgml RefEntry files.

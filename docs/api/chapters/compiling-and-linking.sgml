@@ -5,6 +5,10 @@
     and paths to include and library files.
     </para>
     <sect2>
+	<title>Include files</title>
+	<para>TODO</para>
+    </sect2>
+    <sect2>
 	<title>Compiling and linking on Unix.</title>
 	<para>On Unix-like systems the <filename>xmlsec-config</filename> 
 	script is the simplest way to get all necessary information.

@@ -147,9 +147,30 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
                             SECKEYPublicKey  *pubkey)
 {
     xmlSecNssPKIKeyDataCtxPtr ctx;
+	KeyType					pubType = nullKey ;
+	KeyType					priType = nullKey ;
     
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), -1);
+
+	if( privkey != NULL ) {
+		priType = SECKEY_GetPrivateKeyType( privkey ) ;
+	}
+
+	if( pubkey != NULL ) {
+		pubType = SECKEY_GetPublicKeyType( pubkey ) ;
+	}
+
+	if( priType != nullKey && pubType != nullKey ) {
+		if( pubType != priType ) {
+			xmlSecError( XMLSEC_ERRORS_HERE ,
+				NULL ,
+				NULL ,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED ,
+				"different type of private and public key" ) ;
+			return -1 ;
+		}
+	}
 
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -183,16 +204,30 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
 {
     xmlSecKeyDataPtr data = NULL;
     int ret;
-    KeyType kt;
+	KeyType					pubType = nullKey ;
+	KeyType					priType = nullKey ;
     
-    if (pubkey != NULL) {
-	kt = SECKEY_GetPublicKeyType(pubkey);
-    } else {
-	kt = SECKEY_GetPrivateKeyType(privkey);
-	pubkey = SECKEY_ConvertToPublicKey(privkey);
-    }
-    
-    switch(kt) {	
+	if( privkey != NULL ) {
+		priType = SECKEY_GetPrivateKeyType( privkey ) ;
+	}
+
+	if( pubkey != NULL ) {
+		pubType = SECKEY_GetPublicKeyType( pubkey ) ;
+	}
+
+	if( priType != nullKey && pubType != nullKey ) {
+		if( pubType != priType ) {
+			xmlSecError( XMLSEC_ERRORS_HERE ,
+				NULL ,
+				NULL ,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED ,
+				"different type of private and public key" ) ;
+			return( NULL ) ;
+		}
+	}
+   
+	pubType = priType != nullKey ? priType : pubType ;
+    switch(pubType) {	
 #ifndef XMLSEC_NO_RSA    
     case rsaKey:
 	data = xmlSecKeyDataCreate(xmlSecNssKeyDataRsaId);
@@ -224,7 +259,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "PKI key type %d not supported", kt);
+		    "PKI key type %d not supported", pubType);
 	return(NULL);
     }
 

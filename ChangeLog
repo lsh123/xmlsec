@@ -1,5 +1,10 @@
 2005-03-05  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* src/nss/pkikeys.c: check that input public and private 
+	keys have the same type (based on the OO.org patch) 
+
+2005-03-05  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/nss/digests.c src/nss/hmac.c src/nss/pkikeys.c 
 	  src/nss/signatures.c src/nss/x509.c src/nss/x509vfy.c: 
 	  print more detailed error message (based on the OO.org patch)

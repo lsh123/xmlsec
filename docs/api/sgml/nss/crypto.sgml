@@ -18,7 +18,7 @@ int         <link linkend="xmlSecNssInit">xmlSecNssInit</link>                  
 int         <link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link>               (void);
 int         <link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link>         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> sizeBytes);
+                                             <link linkend="size-t">size_t</link> size);
 #define     <link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link> (void);
 int         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
@@ -80,135 +80,341 @@ int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</lin
 <refsect2>
 <title><anchor id="xmlSecNssInit">xmlSecNssInit ()</title>
 <programlisting>int         xmlSecNssInit                   (void);</programlisting>
-</refsect2>
+<para>
+XMLSec library specific crypto engine initialization.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssShutdown">xmlSecNssShutdown ()</title>
 <programlisting>int         xmlSecNssShutdown               (void);</programlisting>
-</refsect2>
+<para>
+XMLSec library specific crypto engine shutdown.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit ()</title>
 <programlisting>int         xmlSecNssKeysMngrInit           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
-</refsect2>
+<para>
+Adds NSS specific key data stores in keys manager.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom ()</title>
 <programlisting>int         xmlSecNssGenerateRandom         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> sizeBytes);</programlisting>
-</refsect2>
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>		the destination buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>		the numer of bytes to generate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</title>
 <programlisting>#define     xmlSecNssKeyDataAesId</programlisting>
-</refsect2>
+<para>
+The AES key data klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataAesGetKlass (void);</programlisting>
-</refsect2>
+<para>
+The AES key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet ()</title>
 <programlisting>int         xmlSecNssKeyDataAesSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
-</refsect2>
+<para>
+Sets the value of AES key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to AES key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes128CbcId">xmlSecNssTransformAes128CbcId</title>
 <programlisting>#define     xmlSecNssTransformAes128CbcId</programlisting>
-</refsect2>
+<para>
+The AES128 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes128CbcGetKlass">xmlSecNssTransformAes128CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes128CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+AES 128 CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 128 CBC encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes192CbcId">xmlSecNssTransformAes192CbcId</title>
 <programlisting>#define     xmlSecNssTransformAes192CbcId</programlisting>
-</refsect2>
+<para>
+The AES192 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes192CbcGetKlass">xmlSecNssTransformAes192CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes192CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+AES 192 CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 192 CBC encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes256CbcId">xmlSecNssTransformAes256CbcId</title>
 <programlisting>#define     xmlSecNssTransformAes256CbcId</programlisting>
-</refsect2>
+<para>
+The AES256 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformAes256CbcGetKlass">xmlSecNssTransformAes256CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformAes256CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+AES 256 CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 256 CBC encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDesId">xmlSecNssKeyDataDesId</title>
 <programlisting>#define     xmlSecNssKeyDataDesId</programlisting>
-</refsect2>
+<para>
+The DES key data klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDesGetKlass">xmlSecNssKeyDataDesGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDesGetKlass (void);</programlisting>
-</refsect2>
+<para>
+The DES key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DES key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet ()</title>
 <programlisting>int         xmlSecNssKeyDataDesSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
-</refsect2>
+<para>
+Sets the value of DES key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to DES key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformDes3CbcId">xmlSecNssTransformDes3CbcId</title>
 <programlisting>#define     xmlSecNssTransformDes3CbcId</programlisting>
-</refsect2>
+<para>
+The Triple DES CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformDes3CbcGetKlass">xmlSecNssTransformDes3CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDes3CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+Triple DES CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to Triple DES encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</title>
 <programlisting>#define     xmlSecNssKeyDataHmacId</programlisting>
-</refsect2>
+<para>
+The DHMAC key data klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacGetKlass">xmlSecNssKeyDataHmacGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataHmacGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>HMAC key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet ()</title>
 <programlisting>int         xmlSecNssKeyDataHmacSet         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
-</refsect2>
+<para>
+Sets the value of HMAC key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to HMAC key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</title>
 <programlisting>#define     xmlSecNssTransformHmacSha1Id</programlisting>
-</refsect2>
+<para>
+The HMAC with SHA1 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacSha1GetKlass">xmlSecNssTransformHmacSha1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacSha1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC-SHA1 transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacRipemd160Id">xmlSecNssTransformHmacRipemd160Id</title>
 <programlisting>#define     xmlSecNssTransformHmacRipemd160Id</programlisting>
-</refsect2>
+<para>
+The HMAC with RipeMD160 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacRipemd160GetKlass">xmlSecNssTransformHmacRipemd160GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacRipemd160GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC-RIPEMD160 transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-RIPEMD160 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</title>
 <programlisting>#define     xmlSecNssTransformHmacMd5Id</programlisting>
-</refsect2>
+<para>
+The HMAC with MD5 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacMd5GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC-MD5 transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</title>
 <programlisting>#define     xmlSecNssTransformSha1Id</programlisting>
-</refsect2>
+<para>
+The SHA1 digest transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformSha1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+SHA-1 digest transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SHA-1 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

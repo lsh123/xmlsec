@@ -9,10 +9,123 @@ app
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppInit ##### -->
+<para>
+
+</para>
+
+@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppShutdown ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrSave ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrAddCertsPath ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeyLoad ##### -->
+<para>
+
+</para>
+
+@filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppPkcs12Load ##### -->
+<para>
+
+</para>
+
+@filename: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoad ##### -->
+<para>
+
+</para>
+
+@key: 
+@filename: 
+@format: 
+@Returns: 
 
 

@@ -97,6 +97,13 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformRsaPkcs1GetKlass:
+ *
+ * The RSA-PKCS1 key transport transform klass.
+ *
+ * Returns RSA-PKCS1 key transport transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecOpenSSLRsaPkcs1Klass);
@@ -415,7 +422,13 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     NULL,					/* void* reserved1; */
 };
 
-
+/** 
+ * xmlSecOpenSSLTransformRsaOaepGetKlass:
+ *
+ * The RSA-OAEP key transport transform klass.
+ *
+ * Returns RSA-OAEP key transport transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformRsaOaepGetKlass(void) {
     return(&xmlSecOpenSSLRsaOaepKlass);

@@ -25,7 +25,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSShutdown		(void);
 
 XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSGenerateRandom	(xmlSecBufferPtr buffer,
-									 size_t sizeBytes);
+									 size_t size);
 
 
 /********************************************************************
@@ -35,9 +35,9 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSGenerateRandom	(xmlSecBufferPtr buffer,
  *******************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
- * xmlSecAesKey:
+ * xmlSecGnuTLSKeyDataAesId:
  * 
- * The AES key klass.
+ * The AES key data klass.
  */
 #define xmlSecGnuTLSKeyDataAesId \
 	xmlSecGnuTLSKeyDataAesGetKlass()
@@ -81,9 +81,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes256CbcGetKlass(vo
  *******************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
- * xmlSecDesKey:
+ * xmlSecGnuTLSKeyDataDesId:
  * 
- * The DES key klass.
+ * The DES key data klass.
  */
 #define xmlSecGnuTLSKeyDataDesId \
 	xmlSecGnuTLSKeyDataDesGetKlass()
@@ -110,9 +110,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass(void
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
-/** * xmlSecGnuTLSKeyDataHmac:
+/** 
+ * xmlSecGnuTLSKeyDataHmacId:
  * 
- * The DHMAC key klass.
+ * The HMAC key klass.
  */
 #define xmlSecGnuTLSKeyDataHmacId \
 	xmlSecGnuTLSKeyDataHmacGetKlass()
@@ -130,7 +131,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataHmacSet	(xmlSecKeyDataPtr data,
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass(void);
 
 /**
- * xmlSecGnuTLSTransformHmacRipeMd160Id:
+ * xmlSecGnuTLSTransformHmacRipemd160Id:
  * 
  * The HMAC with RipeMD160 signature transform klass.
  */

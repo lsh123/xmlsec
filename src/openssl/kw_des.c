@@ -103,7 +103,13 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     NULL,					/* void* reserved1; */
 };
 
-
+/** 
+ * xmlSecOpenSSLTransformKWDes3GetKlass:
+ * 
+ * The Triple DES key wrapper transform klass.
+ *
+ * Returns Triple DES key wrapper transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformKWDes3GetKlass(void) {
     return(&xmlSecOpenSSLKWDes3Klass);

@@ -9,10 +9,243 @@ crypto
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
+<!-- ##### FUNCTION xmlSecGnuTLSInit ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSShutdown ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSGenerateRandom ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@size: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@sizeBytes: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSKeyDataAesId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataAesGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataAesSet ##### -->
+<para>
+
+</para>
+
+@data: 
+@buf: 
+@bufSize: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformAes128CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformAes128CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformAes192CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformAes192CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformAes256CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformAes256CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSKeyDataDesId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDesGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDesSet ##### -->
+<para>
+
+</para>
+
+@data: 
+@buf: 
+@bufSize: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformDes3CbcId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformDes3CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSKeyDataHmacId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataHmacGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataHmacSet ##### -->
+<para>
+
+</para>
+
+@data: 
+@buf: 
+@bufSize: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

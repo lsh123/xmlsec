@@ -2,7 +2,13 @@
  *
  * XMLSec library
  * 
- * HMAC Algorithm support
+ * HMAC Algorithm support (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
+ * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits 
+ * as a parameter; if the parameter is not specified then all the bits of the 
+ * hash are output. An example of an HMAC SignatureMethod element:  
+ * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
+ *   <HMACOutputLength>128</HMACOutputLength>
+ * </SignatureMethod>
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -127,28 +133,6 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLHmacCtx));
 }
 
-/**
- * xmlSecOpenSSLHmacNodeRead:
- *
- * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
- *
- * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits 
- * as a parameter; if the parameter is not specified then all the bits of the 
- * hash are output. An example of an HMAC SignatureMethod element:  
- * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
- *   <HMACOutputLength>128</HMACOutputLength>
- * </SignatureMethod>
- * 
- * Schema Definition:
- * 
- * <simpleType name="HMACOutputLengthType">
- *   <restriction base="integer"/>
- * </simpleType>
- *     
- * DTD:
- *     
- * <!ELEMENT HMACOutputLength (#PCDATA)>
- */
 static int
 xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLHmacCtxPtr ctx;
@@ -185,7 +169,6 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
     }
     return(0); 
 }
-
 
 static int  
 xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
@@ -245,7 +228,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-int
+static int
 xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform, 
 			const unsigned char* data, size_t dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
@@ -306,7 +289,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     return(0);
 }
 
-int 
+static int 
 xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLHmacCtxPtr ctx;
     xmlSecBufferPtr in, out;
@@ -427,6 +410,13 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformHmacSha1GetKlass:
+ *
+ * The HMAC-SHA1 transform klass.
+ *
+ * Returns the HMAC-SHA1 transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacSha1GetKlass(void) {
     return(&xmlSecOpenSSLHmacSha1Klass);
@@ -462,6 +452,13 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformHmacRipemd160GetKlass:
+ *
+ * The HMAC-RIPEMD160 transform klass.
+ *
+ * Returns the HMAC-RIPEMD160 transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacRipemd160GetKlass(void) {
     return(&xmlSecOpenSSLHmacRipemd160Klass);
@@ -497,6 +494,13 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformHmacMd5GetKlass:
+ *
+ * The HMAC-MD5 transform klass.
+ *
+ * Returns the HMAC-MD5 transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacMd5GetKlass(void) {
     return(&xmlSecOpenSSLHmacMd5Klass);

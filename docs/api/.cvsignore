@@ -4,9 +4,9 @@ Makefile.in
 *.lo
 .libs
 *.la
+*-unused.sgml
 core
 code
 examples
 *.stamp
 *.txt
-

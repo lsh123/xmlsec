@@ -22,6 +22,7 @@
 
 /**
  * xmlSecGnuTLSAppInit:
+ * @config:		the path to GnuTLS configuration (unused).
  * 
  * General crypto engine initialization. This function is used
  * by XMLSec command line utility and called before 
@@ -60,6 +61,18 @@ xmlSecGnuTLSAppShutdown(void) {
     return(0);
 }
 
+/**
+ * xmlSecGnuTLSAppKeyLoad:
+ * @filename:		the key filename.
+ * @format:		the key file format.
+ * @pwd:		the PEM key file password.
+ * @pwdCallback:	the PEM key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from the a file (not implemented yet).
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr
 xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 			const char *pwd ATTRIBUTE_UNUSED, 
@@ -78,6 +91,17 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 }
 
 #ifndef XMLSEC_NO_X509
+/**
+ * xmlSecGnuTLSAppKeyCertLoad:
+ * @key:		the pointer to key.
+ * @filename:		the certificate filename.
+ * @format:		the certificate file format.
+ *
+ * Reads the certificate from $@filename and adds it to key
+ * (not implemented yet).
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
 int		
 xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, 
 			  xmlSecKeyDataFormat format) {
@@ -94,6 +118,18 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     return(-1);
 }
 
+/**
+ * xmlSecGnuTLSAppPkcs12Load:
+ * @filename:		the PKCS12 key filename.
+ * @pwd:		the PKCS12 file password.
+ * @pwdCallback:	the password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 file
+ * (not implemented yet).
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr	
 xmlSecGnuTLSAppPkcs12Load(const char *filename, 
 			  const char *pwd ATTRIBUTE_UNUSED,
@@ -112,13 +148,14 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
 
 /**
  * xmlSecGnuTLSAppKeysMngrCertLoad:
- * @mngr: keys manager.
- * @filename: the PEM file.
- * @trusted: the flag that indicates is the certificate in @filename
- *    trusted or not.
+ * @mngr: 		the keys manager.
+ * @filename: 		the certificate file.
+ * @format:		the certificate file format.
+ * @type: 		the flag that indicates is the certificate in @filename
+ *    			trusted or not.
  * 
- * Reads cert from PEM @filename and adds to the list of trusted or known
- * untrusted certs in @store.
+ * Reads cert from @filename and adds to the list of trusted or known
+ * untrusted certs in @store (not implemented yet).
  *
  * Returns 0 on success or a negative value otherwise.
  */
@@ -139,6 +176,16 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     return(-1);
 }
 
+/**
+ * xmlSecGnuTLSAppKeysMngrAddCertsPath:
+ * @mngr: 		the keys manager.
+ * @path:		the path to trusted certificates.
+ * 
+ * Reads cert from @path and adds to the list of trusted certificates
+ * (not implemented yet).
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecGnuTLSAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
     xmlSecAssert2(mngr != NULL, -1);
@@ -155,7 +202,15 @@ xmlSecGnuTLSAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
 
 #endif /* XMLSEC_NO_X509 */
 
-
+/**
+ * xmlSecGnuTLSAppSimpleKeysMngrInit:
+ * @mngr: 		the pointer to keys manager.
+ *
+ * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * and a default GnuTLS crypto key data stores.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int
 xmlSecGnuTLSAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
@@ -203,6 +258,16 @@ xmlSecGnuTLSAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
+/**
+ * xmlSecGnuTLSAppSimpleKeysMngrAdoptKey:
+ * @mngr: 		the pointer to keys manager.
+ * @key:		the pointer to key.
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecGnuTLSAppSimpleKeysMngrInit
+ * function.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecGnuTLSAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
@@ -234,6 +299,16 @@ xmlSecGnuTLSAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) 
     return(0);
 }
 
+/**
+ * xmlSecGnuTLSAppSimpleKeysMngrLoad:
+ * @mngr: 		the pointer to keys manager.
+ * @uri:		the uri.
+ *
+ * Loads XML keys file from @uri to the keys manager @mngr created 
+ * with #xmlSecGnuTLSAppSimpleKeysMngrInit function.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecGnuTLSAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
@@ -265,6 +340,16 @@ xmlSecGnuTLSAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     return(0);
 }
 
+/**
+ * xmlSecGnuTLSAppSimpleKeysMngrSave:
+ * @mngr: 		the pointer to keys manager.
+ * @filename:		the destination filename.
+ * @type:		the type of keys to save (public/private/symmetric).
+ *
+ * Saves keys from @mngr to  XML keys file.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecGnuTLSAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;

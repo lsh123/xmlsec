@@ -41,19 +41,62 @@ int         <link linkend="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyD
 <title><anchor id="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyDataAdoptEvp ()</title>
 <programlisting>int         xmlSecOpenSSLEvpKeyDataAdoptEvp (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
-</refsect2>
+<para>
+Sets the value of key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL EVP key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pKey</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to EVP key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyDataGetEvp">xmlSecOpenSSLEvpKeyDataGetEvp ()</title>
 <programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLEvpKeyDataGetEvp   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the EVP_PKEY from the key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL EVP data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to EVP_PKEY or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyDup">xmlSecOpenSSLEvpKeyDup ()</title>
 <programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLEvpKeyDup          (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
-</refsect2>
+<para>
+Duplicates <parameter>pKey</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>pKey</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to EVP_PKEY.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created EVP_PKEY object or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyAdopt">xmlSecOpenSSLEvpKeyAdopt ()</title>
 <programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecOpenSSLEvpKeyAdopt   (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
-</refsect2>
+<para>
+Creates xmlsec key object from OpenSSL key object.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>pKey</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to EVP_PKEY.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created xmlsec key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

@@ -66,6 +66,14 @@ xmlSecNssShutdown(void) {
     return(0);
 }
 
+/**
+ * xmlSecNssKeysMngrInit:
+ * @mngr:		the pointer to keys manager.
+ *
+ * Adds NSS specific key data stores in keys manager.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
@@ -74,6 +82,15 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
+/**
+ * xmlSecNssGenerateRandom:
+ * @buffer:		the destination buffer.
+ * @size:		the numer of bytes to generate.
+ *
+ * Generates @size random bytes and puts result in @buffer.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
     SECStatus rv;

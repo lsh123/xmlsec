@@ -14,3 +14,169 @@ The X509 certificates functions.
 
 </para>
 
+<!-- ##### MACRO xmlSecOpenSSLKeyDataX509Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKeyCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptKeyCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@cert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@cert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCertsSize ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCrl ##### -->
+<para>
+
+</para>
+
+@data: 
+@crl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCrl ##### -->
+<para>
+
+</para>
+
+@data: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCrlsSize ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLKeyDataRawX509CertId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataRawX509CertGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLX509StoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreFindCert ##### -->
+<para>
+
+</para>
+
+@store: 
+@subjectName: 
+@issuerName: 
+@issuerSerial: 
+@ski: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreVerify ##### -->
+<para>
+
+</para>
+
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAdoptCert ##### -->
+<para>
+
+</para>
+
+@store: 
+@cert: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsPath ##### -->
+<para>
+
+</para>
+
+@store: 
+@path: 
+@Returns: 
+
+

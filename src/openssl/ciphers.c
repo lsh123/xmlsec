@@ -726,6 +726,13 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLTransformAes128CbcGetKlass:
+ * 
+ * AES 128 CBC encryption transform klass.
+ * 
+ * Returns pointer to AES 128 CBC encryption transform.
+ */ 
 xmlSecTransformId 
 xmlSecOpenSSLTransformAes128CbcGetKlass(void) {
     return(&xmlSecOpenSSLAes128CbcKlass);
@@ -758,6 +765,13 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLTransformAes192CbcGetKlass:
+ * 
+ * AES 192 CBC encryption transform klass.
+ * 
+ * Returns pointer to AES 192 CBC encryption transform.
+ */ 
 xmlSecTransformId 
 xmlSecOpenSSLTransformAes192CbcGetKlass(void) {
     return(&xmlSecOpenSSLAes192CbcKlass);
@@ -790,6 +804,13 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLTransformAes256CbcGetKlass:
+ * 
+ * AES 256 CBC encryption transform klass.
+ * 
+ * Returns pointer to AES 256 CBC encryption transform.
+ */ 
 xmlSecTransformId 
 xmlSecOpenSSLTransformAes256CbcGetKlass(void) {
     return(&xmlSecOpenSSLAes256CbcKlass);
@@ -829,6 +850,9 @@ static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
 /** 
  * xmlSecOpenSSLTransformDes3CbcGetKlass:
  *
+ * Triple DES CBC encryption transform klass.
+ * 
+ * Returns pointer to Triple DES encryption transform.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformDes3CbcGetKlass(void) {

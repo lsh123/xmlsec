@@ -72,10 +72,18 @@ xmlSecOpenSSLInit (void)  {
  */
 int 
 xmlSecOpenSSLShutdown(void) {
-
+    /* nothing to do */
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLKeysMngrInit:
+ * @mngr:		the pointer to keys manager.
+ *
+ * Adds OpenSSL specific key data stores in keys manager.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
@@ -112,6 +120,15 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLGenerateRandom:
+ * @buffer:		the destination buffer.
+ * @size:		the numer of bytes to generate.
+ *
+ * Generates @size random bytes and puts result in @buffer.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
     int ret;
@@ -142,6 +159,18 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLErrorsDefaultCallback:
+ * @file:		the error location file name (__FILE__ macro).
+ * @line:		the error location line number (__LINE__ macro).
+ * @func:		the error location function name (__FUNCTION__ macro).
+ * @errorObject:	the error specific error object 
+ * @errorSubject:	the error specific error subject.
+ * @reason:		the error code.
+ * @msg:		the additional error message.
+ *
+ * The default OpenSSL errors reporting callback function.
+ */
 void 
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 				const char* errorObject, const char* errorSubject,
@@ -432,5 +461,3 @@ xmlSecOpenSSLTransformsInit(void) {
 
     return(0);
 }
-
-

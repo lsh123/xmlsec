@@ -247,11 +247,27 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataX509Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLKeyDataX509GetKlass:
+ * 
+ * The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
+ *
+ * Returns the X509 data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataX509GetKlass(void) {
     return(&xmlSecOpenSSLKeyDataX509Klass);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509GetKeyCert:
+ * @data:		the pointer to X509 key data.
+ *
+ * Gets the certificate from which the key was extracted. 
+ *
+ * Returns the key's certificate or NULL if key data was not used for key
+ * extraction or an error occurs.
+ */
 X509* 	
 xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -264,6 +280,15 @@ xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509AdoptKeyCert:
+ * @data:		the pointer to X509 key data.
+ * @cert:		the pointer to OpenSSL X509 certificate.
+ *
+ * Sets the key's certificate in @data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -281,6 +306,15 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509AdoptCert:
+ * @data:		the pointer to X509 key data.
+ * @cert:		the pointer to OpenSSL X509 certificate.
+ *
+ * Adds certificate to the X509 key data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -317,6 +351,16 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509GetCert:
+ * @data:		the pointer to X509 key data.
+ * @pos:		the desired certificate position.
+ * 
+ * Gets a certificate from X509 key data.
+ *
+ * Returns the pointer to certificate or NULL if @pos is larger than the 
+ * number of certificates in @data or an error occurs.
+ */
 X509* 
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, size_t pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -331,6 +375,14 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, size_t pos) {
     return(sk_X509_value(ctx->certsList, pos));
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509GetCertsSize:
+ * @data:		the pointer to X509 key data.
+ *
+ * Gets the number of certificates in @data.
+ *
+ * Returns te number of certificates in @data.
+ */
 size_t 	
 xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -343,6 +395,15 @@ xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
     return((ctx->certsList != NULL) ? sk_X509_num(ctx->certsList) : 0);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509AdoptCrl:
+ * @data:		the pointer to X509 key data.
+ * @crl:		the pointer to OpenSSL X509 CRL.
+ *
+ * Adds CRL to the X509 key data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -379,6 +440,16 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509GetCrl:
+ * @data:		the pointer to X509 key data.
+ * @pos:		the desired CRL position.
+ * 
+ * Gets a CRL from X509 key data.
+ *
+ * Returns the pointer to CRL or NULL if @pos is larger than the 
+ * number of CRLs in @data or an error occurs.
+ */
 X509_CRL* 
 xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, size_t pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -394,6 +465,14 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, size_t pos) {
     return(sk_X509_CRL_value(ctx->crlsList, pos));
 }
 
+/**
+ * xmlSecOpenSSLKeyDataX509GetCrlsSize:
+ * @data:		the pointer to X509 key data.
+ *
+ * Gets the number of CRLs in @data.
+ *
+ * Returns te number of CRLs in @data.
+ */
 size_t 
 xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -705,7 +784,6 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     return(0);
 }
 
-
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataX509GetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), xmlSecKeyDataTypeUnknown);
@@ -790,7 +868,6 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     /* we don't print out crls */
     fprintf(output, "</X509Data>\n");
 }
-
 
 static int
 xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1446,7 +1523,6 @@ xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
     return(res);
 }
 
-
 static X509_CRL*
 xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
     int ret;
@@ -1660,6 +1736,13 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRawX509CertKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLKeyDataRawX509CertGetKlass:
+ * 
+ * The raw X509 certificates key data klass.
+ *
+ * Returns raw X509 certificates key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataRawX509CertGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataRawX509CertKlass);

@@ -28,7 +28,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLShutdown		(void);
 
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLGenerateRandom	(xmlSecBufferPtr buffer,
-									 size_t sizeBytes);
+									 size_t size);
 /********************************************************************
  *
  * AES transforms
@@ -37,7 +37,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLGenerateRandom	(xmlSecBufferPtr buffer,
 #ifndef XMLSEC_NO_AES
 #ifndef XMLSEC_OPENSSL_096
 /**
- * xmlSecAesKey:
+ * xmlSecOpenSSLKeyDataAesId:
  * 
  * The AES key klass.
  */
@@ -111,7 +111,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecOpenSSLTransformKWAes256GetKlass(vo
  *******************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
- * xmlSecDesKey:
+ * xmlSecOpenSSLKeyDataDesId:
  * 
  * The DES key klass.
  */
@@ -150,7 +150,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass(void
 #include <openssl/evp.h>
 
 /**
- * xmlSecDsaKey:
+ * xmlSecOpenSSLKeyDataDsaId:
  * 
  * The DSA key klass.
  */
@@ -161,7 +161,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataDsaAdoptDsa	(xmlSecKeyDataPtr data
 									 DSA* dsa);
 XMLSEC_CRYPTO_EXPORT DSA*		xmlSecOpenSSLKeyDataDsaGetDsa	(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataDsaAdoptEvp	(xmlSecKeyDataPtr data,
-									 EVP_PKEY* key);
+									 EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLKeyDataDsaGetEvp	(xmlSecKeyDataPtr data);
 
 /**
@@ -181,7 +181,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha1GetKlass(voi
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
-/** * xmlSecOpenSSLKeyDataHmac:
+/** 
+ * xmlSecOpenSSLKeyDataHmacId:
  * 
  * The DHMAC key klass.
  */
@@ -201,7 +202,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataHmacSet	(xmlSecKeyDataPtr data,
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha1GetKlass(void);
 
 /**
- * xmlSecOpenSSLTransformHmacRipeMd160Id:
+ * xmlSecOpenSSLTransformHmacRipemd160Id:
  * 
  * The HMAC with RipeMD160 signature transform klass.
  */
@@ -257,7 +258,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataRsaAdoptRsa	(xmlSecKeyDataPtr data
 									 RSA* rsa);
 XMLSEC_CRYPTO_EXPORT RSA*		xmlSecOpenSSLKeyDataRsaGetRsa	(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataRsaAdoptEvp	(xmlSecKeyDataPtr data,
-									 EVP_PKEY* key);
+									 EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLKeyDataRsaGetEvp	(xmlSecKeyDataPtr data);
 
 /**

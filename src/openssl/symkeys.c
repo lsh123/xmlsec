@@ -242,11 +242,28 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLKeyDataAesGetKlass:
+ * 
+ * The AES key data klass.
+ *
+ * Returns AES key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataAesGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataAesKlass);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataAesSet:
+ * @data:		the pointer to AES key data.
+ * @buf:		the pointer to key value.
+ * @bufSize:		the key value size (in bytes).
+ *
+ * Sets the value of AES key data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
     xmlSecBufferPtr buffer;
@@ -308,11 +325,28 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLKeyDataDesGetKlass:
+ * 
+ * The DES key data klass.
+ *
+ * Returns DES key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataDesGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataDesKlass);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataDesSet:
+ * @data:		the pointer to DES key data.
+ * @buf:		the pointer to key value.
+ * @bufSize:		the key value size (in bytes).
+ *
+ * Sets the value of DES key data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
     xmlSecBufferPtr buffer;
@@ -373,11 +407,28 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLKeyDataHmacGetKlass:
+ * 
+ * The HMAC key data klass.
+ *
+ * Returns HMAC key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataHmacGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataHmacKlass);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataHmacSet:
+ * @data:		the pointer to HMAC key data.
+ * @buf:		the pointer to key value.
+ * @bufSize:		the key value size (in bytes).
+ *
+ * Sets the value of HMAC key data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
     xmlSecBufferPtr buffer;

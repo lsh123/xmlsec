@@ -25,7 +25,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssShutdown		(void);
 
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeysMngrInit		(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssGenerateRandom		(xmlSecBufferPtr buffer,
-									 size_t sizeBytes);
+									 size_t size);
 
 
 /********************************************************************
@@ -35,9 +35,9 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssGenerateRandom		(xmlSecBufferPtr buffer,
  *******************************************************************/
 #ifndef XMLSEC_NO_AES
 /**
- * xmlSecAesKey:
+ * xmlSecNssKeyDataAesId:
  * 
- * The AES key klass.
+ * The AES key data klass.
  */
 #define xmlSecNssKeyDataAesId \
 	xmlSecNssKeyDataAesGetKlass()
@@ -81,9 +81,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformAes256CbcGetKlass(void)
  *******************************************************************/
 #ifndef XMLSEC_NO_DES
 /**
- * xmlSecDesKey:
+ * xmlSecNssKeyDataDesId:
  * 
- * The DES key klass.
+ * The DES key data klass.
  */
 #define xmlSecNssKeyDataDesId \
 	xmlSecNssKeyDataDesGetKlass()
@@ -95,7 +95,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataDesSet		(xmlSecKeyDataPtr data,
 /**
  * xmlSecNssTransformDes3CbcId:
  * 
- * The DES3 CBC cipher transform klass.
+ * The Triple DES CBC cipher transform klass.
  */
 #define xmlSecNssTransformDes3CbcId \
 	xmlSecNssTransformDes3CbcGetKlass()
@@ -110,9 +110,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDes3CbcGetKlass(void);
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
-/** * xmlSecNssKeyDataHmac:
+/** 
+ * xmlSecNssKeyDataHmacId:
  * 
- * The DHMAC key klass.
+ * The DHMAC key data klass.
  */
 #define xmlSecNssKeyDataHmacId \
 	xmlSecNssKeyDataHmacGetKlass()
@@ -130,7 +131,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataHmacSet		(xmlSecKeyDataPtr data,
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
 
 /**
- * xmlSecNssTransformHmacRipeMd160Id:
+ * xmlSecNssTransformHmacRipemd160Id:
  * 
  * The HMAC with RipeMD160 signature transform klass.
  */

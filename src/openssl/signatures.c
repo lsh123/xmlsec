@@ -454,6 +454,13 @@ static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLTransformDsaSha1GetKlass:
+ * 
+ * The DSA-SHA1 signature transform klass.
+ *
+ * Returns DSA-SHA1 signature transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
     return(&xmlSecOpenSSLDsaSha1Klass);
@@ -646,6 +653,13 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLTransformRsaSha1GetKlass:
+ * 
+ * The RSA-SHA1 signature transform klass.
+ *
+ * Returns RSA-SHA1 signature transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformRsaSha1GetKlass(void) {
     return(&xmlSecOpenSSLRsaSha1Klass);

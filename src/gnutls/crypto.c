@@ -64,6 +64,14 @@ xmlSecGnuTLSShutdown(void) {
     return(0);
 }
 
+/**
+ * xmlSecGnuTLSKeysMngrInit:
+ * @mngr:		the pointer to keys manager.
+ *
+ * Adds GnuTLS specific key data stores in keys manager.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
@@ -72,6 +80,15 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
+/**
+ * xmlSecGnuTLSGenerateRandom:
+ * @buffer:		the destination buffer.
+ * @size:		the numer of bytes to generate.
+ *
+ * Generates @size random bytes and puts result in @buffer.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
     int ret;
@@ -215,5 +232,4 @@ xmlSecGnuTLSTransformsInit(void) {
 
     return(0);
 }
-
 

@@ -69,35 +69,111 @@ int         <link linkend="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertL
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppInit">xmlSecOpenSSLAppInit ()</title>
 <programlisting>int         xmlSecOpenSSLAppInit            (const char *config);</programlisting>
-</refsect2>
+<para>
+General crypto engine initialization. This function is used
+by XMLSec command line utility and called before 
+<parameter>xmlSecInit</parameter> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>		the path to crypto library configuration (unused).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppShutdown">xmlSecOpenSSLAppShutdown ()</title>
 <programlisting>int         xmlSecOpenSSLAppShutdown        (void);</programlisting>
-</refsect2>
+<para>
+General crypto engine shutdown. This function is used
+by XMLSec command line utility and called after 
+<parameter>xmlSecShutdown</parameter> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit ()</title>
 <programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
-</refsect2>
+<para>
+Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+and a default OpenSSL crypto key data stores.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrAdoptKey">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey ()</title>
 <programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrAdoptKey
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
-</refsect2>
+<para>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit</link>
+function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrLoad">xmlSecOpenSSLAppSimpleKeysMngrLoad ()</title>
 <programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *uri);</programlisting>
-</refsect2>
+<para>
+Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
+with <link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit</link> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>		the uri.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrSave">xmlSecOpenSSLAppSimpleKeysMngrSave ()</title>
 <programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrSave
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-</refsect2>
+<para>
+Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>		the destination filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>		the type of keys to save (public/private/symmetric).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppKeysMngrCertLoad">xmlSecOpenSSLAppKeysMngrCertLoad ()</title>
 <programlisting>int         xmlSecOpenSSLAppKeysMngrCertLoad
@@ -105,13 +181,47 @@ int         <link linkend="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertL
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-</refsect2>
+<para>
+Reads cert from <parameter>filename</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara> 		the certificate file.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the flag that indicates is the certificate in <parameter>filename</parameter>
+   			trusted or not.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppKeysMngrAddCertsPath">xmlSecOpenSSLAppKeysMngrAddCertsPath ()</title>
 <programlisting>int         xmlSecOpenSSLAppKeysMngrAddCertsPath
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *path);</programlisting>
-</refsect2>
+<para>
+Reads cert from <parameter>path</parameter> and adds to the list of trusted certificates.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<listitem><simpara>		the path to trusted certificates.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppKeyLoad">xmlSecOpenSSLAppKeyLoad ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppKeyLoad        (const char *filename,
@@ -119,20 +229,77 @@ int         <link linkend="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertL
                                              const char *pwd,
                                              <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
-</refsect2>
+<para>
+Reads key from the a file.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>		the key filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the key file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PEM key file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the PEM key password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppPkcs12Load">xmlSecOpenSSLAppPkcs12Load ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppPkcs12Load     (const char *filename,
                                              const char *pwd,
                                              <link linkend="pem-password-cb">pem_password_cb</link> *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
-</refsect2>
+<para>
+Reads key and all associated certificates from the PKCS12 file.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 key filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertLoad ()</title>
 <programlisting>int         xmlSecOpenSSLAppKeyCertLoad     (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
-</refsect2>
+<para>
+Reads the certificate from $<parameter>filename</parameter> and adds it to key.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

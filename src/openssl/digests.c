@@ -322,6 +322,13 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformRipemd160GetKlass:
+ *
+ * RIPEMD-160 digest transform klass.
+ *
+ * Returns pointer to RIPEMD-160 digest transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformRipemd160GetKlass(void) {
     return(&xmlSecOpenSSLRipemd160Klass);
@@ -362,6 +369,13 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformSha1GetKlass:
+ *
+ * SHA-1 digest transform klass.
+ *
+ * Returns pointer to SHA-1 digest transform klass.
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformSha1GetKlass(void) {
     return(&xmlSecOpenSSLSha1Klass);

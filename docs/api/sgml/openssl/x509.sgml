@@ -76,73 +76,204 @@ int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataX509Id</programlisting>
-</refsect2>
+<para>
+The OpenSSL X509 data klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetKlass">xmlSecOpenSSLKeyDataX509GetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataX509GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data">sec-X509Data</link>).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the X509 data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetKeyCert">xmlSecOpenSSLKeyDataX509GetKeyCert ()</title>
 <programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the certificate from which the key was extracted.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the key's certificate or NULL if key data was not used for key
+extraction or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509AdoptKeyCert">xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataX509AdoptKeyCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);</programlisting>
-</refsect2>
+<para>
+Sets the key's certificate in <parameter>data</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cert</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL X509 certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509AdoptCert">xmlSecOpenSSLKeyDataX509AdoptCert ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataX509AdoptCert
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CAPS">X509</link> *cert);</programlisting>
-</refsect2>
+<para>
+Adds certificate to the X509 key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cert</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL X509 certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCert">xmlSecOpenSSLKeyDataX509GetCert ()</title>
 <programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLKeyDataX509GetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
-</refsect2>
+<para>
+Gets a certificate from X509 key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired certificate position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the 
+number of certificates in <parameter>data</parameter> or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCertsSize">xmlSecOpenSSLKeyDataX509GetCertsSize ()</title>
 <programlisting><link linkend="size-t">size_t</link>      xmlSecOpenSSLKeyDataX509GetCertsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the number of certificates in <parameter>data</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>te number of certificates in <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDataX509AdoptCrl ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataX509AdoptCrl
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="X509-CRL-CAPS">X509_CRL</link> *crl);</programlisting>
-</refsect2>
+<para>
+Adds CRL to the X509 key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>crl</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL X509 CRL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCrl">xmlSecOpenSSLKeyDataX509GetCrl ()</title>
 <programlisting><link linkend="X509-CRL-CAPS">X509_CRL</link>*   xmlSecOpenSSLKeyDataX509GetCrl  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
-</refsect2>
+<para>
+Gets a CRL from X509 key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired CRL position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to CRL or NULL if <parameter>pos</parameter> is larger than the 
+number of CRLs in <parameter>data</parameter> or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509GetCrlsSize">xmlSecOpenSSLKeyDataX509GetCrlsSize ()</title>
 <programlisting><link linkend="size-t">size_t</link>      xmlSecOpenSSLKeyDataX509GetCrlsSize
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the number of CRLs in <parameter>data</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>te number of CRLs in <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRawX509CertId">xmlSecOpenSSLKeyDataRawX509CertId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataRawX509CertId</programlisting>
-</refsect2>
+<para>
+The OpenSSL raw X509 certificate klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRawX509CertGetKlass">xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataRawX509CertGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The raw X509 certificates key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>raw X509 certificates key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreId">xmlSecOpenSSLX509StoreId</title>
 <programlisting>#define     xmlSecOpenSSLX509StoreId</programlisting>
-</refsect2>
+<para>
+The OpenSSL X509 store klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreGetKlass">xmlSecOpenSSLX509StoreGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecOpenSSLX509StoreGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The OpenSSL X509 certificates key data store klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to OpenSSL X509 certificates key data store klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreFindCert">xmlSecOpenSSLX509StoreFindCert ()</title>
 <programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreFindCert  (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
@@ -151,23 +282,89 @@ int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509
                                              <link linkend="xmlChar">xmlChar</link> *issuerSerial,
                                              <link linkend="xmlChar">xmlChar</link> *ski,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
-</refsect2>
+<para>
+Searches <parameter>store</parameter> for a certificate that matches given criteria.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>subjectName</parameter>&nbsp;:</term>
+<listitem><simpara>	the desired certificate name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>issuerName</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired certificate issuer name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>issuerSerial</parameter>&nbsp;:</term>
+<listitem><simpara>	the desired certificate issuer serial number.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ski</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired certificate SKI.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to found certificate or NULL if certificate is not found
+or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreVerify">xmlSecOpenSSLX509StoreVerify ()</title>
 <programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreVerify    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
-</refsect2>
+<para>
+Verifies <parameter>certs</parameter> list.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the first verified certificate from <parameter>certs</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert ()</title>
 <programlisting>int         xmlSecOpenSSLX509StoreAdoptCert (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-</refsect2>
+<para>
+Adds trusted (root) or untrusted certificate to the store.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cert</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL X509 certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate type (trusted/untrusted).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath ()</title>
 <programlisting>int         xmlSecOpenSSLX509StoreAddCertsPath
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              const char *path);</programlisting>
-</refsect2>
+<para>
+Adds all certs in the <parameter>path</parameter> to the list of trusted certs
+in <parameter>store</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara> the pointer to OpenSSL x509 store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<listitem><simpara> the path to the certs dir.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

@@ -30,7 +30,8 @@ static int 		xmlSecOpenSSLAppSaveRANDFile		(const char *file);
 
 /**
  * xmlSecOpenSSLAppInit:
- * 
+ * @config:		the path to crypto library configuration (unused).
+ *
  * General crypto engine initialization. This function is used
  * by XMLSec command line utility and called before 
  * @xmlSecInit function.
@@ -771,6 +772,7 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  * xmlSecOpenSSLAppSimpleKeysMngrSave:
  * @mngr: 		the pointer to keys manager.
  * @filename:		the destination filename.
+ * @type:		the type of keys to save (public/private/symmetric).
  *
  * Saves keys from @mngr to  XML keys file.
  *  

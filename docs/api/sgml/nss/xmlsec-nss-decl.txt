@@ -1,0 +1,360 @@
+<FUNCTION>
+<NAME>xmlSecNssAppInit</NAME>
+<RETURNS>int 	</RETURNS>
+const char* config
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppShutdown</NAME>
+<RETURNS>int 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppSimpleKeysMngrInit</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppSimpleKeysMngrAdoptKey</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecKeysMngrPtr mngr,xmlSecKeyPtr key
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppSimpleKeysMngrLoad</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecKeysMngrPtr mngr,const char* uri
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppSimpleKeysMngrSave</NAME>
+<RETURNS>int  </RETURNS>
+xmlSecKeysMngrPtr mngr,const char* filename,xmlSecKeyDataType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppKeysMngrCertLoad</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,const char *filename,xmlSecKeyDataFormat format,xmlSecKeyDataType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppKeysMngrAddCertsPath</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr,const char *path
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppKeyLoad</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+const char *filename,xmlSecKeyDataFormat format,const char *pwd,void *pwdCallback,void* pwdCallbackCtx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppPkcs12Load</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+const char *filename,const char *pwd,void* pwdCallback,void* pwdCallbackCtx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssAppKeyCertLoad</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyPtr key,const char* filename,xmlSecKeyDataFormat format
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssInit</NAME>
+<RETURNS>int 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssShutdown</NAME>
+<RETURNS>int 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssKeysMngrInit</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeysMngrPtr mngr
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssGenerateRandom</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecBufferPtr buffer,size_t sizeBytes
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssKeyDataAesId</NAME>
+#define xmlSecNssKeyDataAesId \
+	xmlSecNssKeyDataAesGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssKeyDataAesGetKlass</NAME>
+<RETURNS>xmlSecKeyDataId  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssKeyDataAesSet</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyDataPtr data,const unsigned char* buf,size_t bufSize
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformAes128CbcId</NAME>
+#define xmlSecNssTransformAes128CbcId \
+	xmlSecNssTransformAes128CbcGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformAes128CbcGetKlass</NAME>
+<RETURNS>xmlSecTransformId 	</RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformAes192CbcId</NAME>
+#define xmlSecNssTransformAes192CbcId \
+	xmlSecNssTransformAes192CbcGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformAes192CbcGetKlass</NAME>
+<RETURNS>xmlSecTransformId 	</RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformAes256CbcId</NAME>
+#define xmlSecNssTransformAes256CbcId \
+	xmlSecNssTransformAes256CbcGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformAes256CbcGetKlass</NAME>
+<RETURNS>xmlSecTransformId 	</RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssKeyDataDesId</NAME>
+#define xmlSecNssKeyDataDesId \
+	xmlSecNssKeyDataDesGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssKeyDataDesGetKlass</NAME>
+<RETURNS>xmlSecKeyDataId  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssKeyDataDesSet</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyDataPtr data,const unsigned char* buf,size_t bufSize
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformDes3CbcId</NAME>
+#define xmlSecNssTransformDes3CbcId \
+	xmlSecNssTransformDes3CbcGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformDes3CbcGetKlass</NAME>
+<RETURNS>xmlSecTransformId  </RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssKeyDataHmacId</NAME>
+#define xmlSecNssKeyDataHmacId \
+	xmlSecNssKeyDataHmacGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssKeyDataHmacGetKlass</NAME>
+<RETURNS>xmlSecKeyDataId 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNssKeyDataHmacSet</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyDataPtr data,const unsigned char* buf,size_t bufSize
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformHmacSha1Id</NAME>
+#define xmlSecNssTransformHmacSha1Id \
+	xmlSecNssTransformHmacSha1GetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformHmacSha1GetKlass</NAME>
+<RETURNS>xmlSecTransformId  </RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformHmacRipemd160Id</NAME>
+#define xmlSecNssTransformHmacRipemd160Id \
+	xmlSecNssTransformHmacRipemd160GetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformHmacRipemd160GetKlass</NAME>
+<RETURNS>xmlSecTransformId  </RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformHmacMd5Id</NAME>
+#define xmlSecNssTransformHmacMd5Id \
+	xmlSecNssTransformHmacMd5GetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformHmacMd5GetKlass</NAME>
+<RETURNS>xmlSecTransformId  </RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecNssTransformSha1Id</NAME>
+#define xmlSecNssTransformSha1Id \
+	xmlSecNssTransformSha1GetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecNssTransformSha1GetKlass</NAME>
+<RETURNS>xmlSecTransformId  </RETURNS>
+void
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecCryptoInit</NAME>
+#define xmlSecCryptoInit			xmlSecNssInit
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoShutdown</NAME>
+#define xmlSecCryptoShutdown			xmlSecNssShutdown
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoKeysMngrInit</NAME>
+#define xmlSecCryptoKeysMngrInit		xmlSecNssKeysMngrInit
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoGenerateRandom</NAME>
+#define xmlSecCryptoGenerateRandom		xmlSecNssGenerateRandom
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataAesId</NAME>
+#define xmlSecKeyDataAesId			xmlSecNssKeyDataAesId
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataDesId</NAME>
+#define xmlSecKeyDataDesId			xmlSecNssKeyDataDesId
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataDsaId</NAME>
+#define xmlSecKeyDataDsaId			xmlSecNssKeyDataDsaId
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataHmacId</NAME>
+#define xmlSecKeyDataHmacId			xmlSecNssKeyDataHmacId
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataRsaId</NAME>
+#define xmlSecKeyDataRsaId			xmlSecNssKeyDataRsaId
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataX509Id</NAME>
+#define xmlSecKeyDataX509Id			xmlSecNssKeyDataX509Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataRawX509CertId</NAME>
+#define xmlSecKeyDataRawX509CertId		xmlSecNssKeyDataRawX509CertId
+</MACRO>
+<MACRO>
+<NAME>xmlSecX509StoreId</NAME>
+#define xmlSecX509StoreId			xmlSecNssX509StoreId
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformAes128CbcId</NAME>
+#define xmlSecTransformAes128CbcId		xmlSecNssTransformAes128CbcId
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformAes192CbcId</NAME>
+#define xmlSecTransformAes192CbcId		xmlSecNssTransformAes192CbcId
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformAes256CbcId</NAME>
+#define xmlSecTransformAes256CbcId		xmlSecNssTransformAes256CbcId
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformKWAes128Id</NAME>
+#define xmlSecTransformKWAes128Id		xmlSecNssTransformKWAes128Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformKWAes192Id</NAME>
+#define xmlSecTransformKWAes192Id		xmlSecNssTransformKWAes192Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformKWAes256Id</NAME>
+#define xmlSecTransformKWAes256Id		xmlSecNssTransformKWAes256Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformDes3CbcId</NAME>
+#define xmlSecTransformDes3CbcId		xmlSecNssTransformDes3CbcId
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformKWDes3Id</NAME>
+#define xmlSecTransformKWDes3Id			xmlSecNssTransformKWDes3Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformDsaSha1Id</NAME>
+#define xmlSecTransformDsaSha1Id		xmlSecNssTransformDsaSha1Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformHmacSha1Id</NAME>
+#define xmlSecTransformHmacSha1Id		xmlSecNssTransformHmacSha1Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformHmacRipemd160Id</NAME>
+#define xmlSecTransformHmacRipemd160Id		xmlSecNssTransformHmacRipemd160Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformHmacMd5Id</NAME>
+#define xmlSecTransformHmacMd5Id		xmlSecNssTransformHmacMd5Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformRipemd160Id</NAME>
+#define xmlSecTransformRipemd160Id		xmlSecNssTransformRipemd160Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformRsaSha1Id</NAME>
+#define xmlSecTransformRsaSha1Id		xmlSecNssTransformRsaSha1Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformRsaPkcs1Id</NAME>
+#define xmlSecTransformRsaPkcs1Id		xmlSecNssTransformRsaPkcs1Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformRsaOaepId</NAME>
+#define xmlSecTransformRsaOaepId		xmlSecNssTransformRsaOaepId
+</MACRO>
+<MACRO>
+<NAME>xmlSecTransformSha1Id</NAME>
+#define xmlSecTransformSha1Id			xmlSecNssTransformSha1Id
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppInit</NAME>
+#define xmlSecCryptoAppInit			xmlSecNssAppInit
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppShutdown</NAME>
+#define xmlSecCryptoAppShutdown			xmlSecNssAppShutdown
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppSimpleKeysMngrInit</NAME>
+#define xmlSecCryptoAppSimpleKeysMngrInit	xmlSecNssAppSimpleKeysMngrInit
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppSimpleKeysMngrAdoptKey</NAME>
+#define xmlSecCryptoAppSimpleKeysMngrAdoptKey	xmlSecNssAppSimpleKeysMngrAdoptKey
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppSimpleKeysMngrLoad</NAME>
+#define xmlSecCryptoAppSimpleKeysMngrLoad	xmlSecNssAppSimpleKeysMngrLoad
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppSimpleKeysMngrSave</NAME>
+#define xmlSecCryptoAppSimpleKeysMngrSave	xmlSecNssAppSimpleKeysMngrSave
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppKeysMngrCertLoad</NAME>
+#define xmlSecCryptoAppKeysMngrCertLoad		xmlSecNssAppKeysMngrCertLoad
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppKeysMngrAddCertsPath</NAME>
+#define xmlSecCryptoAppKeysMngrAddCertsPath	xmlSecNssAppKeysMngrAddCertsPath
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppKeyLoad</NAME>
+#define xmlSecCryptoAppKeyLoad			xmlSecNssAppKeyLoad
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppPkcs12Load</NAME>
+#define xmlSecCryptoAppPkcs12Load		xmlSecNssAppPkcs12Load
+</MACRO>
+<MACRO>
+<NAME>xmlSecCryptoAppKeyCertLoad</NAME>
+#define xmlSecCryptoAppKeyCertLoad		xmlSecNssAppKeyCertLoad
+</MACRO>

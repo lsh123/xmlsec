@@ -1,3 +1,2 @@
 <!ENTITY xmlsec-nss-app SYSTEM "sgml/app.sgml">
 <!ENTITY xmlsec-nss-crypto SYSTEM "sgml/crypto.sgml">
-<!ENTITY xmlsec-nss-symbols SYSTEM "sgml/symbols.sgml">

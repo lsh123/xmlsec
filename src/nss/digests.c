@@ -313,6 +313,13 @@ static xmlSecTransformKlass xmlSecNssSha1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecNssTransformSha1GetKlass:
+ *
+ * SHA-1 digest transform klass.
+ *
+ * Returns pointer to SHA-1 digest transform klass.
+ */
 xmlSecTransformId 
 xmlSecNssTransformSha1GetKlass(void) {
     return(&xmlSecNssSha1Klass);

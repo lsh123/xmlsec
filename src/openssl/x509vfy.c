@@ -108,11 +108,32 @@ static int 		xmlSecOpenSSLX509_NAME_cmp			(const X509_NAME *a,
 static int 		xmlSecOpenSSLX509_NAME_ENTRY_cmp		(const X509_NAME_ENTRY **a, 
 									 const X509_NAME_ENTRY **b);
 
+/** 
+ * xmlSecOpenSSLX509StoreGetKlass:
+ * 
+ * The OpenSSL X509 certificates key data store klass.
+ *
+ * Returns pointer to OpenSSL X509 certificates key data store klass.
+ */
 xmlSecKeyDataStoreId 
 xmlSecOpenSSLX509StoreGetKlass(void) {
     return(&xmlSecOpenSSLX509StoreKlass);
 }
 
+/**
+ * xmlSecOpenSSLX509StoreFindCert:
+ * @store:		the pointer to X509 key data store klass.
+ * @subjectName:	the desired certificate name.
+ * @issuerName:		the desired certificate issuer name.
+ * @issuerSerial:	the desired certificate issuer serial number.
+ * @ski:		the desired certificate SKI.
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Searches @store for a certificate that matches given criteria.
+ *
+ * Returns pointer to found certificate or NULL if certificate is not found
+ * or an error occurs.
+ */
 X509* 
 xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 				xmlChar *issuerName, xmlChar *issuerSerial,
@@ -131,6 +152,17 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
     return(NULL);
 }
 
+/**
+ * xmlSecOpenSSLX509StoreVerify:
+ * @store:		the pointer to X509 key data store klass.
+ * @certs:		the untrusted certificates stack.
+ * @crls:		the crls stack.
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
+ *
+ * Verifies @certs list.
+ *
+ * Returns pointer to the first verified certificate from @certs.
+ */ 
 X509* 	
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 			     STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
@@ -327,6 +359,16 @@ done:
     return(res);
 }
 
+/**
+ * xmlSecOpenSSLX509StoreAdoptCert:
+ * @store:		the pointer to X509 key data store klass.
+ * @cert:		the pointer to OpenSSL X509 certificate.
+ * @type:		the certificate type (trusted/untrusted).
+ *
+ * Adds trusted (root) or untrusted certificate to the store.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecKeyDataType type) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
@@ -402,7 +444,6 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
     X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
     return(0);
 }
-
 
 static int
 xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {

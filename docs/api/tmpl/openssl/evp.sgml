@@ -14,3 +14,40 @@ evp
 
 </para>
 
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDataAdoptEvp ##### -->
+<para>
+
+</para>
+
+@data: 
+@pKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDataGetEvp ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDup ##### -->
+<para>
+
+</para>
+
+@pKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyAdopt ##### -->
+<para>
+
+</para>
+
+@pKey: 
+@Returns: 
+
+

@@ -18,7 +18,7 @@ int         <link linkend="xmlSecOpenSSLInit">xmlSecOpenSSLInit</link>          
 int         <link linkend="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown</link>           (void);
 int         <link linkend="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit</link>       (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom</link>     (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> sizeBytes);
+                                             <link linkend="size-t">size_t</link> size);
 #define     <link linkend="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataAesGetKlass">xmlSecOpenSSLKeyDataAesGetKlass</link>
                                             (void);
@@ -62,7 +62,7 @@ int         <link linkend="xmlSecOpenSSLKeyDataDsaAdoptDsa">xmlSecOpenSSLKeyData
                                              <link linkend="DSA-CAPS">DSA</link> *dsa);
 <link linkend="DSA-CAPS">DSA</link>*        <link linkend="xmlSecOpenSSLKeyDataDsaGetDsa">xmlSecOpenSSLKeyDataDsaGetDsa</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecOpenSSLKeyDataDsaAdoptEvp">xmlSecOpenSSLKeyDataDsaAdoptEvp</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);
 <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLKeyDataDsaGetEvp">xmlSecOpenSSLKeyDataDsaGetEvp</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 #define     <link linkend="xmlSecOpenSSLTransformDsaSha1Id">xmlSecOpenSSLTransformDsaSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformDsaSha1GetKlass">xmlSecOpenSSLTransformDsaSha1GetKlass</link>
@@ -92,7 +92,7 @@ int         <link linkend="xmlSecOpenSSLKeyDataRsaAdoptRsa">xmlSecOpenSSLKeyData
                                              <link linkend="RSA-CAPS">RSA</link> *rsa);
 <link linkend="RSA-CAPS">RSA</link>*        <link linkend="xmlSecOpenSSLKeyDataRsaGetRsa">xmlSecOpenSSLKeyDataRsaGetRsa</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecOpenSSLKeyDataRsaAdoptEvp">xmlSecOpenSSLKeyDataRsaAdoptEvp</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);
 <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLKeyDataRsaGetEvp">xmlSecOpenSSLKeyDataRsaGetEvp</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 #define     <link linkend="xmlSecOpenSSLTransformRsaSha1Id">xmlSecOpenSSLTransformRsaSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformRsaSha1GetKlass">xmlSecOpenSSLTransformRsaSha1GetKlass</link>
@@ -137,282 +137,709 @@ void        <link linkend="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErro
 <refsect2>
 <title><anchor id="xmlSecOpenSSLInit">xmlSecOpenSSLInit ()</title>
 <programlisting>int         xmlSecOpenSSLInit               (void);</programlisting>
-</refsect2>
+<para>
+XMLSec library specific crypto engine initialization.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown ()</title>
 <programlisting>int         xmlSecOpenSSLShutdown           (void);</programlisting>
-</refsect2>
+<para>
+XMLSec library specific crypto engine shutdown.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit ()</title>
 <programlisting>int         xmlSecOpenSSLKeysMngrInit       (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
-</refsect2>
+<para>
+Adds OpenSSL specific key data stores in keys manager.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom ()</title>
 <programlisting>int         xmlSecOpenSSLGenerateRandom     (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> sizeBytes);</programlisting>
-</refsect2>
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara>		the destination buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>		the numer of bytes to generate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataAesId</programlisting>
-</refsect2>
+<para>
+The AES key klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataAesGetKlass">xmlSecOpenSSLKeyDataAesGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataAesGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The AES key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataAesSet">xmlSecOpenSSLKeyDataAesSet ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataAesSet      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
-</refsect2>
+<para>
+Sets the value of AES key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to AES key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformAes128CbcId">xmlSecOpenSSLTransformAes128CbcId</title>
 <programlisting>#define     xmlSecOpenSSLTransformAes128CbcId</programlisting>
-</refsect2>
+<para>
+The AES128 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformAes128CbcGetKlass">xmlSecOpenSSLTransformAes128CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformAes128CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+AES 128 CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 128 CBC encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformAes192CbcId">xmlSecOpenSSLTransformAes192CbcId</title>
 <programlisting>#define     xmlSecOpenSSLTransformAes192CbcId</programlisting>
-</refsect2>
+<para>
+The AES192 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformAes192CbcGetKlass">xmlSecOpenSSLTransformAes192CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformAes192CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+AES 192 CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 192 CBC encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformAes256CbcId">xmlSecOpenSSLTransformAes256CbcId</title>
 <programlisting>#define     xmlSecOpenSSLTransformAes256CbcId</programlisting>
-</refsect2>
+<para>
+The AES256 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformAes256CbcGetKlass">xmlSecOpenSSLTransformAes256CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformAes256CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+AES 256 CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 256 CBC encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWAes128Id">xmlSecOpenSSLTransformKWAes128Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformKWAes128Id</programlisting>
-</refsect2>
+<para>
+The AES 128 key wrap transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWAes128GetKlass">xmlSecOpenSSLTransformKWAes128GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWAes128GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The AES-128 kew wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES-128 kew wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWAes192Id">xmlSecOpenSSLTransformKWAes192Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformKWAes192Id</programlisting>
-</refsect2>
+<para>
+The AES 192 key wrap transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWAes192GetKlass">xmlSecOpenSSLTransformKWAes192GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWAes192GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The AES-192 kew wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES-192 kew wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWAes256Id">xmlSecOpenSSLTransformKWAes256Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformKWAes256Id</programlisting>
-</refsect2>
+<para>
+The AES 256 key wrap transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWAes256GetKlass">xmlSecOpenSSLTransformKWAes256GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWAes256GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The AES-256 kew wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES-256 kew wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDesId">xmlSecOpenSSLKeyDataDesId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataDesId</programlisting>
-</refsect2>
+<para>
+The DES key klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDesGetKlass">xmlSecOpenSSLKeyDataDesGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataDesGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The DES key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DES key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDesSet">xmlSecOpenSSLKeyDataDesSet ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataDesSet      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
-</refsect2>
+<para>
+Sets the value of DES key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to DES key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformDes3CbcId">xmlSecOpenSSLTransformDes3CbcId</title>
 <programlisting>#define     xmlSecOpenSSLTransformDes3CbcId</programlisting>
-</refsect2>
+<para>
+The DES3 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformDes3CbcGetKlass">xmlSecOpenSSLTransformDes3CbcGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformDes3CbcGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+Triple DES CBC encryption transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to Triple DES encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWDes3Id">xmlSecOpenSSLTransformKWDes3Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformKWDes3Id</programlisting>
-</refsect2>
+<para>
+The DES3 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformKWDes3GetKlass">xmlSecOpenSSLTransformKWDes3GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWDes3GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The Triple DES key wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>Triple DES key wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDsaId">xmlSecOpenSSLKeyDataDsaId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataDsaId</programlisting>
-</refsect2>
+<para>
+The DSA key klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDsaGetKlass">xmlSecOpenSSLKeyDataDsaGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataDsaGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The DSA key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to DSA key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDsaAdoptDsa">xmlSecOpenSSLKeyDataDsaAdoptDsa ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataDsaAdoptDsa (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="DSA-CAPS">DSA</link> *dsa);</programlisting>
-</refsect2>
+<para>
+Sets the value of DSA key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dsa</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL DSA key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDsaGetDsa">xmlSecOpenSSLKeyDataDsaGetDsa ()</title>
 <programlisting><link linkend="DSA-CAPS">DSA</link>*        xmlSecOpenSSLKeyDataDsaGetDsa   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the OpenSSL DSA key from DSA key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to OpenSSL DSA key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDsaAdoptEvp">xmlSecOpenSSLKeyDataDsaAdoptEvp ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataDsaAdoptEvp (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);</programlisting>
-</refsect2>
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
+<para>
+Sets the DSA key data value to OpenSSL EVP key.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pKey</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL EVP key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataDsaGetEvp">xmlSecOpenSSLKeyDataDsaGetEvp ()</title>
 <programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLKeyDataDsaGetEvp   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the OpenSSL EVP key from DSA key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to DSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to OpenSSL EVP key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformDsaSha1Id">xmlSecOpenSSLTransformDsaSha1Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformDsaSha1Id</programlisting>
-</refsect2>
+<para>
+The DSA SHA1 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformDsaSha1GetKlass">xmlSecOpenSSLTransformDsaSha1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformDsaSha1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The DSA-SHA1 signature transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DSA-SHA1 signature transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataHmacId">xmlSecOpenSSLKeyDataHmacId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataHmacId</programlisting>
-</refsect2>
+<para>
+The DHMAC key klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataHmacGetKlass">xmlSecOpenSSLKeyDataHmacGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataHmacGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>HMAC key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataHmacSet">xmlSecOpenSSLKeyDataHmacSet ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataHmacSet     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
-</refsect2>
+<para>
+Sets the value of HMAC key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to HMAC key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key value size (in bytes).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformHmacSha1Id">xmlSecOpenSSLTransformHmacSha1Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformHmacSha1Id</programlisting>
-</refsect2>
+<para>
+The HMAC with SHA1 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformHmacSha1GetKlass">xmlSecOpenSSLTransformHmacSha1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformHmacSha1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC-SHA1 transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformHmacRipemd160Id">xmlSecOpenSSLTransformHmacRipemd160Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformHmacRipemd160Id</programlisting>
-</refsect2>
+<para>
+The HMAC with RipeMD160 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformHmacRipemd160GetKlass">xmlSecOpenSSLTransformHmacRipemd160GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformHmacRipemd160GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC-RIPEMD160 transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-RIPEMD160 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformHmacMd5Id">xmlSecOpenSSLTransformHmacMd5Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformHmacMd5Id</programlisting>
-</refsect2>
+<para>
+The HMAC with MD5 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformHmacMd5GetKlass">xmlSecOpenSSLTransformHmacMd5GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformHmacMd5GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The HMAC-MD5 transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRipemd160Id">xmlSecOpenSSLTransformRipemd160Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformRipemd160Id</programlisting>
-</refsect2>
+<para>
+The RIPEMD160 digest transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRipemd160GetKlass">xmlSecOpenSSLTransformRipemd160GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRipemd160GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+RIPEMD-160 digest transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to RIPEMD-160 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRsaId">xmlSecOpenSSLKeyDataRsaId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataRsaId</programlisting>
-</refsect2>
+<para>
+The RSA key klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRsaGetKlass">xmlSecOpenSSLKeyDataRsaGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataRsaGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The OpenSSL RSA key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to OpenSSL RSA key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRsaAdoptRsa">xmlSecOpenSSLKeyDataRsaAdoptRsa ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataRsaAdoptRsa (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="RSA-CAPS">RSA</link> *rsa);</programlisting>
-</refsect2>
+<para>
+Sets the value of RSA key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rsa</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL RSA key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRsaGetRsa">xmlSecOpenSSLKeyDataRsaGetRsa ()</title>
 <programlisting><link linkend="RSA-CAPS">RSA</link>*        xmlSecOpenSSLKeyDataRsaGetRsa   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the OpenSSL RSA key from RSA key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to OpenSSL RSA key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRsaAdoptEvp">xmlSecOpenSSLKeyDataRsaAdoptEvp ()</title>
 <programlisting>int         xmlSecOpenSSLKeyDataRsaAdoptEvp (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);</programlisting>
-</refsect2>
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
+<para>
+Sets the RSA key data value to OpenSSL EVP key.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pKey</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL EVP key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRsaGetEvp">xmlSecOpenSSLKeyDataRsaGetEvp ()</title>
 <programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLKeyDataRsaGetEvp   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
-</refsect2>
+<para>
+Gets the OpenSSL EVP key from RSA key data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to RSA key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to OpenSSL EVP key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRsaSha1Id">xmlSecOpenSSLTransformRsaSha1Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformRsaSha1Id</programlisting>
-</refsect2>
+<para>
+The RSA-SHA1 signature transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRsaSha1GetKlass">xmlSecOpenSSLTransformRsaSha1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRsaSha1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The RSA-SHA1 signature transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-SHA1 signature transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRsaPkcs1Id">xmlSecOpenSSLTransformRsaPkcs1Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformRsaPkcs1Id</programlisting>
-</refsect2>
+<para>
+The RSA PKCS1 key transport transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRsaPkcs1GetKlass">xmlSecOpenSSLTransformRsaPkcs1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRsaPkcs1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The RSA-PKCS1 key transport transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-PKCS1 key transport transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRsaOaepId">xmlSecOpenSSLTransformRsaOaepId</title>
 <programlisting>#define     xmlSecOpenSSLTransformRsaOaepId</programlisting>
-</refsect2>
+<para>
+The RSA PKCS1 key transport transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformRsaOaepGetKlass">xmlSecOpenSSLTransformRsaOaepGetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRsaOaepGetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+The RSA-OAEP key transport transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-OAEP key transport transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformSha1Id">xmlSecOpenSSLTransformSha1Id</title>
 <programlisting>#define     xmlSecOpenSSLTransformSha1Id</programlisting>
-</refsect2>
+<para>
+The SHA1 digest transform klass.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLTransformSha1GetKlass">xmlSecOpenSSLTransformSha1GetKlass ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformSha1GetKlass
                                             (void);</programlisting>
-</refsect2>
+<para>
+SHA-1 digest transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SHA-1 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-OPENSSL-ERRORS-LIB-CAPS">XMLSEC_OPENSSL_ERRORS_LIB</title>
 <programlisting>#define XMLSEC_OPENSSL_ERRORS_LIB			(ERR_LIB_USER + 57)
 </programlisting>
-</refsect2>
+<para>
+Macro. The XMLSec library klass for OpenSSL errors reporting functions.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-OPENSSL-ERRORS-FUNCTION-CAPS">XMLSEC_OPENSSL_ERRORS_FUNCTION</title>
 <programlisting>#define XMLSEC_OPENSSL_ERRORS_FUNCTION			0
 </programlisting>
-</refsect2>
+<para>
+Macro. The XMLSec library functions OpenSSL errors reporting functions.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErrorsDefaultCallback ()</title>
 <programlisting>void        xmlSecOpenSSLErrorsDefaultCallback
@@ -423,7 +850,33 @@ void        <link linkend="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErro
                                              const char *errorSubject,
                                              int reason,
                                              const char *msg);</programlisting>
-</refsect2>
+<para>
+The default OpenSSL errors reporting callback function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location file name (__FILE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location line number (__LINE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location function name (__FUNCTION__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error object 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error subject.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&nbsp;:</term>
+<listitem><simpara>		the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
+<listitem><simpara>		the additional error message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

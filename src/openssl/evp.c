@@ -52,6 +52,15 @@ static int		xmlSecOpenSSLEvpKeyDataDuplicate	(xmlSecKeyDataPtr dst,
 								 xmlSecKeyDataPtr src);
 static void		xmlSecOpenSSLEvpKeyDataFinalize		(xmlSecKeyDataPtr data);
 
+/**
+ * xmlSecOpenSSLEvpKeyDataAdoptEvp:
+ * @data:		the pointer to OpenSSL EVP key data.
+ * @pKey:		the pointer to EVP key.
+ *
+ * Sets the value of key data.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
@@ -70,6 +79,14 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLEvpKeyDataGetEvp:
+ * @data:		the pointer to OpenSSL EVP data.
+ *
+ * Gets the EVP_PKEY from the key data.
+ *
+ * Returns pointer to EVP_PKEY or NULL if an error occurs.
+ */
 EVP_PKEY* 
 xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
@@ -151,6 +168,14 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
  * EVP helper functions
  *
  *****************************************************************************/
+/**
+ * xmlSecOpenSSLEvpKeyDup:
+ * @pKey:		the pointer to EVP_PKEY.
+ *
+ * Duplicates @pKey.
+ *
+ * Returns pointer to newly created EVP_PKEY object or NULL if an error occurs.
+ */
 EVP_PKEY* 
 xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
     int ret;
@@ -170,6 +195,14 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
     return(pKey);
 }
 
+/**
+ * xmlSecOpenSSLEvpKeyAdopt:
+ * @pKey:		the pointer to EVP_PKEY.
+ *
+ * Creates xmlsec key object from OpenSSL key object.
+ *
+ * Returns pointer to newly created xmlsec key or NULL if an error occurs.
+ */
 xmlSecKeyDataPtr
 xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
     xmlSecKeyDataPtr data = NULL;
@@ -362,11 +395,27 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecOpenSSLKeyDataDsaGetKlass:
+ * 
+ * The DSA key data klass.
+ *
+ * Returns pointer to DSA key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataDsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataDsaKlass);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataDsaAdoptDsa:
+ * @data:		the pointer to DSA key data.
+ * @dsa:		the pointer to OpenSSL DSA key.
+ *
+ * Sets the value of DSA key data.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int
 xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     EVP_PKEY* pKey = NULL;
@@ -412,6 +461,14 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     return(0);    
 }
 
+/**
+ * xmlSecOpenSSLKeyDataDsaGetDsa:
+ * @data:		the pointer to DSA key data.
+ *
+ * Gets the OpenSSL DSA key from DSA key data.
+ *
+ * Returns pointer to OpenSSL DSA key or NULL if an error occurs.
+ */
 DSA* 
 xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;
@@ -424,6 +481,15 @@ xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
     return((pKey != NULL) ? pKey->pkey.dsa : (DSA*)NULL);
 }
 
+/** 
+ * xmlSecOpenSSLKeyDataDsaAdoptEvp:
+ * @data:		the pointer to DSA key data.
+ * @pKey:		the pointer to OpenSSL EVP key.
+ *
+ * Sets the DSA key data value to OpenSSL EVP key.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
@@ -433,6 +499,14 @@ xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
 
+/**
+ * xmlSecOpenSSLKeyDataDsaGetEvp:
+ * @data:		the pointer to DSA key data.
+ *
+ * Gets the OpenSSL EVP key from DSA key data.
+ *
+ * Returns pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
 EVP_PKEY* 
 xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), NULL);
@@ -1001,11 +1075,27 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLKeyDataRsaGetKlass:
+ *
+ * The OpenSSL RSA key data klass.
+ *
+ * Returns pointer to OpenSSL RSA key data klass.
+ */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataRsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataRsaKlass);
 }
 
+/**
+ * xmlSecOpenSSLKeyDataRsaAdoptRsa:
+ * @data:		the pointer to RSA key data.
+ * @rsa:		the pointer to OpenSSL RSA key.
+ *
+ * Sets the value of RSA key data.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int
 xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     EVP_PKEY* pKey = NULL;
@@ -1051,6 +1141,14 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     return(0);    
 }
 
+/**
+ * xmlSecOpenSSLKeyDataRsaGetRsa:
+ * @data:		the pointer to RSA key data.
+ *
+ * Gets the OpenSSL RSA key from RSA key data.
+ *
+ * Returns pointer to OpenSSL RSA key or NULL if an error occurs.
+ */
 RSA* 
 xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;
@@ -1063,6 +1161,15 @@ xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
     return((pKey != NULL) ? pKey->pkey.rsa : (RSA*)NULL);
 }
 
+/** 
+ * xmlSecOpenSSLKeyDataRsaAdoptEvp:
+ * @data:		the pointer to RSA key data.
+ * @pKey:		the pointer to OpenSSL EVP key.
+ *
+ * Sets the RSA key data value to OpenSSL EVP key.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
@@ -1072,6 +1179,14 @@ xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
 
+/**
+ * xmlSecOpenSSLKeyDataRsaGetEvp:
+ * @data:		the pointer to RSA key data.
+ *
+ * Gets the OpenSSL EVP key from RSA key data.
+ *
+ * Returns pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
 EVP_PKEY* 
 xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), NULL);

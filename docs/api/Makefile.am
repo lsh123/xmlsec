@@ -40,19 +40,21 @@ html: sgml xmlsec.sgml xmlsec-index
 # targets to make more references
 #
 sgml: templates
-	@gtkdoc-mkdb --module=xmlsec --main-sgml-file xmlsec.sgml \
+	@gtkdoc-mkdb --module=xmlsec --main-sgml-file=xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	gtkdoc-mkdb --module=xmlsec-openssl --main-sgml-file xmlsec-openssl.sgml \
+	@gtkdoc-mkdb --module=xmlsec-openssl --main-sgml-file=xmlsec-openssl.sgml \
 		    --tmpl-dir=tmpl/openssl --output-dir=sgml/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	@gtkdoc-mkdb --module=xmlsec-gnutls --main-sgml-file xmlsec-gnutls.sgml \
+	@gtkdoc-mkdb --module=xmlsec-gnutls --main-sgml-file=xmlsec-gnutls.sgml \
 		    --tmpl-dir=tmpl/gnutls --output-dir=sgml/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	@gtkdoc-mkdb --module=xmlsec-nss --main-sgml-file xmlsec-nss.sgml \
-		    --tmpl-dir=tmpl/nss --output-dir=sgml/nss \
+	@gtkdoc-mkdb --module=xmlsec-nss \
+		    --main-sgml-file=xmlsec-nss.sgml \
+		    --tmpl-dir=tmpl/nss \
+		    --output-dir=sgml/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
 	@(for i in `find sgml -name "*.sgml" -print` ; do \
@@ -66,6 +68,12 @@ sgml: templates
 
 templates: scan
 	@gtkdoc-mktmpl --module=xmlsec 
+	@gtkdoc-mktmpl --module=xmlsec-openssl \
+		    --output-dir=tmpl/openssl
+	@gtkdoc-mktmpl --module=xmlsec-nss \
+		    --output-dir=tmpl/nss
+	@gtkdoc-mktmpl --module=xmlsec-gnutls \
+		    --output-dir=tmpl/gnutls
 
 scan: doc_sources example_sources
 	@gtkdoc-scan --module=xmlsec \
@@ -104,6 +112,7 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
 	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
 	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
+	@rm -f $(DOC_SOURCE_DIR)/include/xmlsec/*/symbols.h
 
 #
 # Create index for all functions. For macros and defines need to add -CAPS suffix

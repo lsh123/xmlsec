@@ -491,6 +491,13 @@ static xmlSecTransformKlass xmlSecNssHmacSha1Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecNssTransformHmacSha1GetKlass:
+ *
+ * The HMAC-SHA1 transform klass.
+ *
+ * Returns the HMAC-SHA1 transform klass.
+ */
 xmlSecTransformId 
 xmlSecNssTransformHmacSha1GetKlass(void) {
     return(&xmlSecNssHmacSha1Klass);
@@ -526,6 +533,13 @@ static xmlSecTransformKlass xmlSecNssHmacRipemd160Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecNssTransformHmacRipemd160GetKlass:
+ *
+ * The HMAC-RIPEMD160 transform klass.
+ *
+ * Returns the HMAC-RIPEMD160 transform klass.
+ */
 xmlSecTransformId 
 xmlSecNssTransformHmacRipemd160GetKlass(void) {
     return(&xmlSecNssHmacRipemd160Klass);
@@ -561,6 +575,13 @@ static xmlSecTransformKlass xmlSecNssHmacMd5Klass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecNssTransformHmacMd5GetKlass:
+ *
+ * The HMAC-MD5 transform klass.
+ *
+ * Returns the HMAC-MD5 transform klass.
+ */
 xmlSecTransformId 
 xmlSecNssTransformHmacMd5GetKlass(void) {
     return(&xmlSecNssHmacMd5Klass);

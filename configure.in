@@ -901,7 +901,7 @@ dnl ==========================================================================
 dnl check if we need dynamic loading in the xmlsec apps
 dnl ==========================================================================
 AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support in command line tool) 
-AC_ARG_ENABLE(apps_crypto_dl,   [  --apps_enable-crypto-dl  enable dynamic loading support for xmlsec-crypto libraries in xmlsec command line tool (yes)])
+AC_ARG_ENABLE(apps_crypto_dl,   [  --enable-apps-crypto-dl  enable dynamic loading support for xmlsec-crypto libraries in xmlsec command line tool (yes)])
 if test "z$enable_apps_crypto_dl" = "z" ; then
     enable_apps_crypto_dl="$enable_crypto_dl"
 fi

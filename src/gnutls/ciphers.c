@@ -446,6 +446,7 @@ xmlSecGnuTLSBlockCipherCheckId(xmlSecTransformPtr transform) {
 static int 
 xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSBlockCipherCtxPtr ctx;
+    gpg_err_code_t ret;
     
     xmlSecAssert2(xmlSecGnuTLSBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSBlockCipherSize), -1);
@@ -488,8 +489,8 @@ xmlSecGnuTLSBlockCipherInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }        
     
-    ctx->cipherCtx = gcry_cipher_open(ctx->cipher, ctx->mode, GCRY_CIPHER_SECURE); /* we are paranoid */
-    if(ctx->cipherCtx == NULL) {
+    ret = gcry_cipher_open(&ctx->cipherCtx, ctx->cipher, ctx->mode, GCRY_CIPHER_SECURE); /* we are paranoid */
+    if(ret != GPG_ERR_NO_ERROR) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "gcry_cipher_open",

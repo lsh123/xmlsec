@@ -401,7 +401,7 @@ dnl See if we can find GnuTLS
 dnl ==========================================================================
 GNUTLS_CONFIG="libgnutls-config"
 XMLSEC_NO_GNUTLS="1"
-GNUTLS_MIN_VERSION="0.8.1"
+GNUTLS_MIN_VERSION="1.0.4"
 GNUTLS_VERSION=""
 GNUTLS_CFLAGS=""
 GNUTLS_LIBS=""

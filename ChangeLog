@@ -1,3 +1,8 @@
+Mon Jan  5 12:42:52 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in src/gnutls/ciphers.c src/gnutls/digests.c 
+	src/gnutls/hmac.c: upgraded gnutls to 1.0.4 (bug #129190)
+
 Thu 13 Nov 2003 08:19:55 AM PST <aleksey@aleksey.com>
 	
 	* src/mscrypto/app.c: fixed non-initialized values (Glenn)

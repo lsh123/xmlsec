@@ -74,6 +74,7 @@ static int 	xmlSecGnuTLSHmacExecute			(xmlSecTransformPtr transform,
 static int 
 xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSHmacCtxPtr ctx;
+    gpg_err_code_t ret;
 
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
@@ -97,8 +98,8 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
     
-    ctx->digestCtx = gcry_md_open(ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
-    if(ctx->digestCtx == NULL) {
+    ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
+    if(ret != GPG_ERR_NO_ERROR) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "gcry_md_open",

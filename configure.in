@@ -462,8 +462,8 @@ else
     NSS_NSS_H=""
 
     dnl process the mozilla options if any
-    if test "z$with_mozilla_version" != "z" ; then
-        MOZILLA_VERSION=$with_mozilla_version
+    if test "z$with_mozilla_ver" != "z" ; then
+        MOZILLA_VERSION=$with_mozilla_ver
     fi
 
     ac_mozilla_name=mozilla-$MOZILLA_VERSION

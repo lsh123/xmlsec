@@ -1,3 +1,8 @@
+Wed Nov  5 13:39:47 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: fixed "--with-mozilla-ver" option for ./configure
+	script (patch from Daniel)
+
 Wed Oct 29 07:55:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/xmltree.h src/dl.c

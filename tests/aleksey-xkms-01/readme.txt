@@ -4,7 +4,8 @@ Tests
 				with certificate from cert3.pem 
     validate-example-1.xml	- ValidateRequest example 4.2.1 from XKMS 2.0 spec 
 				with certificates from cert2.pem and cert3.pem 
-    compaund-example-1.xml	- CompaundRequest example 
+    compaund-example-1.xml	- CompaundRequest example 2.8.1 from XKMS 2.0 spec 
+				with certificate from cert3.pem 
     
 Keys and certificates
     cakey.pem			- root certificate RSA 1024 key encrypted with 

@@ -460,10 +460,10 @@ RSA* xmlSecRsaDup(RSA *rsa) {
     xmlSecAssert2(rsa != NULL, NULL);
 
     /* increment reference counter instead of coping if possible */
-#ifdef XMLSEC_OPENSSL097
+#ifndef XMLSEC_OPENSSL096
     RSA_up_ref(rsa);
     newRsa =  rsa;
-#else /* XMLSEC_OPENSSL097 */     
+#else /* XMLSEC_OPENSSL096 */     
     
     newRsa = RSA_new();
     if(newRsa == NULL) {
@@ -482,7 +482,7 @@ RSA* xmlSecRsaDup(RSA *rsa) {
     if(rsa->d != NULL) {
 	newRsa->d = BN_dup(rsa->d);
     }
-#endif /* XMLSEC_OPENSSL097 */     
+#endif /* XMLSEC_OPENSSL096 */     
     return(newRsa);
 }
  

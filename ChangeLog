@@ -1,3 +1,9 @@
+Tue Aug 13 13:59:32 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* apps/xmlsec.c configure.in src/ciphers.c src/des.c src/dsa.c 
+	src/hmac.c src/rsa.c: replaced XMLSEC_OPENSSL097 define with 
+	XMLSEC_OPENSSL096 define
+	* docs/api/*: updated docs with new errors reporting functions
+
 Tue 13 Aug 2002 01:36:16 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	* include/xmlsec/errors.h src/*.c configure.in: changed
 	error reporting system and updated all files accordingly

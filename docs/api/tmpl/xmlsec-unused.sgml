@@ -1,3 +1,26 @@
+<!-- ##### FUNCTION xmlSecAddIdAttributeName ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecClearIdAttributeNames ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecFindNodeById ##### -->
+<para>
+
+</para>
+
+@parent: 
+@id: 
+@Returns: 
+
 <!-- ##### FUNCTION xmlSecGetChildNodeSet ##### -->
 <para>
 
@@ -6,6 +29,16 @@
 @parent: 
 @nodeSet: 
 @withComments: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecNodeSetContain ##### -->
+<para>
+
+</para>
+
+@nset: 
+@node: 
+@parent: 
 @Returns: 
 
 <!-- ##### VARIABLE xmlSecXPathAlt ##### -->

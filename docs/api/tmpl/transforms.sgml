@@ -331,6 +331,12 @@ transforms
 </para>
 
 
+<!-- ##### VARIABLE xmlSecTransformXPointer ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION xmlSecTransformXPathAdd ##### -->
 <para>
 
@@ -349,6 +355,17 @@ transforms
 
 @transformNode: 
 @type: 
+@expression: 
+@namespaces: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformXPointerAdd ##### -->
+<para>
+
+</para>
+
+@transformNode: 
 @expression: 
 @namespaces: 
 @Returns: 

@@ -101,16 +101,6 @@ xmltree
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecFindNodeById ##### -->
-<para>
-
-</para>
-
-@parent: 
-@id: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecAddChild ##### -->
 <para>
 
@@ -175,19 +165,13 @@ xmltree
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecAddIdAttributeName ##### -->
+<!-- ##### FUNCTION xmlSecAddIDs ##### -->
 <para>
 
 </para>
 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecClearIdAttributeNames ##### -->
-<para>
-
-</para>
-
+@doc: 
+@cur: 
+@ids: 
 
 

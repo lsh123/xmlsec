@@ -20,3 +20,4 @@
 <!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
 <!ENTITY xmlsec-xpath SYSTEM "sgml/xpath.sgml">
 <!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
+<!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">

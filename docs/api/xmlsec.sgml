@@ -6,6 +6,7 @@
 <!ENTITY xmlsec-debug SYSTEM "sgml/debug.sgml">
 <!ENTITY xmlsec-digests SYSTEM "sgml/digests.sgml">
 <!ENTITY xmlsec-io SYSTEM "sgml/io.sgml">
+<!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">
 <!ENTITY xmlsec-keyinfo SYSTEM "sgml/keyinfo.sgml">
 <!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
 <!ENTITY xmlsec-keysInternal SYSTEM "sgml/keysInternal.sgml">
@@ -86,6 +87,7 @@
     &xmlsec-xmlsec;
     &xmlsec-xmldsig;
     &xmlsec-xmlenc;
+    &xmlsec-errors;
     &xmlsec-debug;
     &xmlsec-keyinfo;
     &xmlsec-keys;

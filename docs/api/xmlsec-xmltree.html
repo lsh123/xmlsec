@@ -109,7 +109,7 @@ NAME="XMLSEC-XMLTREE">xmltree</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7116"
+NAME="AEN7513"
 ></A
 ><H2
 >Name</H2
@@ -117,7 +117,7 @@ NAME="AEN7116"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7119"><H2
+NAME="AEN7516"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -253,20 +253,6 @@ HREF="XMLCHAR"
 HREF="XMLNODEPTR"
 >xmlNodePtr</GTKDOCLINK
 >  <A
-HREF="xmlsec-xmltree.html#XMLSECFINDNODEBYID"
->xmlSecFindNodeById</A
->              (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id);
-<GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  <A
 HREF="xmlsec-xmltree.html#XMLSECADDCHILD"
 >xmlSecAddChild</A
 >                  (<GTKDOCLINK
@@ -351,17 +337,21 @@ HREF="XMLNODEPTR"
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > size);
-int         <A
-HREF="xmlsec-xmltree.html#XMLSECADDIDATTRIBUTENAME"
->xmlSecAddIdAttributeName</A
->        (const <GTKDOCLINK
+void        <A
+HREF="xmlsec-xmltree.html#XMLSECADDIDS"
+>xmlSecAddIDs</A
+>                    (<GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             const <GTKDOCLINK
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
-> *id);
-void        <A
-HREF="xmlsec-xmltree.html#XMLSECCLEARIDATTRIBUTENAMES"
->xmlSecClearIdAttributeNames</A
->     (void);</PRE
+> **ids);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -369,7 +359,7 @@ HREF="xmlsec-xmltree.html#XMLSECCLEARIDATTRIBUTENAMES"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7185"
+NAME="AEN7579"
 ></A
 ><H2
 >Description</H2
@@ -379,14 +369,14 @@ NAME="AEN7185"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7188"
+NAME="AEN7582"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7190"
+NAME="AEN7584"
 ></A
 ><H3
 ><A
@@ -414,7 +404,7 @@ HREF="XMLDOCPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7196"><P
+NAME="AEN7590"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -468,7 +458,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7209"
+NAME="AEN7603"
 ></A
 ><H3
 ><A
@@ -501,7 +491,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7216"><P
+NAME="AEN7610"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -589,7 +579,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7237"
+NAME="AEN7631"
 ></A
 ><H3
 ><A
@@ -631,7 +621,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7246"><P
+NAME="AEN7640"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -770,7 +760,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7279"
+NAME="AEN7673"
 ></A
 ><H3
 ><A
@@ -808,7 +798,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7288"><P
+NAME="AEN7682"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -901,7 +891,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7310"
+NAME="AEN7704"
 ></A
 ><H3
 ><A
@@ -934,7 +924,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7318"><P
+NAME="AEN7712"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -988,7 +978,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7331"
+NAME="AEN7725"
 ></A
 ><H3
 ><A
@@ -1029,7 +1019,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7341"><P
+NAME="AEN7735"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1117,7 +1107,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7362"
+NAME="AEN7756"
 ></A
 ><H3
 ><A
@@ -1156,7 +1146,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7371"><P
+NAME="AEN7765"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1244,7 +1234,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7392"
+NAME="AEN7786"
 ></A
 ><H3
 ><A
@@ -1283,7 +1273,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7401"><P
+NAME="AEN7795"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1371,116 +1361,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7422"
-></A
-><H3
-><A
-NAME="XMLSECFINDNODEBYID"
-></A
->xmlSecFindNodeById ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
->  xmlSecFindNodeById              (const <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> parent,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *id);</PRE
-></TD
-></TR
-></TABLE
-><P
->Lookups the node with attribute "Id" equal to given one in the given 
-node subtree</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7431"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->parent</I
-></TT
->:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7448"
+NAME="AEN7816"
 ></A
 ><H3
 ><A
@@ -1521,7 +1402,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7458"><P
+NAME="AEN7826"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1609,7 +1490,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7479"
+NAME="AEN7847"
 ></A
 ><H3
 ><A
@@ -1650,7 +1531,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7489"><P
+NAME="AEN7857"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1738,7 +1619,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7510"
+NAME="AEN7878"
 ></A
 ><H3
 ><A
@@ -1779,7 +1660,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7520"><P
+NAME="AEN7888"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1867,7 +1748,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7541"
+NAME="AEN7909"
 ></A
 ><H3
 ><A
@@ -1901,7 +1782,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7549"><P
+NAME="AEN7917"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1972,7 +1853,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7566"
+NAME="AEN7934"
 ></A
 ><H3
 ><A
@@ -2006,7 +1887,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7574"><P
+NAME="AEN7942"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2077,7 +1958,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7591"
+NAME="AEN7959"
 ></A
 ><H3
 ><A
@@ -2112,7 +1993,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7599"><P
+NAME="AEN7967"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2200,13 +2081,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7620"
+NAME="AEN7988"
 ></A
 ><H3
 ><A
-NAME="XMLSECADDIDATTRIBUTENAME"
+NAME="XMLSECADDIDS"
 ></A
->xmlSecAddIdAttributeName ()</H3
+>xmlSecAddIDs ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2216,23 +2097,27 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecAddIdAttributeName        (const <GTKDOCLINK
+>void        xmlSecAddIDs                    (<GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             const <GTKDOCLINK
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
-> *id);</PRE
+> **ids);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Adds ID attribute to the list of known ID attributes
-(hack for specifying ID attributes names for xml documents
-w/o schemas or DTD).</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7627"><P
+NAME="AEN7996"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2250,7 +2135,7 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->id</I
+>doc</I
 ></TT
 >:</TD
 ><TD
@@ -2264,52 +2149,40 @@ VALIGN="TOP"
 WIDTH="20%"
 ALIGN="RIGHT"
 VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
+><TT
+CLASS="PARAMETER"
 ><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
+>cur</I
+></TT
+>:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 for success or -1 for errors.</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>ids</I
+></TT
+>:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
 ><P
 ></P
 ></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7640"
-></A
-><H3
-><A
-NAME="XMLSECCLEARIDATTRIBUTENAMES"
-></A
->xmlSecClearIdAttributeNames ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecClearIdAttributeNames     (void);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><P
-></P
 ></DIV
 ></DIV
 ><DIV

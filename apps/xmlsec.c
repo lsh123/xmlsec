@@ -941,9 +941,9 @@ void shutdown(void) {
 #ifndef XMLSEC_NO_X509
     X509_TRUST_cleanup();
 #endif /* XMLSEC_NO_X509 */    
-#ifdef XMLSEC_OPENSSL097
+#ifndef XMLSEC_OPENSSL096
     CRYPTO_cleanup_all_ex_data();
-#endif /* XMLSEC_OPENSSL097 */     
+#endif /* XMLSEC_OPENSSL096 */     
 }
 
 /**

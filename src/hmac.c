@@ -266,11 +266,11 @@ xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
     }    
     digest = (xmlSecDigestTransformPtr)transform;
 
-#ifdef XMLSEC_OPENSSL097    
+#ifndef XMLSEC_OPENSSL096
     HMAC_CTX_cleanup(xmlSecMacHmacContext(transform));
-#else /* XMLSEC_OPENSSL097 */
+#else /* XMLSEC_OPENSSL096 */
     HMAC_cleanup(xmlSecMacHmacContext(transform));
-#endif /* XMLSEC_OPENSSL097 */    
+#endif /* XMLSEC_OPENSSL096 */    
     
     memset(digest, 0, XMLSEC_HMACSHA1_TRANSFORM_SIZE);
     xmlFree(digest);

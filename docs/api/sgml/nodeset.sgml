@@ -25,7 +25,7 @@ int         (<link linkend="xmlSecNodeSetWalkCallback">*xmlSecNodeSetWalkCallbac
                                              <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);
 void        <link linkend="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</link>            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);
-int         <link linkend="xmlSecNodeSetContain">xmlSecNodeSetContain</link>            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+int         <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> parent);
 <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <link linkend="xmlSecNodeSetAdd">xmlSecNodeSetAdd</link>           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
@@ -174,8 +174,8 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecNodeSetContain">xmlSecNodeSetContain ()</title>
-<programlisting>int         xmlSecNodeSetContain            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+<title><anchor id="xmlSecNodeSetContains">xmlSecNodeSetContains ()</title>
+<programlisting>int         xmlSecNodeSetContains           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> parent);</programlisting>
 <para>

@@ -924,6 +924,10 @@ extern xmlSecTransformId 	xmlSecTransformXPath;
 <NAME>xmlSecTransformXPath2</NAME>
 extern xmlSecTransformId 	xmlSecTransformXPath2;
 </VARIABLE>
+<VARIABLE>
+<NAME>xmlSecTransformXPointer</NAME>
+extern xmlSecTransformId 	xmlSecTransformXPointer;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecTransformXPathAdd</NAME>
 <RETURNS>int  </RETURNS>
@@ -933,6 +937,11 @@ xmlNodePtr transformNode,const xmlChar *expression,const xmlChar **namespaces
 <NAME>xmlSecTransformXPath2Add</NAME>
 <RETURNS>int  </RETURNS>
 xmlNodePtr transformNode,xmlSecXPath2TransformType type,const xmlChar *expression,const xmlChar **namespaces
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformXPointerAdd</NAME>
+<RETURNS>int  </RETURNS>
+xmlNodePtr transformNode,const xmlChar *expression,const xmlChar **namespaces
 </FUNCTION>
 <VARIABLE>
 <NAME>xmlSecTransformXslt</NAME>
@@ -1705,11 +1714,6 @@ const xmlNodePtr cur,const xmlChar *name,const xmlChar *ns
 const xmlNodePtr parent,const xmlChar *name,const xmlChar *ns
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecFindNodeById</NAME>
-<RETURNS>xmlNodePtr 	</RETURNS>
-const xmlNodePtr parent,const xmlChar *id
-</FUNCTION>
-<FUNCTION>
 <NAME>xmlSecAddChild</NAME>
 <RETURNS>xmlNodePtr 	</RETURNS>
 xmlNodePtr parent,const xmlChar *name,const xmlChar *ns
@@ -1740,14 +1744,9 @@ xmlNodePtr node,xmlNodePtr newNode
 xmlNodePtr node,const unsigned char *buffer,size_t size
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecAddIdAttributeName</NAME>
-<RETURNS>int 	</RETURNS>
-const xmlChar *id
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecClearIdAttributeNames</NAME>
+<NAME>xmlSecAddIDs</NAME>
 <RETURNS>void 	</RETURNS>
-void
+xmlDocPtr doc,xmlNodePtr cur,const xmlChar** ids
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecXPathHereFunction</NAME>
@@ -1806,7 +1805,7 @@ xmlDocPtr doc,xmlNodeSetPtr nodes,xmlSecNodeSetType type
 xmlSecNodeSetPtr nset
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecNodeSetContain</NAME>
+<NAME>xmlSecNodeSetContains</NAME>
 <RETURNS>int 	</RETURNS>
 xmlSecNodeSetPtr nset,xmlNodePtr node,xmlNodePtr parent
 </FUNCTION>
@@ -1835,3 +1834,199 @@ xmlSecNodeSetPtr nset,xmlSecNodeSetWalkCallback func,void* data
 <RETURNS>void 	</RETURNS>
 xmlSecNodeSetPtr nset,FILE *output
 </FUNCTION>
+<MACRO>
+<NAME>XMLSEC_ERRORS_LIB</NAME>
+#define XMLSEC_ERRORS_LIB				(ERR_LIB_USER + 57)
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_FUNCTION</NAME>
+#define XMLSEC_ERRORS_FUNCTION				0
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_MALLOC_FAILED</NAME>
+#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1  	/* "failed to allocate memory" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_XMLSEC_FAILED</NAME>
+#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2	/* "xmlsec operation failed" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CRYPTO_FAILED</NAME>
+#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3	/* "crypto operation failed" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_XML_FAILED</NAME>
+#define XMLSEC_ERRORS_R_XML_FAILED		 4	/* "xml operation failed" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_XSLT_FAILED</NAME>
+#define XMLSEC_ERRORS_R_XSLT_FAILED		 5	/* "xslt operation failed" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_IO_FAILED</NAME>
+#define XMLSEC_ERRORS_R_IO_FAILED		 6	/* "io operation failed" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10	/* "invlaid transform" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11	/* "invlaid transform data	" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12	/* "invalid transform or key" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY		 13	/* "key is invalid" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY_DATA</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14	/* "key data is invalid" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY_SIZE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15	/* "invalid key size" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16	/* "invalid key origin" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_KEY_NOT_FOUND</NAME>
+#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17	/* "key not found" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_SIZE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_SIZE		 18	/* "invalid size" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_DATA</NAME>
+#define XMLSEC_ERRORS_R_INVALID_DATA		 19	/* "invalid data" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TYPE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TYPE		 21	/* "invalid type" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_USAGE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_USAGE		 22	/* "invalid usage" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23	/* "invalid node" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODESET</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24	/* "invalid nodes set" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25	/* "invalid node content" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26	/* "invalid node attribute" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</NAME>
+#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27	/* "node already present" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</NAME>
+#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28	/* "same document required" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_NODE_NOT_FOUND</NAME>
+#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29	/* "node not found" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</NAME>
+#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30	/* "max retrievals level reached" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</NAME>
+#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31	/* "cert verification failed" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_NOT_FOUND</NAME>
+#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32	/* "cert not found" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_REVOKED</NAME>
+#define XMLSEC_ERRORS_R_CERT_REVOKED		 33	/* "cert revoked" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</NAME>
+#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34	/* "invalid reference" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_ASSERTION</NAME>
+#define XMLSEC_ERRORS_R_ASSERTION		 100	/* "assertion" */
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_DISABLED</NAME>
+#define XMLSEC_ERRORS_R_DISABLED		 101	/* "disabled" */
+</MACRO>
+<USER_FUNCTION>
+<NAME>xmlSecErrorsCallback</NAME>
+<RETURNS>void </RETURNS>
+const char* file, int line, 
+				    		 const char* func,
+						 int reason, const char* msg
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>xmlSecErrorsInit</NAME>
+<RETURNS>void  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecErrorsShutdown</NAME>
+<RETURNS>void  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecErrorsSetCallback</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecErrorsCallback callback
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecPrintErrorMessages</NAME>
+extern int xmlSecPrintErrorMessages;	/* whether the error messages will be printed immidiatelly */
+</VARIABLE>
+<MACRO>
+<NAME>XMLSEC_ERRORS_HERE</NAME>
+#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecError</NAME>
+<RETURNS>void  </RETURNS>
+const char* file, int line,const char* func,int reason, const char* msg,...)__attribute__ ((format (printf, 5, 6))
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecError</NAME>
+<RETURNS>void  </RETURNS>
+const char* file, int line,const char* func,int reason, const char* msg,...
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecAssert</NAME>
+#define xmlSecAssert( p ) \
+	if(!( p ) ) { \
+	    xmlSecError(XMLSEC_ERRORS_HERE, \
+			XMLSEC_ERRORS_R_ASSERTION, \
+			"%s", #p); \
+	    return; \
+	} 
+</MACRO>
+<MACRO>
+<NAME>xmlSecAssert2</NAME>
+#define xmlSecAssert2( p, ret ) \
+	if(!( p ) ) { \
+	    xmlSecError(XMLSEC_ERRORS_HERE, \
+			XMLSEC_ERRORS_R_ASSERTION, \
+			"%s", #p); \
+	    return(ret); \
+	} 
+</MACRO>

@@ -428,10 +428,10 @@ DSA* xmlSecDsaDup(DSA *dsa) {
     xmlSecAssert2(dsa != NULL, NULL);        
     
     /* increment reference counter instead of coping */
-#ifdef XMLSEC_OPENSSL097
+#ifndef XMLSEC_OPENSSL096
     DSA_up_ref(dsa);
     newDsa =  dsa;
-#else /* XMLSEC_OPENSSL097 */         
+#else /* XMLSEC_OPENSSL096 */         
     newDsa = DSA_new();
     if(newDsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -455,7 +455,7 @@ DSA* xmlSecDsaDup(DSA *dsa) {
     if(dsa->pub_key != NULL) {
 	newDsa->pub_key = BN_dup(dsa->pub_key);
     }
-#endif /* XMLSEC_OPENSSL097 */         
+#endif /* XMLSEC_OPENSSL096 */         
     return(newDsa);
 }
 

@@ -41,3 +41,8 @@ clean:
 	@rm -f tmpl/*~ tmpl/*.bak  
 	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
 
+clean-local:
+	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
+
+maintainer-clean-local: clean
+	rm -rf sgml/*.sgml *.html xmlsec-decl-list.txt xmlsec-decl.txt xmlsec-sections.txt

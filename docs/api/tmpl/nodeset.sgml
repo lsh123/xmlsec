@@ -80,7 +80,7 @@ nodeset
 @nset: 
 
 
-<!-- ##### FUNCTION xmlSecNodeSetContain ##### -->
+<!-- ##### FUNCTION xmlSecNodeSetContains ##### -->
 <para>
 
 </para>

@@ -20,3 +20,4 @@
     &xmlsec-xmltree;
     &xmlsec-xpath;
     &xmlsec-nodeset;
+    &xmlsec-errors;

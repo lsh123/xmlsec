@@ -665,9 +665,9 @@ xmlSecDes3CbcEnc(const unsigned char *key, const unsigned char *iv,
 	return(-1);	
     }
 
-#ifdef XMLSEC_OPENSSL097
+#ifndef XMLSEC_OPENSSL096
     EVP_CIPHER_CTX_set_padding(&cipherCtx, 0);    
-#endif /* XMLSEC_OPENSSL097 */	
+#endif /* XMLSEC_OPENSSL096 */	
     
     ret = EVP_CipherUpdate(&cipherCtx, out, &updateLen, in, inSize);
     if(ret != 1) {

@@ -37,8 +37,6 @@ int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>      
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNode">xmlSecFindNode</link>                  (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNodeById">xmlSecFindNodeById</link>              (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
-                                             const <link linkend="xmlChar">xmlChar</link> *id);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChild">xmlSecAddChild</link>                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
@@ -55,8 +53,9 @@ int         <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>    
 int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);
-int         <link linkend="xmlSecAddIdAttributeName">xmlSecAddIdAttributeName</link>        (const <link linkend="xmlChar">xmlChar</link> *id);
-void        <link linkend="xmlSecClearIdAttributeNames">xmlSecClearIdAttributeNames</link>     (void);
+void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> **ids);
 </synopsis>
 </refsynopsisdiv>
 
@@ -285,31 +284,6 @@ Lookups a direct child of the node having given name and namespace href</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecFindNodeById">xmlSecFindNodeById ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNodeById              (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
-                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
-<para>
-Lookups the node with attribute "Id" equal to given one in the given 
-node subtree</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecAddChild">xmlSecAddChild ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChild                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
@@ -470,12 +444,10 @@ node subtree</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecAddIdAttributeName">xmlSecAddIdAttributeName ()</title>
-<programlisting>int         xmlSecAddIdAttributeName        (const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
-<para>
-Adds ID attribute to the list of known ID attributes
-(hack for specifying ID attributes names for xml documents
-w/o schemas or DTD).</para>
+<title><anchor id="xmlSecAddIDs">xmlSecAddIDs ()</title>
+<programlisting>void        xmlSecAddIDs                    (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="xmlChar">xmlChar</link> **ids);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -483,20 +455,18 @@ w/o schemas or DTD).</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or -1 for errors.
+<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ids</parameter>&nbsp;:</entry>
+<entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecClearIdAttributeNames">xmlSecClearIdAttributeNames ()</title>
-<programlisting>void        xmlSecClearIdAttributeNames     (void);</programlisting>
-<para>
-</para>
-<para>
-
-</para></refsect2>
 
 </refsect1>
 

@@ -202,9 +202,9 @@ else
 	#endif
     ],[
 	OPENSSL_VERSION="0.9.7"
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL097=1"
     ],[
-	XMLSEC_SOMETHING="1"
+	OPENSSL_VERSION="0.9.6"
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL096=1"
     ])    
     CPPFLAGS=$OLD_CPPFLAGS
     AC_MSG_RESULT(yes ('$OPENSSL_VERSION' ))
@@ -402,8 +402,8 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic compilation) 
 AC_ARG_ENABLE(pedantic,   [  --enable-pedantic       enable pedantic compilation flags (no)])
 if test "$enable_pedantic" = "yes" ; then
-    XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
-    dnl XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    dnl    XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
     CFLAGS="$CFLAGS $XMLSEC_PEDANTIC"
     AC_MSG_RESULT(yes)
 else

@@ -1,4 +1,4 @@
-<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!doctype book PUBLIC "-//DavenPort//DTD DocBook V3.0//EN" [
 <!ENTITY xmlsec-base64 SYSTEM "sgml/base64.sgml">
 <!ENTITY xmlsec-bn SYSTEM "sgml/bn.sgml">
 <!ENTITY xmlsec-buffered SYSTEM "sgml/buffered.sgml">
@@ -20,6 +20,8 @@
 <!ENTITY xmlsec-xmlsec SYSTEM "sgml/xmlsec.sgml">
 <!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
 <!ENTITY xmlsec-xpath SYSTEM "sgml/xpath.sgml">
+<!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
+<!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -49,5 +51,7 @@
     &xmlsec-xmlsec;
     &xmlsec-xmltree;
     &xmlsec-xpath;
+    &xmlsec-nodeset;
+    &xmlsec-errors;
   </chapter>
 </book>

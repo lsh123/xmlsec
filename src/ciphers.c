@@ -409,17 +409,17 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 	 * it is possible to disable padding and do it by yourself
 	 * For OpenSSL 0.9.6 you have interop problems
 	 */
-#ifdef XMLSEC_OPENSSL097	
+#ifndef XMLSEC_OPENSSL096	
 	if(cipher->cipherCtx.cipher != NULL) {
 	    b = cipher->cipherCtx.cipher->block_size;
 	} else {
 	    b = 0;
 	}
 	EVP_CIPHER_CTX_set_padding(&(cipher->cipherCtx), 0);    
-#endif /* XMLSEC_OPENSSL097 */	
+#endif /* XMLSEC_OPENSSL096 */	
 	ret = EVP_DecryptFinal(&(cipher->cipherCtx), 
 		cipher->bufOut, &res);    		 		 
-#ifdef XMLSEC_OPENSSL097
+#ifndef XMLSEC_OPENSSL096
 	if(ret == 1) {
 	    res = (b > 0) ? b - cipher->bufOut[b - 1] : 0;
 	    if(res < 0) {
@@ -429,7 +429,7 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 		return(-1);	
 	    }
 	}
-#endif /* XMLSEC_OPENSSL097 */			
+#endif /* XMLSEC_OPENSSL096 */			
     }
     if(ret != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,

@@ -74,7 +74,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(BAD_CAST "default") < 0) {
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) < 0) {
 	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
 			"that you have it installed and check shared libraries path\n"
 			"(LD_LIBRARY_PATH) envornment variable.\n");

@@ -8,14 +8,19 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
-SET ICONV=d:\sdk\bin\iconv
-SET LIBXML2=d:\sdk\bin\libxml2
-SET LIBXSLT=d:\sdk\bin\libxslt
-SET NSS=d:\sdk\bin\mozilla
-SET XMLSEC=d:\sdk\bin\xmlsec
-SET XMLSEC_INCLUDE=%ICONV%\include;%LIBXML2%\include;%LIBXSLT%\include;%NSS%\include;%NSS%\include\nspr;%NSS%\public;%NSS%\public\nss
-SET XMLSEC_LIB=%ICONV%\lib;%LIBXML2%\lib;%LIBXSLT%\lib;%NSS%\lib
-SET XMLSEC_OPTIONS=static=yes debug=yes xslt=yes crypto=openssl
+REM SET ICONV=d:\sdk\bin\iconv
+REM SET LIBXML2=d:\sdk\bin\libxml2
+REM SET LIBXSLT=d:\sdk\bin\libxslt
+REM SET OPENSSL=d:\sdk\bin\openssl
+REM SET XMLSEC_PREFIX=d:\sdk\bin\xmlsec
+REM SET XMLSEC_INCLUDE=%ICONV%\include;%LIBXML2%\include;%LIBXSLT%\include;%OPENSSL%\include
+REM SET XMLSEC_LIB=%ICONV%\lib;%LIBXML2%\lib;%LIBXSLT%\lib;%OPENSSL%\lib
+
+SET XMLSEC_PREFIX=d:\sdk
+SET MOZILLA_INCLUDES=%XMLSEC_PREFIX%\include\mozilla;%XMLSEC_PREFIX%\include\mozilla\nspr;%XMLSEC_PREFIX%\include\mozilla\public;%XMLSEC_PREFIX%\include\mozilla\public\nss
+SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include;%MOZILLA_INCLUDES%
+SET XMLSEC_LIB=%XMLSEC_PREFIX%\lib
+SET XMLSEC_OPTIONS=static=no debug=yes xslt=yes crypto=nss
 
 del /F Makefile configure.txt
-cscript configure.js prefix=%XMLSEC% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB% 
+cscript configure.js prefix=%XMLSEC_PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB% 

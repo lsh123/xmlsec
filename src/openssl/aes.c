@@ -42,39 +42,39 @@
  * <xmlsec:AESKeyValue> processing
  *
  *************************************************************************/
-static int		xmlSecOpenSSLKeyDataAesValueInitialize	(xmlSecKeyDataPtr data);
-static int		xmlSecOpenSSLKeyDataAesValueDuplicate	(xmlSecKeyDataPtr dst,
+static int		xmlSecOpenSSLKeyDataAesInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataAesDuplicate	(xmlSecKeyDataPtr dst,
 								 xmlSecKeyDataPtr src);
-static void		xmlSecOpenSSLKeyDataAesValueFinalize	(xmlSecKeyDataPtr data);
-static int		xmlSecOpenSSLKeyDataAesValueXmlRead	(xmlSecKeyDataId id,
+static void		xmlSecOpenSSLKeyDataAesFinalize		(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataAesXmlRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataAesValueXmlWrite	(xmlSecKeyDataId id,
+static int		xmlSecOpenSSLKeyDataAesXmlWrite		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataAesValueBinRead	(xmlSecKeyDataId id,
+static int		xmlSecOpenSSLKeyDataAesBinRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 const unsigned char* buf,
 								 size_t bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataAesValueBinWrite	(xmlSecKeyDataId id,
+static int		xmlSecOpenSSLKeyDataAesBinWrite		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 unsigned char** buf,
 								 size_t* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataAesValueGenerate	(xmlSecKeyDataPtr data,
+static int		xmlSecOpenSSLKeyDataAesGenerate		(xmlSecKeyDataPtr data,
 								 size_t sizeBits);
 
-static xmlSecKeyDataType xmlSecOpenSSLKeyDataAesValueGetType	(xmlSecKeyDataPtr data);
-static size_t		xmlSecOpenSSLKeyDataAesValueGetSize	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataAesValueDebugDump	(xmlSecKeyDataPtr data,
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataAesGetType		(xmlSecKeyDataPtr data);
+static size_t		xmlSecOpenSSLKeyDataAesGetSize		(xmlSecKeyDataPtr data);
+static void		xmlSecOpenSSLKeyDataAesDebugDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
-static void		xmlSecOpenSSLKeyDataAesValueDebugXmlDump(xmlSecKeyDataPtr data,
+static void		xmlSecOpenSSLKeyDataAesDebugXmlDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesKlass = {
     sizeof(xmlSecKeyDataKlass),
     sizeof(xmlSecKeyData),
     
@@ -87,38 +87,38 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesValueKlass = {
     xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataAesValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataAesValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataAesValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyDataAesValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
+    xmlSecOpenSSLKeyDataAesInitialize,		/* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataAesDuplicate,		/* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataAesFinalize,		/* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLKeyDataAesGenerate,		/* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecOpenSSLKeyDataAesValueGetType, 	/* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLKeyDataAesValueGetSize,	/* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecOpenSSLKeyDataAesGetType, 		/* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataAesGetSize,		/* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,					/* xmlSecKeyDataGetIdentifier getIdentifier; */    
     
     /* read/write */
-    xmlSecOpenSSLKeyDataAesValueXmlRead,	/* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataAesValueXmlWrite,	/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecOpenSSLKeyDataAesValueBinRead,	/* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecOpenSSLKeyDataAesValueBinWrite,	/* xmlSecKeyDataBinWriteMethod binWrite; */
+    xmlSecOpenSSLKeyDataAesXmlRead,		/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecOpenSSLKeyDataAesXmlWrite,		/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLKeyDataAesBinRead,		/* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecOpenSSLKeyDataAesBinWrite,		/* xmlSecKeyDataBinWriteMethod binWrite; */
 
 
     /* debug */
-    xmlSecOpenSSLKeyDataAesValueDebugDump,	/* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLKeyDataAesValueDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecOpenSSLKeyDataAesDebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataAesDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 };
 
 xmlSecKeyDataId 
-xmlSecOpenSSLKeyDataAesValueGetKlass(void) {
-    return(&xmlSecOpenSSLKeyDataAesValueKlass);
+xmlSecOpenSSLKeyDataAesGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataAesKlass);
 }
 
 int
-xmlSecOpenSSLKeyDataAesValueSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
+xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
     xmlSecBufferPtr buffer;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
     
@@ -129,66 +129,66 @@ xmlSecOpenSSLKeyDataAesValueSet(xmlSecKeyDataPtr data, const unsigned char* buf,
 }
 
 static int
-xmlSecOpenSSLKeyDataAesValueInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId), -1);
+xmlSecOpenSSLKeyDataAesInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId), -1);
     
     return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
 static int
-xmlSecOpenSSLKeyDataAesValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataAesValueId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataAesValueId), -1);
+xmlSecOpenSSLKeyDataAesDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataAesId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataAesId), -1);
     
     return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
-xmlSecOpenSSLKeyDataAesValueFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId));
+xmlSecOpenSSLKeyDataAesFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId));
     
     xmlSecKeyDataBinaryValueFinalize(data);
 }
 
 static int
-xmlSecOpenSSLKeyDataAesValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataAesXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesId, -1);
     
     return(xmlSecKeyDataBinaryValueXmlRead(id, key, node, keyInfoCtx));
 }
 
 static int 
-xmlSecOpenSSLKeyDataAesValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataAesXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesId, -1);
     
     return(xmlSecKeyDataBinaryValueXmlWrite(id, key, node, keyInfoCtx));
 }
 
 static int
-xmlSecOpenSSLKeyDataAesValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataAesBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    const unsigned char* buf, size_t bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesId, -1);
     
     return(xmlSecKeyDataBinaryValueBinRead(id, key, buf, bufSize, keyInfoCtx));
 }
 
 static int
-xmlSecOpenSSLKeyDataAesValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataAesBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    unsigned char** buf, size_t* bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataAesId, -1);
     
     return(xmlSecKeyDataBinaryValueBinWrite(id, key, buf, bufSize, keyInfoCtx));
 }
 
 static int
-xmlSecOpenSSLKeyDataAesValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecOpenSSLKeyDataAesGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     xmlSecBufferPtr buffer;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
@@ -198,10 +198,10 @@ xmlSecOpenSSLKeyDataAesValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataAesValueGetType(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataAesGetType(xmlSecKeyDataPtr data) {
     xmlSecBufferPtr buffer;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId), xmlSecKeyDataTypeUnknown);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, xmlSecKeyDataTypeUnknown);
@@ -210,22 +210,22 @@ xmlSecOpenSSLKeyDataAesValueGetType(xmlSecKeyDataPtr data) {
 }
 
 static size_t 
-xmlSecOpenSSLKeyDataAesValueGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId), 0);
+xmlSecOpenSSLKeyDataAesGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId), 0);
     
     return(xmlSecKeyDataBinaryValueGetSize(data));
 }
 
 static void 
-xmlSecOpenSSLKeyDataAesValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId));
+xmlSecOpenSSLKeyDataAesDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId));
     
     xmlSecKeyDataBinaryValueDebugDump(data, output);    
 }
 
 static void
-xmlSecOpenSSLKeyDataAesValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesValueId));
+xmlSecOpenSSLKeyDataAesDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId));
     
     xmlSecKeyDataBinaryValueDebugXmlDump(data, output);    
 }
@@ -370,7 +370,7 @@ xmlSecOpenSSLAesCbcSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr 
     xmlSecAssert2(xmlSecOpenSSLAesCbcCheckId(transform), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataAesValueId;
+    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataAesId;
     keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
 	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
@@ -388,7 +388,7 @@ xmlSecOpenSSLAesCbcSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     
     xmlSecAssert2(xmlSecOpenSSLAesCbcCheckId(transform), -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataAesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataAesId), -1);
     
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);
@@ -622,7 +622,7 @@ xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr k
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataAesValueId;
+    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataAesId;
     keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
 	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
@@ -643,7 +643,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecOpenSSLKWAesGetKey(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataAesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataAesId), -1);
     
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);

@@ -246,14 +246,14 @@ xmlSecOpenSSLKeyDataX509GetKlass(void) {
  
 X509* 	
 xmlSecOpenSSLKeyDataX509GetVerified(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
     return(xmlSecOpenSSLKeyDataX509GetVerifiedCert(data));
 }
 
 int
 xmlSecOpenSSLKeyDataX509AdoptVerified(xmlSecKeyDataPtr data, X509* cert) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
     
     if(xmlSecOpenSSLKeyDataX509GetVerifiedCert(data) != NULL) {
@@ -268,7 +268,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     STACK_OF(X509)* certs;
     int ret;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
     
     certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
@@ -298,7 +298,7 @@ X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, size_t pos) {
     STACK_OF(X509)* certs;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
     certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
     xmlSecAssert2(certs != NULL, NULL);
@@ -311,7 +311,7 @@ size_t
 xmlSecOpenSSLKeyDataX509GetCertsNumber(xmlSecKeyDataPtr data) {
     STACK_OF(X509)* certs;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), 0);
 
     certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
     return((certs != NULL) ? sk_X509_num(certs) : 0);
@@ -322,7 +322,7 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     STACK_OF(X509_CRL)* crls;
     int ret;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(crl != NULL, -1);
     
     crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
@@ -352,7 +352,7 @@ X509_CRL*
 xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, size_t pos) {
     STACK_OF(X509_CRL)* crls;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
     crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
     xmlSecAssert2(crls != NULL, NULL);
@@ -365,7 +365,7 @@ size_t
 xmlSecOpenSSLKeyDataX509GetCrlsNumber(xmlSecKeyDataPtr data) {
     STACK_OF(X509_CRL)* crls;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), 0);
 
     crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
     return((crls != NULL) ? sk_X509_CRL_num(crls) : 0);
@@ -373,7 +373,7 @@ xmlSecOpenSSLKeyDataX509GetCrlsNumber(xmlSecKeyDataPtr data) {
 
 static int	
 xmlSecOpenSSLKeyDataX509Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
 
     return(0);
 }
@@ -387,8 +387,8 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     size_t size, pos;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataX509Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataX509Id), -1);
     
     /* copy certs */
     size = xmlSecOpenSSLKeyDataX509GetCertsNumber(src);
@@ -481,7 +481,7 @@ xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     STACK_OF(X509_CRL)* crls;
     X509* cert;
 
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id));
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id));
 
     certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
     if(certs != NULL) {
@@ -505,7 +505,7 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecKeyDataPtr data;
     int ret;
     
-    xmlSecAssert2(id == xmlSecKeyDataX509Id, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -514,7 +514,7 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyEnsureData(xmlSecKeyDataX509Id)");
+		    "xmlSecKeyEnsureData(xmlSecOpenSSLKeyDataX509Id)");
 	return(-1);
     }
     
@@ -546,7 +546,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     X509_CRL* crl;
     size_t size, pos;
     				
-    xmlSecAssert2(id == xmlSecKeyDataX509Id, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -637,7 +637,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataX509GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), xmlSecKeyDataTypeUnknown);
 
     /* TODO: return verified/not verified status */    
     return(xmlSecKeyDataTypeUnknown);
@@ -645,7 +645,7 @@ xmlSecOpenSSLKeyDataX509GetType(xmlSecKeyDataPtr data) {
 
 static const xmlChar*
 xmlSecOpenSSLKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
     
     /* TODO */    
     return(NULL);
@@ -656,7 +656,7 @@ xmlSecOpenSSLKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     X509* cert;
     size_t size, pos;
 
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id));
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== X509 Data:\n");
@@ -687,7 +687,7 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     X509* cert;
     size_t size, pos;
 
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id));
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<X509Data>\n");
@@ -722,7 +722,7 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
     xmlNodePtr cur; 
     int ret;
         
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     
@@ -764,7 +764,7 @@ xmlSecOpenSSLX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
     X509* cert;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
@@ -807,7 +807,7 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
     X509* cert2;
     int ret;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
@@ -870,7 +870,7 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
     X509* cert2;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
@@ -972,7 +972,7 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
     X509* cert2;
     int ret;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
@@ -1031,7 +1031,7 @@ xmlSecOpenSSLX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
     X509_CRL* crl;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
@@ -1072,7 +1072,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
     xmlSecKeyDataStorePtr x509Store;
     int ret;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
@@ -1474,7 +1474,7 @@ xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     X509* cert;
     int ret;
     
-    xmlSecAssert2(id == xmlSecKeyDataRawX509CertId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataRawX509CertId, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
@@ -1488,11 +1488,11 @@ xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	return(-1);
     }
 
-    data = xmlSecKeyEnsureData(key, xmlSecKeyDataX509Id);
+    data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataInitialize(xmlSecKeyDataX509Id)");
+		    "xmlSecKeyDataInitialize(xmlSecOpenSSLKeyDataX509Id)");
 	X509_free(cert);
 	return(-1);
     }

@@ -22,11 +22,12 @@ extern "C" {
 
 /****************************************************************************
  *
- * xmlSecKeyDataX509Id:
+ * xmlSecOpenSSLKeyDataX509Id:
  *
  * 
  ***************************************************************************/
-#define xmlSecKeyDataX509Id	xmlSecOpenSSLKeyDataX509GetKlass()
+#define xmlSecOpenSSLKeyDataX509Id \
+	xmlSecOpenSSLKeyDataX509GetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataX509GetKlass	(void);
 
 XMLSEC_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetVerified	(xmlSecKeyDataPtr data);
@@ -48,12 +49,13 @@ XMLSEC_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsNumber	(xmlSecKeyDataPtr d
 
 /****************************************************************************
  *
- * xmlSecKeyDataRawX509CertId:
+ * xmlSecOpenSSLKeyDataRawX509CertId:
  * 
  * The raw X509 certificate
  *
  ***************************************************************************/
-#define xmlSecKeyDataRawX509CertId	xmlSecOpenSSLKeyDataRawX509CertGetKlass()
+#define xmlSecOpenSSLKeyDataRawX509CertId \
+	xmlSecOpenSSLKeyDataRawX509CertGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass	(void);
 
 /****************************************************************************
@@ -63,8 +65,9 @@ XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass	(void);
  * The X509 store 
  *
  ***************************************************************************/
-#define xmlSecOpenSSLX509StoreId	xmlSecOpenSSLX509StoreGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataStoreId	xmlSecOpenSSLX509StoreGetKlass	(void);
+#define xmlSecOpenSSLX509StoreId \
+	xmlSecOpenSSLX509StoreGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass	(void);
 XMLSEC_EXPORT X509* 		xmlSecOpenSSLX509StoreFindCert		(xmlSecKeyDataStorePtr store,
 									 xmlChar *subjectName,
 									 xmlChar *issuerName, 

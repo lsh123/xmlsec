@@ -90,7 +90,7 @@ static int
 xmlSecOpenSSLKeysInit(void) {
 
 #ifndef XMLSEC_NO_AES    
-    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes key");
@@ -99,7 +99,7 @@ xmlSecOpenSSLKeysInit(void) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_DES    
-    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDesValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register des key");
@@ -108,7 +108,7 @@ xmlSecOpenSSLKeysInit(void) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_DSA
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataDsaValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDsaId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register dsa key");
@@ -117,7 +117,7 @@ xmlSecOpenSSLKeysInit(void) {
 #endif /* XMLSEC_NO_DSA */    
 
 #ifndef XMLSEC_NO_HMAC  
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataHmacValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataHmacId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register hmac key");
@@ -126,7 +126,7 @@ xmlSecOpenSSLKeysInit(void) {
 #endif /* XMLSEC_NO_HMAC */    
 
 #ifndef XMLSEC_NO_RSA
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataRsaValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataRsaId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register rsa key");
@@ -135,14 +135,14 @@ xmlSecOpenSSLKeysInit(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_X509
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataX509Id) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataX509Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register x509 data");
 	return(-1);
     }
 
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataRawX509CertId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataRawX509CertId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register x509 data");
@@ -155,7 +155,6 @@ xmlSecOpenSSLKeysInit(void) {
 
 static int 
 xmlSecOpenSSLTransformsInit(void) {
-    /* digest methods */
 #ifndef XMLSEC_NO_SHA1    
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -196,7 +195,6 @@ xmlSecOpenSSLTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_HMAC */
 
-    /* signature */ 
 #ifndef XMLSEC_NO_DSA
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformDsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -211,6 +209,18 @@ xmlSecOpenSSLTransformsInit(void) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register rsa/sha1 transform");
+	return(-1);
+    }
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaPkcs1Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "failed to register rsa/pkcs1 transform");
+	return(-1);
+    }
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaOaepId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "failed to register rsa/oaep transform");
 	return(-1);
     }
 #endif /* XMLSEC_NO_RSA */
@@ -270,21 +280,6 @@ xmlSecOpenSSLTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_RSA
-    if(xmlSecTransformRegister(xmlSecEncRsaPkcs1) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/pkcs1 transform");
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecEncRsaOaep) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register rsa/oaep transform");
-	return(-1);
-    }
-#endif /* XMLSEC_NO_RSA */
-    
     return(0);
 }
 

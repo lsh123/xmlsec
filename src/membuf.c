@@ -19,6 +19,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/base64.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
@@ -288,6 +289,76 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, size_t size) {
     return(0);
 }
 
+int 
+xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
+    xmlChar* content;
+    size_t size;
+    int ret;
+    
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    content = xmlNodeGetContent(node);
+    if(content == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "%s", (node->name != NULL) ? node->name : BAD_CAST "NULL");
+	return(-1);		
+    }
+    
+    /* base64 decode size is less than input size */
+    ret = xmlSecBufferSetMaxSize(buf, xmlStrlen(content));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferSetMaxSize");
+	xmlFree(content);
+	return(-1);
+    }
+    
+    ret = xmlSecBase64Decode(content, xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode");
+	xmlFree(content);
+	return(-1);
+    }
+    size = ret;
+
+    ret = xmlSecBufferSetSize(buf, size);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferSetSize(%d)", size);
+	xmlFree(content);
+	return(-1);
+    }
+    xmlFree(content);
+    
+    return(0);
+}
+
+
+int 
+xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int columns) {
+    xmlChar* content;
+    
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf), columns);
+    if(content == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
+	return(-1);
+    }
+    xmlNodeSetContent(node, content);
+    xmlFree(content);
+    
+    return(0);
+}
 
 
 

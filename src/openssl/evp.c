@@ -949,7 +949,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
     switch(pKey->type) {	
 #ifndef XMLSEC_NO_RSA    
     case EVP_PKEY_RSA:
-	data = xmlSecKeyDataCreate(xmlSecKeyDataRsaValueId);
+	data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataRsaId);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -957,11 +957,11 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 	    return(NULL);	    
 	}
 	
-	ret = xmlSecOpenSSLKeyDataRsaValueAdoptEvp(data, pKey);
+	ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataRsaValueAdoptEvp");
+			"xmlSecOpenSSLKeyDataRsaAdoptEvp");
 	    xmlSecKeyDataDestroy(data);
 	    return(NULL);	    
 	}
@@ -969,7 +969,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 #endif /* XMLSEC_NO_RSA */	
 #ifndef XMLSEC_NO_DSA	
     case EVP_PKEY_DSA:
-	data = xmlSecKeyDataCreate(xmlSecKeyDataDsaValueId);
+	data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataDsaId);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -977,11 +977,11 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 	    return(NULL);	    
 	}
 	
-	ret = xmlSecOpenSSLKeyDataDsaValueAdoptEvp(data, pKey);
+	ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataDsaValueAdoptEvp");
+			"xmlSecOpenSSLKeyDataDsaAdoptEvp");
 	    xmlSecKeyDataDestroy(data);
 	    return(NULL);	    
 	}

@@ -47,7 +47,7 @@ static const unsigned char base64[] =
 #define xmlSecBase64Encode1(a) 		(base64[((int)(a) >> 2) & 0x3F])
 #define xmlSecBase64Encode2(a, b) 	(base64[(((int)(a) << 4) & 0x30) + ((((int)(b)) >> 4) & 0x0F)])
 #define xmlSecBase64Encode3(b, c) 	(base64[(((int)(b) << 2) & 0x3c) + ((((int)(c)) >> 6) & 0x03)])
-#define xmlSecBase64Encode4( c)		(base64[((int)(c)) & 0x3F])
+#define xmlSecBase64Encode4(c)		(base64[((int)(c)) & 0x3F])
 
 #define xmlSecBase64Decode1(a, b)	(((a) << 2) | (((b) & 0x3F) >> 4))
 #define xmlSecBase64Decode2(b, c)	(((b) << 4) | (((c) & 0x3F) >> 2))

@@ -1304,3 +1304,92 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
     }    
     return((xmlNodePtr)encKey);    
 }
+
+/**
+ * xmlSecHmacAddOutputLength:
+ * @transformNode: the pointer to <dsig:Transform> node
+ * @bitsLen: the required length in bits
+ *
+ * Creates <dsig:HMACOutputLength>child for the HMAC transform 
+ * node @transformNode.
+ *
+ * Returns 0 on success and a negatie value otherwise.
+ */
+int
+xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
+    xmlNodePtr node;
+    char buf[32];
+
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(bitsLen > 0, -1);
+
+    node = xmlSecFindChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
+    if(node != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "HMACOutputLength");
+	return(-1);
+    }
+    
+    node = xmlSecAddChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
+    if(node == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild");
+	return(-1);
+    }    
+    
+    sprintf(buf, "%u", bitsLen);
+    xmlNodeSetContent(node, BAD_CAST buf);
+    return(0);
+}
+
+/**
+ * xmlSecEncRsaOaepAddParam::
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @buf: the OAEP param buffer.
+ * @size: the OAEP param buffer size.
+ * 
+ * Creates <enc:OAEPParam> child node in the @transformNode.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int  	
+xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf, 
+			 size_t size) {
+    xmlNodePtr oaepParamNode;
+    xmlChar *base64;
+
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+
+    oaepParamNode = xmlSecFindChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
+    if(oaepParamNode != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "OAEPParam");
+	return(-1);    
+    }
+
+    oaepParamNode = xmlSecAddChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
+    if(oaepParamNode == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(OAEPParam)");
+	return(-1);    
+    }
+    
+    base64 = xmlSecBase64Encode(buf, size, 0);
+    if(base64 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
+	return(-1);    
+    }
+    
+    xmlNodeSetContent(oaepParamNode, base64);
+    xmlFree(base64);
+    return(0);
+}
+

@@ -43,6 +43,16 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
  */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 
+/*************************************************************************
+ *
+ * DSIG Nodes and attributes
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDigestMethod[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrType[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrAlgorithm[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrURI[];
 
 /*************************************************************************
  *
@@ -137,6 +147,13 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRSAKeyValue[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha1[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPkcs1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPkcs1[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaOaep[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaOaep[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
 
 /*************************************************************************
  *

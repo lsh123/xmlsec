@@ -33,39 +33,39 @@
  * <xmlsec:HMACKeyValue> processing
  *
  *************************************************************************/
-static int		xmlSecOpenSSLKeyDataHmacValueInitialize	(xmlSecKeyDataPtr data);
-static int		xmlSecOpenSSLKeyDataHmacValueDuplicate	(xmlSecKeyDataPtr dst,
+static int		xmlSecOpenSSLKeyDataHmacInitialize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataHmacDuplicate	(xmlSecKeyDataPtr dst,
 								 xmlSecKeyDataPtr src);
-static void		xmlSecOpenSSLKeyDataHmacValueFinalize	(xmlSecKeyDataPtr data);
-static int		xmlSecOpenSSLKeyDataHmacValueXmlRead	(xmlSecKeyDataId id,
+static void		xmlSecOpenSSLKeyDataHmacFinalize	(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataHmacXmlRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataHmacValueXmlWrite	(xmlSecKeyDataId id,
+static int		xmlSecOpenSSLKeyDataHmacXmlWrite	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataHmacValueBinRead	(xmlSecKeyDataId id,
+static int		xmlSecOpenSSLKeyDataHmacBinRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 const unsigned char* buf,
 								 size_t bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataHmacValueBinWrite	(xmlSecKeyDataId id,
+static int		xmlSecOpenSSLKeyDataHmacBinWrite	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
 								 unsigned char** buf,
 								 size_t* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int		xmlSecOpenSSLKeyDataHmacValueGenerate	(xmlSecKeyDataPtr data,
+static int		xmlSecOpenSSLKeyDataHmacGenerate	(xmlSecKeyDataPtr data,
 								 size_t sizeBits);
 
-static xmlSecKeyDataType xmlSecOpenSSLKeyDataHmacValueGetType	(xmlSecKeyDataPtr data);
-static size_t		xmlSecOpenSSLKeyDataHmacValueGetSize	(xmlSecKeyDataPtr data);
-static void		xmlSecOpenSSLKeyDataHmacValueDebugDump	(xmlSecKeyDataPtr data,
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataHmacGetType	(xmlSecKeyDataPtr data);
+static size_t		xmlSecOpenSSLKeyDataHmacGetSize		(xmlSecKeyDataPtr data);
+static void		xmlSecOpenSSLKeyDataHmacDebugDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
-static void		xmlSecOpenSSLKeyDataHmacValueDebugXmlDump(xmlSecKeyDataPtr data,
+static void		xmlSecOpenSSLKeyDataHmacDebugXmlDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacValueKlass = {
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacKlass = {
     sizeof(xmlSecKeyDataKlass),
     sizeof(xmlSecKeyData),
 
@@ -78,37 +78,37 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacValueKlass = {
     xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataHmacValueInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataHmacValueDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataHmacValueFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyDataHmacValueGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
+    xmlSecOpenSSLKeyDataHmacInitialize,		/* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataHmacDuplicate,		/* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataHmacFinalize,		/* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLKeyDataHmacGenerate,		/* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecOpenSSLKeyDataHmacValueGetType, 	/* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLKeyDataHmacValueGetSize,	/* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecOpenSSLKeyDataHmacGetType, 		/* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataHmacGetSize,		/* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,					/* xmlSecKeyDataGetIdentifier getIdentifier; */    
 
     /* read/write */
-    xmlSecOpenSSLKeyDataHmacValueXmlRead,	/* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataHmacValueXmlWrite,	/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecOpenSSLKeyDataHmacValueBinRead,	/* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecOpenSSLKeyDataHmacValueBinWrite,	/* xmlSecKeyDataBinWriteMethod binWrite; */
+    xmlSecOpenSSLKeyDataHmacXmlRead,		/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecOpenSSLKeyDataHmacXmlWrite,		/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLKeyDataHmacBinRead,		/* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecOpenSSLKeyDataHmacBinWrite,		/* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecOpenSSLKeyDataHmacValueDebugDump,	/* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLKeyDataHmacValueDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecOpenSSLKeyDataHmacDebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataHmacDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 };
 
 xmlSecKeyDataId 
-xmlSecOpenSSLKeyDataHmacValueGetKlass(void) {
-    return(&xmlSecOpenSSLKeyDataHmacValueKlass);
+xmlSecOpenSSLKeyDataHmacGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataHmacKlass);
 }
 
 int
-xmlSecOpenSSLKeyDataHmacValueSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
+xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
     xmlSecBufferPtr buffer;
     
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
     
@@ -119,66 +119,66 @@ xmlSecOpenSSLKeyDataHmacValueSet(xmlSecKeyDataPtr data, const unsigned char* buf
 }
 
 static int
-xmlSecOpenSSLKeyDataHmacValueInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), -1);
+xmlSecOpenSSLKeyDataHmacInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId), -1);
     
     return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
 static int	
-xmlSecOpenSSLKeyDataHmacValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataHmacValueId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataHmacValueId), -1);
+xmlSecOpenSSLKeyDataHmacDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataHmacId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataHmacId), -1);
 
     return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
-xmlSecOpenSSLKeyDataHmacValueFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId));
+xmlSecOpenSSLKeyDataHmacFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId));
     
     xmlSecKeyDataBinaryValueFinalize(data);
 }
 
 static int
-xmlSecOpenSSLKeyDataHmacValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataHmacXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecKeyDataHmacValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataHmacId, -1);
     
     return(xmlSecKeyDataBinaryValueXmlRead(id, key, node, keyInfoCtx));
 }
 
 static int 
-xmlSecOpenSSLKeyDataHmacValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataHmacXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecKeyDataHmacValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataHmacId, -1);
     
     return(xmlSecKeyDataBinaryValueXmlWrite(id, key, node, keyInfoCtx));
 }
 
 static int
-xmlSecOpenSSLKeyDataHmacValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataHmacBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    const unsigned char* buf, size_t bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecKeyDataHmacValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataHmacId, -1);
     
     return(xmlSecKeyDataBinaryValueBinRead(id, key, buf, bufSize, keyInfoCtx));
 }
 
 static int
-xmlSecOpenSSLKeyDataHmacValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+xmlSecOpenSSLKeyDataHmacBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 				    unsigned char** buf, size_t* bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(id == xmlSecKeyDataHmacValueId, -1);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataHmacId, -1);
     
     return(xmlSecKeyDataBinaryValueBinWrite(id, key, buf, bufSize, keyInfoCtx));
 }
 
 static int
-xmlSecOpenSSLKeyDataHmacValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
+xmlSecOpenSSLKeyDataHmacGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     xmlSecBufferPtr buffer;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
@@ -188,10 +188,10 @@ xmlSecOpenSSLKeyDataHmacValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataHmacValueGetType(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataHmacGetType(xmlSecKeyDataPtr data) {
     xmlSecBufferPtr buffer;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId), xmlSecKeyDataTypeUnknown);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, xmlSecKeyDataTypeUnknown);
@@ -200,22 +200,22 @@ xmlSecOpenSSLKeyDataHmacValueGetType(xmlSecKeyDataPtr data) {
 }
 
 static size_t 
-xmlSecOpenSSLKeyDataHmacValueGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId), 0);
+xmlSecOpenSSLKeyDataHmacGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId), 0);
     
     return(xmlSecKeyDataBinaryValueGetSize(data));
 }
 
 static void 
-xmlSecOpenSSLKeyDataHmacValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId));
+xmlSecOpenSSLKeyDataHmacDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId));
     
     xmlSecKeyDataBinaryValueDebugDump(data, output);    
 }
 
 static void
-xmlSecOpenSSLKeyDataHmacValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataHmacValueId));
+xmlSecOpenSSLKeyDataHmacDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId));
     
     xmlSecKeyDataBinaryValueDebugXmlDump(data, output);    
 }
@@ -493,7 +493,7 @@ xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr ke
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecKeyDataHmacValueId;
+    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataHmacId;
     keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
 	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
@@ -513,7 +513,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecOpenSSLHmacGetCtx(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataHmacValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataHmacId), -1);
     
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);

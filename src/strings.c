@@ -17,9 +17,20 @@
  * Global Namespaces
  *
  ************************************************************************/
-const xmlChar xmlSecNs[] 	= "http://www.aleksey.com/xmlsec/2002";
-const xmlChar xmlSecDSigNs[] 	= "http://www.w3.org/2000/09/xmldsig#";
-const xmlChar xmlSecEncNs[] 	= "http://www.w3.org/2001/04/xmlenc#";
+const xmlChar xmlSecNs[] 		= "http://www.aleksey.com/xmlsec/2002";
+const xmlChar xmlSecDSigNs[] 		= "http://www.w3.org/2000/09/xmldsig#";
+const xmlChar xmlSecEncNs[] 		= "http://www.w3.org/2001/04/xmlenc#";
+
+/*************************************************************************
+ *
+ * DSIG Nodes and attributes
+ *
+ ************************************************************************/
+const xmlChar xmlSecNodeDigestMethod[]	= "DigestMethod";
+
+const xmlChar xmlSecAttrType[]		= "Type";
+const xmlChar xmlSecAttrAlgorithm[]	= "Algorithm";
+const xmlChar xmlSecAttrURI[]		= "URI";
 
 /*************************************************************************
  *
@@ -114,6 +125,13 @@ const xmlChar xmlSecHrefRSAKeyValue[]	= "http://www.w3.org/2000/09/xmldsig#RSAKe
 
 const xmlChar xmlSecNameRsaSha1[]	= "rsa-sha1";
 const xmlChar xmlSecHrefRsaSha1[]	= "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
+
+const xmlChar xmlSecNameRsaPkcs1[]	= "rsa-pkcs1";
+const xmlChar xmlSecHrefRsaPkcs1[]	= "http://www.w3.org/2001/04/xmlenc#rsa-1_5";
+
+const xmlChar xmlSecNameRsaOaep[]	= "rsa-oaep";
+const xmlChar xmlSecHrefRsaOaep[]	= "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p";
+const xmlChar xmlSecNodeRsaOAEPparams[]	= "OAEPparams";
 
 /*************************************************************************
  *

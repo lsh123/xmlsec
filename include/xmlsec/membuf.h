@@ -63,6 +63,12 @@ XMLSEC_EXPORT int		xmlSecBufferRemoveHead		(xmlSecBufferPtr buf,
 XMLSEC_EXPORT int		xmlSecBufferRemoveTail		(xmlSecBufferPtr buf,
 								 size_t size);
 
+XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,
+								 xmlNodePtr node,
+								 int columns);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -98,8 +98,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
 
 
 
-XMLSEC_EXPORT 	int		xmlSecHmacAddOutputLength		(xmlNodePtr transformNode,
-									 size_t bitsLen);
+XMLSEC_EXPORT int	xmlSecHmacAddOutputLength	(xmlNodePtr transformNode,
+							 size_t bitsLen);
+XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam	(xmlNodePtr transformNode,
+							 const unsigned char *buf,
+							 size_t size);
 
 
 #ifdef __cplusplus

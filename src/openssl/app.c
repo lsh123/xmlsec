@@ -152,11 +152,11 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
 
-    data = xmlSecKeyEnsureData(key, xmlSecKeyDataX509Id);
+    data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyEnsureData(xmlSecKeyDataX509Id)");
+		    "xmlSecKeyEnsureData(xmlSecOpenSSLKeyDataX509Id)");
 	return(-1);
     }
 
@@ -238,7 +238,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     }    
 
     sk_X509_push(chain, cert);
-    x509Data = xmlSecKeyDataCreate(xmlSecKeyDataX509Id);
+    x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

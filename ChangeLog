@@ -5,8 +5,9 @@ Thu Sep 25 20:47:11 2003  Aleksey Sanin  <aleksey@aleksey.com>
 	* include/xmlsec/nss/app.h nclude/xmlsec/nss/x509.h
 	include/xmlsec/openssl/app.h include/xmlsec/openssl/x509.h
 	src/nss/app.c src/nss/crypto.c src/nss/x509.c 
-	src/openssl/app.c src/openssl/x509.c: implemented
-	support for new formats in OpenSSL and NSS
+	src/openssl/app.c src/openssl/x509.c
+	src/mscrypto/app.c: implemented support for new formats 
+	in OpenSSL, NSS and MSCrypto
 	* apps/xmlsec.c: added "--pubkey-cert-pem" and "--pubkey-cert-der" options 
 	* tests/testDSig.sh tests/merlin-xmldsig-twenty-three/certs/lugh-cert.der: 
 	use certificate for public keys 	

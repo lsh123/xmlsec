@@ -81,43 +81,6 @@ xmlSecSkeletonKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
-/**
- * xmlSecSkeletonGenerateRandom:
- * @buffer:		the destination buffer.
- * @size:		the numer of bytes to generate.
- *
- * Generates @size random bytes and puts result in @buffer
- * (not implemented yet).
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecSkeletonGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
-    int ret;
-    
-    xmlSecAssert2(buffer != NULL, -1);
-    xmlSecAssert2(size > 0, -1);
-
-    ret = xmlSecBufferSetSize(buffer, size);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    NULL,
-		    "xmlSecBufferSetSize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", size);
-	return(-1);
-    }
-        
-    /* TODO: get random data */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		"xmlSecSkeletonGenerateRandom",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
-    return(0);
-}
-
-
 static int		
 xmlSecSkeletonKeysInit(void) {
     /* TODO: register key data here */

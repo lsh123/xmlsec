@@ -24,8 +24,6 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonInit		(void);
 XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonShutdown		(void);
 
 XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonKeysMngrInit	(xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonGenerateRandom	(xmlSecBufferPtr buffer,
-									 size_t size);
 
 
 #ifdef __cplusplus

@@ -25,7 +25,6 @@ extern "C" {
 #define xmlSecCryptoShutdown			xmlSecNssShutdown
 
 #define xmlSecCryptoKeysMngrInit		xmlSecNssKeysMngrInit
-#define xmlSecCryptoGenerateRandom		xmlSecNssGenerateRandom
 
 /**
  * Key data ids

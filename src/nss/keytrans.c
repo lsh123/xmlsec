@@ -69,7 +69,7 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 /* RSA OAEP is not supported by NSS yet */
 #ifdef TODO
         || xmlSecTransformCheckId( transform, xmlSecNssTransformRsaOaepId ) 
-#endif // TODO
+#endif /* TODO: RSA OAEP is not supported by NSS yet */
         
         ) {
 
@@ -100,7 +100,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 	} else if( transform->id == xmlSecNssTransformRsaOaepId ) {
 		context->cipher = CKM_RSA_PKCS_OAEP ;
 		context->keyId = xmlSecNssKeyDataRsaId ;
-#endif // TODO
+#endif /* TODO: RSA OAEP is not supported by NSS yet */
 	} else
 #endif		/* XMLSEC_NO_RSA */
 
@@ -744,7 +744,7 @@ xmlSecTransformId
 xmlSecNssTransformRsaOaepGetKlass(void) {
     return(&xmlSecNssRsaOaepKlass);
 }
-#endif // TODO
+#endif /* TODO: RSA OAEP is not supported by NSS yet */
 
 #endif /* XMLSEC_NO_RSA */
 

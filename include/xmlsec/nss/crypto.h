@@ -16,6 +16,7 @@ extern "C" {
 
 #include <nspr.h>
 #include <nss.h>
+#include <pk11func.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -278,7 +279,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
 #define xmlSecNssTransformRsaOaepId \
         xmlSecNssTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
-#endif // TODO
+#endif /* TODO: RSA OAEP is not supported by NSS yet */
 
 #endif /* XMLSEC_NO_RSA */
 

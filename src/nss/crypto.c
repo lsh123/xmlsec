@@ -125,7 +125,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 /* RSA OAEP is not supported by NSS yet */
 #ifdef TODO
     gXmlSecNssFunctions->transformRsaOaepGetKlass 	= xmlSecNssTransformRsaOaepGetKlass;
-#endif // TODO
+#endif /* TODO: RSA OAEP is not supported by NSS yet */
 
 #endif /* XMLSEC_NO_RSA */
 

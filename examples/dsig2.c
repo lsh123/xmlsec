@@ -1,269 +1,163 @@
 /** 
- * XML Security Library example: Signing a simple dynamic template.
+ * XML Security Library example: Verifying a file.
+ *
+ * Verifies a file using a key from PEM file.
  * 
- * See Copyright for the status of this software.
+ * Usage: 
+ *	dsig4 <signed-file> <pem-key> 
+ *
+ * Example:
+ *	./dsig4 ./dsig1-res.xml rsapub.pem
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ * 
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
 #include <string.h>
-
-#include <openssl/err.h>
-#include <openssl/rand.h>
+#include <assert.h>
 
 #include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
+#ifndef XMLSEC_NO_XSLT
+#include <libxslt/xslt.h>
+#endif /* XMLSEC_NO_XSLT */
+
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmldsig.h> 
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/xmldsig.h>
+#include <xmlsec/crypto.h>
 
-xmlNodePtr addSignature(xmlDocPtr doc);
+int verify_file(const char* xml_file, const char* key_file);
 
-int main(int argc, char **argv) {
-    xmlSecKeysMngrPtr keysMngr = NULL; 
-    xmlSecDSigCtxPtr dsigCtx = NULL;
-    xmlDocPtr doc = NULL;
-    xmlSecDSigResultPtr result = NULL;
-    xmlNodePtr signatureNode;
-    xmlChar* string;
-    int ret = -1;
-    int rnd_seed = 0;
-    int len; 
-        
-    if(argc < 2) {
-	fprintf(stderr, "Error: missed required parameter. Usage: %s <key-file> <xml-file>\n", argv[0]);
+int 
+main(int argc, char **argv) {
+    assert(argv);
+
+    if(argc != 3) {
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
 	return(1);
     }
-    
-    /** 
-     * Init OpenSSL
-     */    
-    while (RAND_status() != 1) {
-	RAND_seed(&rnd_seed, sizeof(rnd_seed));
-    }
-    
-    /*
-     * Init libxml
-     */     
+
+    /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
+    }
 
-    /*
-     * Init xmlsec
-     */
-    xmlSecInit();    
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) < 0) {
+	fprintf(stderr, "Error: crypto initialization failed.\n");
+	return(-1);
+    }
 
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() < 0) {
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	return(-1);
+    }
 
-    /** 
-     * Create Keys managers
-     */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager\n");
+    if(verify_file(argv[1], argv[2]) < 0) {
+	return(-1);
+    }    
+    
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+int 
+verify_file(const char* xml_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(xml_file);
+    assert(key_file);
+
+    /* load file */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
 	goto done;	
     }
 
-    /** 
-     * load key
-     */
-    if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {
-	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
-	goto done;
-    }
-    
-    dsigCtx = xmlSecDSigCtxCreate(keysMngr);
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-    	fprintf(stderr,"Error: failed to create dsig context\n");
-	goto done; 
-    }                
-
-    /* 
-     * build an XML tree from a the file; we need to add default
-     * attributes and resolve all character and entities references
-     */
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-
-    /** 
-     * Load doc 
-     */
-    doc = xmlParseFile(argv[2]);
-    if (doc == NULL) {
-	fprintf(stderr, "Error	: unable to parse file \"%s\"\n", argv[2]);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
-    
-    /*
-     * Check the document is of the right kind
-     */    
-    if(xmlDocGetRootElement(doc) == NULL) {
-        fprintf(stderr,"Error: empty document for file \"%s\"\n", argv[2]);
+
+    /* load public key */
+    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
+    if(dsigCtx->signKey == NULL) {
+        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
 	goto done;
+    }
+
+    /* Verify signature */
+    if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
+        fprintf(stderr,"Error: signature verify\n");
+	goto done;
+    }
+        
+    /* print verification result to stdout */
+    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
+	fprintf(stdout, "Signature is OK\n");
+    } else {
+	fprintf(stdout, "Signature is INVALID\n");
     }    
-    
-    /**
-     * Add Signature
-     */ 
-    signatureNode = addSignature(doc);
-    if(signatureNode == NULL) {
-        fprintf(stderr,"Error: failed to add signature\n");
-	goto done;
-    }
-									
-    /**
-     * Sign It!
-     */ 
-    ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, signatureNode, &result);
-    if(ret < 0) {
-    	fprintf(stderr,"Error: signature failed\n");
-	goto done; 
-    }     
-    
-    /*
-     * Print out the document
-     */
-    xmlDocDumpMemoryEnc(doc, &string, &len, NULL);
-    if(string == NULL) {
-	fprintf(stderr,"Error: failed to dump document to memory\n");
-	goto done;
-    }
-    fwrite(string, len, 1, stdout);
-    xmlFree(string);
-    
-done:
-    /*
-     * Cleanup
-     */
-    if(result != NULL) {
-	xmlSecDSigResultDestroy(result);
-    }
-    if(dsigCtx != NULL) { 
+
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
+    
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
-    
-    if(keysMngr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keysMngr);
-    }
-    
-    xmlSecShutdown();
-    
-    /* 
-     * Shutdown libxml
-     */
-    xmlCleanupParser();
-    
-    /* 
-     * Shutdown OpenSSL
-     */
-    RAND_cleanup();
-    ERR_clear_error();
-
-    return((ret >= 0) ? 0 : 1);
+    return(res);
 }
 
-xmlNodePtr addSignature(xmlDocPtr doc) {
-    xmlNodePtr signatureNode;
-    xmlNodePtr signedInfoNode;
-    xmlNodePtr keyInfoNode;
-    xmlNodePtr referenceNode;
-    xmlNodePtr cur;
-
-    /**
-     * Create Signature node 
-     */
-    signatureNode = xmlSecSignatureCreate(NULL);
-    if(signatureNode == NULL) {
-    	fprintf(stderr,"Error: failed to create signature\n");
-	return(NULL);
-    }
-
-
-    /**
-     * Add SignedInfo and set c14n and signature methods
-     */
-    signedInfoNode = xmlSecSignatureAddSignedInfo(signatureNode, NULL);
-    if(signedInfoNode == NULL) {
-    	fprintf(stderr,"Error: failed to add SignedInfo\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    cur = xmlSecSignedInfoAddC14NMethod(signedInfoNode, xmlSecC14NInclusive);
-    if(cur == NULL) {
-    	fprintf(stderr,"Error: failed to add C14N method\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    cur = xmlSecSignedInfoAddSignMethod(signedInfoNode, xmlSecSignDsaSha1);
-    if(cur == NULL) {
-    	fprintf(stderr,"Error: failed to add sign method\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    /** 
-     * Create Reference node with SHA1 as digest method and one
-     * C14N transform to include comments in the digest
-     */
-
-    referenceNode = xmlSecSignedInfoAddReference(signedInfoNode,
-					NULL,
-					NULL,
-					NULL);
-
-    if(referenceNode == NULL) {
-    	fprintf(stderr,"Error: failed to add Reference\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    cur = xmlSecReferenceAddDigestMethod(referenceNode, xmlSecDigestSha1);
-    if(cur == NULL) {
-    	fprintf(stderr,"Error: failed to add digest method\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    cur = xmlSecReferenceAddTransform(referenceNode, 
-				      xmlSecTransformEnveloped);
-    if(cur == NULL) {
-    	fprintf(stderr,"Error: failed to add enveloped transform\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    /**
-     * Add KeyInfo node: for test purposes we will put
-     * DSA key in the signature
-     */
-    keyInfoNode = xmlSecSignatureAddKeyInfo(signatureNode, NULL);  
-    if(keyInfoNode == NULL) {
-    	fprintf(stderr,"Error: failed to add KeyInfo\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-    
-    cur = xmlSecKeyInfoAddKeyValue(keyInfoNode);
-    if(cur == NULL) { 
-    	fprintf(stderr,"Error: failed to add KeyValue node\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    /**
-     * Add the signature to the end of the document
-     */    
-    if(xmlAddChild(xmlDocGetRootElement(doc), signatureNode) == NULL) {
-    	fprintf(stderr,"Error: failed to add Signature\n");
-	xmlSecSignatureDestroy(signatureNode);
-	return(NULL);
-    }
-
-    return(signatureNode);
-}
 

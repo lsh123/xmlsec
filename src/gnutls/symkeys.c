@@ -4,9 +4,10 @@
  * 
  * DES Algorithm support
  * 
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 

@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG1"></a>dsig1.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14656"></a><h2>Name</h2>dsig1.c -- Signing a template file.</div>
+<a name="AEN14662"></a><h2>Name</h2>dsig1.c -- Signing a template file.</div>
 <div class="REFSECT1">
-<a name="AEN14659"></a><h2>Example: Signing a template file.</h2>
+<a name="AEN14665"></a><h2>Example: Signing a template file.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN14662"></a><p></p>
+<a name="AEN14668"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Signing a template file.
  * 
@@ -55,12 +55,14 @@
  * 
  * Usage: 
  *	dsig1 &lt;xml-tmpl&gt; &lt;pem-key&gt; 
+ *
  * Example:
  *	./dsig1 ./dsig1-tmpl.xml rsakey.pem &gt; dsig1-res.xml
  *
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyrigth (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -79,25 +81,9 @@
 #include &lt;xmlsec/keys.h&gt;
 #include &lt;xmlsec/keysmngr.h&gt;
 #include &lt;xmlsec/xmldsig.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
 
-#ifdef XMLSEC_CRYPTO_OPENSSL
-#include &lt;xmlsec/openssl/app.h&gt;
-#include &lt;xmlsec/openssl/symbols.h&gt;
-#else /* XMLSEC_CRYPTO_OPENSSL */
-#ifdef XMLSEC_CRYPTO_GNUTLS
-#include &lt;xmlsec/gnutls/app.h&gt;
-#include &lt;xmlsec/gnutls/symbols.h&gt;
-#else /* XMLSEC_CRYPTO_GNUTLS */
-#ifdef XMLSEC_CRYPTO_NSS
-#include &lt;xmlsec/nss/app.h&gt;
-#include &lt;xmlsec/nss/symbols.h&gt;
-#else /* XMLSEC_CRYPTO_NSS */
-#error No Crypto library defined
-#endif /* XMLSEC_CRYPTO_GNUTLS */
-#endif /* XMLSEC_CRYPTO_NSS */
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-
-static int sign_file(const char* tmpl_file, const char* key_file);
+int sign_file(const char* tmpl_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -158,7 +144,7 @@ main(int argc, char **argv) {
     return(0);
 }
 
-static int 
+int 
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
@@ -209,6 +195,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
     res = 0;
 
 done:    
+    /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }

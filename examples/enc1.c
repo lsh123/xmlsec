@@ -1,16 +1,18 @@
 /** 
  * XML Security Library example: Encrypting data using a template file.
  * 
- * Encrypts binary data using a template file and a key from PEM file
+ * Encrypts binary data using a template file and a DES key from a binary file
  * 
  * Usage: 
- *	enc1 <xml-tmpl> <pem-key> 
- * Example:
- *	./enc1 ./enc1-tmpl.xml rsakey.pem > enc1-res.xml
+ *	enc1 <xml-tmpl> <des-key-file> 
  *
- * See Copyright for the status of this software.
+ * Example:
+ *	./enc1 ./enc1-tmpl.xml deskey.bin > enc1-res.xml
+ *
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
 #include <string.h>
@@ -29,28 +31,14 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmlenc.h>
+#include <xmlsec/crypto.h>
 
-#ifdef XMLSEC_CRYPTO_OPENSSL
-#include <xmlsec/openssl/app.h>
-#include <xmlsec/openssl/symbols.h>
-#else /* XMLSEC_CRYPTO_OPENSSL */
-#ifdef XMLSEC_CRYPTO_GNUTLS
-#include <xmlsec/gnutls/app.h>
-#include <xmlsec/gnutls/symbols.h>
-#else /* XMLSEC_CRYPTO_GNUTLS */
-#ifdef XMLSEC_CRYPTO_NSS
-#include <xmlsec/nss/app.h>
-#include <xmlsec/nss/symbols.h>
-#else /* XMLSEC_CRYPTO_NSS */
-#error No Crypto library defined
-#endif /* XMLSEC_CRYPTO_GNUTLS */
-#endif /* XMLSEC_CRYPTO_NSS */
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-
-static int encrypt_file(const char* tmpl_file, const char* key_file);
-
+int encrypt_file(const char* tmpl_file, const char* key_file, 
+		 const unsigned char* data, size_t dataSize);
 int 
 main(int argc, char **argv) {
+    static const char secret_data[] = "Big secret";
+    
     assert(argv);
 
     if(argc != 3) {
@@ -86,7 +74,7 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(encrypt_file(argv[1], argv[2]) < 0) {
+    if(encrypt_file(argv[1], argv[2], secret_data, strlen(secret_data)) < 0) {
 	return(-1);
     }    
     
@@ -108,8 +96,8 @@ main(int argc, char **argv) {
     return(0);
 }
 
-static int 
-encrypt_file(const char* tmpl_file, const char* key_file) {
+int 
+encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
@@ -117,6 +105,7 @@ encrypt_file(const char* tmpl_file, const char* key_file) {
     
     assert(tmpl_file);
     assert(key_file);
+    assert(data);
 
     /* load template */
     doc = xmlParseFile(tmpl_file);
@@ -139,26 +128,28 @@ encrypt_file(const char* tmpl_file, const char* key_file) {
 	goto done;
     }
 
-    /* load private key, assuming that there is not password */
-    encCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
-    if(encCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+    /* load DES key, assuming that there is not password */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx->encKey == NULL) {
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
-    /* sign the template */
-    if(xmlSecEncCtxEncrypt(encCtx, node) < 0) {
+    /* encrypt the data */
+    if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) < 0) {
         fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
         
-    /* print signed document to stdout */
+    /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
     
     /* success */
     res = 0;
 
 done:    
+
+    /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }

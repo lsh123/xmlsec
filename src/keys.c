@@ -3,9 +3,10 @@
  *
  * Keys
  *
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 
@@ -589,6 +590,107 @@ xmlSecKeyGenerate(const xmlChar* klass, const xmlChar* name, size_t sizeBits, xm
 	xmlSecKeyDestroy(key);
 	return(NULL);    
     }
+    
+    return(key);
+}
+
+xmlSecKeyPtr 
+xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
+    xmlSecKeyInfoCtx keyInfoCtx;
+    xmlSecBuffer buffer;
+    unsigned char buf[1024];
+    xmlSecKeyPtr key;
+    FILE *f;
+    int ret;
+    
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+    xmlSecAssert2(filename != NULL, NULL);
+
+    /* read file to buffer */
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecBufferInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);	
+    }
+
+    f = fopen(filename, "r");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "fopen",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "filename=%s", 
+		    xmlSecErrorsSafeString(filename));
+	xmlSecBufferFinalize(&buffer);
+	return(NULL);
+    }
+
+    while(1) {
+        ret = fread(buf, 1, sizeof(buf), f);
+	if(ret > 0) {
+	    xmlSecBufferAppend(&buffer, buf, ret);
+	} else if(ret == 0) {
+	    break;
+	} else {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"fread",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"filename=%s", 
+			xmlSecErrorsSafeString(filename));
+	    fclose(f);
+	    xmlSecBufferFinalize(&buffer);
+	    return(NULL);
+	}
+    }
+    fclose(f);    
+    
+    /* create key data */
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBufferFinalize(&buffer);
+	return(NULL);    
+    }
+
+    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);    
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyInfoCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBufferFinalize(&buffer);
+	xmlSecKeyDestroy(key);
+	return(NULL);    
+    }
+    
+    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
+    ret = xmlSecKeyDataBinRead(dataId, key, 
+			xmlSecBufferGetData(&buffer),
+			xmlSecBufferGetSize(&buffer),
+			&keyInfoCtx);	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyDataBinRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+	xmlSecBufferFinalize(&buffer);
+	xmlSecKeyDestroy(key);
+	return(NULL);    
+    }
+    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+    xmlSecBufferFinalize(&buffer);
     
     return(key);
 }

@@ -3,9 +3,10 @@
  *
  * Keys Base: forward declarations
  *
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_KEYS_H__
 #define __XMLSEC_KEYS_H__    
@@ -157,6 +158,10 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(const xmlChar* klass,
 XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key, 
 							 const xmlChar *name,
 							 xmlSecKeyReqPtr keyReq);
+
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadBinaryFile	(xmlSecKeyDataId dataId,
+							 const char* filename);
+
 							 
 /**
  * xmlSecKeyIsValid:

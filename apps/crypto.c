@@ -254,12 +254,8 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 
 int 
 xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* keyKlass, const char *filename, const char *name) {
-    FILE *f;
-    unsigned char buf[1024];
-    xmlSecBufferPtr buffer;
     xmlSecKeyPtr key;
     xmlSecKeyDataId dataId;
-    xmlSecKeyInfoCtx keyInfoCtx;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -279,78 +275,15 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 	return(-1);    
     }
 
-    /* read file to buffer */
-    buffer = xmlSecBufferCreate(0);
-    if(buffer == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBufferCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
-    }
-
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "fopen",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "filename=%s", 
-		    xmlSecErrorsSafeString(filename));
-	xmlSecBufferDestroy(buffer);
-	return(-1);
-    }
-
-    while(1) {
-        ret = fread(buf, 1, sizeof(buf), f);
-	if(ret > 0) {
-	    xmlSecBufferAppend(buffer, buf, ret);
-	} else if(ret == 0) {
-	    break;
-	} else {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"fread",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"filename=%s", 
-			xmlSecErrorsSafeString(filename));
-	    fclose(f);
-	    xmlSecBufferDestroy(buffer);
-	    return(-1);
-	}
-    }
-    fclose(f);    
-    
-    /* create key data */
-    key = xmlSecKeyCreate();
+    key = xmlSecKeyReadBinaryFile(dataId, filename);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecKeyCreate",
+		    "xmlSecKeyReadBinaryFile",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecBufferDestroy(buffer);
 	return(-1);    
     }
-
-    memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
-    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
-    ret = xmlSecKeyDataBinRead(dataId, key, 
-			xmlSecBufferGetData(buffer),
-			xmlSecBufferGetSize(buffer),
-			&keyInfoCtx);	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataBinRead",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecBufferDestroy(buffer);
-	xmlSecKeyDestroy(key);
-	return(-1);    
-    }
-    xmlSecBufferDestroy(buffer);
     
     ret = xmlSecKeySetName(key, BAD_CAST name);
     if(ret < 0) {
@@ -375,6 +308,7 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
+
     return(0);
 }
 

@@ -24,6 +24,10 @@ EXTRA_DIST = \
 	xmlsec.pc.in \
 	$(NULL)
 
+EXTRA_CLEAN = \
+	examples \
+	$(NULL)
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xmlsec.pc
 

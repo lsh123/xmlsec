@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="enc1.c" href="xmlsec-example-enc1.html">
+<link rel="PREVIOUS" title="enc1-tmpl.xml" href="xmlsec-example-enc1-tmpl.html">
 <link rel="NEXT" title="XML Security Library Refernce Index" href="xmlsec-index.html">
 </head>
 <body><table witdh="100%"><tr>
@@ -33,7 +33,7 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1-tmpl.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-index.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
@@ -42,215 +42,175 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-ENC2"></a>enc2.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14710"></a><h2>Name</h2>enc2.c -- Decrypting file.</div>
+<a name="AEN14725"></a><h2>Name</h2>enc2.c -- Decrypting an encrypted file.</div>
 <div class="REFSECT1">
-<a name="AEN14713"></a><h2>Example: Decrypting file.</h2>
+<a name="AEN14728"></a><h2>Example: Decrypting an encrypted file.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN14716"></a><p></p>
+<a name="AEN14731"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * XML Security Library example: Decrypting file.
+ * XML Security Library example: Decrypting an encrypted file.
  * 
- * See Copyright for the status of this software.
+ * Decrypts encrypted XML file using DES key from a binary file
  * 
- * Author: Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Usage: 
+ *	enc2 &lt;xml-enc&gt; &lt;des-key-file&gt; 
+ *
+ * Example:
+ *	./enc2 ./enc1-res.xml deskey.bin
+ *
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ * 
+ * Copyrigth (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
-
-#include &lt;openssl/err.h&gt;
-#include &lt;openssl/rand.h&gt;
+#include &lt;assert.h&gt;
 
 #include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
 #include &lt;libxml/parser.h&gt;
+
+#ifndef XMLSEC_NO_XSLT
 #include &lt;libxslt/xslt.h&gt;
+#endif /* XMLSEC_NO_XSLT */
 
-#include &lt;xmlsec/xmlenc.h&gt; 
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/keys.h&gt;
 #include &lt;xmlsec/keysmngr.h&gt;
+#include &lt;xmlsec/xmlenc.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
 
+int decrypt_file(const char* enc_file, const char* key_file);
 
-int		initEverything				(void);
-void		shutdownEverything			(void);
-int 		decrypt					(const char *filename);
+int 
+main(int argc, char **argv) {
+    assert(argv);
 
-
-xmlSecKeysMngrPtr keysMngr = NULL; 
-xmlSecEncCtxPtr ctx;
-
-int main(int argc, char **argv) {
-    int ret = -1;
-    xmlSecKeyPtr key;
-            
-    /** 
-     * Init OpenSSL, libxml and xmlsec
-     */
-    ret = initEverything();
-    if(ret &lt; 0) {
-	fprintf(stderr, &quot;Error: initialization failed\n&quot;);
+    if(argc != 3) {
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;enc-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
 	return(1);
     }
+
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) &lt; 0) {
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    if(decrypt_file(argv[1], argv[2]) &lt; 0) {
+	return(-1);
+    }    
     
-    if(argc &lt; 3) {
-	fprintf(stderr, &quot;Error: missed required parameter. Usage: %s &lt;private-key-file&gt; &lt;encrypted-doc&gt;\n&quot;, argv[0]);
-	goto done;
-    }
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
 
-    /** 
-     * load key
-     */
-    key = xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1);
-    if(key == NULL) {
-	fprintf(stderr, &quot;Error: failed to load key from \&quot;%s\&quot;\n&quot;, argv[1]);
-	goto done;
-    }
-    key-&gt;name = xmlStrdup(BAD_CAST &quot;test-rsa-key&quot;);
-
-    /** 
-     * Decrypt file
-     */    
-    ret = decrypt(argv[2]);
-    if(ret &lt; 0) {
-	fprintf(stderr, &quot;Error: failed to decrypt file \&quot;%s\&quot;\n&quot;, argv[2]);
-	goto done;	
-    }
-        
-done:
-    /*
-     * Cleanup: shutdown xmlsec, libxml, openssl
-     */
-    shutdownEverything();    
-    return((ret &gt;= 0) ? 0 : 1);
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
 }
 
 int 
-decrypt(const char *filename) {
+decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
-    xmlSecEncResultPtr result = NULL;
-    int ret;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(enc_file);
+    assert(key_file);
 
-
-    /*
-     * build an XML tree from a the file; we need to add default
-     * attributes and resolve all character and entities references
-     */
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-
-    doc = xmlParseFile(filename);
-    if (doc == NULL) {
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, filename);
-	goto done;    
+    /* load template */
+    doc = xmlParseFile(enc_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, enc_file);
+	goto done;	
     }
     
-    /*
-     * Check the document is of the right kind
-     */    
-    if(xmlDocGetRootElement(doc) == NULL) {
-	fprintf(stderr,&quot;Error: empty document for file \&quot;%s\&quot;\n&quot;, filename);
-	goto done;    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, enc_file);
+	goto done;	
     }
-    
-    /** 
-     * Decrypt
-     */
-    ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);
-    if(ret &lt; 0) {
-	fprintf(stderr, &quot;Error: decryption failed\n&quot;);
-	goto done;    
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+	goto done;
     }
-    
-    /**
-     * And print result to stdout
-     */			     
-     ret = fwrite(xmlBufferContent(result-&gt;buffer),  
-    		  xmlBufferLength(result-&gt;buffer), 
-		  1, stdout);     
-done:        
-    if(result != NULL) {
-	xmlSecEncResultDestroy(result);
-    }    
+
+    /* load DES key */
+    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx-&gt;encKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
+        fprintf(stderr,&quot;Error: decryption failed\n&quot;);
+	goto done;
+    }
+        
+    /* print decrypted data to stdout */
+    fprintf(stdout, &quot;Decrypted data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
+    if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
+	fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
+	       1, 
+	       xmlSecBufferGetSize(encCtx-&gt;result),
+	       stdout);
+    }
+    fprintf(stdout, &quot;\n&quot;);
+        
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
-    return(0);
-}
-
-
-int initEverything(void) {
-    int rnd_seed = 0;
-            
-    /** 
-     * Init OpenSSL
-     */    
-    while (RAND_status() != 1) {
-	RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));
-    }
-    
-    /*
-     * Init libxml
-     */     
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-
-    /*
-     * Init xmlsec
-     */
-    xmlSecInit();    
-
-    /** 
-     * Create Keys managers
-     */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, &quot;Error: failed to create keys manager\n&quot;);
-	return(-1);	
-    }
-  
-    /**
-     * Create enc context
-     */
-    ctx = xmlSecEncCtxCreate(keysMngr);
-    if(ctx == NULL) {
-	fprintf(stderr, &quot;Error: template failed to create context\n&quot;);
-	return(-1);
-    }
-    
-    return(0);
-}
-
-void shutdownEverything(void) {
-
-    /* destroy context and key manager */
-    if(ctx != NULL) {
-	xmlSecEncCtxDestroy(ctx);
-    }
-    
-    
-    if(keysMngr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keysMngr);
-    }
-    
-    /**
-     * Shutdown xmlsec
-     */
-    xmlSecShutdown();
-
-    /**
-     * Shutdown libxslt
-     */    
-    xsltCleanupGlobals();            
-    
-    /* 
-     * Shutdown libxml
-     */
-    xmlCleanupParser();
-    
-    /* 
-     * Shutdown OpenSSL
-     */
-    RAND_cleanup();
-    ERR_clear_error();
+    return(res);
 }</pre></td></tr></table>
 <p></p>
 </div>
@@ -258,13 +218,13 @@ void shutdownEverything(void) {
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1-tmpl.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-index.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>enc1.c</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>enc1-tmpl.xml</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Refernce Index</b></font></td>
 </tr>
 </table>

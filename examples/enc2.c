@@ -1,205 +1,165 @@
 /** 
- * XML Security Library example: Decrypting file.
+ * XML Security Library example: Decrypting an encrypted file.
  * 
- * See Copyright for the status of this software.
+ * Decrypts encrypted XML file using DES key from a binary file
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Usage: 
+ *	enc2 <xml-enc> <des-key-file> 
+ *
+ * Example:
+ *	./enc2 ./enc1-res.xml deskey.bin
+ *
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ * 
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
 #include <string.h>
-
-#include <openssl/err.h>
-#include <openssl/rand.h>
+#include <assert.h>
 
 #include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+
+#ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
+#endif /* XMLSEC_NO_XSLT */
 
-#include <xmlsec/xmlenc.h> 
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/xmlenc.h>
+#include <xmlsec/crypto.h>
 
+int decrypt_file(const char* enc_file, const char* key_file);
 
-int		initEverything				(void);
-void		shutdownEverything			(void);
-int 		decrypt					(const char *filename);
+int 
+main(int argc, char **argv) {
+    assert(argv);
 
-
-xmlSecKeysMngrPtr keysMngr = NULL; 
-xmlSecEncCtxPtr ctx;
-
-int main(int argc, char **argv) {
-    int ret = -1;
-    xmlSecKeyPtr key;
-            
-    /** 
-     * Init OpenSSL, libxml and xmlsec
-     */
-    ret = initEverything();
-    if(ret < 0) {
-	fprintf(stderr, "Error: initialization failed\n");
+    if(argc != 3) {
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s <enc-file> <key-file>\n", argv[0]);
 	return(1);
     }
+
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) < 0) {
+	fprintf(stderr, "Error: crypto initialization failed.\n");
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() < 0) {
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	return(-1);
+    }
+
+    if(decrypt_file(argv[1], argv[2]) < 0) {
+	return(-1);
+    }    
     
-    if(argc < 3) {
-	fprintf(stderr, "Error: missed required parameter. Usage: %s <private-key-file> <encrypted-doc>\n", argv[0]);
-	goto done;
-    }
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
 
-    /** 
-     * load key
-     */
-    key = xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
-	goto done;
-    }
-    key->name = xmlStrdup(BAD_CAST "test-rsa-key");
-
-    /** 
-     * Decrypt file
-     */    
-    ret = decrypt(argv[2]);
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", argv[2]);
-	goto done;	
-    }
-        
-done:
-    /*
-     * Cleanup: shutdown xmlsec, libxml, openssl
-     */
-    shutdownEverything();    
-    return((ret >= 0) ? 0 : 1);
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
 }
 
 int 
-decrypt(const char *filename) {
+decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
-    xmlSecEncResultPtr result = NULL;
-    int ret;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(enc_file);
+    assert(key_file);
 
-
-    /*
-     * build an XML tree from a the file; we need to add default
-     * attributes and resolve all character and entities references
-     */
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-
-    doc = xmlParseFile(filename);
-    if (doc == NULL) {
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", filename);
-	goto done;    
+    /* load template */
+    doc = xmlParseFile(enc_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
+	goto done;	
     }
     
-    /*
-     * Check the document is of the right kind
-     */    
-    if(xmlDocGetRootElement(doc) == NULL) {
-	fprintf(stderr,"Error: empty document for file \"%s\"\n", filename);
-	goto done;    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
+	goto done;	
     }
-    
-    /** 
-     * Decrypt
-     */
-    ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &result);
-    if(ret < 0) {
-	fprintf(stderr, "Error: decryption failed\n");
-	goto done;    
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
+	goto done;
     }
-    
-    /**
-     * And print result to stdout
-     */			     
-     ret = fwrite(xmlBufferContent(result->buffer),  
-    		  xmlBufferLength(result->buffer), 
-		  1, stdout);     
-done:        
-    if(result != NULL) {
-	xmlSecEncResultDestroy(result);
-    }    
+
+    /* load DES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx->encKey == NULL) {
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
+        fprintf(stderr,"Error: decryption failed\n");
+	goto done;
+    }
+        
+    /* print decrypted data to stdout */
+    fprintf(stdout, "Decrypted data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
+    if(xmlSecBufferGetData(encCtx->result) != NULL) {
+	fwrite(xmlSecBufferGetData(encCtx->result), 
+	       1, 
+	       xmlSecBufferGetSize(encCtx->result),
+	       stdout);
+    }
+    fprintf(stdout, "\n");
+        
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
-    return(0);
-}
-
-
-int initEverything(void) {
-    int rnd_seed = 0;
-            
-    /** 
-     * Init OpenSSL
-     */    
-    while (RAND_status() != 1) {
-	RAND_seed(&rnd_seed, sizeof(rnd_seed));
-    }
-    
-    /*
-     * Init libxml
-     */     
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-
-    /*
-     * Init xmlsec
-     */
-    xmlSecInit();    
-
-    /** 
-     * Create Keys managers
-     */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager\n");
-	return(-1);	
-    }
-  
-    /**
-     * Create enc context
-     */
-    ctx = xmlSecEncCtxCreate(keysMngr);
-    if(ctx == NULL) {
-	fprintf(stderr, "Error: template failed to create context\n");
-	return(-1);
-    }
-    
-    return(0);
-}
-
-void shutdownEverything(void) {
-
-    /* destroy context and key manager */
-    if(ctx != NULL) {
-	xmlSecEncCtxDestroy(ctx);
-    }
-    
-    
-    if(keysMngr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keysMngr);
-    }
-    
-    /**
-     * Shutdown xmlsec
-     */
-    xmlSecShutdown();
-
-    /**
-     * Shutdown libxslt
-     */    
-    xsltCleanupGlobals();            
-    
-    /* 
-     * Shutdown libxml
-     */
-    xmlCleanupParser();
-    
-    /* 
-     * Shutdown OpenSSL
-     */
-    RAND_cleanup();
-    ERR_clear_error();
+    return(res);
 }
 

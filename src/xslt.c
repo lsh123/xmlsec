@@ -28,9 +28,10 @@
  * that support the XSLT transform. Note that if the output is actually HTML, 
  * then the result of these steps is logically equivalent [XHTML].
  *
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 

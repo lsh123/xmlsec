@@ -716,6 +716,8 @@
 <listitem><para><link linkend="xmlSecKeyPtrListGetKlass">xmlSecKeyPtrListGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link></para></listitem>
+<listitem><para><link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link></para></listitem>
+<listitem><para><link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link></para></listitem>

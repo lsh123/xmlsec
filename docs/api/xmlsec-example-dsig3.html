@@ -42,18 +42,19 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG3"></a>dsig3.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14683"></a><h2>Name</h2>dsig3.c -- Signing dynamic template with enveloped transforms.</div>
+<a name="AEN14689"></a><h2>Name</h2>dsig3.c -- Signing a simple dynamic template.</div>
 <div class="REFSECT1">
-<a name="AEN14686"></a><h2>Example: Signing dynamic template with enveloped transforms.</h2>
+<a name="AEN14692"></a><h2>Example: Signing a simple dynamic template.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN14689"></a><p></p>
+<a name="AEN14695"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * XML Security Library example: Signing dynamic template with enveloped transforms.
+ * XML Security Library example: Signing a simple dynamic template.
  * 
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ * Copyrigth (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -225,7 +226,7 @@ xmlNodePtr addSignature(xmlDocPtr doc) {
     /**
      * Create Signature node 
      */
-    signatureNode = xmlSecSignatureCreate(&quot;my-signature&quot;);
+    signatureNode = xmlSecSignatureCreate(NULL);
     if(signatureNode == NULL) {
     	fprintf(stderr,&quot;Error: failed to create signature\n&quot;);
 	return(NULL);
@@ -260,10 +261,12 @@ xmlNodePtr addSignature(xmlDocPtr doc) {
      * Create Reference node with SHA1 as digest method and one
      * C14N transform to include comments in the digest
      */
+
     referenceNode = xmlSecSignedInfoAddReference(signedInfoNode,
-					&quot;my-reference&quot;,
-					&quot;#xpointer(id('SomeData'))&quot;,
+					NULL,
+					NULL,
 					NULL);
+
     if(referenceNode == NULL) {
     	fprintf(stderr,&quot;Error: failed to add Reference\n&quot;);
 	xmlSecSignatureDestroy(signatureNode);
@@ -276,11 +279,11 @@ xmlNodePtr addSignature(xmlDocPtr doc) {
 	xmlSecSignatureDestroy(signatureNode);
 	return(NULL);
     }
-    
+
     cur = xmlSecReferenceAddTransform(referenceNode, 
-				      xmlSecC14NExclusiveWithComments);
+				      xmlSecTransformEnveloped);
     if(cur == NULL) {
-    	fprintf(stderr,&quot;Error: failed to add c14n transform\n&quot;);
+    	fprintf(stderr,&quot;Error: failed to add enveloped transform\n&quot;);
 	xmlSecSignatureDestroy(signatureNode);
 	return(NULL);
     }

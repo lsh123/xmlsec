@@ -5,12 +5,14 @@
  * 
  * Usage: 
  *	dsig1 <xml-tmpl> <pem-key> 
+ *
  * Example:
  *	./dsig1 ./dsig1-tmpl.xml rsakey.pem > dsig1-res.xml
  *
- * See Copyright for the status of this software.
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyrigth (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
 #include <string.h>
@@ -29,25 +31,9 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmldsig.h>
+#include <xmlsec/crypto.h>
 
-#ifdef XMLSEC_CRYPTO_OPENSSL
-#include <xmlsec/openssl/app.h>
-#include <xmlsec/openssl/symbols.h>
-#else /* XMLSEC_CRYPTO_OPENSSL */
-#ifdef XMLSEC_CRYPTO_GNUTLS
-#include <xmlsec/gnutls/app.h>
-#include <xmlsec/gnutls/symbols.h>
-#else /* XMLSEC_CRYPTO_GNUTLS */
-#ifdef XMLSEC_CRYPTO_NSS
-#include <xmlsec/nss/app.h>
-#include <xmlsec/nss/symbols.h>
-#else /* XMLSEC_CRYPTO_NSS */
-#error No Crypto library defined
-#endif /* XMLSEC_CRYPTO_GNUTLS */
-#endif /* XMLSEC_CRYPTO_NSS */
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-
-static int sign_file(const char* tmpl_file, const char* key_file);
+int sign_file(const char* tmpl_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -108,7 +94,7 @@ main(int argc, char **argv) {
     return(0);
 }
 
-static int 
+int 
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
@@ -159,6 +145,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
     res = 0;
 
 done:    
+    /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }

@@ -9,11 +9,11 @@ Files List:
     dsig1-res.xml		The result of processing dsig1_tmpl.xml 
 				with dsig1 example:
 				    ./dsig1 ./dsig1-tmpl.xml rsakey.pem > dsig1-res.xml
-    dsig2.c			
+    dsig2.c			Verifying a signed document.
     dsig3.c	
     dsig4.c
-    enc1.c
-    enc2.c
+    enc1.c			Encrypting binary data with a template file.
+    enc2.c			Decrypting binary data.
 
 
 

@@ -53,12 +53,12 @@
 	encrypted document.
     	  </p>
 <div class="FIGURE">
-<a name="AEN175"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
+<a name="AEN179"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
 <p><img src="images/verif-dec-model.png" align="CENTER"></p>
 </div>	 
 	<br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN178"></a>Verifying a signed document</h2>
+<a name="AEN182"></a>Verifying a signed document</h2>
 <p>The typical siganture verification process includes following steps:
 	  </p>
 <p></p>
@@ -89,7 +89,7 @@
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN207"></a><p><b>Example 6. Verifying a document.</b></p>
+<a name="AEN211"></a><p><b>Example 6. Verifying a document.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -145,6 +145,7 @@ verify_file(const char* xml_file, const char* key_file) {
     res = 0;
 
 done:    
+    /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
@@ -155,12 +156,12 @@ done:
     return(res);
 }
 		</pre></td></tr></table>
-<p><a href="xmlsec-example-dsig4.html">Full Program Listing</a></p>
+<p><a href="xmlsec-example-dsig2.html">Full Program Listing</a></p>
 </div>
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN212"></a>Decrypting an encrypted document</h2>
+<a name="AEN216"></a>Decrypting an encrypted document</h2>
 <p>The typical decryption process includes following steps:
 	  </p>
 <p></p>
@@ -187,9 +188,77 @@ done:
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN237"></a><p><b>Example 7. Decrypting a document.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
+<a name="AEN241"></a><p><b>Example 7. Decrypting a document.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
+decrypt_file(const char* enc_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(enc_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(enc_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, enc_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, enc_file);
+	goto done;	
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+	goto done;
+    }
+
+    /* load DES key */
+    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx-&gt;encKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
+        fprintf(stderr,&quot;Error: decryption failed\n&quot;);
+	goto done;
+    }
+        
+    /* print decrypted data to stdout */
+    fprintf(stdout, &quot;Decrypted data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
+    if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
+	fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
+	       1, 
+	       xmlSecBufferGetSize(encCtx-&gt;result),
+	       stdout);
+    }
+    fprintf(stdout, &quot;\n&quot;);
+        
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
 		</pre></td></tr></table>
+<p><a href="xmlsec-example-enc2.html">Full Program Listing</a></p>
 </div>
 	</div>
 </div>

@@ -55,7 +55,7 @@
 	</para>
 	<para>
 	     <example>
-		<title>Signing a template</title>
+		<title>Signing a template.</title>
 		<programlisting><![CDATA[
 int 
 sign_file(const char* tmpl_file, const char* key_file) {
@@ -108,6 +108,7 @@ sign_file(const char* tmpl_file, const char* key_file) {
     res = 0;
 
 done:    
+    /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
@@ -123,8 +124,11 @@ done:
 	    </example>
 	</para>
 	</sect2>
+	
+	
+	
 	<sect2>
-	<title>Encrypting a document</title>
+	<title>Encrypting data.</title>
 	<para>The typical encryption process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -173,10 +177,73 @@ done:
 	</para>
 	<para>
 	     <example>
-		<title>Encrypting a document.</title>
+		<title>Encrypting binary data with a template.</title>
 		<programlisting><![CDATA[
-TODO
+int 
+encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+    assert(data);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+	goto done;	
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
+	goto done;
+    }
+
+    /* load DES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx->encKey == NULL) {
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* encrypt the data */
+    if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) < 0) {
+        fprintf(stderr,"Error: encryption failed\n");
+    	goto done;
+    }
+        
+    /* print encrypted data with document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
 		]]></programlisting>
+		<simpara><link linkend="xmlsec-example-enc1">Full program listing</link></simpara>
+		<simpara><link linkend="xmlsec-example-enc1-tmpl">Simple encryption template file</link></simpara>
 	    </example>
 	</para>
 	</sect2>

@@ -357,9 +357,15 @@ xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(BINDIR)\$(XMLSEC_CRYP
 
 apps : $(BINDIR)\$(APP_NAME)
 
-check : $(BINDIR)\$(APP_NAME)
+check : check-keys check-dsig check-enc
+
+check-keys : $(BINDIR)\$(APP_NAME)
 	sh ../tests/testKeys.sh ../tests $(BINDIR)/$(APP_NAME) der
+
+check-dsig : $(BINDIR)\$(APP_NAME)
 	sh ../tests/testDSig.sh ../tests $(BINDIR)/$(APP_NAME) der
+
+check-enc : $(BINDIR)\$(APP_NAME)
 	sh ../tests/testEnc.sh ../tests $(BINDIR)/$(APP_NAME) der
 
 clean :

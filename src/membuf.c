@@ -326,6 +326,8 @@ static const struct _xmlSecTransformKlass xmlSecMemBufTransformId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary methods */
     NULL,

@@ -48,6 +48,8 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveTransformId = {
     xmlSecC14NTransformReadNode,	/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
     NULL,
@@ -75,6 +77,8 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveWithCommentsTransfo
     xmlSecC14NTransformReadNode,	/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
     NULL,
@@ -102,6 +106,8 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveTransformId = {
     xmlSecC14NTransformReadNode,	/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* bin transforms */
     NULL,
@@ -129,6 +135,8 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveWithCommentsTransfo
     xmlSecC14NTransformReadNode,	/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
     NULL,

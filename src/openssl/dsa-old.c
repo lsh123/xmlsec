@@ -28,6 +28,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignDsaSha1Id = {
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     xmlSecSignDsaSha1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecSignDsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,

@@ -95,6 +95,8 @@ struct _xmlSecTransformKlass xmlSecTransformXPathId = {
     xmlSecTransformXPathReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* bin transforms */
     NULL,
@@ -121,6 +123,8 @@ struct _xmlSecTransformKlass xmlSecTransformXPath2Id = {
     xmlSecTransformXPath2ReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
     NULL,
@@ -147,6 +151,8 @@ struct _xmlSecTransformKlass xmlSecTransformXPointerId = {
     xmlSecTransformXPointerReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
     NULL,

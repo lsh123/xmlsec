@@ -55,6 +55,7 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
+#define XMLSEC_TRANSFORM_BINARY_CHUNK	64
 
 /**************************************************************************
  *
@@ -75,6 +76,7 @@
 xmlSecTransformPtr	
 xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
     xmlSecTransformPtr transform;
+    int ret;
     
     xmlSecAssert2(id != NULL, NULL);
     xmlSecAssert2(id->create != NULL, NULL);
@@ -87,6 +89,25 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 	return(NULL);	
     }
     transform->dontDestroy = dontDestroy;
+    
+    ret = xmlSecBufferInitialize(&(transform->inBuf), 0);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferInitialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);	
+    }
+
+    ret = xmlSecBufferInitialize(&(transform->outBuf), 0);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferInitialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);	
+    }
+    
     return(transform);
 }
 
@@ -112,6 +133,9 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
 	/* requested do not destroy transform */
 	return;
     }    
+    
+    xmlSecBufferFinalize(&(transform->inBuf));
+    xmlSecBufferFinalize(&(transform->outBuf));
     transform->id->destroy(transform);
 }
 
@@ -180,6 +204,25 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyInfoCtxPtr keyIn
 	return((transform->id->setKeyReq)(transform, keyInfoCtx));
     }
     return(0);
+}
+
+int 
+xmlSecTransformValidate(xmlSecTransformPtr transform, const unsigned char* data,
+			size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->id->validate != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    return((transform->id->validate)(transform, data, dataSize, transformCtx));
+}
+
+int 
+xmlSecTransformExecute(xmlSecTransformPtr transform, size_t delta, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->id->execute != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    return((transform->id->execute)(transform, delta, transformCtx));
 }
 
 /**
@@ -611,6 +654,201 @@ xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
     return(0);
 }
 
+
+/**
+ * xmlSecTransformDefault2ReadBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
+ *
+ * Reads chunk of data from the transform (wrapper transform specific
+ * readBin() function).
+ *
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
+ */
+int
+xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform, 
+		       unsigned char *buf, size_t size) {
+    xmlSecTransformCtx ctx; /* todo */
+    unsigned char chunk[XMLSEC_TRANSFORM_BINARY_CHUNK];
+    size_t chunkSize;
+    size_t res = 0;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
+
+    while(xmlSecBufferGetSize(&(transform->outBuf))) {
+	/* read chunk from previous transform (if exist) */
+	if((transform->prev != NULL) && !xmlSecTransformStatusIsDone(transform->prev->status)) {
+	    ret = xmlSecTransformReadBin(transform->prev, chunk, sizeof(chunk));
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecTransformReadBin");
+		return(-1);
+	    }
+	    chunkSize = ret;
+	    
+	    ret = xmlSecBufferAppend(&(transform->inBuf), chunk, chunkSize);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecBufferAppend(%d)", chunkSize);
+		return(-1);
+	    }
+	} else {
+	    chunkSize = 0;
+	}
+	
+	/* process the current data */
+	ret = xmlSecTransformExecute(transform, chunkSize, &ctx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformExecute");
+	    return(-1);
+	}
+	
+	if(chunkSize == 0) {
+	    /* we have no more data from previous transform
+	     */ 
+	     break;
+	}
+    }
+    
+    /* copy result to output buffer */
+    res = xmlSecBufferGetSize(&(transform->outBuf));
+    if(res > size) {
+	res = size;
+    }
+    if(res > 0) {
+	xmlSecAssert2(buf != NULL, -1);
+
+	memcpy(buf, xmlSecBufferGetData(&(transform->outBuf)), res);
+	xmlSecBufferRemoveHead(&(transform->outBuf), res);
+    }
+    return(res);
+}
+
+/**
+ * xmlSecTransformDefault2WriteBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the input data buffer.
+ * @size: the input data size.
+ *
+ * Writes data to the transform (wrapper to the transform specific
+ * writeBin() function).
+ * 
+ * Returns 0 if success or a negative value otherwise.
+ */
+int
+xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform, 
+			const unsigned char *buf, size_t size) {
+    xmlSecTransformCtx ctx; /* todo */
+    size_t chunkSize;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
+
+    for(;size > 0; size -= chunkSize) {
+	xmlSecAssert2(buf != NULL, -1);
+	
+	/* add next chunk */
+	chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+	if(chunkSize > size) {
+	    chunkSize = size;
+	}
+	ret = xmlSecBufferAppend(&(transform->inBuf), buf, chunkSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferAppend(%d)", chunkSize);
+	    return(-1);
+	}
+	
+	/* process the current data */
+	ret = xmlSecTransformExecute(transform, chunkSize, &ctx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformExecute");
+	    return(-1);
+	}
+    
+	/* write results to next transform */
+	if((xmlSecBufferGetSize(&(transform->outBuf)) > 0) && (transform->next != NULL)) {
+	    ret = xmlSecTransformWriteBin(transform->next,
+					  xmlSecBufferGetData(&(transform->outBuf)),
+					  xmlSecBufferGetSize(&(transform->outBuf)));
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecTransformWriteBin");
+		return(-1);
+	    }
+	    xmlSecBufferSetSize(&(transform->outBuf), 0);
+	}	
+    }    
+    return(0);
+}
+
+/**
+ * xmlSecTransformDefault2FlushBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * Finalizes writing (wrapper for transform specific flushBin() method). 
+ *
+ * Returns 0 if success or negative value otherwise.
+ */
+int
+xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
+    xmlSecTransformCtx ctx; /* todo */
+
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
+
+    while(1) {
+	/* process data */
+	ret = xmlSecTransformExecute(transform, 0, &ctx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformExecute");
+	    return(-1);
+	}
+    
+	/* quit or write results to next transform */
+	if(xmlSecBufferGetSize(&(transform->outBuf)) == 0) {
+	    break;
+	} else if(transform->next != NULL) {
+	    ret = xmlSecTransformWriteBin(transform->next,
+					  xmlSecBufferGetData(&(transform->outBuf)),
+					  xmlSecBufferGetSize(&(transform->outBuf)));
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecTransformWriteBin");
+		return(-1);
+	    }
+	    xmlSecBufferSetSize(&(transform->outBuf), 0);
+	}	
+    }    
+
+    if(transform->next != NULL) {
+	ret = xmlSecTransformFlushBin(transform->next);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformFlushBin");
+	    return(-1);
+	}
+    }
+
+    return(0);
+}
 
 
 #include "transforms-old.c"

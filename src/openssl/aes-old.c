@@ -23,6 +23,8 @@ static xmlSecTransformKlass xmlSecEncAes128CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecAesSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     xmlSecOpenSSLEvpBlockCipherExecuteBin,
@@ -48,6 +50,8 @@ static xmlSecTransformKlass xmlSecEncAes192CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecAesSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     xmlSecOpenSSLEvpBlockCipherExecuteBin,
@@ -71,6 +75,8 @@ static xmlSecTransformKlass xmlSecEncAes256CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecAesSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     xmlSecOpenSSLEvpBlockCipherExecuteBin,
@@ -222,6 +228,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes128Id = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecKWAesSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     NULL,
@@ -249,6 +257,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes192Id = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecKWAesSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     NULL,
@@ -275,6 +285,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes256Id = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecKWAesSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     NULL,

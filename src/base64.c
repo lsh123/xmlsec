@@ -115,6 +115,8 @@ static xmlSecTransformKlass xmlSecBase64EncodeId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
@@ -139,6 +141,8 @@ static xmlSecTransformKlass xmlSecBase64DecodeId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */

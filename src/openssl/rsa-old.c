@@ -29,6 +29,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecSignRsaSha1Id = {
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     xmlSecSignRsaSha1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecSignRsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
@@ -70,6 +72,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaPkcs1Id = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecRsaPkcs1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecRsaPkcs1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     NULL,
@@ -112,6 +116,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaOaepId = {
     xmlSecRsaOaepReadNode,		/* xmlSecTransformReadMethod read; */
     xmlSecRsaOaepSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecRsaOaepSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     NULL,

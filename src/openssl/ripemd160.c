@@ -49,6 +49,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestRipemd160Id = {
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,

@@ -25,6 +25,8 @@ static xmlSecTransformKlass xmlSecEncDes3CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecDesSetKeyReq,			/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecDesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     xmlSecOpenSSLEvpBlockCipherExecuteBin,
@@ -189,6 +191,8 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
     NULL,				/* xmlSecTransformReadMethod read; */
     xmlSecDes3KWSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecDes3KWSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
     NULL,

@@ -33,6 +33,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacSha1Id = {
     xmlSecMacHmacReadNode,		/* xmlSecTransformReadNodeMethod read; */
     xmlSecMacHmacSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMacHmacSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
@@ -65,6 +67,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacMd5Id = {
     xmlSecMacHmacReadNode,		/* xmlSecTransformReadNodeMethod read; */
     xmlSecMacHmacSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMacHmacSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
@@ -97,6 +101,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecMacHmacRipeMd160Id = {
     xmlSecMacHmacReadNode,		/* xmlSecTransformReadNodeMethod read; */
     xmlSecMacHmacSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecMacHmacSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,

@@ -46,6 +46,8 @@ struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
     xmlSecTransformEnvelopedReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
     NULL,

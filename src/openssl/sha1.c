@@ -1,6 +1,6 @@
 /** 
  * XML Security Library
- *
+     *
  * Encryption Algorithms: SHA1
  * 
  * See Copyright for the status of this software.
@@ -49,6 +49,8 @@ struct _xmlSecDigestTransformIdStruct xmlSecDigestSha1Id = {
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,

@@ -13,9 +13,6 @@ URL: http://www.aleksey.com/xmlsec
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
 Requires: openssl >= @OPENSSL_MIN_VERSION@
-Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
-Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
-Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
 BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
 BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
@@ -26,8 +23,19 @@ Docdir: %{_docdir}
 XML Security Library is a C library based on LibXML2  and OpenSSL. 
 The library was created with a goal to support major XML security 
 standards "XML Digital Signature" and "XML Encryption". 
-It is released under the MIT Licence (see the Copyright file in the 
-distribution for details).
+
+%package devel 
+Summary: Libraries, includes, etc. to develop applications with XML Digital Signatures and XML Encryption support.
+Group: Development/Libraries 
+Requires: xmlsec = %{version}
+Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
+Requires: zlib-devel 
+
+%description devel
+Libraries, includes, etc. you can use to develop applications with XML Digital 
+Signatures and XML Encryption support.
 
 %prep
 %setup -q
@@ -73,12 +81,16 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README Copyright
-%doc docs/* 
 %{prefix}/lib/lib*.so.*
 %{prefix}/lib/lib*.so
-%{prefix}/lib/*a
 %{prefix}/bin/xmlsec
+
+%files devel
+%defattr(-, root, root)  
+
+%{prefix}/lib/*a
 %{prefix}/bin/xmlsec-config
 %{prefix}/include/*
+%doc docs/* 
 
 %changelog

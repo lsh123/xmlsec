@@ -78,6 +78,7 @@ static int			xmlSecManifestRead		(xmlNodePtr manifestNode,
 								 int sign,
 								 xmlSecDSigResultPtr result);
 
+
 /**
  * Creating DSig template
  */
@@ -1428,7 +1429,7 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     /* 
      * if requested then insert a memory buffer to capture the digest data 
      */
-    if(result->ctx->storeSignatures) {
+    if(result->ctx->storeSignatures || result->ctx->fakeSignatures) {
 	memBuffer = xmlSecTransformCreate(xmlSecMemBuf, 0, 1);
 	if(memBuffer == NULL) {
 #ifdef XMLSEC_DEBUG    
@@ -1449,48 +1450,51 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
 	}
     }
      
-    ret = xmlSecTransformStateUpdate(state, signMethod);
-    if(ret < 0){
+    if(!(result->ctx->fakeSignatures)) {
+	ret = xmlSecTransformStateUpdate(state, signMethod);
+	if(ret < 0){
 #ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add sign method\n",
-	    func);
+	    xmlGenericError(xmlGenericErrorContext,
+		"%s: failed to add sign method\n",
+		func);
 #endif	    
-	goto done;
-    }
-    
-    ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
-    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to finalize transforms\n",
-	    func);
-#endif
-	goto done;
-    }
-    
-    if(sign) {
-	ret = xmlSecDigestSignNode(signMethod, signatureValueNode, 1);
+	    goto done;
+	}
+        ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
 	if(ret < 0) {
 #ifdef XMLSEC_DEBUG
 	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to sign node\n",
+		"%s: failed to finalize transforms\n",
 		func);
 #endif
-	    goto done;	
+	    goto done;
 	}
+    
+	if(sign) {
+	    ret = xmlSecDigestSignNode(signMethod, signatureValueNode, 1);
+	    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+		xmlGenericError(xmlGenericErrorContext,
+		    "%s: failed to sign node\n",
+		    func);
+#endif
+		goto done;	
+	    }
+	} else {
+	    ret = xmlSecDigestVerifyNode(signMethod, signatureValueNode);
+	    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+		xmlGenericError(xmlGenericErrorContext,
+	    	    "%s: failed to verify node\n",
+		    func);
+#endif
+		goto done;	
+	    }
+	}
+	result->result = signMethod->status;
     } else {
-	ret = xmlSecDigestVerifyNode(signMethod, signatureValueNode);
-	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to verify node\n",
-		func);
-#endif
-	    goto done;	
-	}
+	result->result = xmlSecTransformStatusOk; /* in "fake" mode we always ok */
     }
-    result->result = signMethod->status;
 
     if(memBuffer != NULL) {
 	result->buffer = xmlSecMemBufTransformGetBuffer(memBuffer, 1);

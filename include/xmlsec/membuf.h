@@ -19,9 +19,10 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
-extern xmlSecTransformId xmlSecMemBuf;
+XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecMemBuf;
 
-xmlBufferPtr	xmlSecMemBufTransformGetBuffer		(xmlSecTransformPtr transform,
+XMLSEC_EXPORT xmlBufferPtr	xmlSecMemBufTransformGetBuffer		
+							(xmlSecTransformPtr transform,
 							 int removeBuffer);
 #ifdef __cplusplus
 }

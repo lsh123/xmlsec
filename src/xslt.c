@@ -40,7 +40,6 @@
 #include <string.h>
  
 #include <libxml/tree.h>
-#include <libxml/c14n.h>
 #include <libxslt/xslt.h>
 #include <libxslt/xsltInternals.h>
 #include <libxslt/transform.h>
@@ -395,10 +394,8 @@ static int
 xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltReadNode";
     xmlSecBinTransformPtr xsltTransform;
-    xmlNodeSetPtr nodes = NULL;
-    xmlOutputBufferPtr output = NULL;  
+    xmlBufferPtr buffer;
     xmlNodePtr cur;
-    int ret;
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformXslt) || 
        (transformNode == NULL)) {
@@ -410,55 +407,28 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
 	return(-1);
     }    
     xsltTransform = (xmlSecBinTransformPtr)transform;
-    
-    cur = transformNode->children;
-    while(cur != NULL) {
-	/* we use c14n to get all namespaces */
-	nodes = xmlSecGetChildNodeSet(cur, nodes, 1);
-	if(nodes == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to get transform node childs\n",
-	        func);	
-#endif 	    
-	    return(-1);
-	}
-	cur = cur->next;
-    }
-    
-    output = xmlAllocOutputBuffer(NULL);
-    if(output == NULL) {
+
+    buffer = xmlBufferCreate();
+    if(buffer == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: failed to allocate output buffer\n",
 	    func);	
 #endif 	    
-	xmlXPathFreeNodeSet(nodes);
 	return(-1);
     }
     
-    ret = xmlC14NDocSaveTo(transformNode->doc, nodes, 0, NULL, 1, output);
-    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to dump the node\n",
-	    func);	
-#endif 	    
-	xmlOutputBufferClose(output);
-	xmlXPathFreeNodeSet(nodes);
-	return(-1);
+    cur = transformNode->children;
+    while(cur != NULL) {
+	xmlNodeDump(buffer, cur->doc, cur, 0, 0);
+	cur = cur->next;
     }
         
     if(xsltTransform->binData != NULL) {
 	xmlBufferEmpty((xmlBufferPtr)xsltTransform->binData);
 	xmlBufferFree((xmlBufferPtr)(xsltTransform->data)); 
     }
-    xsltTransform->binData = output->buffer;
-    output->buffer = NULL;
-
-    
-    xmlXPathFreeNodeSet(nodes);
-    xmlOutputBufferClose(output);
+    xsltTransform->binData = buffer;
     return(0);
 }
 
@@ -524,7 +494,6 @@ xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {
 	goto done;	
     }
 
-    
     docXslt = xmlSecParseMemory(xmlBufferContent(xslt), xmlBufferLength(xslt), 1);
     if(docXslt == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -569,7 +538,7 @@ xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {
 #endif 	    
 	goto done;	
     }
-    
+
     ret = xsltSaveResultTo(output, docRes, cur);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG

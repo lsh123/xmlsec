@@ -83,7 +83,7 @@ static int		xmlSecBase64CtxDecode		(xmlSecBase64CtxPtr ctx);
 
 
 
-static xmlSecTransformPtr xmlSecBase64Create		(const xmlSecTransformId id);
+static xmlSecTransformPtr xmlSecBase64Create		(xmlSecTransformId id);
 static void		xmlSecBase64Destroy		(xmlSecTransformPtr transform);
 static int  		xmlSecBase64Update		(xmlSecCipherTransformPtr transform, 
 							 const unsigned char *buf, 
@@ -184,7 +184,7 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
  * if an error occurs.
  */
 static xmlSecTransformPtr 
-xmlSecBase64Create(const xmlSecTransformId id) {
+xmlSecBase64Create(xmlSecTransformId id) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Create";
     xmlSecCipherTransformPtr cipher;
     int encode;

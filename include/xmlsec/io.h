@@ -15,24 +15,24 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <libxml/tree.h>
+#include <libxml/xmlIO.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
-void		xmlSecIOInit				(void);
-void		xmlSecIOShutdown			(void);
+XMLSEC_EXPORT void	xmlSecIOInit			(void);
+XMLSEC_EXPORT void	xmlSecIOShutdown		(void);
 
-extern xmlSecTransformId xmlSecInputUri;
-
-typedef void* (*xmlSecInputUriTransformOpenCallback)	(const char *uri, 
-							 void *context);
-typedef int   (*xmlSecInputUriTransformReadCallback)	(void *data,
-							 unsigned char *buffer,
-							 size_t size);
-typedef void  (*xmlSecInputUriTransformCloseCallback)	(void *data);							 
-
-int		xmlSecInputUriTransformOpen		(xmlSecTransformPtr transform,
+XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecInputUri;
+XMLSEC_EXPORT int 	xmlSecInputUriTransformOpen	(xmlSecTransformPtr transform,
 							 const char *uri);
+
+XMLSEC_EXPORT void	xmlSecCleanupInputCallbacks	(void);
+XMLSEC_EXPORT void	xmlSecRegisterDefaultInputCallbacks (void);
+XMLSEC_EXPORT int     	xmlSecRegisterInputCallbacks	(xmlInputMatchCallback matchFunc,
+							 xmlInputOpenCallback openFunc,
+							 xmlInputReadCallback readFunc,
+							 xmlInputCloseCallback closeFunc);
 
 #ifdef __cplusplus
 }

@@ -8,6 +8,7 @@ bn.h \
 buffered.h \
 ciphers.h \
 digests.h \
+debug.h \
 io.h \
 keyinfo.h \
 keys.h \

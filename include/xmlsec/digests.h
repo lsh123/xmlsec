@@ -87,24 +87,24 @@ typedef struct _xmlSecDigestTransform {
 /** 
  * Digest specific hi-level methods
  */ 
-int 	xmlSecDigestSignNode				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecDigestSignNode		(xmlSecTransformPtr transform,
 							 xmlNodePtr valueNode,
 							 int removeOldContent);
-int 	xmlSecDigestVerifyNode				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecDigestVerifyNode		(xmlSecTransformPtr transform,
 							 const xmlNodePtr valueNode);
-void	xmlSecDigestSetPushMode				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT void	xmlSecDigestSetPushMode		(xmlSecTransformPtr transform,
 							 int enabled);
 
 /** 
  * Digest specific low-level methods
  */ 
-int 	xmlSecDigestUpdate				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecDigestUpdate		(xmlSecTransformPtr transform,
 							 const unsigned char *buffer,
 							 size_t size);
-int 	xmlSecDigestSign				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecDigestSign		(xmlSecTransformPtr transform,
 							 unsigned char **buffer,
 							 size_t *size);
-int 	xmlSecDigestVerify				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecDigestVerify		(xmlSecTransformPtr transform,
 							 const unsigned char *buffer,
 							 size_t size);
 
@@ -112,13 +112,13 @@ int 	xmlSecDigestVerify				(xmlSecTransformPtr transform,
 /**
  * BinTransform methods to be used in the Id structure
  */
-int  	xmlSecDigestTransformRead			(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecDigestTransformRead	(xmlSecBinTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
-int  	xmlSecDigestTransformWrite			(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecDigestTransformWrite	(xmlSecBinTransformPtr transform, 
                                         		 const unsigned char *buf, 
 							 size_t size);
-int  	xmlSecDigestTransformFlush			(xmlSecBinTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecDigestTransformFlush	(xmlSecBinTransformPtr transform);
 
 
 

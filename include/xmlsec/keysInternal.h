@@ -78,15 +78,15 @@ void		xmlSecKeysInit				(void);
 #define xmlSecKeyCheckTransform(key, tr) \
  	(xmlSecKeyIsValid(( key )) && \
 	((((const xmlSecKeyId) (( key )->id->transformId))) == ( tr )))
-xmlSecKeyPtr	xmlSecKeyReadXml			(xmlSecKeyId id,
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadXml	(xmlSecKeyId id,
 							 xmlNodePtr node);
-int		xmlSecKeyWriteXml			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int		xmlSecKeyWriteXml	(xmlSecKeyPtr key,
 							 xmlSecKeyType type,
 							 xmlNodePtr node); 							
-xmlSecKeyPtr	xmlSecKeyReadBin			(xmlSecKeyId id,
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadBin	(xmlSecKeyId id,
 							 const unsigned char *buf,
 							 size_t size);
-int		xmlSecKeyWriteBin			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int		xmlSecKeyWriteBin	(xmlSecKeyPtr key,
 							 xmlSecKeyType type,
 							 unsigned char **buf,
 							 size_t *size);

@@ -280,7 +280,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 	return(-1);
     }
     
-    memset(&keysMngr, 0, sizeof(keysMngr));
+    memcpy(&keysMngr, mngr, sizeof(keysMngr));
     keysMngr.allowedOrigins = xmlSecKeyOriginAll;
     cur = xmlSecGetNextElementNode(root->children);
     while(xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs)) {  

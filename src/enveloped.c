@@ -171,6 +171,7 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
  * MUST produce output in exactly the same manner as the XPath transform 
  * parameterized by the XPath expression above.
  */
+#ifdef XMLSEC_NO_OPT_ENVELOPED
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
@@ -263,4 +264,115 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     xmlXPathFreeObject(xpath);     
     return(0);
 }
+#else /* XMLSEC_NO_OPT_ENVELOPED */
+
+static xmlNodeSetPtr	xmlSecEnvelopedRemoveTree	(xmlNodeSetPtr nodes, 
+							 xmlNodePtr cur);
+static int
+xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
+			     xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
+    int allocated = 0;
+    xmlSecXmlTransformPtr xmlTransform;
+    xmlNodePtr signature;
+    
+    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
+       (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: transform is invalid or something else is null\n",
+	    func);	
+#endif 	    
+	return(-1);
+    }    
+    xmlTransform = (xmlSecXmlTransformPtr)transform;
+
+    if(((*doc) != ctxDoc) || (xmlTransform->here == NULL) || 
+	(xmlTransform->here->doc != (*doc))) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: enveloped transform works only on the same document\n",
+	    func);	
+#endif
+	return(-1);
+    }
+
+    signature = xmlSecFindParent(xmlTransform->here, BAD_CAST "Signature", xmlSecDSigNs);
+    if(signature == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: \"Signature\" node is not found\n",
+	    func);	
+#endif
+	return(-1);
+    }
+    
+    if((*nodes) == NULL) {
+	xmlNodeSetPtr tmp;
+	xmlNodePtr cur;
+	
+	for(cur = (*doc)->children; cur != NULL; cur = cur->next) {
+	    tmp = xmlSecGetChildNodeSet(cur, (*nodes), 1);
+	    if(tmp == NULL) {
+#ifdef XMLSEC_DEBUG
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: failed to create nodes set\n",
+	    	    func);	
+#endif
+		if((*nodes) != NULL) {
+		    xmlXPathFreeNodeSet(*nodes); 
+		}
+		return(-1);
+	    }
+	    (*nodes) = tmp;
+	}
+	allocated = 1;
+    }
+
+    if(xmlSecEnvelopedRemoveTree((*nodes), signature) == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: operation failed\n",
+	    func);	
+#endif
+	if(allocated) {
+	    xmlXPathFreeNodeSet(*nodes);  
+	}
+	return(-1);
+	
+    }
+    return(0);
+}
+
+static xmlNodeSetPtr
+xmlSecEnvelopedRemoveTree(xmlNodeSetPtr nodes, xmlNodePtr cur) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEnvelopedRemoveTree";
+    
+    if((nodes == NULL) || (cur == NULL)) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: nodes or cur is null\n",
+	    func);	
+#endif 	    
+	return(NULL);
+    }
+    
+    xmlXPathNodeSetDel(nodes, cur);
+    if(cur->type == XML_ELEMENT_NODE) {	
+	for(cur = cur->children; cur != NULL; cur = cur->next) {
+	    if(xmlSecEnvelopedRemoveTree(nodes, cur) == NULL) {
+#ifdef XMLSEC_DEBUG
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: children failed\n",
+		    func);	
+#endif 	    
+		return(NULL);
+	    }
+	}
+    }
+    return(nodes);
+}
+
+#endif /* XMLSEC_NO_OPT_ENVELOPED */
+
 

@@ -10,8 +10,8 @@ keysfile=$topfolder/keys.xml
 
 if [ -n "$DEBUG_MEMORY" ] ; then 
     export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16"
-    export RETRY=1
-    export EXTRA_PARAMS="--retry $RETRY"
+    export REPEAT=1
+    export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 
 printRes() {

@@ -14,6 +14,7 @@ libxmlsec_la_SOURCES =\
 xmlsec.c \
 xmltree.c \
 bn.c \
+debug.c \
 transforms.c \
 keys.c \
 keyinfo.c \
@@ -38,6 +39,7 @@ xmldsig.c \
 des.c \
 aes.c \
 xmlenc.c \
+xpathalt.c \
 $(NULL)
 
 

@@ -49,6 +49,7 @@ typedef struct _xmlSecDSigCtx {
 						  * just before digesting 
 						  * (ignored if processManifest is 0)
 						  */
+    int				fakeSignatures;  /* for performance testing only! */
 } xmlSecDSigCtx;
 
 /**
@@ -95,40 +96,40 @@ typedef struct _xmlSecReferenceResult {
 /**
  * DSig context methods
  */
-xmlSecDSigCtxPtr	xmlSecDSigCtxCreate			(xmlSecKeysMngrPtr keysMngr);
-void 			xmlSecDSigCtxDestroy			(xmlSecDSigCtxPtr ctx);
+XMLSEC_EXPORT xmlSecDSigCtxPtr	xmlSecDSigCtxCreate		(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void 		xmlSecDSigCtxDestroy		(xmlSecDSigCtxPtr ctx);
 
 /**
  * Creating DSig template
  */
-xmlNodePtr		xmlSecSignatureCreate			(const xmlChar *id);
-void			xmlSecSignatureDestroy			(xmlNodePtr signNode);
-xmlNodePtr		xmlSecSignatureAddSignedInfo		(xmlNodePtr signNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignatureCreate		(const xmlChar *id);
+XMLSEC_EXPORT void		xmlSecSignatureDestroy		(xmlNodePtr signNode);
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignatureAddSignedInfo	(xmlNodePtr signNode,
 								 const xmlChar *id);
-xmlNodePtr		xmlSecSignatureAddKeyInfo		(xmlNodePtr signNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignatureAddKeyInfo	(xmlNodePtr signNode,
 								const xmlChar *id);
-xmlNodePtr		xmlSecSignatureAddObject		(xmlNodePtr signNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignatureAddObject	(xmlNodePtr signNode,
 								 const xmlChar *id,
 								 const xmlChar *mimeType,
 								 const xmlChar *encoding);
-xmlNodePtr		xmlSecSignedInfoAddC14NMethod		(xmlNodePtr signedInfoNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignedInfoAddC14NMethod	(xmlNodePtr signedInfoNode,
 								 xmlSecTransformId encMethod);
-xmlNodePtr		xmlSecSignedInfoAddSignMethod		(xmlNodePtr signedInfoNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignedInfoAddSignMethod	(xmlNodePtr signedInfoNode,
 								 xmlSecTransformId encMethod);
-xmlNodePtr		xmlSecSignedInfoAddReference		(xmlNodePtr signedInfoNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecSignedInfoAddReference	(xmlNodePtr signedInfoNode,
 								 const xmlChar *id, 
 								 const xmlChar *uri,
 								 const xmlChar *type);
-xmlNodePtr		xmlSecReferenceAddDigestMethod		(xmlNodePtr refNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecReferenceAddDigestMethod	(xmlNodePtr refNode,
 								 xmlSecTransformId digestMethod);
-xmlNodePtr		xmlSecReferenceAddTransform		(xmlNodePtr refNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecReferenceAddTransform	(xmlNodePtr refNode,
 								 xmlSecTransformId transform);
-xmlNodePtr		xmlSecObjectAddSignProperties		(xmlNodePtr objectNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecObjectAddSignProperties	(xmlNodePtr objectNode,
 								 const xmlChar *id,
 								 const xmlChar *target);							 							 
-xmlNodePtr		xmlSecObjectAddManifest			(xmlNodePtr objectNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecObjectAddManifest		(xmlNodePtr objectNode,
 								 const xmlChar *id);
-xmlNodePtr		xmlSecManifestAddReference		(xmlNodePtr manifestNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecManifestAddReference	(xmlNodePtr manifestNode,
 								 const xmlChar *id, 
 								 const xmlChar *uri,
 								 const xmlChar *type);
@@ -136,12 +137,12 @@ xmlNodePtr		xmlSecManifestAddReference		(xmlNodePtr manifestNode,
 /**
  * DSig generation/validation
  */
-int			xmlSecDSigValidate			(xmlSecDSigCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecDSigValidate		(xmlSecDSigCtxPtr ctx,
 								 void *context,
 								 xmlSecKeyPtr key,
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
-int			xmlSecDSigGenerate			(xmlSecDSigCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecDSigGenerate		(xmlSecDSigCtxPtr ctx,
 								 void *context,
 								 xmlSecKeyPtr key,								 
 								 xmlNodePtr signNode,
@@ -149,14 +150,13 @@ int			xmlSecDSigGenerate			(xmlSecDSigCtxPtr ctx,
 /**
  * DSig results methods
  */
-xmlSecDSigResultPtr	xmlSecDSigResultCreate			(const xmlSecDSigCtxPtr ctx,
+XMLSEC_EXPORT xmlSecDSigResultPtr xmlSecDSigResultCreate	(xmlSecDSigCtxPtr ctx,
 								 void *context,
 								 xmlNodePtr signNode,
 								 int sign);
-void			xmlSecDSigResultDestroy			(xmlSecDSigResultPtr result);
-void			xmlSecDSigResultDebugDump		(xmlSecDSigResultPtr result,
+XMLSEC_EXPORT void		xmlSecDSigResultDestroy		(xmlSecDSigResultPtr result);
+XMLSEC_EXPORT void		xmlSecDSigResultDebugDump	(xmlSecDSigResultPtr result,
 								 FILE *output);
-
 
 #ifdef __cplusplus
 }

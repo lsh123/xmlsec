@@ -28,26 +28,26 @@ extern "C" {
  * Base64 Context
  */
 typedef struct _xmlSecBase64Ctx *xmlSecBase64CtxPtr;
-xmlSecBase64CtxPtr	xmlSecBase64CtxCreate		(int encode,
-							 int columns);
-void			xmlSecBase64CtxDestroy		(xmlSecBase64CtxPtr ctx);
-int 			xmlSecBase64CtxInit		(xmlSecBase64CtxPtr ctx);
-int 			xmlSecBase64CtxUpdate		(xmlSecBase64CtxPtr ctx,
+XMLSEC_EXPORT xmlSecBase64CtxPtr xmlSecBase64CtxCreate	(int encode,
+							int columns);
+XMLSEC_EXPORT void		xmlSecBase64CtxDestroy	(xmlSecBase64CtxPtr ctx);
+XMLSEC_EXPORT int 		xmlSecBase64CtxInit	(xmlSecBase64CtxPtr ctx);
+XMLSEC_EXPORT int 		xmlSecBase64CtxUpdate	(xmlSecBase64CtxPtr ctx,
 							 const unsigned char *in, 
 						         size_t inLen, 
 							 unsigned char *out,
 							 size_t outLen);
-int			xmlSecBase64CtxFinal		(xmlSecBase64CtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecBase64CtxFinal	(xmlSecBase64CtxPtr ctx,
 							 unsigned char *out,
 							 size_t outLen);
 
 /**
  * Standalone routine to do base64 encode/decode "at once"
  */
-xmlChar*		xmlSecBase64Encode		(const unsigned char *buf,
+XMLSEC_EXPORT xmlChar*		xmlSecBase64Encode	(const unsigned char *buf,
 							 size_t len,
 							 int columns);
-int			xmlSecBase64Decode		(const xmlChar* str,
+XMLSEC_EXPORT int		xmlSecBase64Decode	(const xmlChar* str,
 							 unsigned char *buf,
 							 size_t len);
 

@@ -31,6 +31,7 @@
 #include <xmlsec/digests.h>
 #include <xmlsec/buffered.h>
 #include <xmlsec/base64.h>
+#include <xmlsec/debug.h>
 
 
 /**
@@ -183,7 +184,7 @@ xmlSecTransformId xmlSecEncRsaOaep = (xmlSecTransformId)&xmlSecEncRsaOaepId;
 
 
 
-#define xmlSecRsaKey( k ) 			((RSA*)(( k )->keyData))
+#define xmlSecGetRsaKey( k ) 			((RSA*)(( k )->keyData))
 
 /**
  * RSA-SHA1 transform
@@ -433,7 +434,7 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     }    
     digest = (xmlSecDigestTransformPtr)transform;
 
-    if(xmlSecRsaKey(key) == NULL) {
+    if(xmlSecGetRsaKey(key) == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: key rsa data is null\n",
@@ -442,7 +443,7 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	return(-1);
     }
 
-    rsa = RSA_new();
+    rsa = xmlSecRsaDup(xmlSecGetRsaKey(key));
     if(rsa == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -450,16 +451,6 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	    func);	
 #endif 	    
 	return(-1);
-    }
-
-    if(xmlSecRsaKey(key)->n != NULL) {
-	rsa->n = BN_dup(xmlSecRsaKey(key)->n);
-    }
-    if(xmlSecRsaKey(key)->e != NULL) {
-	rsa->e = BN_dup(xmlSecRsaKey(key)->e);
-    }
-    if(xmlSecRsaKey(key)->d != NULL) {
-	rsa->d = BN_dup(xmlSecRsaKey(key)->d);
     }
 
     digestBuf = xmlMalloc(sizeof(unsigned char) * RSA_size(rsa));
@@ -504,7 +495,11 @@ RSA* xmlSecRsaDup(RSA *rsa) {
 	return(NULL);
     }
 
-    /* todo: increment reference counter nstead of coping */
+    /* increment reference counter instead of coping if possible */
+#ifdef XMLSEC_OPENSSL097
+    RSA_up_ref(rsa);
+    newRsa =  rsa;
+#else /* XMLSEC_OPENSSL097 */     
     
     newRsa = RSA_new();
     if(newRsa == NULL) {
@@ -525,6 +520,7 @@ RSA* xmlSecRsaDup(RSA *rsa) {
     if(rsa->d != NULL) {
 	newRsa->d = BN_dup(rsa->d);
     }
+#endif /* XMLSEC_OPENSSL097 */     
     return(newRsa);
 }
  
@@ -580,8 +576,8 @@ xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
 	return;
     }
     
-    if(xmlSecRsaKey(key) != NULL) {
-	RSA_free(xmlSecRsaKey(key));
+    if(xmlSecGetRsaKey(key) != NULL) {
+	RSA_free(xmlSecGetRsaKey(key));
     }    
     memset(key, 0, sizeof(struct _xmlSecKey));
     
@@ -612,8 +608,8 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
 	return(NULL);
     }
     
-    if(xmlSecRsaKey(key) != NULL) {
-	newKey->keyData = xmlSecRsaDup(xmlSecRsaKey(key));
+    if(xmlSecGetRsaKey(key) != NULL) {
+	newKey->keyData = xmlSecRsaDup(xmlSecGetRsaKey(key));
 	if(newKey->keyData == NULL) {
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
@@ -623,7 +619,7 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
-	if(xmlSecRsaKey(newKey)->d != NULL) {
+	if(xmlSecGetRsaKey(newKey)->d != NULL) {
 	    newKey->type = xmlSecKeyTypePrivate;
 	} else {
 	    newKey->type = xmlSecKeyTypePublic;
@@ -673,8 +669,8 @@ xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
 	}
     }
 
-    if(xmlSecRsaKey(key) != NULL) {
-	RSA_free(xmlSecRsaKey(key));
+    if(xmlSecGetRsaKey(key) != NULL) {
+	RSA_free(xmlSecGetRsaKey(key));
     }    
     key->keyData = rsa;
     if(rsa->d != NULL) {
@@ -822,8 +818,8 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	return(-1);
     }
 
-    if(xmlSecRsaKey(key) != NULL) {
-	RSA_free(xmlSecRsaKey(key));
+    if(xmlSecGetRsaKey(key) != NULL) {
+	RSA_free(xmlSecGetRsaKey(key));
     }    
     key->keyData = rsa;
     if(privateKey) {
@@ -867,7 +863,7 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	return(-1);	
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecRsaKey(key)->n, 1);
+    ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->n, 1);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -887,7 +883,7 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	return(-1);	
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecRsaKey(key)->e, 1);
+    ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->e, 1);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -909,7 +905,7 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	    return(-1);	
 	}
-	ret = xmlSecNodeSetBNValue(cur, xmlSecRsaKey(key)->d, 1);
+	ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->d, 1);
 	if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	    xmlGenericError(xmlGenericErrorContext,
@@ -1002,7 +998,7 @@ xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
 
-    if(xmlSecRsaKey(key) == NULL) {
+    if(xmlSecGetRsaKey(key) == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: key rsa data is null\n",
@@ -1011,7 +1007,7 @@ xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	return(-1);
     } 
 
-    rsa = xmlSecRsaDup(xmlSecRsaKey(key)); 
+    rsa = xmlSecRsaDup(xmlSecGetRsaKey(key)); 
     if(rsa == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -1237,7 +1233,7 @@ xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
 
-    if(xmlSecRsaKey(key) == NULL) {
+    if(xmlSecGetRsaKey(key) == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: key rsa data is null\n",
@@ -1246,7 +1242,7 @@ xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	return(-1);
     }
 
-    rsa = xmlSecRsaDup(xmlSecRsaKey(key));
+    rsa = xmlSecRsaDup(xmlSecGetRsaKey(key));
     if(rsa == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,

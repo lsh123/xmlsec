@@ -17,18 +17,36 @@ extern "C" {
 
 #include <xmlsec/version.h>
 
+#ifndef XMLSEC_EXPORT
+#if defined(_MSC_VER)
+#if defined(IN_XMLSEC)
+#define XMLSEC_EXPORT __declspec(dllexport) extern
+#define XMLSEC_EXPORT_VAR extern
+#else /* defined(IN_XMLSEC) */
+#define XMLSEC_EXPORT extern
+#define XMLSEC_EXPORT_VAR __declspec(dllimport) extern
+#endif /* defined(IN_XMLSEC) */
+#else /* defined(_MSC_VER) */
+#define XMLSEC_EXPORT 
+#define XMLSEC_EXPORT_VAR extern
+#endif /* defined(_MSC_VER) */
+#endif /* defined(_MSC_VER) */
+
+
 /* XMLDSig namespace */
-extern const xmlChar xmlSecDSigNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
 
 /* XMLEnc namespace */
-extern const xmlChar xmlSecEncNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 
 /* XMLSec namespace */
-extern const xmlChar xmlSecNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 
+/* XPath2 transform namespace */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2[];
 
-void 		xmlSecInit			(void);
-void 		xmlSecShutdown			(void);
+XMLSEC_EXPORT void	xmlSecInit			(void);
+XMLSEC_EXPORT void	xmlSecShutdown			(void);
 
 
 #define xmlSecIsHex(c) \
@@ -59,9 +77,12 @@ void 		xmlSecShutdown			(void);
 #define ATTRIBUTE_UNUSED
 #endif
 
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_H__ */
+
 

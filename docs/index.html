@@ -88,6 +88,33 @@ MIT  Licence</a>
 )<br>
                                               
       <ul>
+	<li>May 28 2002<br> 
+	New LibXML 2.4.22 is <a href="http://xmlsoft.org/news.html">released</a>
+	and new <a href="download.html">XML Security Library 0.0.6</a> is 
+	released:<br>
+	- Win32 port is added: the idea and most of the configuration scripts
+	code was taken from LibXML2 (written by Igor Zlatkovic). I modified
+	original files so all errors are mine, not Igor's.<br>
+	- Many different performance optimizations (especially for RSA/DSA
+	algorithms and enveloped signatures).<br>
+	- <a href="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter 2</a>
+	and <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0001.html">Alternative 
+	XPath Filter</a> (not compiled by default, use --enable-altxpath configuration
+	switch if you need this transform) support is added. <br>
+	- Custom network protocol handler support is added. It is similar
+	to custom protocol handlers in LibXML2 but applied to binary files.<br>
+	- Separated XML Security Library RPM into xmlsec and xmlsec-devel
+	(suggested by Devin Heitmueller).<br>
+	</li>
+	<br>
+	
+ 	<li>May 14 2002<br>
+	I've checked in new code for plugging in custom input handlers
+	(similar to ones that exist in LibXML2). The downside is that
+	you have to use <a href="ftp://xmlsoft.org/cvs-snapshot.tar.gz">daily 
+	LibXML2 snapshot</a> to compile daily XML Security Library snapshot.
+	</li>
+	<br>
  	<li>April 28 2002<br>
           <a href="download.html">XMLSec 0.0.5</a> released: <br>
         - Big external and internal cleanup. Now the API looks much more consistent
@@ -133,38 +160,6 @@ OpenSSL 0.9.7</a>
      <br>
            </li>
  	  <br>
-              <li>April 6 2002<br>
- The <a href="download.html">RPM packages</a>
-  are now available.<br>
-           <br>
-         </li>
-         <li>April 5 2002<br>
-  Test suite updates and new minor release <a href="download.html">XML Security
-Library 0.0.2a.</a>
-           <br>
-  New <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0017.html">
-  interoperability tests</a>
-   were provided by Merlin Hughes. XML Security Library successfully passed
-           <b>all tests </b>after small test program tweaking and adding
-workaround  for <a href="http://groups.google.com/groups?hl=en&amp;threadm=96uofi%2417gh%241%40FreeBSD.csie.NCTU.edu.tw&amp;rnum=2&amp;prev=/groups%3Fq%3DX509_STORE_add_crl%26hl%3Den%26selm%3D96uofi%252417gh%25241%2540FreeBSD.csie.NCTU.edu.tw%26rnum%3D2">
-  OpenSSL CRL problem.</a>
-  These new tests are included into the distribution and previous Merlin's 
-test suites  are removed. Because of these changes I decided to generate a
-new package that also will include the <a href="xmldsig-verifier.html"> Online
-XML  Digital Signature Verifier</a>
-  code.<br>
-            <br>
-          </li>
-          <li>April 3 2002<br>
-   The <a href="xmldsig-verifier.html">Online XML Digital Signature Verifier</a>
-    is available! You can use this tool to verify your XML Digital Signatures 
- from online Web form or using a simple Perl script. The idea was stolen from
-          <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0006.html">
-   Manoj K. Srivastava.</a>
-          <br>
-            <br>
-           </li>
-       
       </ul>
      
       <p>     <a href="bugs.html">Aleksey Sanin</a>

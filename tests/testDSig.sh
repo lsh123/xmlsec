@@ -10,8 +10,8 @@ keysfile=$topfolder/keys.xml
 
 if [ -n "$DEBUG_MEMORY" ] ; then 
     export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16"
-    export RETRY=10
-    export EXTRA_PARAMS="--retry $RETRY"
+    export REPEAT=10
+    export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 
 printRes() {
@@ -167,6 +167,16 @@ execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5" \
     "--hmackey keys/hmackey.bin" 
 
 execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
+    "--hmackey keys/hmackey.bin" \
+    "--hmackey keys/hmackey.bin" \
+    "--hmackey keys/hmackey.bin" 
+
+execDSigTest "01-geuerp-xfilter2/xpath2filterOmitComments" \
+    "--hmackey keys/hmackey.bin" \
+    "--hmackey keys/hmackey.bin" \
+    "--hmackey keys/hmackey.bin" 
+
+execDSigTest "01-geuerp-xfilter2/xpath2filterWithComments" \
     "--hmackey keys/hmackey.bin" \
     "--hmackey keys/hmackey.bin" \
     "--hmackey keys/hmackey.bin" 

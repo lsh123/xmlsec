@@ -20,13 +20,13 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-BIGNUM*			xmlSecCryptoBinary2BN		(const xmlChar *str,
+XMLSEC_EXPORT BIGNUM*	xmlSecCryptoBinary2BN		(const xmlChar *str,
 							 BIGNUM **a);
-xmlChar*		xmlSecBN2CryptoBinary		(const BIGNUM *a);
+XMLSEC_EXPORT xmlChar*	xmlSecBN2CryptoBinary		(const BIGNUM *a);
 
-BIGNUM*			xmlSecNodeGetBNValue		(const xmlNodePtr cur,
+XMLSEC_EXPORT BIGNUM*	xmlSecNodeGetBNValue		(const xmlNodePtr cur,
 							 BIGNUM **a);
-int			xmlSecNodeSetBNValue		(xmlNodePtr cur, 
+XMLSEC_EXPORT int	xmlSecNodeSetBNValue		(xmlNodePtr cur, 
 							 const BIGNUM *a,
 							 int addLineBreak);
 

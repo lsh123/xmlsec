@@ -21,7 +21,7 @@ typedef const struct _xmlSecKeyId	*xmlSecKeyId;
 typedef struct _xmlSecKey 		*xmlSecKeyPtr; 
 typedef struct _xmlSecKeysMngr  	*xmlSecKeysMngrPtr; 
 
-extern xmlSecKeyId xmlSecAllKeyIds[];
+XMLSEC_EXPORT_VAR xmlSecKeyId xmlSecAllKeyIds[];
 
 /** 
  * Key Types
@@ -86,19 +86,19 @@ struct _xmlSecKey {
 };
 
 
-xmlSecKeyPtr	xmlSecKeyCreate				(xmlSecKeyId id,
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(xmlSecKeyId id,
 							 xmlSecKeyOrigin origin);
-void		xmlSecKeyDestroy			(xmlSecKeyPtr key);
-xmlSecKeyPtr	xmlSecKeyDuplicate			(xmlSecKeyPtr key,
+XMLSEC_EXPORT void		xmlSecKeyDestroy	(xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDuplicate	(xmlSecKeyPtr key,
 							 xmlSecKeyOrigin origin);
-int		xmlSecVerifyKey				(xmlSecKeyPtr key, 
+XMLSEC_EXPORT int		xmlSecVerifyKey		(xmlSecKeyPtr key, 
 							 const xmlChar *name,
 							 xmlSecKeyId id, 
 							 xmlSecKeyType type);
-void		xmlSecKeyDebugDump			(xmlSecKeyPtr key,
+XMLSEC_EXPORT void		xmlSecKeyDebugDump	(xmlSecKeyPtr key,
 							 FILE *output);
 #ifndef XMLSEC_NO_X509
-int		xmlSecKeyReadPemCert			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int		xmlSecKeyReadPemCert	(xmlSecKeyPtr key,
 							 const char *filename);
 #endif /* XMLSEC_NO_X509 */
 
@@ -177,7 +177,7 @@ typedef struct _xmlSecKeysMngr {
 } xmlSecKeysMngr;
 
 
-xmlSecKeyPtr 		xmlSecKeysMngrGetKey		(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 xmlSecKeyId keyId,

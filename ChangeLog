@@ -1,12 +1,20 @@
+Wed 29 May 2002 12:07:35 AM PDT Aleksey Sanin <aleksey@aleksey.com>
+    * merged 0.0.6 release from local CVS
+    * win32 port
+    * xpath filter2
+    * custom network handlers
+    
 Mon 29 Apr 2002 12:07:35 AM PDT Aleksey Sanin <aleksey@aleksey.com>
     * Significant API re-factoring (make it more simple and consistent)
     * added symmetric Key Wrappers support (AES, DES)
     * added RIPEMD-160 support
+    
 Sat 30 Mar 2002 12:55:30 AM PST Aleksey Sanin <aleksey@aleksey.com>
     * Finished x509 supprot
     * Added functions to create signature "on-the-fly"
     * Updated examples and docs
     * Fixed header files installation bug
+    
 Wed 27 Mar 2002 11:20:42 PM PST Aleksey Sanin <aleksey@aleksey.com> 
     * Added x509 verification support and a skeleton for x509 
       x509 based sigantures

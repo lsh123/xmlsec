@@ -9,19 +9,17 @@ INCLUDES =\
 $(OPENSSL_CFLAGS) \
 $(LIBXSLT_CFLAGS) \
 $(LIBXML_CFLAGS) \
-$(NULL)
-
-LDFLAGS = \
--static \
 $(NULL) 
 
-LDADD = \
+
+   
+xmlsec_LIBS = 
+xmlsec_LDFLAGS = -static
+xmlsec_LDADD = \
 $(top_builddir)/src/libxmlsec.la \
 $(OPENSSL_LDADDS) \
 $(LIBXSLT_LIBS) \
 $(LIBXML_LIBS) \
 $(NULL)
-        
-
 
 

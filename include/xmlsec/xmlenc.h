@@ -29,8 +29,8 @@ extern "C" {
 typedef struct _xmlSecEncCtx *xmlSecEncCtxPtr; 
 typedef struct _xmlSecEncResult *xmlSecEncResultPtr; 
 
-extern const xmlChar xmlSecEncTypeElement[]; /* "http://www.w3.org/2001/04/xmlenc#Element"; */
-extern const xmlChar xmlSecEncTypeContent[]; /* "http://www.w3.org/2001/04/xmlenc#Content"; */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeElement[]; /* "http://www.w3.org/2001/04/xmlenc#Element"; */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeContent[]; /* "http://www.w3.org/2001/04/xmlenc#Content"; */
 
 /** 
  * XML Encrypiton context
@@ -66,27 +66,27 @@ typedef struct _xmlSecEncResult {
 /**
  * XML Encrypiton context methods
  */
-xmlSecEncCtxPtr		xmlSecEncCtxCreate		(xmlSecKeysMngrPtr keysMngr);
-void 			xmlSecEncCtxDestroy		(xmlSecEncCtxPtr ctx);
+XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate	(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void 		xmlSecEncCtxDestroy	(xmlSecEncCtxPtr ctx);
 
 
 /**
  * Encryption
  */
-int			xmlSecEncryptMemory		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecEncryptMemory	(xmlSecEncCtxPtr ctx,
 							 void *context,
 							 xmlSecKeyPtr key,
 							 xmlNodePtr encNode,
 							 const unsigned char *buf,
 							 size_t size,
 							 xmlSecEncResultPtr *result);
-int			xmlSecEncryptUri		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecEncryptUri	(xmlSecEncCtxPtr ctx,
 							 void *context,
 							 xmlSecKeyPtr key,
 							 xmlNodePtr encNode,
 							 const char *uri,
 							 xmlSecEncResultPtr *result);
-int			xmlSecEncryptXmlNode		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecEncryptXmlNode	(xmlSecEncCtxPtr ctx,
 							 void *context,
 							 xmlSecKeyPtr key,
 							 xmlNodePtr encNode,
@@ -95,7 +95,7 @@ int			xmlSecEncryptXmlNode		(xmlSecEncCtxPtr ctx,
 /**
  * Decryption
  */
-int			xmlSecDecrypt			(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecDecrypt		(xmlSecEncCtxPtr ctx,
 							 void *context,
 							 xmlSecKeyPtr key,
 							 xmlNodePtr encDataNode,
@@ -103,34 +103,38 @@ int			xmlSecDecrypt			(xmlSecEncCtxPtr ctx,
 /**
  * XML Enc Result
  */		
-xmlSecEncResultPtr	xmlSecEncResultCreate		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT xmlSecEncResultPtr xmlSecEncResultCreate	(xmlSecEncCtxPtr ctx,
 							 void *context,
 							 int encrypt,
 							 xmlNodePtr node);
-void 			xmlSecEncResultDestroy		(xmlSecEncResultPtr result);
-void			xmlSecEncResultDebugDump	(xmlSecEncResultPtr result,
+XMLSEC_EXPORT void 		xmlSecEncResultDestroy	(xmlSecEncResultPtr result);
+XMLSEC_EXPORT void		xmlSecEncResultDebugDump(xmlSecEncResultPtr result,
 							 FILE *output);
 
 /** 
  * Encryption Template
  */
-xmlNodePtr		xmlSecEncDataCreate		(const xmlChar *id,
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataCreate	(const xmlChar *id,
 							 const xmlChar *type,
 							 const xmlChar *mimeType,
 							 const xmlChar *encoding);
-void 			xmlSecEncDataDestroy		(xmlNodePtr encNode);
-xmlNodePtr		xmlSecEncDataAddEncMethod	(xmlNodePtr encNode,
+XMLSEC_EXPORT void 		xmlSecEncDataDestroy	(xmlNodePtr encNode);
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataAddEncMethod(xmlNodePtr encNode,
 							 xmlSecTransformId encMethod);
-xmlNodePtr		xmlSecEncDataAddKeyInfo		(xmlNodePtr encNode);							 
-xmlNodePtr		xmlSecEncDataAddEncProperties	(xmlNodePtr encNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataAddKeyInfo	(xmlNodePtr encNode);							 
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataAddEncProperties	
+							(xmlNodePtr encNode,
 							 const xmlChar *id); 
-xmlNodePtr		xmlSecEncDataAddEncProperty	(xmlNodePtr encNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataAddEncProperty	
+							(xmlNodePtr encNode,
 							 const xmlChar *id,
 							 const xmlChar *target);
-xmlNodePtr		xmlSecEncDataAddCipherValue	(xmlNodePtr encNode);
-xmlNodePtr		xmlSecEncDataAddCipherReference	(xmlNodePtr encNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataAddCipherValue		
+							(xmlNodePtr encNode);
+XMLSEC_EXPORT xmlNodePtr	xmlSecEncDataAddCipherReference	
+							(xmlNodePtr encNode,
 							 const xmlChar *uri);
-xmlNodePtr		xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
+XMLSEC_EXPORT xmlNodePtr	xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
 							 xmlSecTransformId transform);
 
 #ifdef __cplusplus

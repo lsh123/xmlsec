@@ -21,13 +21,13 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-xmlSecKeyPtr	xmlSecKeyInfoNodeRead			(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
 							 xmlSecKeyId keyId,
 							 xmlSecKeyType keyType,
 							 xmlSecKeyUsage keyUsage);
-int 		xmlSecKeyInfoNodeWrite			(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT int 	xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
 							 xmlSecKeyPtr key,
@@ -35,15 +35,17 @@ int 		xmlSecKeyInfoNodeWrite			(xmlNodePtr keyInfoNode,
 
 
 
-xmlNodePtr	xmlSecKeyInfoAddKeyName			(xmlNodePtr keyInfoNode);
-xmlNodePtr	xmlSecKeyInfoAddKeyValue		(xmlNodePtr keyInfoNode);
-xmlNodePtr	xmlSecKeyInfoAddX509Data		(xmlNodePtr keyInfoNode);
-xmlNodePtr	xmlSecKeyInfoAddRetrievalMethod		(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddKeyName	(xmlNodePtr keyInfoNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddKeyValue	(xmlNodePtr keyInfoNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddX509Data	(xmlNodePtr keyInfoNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddRetrievalMethod	
+							(xmlNodePtr keyInfoNode,
 							 const xmlChar *uri,
 							 const xmlChar *type);
-xmlNodePtr	xmlSecRetrievalMethodAddTransform	(xmlNodePtr retrMethod,
+XMLSEC_EXPORT xmlNodePtr xmlSecRetrievalMethodAddTransform	
+							(xmlNodePtr retrMethod,
 							 xmlSecTransformId id);						 							 
-xmlNodePtr	xmlSecKeyInfoAddEncryptedKey		(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
 							 const xmlChar *id,
 							 const xmlChar *type,
 							 const xmlChar *recipient);

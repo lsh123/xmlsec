@@ -12,7 +12,9 @@
 #include <stdlib.h>
 #include <string.h> 
 
+#include <libxml/uri.h>
 #include <libxml/tree.h>
+#include <libxml/xmlIO.h>
 
 #ifdef LIBXML_HTTP_ENABLED
 #include <libxml/nanohttp.h>
@@ -30,13 +32,29 @@
 #include <xmlsec/io.h>
 
 
+
+/*
+ * Input I/O callback sets
+ */
+typedef struct _xmlSecInputCallback {
+    xmlInputMatchCallback matchcallback;
+    xmlInputOpenCallback opencallback;
+    xmlInputReadCallback readcallback;
+    xmlInputCloseCallback closecallback;
+} xmlSecInputCallback, *xmlSecInputCallbackPtr;
+
+#define MAX_INPUT_CALLBACK 15
+
+static xmlSecInputCallback xmlSecInputCallbackTable[MAX_INPUT_CALLBACK];
+static int xmlSecInputCallbackNr = 0;
+static int xmlSecInputCallbackInitialized = 0;
+
+
+
 static xmlSecTransformPtr xmlSecInputUriTransformCreate	(xmlSecTransformId id);
 static void		xmlSecInputUriTransformDestroy	(xmlSecTransformPtr transform);
 static int  		xmlSecInputUriTransformRead	(xmlSecBinTransformPtr transform, 
 							 unsigned char *buf, 
-							 size_t size);
-static int		xmlSecFileRead			(FILE *f,
-							 unsigned char *buf,
 							 size_t size);
 
 static const struct _xmlSecBinTransformId xmlSecInputUriTransformId = {
@@ -61,97 +79,16 @@ static const struct _xmlSecBinTransformId xmlSecInputUriTransformId = {
 };
 xmlSecTransformId xmlSecInputUri = (xmlSecTransformId)&xmlSecInputUriTransformId;
 
-typedef struct _xmlSecInputUriTransform {	
-    /* same as for xmlSecTransform */
-    xmlSecBinTransformId 		id;    
-    xmlSecTransformStatus		status;
-    int					dontDestroy;
-    void				*data;
-    
-    /* xmlSecBinTransform specific */
-    int					encode;
-    int					finished;
-    xmlSecBinTransformPtr		next;
-    xmlSecBinTransformPtr		prev;   
-    void				*binData;
-    
-    /* xmlSecInputUriTransform specific */    
-    xmlSecInputUriTransformReadCallback	readInputUri;
-    xmlSecInputUriTransformCloseCallback closeInputUri;    
-} xmlSecInputUriTransform, *xmlSecInputUriTransformPtr;
-
-
-/** 
- * xmlSecInputUriTransformOpen:
- *
- */
-int
-xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformOpen";
-    xmlSecInputUriTransformPtr t;
-        
-    if(!xmlSecTransformCheckId(transform, xmlSecInputUri) || (uri == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or uri == NULL\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-
-    t = (xmlSecInputUriTransformPtr)transform;
-    /* todo: add an ability to use custom protocol handlers */
-#ifdef LIBXML_HTTP_ENABLED    
-    if(strncmp(uri, "http://", 7) == 0) {
-	t->data = xmlNanoHTTPOpen(uri, NULL);
-	t->readInputUri = (xmlSecInputUriTransformReadCallback)xmlNanoHTTPRead;
-	t->closeInputUri = (xmlSecInputUriTransformCloseCallback)xmlNanoHTTPClose;
-    } else 
-#endif /* LIBXML_HTTP_ENABLED */     
-
-#ifdef LIBXML_FTP_ENABLED        
-    if(strncmp(uri, "ftp://", 6) == 0) { 
-	t->data = xmlNanoFTPOpen(uri);
-	t->readInputUri = (xmlSecInputUriTransformReadCallback)xmlNanoFTPRead;
-	t->closeInputUri = (xmlSecInputUriTransformCloseCallback)xmlNanoFTPClose;
-    } else
-#endif /* LIBXML_FTP_ENABLED */     
-
-    {
-	FILE *fd;
-	const char *path = NULL;
-	
-	/* try to open local file */
-	if(strncmp(uri, "file://localhost", 16) == 0) {
-	    path = &uri[16];
-	} else if(strncmp(uri, "file:///", 8) == 0) {
-#if defined (_WIN32) && !defined(__CYGWIN__)
-	    path = &uri[8];
-#else
-	    path = &uri[7];
-#endif
-	} else {
-	    path = uri;
-	}
-#if defined(WIN32) || defined (__CYGWIN__)
-	fd = fopen(path, "rb");
-#else
-	fd = fopen(path, "r");
-#endif /* WIN32 */
-	t->data = fd;
-	t->readInputUri = (xmlSecInputUriTransformReadCallback)xmlSecFileRead;
-	t->closeInputUri = (xmlSecInputUriTransformCloseCallback)fclose;
-    }
-
-    if(t->data == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to open file \"%s\"\n", 
-	    func, uri);
-	return(-1);
-    }
-    
-    return(0);
-}
+#define xmlSecInputUriTransformReadClbk( t ) \
+    ( ( (xmlSecTransformCheckId(t, xmlSecInputUri)) && \
+	( (t)->binData != NULL ) ) ? \
+	((xmlSecInputCallbackPtr)(t)->binData)->readcallback : \
+	NULL )
+#define xmlSecInputUriTransformCloseClbk( t ) \
+    ( ( (xmlSecTransformCheckId(t, xmlSecInputUri)) && \
+	( (t)->binData != NULL ) ) ? \
+	((xmlSecInputCallbackPtr)(t)->binData)->closecallback : \
+	NULL )
 
 /** 
  * xmlSecInputUriTransformCreate:
@@ -162,7 +99,7 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
 static xmlSecTransformPtr 
 xmlSecInputUriTransformCreate(xmlSecTransformId id) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformCreate";
-    xmlSecInputUriTransformPtr ptr;
+    xmlSecBinTransformPtr ptr;
 
     if((id == NULL) || (id != xmlSecInputUri)){
 #ifdef XMLSEC_DEBUG
@@ -174,18 +111,18 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
     }
     
     /*
-     * Allocate a new xmlSecInputUriTransform and fill the fields.
+     * Allocate a new xmlSecBinTransform and fill the fields.
      */
-    ptr = (xmlSecInputUriTransformPtr) xmlMalloc(sizeof(xmlSecInputUriTransform));
+    ptr = (xmlSecBinTransformPtr) xmlMalloc(sizeof(xmlSecBinTransform));
     if(ptr == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecInputUriTransform malloc failed\n",
+	    "%s: xmlSecBinTransform malloc failed\n",
 	    func);	
 #endif 	    
 	return(NULL);
     }
-    memset(ptr, 0, sizeof(xmlSecInputUriTransform));
+    memset(ptr, 0, sizeof(xmlSecBinTransform));
     
     ptr->id = (xmlSecBinTransformId)id;
     return((xmlSecTransformPtr)ptr);
@@ -200,7 +137,7 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
 static void
 xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformDestroy";
-    xmlSecInputUriTransformPtr t;
+    xmlSecBinTransformPtr t;
     
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
 #ifdef XMLSEC_DEBUG
@@ -211,12 +148,82 @@ xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
 	return;
     }
     
-    t = (xmlSecInputUriTransformPtr)transform;
-    if(t->closeInputUri) {
-	t->closeInputUri(t->data);
+    t = (xmlSecBinTransformPtr)transform;
+    if((t->data != NULL) && (xmlSecInputUriTransformCloseClbk(t) != NULL)) {
+	xmlSecInputUriTransformCloseClbk(t)(t->data);
     }
-    memset(t, 0, sizeof(xmlSecInputUriTransform));
+    memset(t, 0, sizeof(xmlSecBinTransform));
     xmlFree(t);
+}
+
+/** 
+ * xmlSecInputUriTransformOpen:
+ *
+ */
+int
+xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformOpen";
+    xmlSecBinTransformPtr t;
+    int i;
+    char *unescaped;
+        
+    if(!xmlSecTransformCheckId(transform, xmlSecInputUri) || (uri == NULL)) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: transform is invalid or uri == NULL\n",
+	    func);	
+#endif 	    
+	return(-1);
+    }
+
+    t = (xmlSecBinTransformPtr)transform;
+    /* todo: add an ability to use custom protocol handlers */
+
+    /*
+     * Try to find one of the input accept method accepting that scheme
+     * Go in reverse to give precedence to user defined handlers.
+     * try with an unescaped version of the uri
+     */
+    unescaped = xmlURIUnescapeString(uri, 0, NULL);
+    if (unescaped != NULL) {
+	for (i = xmlSecInputCallbackNr - 1;i >= 0;i--) {
+	    if ((xmlSecInputCallbackTable[i].matchcallback != NULL) &&
+		(xmlSecInputCallbackTable[i].matchcallback(unescaped) != 0)) {
+		t->data = xmlSecInputCallbackTable[i].opencallback(unescaped);
+		if (t->data != NULL) {
+		    t->binData = &(xmlSecInputCallbackTable[i]);
+		    break;
+		}
+	    }
+	}
+	xmlFree(unescaped);
+    }
+
+    /*
+     * If this failed try with a non-escaped uri this may be a strange
+     * filename
+     */
+    if (t->data == NULL) {
+	for (i = xmlSecInputCallbackNr - 1;i >= 0;i--) {
+	    if ((xmlSecInputCallbackTable[i].matchcallback != NULL) &&
+		(xmlSecInputCallbackTable[i].matchcallback(uri) != 0)) {
+		t->data = xmlSecInputCallbackTable[i].opencallback(uri);
+		if (t->data != NULL) {
+		    t->binData = &(xmlSecInputCallbackTable[i]);
+		    break;
+		}
+	    }
+	}
+    }
+
+    if(t->data == NULL) {
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: unable to open file \"%s\"\n", 
+	    func, uri);
+	return(-1);
+    }
+    
+    return(0);
 }
 
 /** 
@@ -231,7 +238,8 @@ static int
 xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform, 
 			 unsigned char *buf, size_t size) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformRead";
-    xmlSecInputUriTransformPtr t;
+    xmlSecBinTransformPtr t;
+    int ret;
     
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
 #ifdef XMLSEC_DEBUG
@@ -242,11 +250,9 @@ xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform,
 	return(-1);
     }
     
-    t = (xmlSecInputUriTransformPtr)transform;
-    if(t->readInputUri) {
-	int ret;
-
-	ret = t->readInputUri(t->data, buf, size);
+    t = (xmlSecBinTransformPtr)transform;
+    if((t->data != NULL) && (xmlSecInputUriTransformReadClbk(t) != NULL)) {
+	ret = xmlSecInputUriTransformReadClbk(t)(t->data, (char*)buf, (int)size);
 	if(ret < 0) {
 #ifdef XMLSEC_DEBUG
 	    xmlGenericError(xmlGenericErrorContext,
@@ -260,38 +266,15 @@ xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform,
     return(0);
 }
 
-/** 
- * xmlSecFileRead:
- * @f:
- * @buf:
- * @size:
- *
- * Reads data from local file
- */
-static int
-xmlSecFileRead(FILE *f,  unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFileRead";
-
-    if(f == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: file descriptor is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-    return (fread(buf, sizeof(unsigned char), size, f));
-}
-
-
 void
-xmlSecIOInit(void) {
+xmlSecIOInit(void) {    
 #ifdef LIBXML_HTTP_ENABLED
     xmlNanoHTTPInit();
 #endif /* LIBXML_HTTP_ENABLED */
 #ifdef LIBXML_FTP_ENABLED       
     xmlNanoFTPInit();
 #endif /* LIBXML_FTP_ENABLED */ 
+    xmlSecRegisterDefaultInputCallbacks();
 }
 
 void
@@ -302,12 +285,84 @@ xmlSecIOShutdown(void) {
 #ifdef LIBXML_FTP_ENABLED       
     xmlNanoFTPCleanup();
 #endif /* LIBXML_FTP_ENABLED */ 
+    xmlSecCleanupInputCallbacks();
 }
 
 
 
 
+/**
+ * xmlSecCleanupInputCallbacks:
+ *
+ * clears the entire input callback table. this includes the
+ * compiled-in I/O. 
+ */
+void
+xmlSecCleanupInputCallbacks(void)
+{
+    int i;
 
+    if (!xmlSecInputCallbackInitialized)
+        return;
+
+    for (i = xmlSecInputCallbackNr - 1; i >= 0; i--) {
+        xmlSecInputCallbackTable[i].matchcallback = NULL;
+        xmlSecInputCallbackTable[i].opencallback = NULL;
+        xmlSecInputCallbackTable[i].readcallback = NULL;
+        xmlSecInputCallbackTable[i].closecallback = NULL;
+    }
+
+    xmlSecInputCallbackNr = 0;
+}
+
+/**
+ * xmlSecRegisterDefaultInputCallbacks:
+ *
+ * Registers the default compiled-in I/O handlers.
+ */
+void
+xmlSecRegisterDefaultInputCallbacks(void) {
+    if (xmlSecInputCallbackInitialized)
+	return;
+
+    xmlSecRegisterInputCallbacks(xmlFileMatch, xmlFileOpen,
+	                      xmlFileRead, xmlFileClose);
+#ifdef LIBXML_HTTP_ENABLED
+    xmlSecRegisterInputCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
+	                      xmlIOHTTPRead, xmlIOHTTPClose);
+#endif /* LIBXML_HTTP_ENABLED */
+
+#ifdef LIBXML_FTP_ENABLED
+    xmlSecRegisterInputCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
+	                      xmlIOFTPRead, xmlIOFTPClose);
+#endif /* LIBXML_FTP_ENABLED */
+    xmlSecInputCallbackInitialized = 1;
+}
+
+/**
+ * xmlSecRegisterInputCallbacks:
+ * @matchFunc:  the xmlInputMatchCallback
+ * @openFunc:  the xmlInputOpenCallback
+ * @readFunc:  the xmlInputReadCallback
+ * @closeFunc:  the xmlInputCloseCallback
+ *
+ * Register a new set of I/O callback for handling parser input.
+ *
+ * Returns the registered handler number or -1 in case of error
+ */
+int
+xmlSecRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
+	xmlInputOpenCallback openFunc, xmlInputReadCallback readFunc,
+	xmlInputCloseCallback closeFunc) {
+    if (xmlSecInputCallbackNr >= MAX_INPUT_CALLBACK) {
+	return(-1);
+    }
+    xmlSecInputCallbackTable[xmlSecInputCallbackNr].matchcallback = matchFunc;
+    xmlSecInputCallbackTable[xmlSecInputCallbackNr].opencallback = openFunc;
+    xmlSecInputCallbackTable[xmlSecInputCallbackNr].readcallback = readFunc;
+    xmlSecInputCallbackTable[xmlSecInputCallbackNr].closecallback = closeFunc;
+    return(xmlSecInputCallbackNr++);
+}
 
 
 

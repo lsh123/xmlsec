@@ -73,17 +73,17 @@ typedef struct _xmlSecBufferedTransform {
 /**
  * BinTransform methods to be used in the Id structure
  */
-int  	xmlSecBufferedTransformRead			(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecBufferedTransformRead	(xmlSecBinTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
-int  	xmlSecBufferedTransformWrite			(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecBufferedTransformWrite	(xmlSecBinTransformPtr transform, 
                                         		 const unsigned char *buf, 
 							 size_t size);
-int  	xmlSecBufferedTransformFlush			(xmlSecBinTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecBufferedTransformFlush	(xmlSecBinTransformPtr transform);
 
 
-void 	xmlSecBufferedDestroy				(xmlSecBufferedTransformPtr buffered);
-int 	xmlSecBufferedProcess				(xmlSecBinTransformPtr transform,
+XMLSEC_EXPORT void 	xmlSecBufferedDestroy		(xmlSecBufferedTransformPtr buffered);
+XMLSEC_EXPORT int 	xmlSecBufferedProcess		(xmlSecBinTransformPtr transform,
 							 xmlBufferPtr buffer);
 
 #ifdef __cplusplus

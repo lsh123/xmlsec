@@ -24,27 +24,28 @@ extern "C" {
 /**
  * Simple Keys Manager:
  */
-xmlSecKeysMngrPtr	xmlSecSimpleKeysMngrCreate	(void);
-void			xmlSecSimpleKeysMngrDestroy	(xmlSecKeysMngrPtr mngr);
+XMLSEC_EXPORT xmlSecKeysMngrPtr	xmlSecSimpleKeysMngrCreate	
+							(void);
+XMLSEC_EXPORT void	xmlSecSimpleKeysMngrDestroy 	(xmlSecKeysMngrPtr mngr);
 
 /**
  * Keys management
  */
-xmlSecKeyPtr 		xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 const xmlChar *name,
 							 xmlSecKeyId id, 
 							 xmlSecKeyType keyType,
 							 xmlSecKeyUsage keyUsage);
-int			xmlSecSimpleKeysMngrAddKey	(xmlSecKeysMngrPtr mngr, 
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddKey	(xmlSecKeysMngrPtr mngr, 
 							 xmlSecKeyPtr key);
-int			xmlSecSimpleKeysMngrLoad	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoad 	(xmlSecKeysMngrPtr mngr,
 							 const char *uri,
 							 int strict); 
-int			xmlSecSimpleKeysMngrSave	(const xmlSecKeysMngrPtr mngr, 
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrSave	(const xmlSecKeysMngrPtr mngr, 
 							 const char *filename,
 							 xmlSecKeyType type);
-xmlSecKeyPtr		xmlSecSimpleKeysMngrLoadPemKey	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
 							 const char *keyfile,
 							 const char *keyPwd,
 							 pem_password_cb *keyPwdCallback,
@@ -54,20 +55,21 @@ xmlSecKeyPtr		xmlSecSimpleKeysMngrLoadPemKey	(xmlSecKeysMngrPtr mngr,
  * X509 certificates management
  */
 #ifndef XMLSEC_NO_X509						 
-xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find	
+							(xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 xmlChar *subjectName,
 							 xmlChar *issuerName,
 							 xmlChar *issuerSerial,
 							 xmlChar *ski,
 							 xmlSecX509DataPtr cert);
-int			xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrPtr mngr,
 							 void *context,
     							 xmlSecX509DataPtr cert);  
-int			xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
 							 const char *filename,
 							 int trusted);
-int			xmlSecSimpleKeysMngrAddCertsDir	(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddCertsDir	(xmlSecKeysMngrPtr mngr,
 							 const char *path);
 #endif /* XMLSEC_NO_X509 */
 

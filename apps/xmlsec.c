@@ -18,7 +18,13 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
+#ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
+#include <libxslt/extensions.h> 
+#include <libxslt/xsltInternals.h>
+#include <libxslt/xsltutils.h>
+#include <libexslt/exslt.h>
+#endif /* XMLSEC_NO_XSLT */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -27,6 +33,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
+#include <xmlsec/debug.h>
 
 
 static const char copyright[] =
@@ -43,17 +50,17 @@ static const char usage[] =
 
 static const char helpCommands[] =     
     "XMLSec commands are:\n"
-    "  help                   display this help information and exit\n"
-    "  help-<command>         display help information for <command> and exit\n"
-    "  version                print version information and exit\n"
-    "  keys                   keys XML file manipulation\n"
+    "  help                  display this help information and exit\n"
+    "  help-<command>        display help information for <command> and exit\n"
+    "  version               print version information and exit\n"
+    "  keys                  keys XML file manipulation\n"
 #ifndef XMLSEC_NO_XMLDSIG
-    "  sign                   sign data and output XML document\n"
-    "  verify                 verify signed document\n"
+    "  sign                  sign data and output XML document\n"
+    "  verify                verify signed document\n"
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
-    "  encrypt                encrypt data and output XML document\n"
-    "  decrypt                decrypt data from XML document\n"
+    "  encrypt               encrypt data and output XML document\n"
+    "  decrypt               decrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
     "\n";
 
@@ -67,24 +74,24 @@ static const char helpKeys[] =
     "Keys XML file manipulation. The result keys set is written to the file.\n"
     "\n"
     "Keys generation options:\n"
-    "  --gen-hmac <name>    generate new 24 bytes HMAC key and set the key name\n"
-    "  --gen-rsa <name>     generate new RSA key and set the key name\n"
-    "  --gen-dsa <name>     generate new DSA key and set the key name\n"
-    "  --gen-des3 <name>    generate new DES key and set the key name\n"
-    "  --gen-aes128 <name>  generate new AES 128 key and set the key name\n"
-    "  --gen-aes192 <name>  generate new AES 192 key and set the key name\n"
-    "  --gen-aes256 <name>  generate new AES 256 key and set the key name\n"
+    "  --gen-hmac <name>     generate new 24 bytes HMAC key and set the key name\n"
+    "  --gen-rsa <name>      generate new RSA key and set the key name\n"
+    "  --gen-dsa <name>      generate new DSA key and set the key name\n"
+    "  --gen-des3 <name>     generate new DES key and set the key name\n"
+    "  --gen-aes128 <name>   generate new AES 128 key and set the key name\n"
+    "  --gen-aes192 <name>   generate new AES 192 key and set the key name\n"
+    "  --gen-aes256 <name>   generate new AES 256 key and set the key name\n"
     "\n";
 
 static const char helpKeySelect[] = 
     "Key selection options:\n"
-    "  --session-key-hmac   generate and use session 24 bytes HMAC key\n"
-    "  --session-key-rsa    generate and use session RSA key\n"
-    "  --session-key-dsa    generate and use session DSA key\n"
-    "  --session-key-des3   generate and use session DES key\n"
-    "  --session-key-aes128 generate and use session AES 128 key\n"
-    "  --session-key-aes192 generate and use session AES 192 key\n"
-    "  --session-key-aes256 generate and use session AES 256 key\n"
+    "  --session-key-hmac    generate and use session 24 bytes HMAC key\n"
+    "  --session-key-rsa     generate and use session RSA key\n"
+    "  --session-key-dsa     generate and use session DSA key\n"
+    "  --session-key-des3    generate and use session DES key\n"
+    "  --session-key-aes128  generate and use session AES 128 key\n"
+    "  --session-key-aes192  generate and use session AES 192 key\n"
+    "  --session-key-aes256  generate and use session AES 256 key\n"
     "\n";
 
 
@@ -94,7 +101,8 @@ static const char helpSign[] =
     "\n"
 #ifndef XMLSEC_NO_XMLDSIG    
     "Signature options:\n"
-    "  --ignore-manifests   do not process <Manifest> elements\n"
+    "  --ignore-manifests    do not process <Manifest> elements\n"
+    "  --fake-signatures     disable actual signature calc for perf tests\n"
 #else  /* XMLSEC_NO_XMLDSIG */
     "XML Digital Signatures support was disabled during compilation\n"
 #endif /* XMLSEC_NO_XMLDSIG */    
@@ -114,6 +122,7 @@ static const char helpVerify[] =
     "  --print-signature     store and print the pre-signated\n"
     "                        data (<SignedInfo> element)\n"
     "  --print-all           combination of the all \"--print-*\" options\n"
+    "  --fake-signatures     disable actual signature calc for perf tests\n"
 #else  /* XMLSEC_NO_XMLDSIG */
     "XML Digital Signatures support was disabled during compilation\n"
 #endif /* XMLSEC_NO_XMLDSIG */    
@@ -183,7 +192,7 @@ static const char helpX509[] =
     
 static const char helpMisc[] = 
     "Misc. options:\n"
-    "  --retry <number>      retry the operation <number> times\n"
+    "  --repeat <number>     repeat the operation <number> times\n"
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -270,7 +279,7 @@ xmlSecKeyPtr sessionKey = NULL;
 char *nodeId = NULL;
 char *nodeName = NULL;
 char *nodeNs = NULL;
-int retries = 1;
+int repeats = 1;
 int printResult = 0;
 clock_t total_time = 0;
 
@@ -471,8 +480,8 @@ int main(int argc, char **argv) {
 	/**
 	 * Misc. options
 	 */	
-	if((strcmp(argv[pos], "--retry") == 0) && (pos + 1 < argc)) {
-	    ret = readNumber(argv[++pos], &retries);
+	if((strcmp(argv[pos], "--repeat") == 0) && (pos + 1 < argc)) {
+	    ret = readNumber(argv[++pos], &repeats);
 	} else 
 
 	/**
@@ -550,7 +559,10 @@ int main(int argc, char **argv) {
 	 */
 	if((strcmp(argv[pos], "--ignore-manifests") == 0) && (dsigCtx != NULL)) {
 	    dsigCtx->processManifests = 0; 
+	} else if((strcmp(argv[pos], "--fake-signatures") == 0) && (dsigCtx != NULL)) {
+	    dsigCtx->fakeSignatures = 1; 
 	} else 
+	
 	
 	/**
 	 * Verification  options
@@ -630,7 +642,7 @@ int main(int argc, char **argv) {
     ret = 0; 
     while((pos < argc) && (ret >= 0)) {
 	templateRequired = 0;
-	for(i = 0; ((i < retries) && (ret >= 0)); ++i) {
+	for(i = 0; ((i < repeats) && (ret >= 0)); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
 		ret = xmlSecSimpleKeysMngrSave(keyMgr,  argv[pos], 
@@ -682,8 +694,11 @@ int main(int argc, char **argv) {
  	goto done;	    	    
     }
     
-    if(retries > 1) {
-        fprintf(stderr, "Executed %d tests in %ld msec\n", retries, total_time / (CLOCKS_PER_SEC / 1000));    
+    if(repeats > 1) {
+        fprintf(stderr, "Executed %d tests in %ld msec\n", repeats, total_time / (CLOCKS_PER_SEC / 1000));    
+	if(xmlSecTimerGet() > 0.0001) {
+	    fprintf(stderr, "The debug timer is %f\n", xmlSecTimerGet());    
+	}
     }
 
     /* success */
@@ -788,10 +803,16 @@ int init(xmlsecCommand command) {
     xmlInitParser();
     LIBXML_TEST_VERSION
 
+    xmlTreeIndentString = "\t";
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+    
     /*
      * Init xmlsec
      */
     xmlSecInit();    
+
 
     /** 
      * Create Keys and x509 managers
@@ -873,7 +894,9 @@ void shutdown(void) {
     /* 
      * Shutdown libxslt/libxml
      */
+#ifndef XMLSEC_NO_XSLT
     xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
 
     /**
@@ -1108,16 +1131,19 @@ int generateDSig(xmlDocPtr doc) {
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
 	goto done;    
-    } 
-    /*
-     * Print document out in default UTF-8 encoding
-     */
-    xmlDocDumpMemoryEnc(doc, &string, &len, NULL);
-    if(string == NULL) {
-        fprintf(stderr,"Error: failed to dump document to memory\n");
-	goto done;
     }
-    fwrite(string, len, 1, stdout);
+    
+    if(repeats <= 1) { 
+        /*
+	 * Print document out in default UTF-8 encoding
+         */
+	xmlDocDumpMemoryEnc(doc, &string, &len, NULL);
+        if(string == NULL) {
+	    fprintf(stderr,"Error: failed to dump document to memory\n");
+	    goto done;
+        }    
+	fwrite(string, len, 1, stdout);
+    }
     res = 0;
     
 done:    
@@ -1134,6 +1160,7 @@ int validateDSig(xmlDocPtr doc) {
     xmlSecDSigResultPtr result = NULL;
     xmlSecDSigStatus status;
     xmlNodePtr signNode;
+    clock_t start_time;
     int ret;
     	    
     signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
@@ -1142,8 +1169,10 @@ int validateDSig(xmlDocPtr doc) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
     }    
-        
+
+    start_time = clock();        
     ret = xmlSecDSigValidate(dsigCtx, NULL, sessionKey, signNode, &result);
+    total_time += clock() - start_time;    
     if((ret < 0) || (result == NULL)){
 	fprintf(stdout,"ERROR\n");
 	if(result != NULL) { 
@@ -1162,15 +1191,17 @@ int validateDSig(xmlDocPtr doc) {
      */
     memset(&status, 0, sizeof(status));
     getDSigResult(result, &status);
-	
-    fprintf(stderr, "= Status:\n");
-    fprintf(stderr, "== Signatures ok: %d\n", status.signaturesOk);
-    fprintf(stderr, "== Signatures fail: %d\n", status.signaturesFail);
-    fprintf(stderr, "== SignedInfo Ref ok: %d\n", status.signRefOk);
-    fprintf(stderr, "== SignedInfo Ref fail: %d\n", status.signRefFail);
-    fprintf(stderr, "== Manifest Ref ok: %d\n", status.manifestRefOk);
-    fprintf(stderr, "== Manifest Ref fail: %d\n", status.manifestRefFail);
 
+    if(repeats <= 1) { 
+        
+	fprintf(stderr, "= Status:\n");
+	fprintf(stderr, "== Signatures ok: %d\n", status.signaturesOk);
+        fprintf(stderr, "== Signatures fail: %d\n", status.signaturesFail);
+	fprintf(stderr, "== SignedInfo Ref ok: %d\n", status.signRefOk);
+        fprintf(stderr, "== SignedInfo Ref fail: %d\n", status.signRefFail);
+	fprintf(stderr, "== Manifest Ref ok: %d\n", status.manifestRefOk);
+        fprintf(stderr, "== Manifest Ref fail: %d\n", status.manifestRefFail);
+    }
     	    	
     if(result != NULL) {
 	xmlSecDSigResultDestroy(result);
@@ -1195,14 +1226,17 @@ int encrypt(xmlDocPtr tmpl) {
     xmlSecEncResultPtr encResult = NULL;
     xmlChar *result = NULL;	
     xmlDocPtr doc = NULL;
+    clock_t start_time;
     int len;
     int ret;
     int res = -1;
 
     if(binary && (data != NULL)) {
+        start_time = clock();        
 	ret = xmlSecEncryptUri(encCtx, NULL, sessionKey,
 				xmlDocGetRootElement(tmpl), data, 
 				&encResult);
+        total_time += clock() - start_time;    
 	if(ret < 0) {
     	    fprintf(stderr,"Error: xmlSecEncryptUri() failed \n");
 	    goto done;    
@@ -1238,10 +1272,12 @@ int encrypt(xmlDocPtr tmpl) {
     	    fprintf(stderr,"Error: empty document for file \"%s\" or unable to find node\n", data);
 	    goto done;    
 	}
-	
+
+        start_time = clock();        	
 	ret = xmlSecEncryptXmlNode(encCtx, NULL, sessionKey,
 				xmlDocGetRootElement(tmpl), 
 				cur, &encResult);	
+        total_time += clock() - start_time;    
 	if(ret < 0) {
     	    fprintf(stderr,"Error: xmlSecEncryptXmlNode() failed \n");
 	    goto done;    
@@ -1250,20 +1286,22 @@ int encrypt(xmlDocPtr tmpl) {
         fprintf(stderr,"Error: unknown type or bad type parameters\n");
 	goto done;    
     }
-    	
-    /*
-     * Print document out in default UTF-8 encoding
-     */
-    if((encResult != NULL) && (encResult->replaced) && (doc != NULL)) {
-	xmlDocDumpMemoryEnc(doc, &result, &len, NULL);  
-    } else {
-	xmlDocDumpMemoryEnc(tmpl, &result, &len, NULL);
+    
+    if(repeats <= 1) {	
+        /*
+	 * Print document out in default UTF-8 encoding
+         */     
+	if((encResult != NULL) && (encResult->replaced) && (doc != NULL)) {
+	    xmlDocDumpMemoryEnc(doc, &result, &len, NULL);  
+        } else {
+    	    xmlDocDumpMemoryEnc(tmpl, &result, &len, NULL);
+        }
+	if(result == NULL) {
+    	    fprintf(stderr,"Error: failed to dump document to memory\n");
+    	    goto done;
+        }
+	fwrite(result, len, 1, stdout);
     }
-    if(result == NULL) {
-        fprintf(stderr,"Error: failed to dump document to memory\n");
-	goto done;
-    }
-    fwrite(result, len, 1, stdout);
     res = 0;
 
     if(printResult) {
@@ -1286,6 +1324,7 @@ done:
 int decrypt(xmlDocPtr doc) {    
     xmlSecEncResultPtr encResult = NULL;
     xmlNodePtr cur;
+    clock_t start_time;
     int ret;
     int res = -1;
 
@@ -1294,31 +1333,34 @@ int decrypt(xmlDocPtr doc) {
         fprintf(stderr,"Error: unable to find EncryptedData node\n");
 	goto done;    
     }
-    
+
+    start_time = clock();            
     ret = xmlSecDecrypt(encCtx, NULL, sessionKey, cur, &encResult);
+    total_time += clock() - start_time;    
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDecrypt() failed \n");
 	goto done;    
     } 
 
-    if((encResult != NULL) && encResult->replaced && (encResult->buffer != NULL)) {
-	ret = xmlDocDump(stdout, doc);    
-    } else if((encResult != NULL) && !encResult->replaced) {
-	ret = fwrite(xmlBufferContent(encResult->buffer), 
+    if(repeats <= 1) {
+	if((encResult != NULL) && encResult->replaced && (encResult->buffer != NULL)) {
+	    ret = xmlDocDump(stdout, doc);    
+        } else if((encResult != NULL) && !encResult->replaced) {
+    	    ret = fwrite(xmlBufferContent(encResult->buffer), 
 	       xmlBufferLength(encResult->buffer),
 	       1, stdout);		       
-    } else {
-        fprintf(stderr,"Error: bad results \n");
-	goto done;    
-    }
-
-    if(ret < 0) {
-        fprintf(stderr,"Error: failed to print out the result \n");
-	goto done;    
-    }
+	} else {
+    	    fprintf(stderr,"Error: bad results \n");
+	    goto done;    
+	}
+        if(ret < 0) {
+	    fprintf(stderr,"Error: failed to print out the result \n");
+	    goto done;    
+	}
     
-    if(printResult) {
-    	xmlSecEncResultDebugDump(encResult, stderr);
+	if(printResult) {
+    	    xmlSecEncResultDebugDump(encResult, stderr);
+	}
     }	
         
     res = 0;

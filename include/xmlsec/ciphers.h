@@ -85,30 +85,30 @@ typedef struct _xmlSecCipherTransform {
 /**
  * BinTransform methods to be used in the Id structure
  */
-int  	xmlSecCipherTransformRead			(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecCipherTransformRead	(xmlSecBinTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
-int  	xmlSecCipherTransformWrite			(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecCipherTransformWrite	(xmlSecBinTransformPtr transform, 
                                         		 const unsigned char *buf, 
 							 size_t size);
-int  	xmlSecCipherTransformFlush			(xmlSecBinTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecCipherTransformFlush	(xmlSecBinTransformPtr transform);
 
 
 /**
  * EVP Cipher methods
  */
-int 	xmlSecEvpCipherUpdate				(xmlSecCipherTransformPtr cipher,
+XMLSEC_EXPORT int 	xmlSecEvpCipherUpdate		(xmlSecCipherTransformPtr cipher,
 							 const unsigned char *buffer,
 							 size_t size);
-int 	xmlSecEvpCipherFinal				(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 	xmlSecEvpCipherFinal		(xmlSecCipherTransformPtr cipher);
  
 /**
  * Low-level methods
  */
-int 	xmlSecCipherUpdate				(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecCipherUpdate		(xmlSecTransformPtr transform,
 							 const unsigned char *buffer,
 							 size_t size);
-int 	xmlSecCipherFinal				(xmlSecTransformPtr transform);
+XMLSEC_EXPORT int 	xmlSecCipherFinal		(xmlSecTransformPtr transform);
 
 #ifdef __cplusplus
 }

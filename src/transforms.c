@@ -44,8 +44,7 @@ static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlNodeSe
  */
 void xmlSecTransformsInit(void) {
     int i = 0;
-    
-    
+
     /* encoding */
     xmlSecAllTransforms[i++] = xmlSecEncBase64Encode;
     xmlSecAllTransforms[i++] = xmlSecEncBase64Decode;
@@ -83,6 +82,7 @@ void xmlSecTransformsInit(void) {
     /* XML transforms */
     xmlSecAllTransforms[i++] = xmlSecTransformEnveloped;
     xmlSecAllTransforms[i++] = xmlSecTransformXPath;
+    xmlSecAllTransforms[i++] = xmlSecTransformXPath2;
 
 #ifndef XMLSEC_NO_XSLT
     xmlSecAllTransforms[i++] = xmlSecTransformXslt;
@@ -112,6 +112,10 @@ void xmlSecTransformsInit(void) {
     xmlSecAllTransforms[i++] = xmlSecKWAes192;
     xmlSecAllTransforms[i++] = xmlSecKWAes256;
 #endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_XPATHALT 
+    xmlSecAllTransforms[i++] =  xmlSecXPathAlt;
+#endif /* XMLSEC_NO_XPATHALT */    
     
     /* Input/memory buffer */
     xmlSecAllTransforms[i++] = xmlSecInputUri;

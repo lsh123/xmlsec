@@ -1,0 +1,241 @@
+# Makefile for xmlsec, specific for Windows, MSVC and NMAKE.
+#
+# Take a look at the beginning and modify the variables to suit your 
+# environment. Having done that, you can do a
+#
+# nmake [all]     to build the xmlsec and the accompanying utilities.
+# nmake clean     to remove all compiler output files and return to a
+#                 clean state.
+# nmake rebuild   to rebuild everything from scratch. This basically does
+#                 a 'nmake clean' and then a 'nmake all'.
+# nmake install   to install the library and its header files.
+#
+# March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+#	Created for LibXML and LibXSLT
+# April 2002, Aleksey Sanin <aleksey@aleksey.com>
+#	Modified for XMLSec Libary
+#
+
+AUTOCONF = .\configure.txt
+
+# If you cannot run the configuration script, which would take the burden of
+# editing this file from your back, then remove the following line...
+!include $(AUTOCONF)
+# ...and enable the following lines and adapt them to your environment.
+#BASEDIR = ..
+#XMLSEC_SRCDIR = $(BASEDIR)\src
+#APPS_SRCDIR = $(BASEDIR)\apps
+#BINDIR = binaries
+#XMLSEC_MAJOR_VERSION = 0 # set this to the right value.
+#XMLSEC_MINOR_VERSION = 0 # set this to the right value.
+#XMLSEC_MICRO_VERSION = 0 # set this to the right value.
+#WITH_XMLSEC_DEBUG = 1
+#DEBUG = 0
+#WITH_OPENSSL096=0
+#WITH_LIBXSLT=1
+#STATIC = 0
+#PREFIX = . # set this to the right value.
+#BINPREFIX = $(PREFIX)\bin
+#INCPREFIX = $(PREFIX)\include
+#LIBPREFIX = $(PREFIX)\lib
+#SOPREFIX = $(PREFIX)\lib
+#INCLUDE = $(INCLUDE);$(INCPREFIX)
+#LIB = $(LIB);$(LIBPREFIX) 
+
+
+# There should never be a need to modify anything below this line.
+# ----------------------------------------------------------------
+
+
+# Names of various input and output components.
+XMLSEC_NAME = xmlsec
+XMLSEC_BASENAME = lib$(XMLSEC_NAME)
+XMLSEC_SO = $(XMLSEC_BASENAME).dll
+XMLSEC_IMP = $(XMLSEC_BASENAME).lib
+XMLSEC_DEF = $(XMLSEC_BASENAME).def
+XMLSEC_A = $(XMLSEC_BASENAME)_a.lib
+
+# Places where intermediate files produced by the compiler go
+XMLSEC_INTDIR = $(XMLSEC_BASENAME).int
+APPS_INTDIR = apps.int
+
+# The preprocessor and its options.
+CPP = cl.exe /EP
+CPPFLAGS = /nologo
+
+# The compiler and its options.
+CC = cl.exe
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD 
+CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include /I$(XMLSEC_SRCDIR)
+CFLGAS = $(CFLAGS) /DXMLSEC_NO_XPATHAL=1
+
+
+# The linker and its options.
+LD = link.exe
+LDFLAGS = /nologo 
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR)
+LIBS =
+!if "$(STATIC)" == "1"
+LIBS = libeay32.lib libxml2_a.lib wsock32.lib user32.lib gdi32.lib
+!else
+LIBS = libeay32.lib libxml2.lib user32.lib gdi32.lib
+!endif
+
+
+# The archiver and its options.
+AR = lib.exe
+ARFLAGS = /nologo
+
+# Optimisation and debug symbols.
+!if "$(DEBUG)" == "1"
+CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
+LDFLAGS = $(LDFLAGS) /DEBUG
+!else
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
+LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
+!endif
+
+# configurable options
+!if "$(WITH_OPENSSL096)" == "1"
+CFLGAS = $(CFLAGS) /DXMLSEC_NO_AES=1
+!else
+CFLAGS = $(CFLAGS) /DXMLSEC_OPENSSL097=1
+!endif
+
+!if "$(WITH_LIBSXSLT)" == "1"
+!if "$(STATIC)" == "1"
+LIBS = libxslt_a.lib $(LIBS)
+!else
+LIBS = libxslt.lib $(LIBS)
+!endif
+!else 
+CFLAGS = $(CFLAGS) /DXMLSEC_NO_XSLT=1
+!endif
+
+
+# xmlsec object files.
+XMLSEC_OBJS = $(XMLSEC_INTDIR)\aes.obj\
+	$(XMLSEC_INTDIR)\base64.obj\
+	$(XMLSEC_INTDIR)\bn.obj \
+	$(XMLSEC_INTDIR)\buffered.obj \
+	$(XMLSEC_INTDIR)\c14n.obj \
+	$(XMLSEC_INTDIR)\ciphers.obj \
+	$(XMLSEC_INTDIR)\debug.obj \
+	$(XMLSEC_INTDIR)\des.obj \
+	$(XMLSEC_INTDIR)\digests.obj \
+	$(XMLSEC_INTDIR)\dsa.obj \
+	$(XMLSEC_INTDIR)\enveloped.obj \
+	$(XMLSEC_INTDIR)\hmac.obj \
+	$(XMLSEC_INTDIR)\io.obj \
+	$(XMLSEC_INTDIR)\keyinfo.obj \
+	$(XMLSEC_INTDIR)\keys.obj \
+	$(XMLSEC_INTDIR)\keysmngr.obj \
+	$(XMLSEC_INTDIR)\membuf.obj \
+	$(XMLSEC_INTDIR)\ripemd160.obj \
+	$(XMLSEC_INTDIR)\rsa.obj \
+	$(XMLSEC_INTDIR)\sha1.obj \
+	$(XMLSEC_INTDIR)\transforms.obj \
+	$(XMLSEC_INTDIR)\x509.obj \
+	$(XMLSEC_INTDIR)\xmldsig.obj \
+	$(XMLSEC_INTDIR)\xmlenc.obj \
+	$(XMLSEC_INTDIR)\xmlsec.obj \
+	$(XMLSEC_INTDIR)\xmltree.obj \
+	$(XMLSEC_INTDIR)\xpath.obj \
+	$(XMLSEC_INTDIR)\xpathalt.obj \
+	$(XMLSEC_INTDIR)\xslt.obj 
+
+
+
+# XmlSec and friends executables.
+APPS = $(BINDIR)\xmlsec.exe
+
+all : xmlsec apps
+
+xmlsec : $(BINDIR)\$(XMLSEC_SO) $(BINDIR)\$(XMLSEC_A)
+
+
+apps : $(APPS)
+
+clean :
+	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)
+	if exist $(APPS_INTDIR) rmdir /S /Q $(APPS_INTDIR)
+	if exist $(BINDIR) rmdir /S /Q $(BINDIR)
+
+rebuild : clean all
+
+install : all
+	if not exist $(INCPREFIX)\$(XMLSEC_NAME) mkdir $(INCPREFIX)\$(XMLSEC_NAME)
+	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
+	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
+	copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)
+	copy $(BINDIR)\$(XMLSEC_SO) $(SOPREFIX)
+	copy $(BINDIR)\$(XMLSEC_A) $(LIBPREFIX)
+	copy $(BINDIR)\$(XMLSEC_IMP) $(LIBPREFIX)
+	copy $(BINDIR)\*.exe $(BINPREFIX)
+
+# This is a target for me, to make a binary distribution. Not for the public use,
+# keep your hands off :-)
+BDVERSION = $(xmlsec_MAJOR_VERSION).$(xmlsec_MINOR_VERSION).$(xmlsec_MICRO_VERSION)
+BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
+bindist : all
+	$(MAKE) /nologo PREFIX=$(BDPREFIX) BINPREFIX=$(BDPREFIX)\util install
+	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
+
+# Makes the compiler output directory.
+$(BINDIR) :
+	if not exist $(BINDIR) mkdir $(BINDIR)
+
+
+# Makes the xmlsec intermediate directory.
+$(XMLSEC_INTDIR) :
+	if not exist $(XMLSEC_INTDIR) mkdir $(XMLSEC_INTDIR)
+
+# An implicit rule for xmlsec compilation.
+{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR)}.obj::
+	$(CC) $(CFLAGS) /Fo$(XMLSEC_INTDIR)\ /c $<
+
+# Compiles xmlsec source. Uses the implicit rule for commands.
+$(XMLSEC_OBJS) : $(XMLSEC_INTDIR)
+
+# Creates the export definition file (DEF) for xmlsec.
+$(XMLSEC_INTDIR)\$(XMLSEC_DEF) : $(XMLSEC_INTDIR) $(XMLSEC_DEF).src
+	$(CPP) $(CPPFLAGS) $(XMLSEC_DEF).src > $(XMLSEC_INTDIR)\$(XMLSEC_DEF)
+
+# Creates the xmlsec shared object.
+$(BINDIR)\$(XMLSEC_SO) : $(BINDIR) $(XMLSEC_OBJS) $(XMLSEC_INTDIR)\$(XMLSEC_DEF)
+	$(LD) $(LDFLAGS) /DLL /DEF:$(XMLSEC_INTDIR)\$(XMLSEC_DEF) \
+		/VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
+		/IMPLIB:$(BINDIR)\$(XMLSEC_IMP) /OUT:$(BINDIR)\$(XMLSEC_SO) \
+		$(XMLSEC_OBJS) $(LIBS)
+
+# Creates the xmlsec archive.
+$(BINDIR)\$(XMLSEC_A) : $(BINDIR) $(XMLSEC_OBJS)
+	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_A) $(XMLSEC_OBJS)
+
+
+# Creates the xmlsec intermediate directory.
+
+# Creates the export definition file (DEF) for xmlsec.
+
+
+# Creates the apps intermediate directory.
+$(APPS_INTDIR) :
+	if not exist $(APPS_INTDIR) mkdir $(APPS_INTDIR)
+
+# An implicit rule for xmlsec and friends.
+!if "$(STATIC)" == "1"
+{$(APPS_SRCDIR)}.c{$(BINDIR)}.exe:
+	$(CC) /D "xmlsec_STATIC" $(CFLAGS) /Fo$(APPS_INTDIR)\ /c $< 
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(LIBS) $(APPS_INTDIR)\$(<B).obj
+!else
+{$(APPS_SRCDIR)}.c{$(BINDIR)}.exe:
+	$(CC) $(CFLAGS) /Fo$(APPS_INTDIR)\ /c $< 
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(LIBS) $(APPS_INTDIR)\$(<B).obj
+!endif
+
+# Builds xmlsec and friends. Uses the implicit rule for commands.
+$(APPS) : $(APPS_INTDIR) $(BINDIR) xmlsec 
+
+# Source dependences should be autogenerated somehow here, but how to
+# do it? I have no clue.
+

@@ -19,48 +19,51 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-xmlDocPtr		xmlSecParseFile			(const char *filename);
-xmlDocPtr		xmlSecParseMemory		(const unsigned char *buffer, 
+XMLSEC_EXPORT xmlDocPtr		xmlSecParseFile		(const char *filename);
+XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemory	(const unsigned char *buffer, 
 							 size_t size,
 							 int recovery);
-xmlDocPtr		xmlSecParseMemoryExt		(const unsigned char *prefix, 
+XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix, 
 							 size_t prefixSize,
 							 const unsigned char *buffer, 
 							 size_t bufferSize, 
 							 const unsigned char *postfix, 
 							 size_t postfixSize);
 
-int			xmlSecCheckNodeName		(const xmlNodePtr cur, 
+XMLSEC_EXPORT int		xmlSecCheckNodeName	(const xmlNodePtr cur, 
 							 const xmlChar *name, 
 							 const xmlChar *ns);
-xmlNodePtr		xmlSecGetNextElementNode	(xmlNodePtr cur);
-xmlNodePtr		xmlSecFindChild			(const xmlNodePtr parent,
+XMLSEC_EXPORT xmlNodePtr	xmlSecGetNextElementNode(xmlNodePtr cur);
+XMLSEC_EXPORT xmlNodePtr	xmlSecFindChild		(const xmlNodePtr parent,
 							 const xmlChar *name,
 							 const xmlChar *ns);
-xmlNodePtr		xmlSecFindNode			(const xmlNodePtr parent,
+XMLSEC_EXPORT xmlNodePtr	xmlSecFindParent	(const xmlNodePtr cur, 
+							 const xmlChar *name, 
+							 const xmlChar *ns);
+XMLSEC_EXPORT xmlNodePtr	xmlSecFindNode		(const xmlNodePtr parent,
 							 const xmlChar *name,
 							 const xmlChar *ns);
-xmlNodePtr		xmlSecFindNodeById		(const xmlNodePtr parent,
+XMLSEC_EXPORT xmlNodePtr	xmlSecFindNodeById	(const xmlNodePtr parent,
 							 const xmlChar *id);
 
-xmlNodeSetPtr		xmlSecGetChildNodeSet		(const xmlNodePtr parent,
+XMLSEC_EXPORT xmlNodeSetPtr	xmlSecGetChildNodeSet	(const xmlNodePtr parent,
 							 xmlNodeSetPtr nodeSet,
 							 int withComments);
-xmlNodePtr		xmlSecAddChild			(xmlNodePtr parent, 
+XMLSEC_EXPORT xmlNodePtr	xmlSecAddChild		(xmlNodePtr parent, 
 							 const xmlChar *name,
 							 const xmlChar *ns);
-xmlNodePtr		xmlSecAddNextSibling		(xmlNodePtr node, 
+XMLSEC_EXPORT xmlNodePtr	xmlSecAddNextSibling	(xmlNodePtr node, 
 							 const xmlChar *name,
 							 const xmlChar *ns);
-xmlNodePtr		xmlSecAddPrevSibling		(xmlNodePtr node, 
+XMLSEC_EXPORT xmlNodePtr	xmlSecAddPrevSibling	(xmlNodePtr node, 
 							 const xmlChar *name,
 							 const xmlChar *ns);
 
-int			xmlSecReplaceNode		(xmlNodePtr node,
+XMLSEC_EXPORT int		xmlSecReplaceNode	(xmlNodePtr node,
 						         xmlNodePtr newNode);
-int			xmlSecReplaceContent		(xmlNodePtr node,
+XMLSEC_EXPORT int		xmlSecReplaceContent	(xmlNodePtr node,
 							 xmlNodePtr newNode);
-int			xmlSecReplaceNodeBuffer		(xmlNodePtr node,
+XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 							 const unsigned char *buffer, 
 							 size_t size);
 

@@ -107,7 +107,7 @@ xmlSecTransformId xmlSecSignDsaSha1 = (xmlSecTransformId)&xmlSecSignDsaSha1Id;
 
 #define XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE		20
 
-#define xmlSecDsaKey( k ) 			((DSA*)(( k )->keyData))
+#define xmlSecGetDsaKey( k ) 			((DSA*)(( k )->keyData))
 
 /**
  * DSA transform
@@ -396,7 +396,7 @@ xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     }    
     digest = (xmlSecDigestTransformPtr)transform;
 
-    if(xmlSecDsaKey(key) == NULL) {
+    if(xmlSecGetDsaKey(key) == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: key dsa data is null\n",
@@ -405,7 +405,7 @@ xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	return(-1);
     }
     
-    dsa = xmlSecDsaDup(xmlSecDsaKey(key));
+    dsa = xmlSecDsaDup(xmlSecGetDsaKey(key));
     if(dsa == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -439,8 +439,11 @@ DSA* xmlSecDsaDup(DSA *dsa) {
 	return(NULL);
     }
     
-    /* todo: increment reference counter nstead of coping */
-    
+    /* increment reference counter instead of coping */
+#ifdef XMLSEC_OPENSSL097
+    DSA_up_ref(dsa);
+    newDsa =  dsa;
+#else /* XMLSEC_OPENSSL097 */         
     newDsa = DSA_new();
     if(newDsa == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -466,6 +469,7 @@ DSA* xmlSecDsaDup(DSA *dsa) {
     if(dsa->pub_key != NULL) {
 	newDsa->pub_key = BN_dup(dsa->pub_key);
     }
+#endif /* XMLSEC_OPENSSL097 */         
     return(newDsa);
 }
 
@@ -521,8 +525,8 @@ xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
 	return;
     }
     
-    if(xmlSecDsaKey(key) != NULL) {
-	DSA_free(xmlSecDsaKey(key));
+    if(xmlSecGetDsaKey(key) != NULL) {
+	DSA_free(xmlSecGetDsaKey(key));
     }    
     memset(key, 0, sizeof(struct _xmlSecKey));    
     xmlFree(key);		    
@@ -552,8 +556,8 @@ xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
 	return(NULL);
     }
     
-    if(xmlSecDsaKey(key) != NULL) {
-	newKey->keyData = xmlSecDsaDup(xmlSecDsaKey(key));
+    if(xmlSecGetDsaKey(key) != NULL) {
+	newKey->keyData = xmlSecDsaDup(xmlSecGetDsaKey(key));
 	if(newKey->keyData == NULL) {
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
@@ -563,7 +567,7 @@ xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
-	if(xmlSecDsaKey(newKey)->priv_key != NULL) {
+	if(xmlSecGetDsaKey(newKey)->priv_key != NULL) {
 	    newKey->type = xmlSecKeyTypePrivate;
 	} else {
 	    newKey->type = xmlSecKeyTypePublic;
@@ -628,8 +632,8 @@ xmlSecDsaKeyGenerate(xmlSecKeyPtr key, DSA *dsa) {
     }
     
 
-    if(xmlSecDsaKey(key) != NULL) {
-	DSA_free(xmlSecDsaKey(key));
+    if(xmlSecGetDsaKey(key) != NULL) {
+	DSA_free(xmlSecGetDsaKey(key));
     }    
     key->keyData = dsa;
     if(dsa->priv_key != NULL) {
@@ -860,8 +864,8 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 	return(-1);
     }
 
-    if(xmlSecDsaKey(key) != NULL) {
-	DSA_free(xmlSecDsaKey(key));
+    if(xmlSecGetDsaKey(key) != NULL) {
+	DSA_free(xmlSecGetDsaKey(key));
     }    
     key->keyData = dsa;
     if(privateKey) {
@@ -905,7 +909,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	return(-1);	
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecDsaKey(key)->p, 1);
+    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->p, 1);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -925,7 +929,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	return(-1);	
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecDsaKey(key)->q, 1);
+    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->q, 1);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -945,7 +949,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	return(-1);	
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecDsaKey(key)->g, 1);
+    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->g, 1);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -967,7 +971,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	    return(-1);	
 	}
-	ret = xmlSecNodeSetBNValue(cur, xmlSecDsaKey(key)->priv_key, 1);
+	ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->priv_key, 1);
 	if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	    xmlGenericError(xmlGenericErrorContext,
@@ -988,7 +992,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 #endif 	    
 	return(-1);	
     }
-    ret = xmlSecNodeSetBNValue(cur, xmlSecDsaKey(key)->pub_key, 1);
+    ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->pub_key, 1);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,

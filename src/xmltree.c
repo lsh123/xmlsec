@@ -259,6 +259,27 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
     return(NULL);
 }
 
+xmlNodePtr
+xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindParent";
+        
+    if((cur == NULL) || (name == NULL)){
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: the node or name is null\n", 
+	    func);	
+#endif
+	return(NULL);	
+    }
+
+    if(xmlSecCheckNodeName(cur, name, ns)) {
+	return(cur);
+    } else if(cur->parent != NULL) {
+	return(xmlSecFindParent(cur->parent, name, ns));
+    }
+    return(NULL);
+}
+
 xmlNodePtr		
 xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindChild";
@@ -318,13 +339,15 @@ xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
         if(cur->type == XML_ELEMENT_NODE) {	    
 	    xmlChar* attr;
 	    xmlNodePtr ret;
-	    
+	
 	    attr = xmlGetProp(cur, BAD_CAST "Id");
-	    if(xmlStrEqual(id, attr)) {
+	    if(attr != NULL) {
+		if(xmlStrEqual(id, attr)) {
+		    xmlFree(attr);
+		    return(cur);
+		}
 		xmlFree(attr);
-		return(cur);
 	    }
-	    xmlFree(attr);
 	    
 	    if(cur->children != NULL) {
 	        ret = xmlSecFindNodeById(cur->children, id);
@@ -351,6 +374,7 @@ xmlNodeSetPtr
 xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withComments) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecGetChildNodeSet";
     xmlNodePtr cur;
+    xmlNsPtr ns;
     xmlAttrPtr attr;
     
     if(parent == NULL) {
@@ -378,30 +402,37 @@ xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withCo
     switch(parent->type) {
     case XML_COMMENT_NODE:
         if(!withComments) return(nodeSet);
-        xmlXPathNodeSetAddUnique(nodeSet, parent);
+        xmlXPathNodeSetAdd(nodeSet, parent);
         return(nodeSet);	
     case XML_ELEMENT_NODE:
-        xmlXPathNodeSetAddUnique(nodeSet, parent);
+        xmlXPathNodeSetAdd(nodeSet, parent);
+	
+	/* add all attrs */
+	attr = parent->properties; 
+	while (attr != NULL) {
+    	    xmlXPathNodeSetAdd(nodeSet, (xmlNodePtr)attr); 
+    	    attr = attr->next; 
+	}	
+    
+	/* add namespaces */
+	for (ns = parent->nsDef; ns != NULL; ns = ns->next) {
+	    xmlXPathNodeSetAddNs(nodeSet, parent, ns);
+	}
+
         break;
     case XML_TEXT_NODE:
-        xmlXPathNodeSetAddUnique(nodeSet, parent);
+        xmlXPathNodeSetAdd(nodeSet, parent);
         return(nodeSet);
     case XML_PI_NODE:
-        xmlXPathNodeSetAddUnique(nodeSet, parent);
+        xmlXPathNodeSetAdd(nodeSet, parent);
         return(nodeSet);
     default:
         return(nodeSet);
     }
-    
-    /* add all attrs */
-    attr = parent->properties; 
-    while (attr != NULL) {
-        xmlXPathNodeSetAddUnique(nodeSet, (xmlNodePtr)attr); 
-        attr = attr->next; 
-    }	
-    cur = parent->children;
+        
     
     /* add all childrens */
+    cur = parent->children;
     while(cur != NULL) {
 	nodeSet = xmlSecGetChildNodeSet(cur, nodeSet, withComments);
 	if(nodeSet == NULL) {
@@ -422,7 +453,7 @@ xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withCo
 /** 
  * xmlSecCheckNodeName:
  * @cur:
- * @name:
+dis * @name:
  * @ns:
  *
  * Checks that the node has a given name and a given namespace href

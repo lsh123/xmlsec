@@ -18,8 +18,8 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-void 				xmlSecXPathHereFunction		(xmlXPathParserContextPtr ctxt, 
-								 int nargs);
+XMLSEC_EXPORT void 	xmlSecXPathHereFunction		(xmlXPathParserContextPtr ctxt, 
+							 int nargs);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

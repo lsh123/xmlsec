@@ -41,15 +41,15 @@ typedef enum _xmlSecTransformStatus {
  * AES transforms
  */
 #ifndef XMLSEC_NO_AES
-extern xmlSecTransformId 	xmlSecEncAes128Cbc;
-extern xmlSecTransformId 	xmlSecEncAes192Cbc;
-extern xmlSecTransformId 	xmlSecEncAes256Cbc;
-extern xmlSecTransformId 	xmlSecKWAes128;
-extern xmlSecTransformId 	xmlSecKWAes192;
-extern xmlSecTransformId 	xmlSecKWAes256;
-extern xmlSecKeyId 	 	xmlSecAesKey;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecEncAes128Cbc;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecEncAes192Cbc;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecEncAes256Cbc;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecKWAes128;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecKWAes192;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecKWAes256;
+XMLSEC_EXPORT_VAR xmlSecKeyId 	 	xmlSecAesKey;
 
-int	xmlSecAesKeyGenerate			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int	xmlSecAesKeyGenerate	(xmlSecKeyPtr key,
 						 const unsigned char *buf, 
 						 size_t size);
 #endif /* XMLSEC_NO_AES */
@@ -58,33 +58,34 @@ int	xmlSecAesKeyGenerate			(xmlSecKeyPtr key,
  * Base64 Transform
  */
 #define XMLSEC_BASE64_LINESIZE		64
-extern xmlSecTransformId xmlSecEncBase64Encode;
-extern xmlSecTransformId xmlSecEncBase64Decode;
+XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecEncBase64Encode;
+XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecEncBase64Decode;
 
-void   	xmlSecBase64EncodeSetLineSize		(xmlSecTransformPtr transform,
+XMLSEC_EXPORT void   	xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform,
 						 size_t lineSize);
 
 
 /**
  * C14N transforms 
  */
-extern xmlSecTransformId 	xmlSecC14NInclusive;
-extern xmlSecTransformId 	xmlSecC14NInclusiveWithComments;
-extern xmlSecTransformId 	xmlSecC14NExclusive;
-extern xmlSecTransformId 	xmlSecC14NExclusiveWithComments;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecC14NInclusive;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecC14NInclusiveWithComments;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecC14NExclusive;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecC14NExclusiveWithComments;
 
-int	xmlSecC14NExclAddInclNamespaces		(xmlNodePtr transformNode,
+XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces		
+						(xmlNodePtr transformNode,
 						 const xmlChar *prefixList);
 
 /**
  * DES transform
  */
 #ifndef XMLSEC_NO_DES
-extern xmlSecTransformId 	xmlSecEncDes3Cbc;
-extern xmlSecTransformId 	xmlSecKWDes3Cbc;
-extern xmlSecKeyId 		xmlSecDesKey;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecEncDes3Cbc;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecKWDes3Cbc;
+XMLSEC_EXPORT_VAR xmlSecKeyId 		xmlSecDesKey;
  
-int	xmlSecDesKeyGenerate			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int	xmlSecDesKeyGenerate	(xmlSecKeyPtr key,
 						 const unsigned char *buf, 
 						 size_t size);
 #endif /* XMLSEC_NO_DES */
@@ -95,51 +96,51 @@ int	xmlSecDesKeyGenerate			(xmlSecKeyPtr key,
 #ifndef XMLSEC_NO_DSA
 #include <openssl/dsa.h>
 
-extern xmlSecTransformId 	xmlSecSignDsaSha1;
-extern xmlSecKeyId 		xmlSecDsaKey;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecSignDsaSha1;
+XMLSEC_EXPORT_VAR xmlSecKeyId 		xmlSecDsaKey;
 
-int	xmlSecDsaKeyGenerate			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int	xmlSecDsaKeyGenerate	(xmlSecKeyPtr key,
 						 DSA *dsa);
 #endif /* XMLSEC_NO_DSA */
 
 /**
  * Enveloped transform 
  */
-extern xmlSecTransformId 	xmlSecTransformEnveloped;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformEnveloped;
 
 
 /**
  * HMAC transforms
  */
 #ifndef XMLSEC_NO_HMAC
-extern xmlSecTransformId 	xmlSecMacHmacSha1;
-extern xmlSecTransformId 	xmlSecMacHmacRipeMd160;
-extern xmlSecTransformId 	xmlSecMacHmacMd5;
-extern xmlSecKeyId 		xmlSecHmacKey;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecMacHmacSha1;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecMacHmacRipeMd160;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecMacHmacMd5;
+XMLSEC_EXPORT_VAR xmlSecKeyId 		xmlSecHmacKey;
 
-int	xmlSecHmacKeyGenerate			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int	xmlSecHmacKeyGenerate	(xmlSecKeyPtr key,
 						 const unsigned char *buf, 
 						 size_t size);
-int	xmlSecHmacAddOutputLength		(xmlNodePtr transformNode,
+XMLSEC_EXPORT int	xmlSecHmacAddOutputLength(xmlNodePtr transformNode,
 						 size_t bitsLen);
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RIPEMD160
-extern xmlSecTransformId 	xmlSecDigestRipemd160;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecDigestRipemd160;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 /**
  * RSA transforms
  */
 #ifndef XMLSEC_NO_RSA
-extern xmlSecTransformId 	xmlSecSignRsaSha1;
-extern xmlSecTransformId 	xmlSecEncRsaPkcs1;
-extern xmlSecTransformId 	xmlSecEncRsaOaep;
-extern xmlSecKeyId 		xmlSecRsaKey;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecSignRsaSha1;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecEncRsaPkcs1;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecEncRsaOaep;
+XMLSEC_EXPORT_VAR xmlSecKeyId 		xmlSecRsaKey;
 
-int	xmlSecRsaKeyGenerate			(xmlSecKeyPtr key,
+XMLSEC_EXPORT int	xmlSecRsaKeyGenerate	(xmlSecKeyPtr key,
 						 RSA *rsa);
-int  	xmlSecEncRsaOaepAddParam		(xmlNodePtr transformNode,
+XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode,
 						 const unsigned char *buf,
 						 size_t size);
 #endif /* XMLSEC_NO_RSA */
@@ -149,13 +150,30 @@ int  	xmlSecEncRsaOaepAddParam		(xmlNodePtr transformNode,
  * SHA1 transform
  */
 #ifndef XMLSEC_NO_SHA1
-extern xmlSecTransformId 	xmlSecDigestSha1;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecDigestSha1;
 #endif /* XMLSEC_NO_SHA1 */
 
 /**
- * XPath transform */
-extern xmlSecTransformId 	xmlSecTransformXPath;
-int 	xmlSecTransformXPathAdd			(xmlNodePtr transformNode, 
+ * XPath transform 
+ */
+typedef enum _xmlSecXPath2TransformType {
+    xmlSecXPathTransformUnknown = 0,
+    xmlSecXPathTransformIntersect,
+    xmlSecXPathTransformSubtract,
+    xmlSecXPathTransformUnion
+} xmlSecXPath2TransformType;
+ 
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPath;
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPath2;
+#ifndef XMLSEC_NO_XPATHALT  
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecXPathAlt;
+#endif /* XMLSEC_NO_XPATHALT */
+
+XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXPath2Add(xmlNodePtr transformNode, 
+						 xmlSecXPath2TransformType type,
 						 const xmlChar *expression,
 						 const xmlChar **namespaces);
 
@@ -163,8 +181,8 @@ int 	xmlSecTransformXPathAdd			(xmlNodePtr transformNode,
  * XSLT transform 
  */
 #ifndef XMLSEC_NO_XSLT
-extern xmlSecTransformId 	xmlSecTransformXslt;
-int 	xmlSecTransformXsltAdd			(xmlNodePtr transformNode, 
+XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXslt;
+XMLSEC_EXPORT int 	xmlSecTransformXsltAdd	(xmlNodePtr transformNode, 
 						 const xmlChar *xslt);
 #endif /* XMLSEC_NO_XSLT */
 

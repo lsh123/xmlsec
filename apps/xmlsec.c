@@ -1282,10 +1282,12 @@ xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlCha
 	
 	xmlXPathFreeContext(ctx);
 	xmlXPathFreeObject(obj);
-    } else if(defNodeName != NULL) {
-	cur = xmlSecFindNode(xmlDocGetRootElement(doc), defNodeName, defNodeNs);
     } else {
 	cur = xmlDocGetRootElement(doc);
+    }
+    
+    if(defNodeName != NULL) {
+	cur = xmlSecFindNode(cur, defNodeName, defNodeNs);
     }
     return(cur);
 }

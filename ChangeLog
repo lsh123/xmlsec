@@ -1,3 +1,9 @@
+Wed Mar 19 10:59:41 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: force Signature or EncryptedData node
+	selection when specifing start node from xmlsec tool 
+	command line
+
 Mon Mar 10 07:59:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/transforms.c: fixed Reference URI evaluation for

@@ -1972,46 +1972,19 @@ IsHexDigit(char c) {
 
 static xmlChar*
 xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
-    xmlChar *res = NULL;
-    unsigned char * bsn;
-    unsigned char *data, *p, *e;
-    size_t ssn;
-    int i;
-    char *str;
-    char str0[10];
-    int len;
+    xmlChar *res;
 
     xmlSecAssert2(num != NULL, NULL);
 
-    if (!CryptBinaryToString(num->pbData, num->cbData, CRYPT_STRING_HEX, NULL, &len)) {
+    res = xmlSecBinaryToHexString(num->pbData, num->cbData, 0);
+    if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "CryptBinaryToString",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "xmlSecBinaryToHexString",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	return NULL;
+	return(NULL);
     }
-    data = malloc(len + 1);
-    if (!CryptBinaryToString(num->pbData, num->cbData, CRYPT_STRING_HEX, data, &len)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "CryptBinaryToString",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return NULL;
-    }
-
-    /* Somehow CryptBinaryToString thinks it is necessary to add leading and trailing non hex characters */
-    p = data;
-    while (!IsHexDigit(*p)) {
-	p++;
-    }
-    while (!IsHexDigit(data[len-1])) {
-	len--;
-    }
-    data[len] = 0;
-    res = xmlStrdup(BAD_CAST p);
-    free(data);
 
     return(res);
 }

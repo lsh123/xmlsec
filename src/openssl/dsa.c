@@ -760,6 +760,10 @@ static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     xmlSecOpenSSLDsaSha1SetKeyReq,	/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLDsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLDsaSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLDsaSha1Execute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */

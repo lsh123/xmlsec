@@ -50,6 +50,10 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLSha1Verify,			/* xmlSecTransformVerifyMethod verify; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLSha1Execute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */

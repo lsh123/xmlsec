@@ -49,6 +49,10 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLRipemd160Verify,		/* xmlSecTransformVerifyMethod verify; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRipemd160Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */

@@ -620,6 +620,10 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     xmlSecOpenSSLRsaSha1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLRsaSha1SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLRsaSha1Verify,			/* xmlSecTransformVerifyMethod verify; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaSha1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
@@ -750,6 +754,10 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     xmlSecOpenSSLRsaPkcs1SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaPkcs1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaPkcs1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
@@ -1027,6 +1035,10 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     xmlSecOpenSSLRsaOaepSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaOaepSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaOaepExecute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */

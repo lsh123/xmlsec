@@ -74,27 +74,31 @@ static int		xmlSecXslProcess			(xmlSecBufferPtr in,
 								 xsltStylesheetPtr stylesheet);
 static xmlSecTransformKlass xmlSecXsltKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
-    xmlSecNameXslt,			/* const xmlChar* name; */
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefXslt, 			/* const xmlChar href; */
+    xmlSecNameXslt,				/* const xmlChar* name; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
+    xmlSecHrefXslt, 				/* const xmlChar href; */
 
-    xmlSecXsltInitialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecXsltFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecXsltReadNode,			/* xmlSecTransformReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecXsltExecute,			/* xmlSecTransformExecuteMethod execute; */
+    xmlSecXsltInitialize,			/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecXsltFinalize,				/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecXsltReadNode,				/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecXsltExecute,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     
     NULL,
     NULL,

@@ -276,6 +276,10 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
     xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
@@ -306,6 +310,10 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
     xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
@@ -336,6 +344,10 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
     xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */

@@ -108,28 +108,32 @@ static int 		xmlSecBase64Execute		(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecBase64Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
     xmlSecNameBase64,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefBase64,			/* const xmlChar href; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
+    xmlSecHrefBase64,				/* const xmlChar href; */
 
-    xmlSecBase64Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecBase64Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecBase64Execute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecBase64Initialize, 			/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecBase64Finalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
+    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
+    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecBase64Execute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
-    NULL,				/* xmlSecTransformExecuteBinMethod executeBin; */
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
-
+    NULL,					/* xmlSecTransformExecuteBinMethod executeBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
+    
     /* xml/c14n methods */
     NULL,
     NULL,

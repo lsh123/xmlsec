@@ -399,17 +399,6 @@ static xmlSecAppCmdLineParam printXmlDebugParam = {
  *
  ***************************************************************/
 #ifndef XMLSEC_NO_XMLDSIG
-static xmlSecAppCmdLineParam fakeSignaturesParam = { 
-    xmlSecAppCmdLineTopicDSigCommon,
-    "--fake-signatures",
-    NULL,
-    "--fake-signatures"
-    "\n\tdisable actual signature calculation for performance testing",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};    
-
 static xmlSecAppCmdLineParam ignoreManifestsParam = { 
     xmlSecAppCmdLineTopicDSigCommon,
     "--ignore-manifests",
@@ -576,7 +565,6 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     /* common dsig params */
 #ifndef XMLSEC_NO_XMLDSIG
     &ignoreManifestsParam,
-    &fakeSignaturesParam,
     &storeReferencesParam,
     &storeManifestsParam,
     &storeSignaturesParam,
@@ -950,18 +938,23 @@ xmlSecAppVerifyFile(const char* filename) {
 	    goto done;
 	}
 	switch(dsigCtx.status) {
-	    case xmlDSigStatusSucceeded:
+	    case xmlSecDSigStatusUnknown:
+		fprintf(f, "ERROR\n");
+		break;
+	    case xmlSecDSigStatusSucceeded:
 		fprintf(f, "OK\n");
 		break;
-	    case xmlDSigStatusInvalid:
+	    case xmlSecDSigStatusInvalid:
 		fprintf(f, "FAIL\n");
-		break;
-	    default:
-		fprintf(f, "ERROR\n");
 		break;
 	}    
 	/* TODO: print stats about # of good/bad references */
 	xmlSecAppCloseFile(f);
+
+	/* return an error if signature does not match */
+	if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
+	    goto done;
+	}
     }
 
     res = 0;
@@ -1003,9 +996,6 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     /* set dsig params */
     if(xmlSecAppCmdLineParamIsSet(&ignoreManifestsParam)) {
 	dsigCtx->processManifests = 0; 
-    }
-    if(xmlSecAppCmdLineParamIsSet(&fakeSignaturesParam)) {
-	dsigCtx->fakeSignatures = 1; 
     }
     if(xmlSecAppCmdLineParamIsSet(&storeReferencesParam)) {
 	dsigCtx->storeReferences = 1; 
@@ -1390,13 +1380,15 @@ xmlSecAppLoadKeys(void) {
     /* read all private keys */
     for(value = privkeyParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", privkeyParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    privkeyParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
-		    xmlSecAppCmdLineParamGetStringList(&privkeyParam),
+		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
 		    value->paramNameValue, 1) < 0) {
-	    fprintf(stderr, "Error: failed to load private key.\n");
+	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
+		    value->strListValue);
 	    return(-1);
 	}
     }
@@ -1404,13 +1396,15 @@ xmlSecAppLoadKeys(void) {
     /* read all public keys */
     for(value = pubkeyParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", pubkeyParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    pubkeyParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
-		    xmlSecAppCmdLineParamGetStringList(&pubkeyParam),
+		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
 		    value->paramNameValue, 0) < 0) {
-	    fprintf(stderr, "Error: failed to load public key.\n");
+	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
+		    value->strListValue);
 	    return(-1);
 	}
     }
@@ -1419,13 +1413,13 @@ xmlSecAppLoadKeys(void) {
     /* read all AES keys */
     for(value = aeskeyParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", aeskeyParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    aeskeyParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr, 
-		    "aes",
-		    xmlSecAppCmdLineParamGetString(&aeskeyParam),
-		    value->paramNameValue) < 0) {
-	    fprintf(stderr, "Error: failed to load aes key.\n");
+		    "aes", value->strValue, value->paramNameValue) < 0) {
+	    fprintf(stderr, "Error: failed to load aes key from \"%s\".\n",
+		    value->strValue);
 	    return(-1);
 	}
     }
@@ -1435,13 +1429,13 @@ xmlSecAppLoadKeys(void) {
     /* read all des keys */
     for(value = deskeyParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", deskeyParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    deskeyParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr, 
-		    "des",
-		    xmlSecAppCmdLineParamGetString(&deskeyParam),
-		    value->paramNameValue) < 0) {
-	    fprintf(stderr, "Error: failed to load des key.\n");
+		    "des", value->strValue, value->paramNameValue) < 0) {
+	    fprintf(stderr, "Error: failed to load des key from \"%s\".\n",
+		    value->strValue);
 	    return(-1);
 	}
     }
@@ -1451,13 +1445,13 @@ xmlSecAppLoadKeys(void) {
     /* read all hmac keys */
     for(value = hmackeyParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", hmackeyParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    hmackeyParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr, 
-		    "hmac",
-		    xmlSecAppCmdLineParamGetString(&hmackeyParam),
-		    value->paramNameValue) < 0) {
-	    fprintf(stderr, "Error: failed to load hmac key.\n");
+		    "hmac", value->strValue, value->paramNameValue) < 0) {
+	    fprintf(stderr, "Error: failed to load hmac key from \"%s\".\n",
+		    value->strValue);
 	    return(-1);
 	}
     }
@@ -1470,10 +1464,11 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", pkcs12Param.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(gKeysMngr, 
-		    xmlSecAppCmdLineParamGetString(&pkcs12Param),
+		    value->strValue,
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
 		    value->paramNameValue) < 0) {
-	    fprintf(stderr, "Error: failed to load pkcs12 key.\n");
+	    fprintf(stderr, "Error: failed to load pkcs12 key from \"%s\".\n",
+		    value->strValue);
 	    return(-1);
 	}
     }
@@ -1484,9 +1479,9 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(gKeysMngr, 
-		    xmlSecAppCmdLineParamGetString(&trustedParam),
-		    1) < 0) {
-	    fprintf(stderr, "Error: failed to load trusted cert.\n");
+		    value->strValue, 1) < 0) {
+	    fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
+		    value->strValue);
 	    return(-1);
 	}
     }
@@ -1497,9 +1492,9 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(gKeysMngr, 
-		    xmlSecAppCmdLineParamGetString(&untrustedParam),
-		    0) < 0) {
-	    fprintf(stderr, "Error: failed to load untrusted cert.\n");
+		    value->strValue, 0) < 0) {
+	    fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
+		    value->strValue);
 	    return(-1);
 	}
     }

@@ -1004,7 +1004,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     /* the only one node is optional Transforms node */
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecEncNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecDSigNs))) {
 	ret = xmlSecTransformCtxNodesListRead(keyInfoCtx->retrievalMethodTransformCtx, 
 					    cur, xmlSecTransformUsageDSigTransform);
 	if(ret < 0) {

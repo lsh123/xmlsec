@@ -351,7 +351,6 @@ xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform
     return(0);
 }
 
-
 int 
 xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
     int ret;
@@ -783,7 +782,6 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     int ret;
         
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->first != NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
     xmlSecAssert2(uri != NULL, -1);
 
@@ -1302,6 +1300,53 @@ xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
     xmlSecAssert2(transformCtx != NULL, -1);
 
     return((transform->id->verify)(transform, data, dataSize, transformCtx));
+}
+
+int 
+xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, xmlNodePtr node,
+				 xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBuffer buffer;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecBufferInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    ret = xmlSecBufferBase64NodeContentRead(&buffer, node);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecBufferBase64NodeContentRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBufferFinalize(&buffer);
+	return(-1);
+    }
+    
+    ret = xmlSecTransformVerify(transform, xmlSecBufferGetData(&buffer),
+				xmlSecBufferGetSize(&buffer), transformCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformVerify",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBufferFinalize(&buffer);
+	return(-1);
+    }
+
+    xmlSecBufferFinalize(&buffer);
+    return(0);
 }
 
 xmlSecTransformDataType	

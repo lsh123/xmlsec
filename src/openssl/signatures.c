@@ -233,7 +233,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = EVP_VerifyFinal(&(ctx->digestCtx), (unsigned char*)data, dataSize, ctx->pKey);
-    if(ret < 1) {
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_VerifyFinal",

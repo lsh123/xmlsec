@@ -28,11 +28,10 @@ typedef struct _xmlSecDSigReferenceCtx		xmlSecDSigReferenceCtx,
 						*xmlSecDSigReferenceCtxPtr;
 
 typedef enum {
-    xmlDSigStatusUnknown = 0,
-    xmlDSigStatusSucceeded,
-    xmlDSigStatusInvalid,
-    xmlDSigStatusFailed
-} xmlDSigStatus;
+    xmlSecDSigStatusUnknown = 0,
+    xmlSecDSigStatusSucceeded,
+    xmlSecDSigStatusInvalid
+} xmlSecDSigStatus;
 
 /**************************************************************************
  *
@@ -49,7 +48,6 @@ typedef enum {
  *      <dsig:SignedInfo> nodes just before digesting.
  * @storeManifests: store the result of processing <dsig:Reference> nodes in 
  *	<dsig:Manifest> nodes just before digesting (ignored if @processManifest is 0).
- * @fakeSignatures: for performance testing only.
  *
  * XML DSig context. 
  */
@@ -59,14 +57,11 @@ struct _xmlSecDSigCtx {
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		signTransformCtx;
-    xmlSecTransformPtr		signMethod;
-    xmlSecTransformPtr		c14nMethod;
     xmlSecKeyPtr		signKey;
     int				processManifests;
     int				storeSignatures;
     int				storeReferences;
     int				storeManifests;	
-    int				fakeSignatures;
     xmlSecUriType		allowedRefernceUriTypes;
     xmlSecTransformId		defaultDigestTransformId;
     xmlSecTransformId		defaultC14NTransformId;
@@ -74,13 +69,16 @@ struct _xmlSecDSigCtx {
     /* these data are returned */
     int				sign;
     xmlSecBufferPtr		result;
-    xmlDSigStatus		status;
+    xmlSecDSigStatus		status;
+    xmlSecTransformPtr		signMethod;
+    xmlSecTransformPtr		c14nMethod;
     xmlSecTransformPtr		preSignMemBufMethod;
     xmlChar*			id;    
     xmlSecPtrList    		references;
     xmlSecPtrList		manifests;
         
     /* these are internal data, nobody should change that except us */
+    xmlNodePtr			signValueNode;
     int				dontDestroySignMethod;
     int				dontDestroyC14NMethod;
 
@@ -131,7 +129,7 @@ struct _xmlSecDSigReferenceCtx {
     xmlSecTransformPtr		c14nMethod;
 
     xmlSecBufferPtr		result;
-    xmlDSigStatus		status;
+    xmlSecDSigStatus		status;
     xmlSecTransformPtr		preDigestMemBufMethod;
     xmlChar*			id;
     xmlChar*			uri;
@@ -149,10 +147,8 @@ XMLSEC_EXPORT int		xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr ds
 								xmlSecDSigCtxPtr dsigCtx,
 								xmlSecDSigReferenceOrigin origin); 
 XMLSEC_EXPORT void		xmlSecDSigReferenceCtxFinalize	(xmlSecDSigReferenceCtxPtr dsigRefCtx);
-XMLSEC_EXPORT int		xmlSecDSigReferenceCtxCalculate	(xmlSecDSigReferenceCtxPtr dsigRefCtx,
-								 xmlNodePtr tmpl);
-XMLSEC_EXPORT int		xmlSecDSigReferenceCtxVerify	(xmlSecDSigReferenceCtxPtr dsigRefCtx,
-								 xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, 
+								  xmlNodePtr node);
 XMLSEC_EXPORT void		xmlSecDSigReferenceCtxDebugDump	(xmlSecDSigReferenceCtxPtr dsigRefCtx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx,

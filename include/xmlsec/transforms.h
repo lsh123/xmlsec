@@ -252,6 +252,9 @@ XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform,
 								 const unsigned char* data,
 								 size_t dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int  			xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, 
+								 xmlNodePtr node,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformGetDataType(xmlSecTransformPtr transform,
 								 xmlSecTransformMode mode,
 								 xmlSecTransformCtxPtr transformCtx);

@@ -230,7 +230,7 @@ printRes
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format"
+    "--X509-skip-strict-checks --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" 

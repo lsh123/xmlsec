@@ -240,16 +240,13 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     keyItem.data = xmlSecBufferGetData(buffer);
     keyItem.len  = xmlSecBufferGetSize(buffer); 
 
-    /* this code is taken from PK11_CreateContextByRawKey function;
-     * somehow it just does not work for me */     
     slot = PK11_GetBestSlot(ctx->digestType, NULL);
     if(slot == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error=0x%08x",
-		    PR_GetError());
+		    "error code=%d", PORT_GetError());
 	return(-1);
     }
 	
@@ -260,8 +257,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_ImportSymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error=0x%08x",
-		    PR_GetError());
+		    "error code=%d", PORT_GetError());
         PK11_FreeSlot(slot);
 	return(-1);
     }
@@ -272,8 +268,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_CreateContextBySymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error=0x%08x",
-		    PR_GetError());
+		    "error code=%d", PORT_GetError());
 	PK11_FreeSymKey(symKey);
         PK11_FreeSlot(slot);
 	return(-1);
@@ -372,7 +367,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"PK11_DigestBegin",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);
 	}
 	transform->status = xmlSecTransformStatusWorking;
@@ -389,8 +384,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "PK11_DigestOp",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "error=0x%08x",
-			    PR_GetError());
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	    
@@ -413,7 +407,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "PK11_DigestFinal",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	    xmlSecAssert2(dgstSize > 0, -1);

@@ -101,7 +101,35 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataDesSet		(xmlSecKeyDataPtr data,
 	xmlSecNssTransformDes3CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDes3CbcGetKlass(void);
 
+
 #endif /* XMLSEC_NO_DES */
+
+/********************************************************************
+ *
+ * DSA transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+/**
+ * xmlSecNssKeyDataDsaId:
+ * 
+ * The DSA key klass.
+ */
+#define xmlSecNssKeyDataDsaId \
+	xmlSecNssKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataDsaGetKlass	(void);
+
+/**
+ * xmlSecNssTransformDsaSha1Id:
+ * 
+ * The DSA SHA1 signature transform klass.
+ */
+#define xmlSecNssTransformDsaSha1Id \
+	xmlSecNssTransformDsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass(void);
+
+#endif /* XMLSEC_NO_DSA */
 
 
 /********************************************************************
@@ -150,6 +178,34 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
 
 
 #endif /* XMLSEC_NO_HMAC */
+
+
+/********************************************************************
+ *
+ * RSA transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_RSA
+
+/**
+ * xmlSecNssKeyDataRsaId:
+ * 
+ * The RSA key klass.
+ */
+#define xmlSecNssKeyDataRsaId \
+	xmlSecNssKeyDataRsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataRsaGetKlass	(void);
+
+/**
+ * xmlSecNssTransformRsaSha1Id:
+ * 
+ * The RSA-SHA1 signature transform klass.
+ */
+#define xmlSecNssTransformRsaSha1Id	\
+	xmlSecNssTransformRsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
+
+#endif /* XMLSEC_NO_RSA */
 
 
 /********************************************************************

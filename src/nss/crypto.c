@@ -17,10 +17,12 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/nss/crypto.h>
+#include <xmlsec/nss/x509.h>
 
 static int		xmlSecNssKeysInit			(void);
 static int		xmlSecNssTransformsInit			(void);
@@ -76,9 +78,38 @@ xmlSecNssShutdown(void) {
  */
 int
 xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+    int ret;
+   
     xmlSecAssert2(mngr != NULL, -1);
 
-    /* TODO: add key data stores */
+#ifndef XMLSEC_NO_X509
+    /* create x509 store if needed */
+    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId) == NULL) {
+        xmlSecKeyDataStorePtr x509Store;
+
+        x509Store = xmlSecKeyDataStoreCreate(xmlSecNssX509StoreId);
+        if(x509Store == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataStoreCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecNssX509StoreId");
+            return(-1);
+        }
+
+        ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeysMngrAdoptDataStore",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecKeyDataStoreDestroy(x509Store);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_X509 */
+
     return(0);
 }
 
@@ -116,7 +147,7 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 		    NULL,
 		    "PK11_GenerateRandom",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "size=%d", size);
+		    "size=%d, error code=%d", size, PORT_GetError());
 	return(-1);    
     }    
     return(0);
@@ -148,6 +179,16 @@ xmlSecNssKeysInit(void) {
     }
 #endif /* XMLSEC_NO_DES */
 
+#ifndef XMLSEC_NO_DSA
+    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataDsaId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataDsaId)),
+		    "xmlSecKeyDataIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_DSA */    
 
 #ifndef XMLSEC_NO_HMAC  
     if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataHmacId) < 0) {
@@ -160,11 +201,53 @@ xmlSecNssKeysInit(void) {
     }
 #endif /* XMLSEC_NO_HMAC */    
 
+#ifndef XMLSEC_NO_RSA
+    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataRsaId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataRsaId)),
+		    "xmlSecKeyDataIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_X509
+    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataX509Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataX509Id)),
+		    "xmlSecKeyDataIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataRawX509CertId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataRawX509CertId)),
+		    "xmlSecKeyDataIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_X509 */
+
     return(0);
 }
 
 static int 
 xmlSecNssTransformsInit(void) {
+#ifndef XMLSEC_NO_SHA1    
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformSha1Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformSha1Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_HMAC
     if(xmlSecTransformIdsRegister(xmlSecNssTransformHmacSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -192,17 +275,28 @@ xmlSecNssTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_HMAC */
 
-
-#ifndef XMLSEC_NO_SHA1    
-    if(xmlSecTransformIdsRegister(xmlSecNssTransformSha1Id) < 0) {
+#ifndef XMLSEC_NO_DSA
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformDsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformSha1Id)),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformDsaSha1Id)),
 		    "xmlSecTransformIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_DSA */    
+
+#ifndef XMLSEC_NO_RSA
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformRsaSha1Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformRsaSha1Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+#endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_DES    
     if(xmlSecTransformIdsRegister(xmlSecNssTransformDes3CbcId) < 0) {
@@ -213,6 +307,7 @@ xmlSecNssTransformsInit(void) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES    
@@ -240,6 +335,7 @@ xmlSecNssTransformsInit(void) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+
 #endif /* XMLSEC_NO_AES */
 
     return(0);

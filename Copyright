@@ -10,6 +10,12 @@ nished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
 
+Portions of the Software were created using source code and/or APIs 
+governed by the Mozilla Public License (MPL). The MPL is available
+at http://www.mozilla.org/MPL/MPL-1.1.html. The MPL permits such
+portions to be distributed with code not governed by MPL, as long
+as the requirements of MPL are fulfilled for such portions.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FIT-
 NESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE

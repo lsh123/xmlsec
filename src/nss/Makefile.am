@@ -19,11 +19,16 @@ lib_LTLIBRARIES = \
 
 libxmlsec1_nss_la_SOURCES =\
 	app.c \
+	bignum.c \
 	ciphers.c \
 	crypto.c \
 	digests.c \
 	hmac.c \
+	pkikeys.c \
+	signatures.c \
 	symkeys.c \
+	x509.c \
+	x509vfy.c \
 	$(NULL)
 
 libxmlsec1_nss_la_LIBADD = \

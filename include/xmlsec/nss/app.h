@@ -40,8 +40,6 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeysMngrCertLoad	(xmlSecKeysMngrPtr mngr,
 									 const char *filename, 
 									 xmlSecKeyDataFormat format, 
 									 xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, 
-									 const char *path);
 #endif /* XMLSEC_NO_X509 */
 
 

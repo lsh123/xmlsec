@@ -137,6 +137,13 @@ typedef enum {
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
 
+/** 
+ * XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS:
+ *
+ * If the flag is set then we'll skip strict checking of certs and CRLs
+ */
+#define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS	0x00002000
+
 /**		
  * xmlSecKeyInfoCtx:
  * @userData:		the pointer to user data (xmlsec and xmlsec-crypto 

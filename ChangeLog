@@ -1,3 +1,13 @@
+Sun 14 Sep 2003 02:13:51 AM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* tests/testEnc.sh: added "--session-key <key>" paramater
+	to all tests with <EncryptedKey/> (problem reported by Wouter)
+
+Fri 12 Sep 2003 09:43:21 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/buffer.h src/buffer.c: added functions to convert 
+	binary buffer to hex string and vice versa (based on patch from Remy)
+
 Thu Sep 11 17:08:15 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/Makefile.am src/dl.c src/xmlsec-ltdl.h src/xmlsec-ltdl.patch 

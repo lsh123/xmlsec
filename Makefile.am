@@ -101,7 +101,8 @@ check-km: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testKeys.sh default tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
-check-dsig: $(TEST_APP) 	@($(PRECHECK_COMMANDS) && \
+check-dsig: $(TEST_APP) 	
+	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testDSig.sh default tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
 
 check-enc: $(TEST_APP) 

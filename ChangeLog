@@ -1,3 +1,7 @@
+Sat Feb  7 22:42:11 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/* src/* tests/*: added XKMS SOAP 1.2 bindings
+
 Thu Feb  5 23:37:24 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c include/* src/* tests/*: added XKMS SOAP 1.1 bindings

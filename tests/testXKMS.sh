@@ -109,6 +109,22 @@ execXkmsServerRequestTest \
     "--xkms-service http://www.example.com/xkms"
 
 execXkmsServerRequestTest \
+    "aleksey-xkms-01/bad-request-name" "not-supported" \
+    "--xkms-service http://www.example.com/xkms"
+
+execXkmsServerRequestTest \
+    "aleksey-xkms-01/soap12-locate-example-1" "no-match" \
+    "--xkms-service http://www.example.com/xkms --xkms-format soap-1.2"
+
+execXkmsServerRequestTest \
+    "aleksey-xkms-01/soap11-locate-example-1" "unsupported" \
+    "--xkms-service http://www.example.com/xkms --xkms-format soap-1.2"
+
+execXkmsServerRequestTest \
+    "aleksey-xkms-01/soap12-bad-request-name" "msg-invalid" \
+    "--xkms-service http://www.example.com/xkms --xkms-format soap-1.2"
+
+execXkmsServerRequestTest \
     "aleksey-xkms-01/soap11-locate-example-1" "no-match" \
     "--xkms-service http://www.example.com/xkms --xkms-format soap-1.1"
 
@@ -117,8 +133,9 @@ execXkmsServerRequestTest \
     "--xkms-service http://www.example.com/xkms --xkms-format soap-1.1"
 
 execXkmsServerRequestTest \
-    "aleksey-xkms-01/bad-request-name" "not-supported" \
-    "--xkms-service http://www.example.com/xkms"
+    "aleksey-xkms-01/soap11-bad-request-name" "msg-invalid" \
+    "--xkms-service http://www.example.com/xkms --xkms-format soap-1.1"
+
 
 rm -rf $tmpfile
 

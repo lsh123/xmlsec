@@ -39,6 +39,8 @@ static const xmlChar* xmlSecXkmsServerIds[] = { BAD_CAST "Id", NULL };
 #ifndef XMLSEC_NO_SOAP
 static int      xmlSecXkmsServerCtxWriteSoap11FatalError	(xmlSecXkmsServerCtxPtr ctx,
 							         xmlNodePtr envNode);
+static int      xmlSecXkmsServerCtxWriteSoap12FatalError	(xmlSecXkmsServerCtxPtr ctx,
+							         xmlNodePtr envNode);
 #endif /* XMLSEC_NO_SOAP */
 
 static int	xmlSecXkmsServerCtxRequestAbstractTypeNodeRead	(xmlSecXkmsServerCtxPtr ctx,
@@ -787,6 +789,40 @@ xmlSecXkmsServerCtxRequestUnwrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node,  x
         
         break;
     case xmlSecXkmsServerFormatSoap12:
+        /* verify that it is actually soap Envelope node */
+        if(xmlSecSoap12CheckEnvelope(node) != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12CheckEnvelope",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }   
+        
+        /* check that Body has exactly one entry */
+        if(xmlSecSoap12GetBodyEntriesNumber(node) != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12GetBodyEntriesNumber",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        /* this one enntry is our xkms request */
+        result = xmlSecSoap12GetBodyEntry(node, 0);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12GetBodyEntry",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
         break;
 #endif /* XMLSEC_NO_SOAP */
     default:
@@ -851,6 +887,26 @@ xmlSecXkmsServerCtxResponseWrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node, xml
         }
         break;
     case xmlSecXkmsServerFormatSoap12:
+        result = xmlSecSoap12CreateEnvelope(doc);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12CreateEnvelope",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        if(xmlSecSoap12AddBodyEntry(result, node) == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12AddBodyEntry",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
         break;
 #endif /* XMLSEC_NO_SOAP */
     default:
@@ -930,6 +986,29 @@ xmlSecXkmsServerCtxFatalErrorResponseCreate(xmlSecXkmsServerCtxPtr ctx, xmlSecXk
                 
         break;
     case xmlSecXkmsServerFormatSoap12:
+        result = xmlSecSoap12CreateEnvelope(doc);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12CreateEnvelope",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        ret = xmlSecXkmsServerCtxWriteSoap12FatalError(ctx, result);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerCtxWriteSoap12FatalError",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            xmlFreeNode(result);
+	    return(NULL);
+        }
+                
         break;
 #endif /* XMLSEC_NO_SOAP */
     default:
@@ -962,7 +1041,7 @@ xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr 
         /* we were not able to parse the envelope or its general version mismatch error */
         faultCodeHref = xmlSecSoap11Ns;
         faultCodeLocalPart = xmlSecSoapFaultCodeVersionMismatch;
-        faultString = xmlStrdup(xmlSecSoapFaultStringUnsupportedVersion);
+        faultString = xmlStrdup(xmlSecXkmsSoapFaultReasonUnsupportedVersion);
         if(faultString == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
 		        NULL,
@@ -979,7 +1058,7 @@ xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr 
         faultCodeLocalPart = xmlSecSoapFaultCodeClient;
 
         len = xmlStrlen(BAD_CAST xmlSecErrorsSafeString(ctx->requestNode->name)) +
-              xmlStrlen(xmlSecSoapFaultStringMessageInvalid) + 1;
+              xmlStrlen(xmlSecXkmsSoapFaultReasonMessageInvalid) + 1;
         faultString = xmlMalloc(len + 1);
         if(faultString == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -990,14 +1069,14 @@ xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr 
 	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
             return(-1);
         }
-        xmlSecStrPrintf(faultString, len , xmlSecSoapFaultStringMessageInvalid,
+        xmlSecStrPrintf(faultString, len , xmlSecXkmsSoapFaultReasonMessageInvalid,
                         xmlSecErrorsSafeString(ctx->requestNode->name));        
     } else if((ctx->resultMajor == xmlSecXkmsResultMajorReceiver) &&
               (ctx->requestId == NULL)) {
         /* we understood the request but were not able to process it */
         faultCodeHref = xmlSecSoap11Ns;
         faultCodeLocalPart = xmlSecSoapFaultCodeServer;
-        faultString = xmlStrdup(xmlSecSoapFaultStringServiceUnavailable);
+        faultString = xmlStrdup(xmlSecXkmsSoapFaultReasonServiceUnavailable);
         if(faultString == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
 		        NULL,
@@ -1013,7 +1092,7 @@ xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr 
         faultCodeLocalPart = xmlSecSoapFaultCodeClient;
 
         len = xmlStrlen(BAD_CAST xmlSecErrorsSafeString(ctx->requestNode->name)) + 
-              xmlStrlen(xmlSecSoapFaultStringMessageNotSupported) + 1;
+              xmlStrlen(xmlSecXkmsSoapFaultReasonMessageNotSupported) + 1;
         faultString = xmlMalloc(len + 1);
         if(faultString == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1024,13 +1103,13 @@ xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr 
 	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
             return(-1);
         }
-        xmlSecStrPrintf(faultString, len , xmlSecSoapFaultStringMessageNotSupported,
+        xmlSecStrPrintf(faultString, len , xmlSecXkmsSoapFaultReasonMessageNotSupported,
                         xmlSecErrorsSafeString(ctx->requestNode->name));
     } else {
         /* just some error */
         faultCodeHref = xmlSecSoap11Ns;
         faultCodeLocalPart = xmlSecSoapFaultCodeServer;
-        faultString = xmlStrdup(xmlSecSoapFaultStringServiceUnavailable);
+        faultString = xmlStrdup(xmlSecXkmsSoapFaultReasonServiceUnavailable);
         if(faultString == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
 		        NULL,
@@ -1056,6 +1135,145 @@ xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr 
     xmlFree(faultString);    
     return(0);
 }
+
+static int 
+xmlSecXkmsServerCtxWriteSoap12FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr envNode) {
+    xmlSecSoap12FaultCode faultCode = xmlSecSoap12FaultCodeUnknown;
+    const xmlChar* faultSubCodeHref = NULL;
+    const xmlChar* faultSubCodeLocalPart = NULL;
+    xmlChar* faultReason = NULL;
+    int len;
+    xmlNodePtr faultNode;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(envNode != NULL, -1);
+
+    if((ctx->resultMajor == xmlSecXkmsResultMajorVersionMismatch) ||
+       (ctx->requestNode == NULL)) {
+        /* we were not able to parse the envelope or its general version mismatch error */
+        faultCode = xmlSecSoap12FaultCodeVersionMismatch;
+        faultReason = xmlStrdup(xmlSecXkmsSoapFaultReasonUnsupportedVersion);
+        if(faultReason == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+    } else if((ctx->resultMajor == xmlSecXkmsResultMajorSender) && 
+              (ctx->requestId == NULL)) {
+        /* we understood the request but were not able to parse input message */
+        faultCode = xmlSecSoap12FaultCodeSender;
+        faultSubCodeHref = xmlSecXkmsNs;
+        faultSubCodeLocalPart = xmlSecXkmsSoapSubcodeValueMessageNotSupported;
+
+        len = xmlStrlen(BAD_CAST xmlSecErrorsSafeString(ctx->requestNode->name)) +
+              xmlStrlen(xmlSecXkmsSoapFaultReasonMessageInvalid) + 1;
+        faultReason = xmlMalloc(len + 1);
+        if(faultReason == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlMalloc",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+        xmlSecStrPrintf(faultReason, len , xmlSecXkmsSoapFaultReasonMessageInvalid,
+                        xmlSecErrorsSafeString(ctx->requestNode->name));        
+    } else if((ctx->resultMajor == xmlSecXkmsResultMajorReceiver) &&
+              (ctx->requestId == NULL)) {
+        /* we understood the request but were not able to process it */
+        faultCode = xmlSecSoap12FaultCodeReceiver;
+        faultReason = xmlStrdup(xmlSecXkmsSoapFaultReasonServiceUnavailable);
+        if(faultReason == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+    } else if((ctx->requestId == NULL) && (ctx->requestNode != NULL)) {
+        /* we parsed the envelope but were not able to understand this request */
+        faultCode = xmlSecSoap12FaultCodeSender;
+        faultSubCodeHref = xmlSecXkmsNs;
+        faultSubCodeLocalPart = xmlSecXkmsSoapSubcodeValueBadMessage;
+
+        len = xmlStrlen(BAD_CAST xmlSecErrorsSafeString(ctx->requestNode->name)) + 
+              xmlStrlen(xmlSecXkmsSoapFaultReasonMessageNotSupported) + 1;
+        faultReason = xmlMalloc(len + 1);
+        if(faultReason == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlMalloc",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+        xmlSecStrPrintf(faultReason, len , xmlSecXkmsSoapFaultReasonMessageNotSupported,
+                        xmlSecErrorsSafeString(ctx->requestNode->name));
+    } else {
+        /* just some error */
+        faultCode = xmlSecSoap12FaultCodeReceiver;
+        faultReason = xmlStrdup(xmlSecXkmsSoapFaultReasonServiceUnavailable);
+        if(faultReason == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+    }
+    xmlSecAssert2(faultCode != xmlSecSoap12FaultCodeUnknown, -1);
+    xmlSecAssert2(faultReason != NULL, -1);
+    
+    faultNode = xmlSecSoap12AddFaultEntry(envNode, faultCode, faultReason, 
+                                    xmlSecXkmsSoapFaultReasonLang, NULL, NULL);
+    if(faultNode == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSoap12AddFaultEntry",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+        xmlFree(faultReason);    
+        return(-1);
+    }
+    xmlFree(faultReason);    
+
+    if((faultSubCodeHref != NULL) && (faultSubCodeLocalPart != NULL)) {
+        /* make sure that we have subcode (xkms) namespace declared */
+        if(xmlNewNs(faultNode, faultSubCodeHref, BAD_CAST "xkms") == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlNewNs",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        "ns=%s",
+		        xmlSecErrorsSafeString(faultSubCodeHref));
+            return(-1);
+        }
+        if(xmlSecSoap12AddFaultSubcode(faultNode, faultSubCodeHref, faultSubCodeLocalPart) == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap12AddFaultSubcode",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "href=%s,value=%s",
+		        xmlSecErrorsSafeString(faultSubCodeHref),
+		        xmlSecErrorsSafeString(faultSubCodeLocalPart));
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
 #endif /* XMLSEC_NO_SOAP */
 
 

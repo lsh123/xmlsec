@@ -71,6 +71,9 @@ XMLSEC_EXPORT xmlDocPtr		xmlSecCreateTree	(const xmlChar* rootNodeName,
 							 const xmlChar* rootNodeNs);
 XMLSEC_EXPORT int		xmlSecIsEmptyNode	(xmlNodePtr node);
 XMLSEC_EXPORT int		xmlSecIsEmptyString	(const xmlChar* str);
+XMLSEC_EXPORT xmlChar*		xmlSecGetQName		(xmlNodePtr node,
+							 const xmlChar* href,
+							 const xmlChar* local);
 
 /**
  * xmlSecIsHex:
@@ -108,8 +111,6 @@ struct _xmlSecQName2IntegerInfo {
     const xmlChar*      qnameLocalPart;
     int       		intValue;
 };
-XMLSEC_EXPORT xmlChar* 		xmlSecQName2IntegerGetString	(xmlSecQName2IntegerInfoConstPtr info,
-								 xmlNodePtr node);
 XMLSEC_EXPORT xmlSecQName2IntegerInfoConstPtr xmlSecQName2IntegerGetInfo	
 								(xmlSecQName2IntegerInfoConstPtr info,
 								 int intValue);
@@ -167,8 +168,6 @@ struct _xmlSecQName2BitMaskInfo {
     xmlSecBitMask       mask;
 };
 
-XMLSEC_EXPORT xmlChar* 		xmlSecQName2BitMaskGetString	(xmlSecQName2BitMaskInfoConstPtr info,
-								 xmlNodePtr node);
 XMLSEC_EXPORT xmlSecQName2BitMaskInfoConstPtr xmlSecQName2BitMaskGetInfo	
 								(xmlSecQName2BitMaskInfoConstPtr info,
 								 xmlSecBitMask mask);

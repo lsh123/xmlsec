@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Envelope xmlns="http://www.w3.org/2002/06/soap-envelope">
+<Body>
+<Fault xmlns:xkms="http://www.w3.org/2002/03/xkms#">
+<Code>xkms:MessageNotSupported</Code>
+<Reason>
+<Text xml:lang="en">InvalidRequest message invalid</Text>
+</Reason>
+</Fault>
+</Body>
+</Envelope>

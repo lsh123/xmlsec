@@ -718,45 +718,40 @@ xmlSecIsEmptyString(const xmlChar* str) {
     return(1);
 }
 
-
-/*************************************************************************
+/** 
+ * xmlSecGetQName:
+ * @node:		the context node.
+ * @href:		the QName href (can be NULL).
+ * @local:		the QName local part.
  *
- * QName <-> Integer mapping
+ * Creates QName (prefix:local) from @href and @local in the context of the @node.
+ * Caller is responsible for freeing returned string with xmlFree.
  *
- ************************************************************************/
-/**
- * xmlSecQName2IntegerInfoConstPtr:
- * @info:               the qname<->bit mask mapping information.
- * @node:               the context node.
- *
- * Creates qname from @info in the context of the @node. Caller is responsible
- * for freeing the returned string with @xmlFree function.
- *
- * Returns qname string or NULL if an error occurs.
+ * Returns qname or NULL if an error occurs.
  */
 xmlChar* 
-xmlSecQName2IntegerGetString(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node) {
-    xmlNsPtr ns;
+xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     xmlChar* qname;
-    
-    xmlSecAssert2(info != NULL, NULL);
+    xmlNsPtr ns;
+
     xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(local != NULL, NULL);
 
     /* we don't want to create namespace node ourselves because
      * it might cause collisions */
-    ns = xmlSearchNsByHref(node->doc, node, info->qnameHref);
-    if((ns == NULL) && (info->qnameHref != NULL)) {
+    ns = xmlSearchNsByHref(node->doc, node, href);
+    if((ns == NULL) && (href != NULL)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSearchNsByHref",
 	    	    XMLSEC_ERRORS_R_XML_FAILED,
 		    "node=%s,href=%s",
     		    xmlSecErrorsSafeString(node->name),
-    		    xmlSecErrorsSafeString(info->qnameHref));
+    		    xmlSecErrorsSafeString(href));
         return(NULL);
     }
 
-    qname = xmlBuildQName(info->qnameLocalPart, (ns != NULL) ? ns->prefix : NULL, NULL, 0);
+    qname = xmlBuildQName(local, (ns != NULL) ? ns->prefix : NULL, NULL, 0);
     if(qname == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -767,9 +762,15 @@ xmlSecQName2IntegerGetString(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
         return(NULL);
     }
     /* xmlBuildQName function may return just local part */
-    return ((qname != info->qnameLocalPart) ? qname : xmlStrdup(qname));
+    return ((qname != local) ? qname : xmlStrdup(qname));
 }
 
+
+/*************************************************************************
+ *
+ * QName <-> Integer mapping
+ *
+ ************************************************************************/
 /** 
  * xmlSecQName2IntegerGetInfo:
  * @info:               the qname<->integer mapping information.
@@ -944,7 +945,7 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
         return(NULL);
     }
     
-    return (xmlSecQName2IntegerGetString(qnameInfo, node));
+    return (xmlSecGetQName(node, qnameInfo->qnameHref, qnameInfo->qnameLocalPart));
 }
 
 /** 
@@ -1214,52 +1215,6 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
  * QName <-> Bits mask mapping
  *
  ************************************************************************/
-/**
- * xmlSecQName2uBitMaskInfoConstPtr:
- * @info:               the qname<->bit mask mapping information.
- * @node:               the context node.
- *
- * Creates qname from @info in the context of the @node. Caller is responsible
- * for freeing the returned string with @xmlFree function.
- *
- * Returns qname string or NULL if an error occurs.
- */
-xmlChar* 
-xmlSecQName2BitMaskGetString(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr node) {
-    xmlNsPtr ns;
-    xmlChar* qname;
-    
-    xmlSecAssert2(info != NULL, NULL);
-    xmlSecAssert2(node != NULL, NULL);
-
-    /* we don't want to create namespace node ourselves because
-     * it might cause collisions */
-    ns = xmlSearchNsByHref(node->doc, node, info->qnameHref);
-    if((ns == NULL) && (info->qnameHref != NULL)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSearchNsByHref",
-	    	    XMLSEC_ERRORS_R_XML_FAILED,
-		    "node=%s,href=%s",
-    		    xmlSecErrorsSafeString(node->name),
-    		    xmlSecErrorsSafeString(info->qnameHref));
-        return(NULL);
-    }
-
-    qname = xmlBuildQName(info->qnameLocalPart, (ns != NULL) ? ns->prefix : NULL, NULL, 0);
-    if(qname == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlBuildQName",
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(node->name));
-        return(NULL);
-    }
-    /* xmlBuildQName function may return just local part */
-    return ((qname != info->qnameLocalPart) ? qname : xmlStrdup(qname));
-}
-
 /** 
  * xmlSecQName2BitMaskGetInfo:
  * @info:               the qname<->bit mask mapping information.
@@ -1436,7 +1391,7 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
         return(NULL);
     }
     
-    return(xmlSecQName2BitMaskGetString(qnameInfo, node));
+    return(xmlSecGetQName(node, qnameInfo->qnameHref, qnameInfo->qnameLocalPart));
 }
 
 /** 
@@ -1543,11 +1498,11 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
             xmlNodePtr cur;
             xmlChar* qname;
             
-            qname = xmlSecQName2BitMaskGetString(&info[ii], node);
+	    qname = xmlSecGetQName(node, info[ii].qnameHref, info[ii].qnameLocalPart);
             if(qname == NULL) {
 	        xmlSecError(XMLSEC_ERRORS_HERE,
 		            NULL,
-		            "xmlSecQName2BitMaskGetString",
+		            "xmlSecGetQName",
 	    	            XMLSEC_ERRORS_R_XML_FAILED,
 		            "node=%s",
 		            xmlSecErrorsSafeString(nodeName));

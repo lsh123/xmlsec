@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CompoundRequest xmlns="http://www.w3.org/2002/03/xkms#" Id="Ie383fac377f1e54d2b26596c072b8b7a" Service="http://www.example.com/xkms">
-  <LocateRequest Id="I97a5c09bff0fe094d27facf5e5adb206" Service="http://www.example.com/xkms">
+<CompoundRequest xmlns="http://www.w3.org/2002/03/xkms#" 
+		 Id="Ie383fac377f1e54d2b26596c072b8b7a" 
+		 Service="http://www.example.com/xkms">
+  <LocateRequest Id="I97a5c09bff0fe094d27facf5e5adb206" 
+		 Service="http://www.example.com/xkms">
     <RespondWith>KeyValue</RespondWith>
     <QueryKeyBinding>
       <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -31,7 +34,8 @@ AQEEBQADQQAKRCJXl5CTvvDN5jMaawgGU4DYDpvKmJbMKIV7XM+ZXBFnvcooUSIy
       <KeyUsage>Signature</KeyUsage>
     </QueryKeyBinding>
   </LocateRequest>
-  <LocateRequest Id="Icf173d33d71c80c74589c6204f7aeb4f" Service="http://www.example.com/xkms">
+  <LocateRequest Id="Icf173d33d71c80c74589c6204f7aeb4f" 
+		 Service="http://www.example.com/xkms">
     <RespondWith>KeyName</RespondWith>
     <RespondWith>KeyValue</RespondWith>
     <RespondWith>X509Cert</RespondWith>

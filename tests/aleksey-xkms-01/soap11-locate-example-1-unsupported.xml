@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Envelope xmlns="http://www.w3.org/2002/06/soap-envelope">
+<Body>
+<Fault>
+<Code>
+<Value>VersionMismatch</Value>
+</Code>
+<Reason>
+<Text xml:lang="en">Unsupported SOAP version</Text>
+</Reason>
+</Fault>
+</Body>
+</Envelope>

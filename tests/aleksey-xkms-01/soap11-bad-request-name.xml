@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+  <env:Body>
+    <xkms:InvalidRequest xmlns:ds="http://www.w3.org/2000/09/xmldsig#" 
+		    xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" 
+		    xmlns:xkms="http://www.w3.org/2002/03/xkms#" 
+		    Id="aleksey_xkms_01_bad_request_name" 
+		    Service="http://www.example.com/xkms" 
+		    Nonce="NhdGUxFjAUBgNVBAMTDUFsZWtzZXkasdfgU2Fu" 
+		    ResponseLimit="5" >
+	<xkms:RespondWith>KeyName</xkms:RespondWith>
+    </xkms:InvalidRequest>
+  </env:Body>
+</env:Envelope>

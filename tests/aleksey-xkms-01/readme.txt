@@ -59,9 +59,12 @@ xkms:OpaqueClientData nodes).
 from XKMS 2.0 spec 
     
     * soap12-locate-example-1.xml	- SOAP 1.2 LocateRequest file.
+    * soap12-locate-example-1-no-match.xml	
+					- SOAP 1.2 LocateResult: "NoMatch" 
+					error (key not found).
     * soap12-locate-example-1-unsupported.xml	
-					- Processing SOAP 1.2 with SOAP 1.1:
-					 "Unsupported SOAP Version": 
+					- Processing SOAP 1.2 request with 
+					SOAP 1.1: "Unsupported SOAP Version": 
             
 1.8) soap11-locate-example-1 (SOAP 1.1 LocateRequest example 3.1.2 
 from XKMS 2.0 spec 
@@ -70,10 +73,24 @@ from XKMS 2.0 spec
     * soap11-locate-example-1-no-match.xml	
 					- SOAP 1.1 LocateResult: "NoMatch" 
 					error (key not found).
+    * soap11-locate-example-1-unsupported.xml	
+					- Processing SOAP 1.1 request with 
+					SOAP 1.2: "Unsupported SOAP Version": 
 
 1.9) bad-request-name (A request with invalid node name).
   bad-request-name.xml			- Invalid request file.    
   bad-request-name-not-supported.xml	- Result: MessageNotSupported error.
+
+1.10) soap12-bad-request-name (SOAP 1.2 request with invalid node name).
+  soap12-bad-request-name.xml		- SOAP 1.2 Invalid request file.    
+  soap12-bad-request-name-not-supported.xml 	
+					- SOAP 1.2 Result: MessageNotSupported error.
+
+1.11) soap11-bad-request-name (SOAP 1.1 request with invalid node name).
+  soap11-bad-request-name.xml		- SOAP 1.1 Invalid request file.    
+  soap11-bad-request-name-not-supported.xml 	
+					- SOAP 1.1 Result: MessageNotSupported error.
+
 
 2) Keys and certificates (private keys are encrypted with password "secret")
   keys/create-keys.sh		- shell script to create the keys and certificates chain

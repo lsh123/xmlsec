@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ValidateRequest xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns="http://www.w3.org/2002/03/xkms#" Id="Ic4d10f0affff49382b021a820613fa71" Service="http://www.example.com/xkms">
+<ValidateRequest xmlns:ds="http://www.w3.org/2000/09/xmldsig#" 
+		 xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" 
+		 xmlns="http://www.w3.org/2002/03/xkms#" 
+		 Id="Ic4d10f0affff49382b021a820613fa71" 
+		 Service="http://www.example.com/xkms">
   <RespondWith>KeyName</RespondWith>
   <QueryKeyBinding>
     <ds:KeyInfo>

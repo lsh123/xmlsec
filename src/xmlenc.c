@@ -354,7 +354,15 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     }
     
     /* close the buffer and flush everything */
-    xmlOutputBufferClose(output);
+    ret = xmlOutputBufferClose(output);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlOutputBufferClose",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
 
     encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, -1);

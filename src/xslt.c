@@ -308,7 +308,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 	docOut = xsltApplyStylesheet(ctx->xslt, docIn, NULL);
 	if(docOut == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
+		        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xsltApplyStylesheet",
 			XMLSEC_ERRORS_R_XSLT_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -321,7 +321,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 	    output = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
 	    if(output == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
+		    	    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecTransformCreateOutputBuffer",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -332,7 +332,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 	    output = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
 	    if(output == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecBufferCreateOutputBuffer",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -344,7 +344,7 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 	ret = xsltSaveResultTo(output, docOut, ctx->xslt);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
+		        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xsltSaveResultTo",
 			XMLSEC_ERRORS_R_XSLT_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -352,7 +352,16 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 	    xmlFreeDoc(docOut);
 	    return(-1);
 	}
-	xmlOutputBufferClose(output);
+	ret = xmlOutputBufferClose(output);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlOutputBufferClose",
+			XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlFreeDoc(docOut);
+	    return(-1);
+	}
 	xmlFreeDoc(docOut);
 
 	transform->status = xmlSecTransformStatusFinished;
@@ -479,6 +488,18 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
+
+    ret = xmlOutputBufferClose(output);
+    output = NULL;
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlOutputBufferClose",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
     res = 0;
 
 done:   

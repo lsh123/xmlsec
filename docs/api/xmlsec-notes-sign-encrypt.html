@@ -53,10 +53,13 @@
 	process and stores the required temporary data.
 	  </p>
 <div class="FIGURE">
-<a name="AEN38"></a><p><b>Figure 2. The signature or encryption processing model.</b></p>
+<a name="AEN49"></a><p><b>Figure 2. The signature or encryption processing model.</b></p>
 <p><img src="images/sign-enc-model.png" align="CENTER"></p>
 </div>
-	<p>The typical siganture process includes following steps:
+	<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="AEN52"></a>Signing a document.</h2>
+<p>The typical siganture process includes following steps:
 	  </p>
 <p></p>
 <ul>
@@ -86,13 +89,76 @@
 		functions.
 	    </p></li>
 </ul>
-<p>TODO: example signature
-	     </p>
+<p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN68"></a><p><b>Example 1. Signing a template</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"></pre></td></tr></table>
+<a name="AEN81"></a><p><b>Example 3. Signing a template</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
+sign_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
+    if(dsigCtx-&gt;signKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,&quot;Error: signature failed\n&quot;);
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
+		</pre></td></tr></table>
 </div>
-	<p>The typical encryption process includes following steps:
+	</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="AEN84"></a>Encrypting a document</h2>
+<p>The typical encryption process includes following steps:
 	  </p>
 <p></p>
 <ul>
@@ -132,7 +198,13 @@
 		functions.
 	    </p></li>
 </ul>
-<p>TODO: example encryption</p>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN122"></a><p><b>Example 4. Encrypting a document.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
+		</pre></td></tr></table>
+</div>
+	</div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">

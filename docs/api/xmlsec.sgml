@@ -111,9 +111,67 @@
 	code might be general enough so switching crypto engine would be 
 	a matter of changing several #include directives.</para>
     </sect1>
+    <sect1 id="xmlsec-compiling">
+	<title>Compiling and linking</title>
+	<para>TODO</para>
+    </sect1>
     <sect1 id="xmlsec-notes-init-shutdown">
-      <title>Initialization and shutdown.</title>
-      <para>TODO: example</para>
+        <title>Initialization and shutdown.</title>
+        <para>TODO</para>
+	<para>
+	     <example>
+		<title>Initializing application.</title>
+		<programlisting><![CDATA[
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) < 0) {
+	fprintf(stderr, "Error: crypto initialization failed.\n");
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() < 0) {
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	return(-1);
+    }
+		]]></programlisting>
+	    </example>
+	</para>
+	<para>
+	     <example>
+		<title>Shutdown application.</title>
+		<programlisting><![CDATA[
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();		
+		]]></programlisting>
+	    </example>
+	</para>
     </sect1>
     <sect1 id="xmlsec-notes-sign-encrypt">
       <title>Signing and encrypting documents.</title>
@@ -131,6 +189,8 @@
 	    <graphic fileref="images/sign-enc-model.png" align="center" />
 	  </figure>
 	</para>
+	<sect2>
+	<title>Signing a document.</title>
 	<para>The typical siganture process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -167,13 +227,77 @@
 	    </para></listitem>
 	  </itemizedlist>
 	</para>
-	<para>TODO: example signature
+	<para>
 	     <example>
 		<title>Signing a template</title>
-		<programlisting></programlisting>
+		<programlisting><![CDATA[
+int 
+sign_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+	goto done;	
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,"Error: failed to create signature context\n");
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
+    if(dsigCtx->signKey == NULL) {
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, node) < 0) {
+        fprintf(stderr,"Error: signature failed\n");
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
+		]]></programlisting>
 	    </example>
 	</para>
-
+	</sect2>
+	
+	<sect2>
+	<title>Encrypting a document</title>
 	<para>The typical encryption process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -220,7 +344,15 @@
 	    </para></listitem>
 	  </itemizedlist>
 	</para>
-	<para>TODO: example encryption</para>
+	<para>
+	     <example>
+		<title>Encrypting a document.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
+	</sect2>
     </sect1>
     <sect1 id="xmlsec-notes-verify-decrypt">
       <title>Verifing and decrypting documents.</title>
@@ -270,7 +402,13 @@
 	    </para></listitem>
 	  </itemizedlist>
 	</para>
-	<para>TODO: example signature
+	<para>
+	     <example>
+		<title>Verifying a document.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
 	</para>
 	<para>The typical decryption process includes following steps:
 	  <itemizedlist>
@@ -301,7 +439,14 @@
 	    </para></listitem>
 	  </itemizedlist>
 	</para>
-	<para>TODO: example encryption</para>
+	<para>
+	     <example>
+		<title>Decrypting a document.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
     </sect1>
     <sect1 id="xmlsec-notes-keysmngr">
         <title>Keys and keys manager.</title>
@@ -356,7 +501,14 @@
 	manager each time it needs to perform XML signature, verification, 
 	encryption or decryption.
 	</para>
-	<para>TODO: example</para>
+	<para>
+	     <example>
+		<title>Initializing keys manager and loading keys.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
     </sect1>
     <sect1 id="xmlsec-notes-transforms">
 	<title>Transforms and transforms chain.</title>
@@ -414,12 +566,18 @@
 	    <graphic fileref="images/transforms-chain.png" align="center" />
 	</figure>	 
 
-
-	<para>TODO: example</para>
+	<para>
+	     <example>
+		<title>Walking through transforms chain.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
     </sect1>
     <sect1 id="xmlsec-notes-templates">
 	<title>Creating dynamic templates.</title>
-	<para>    
+	<para>TODO</para>    
     <figure>
     <title>XML Digital Signature Structure</title>
     <programlisting>
@@ -439,6 +597,16 @@
         &lt;/Signature&gt;
     </programlisting>
     </figure>
+	<para>
+	     <example>
+		<title>Creating dynamic signature template.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
+
+	<para>TODO</para>
     <figure>
     <title>XML Encryption Structure</title>
     <programlisting>
@@ -459,13 +627,25 @@
         &lt;/EncryptedData&gt;	
 	</programlisting>
     </figure>
-</para>
-	<para>TODO: example signature</para>
-	<para>TODO: example encryption</para>
+	<para>
+	     <example>
+		<title>Creating dynamic encrytion template.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
     </sect1>
     <sect1 id="xmlsec-notes-cusomize-signature">
 	<title>Customizing signature and verification process.</title>
-	<para>TODO: example</para>
+	<para>
+	     <example>
+		<title>SAML signature validation.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
     </sect1>
     <sect1 id="xmlsec-notes-customize-encryption">
 	<title>Customizing encryption and decryption process.</title>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+        <DigestValue>9H/rQr2Axe9hYTV2n/tCp+3UIQT=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>Nhl8HyO7WFMMDXOcrVLz5CJq2V8sPkwgiy1rMGD7d/SY7pWr2tyJpoV3dtMIT24F
+bSFhVnYTtBmxbuYMACRITa2IkwD0gQnrffPhLdYHcoJmznZjbEHjMqBltCCdmRQm
+y4eU2KjrPfIsW1kxz8pO5K5onRXsGqF6OR9IqCF16HhcHjy2lo+s993J8/63GPW1
+bNe7bJEIQJ+FIK3xKxdF/tPBKBKPIJz3wq9aV19uD16571DJZacEgddrWNQ8isX2
+n4nzQ8Rz+U/O5S0AXuJ1nnnnZLzJLo8XwpCOJEKa5I8S4oUVSn6rF8Hud1FgXRq+
+HBC+Dk+vxMHZz4WEtq6aI6==</SignatureValue>
+  </Signature>
+</Envelope>

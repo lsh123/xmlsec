@@ -1,0 +1,19 @@
+This folder contains XML Security Library examples.
+
+Files List:	
+    Makefile			Makefile for building all the examples.
+    rsakey.pem			Private PEM key file.
+    rsapub.pem			Public PEM key file.
+    dsig1.c			Signing a template file.
+    dsig1-tmpl.xml		The template file for dsig1 example.
+    dsig1-res.xml		The result of processing dsig1_tmpl.xml 
+				with dsig1 example:
+				    ./dsig1 ./dsig1-tmpl.xml rsakey.pem > dsig1-res.xml
+    dsig2.c			
+    dsig3.c	
+    dsig4.c
+    enc1.c
+    enc2.c
+
+
+

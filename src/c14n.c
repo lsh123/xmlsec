@@ -271,7 +271,15 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 	return(-1);
     }
     
-    xmlOutputBufferClose(buf);
+    ret = xmlOutputBufferClose(buf);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlOutputBufferClose",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
     transform->status = xmlSecTransformStatusFinished;
     return(0);
 }
@@ -339,8 +347,15 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
 	    xmlOutputBufferClose(buf);
 	    return(-1);
 	}
-	xmlOutputBufferClose(buf);
-	
+	ret = xmlOutputBufferClose(buf);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlOutputBufferClose",
+			XMLSEC_ERRORS_R_XML_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
 	transform->status = xmlSecTransformStatusWorking;
     }
     

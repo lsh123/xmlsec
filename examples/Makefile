@@ -1,7 +1,7 @@
 #
 #
 #
-PROGRAM		 = dsig1
+PROGRAMS	 = dsig1
 
 cc	 	 = gcc
 CC	 	 = gcc
@@ -9,11 +9,13 @@ LD	 	 = gcc
 
 CFLAGS		+= -g $(shell xmlsec-config --cflags)
 LDFLAGS		+= -g
-LIBS 		+= -static $(shell xmlsec-config --libs) 
+LIBS 		+= $(shell xmlsec-config --libs) 
 
-$(PROGRAM):  $(PROGRAM).c 
-	$(cc) $(LDFLAGS) $(CFLAGS) -o $(PROGRAM) $(PROGRAM).c $(LIBRARY) $(LIBS) 
+all: $(PROGRAMS)
+
+%: %.c 
+	$(cc) $< $(LDFLAGS) $(CFLAGS) -o $@ $(PROGRAM) $(LIBRARY) $(LIBS)
 
 clean:
-	@rm -rf $(PROGRAM)
+	@rm -rf $(PROGRAMS)
 

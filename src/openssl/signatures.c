@@ -275,7 +275,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);    
-    xmlSecAssert2(outSize == 0, -1);
     
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -283,6 +282,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     xmlSecAssert2(ctx->pKey != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
+	xmlSecAssert2(outSize == 0, -1);
+	
 	if(transform->operation == xmlSecTransformOperationSign) {
 #ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_SignInit(&(ctx->digestCtx), ctx->digest);
@@ -316,6 +317,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     }
     
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
+	xmlSecAssert2(outSize == 0, -1);
+
 	if(transform->operation == xmlSecTransformOperationSign) {
 #ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
@@ -358,6 +361,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+	xmlSecAssert2(outSize == 0, -1);
 	if(transform->operation == xmlSecTransformOperationSign) {
 	    /* this is a hack: for rsa signatures 
 	     * we get size from EVP_PKEY_size(),

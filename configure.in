@@ -931,18 +931,27 @@ dnl ==========================================================================
 rm -f rm COPYING.LIB COPYING
 ln -s $srcdir/Copyright COPYING
 
+if test "$OPENSSL_WITHOUT" = "no"
+then
+AC_OUTPUT([include/xmlsec/openssl/Makefile src/openssl/Makefile])
+fi
+
+if test "$GNUTLS_WITHOUT" = "no"
+then
+AC_OUTPUT([include/xmlsec/gnutls/Makefile src/gnutls/Makefile])
+fi
+
+if test "$NSS_WITHOUT" = "no"
+then
+AC_OUTPUT([include/xmlsec/nss/Makefile src/nss/Makefile])
+fi
+
 AC_OUTPUT([
 include/xmlsec/version.h
 Makefile
 include/Makefile
 include/xmlsec/Makefile
-include/xmlsec/openssl/Makefile
-include/xmlsec/gnutls/Makefile
-include/xmlsec/nss/Makefile
 src/Makefile
-src/openssl/Makefile
-src/gnutls/Makefile
-src/nss/Makefile
 apps/Makefile
 docs/Makefile
 docs/api/Makefile

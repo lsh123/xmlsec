@@ -1,3 +1,7 @@
+Sun Jun  8 20:08:42 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: fix for 'make distclean'
+
 Sat Jun  7 20:35:25 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am apps/* include/xmlsec/keysdata.h src/openssl/app.c tests/*: 

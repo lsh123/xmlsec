@@ -51,6 +51,8 @@ XMLSEC_OPENSSL_INTDIR   = $(XMLSEC_BASENAME)_openssl.int
 XMLSEC_OPENSSL_INTDIR_A = $(XMLSEC_BASENAME)_openssl_a.int
 XMLSEC_NSS_INTDIR       = $(XMLSEC_BASENAME)_nss.int
 XMLSEC_NSS_INTDIR_A     = $(XMLSEC_BASENAME)_nss_a.int
+XMLSEC_MSCRYPTO_INTDIR  = $(XMLSEC_BASENAME)_mscrypto.int
+XMLSEC_MSCRYPTO_INTDIR_A= $(XMLSEC_BASENAME)_mscrypto_a.int
 XMLSEC_APPS_INTDIR      = apps.int
 XMLSEC_APPS_INTDIR_A    = apps_a.int
 
@@ -197,6 +199,38 @@ XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\kw_aes.obj\
 	$(XMLSEC_NSS_INTDIR_A)\strings.obj
 
+# xmlsec-mscrypto object files.
+XMLSEC_MSCRYPTO_OBJS = \
+	$(XMLSEC_MSCRYPTO_INTDIR)\app.obj\
+	$(XMLSEC_MSCRYPTO_INTDIR)\crypto.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\ciphers.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\digests.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\symkeys.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\kt_rsa.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\hmac.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\strings.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\signatures.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\certkeys.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\keysstore.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\msx509.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\x509vfy.obj
+
+# static xmlsec-mscrypto object files.
+XMLSEC_MSCRYPTO_OBJS_A = \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\app.obj\
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\crypto.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\ciphers.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\digests.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\symkeys.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\hmac.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\kt_rsa.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\strings.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\signatures.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\certkeys.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\keysstore.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\msx509.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\x509vfy.obj
+
 # configurable options
 !if "$(WITH_LIBXSLT)" == "1"
 !else 
@@ -237,6 +271,18 @@ XMLSEC_CRYPTO_SRCDIR   = $(XMLSEC_SRCDIR)\nss
 XMLSEC_CRYPTO_CFLAGS   = /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_CRYPTO=\"nss\""
 XMLSEC_CRYPTO_SOLIBS   = smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib	
 XMLSEC_CRYPTO_ALIBS    = smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib
+!endif
+
+!if "$(WITH_CRYPTO)" == "mscrypto"
+XMLSEC_CRYPTO          = "mscrypto"
+XMLSEC_CRYPTO_OBJS     = $(XMLSEC_MSCRYPTO_OBJS)
+XMLSEC_CRYPTO_OBJS_A   = $(XMLSEC_MSCRYPTO_OBJS_A)
+XMLSEC_CRYPTO_INTDIR   = $(XMLSEC_MSCRYPTO_INTDIR)
+XMLSEC_CRYPTO_INTDIR_A = $(XMLSEC_MSCRYPTO_INTDIR_A)
+XMLSEC_CRYPTO_SRCDIR   = $(XMLSEC_SRCDIR)\mscrypto
+XMLSEC_CRYPTO_CFLAGS   = /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_CRYPTO=\"mscrypto\""
+XMLSEC_CRYPTO_SOLIBS   = user32.lib gdi32.lib Crypt32.lib Advapi32.lib
+XMLSEC_CRYPTO_ALIBS    = user32.lib gdi32.lib Crypt32.lib Advapi32.lib
 !endif
 
 # Names of various input and output components.

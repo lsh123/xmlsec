@@ -32,6 +32,11 @@ extern "C" {
 #include <xmlsec/gnutls/crypto.h>
 #include <xmlsec/gnutls/symbols.h>
 #else /* XMLSEC_CRYPTO_GNUTLS */
+#ifdef XMLSEC_CRYPTO_MSCRYPTO
+#include <xmlsec/mscrypto/app.h>
+#include <xmlsec/mscrypto/crypto.h>
+#include <xmlsec/mscrypto/symbols.h>
+#else /* XMLSEC_CRYPTO_MSCRYPTO */
 #ifdef XMLSEC_CRYPTO_NSS
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
@@ -39,6 +44,7 @@ extern "C" {
 #else /* XMLSEC_CRYPTO_NSS */
 #error No crypto library defined
 #endif /* XMLSEC_CRYPTO_GNUTLS */
+#endif /* XMLSEC_CRYPTO_MSCRYPTO */
 #endif /* XMLSEC_CRYPTO_NSS */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 

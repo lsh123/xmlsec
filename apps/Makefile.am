@@ -12,9 +12,12 @@ $(LIBXML_CFLAGS) \
 $(NULL) 
 
 
-   
-xmlsec_LIBS = 
+if XMLSEC_DYNAMIC_LINKING
+xmlsec_LDFLAGS =
+else
 xmlsec_LDFLAGS = -static
+endif
+
 xmlsec_LDADD = \
 $(top_builddir)/src/libxmlsec.la \
 $(OPENSSL_LDADDS) \

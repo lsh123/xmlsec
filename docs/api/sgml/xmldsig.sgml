@@ -124,6 +124,9 @@ Destroys <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure <parameter
 } xmlSecReferenceType;
 </programlisting>
 <para>
+The possible &lt;dsig:Reference&gt; node locations: 
+in the &lt;dsig:SignedInfo&gt; node or in the &lt;dsig:Manifest&gt; node.</para>
+<para>
 
 </para></refsect2>
 <refsect2>

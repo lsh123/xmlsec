@@ -1,6 +1,6 @@
 37% symbol docs coverage.
-135 symbols documented.
-233 not documented.
+136 symbols documented.
+232 not documented.
 
 
 XMLSEC_BASE64_LINESIZE
@@ -153,7 +153,6 @@ xmlSecPKCS12ReadKey
 xmlSecParseFile
 xmlSecParseMemory
 xmlSecParseMemoryExt
-xmlSecReferenceType
 xmlSecReplaceContent
 xmlSecReplaceNode
 xmlSecReplaceNodeBuffer

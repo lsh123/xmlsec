@@ -28,8 +28,10 @@ typedef struct _xmlSecDSigCtx *xmlSecDSigCtxPtr;
 typedef struct _xmlSecDSigResult *xmlSecDSigResultPtr;
 typedef struct _xmlSecReferenceResult *xmlSecReferenceResultPtr;
 
-/** 
- * DSig context
+/**
+ * xmlSecDSigCtx:
+ *
+ * XML DSig context. 
  */
 typedef struct _xmlSecDSigCtx {
     /* keys */
@@ -53,7 +55,9 @@ typedef struct _xmlSecDSigCtx {
 } xmlSecDSigCtx;
 
 /**
- * DSig Result
+ * xmlSecDSigResult:
+ *
+ * XML DSig Result.
  */
 typedef struct _xmlSecDSigResult {
     xmlSecDSigCtxPtr		ctx;
@@ -71,13 +75,21 @@ typedef struct _xmlSecDSigResult {
 } xmlSecDSigResult;
 
 /**
- * DSig Reference
+ * xmlSecReferenceType:
+ * 
+ * The possible <dsig:Reference> node locations: 
+ * in the <dsig:SignedInfo> node or in the <dsig:Manifest> node.
  */
 typedef enum  {
     xmlSecSignedInfoReference,
     xmlSecManifestReference
 } xmlSecReferenceType;
 
+/**
+ * xmlSecReferenceResult:
+ *
+ * The result of <dsig:Reference> processing.
+ */
 typedef struct _xmlSecReferenceResult {
     xmlSecDSigCtxPtr		ctx;
     xmlNodePtr			self;

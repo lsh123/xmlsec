@@ -38,7 +38,7 @@ xmlSecBufferCreate(size_t size) {
 		    "sizeof(xmlSecBuffer)=%d", sizeof(xmlSecBuffer));
 	return(NULL);
     }
-
+    
     ret = xmlSecBufferInitialize(buf, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -49,7 +49,6 @@ xmlSecBufferCreate(size_t size) {
 	xmlSecBufferDestroy(buf);
 	return(NULL);
     }
-    
     return(buf);
 }
 
@@ -381,4 +380,56 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
     return(0);
 }
 
+
+/************************************************************************
+ *
+ * IO buffer
+ *
+ ************************************************************************/ 
+static int	xmlSecBufferIOWrite				(xmlSecBufferPtr buf,
+								 const unsigned char *data,
+								 size_t size);		
+static int	xmlSecBufferIOClose				(xmlSecBufferPtr buf);
+
+/**
+ * xmlSecBufferCreateOutputBuffer:
+ *
+ * Caller is responsible for destroying @buf (if necessary)
+ * when processing is done. 
+ */
+xmlOutputBufferPtr 
+xmlSecBufferCreateOutputBuffer(xmlSecBufferPtr buf) {
+    return(xmlOutputBufferCreateIO((xmlOutputWriteCallback)xmlSecBufferIOWrite,
+				     (xmlOutputCloseCallback)xmlSecBufferIOClose,
+				     buf,
+				     NULL)); 
+}
+
+static int 
+xmlSecBufferIOWrite(xmlSecBufferPtr buf, const unsigned char *data, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    
+    ret = xmlSecBufferAppend(buf, data, size);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecBuffer",
+		    "xmlSecBufferAppend",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "size=%d", size);
+	return(-1);
+    }
+    
+    return(size);    
+}
+
+static int 
+xmlSecBufferIOClose(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, -1);
+    
+    /* just do nothing */
+    return(0);
+}
 

@@ -220,7 +220,7 @@ xmlSecTransformXmlParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* n
     if(buf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecTransformPushXml",
+		    "xmlSecTransformCreateInputBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -298,6 +298,7 @@ xmlSecTransformXmlParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* n
 	return(-1);
     }	
     xmlSecNodeSetDocDestroy((*nodes)); /* this node set "owns" the doc pointer */
+    transform->status = xmlSecTransformStatusFinished;
     return(0);
 }
 

@@ -54,7 +54,20 @@ static int		xmlSecTransformC14NInitialize	(xmlSecTransformPtr transform);
 static void		xmlSecTransformC14NFinalize	(xmlSecTransformPtr transform);
 static int 		xmlSecTransformC14NReadNode	(xmlSecTransformPtr transform,
 							 xmlNodePtr node);
-static int 		xmlSecTransformC14NExec		(xmlSecTransformPtr transform,
+static int		xmlSecTransformC14NPushXml	(xmlSecTransformPtr transform, 
+							 xmlSecNodeSetPtr nodes,
+							 xmlSecTransformCtxPtr transformCtx);
+static int		xmlSecTransformC14NPopBin	(xmlSecTransformPtr transform, 
+							 unsigned char* data,
+							 size_t maxDataSize,
+							 size_t* dataSize,
+							 xmlSecTransformCtxPtr transformCtx);
+static int		xmlSecTransformC14NExecute	(xmlSecTransformId id, 
+							 xmlSecNodeSetPtr nodes, 
+							 xmlChar** nsList,
+							 xmlOutputBufferPtr buf);
+
+static int 		xmlSecTransformC14NOldExec	(xmlSecTransformPtr transform,
 							 xmlDocPtr doc,
 							 xmlSecNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
@@ -191,55 +204,224 @@ xmlSecTransformC14NReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     return(0);    
 }
 
-static int
-xmlSecTransformC14NExec(xmlSecTransformPtr transform, xmlDocPtr doc,
-			xmlSecNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
+
+static int 
+xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
+			    xmlSecTransformCtxPtr transformCtx) {
+    xmlOutputBufferPtr buf;
     xmlSecPtrListPtr nsList;
     int ret;
+    
+    xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
+    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(nodes->doc != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
+    /* check/update current transform status */
+    switch(transform->status) {
+    case xmlSecTransformStatusNone:
+	transform->status = xmlSecTransformStatusWorking;
+	break;
+    case xmlSecTransformStatusWorking:
+    case xmlSecTransformStatusFinished:
+	return(0);
+    default:
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "status=%d", transform->status);
+	return(-1);
+    }
+    xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
 
-    xmlSecAssert2(doc!= NULL, -1);
-    xmlSecAssert2(buffer != NULL, -1);
+    /* prepare output buffer: next transform or ourselves */
+    if(transform->next != NULL) {
+	buf = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
+	if(buf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformCreateOutputBuffer",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    } else {
+	buf = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
+	if(buf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecBufferCreateOutputBuffer",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }
 
-    if(transform == NULL) {
-	/* the default c14n transform */
-	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
-			nodes, 
-			0, NULL, 0, buffer);
-    } else if(xmlSecTransformCheckId(transform, xmlSecTransformInclC14NId)) {    
-    	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
-			nodes, 
-			0, NULL, 0, buffer);
-    } else if(xmlSecTransformCheckId(transform, xmlSecTransformInclC14NWithCommentsId)) {
-	 ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
-			nodes, 
-			0, NULL, 1, buffer); 
-    } else if(xmlSecTransformCheckId(transform, xmlSecTransformExclC14NId)) {
+    /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+     * all pointers in the big array */
+    nsList = xmlSecTransformC14NGetNsList(transform);
+    xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
+
+    ret = xmlSecTransformC14NExecute(transform->id, nodes, (xmlChar**)(nsList->data), buf);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformC14NExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlOutputBufferClose(buf);
+	return(-1);
+    }
+    
+    xmlOutputBufferClose(buf);
+    transform->status = xmlSecTransformStatusFinished;
+    return(0);
+}
+
+static int 
+xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
+			    size_t maxDataSize, size_t* dataSize,
+			    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBufferPtr out;
+    xmlSecPtrListPtr nsList;
+    int ret;
+        
+    xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    out = &(transform->outBuf);
+    if(transform->status == xmlSecTransformStatusNone) {
+	xmlOutputBufferPtr buf;
+	
+	xmlSecAssert2(transform->inNodes == NULL, -1);
+	
+	/* todo: isn't it an error? */
+	if(transform->prev == NULL) {
+	    (*dataSize) = 0;
+	    transform->status = xmlSecTransformStatusFinished;
+	    return(0);
+	}
+	
+	/* get xml data from previous transform */
+	ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformPopXml",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+		
+	/* dump everything to internal buffer */
+	buf = xmlSecBufferCreateOutputBuffer(out);
+	if(buf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecBufferCreateOutputBuffer",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+
 	/* we are using a semi-hack here: we know that xmlSecPtrList keeps
-	   all pointers in the big array */
+	 * all pointers in the big array */
 	nsList = xmlSecTransformC14NGetNsList(transform);
 	xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
+
+        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
+        if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformC14NExecute",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlOutputBufferClose(buf);
+	    return(-1);
+	}
+	xmlOutputBufferClose(buf);
 	
-	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
-			nodes, 
-			1, (xmlChar**)(nsList->data), 0, buffer);
-    } else if(xmlSecTransformCheckId(transform, xmlSecTransformExclC14NWithCommentsId)) {
-	/* we are using a semi-hack here: we know that xmlSecPtrList keeps
-	   all pointers in the big array */
-	nsList = xmlSecTransformC14NGetNsList(transform);
-	xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
+	transform->status = xmlSecTransformStatusWorking;
+    }
+    
+    if(transform->status == xmlSecTransformStatusWorking) {
+	size_t outSize;
 	
-	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
-			nodes, 
-			1, (xmlChar**)(nsList->data), 1, buffer);
+	/* return chunk after chunk */
+	outSize = xmlSecBufferGetSize(out);
+	if(outSize > maxDataSize) {	
+	    outSize = maxDataSize;
+	}
+	if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
+	    outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+	}
+	if(outSize > 0) {
+	    xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
+	
+	    memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
+	    ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
+    	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecBufferRemoveHead",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "size=%d", outSize);
+		return(-1);
+	    }	
+	} else if(xmlSecBufferGetSize(out) == 0) {
+	    transform->status = xmlSecTransformStatusFinished;
+	}
+	(*dataSize) = outSize;
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+	/* the only way we can get here is if there is no output */
+	xmlSecAssert2(xmlSecBufferGetSize(out) == 0, -1);
+	(*dataSize) = 0;
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "status=%d", transform->status);
+	return(-1);
+    }
+    
+    return(0);
+}
+
+static int 
+xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar** nsList, 
+			   xmlOutputBufferPtr buf) {
+    int ret; 
+    
+    xmlSecAssert2(id != xmlSecTransformIdUnknown, -1);
+    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(nodes->doc != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    /* execute c14n transform */
+    if(id == xmlSecTransformInclC14NId) {    
+    	ret = xmlC14NExecute(nodes->doc, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
+			nodes, 0, NULL, 0, buf);
+    } else if(id == xmlSecTransformInclC14NWithCommentsId) {
+	 ret = xmlC14NExecute(nodes->doc, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
+			nodes, 0, NULL, 1, buf); 
+    } else if(id == xmlSecTransformExclC14NId) {
+	ret = xmlC14NExecute(nodes->doc, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
+			nodes, 1, nsList, 0, buf);
+    } else if(id == xmlSecTransformExclC14NWithCommentsId) {
+	ret = xmlC14NExecute(nodes->doc, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
+			nodes, 1, nsList, 1, buf);
+    } else {
+	/* shoudn't be possible to come here, actually */
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(id->name),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -248,14 +430,19 @@ xmlSecTransformC14NExec(xmlSecTransformPtr transform, xmlDocPtr doc,
     
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    xmlSecErrorsSafeString(id->name),
 		    "xmlC14NExecute",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
-    }    
+    }
+    
     return(0);
 }
+
+
+
+
 
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
@@ -275,13 +462,13 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     NULL,				/* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NExec		/* xmlSecTransformC14NExecuteMethod executeC14N; */
+    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
 };
 
 xmlSecTransformId 
@@ -308,13 +495,13 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     NULL,				/* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NExec		/* xmlSecTransformC14NExecuteMethod executeC14N; */
+    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
 };
 
 xmlSecTransformId 
@@ -340,13 +527,13 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     NULL,				/* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NExec		/* xmlSecTransformC14NExecuteMethod executeC14N; */
+    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
 };
 
 xmlSecTransformId 
@@ -372,13 +559,13 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     NULL,				/* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NExec		/* xmlSecTransformC14NExecuteMethod executeC14N; */
+    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
 };
 
 xmlSecTransformId 
@@ -386,4 +573,51 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
     return(&xmlSecTransformExclC14NWithCommentsKlass);
 }
 
+
+
+
+
+/*************************** delete this asap :) ************************/
+static int
+xmlSecTransformC14NOldExec(xmlSecTransformPtr transform, xmlDocPtr doc,
+			xmlSecNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
+    xmlSecPtrListPtr nsList;
+    xmlSecNodeSetPtr myNodes = NULL;
+    int ret;
+
+
+    xmlSecAssert2(doc!= NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+     * all pointers in the big array */
+    if(transform != NULL) {
+	nsList = xmlSecTransformC14NGetNsList(transform);
+    	xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
+    } else {
+	nsList = NULL;
+    }
+    
+    if(nodes == NULL) {
+	nodes = myNodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetTree);
+    }
+    
+    /* the default c14n transform */
+    ret = xmlSecTransformC14NExecute((transform != NULL) ? transform->id : xmlSecTransformInclC14NId, 
+				     nodes, 
+				     (nsList != NULL) ? (xmlChar**)(nsList->data) : NULL, 
+				     buffer);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformC14NExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    if(myNodes) {
+	xmlSecNodeSetDestroy(myNodes);
+    }
+    return(0);
+}
 

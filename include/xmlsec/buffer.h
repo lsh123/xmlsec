@@ -69,6 +69,7 @@ XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,
 								 xmlNodePtr node,
 								 int columns);
 
+XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer	(xmlSecBufferPtr buf);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

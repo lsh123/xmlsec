@@ -26,6 +26,7 @@ io.c \
 digests.c \
 ciphers.c \
 sha1.c \
+ripemd160.c \
 hmac.c \
 c14n.c \
 dsa.c \

@@ -6,6 +6,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -16,18 +18,22 @@
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
+#include <xmlsec/io.h>
 
 const xmlChar xmlSecDSigNs[] = "http://www.w3.org/2000/09/xmldsig#";
 const xmlChar xmlSecEncNs[] = "http://www.w3.org/2001/04/xmlenc#";
+const xmlChar xmlSecNs[] = "http://www.aleksey.com/xmlsec/2002";
 
 
 void
 xmlSecInit(void) {
     xmlSecTransformsInit();
     xmlSecKeysInit();
+    xmlSecIOInit();
 }
 
 void
 xmlSecShutdown(void) {
+    xmlSecIOShutdown();
 }
 

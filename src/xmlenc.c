@@ -8,6 +8,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_XMLENC
  
 #include <stdlib.h>
@@ -26,6 +28,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/io.h>
 
 #include <xmlsec/xmlenc.h>
 
@@ -94,7 +97,7 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
  */
 xmlSecEncCtxPtr		
 xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncCtxCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncCtxCreate";
     xmlSecEncCtxPtr ctx;
     
     /*
@@ -123,7 +126,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
  */
 void
 xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncCtxDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncCtxDestroy";
     if(ctx == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -155,7 +158,7 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
 xmlNodePtr		
 xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
 		    const xmlChar *mimeType, const xmlChar *encoding) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataCreate";
     xmlNodePtr encNode;
     xmlNodePtr cipherData;
     
@@ -212,7 +215,7 @@ xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
  */
 void
 xmlSecEncDataDestroy(xmlNodePtr encNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataDestroy";
         
     if((encNode == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -235,7 +238,7 @@ xmlSecEncDataDestroy(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataAddEncMethod";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddEncMethod";
     xmlNodePtr encMethod;
     xmlNodePtr tmp;
     int ret;
@@ -296,7 +299,7 @@ xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
  */
 xmlNodePtr
 xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataAddKeyInfo";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddKeyInfo";
     xmlNodePtr keyInfo;
     xmlNodePtr prev;
     xmlNodePtr tmp;
@@ -348,7 +351,7 @@ xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataAddEncProperties";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddEncProperties";
     xmlNodePtr encProps;
         
     if((encNode == NULL)) {
@@ -394,7 +397,7 @@ xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
  */
 xmlNodePtr	
 xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id,  const xmlChar *target) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataAddEncProperty";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddEncProperty";
     xmlNodePtr encProp;
     xmlNodePtr encProps;
         
@@ -447,7 +450,7 @@ xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id,  const xmlCha
  */
 xmlNodePtr
 xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataAddCipherValue";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddCipherValue";
     xmlNodePtr cipherData;
     xmlNodePtr cipherValue;
     xmlNodePtr tmp;
@@ -512,7 +515,7 @@ xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncDataAddCipherReference";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncDataAddCipherReference";
     xmlNodePtr cipherRef;
     xmlNodePtr cipherData;    
     xmlNodePtr tmp;
@@ -581,7 +584,7 @@ xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  */
 xmlNodePtr
 xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, xmlSecTransformId transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherReferenceAddTransform";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherReferenceAddTransform";
     xmlNodePtr cipherData;
     xmlNodePtr cipherRef;    
     xmlNodePtr transforms;
@@ -665,10 +668,10 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, xmlSecTransformId transfor
  *
  */
 int
-xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
-		    const unsigned char *buf, size_t size,
+xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncryptMemory";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptMemory";
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     int ret;
@@ -692,6 +695,10 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
 #endif
 	return(-1);	    		
     }
+    if(key != NULL) {
+	res->key = xmlSecKeyDuplicate(key, key->origin);    
+    }
+    
 
     /**
      * create state
@@ -760,9 +767,15 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
  *
  */
 int
-xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode, 
-		const char *uri, xmlSecEncResultPtr *result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncryptUri";
+xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+		xmlNodePtr encNode, const char *uri, 
+		xmlSecEncResultPtr *result) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptUri";
+    xmlSecEncStatePtr state = NULL;
+    xmlSecEncResultPtr res = NULL;
+    xmlSecTransformPtr inputUri = NULL;
+    unsigned char buf[1024];
+    int ret;
 
     if((ctx == NULL) || (encNode == NULL) || (uri == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -773,14 +786,106 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
 	return(-1);	    
     }
 
+    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
+    if(res == NULL) {
 #ifdef XMLSEC_DEBUG
-    xmlGenericError(xmlGenericErrorContext,
-	"%s: not implemented\n", 
-	func);	
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to create result object\n", 
+	    func);	
 #endif
-    return(-1);	    
+	return(-1);	    		
+    }
+    if(key != NULL) {
+	res->key = xmlSecKeyDuplicate(key, key->origin);    
+    }
 
-    /* TODO: */
+    /**
+     * create state
+     */    
+    state = xmlSecEncStateCreate(ctx, encNode, 1, res);
+    if(state == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to create encryption state\n", 
+	    func);	
+#endif
+	xmlSecEncResultDestroy(res);
+	return(-1);	    
+    }
+    
+    /* add the uri load at the beginning */
+    inputUri = xmlSecTransformCreate(xmlSecInputUri, 0, 0);
+    if(inputUri == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to create uri transform\n",
+	    func);
+#endif	    
+	xmlSecEncResultDestroy(res);
+	xmlSecEncStateDestroy(state);    
+	return(-1);	
+    }    
+    
+    ret = xmlSecInputUriTransformOpen(inputUri, uri);
+    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to open uri \"%s\"\n",
+	    func, uri);
+#endif	    
+	xmlSecTransformDestroy(inputUri, 1);	
+	xmlSecEncResultDestroy(res);
+	xmlSecEncStateDestroy(state);    
+	return(-1);	
+    }
+    
+    ret = xmlSecEncStateAddFirstTransform(state, inputUri);
+    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to add uri transform\n",
+	    func);
+#endif	    
+	xmlSecTransformDestroy(inputUri, 1);	
+	xmlSecEncResultDestroy(res);
+	xmlSecEncStateDestroy(state);    
+	return(-1);	
+    }
+         
+    /* encrypt the data */
+    do {
+	ret = xmlSecBinTransformRead((xmlSecTransformPtr)state->last, buf, sizeof(buf));
+    } while(ret > 0);
+    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to encrypt the buffer\n", 
+	    func);	
+#endif
+	xmlSecEncResultDestroy(res);
+	xmlSecEncStateDestroy(state);    
+	return(-1);	    	
+    }
+
+    ret = xmlSecEncStateWriteResult(state, encNode, res); 			
+    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: finalization failed\n", 
+	    func);	
+#endif
+	xmlSecEncStateDestroy(state);
+	xmlSecEncResultDestroy(res); 
+	return(-1);	    
+    }
+    
+    /* cleanup */
+    if(result != NULL) {
+	(*result) = res;
+    } else {
+	xmlSecEncResultDestroy(res);
+    }
+    xmlSecEncStateDestroy(state);    
     return(0);
 }
 
@@ -791,9 +896,10 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
  *
  */
 int
-xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode, 
-		    xmlNodePtr src, xmlSecEncResultPtr *result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncryptXmlNode";
+xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+		    xmlNodePtr encNode, xmlNodePtr src, 
+		    xmlSecEncResultPtr *result) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptXmlNode";
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     xmlBufferPtr buffer = NULL;
@@ -816,6 +922,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
 	    func);	
 #endif
 	return(-1);	    		
+    }
+    if(key != NULL) {
+	res->key = xmlSecKeyDuplicate(key, key->origin);    
     }
 
     /**
@@ -966,9 +1075,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlNodePtr encNode,
  *
  */
 int
-xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, 
+xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDecrypt";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDecrypt";
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
     int ret;
@@ -991,6 +1100,9 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context,
 	    func);	
 #endif
 	return(-1);	    		
+    }
+    if(key != NULL) {
+	res->key = xmlSecKeyDuplicate(key, key->origin);    
     }
 
     state = xmlSecEncStateCreate(ctx, encNode, 0, res);
@@ -1086,7 +1198,7 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context,
  */ 
 static xmlSecEncStatePtr
 xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncStateCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateCreate";
     xmlSecEncStatePtr state;
     int ret;
 
@@ -1139,7 +1251,7 @@ xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSe
  */ 
 static void
 xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncStateDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateDestroy";
     if(state == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -1168,7 +1280,7 @@ xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
 static int
 xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
 		       xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncStateWriteResult";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateWriteResult";
     int ret;
     
     if((encNode == NULL) || (state == NULL) || (result == NULL)) {
@@ -1218,7 +1330,7 @@ xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
  */
 static int
 xmlSecEncStateAddTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncStateAddTransform";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateAddTransform";
 
     if((state == NULL) || !xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) { 
 #ifdef XMLSEC_DEBUG
@@ -1253,7 +1365,7 @@ xmlSecEncStateAddTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform
  */
 static int
 xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncStateAddFirstTransform";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncStateAddFirstTransform";
 
     if((state == NULL) || !xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) { 
 #ifdef XMLSEC_DEBUG
@@ -1291,7 +1403,7 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
  */ 		
 xmlSecEncResultPtr		
 xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncResultCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncResultCreate";
     xmlSecEncResultPtr result;
     
     if(ctx == NULL) {
@@ -1333,7 +1445,7 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePt
  */ 		
 void
 xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncResultDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncResultDestroy";
     if(result == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -1378,7 +1490,7 @@ xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
  */
 void
 xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncResultDebugDump";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncResultDebugDump";
 
     if(result == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -1430,7 +1542,7 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
  */
 static int
 xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncryptedDataNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptedDataNodeRead";
     xmlNodePtr cur;
     xmlNodePtr keyInfoNode = NULL;
     xmlSecTransformPtr encryptionMethod = NULL;
@@ -1630,7 +1742,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 static int
 xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state, 
 			 xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherDataNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherDataNodeRead";
     xmlNodePtr cur;
     int ret;
     
@@ -1692,7 +1804,7 @@ xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state,
 static int
 xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 		      const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ ="xmlSecCipherDataNodeWrite";
+    static const char func[] ATTRIBUTE_UNUSED ="xmlSecCipherDataNodeWrite";
     xmlNodePtr cur; 
 
     if((cipherDataNode == NULL) || (buf == NULL)){
@@ -1743,7 +1855,7 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 static int
 xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state, 
 			  xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherValueNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherValueNodeRead";
     xmlSecTransformPtr base64;
     xmlSecTransformPtr memBuf;
     xmlChar *content;
@@ -1857,7 +1969,7 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
 static int			
 xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr state, 
 			      xmlSecEncResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherReferenceNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherReferenceNodeRead";
     xmlSecBinTransformPtr transform;
     xmlSecTransformStatePtr transState = NULL;
     xmlNodePtr cur;

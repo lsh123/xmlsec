@@ -8,6 +8,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_X509
 
 #include <stdlib.h>
@@ -82,7 +84,7 @@ static int 		xmlSecX509_NAME_ENTRY_cmp	(const X509_NAME_ENTRY **a,
 
 xmlSecX509DataPtr	
 xmlSecX509DataCreate(void) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataCreate";
     xmlSecX509DataPtr x509Data;
     
     /*
@@ -103,7 +105,7 @@ xmlSecX509DataCreate(void) {
 
 void
 xmlSecX509DataDestroy(xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataDestroy";
     
     if(x509Data == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -129,7 +131,7 @@ xmlSecX509DataDestroy(xmlSecX509DataPtr x509Data) {
 
 size_t			
 xmlSecX509DataGetCertsNumber(xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataGetCertsNumber";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataGetCertsNumber";
     
     if(x509Data == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -144,7 +146,7 @@ xmlSecX509DataGetCertsNumber(xmlSecX509DataPtr x509Data) {
 
 size_t
 xmlSecX509DataGetCrlsNumber(xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataGetCrlsNumber";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataGetCrlsNumber";
     
     if(x509Data == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -159,7 +161,7 @@ xmlSecX509DataGetCrlsNumber(xmlSecX509DataPtr x509Data) {
 
 static int
 xmlSecX509DataAddCrl(xmlSecX509DataPtr x509Data, X509_CRL *crl) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataAddCrl";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataAddCrl";
 
     if((x509Data == NULL) || (crl == NULL)){
 #ifdef XMLSEC_DEBUG
@@ -187,7 +189,7 @@ xmlSecX509DataAddCrl(xmlSecX509DataPtr x509Data, X509_CRL *crl) {
 
 static int
 xmlSecX509DataAddCert(xmlSecX509DataPtr x509Data, X509 *cert) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataAddCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataAddCert";
 
     if((x509Data == NULL) || (cert == NULL)){
 #ifdef XMLSEC_DEBUG
@@ -216,7 +218,7 @@ xmlSecX509DataAddCert(xmlSecX509DataPtr x509Data, X509 *cert) {
 
 xmlSecX509DataPtr
 xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataDup";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataDup";
     xmlSecX509DataPtr newX509;
     int ret;
     
@@ -316,7 +318,7 @@ xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
 
 xmlSecKeyPtr
 xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataCreateKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataCreateKey";
     xmlSecKeyPtr key = NULL;
     EVP_PKEY *pKey = NULL;
     int ret;
@@ -411,6 +413,7 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 	EVP_PKEY_free(pKey);
 	return(NULL);
     }
+    EVP_PKEY_free(pKey);
     
     if(key != NULL) {
 	key->x509Data = x509Data;
@@ -420,7 +423,7 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 
 void
 xmlSecX509DataDebugDump(xmlSecX509DataPtr x509Data, FILE *output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataDebugDump";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataDebugDump";
 
     if((x509Data == NULL) || (output == NULL)){
 #ifdef XMLSEC_DEBUG
@@ -447,7 +450,7 @@ xmlSecX509DataDebugDump(xmlSecX509DataPtr x509Data, FILE *output) {
 
 static void
 xmlSecX509DebugDump(X509 *cert, FILE *output) { 
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDebugx509Dump";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDebugx509Dump";
     char buf[1024];
     BIGNUM *bn = NULL;
     
@@ -479,7 +482,7 @@ xmlSecX509DebugDump(X509 *cert, FILE *output) {
 int
 xmlSecX509DataReadDerCert(xmlSecX509DataPtr x509Data, xmlChar *buf, size_t size,
 			int base64) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataReadDerCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataReadDerCert";
     X509 *cert = NULL;
     BIO *mem = NULL;
     int res = -1;
@@ -562,7 +565,7 @@ done:
 
 xmlChar*		
 xmlSecX509DataWriteDerCert(xmlSecX509DataPtr x509Data, int pos) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataWriteDerCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataWriteDerCert";
     xmlChar *res = NULL;
     BIO *mem = NULL;
     unsigned char *p = NULL;
@@ -598,7 +601,7 @@ xmlSecX509DataWriteDerCert(xmlSecX509DataPtr x509Data, int pos) {
 	goto done;
     }
 
-    /* todo: */
+    /* todo: add error checks */
     i2d_X509_bio(mem, cert);
     BIO_flush(mem);
         
@@ -634,7 +637,7 @@ done:
 int
 xmlSecX509DataReadDerCrl(xmlSecX509DataPtr x509Data, xmlChar *buf, size_t size, 
 			int base64) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataReadDerCrl";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataReadDerCrl";
     X509_CRL *crl = NULL;
     BIO *mem = NULL;
     int res = -1;
@@ -717,7 +720,7 @@ done:
 
 xmlChar*		
 xmlSecX509DataWriteDerCrl(xmlSecX509DataPtr x509Data, int pos) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataWriteDerCrl";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataWriteDerCrl";
     xmlChar *res = NULL;
     BIO *mem = NULL;
     unsigned char *p = NULL;
@@ -753,7 +756,7 @@ xmlSecX509DataWriteDerCrl(xmlSecX509DataPtr x509Data, int pos) {
 	goto done;
     }
 
-    /* todo: */
+    /* todo: add error checks */
     i2d_X509_CRL_bio(mem, crl);
     BIO_flush(mem);
         
@@ -788,7 +791,7 @@ done:
 
 int
 xmlSecX509DataReadPemCert(xmlSecX509DataPtr x509Data, const char *filename) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataWriteDerCrl";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataWriteDerCrl";
     X509 *cert;
     FILE *f;
     int ret;
@@ -843,7 +846,7 @@ xmlSecX509DataReadPemCert(xmlSecX509DataPtr x509Data, const char *filename) {
  */
 xmlSecX509StorePtr	
 xmlSecX509StoreCreate(void) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509StoreCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreCreate";
     xmlSecX509StorePtr store;
     
     store = (xmlSecX509StorePtr)xmlMalloc(sizeof(xmlSecX509Store));
@@ -903,7 +906,7 @@ xmlSecX509StoreCreate(void) {
 
 void
 xmlSecX509StoreDestroy(xmlSecX509StorePtr store) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509StoreDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreDestroy";
 
     if(store == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -930,7 +933,7 @@ xmlSecX509StoreDestroy(xmlSecX509StorePtr store) {
 
 int
 xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509StoreVerify";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreVerify";
     int ret;
     
     if((store == NULL) || (x509Data == NULL)) {
@@ -1046,7 +1049,7 @@ xmlSecX509DataPtr
 xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName, 
 		 xmlChar *issuerName,  xmlChar *issuerSerial, xmlChar *ski,
 		 xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509StoreFind";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreFind";
     X509 *cert = NULL;
     int ret;
 
@@ -1089,7 +1092,7 @@ xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName,
 
 int
 xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, int trusted) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509StoreLoadPemCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreLoadPemCert";
     int ret;
     
     if((store == NULL) || (filename == NULL)) {
@@ -1163,9 +1166,37 @@ xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, int t
     return(0);
 }
 
+int
+xmlSecX509StoreAddCertsDir(xmlSecX509StorePtr store, const char *path) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreAddCertsDir";
+    X509_LOOKUP *lookup = NULL;
+    
+    if((store == NULL) || (store->xst == NULL) || (path == NULL)) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: store or filename is null\n",
+	    func);	
+#endif 	    
+	return(-1);
+    }
+
+    lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_hash_dir());
+    if(lookup == NULL) {
+#ifdef XMLSEC_DEBUG
+    	xmlGenericError(xmlGenericErrorContext,
+	    "%s: x509 hash dir lookup creation failed\n",
+	    func);	
+#endif 	    
+	return(-1);
+    }    
+    X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
+    return(0);
+}
+
+
 static int
 xmlSecX509StoreVerifyCRL(xmlSecX509StorePtr store, X509_CRL *crl ) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509StoreVerifyCRL";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509StoreVerifyCRL";
     X509_STORE_CTX xsc; 
     X509_OBJECT xobj;
     EVP_PKEY *pkey;
@@ -1224,7 +1255,7 @@ static X509*
 xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
 			xmlChar *issuerName, xmlChar *issuerSerial,
 			xmlChar *ski) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509Find";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509Find";
     X509 *cert = NULL;
     int i;
     
@@ -1371,7 +1402,7 @@ xmlSecX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
  */
 static X509*
 xmlSecX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509FindNextChainCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509FindNextChainCert";
     unsigned long certSubjHash;
     int i;
     
@@ -1401,7 +1432,7 @@ xmlSecX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
  */
 static int
 xmlSec509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSec509VerifyCertAgainstCrls";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSec509VerifyCertAgainstCrls";
     X509_NAME *issuer;
     X509_CRL *crl = NULL;
     X509_REVOKED *revoked;
@@ -1469,7 +1500,7 @@ xmlSec509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
  */       
 static X509_NAME *
 xmlSecX509NameRead(unsigned char *str, int len) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509NameRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509NameRead";
     unsigned char name[256];
     unsigned char value[256];
     int nameLen, valueLen;
@@ -1535,7 +1566,7 @@ xmlSecX509NameRead(unsigned char *str, int len) {
 		}
 		type = MBSTRING_ASC;
 	    } else if((*str) == '#') {
-		    /* TODO: */
+		    /* TODO: read octect values */
 #ifdef XMLSEC_DEBUG
 		    xmlGenericError(xmlGenericErrorContext,
 			"%s: reading octect values is not implemented yet\n",
@@ -1582,7 +1613,7 @@ static int
 xmlSecX509NameStringRead(unsigned char **str, int *strLen, 
 			unsigned char *res, int resLen,
 			unsigned char delim, int ingoreTrailingSpaces) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509NameStringRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509NameStringRead";
     unsigned char *p, *q, *nonSpace; 
     
     p = (*str);
@@ -1672,7 +1703,7 @@ int xmlSecX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
  */
 static int		
 xmlSecX509NamesCompare(X509_NAME *a, X509_NAME *b) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509NamesCompare";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509NamesCompare";
     X509_NAME *a1 = NULL;
     X509_NAME *b1 = NULL;
     int ret;

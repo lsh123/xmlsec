@@ -87,16 +87,16 @@ it's   the way to  go.<br>
    object. &nbsp;In most case you will need only one DSig context object
 per application<br>
       <br>
-        &nbsp;<code> &nbsp; xmlSecKeysReadContext keysReadCtx;<br>
-&nbsp;&nbsp;&nbsp; xmlSecSimpleKeyMngrPtr keyMgr = NULL; <br>
+        <code>
+&nbsp;&nbsp;&nbsp; xmlSecKeysMngrPtr keysMngr = NULL; <br>
 &nbsp;&nbsp;&nbsp; xmlSecDSigCtxPtr dsigCtx = NULL;</code><code><br>
         &nbsp;&nbsp;&nbsp; <br>
 &nbsp;&nbsp;&nbsp; /** <br>
 &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys managers<br>
 &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&nbsp;&nbsp;&nbsp; keyMgr = xmlSecSimpleKeyMngrCreate();&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; keysMngr = xmlSecSimpleKeysMngrCreate();&nbsp;&nbsp;&nbsp;
       <br>
-&nbsp;&nbsp;&nbsp; if(keyMgr == NULL) {<br>
+&nbsp;&nbsp;&nbsp; if(keysMngr == NULL) {<br>
 &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to create keys manager\n");<br>
 &nbsp;&nbsp;&nbsp; &nbsp; goto done;&nbsp;&nbsp;&nbsp; <br>
 &nbsp;&nbsp;&nbsp; }<br>
@@ -104,26 +104,13 @@ per application<br>
 &nbsp;&nbsp;&nbsp; /** <br>
 &nbsp;&nbsp;&nbsp;&nbsp; * load key<br>
 &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&nbsp;&nbsp;&nbsp; if(xmlSecSimpleKeyMngrLoadPrivateKey(keyMgr, argv[1],
-NULL, NULL) == NULL) {<br>
+&nbsp;&nbsp;&nbsp; if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br>
 &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to load key from
 \"%s\"\n", argv[1]);<br>
 &nbsp;&nbsp;&nbsp; &nbsp; goto done;<br>
 &nbsp;&nbsp;&nbsp; }<br>
 &nbsp; <br>
-&nbsp;&nbsp;&nbsp; /**<br>
-&nbsp;&nbsp;&nbsp;&nbsp; * Create Keys Search context<br>
-&nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&nbsp;&nbsp;&nbsp; memset(&amp;keysReadCtx, 0, sizeof(keysReadCtx));<br>
-      <br>
-&nbsp;&nbsp;&nbsp; keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; <br>
-&nbsp;&nbsp;&nbsp; keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;<br>
-&nbsp;&nbsp;&nbsp; keysReadCtx.findKeyContext = keyMgr;<br>
-&nbsp;&nbsp;&nbsp; <br>
-&nbsp;&nbsp;&nbsp; /**<br>
-&nbsp;&nbsp;&nbsp;&nbsp; * Create Signature Context <br>
-&nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&nbsp;&nbsp;&nbsp; dsigCtx = xmlSecDSigCtxCreate(&amp;keysReadCtx);<br>
+&nbsp;&nbsp;&nbsp; dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
 &nbsp;&nbsp;&nbsp; if(dsigCtx == NULL) {<br>
 &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr,"Error: failed to create dsig context\n");<br>
 &nbsp;&nbsp;&nbsp; &nbsp; goto done; <br>
@@ -195,7 +182,7 @@ failed    to add data\n");<br>
          &nbsp;&nbsp;&nbsp; /**<br>
 	 &nbsp;&nbsp;&nbsp;&nbsp; * Sign It!<br>
 	 &nbsp;&nbsp;&nbsp;&nbsp; */ <br>
-	 &nbsp;&nbsp;&nbsp; ret = xmlSecDSigGenerate(dsigCtx, xmlDocGetRootElement(doc), &amp;result);<br>
+	 &nbsp;&nbsp;&nbsp; ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br>
 	 &nbsp;&nbsp;&nbsp; if(ret &lt; 0) {<br>
 	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: signature failed\n");<br>
 	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; goto done; <br>
@@ -237,8 +224,8 @@ Print the document to stdout:<br>
 &nbsp;&nbsp;&nbsp; if(dsigCtx != NULL) { <br>
 &nbsp;&nbsp; &nbsp; &nbsp; xmlSecDSigCtxDestroy(dsigCtx);<br>
 &nbsp;&nbsp;&nbsp; }<br>
-&nbsp;&nbsp;&nbsp; if(keyMgr != NULL) {<br>
-&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSimpleKeyMngrDestroy(keyMgr);<br>
+&nbsp;&nbsp;&nbsp; if(keysMngr != NULL) {<br>
+&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
 &nbsp;&nbsp;&nbsp; }<br>
 &nbsp;&nbsp; &nbsp;<br>
 &nbsp; &nbsp; /** <br>

@@ -106,71 +106,41 @@ sizeof(rnd_seed));<br>
 create    encryption context     object. &nbsp;In most case you will need
 only one   context object per application<br>
       <br>
-                 &nbsp;<code> &nbsp; xmlSecKeysReadContext keysReadCtx;<br>
-         &nbsp;&nbsp; &nbsp;xmlSecSimpleKeyMngrPtr keyMgr = NULL; <br>
-             &nbsp; &nbsp; xmlSecEncCtxPtr ctx = NULL;<br>
+	<code>
+    &nbsp;&nbsp;&nbsp; &nbsp;xmlSecKeysMngrPtr keysMngr = NULL; <br>
+    &nbsp;&nbsp;&nbsp; xmlSecEncCtxPtr ctx = NULL;<br>
                  &nbsp;&nbsp;&nbsp; <br>
          &nbsp;&nbsp;&nbsp; /** <br>
      &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys managers<br>
      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; keyMgr = xmlSecSimpleKeyMngrCreate();&nbsp;&nbsp;&nbsp; 
+     &nbsp;&nbsp;&nbsp; keysMngr = xmlSecSimpleKeysMngrCreate();&nbsp;&nbsp;&nbsp; 
         <br>
-     &nbsp;&nbsp;&nbsp; if(keyMgr == NULL) {<br>
+     &nbsp;&nbsp;&nbsp; if(keysMngr == NULL) {<br>
      &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to create keys
   manager\n");<br>
      &nbsp;&nbsp;&nbsp; &nbsp; return(-1);&nbsp;&nbsp;&nbsp; <br>
      &nbsp;&nbsp;&nbsp; }<br>
       <br>
      &nbsp; <br>
-     &nbsp;&nbsp;&nbsp; /**<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys Search context<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; memset(&amp;keysReadCtx, 0, sizeof(keysReadCtx));<br>
-     &nbsp;&nbsp;&nbsp; keysReadCtx.allowedOrigins = xmlSecKeyOriginAll;
-      <br>
-     &nbsp;&nbsp;&nbsp; keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;<br>
-     &nbsp;&nbsp;&nbsp; keysReadCtx.findKeyContext = keyMgr;<br>
-&nbsp; &nbsp; keysReadCtx.maxEncKeyLevels = 1; /* limit the infinite recursion
-*/<br>
       <br>
      &nbsp;&nbsp;&nbsp; /**<br>
      &nbsp;&nbsp;&nbsp;&nbsp; * Create enc context<br>
      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; ctx = xmlSecEncCtxCreate(&amp;keysReadCtx);<br>
+     &nbsp;&nbsp;&nbsp; ctx = xmlSecEncCtxCreate(keysMngr);<br>
      &nbsp;&nbsp;&nbsp; if(ctx == NULL) {<br>
-     &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: template failed to 
-create   context\n");<br>
-      </code><code><code>     &nbsp;&nbsp;&nbsp; &nbsp; return(-1)</code></code><br>
-      <code>&nbsp;&nbsp;&nbsp; }<br>
-      <br>
-      <code>&nbsp;&nbsp;&nbsp; /** <br>
-         &nbsp;&nbsp;&nbsp;&nbsp; * load key private rsa key<br>
-         &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-         &nbsp;&nbsp;&nbsp; if(xmlSecSimpleKeyMngrLoadPrivateKey(keyMgr,
-argv[1],     NULL, NULL) == NULL) {<br>
-         &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to load 
-key   from   \"%s\"\n", argv[1]);<br>
-         &nbsp;&nbsp;&nbsp; &nbsp; return(-1);<br>
-         &nbsp;&nbsp;&nbsp; }<br>
-         &nbsp; <br>
-         &nbsp;&nbsp;&nbsp; /**<br>
-         &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys Search context<br>
-         &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-         &nbsp;&nbsp;&nbsp; memset(&amp;keysReadCtx, 0, sizeof(keysReadCtx));<br>
-      <br>
-         &nbsp;&nbsp;&nbsp; keysReadCtx.allowedOrigins = xmlSecKeyOriginAll;
-        <br>
-         &nbsp;&nbsp;&nbsp; keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;<br>
-         &nbsp;&nbsp;&nbsp; keysReadCtx.findKeyContext = keyMgr;<br>
-         &nbsp;&nbsp;&nbsp; /**<br>
-         &nbsp;&nbsp;&nbsp;&nbsp; * Create Signature Context <br>
-         &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-         &nbsp;&nbsp;&nbsp; ctx = xmlSecEncCtxCreate(&amp;keysReadCtx);<br>
-         &nbsp;&nbsp;&nbsp; if(dsigCtx == NULL) {<br>
-         &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr,"Error: failed to create
- context\n");<br>
-      <code><code>     &nbsp;&nbsp;&nbsp; &nbsp; return(-1)</code></code><br>
-      </code></code><code><code>&nbsp;&nbsp;&nbsp; }</code></code><br>
+     &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: template failed to create   context\n");<br>
+     &nbsp;&nbsp;&nbsp; &nbsp; return(-1)<br>
+     &nbsp;&nbsp;&nbsp; }<br>
+     <br>
+     &nbsp;&nbsp;&nbsp; /** <br>
+     &nbsp;&nbsp;&nbsp;&nbsp; * load key private rsa key<br>
+     &nbsp;&nbsp;&nbsp;&nbsp; */<br>
+     &nbsp;&nbsp;&nbsp; if(xmlSecSimpleKeysMngrLoadPem(keysMgr, argv[1],  NULL, NULL, 1) == NULL) {<br>
+     &nbsp;&nbsp;&nbsp; &nbsp; fprintf(stderr, "Error: failed to load key   from   \"%s\"\n", argv[1]);<br>
+     &nbsp;&nbsp;&nbsp; &nbsp; return(-1);<br>
+     &nbsp;&nbsp;&nbsp; }<br>
+    <br>
+    </code>
       <h4>Step 2. Load the document, decrypt and print result document to
 stdout.</h4>
     We are ready to decrypt the document!<br>
@@ -208,7 +178,7 @@ filename);<br>
 &nbsp;&nbsp;&nbsp; /** <br>
 &nbsp;&nbsp;&nbsp;&nbsp; * Decrypt<br>
 &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&nbsp;&nbsp;&nbsp; ret = xmlSecDecrypt(ctx, xmlDocGetRootElement(doc), &amp;result);<br>
+&nbsp;&nbsp;&nbsp; ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br>
 &nbsp;&nbsp;&nbsp; if(ret &lt; 0) {<br>
 &nbsp;&nbsp; &nbsp; &nbsp; fprintf(stderr, "Error: decryption failed\n");<br>
 &nbsp;&nbsp; &nbsp; &nbsp; goto done;&nbsp;&nbsp;&nbsp; <br>
@@ -231,8 +201,8 @@ filename);<br>
          &nbsp;&nbsp;&nbsp; if(ctx != NULL) { <br>
          &nbsp;&nbsp; &nbsp; &nbsp; xmlSecEncCtxDestroy(ctx);<br>
          &nbsp;&nbsp;&nbsp; }<br>
-         &nbsp;&nbsp;&nbsp; if(keyMgr != NULL) {<br>
-         &nbsp;&nbsp; &nbsp; &nbsp; xmlSecSimpleKeyMngrDestroy(keyMgr);<br>
+         &nbsp;&nbsp;&nbsp; if(keysMngr != NULL) {<br>
+         &nbsp;&nbsp; &nbsp; &nbsp; xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
          &nbsp;&nbsp;&nbsp; }<br>
          &nbsp;&nbsp; &nbsp;<br>
          &nbsp; &nbsp; /** <br>

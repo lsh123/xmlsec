@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
  
@@ -61,7 +63,7 @@ xmlSecTransformId xmlSecMemBuf = (xmlSecTransformId)&xmlSecMemBufTransformId;
  */
 xmlBufferPtr
 xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMemBufTransformGetBuffer";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformGetBuffer";
     xmlBufferPtr ptr;
        
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
@@ -88,7 +90,7 @@ xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
  */
 static xmlSecTransformPtr 
 xmlSecMemBufTransformCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMemBufTransformCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformCreate";
     xmlSecBinTransformPtr ptr;
     
     if(id != xmlSecMemBuf){
@@ -126,7 +128,7 @@ xmlSecMemBufTransformCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMemBufTransformDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformDestroy";
             
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
 #ifdef XMLSEC_DEBUG
@@ -156,7 +158,7 @@ xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
 static int
 xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform, 
 			unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMemBufTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformRead";
     int ret;
        
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
@@ -215,7 +217,7 @@ xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform,
 static int
 xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMemBufTransformWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformWrite";
     xmlBufferPtr ptr;
     int ret;
             
@@ -276,7 +278,7 @@ xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform,
  */
 static int
 xmlSecMemBufTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMemBufTransformFlush";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformFlush";
     int ret;
         
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {

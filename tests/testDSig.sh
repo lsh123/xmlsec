@@ -11,7 +11,7 @@ keysfile=$topfolder/keys.xml
 if [ -n "$DEBUG_MEMORY" ] ; then 
     export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16"
     export RETRY=10
-    export EXTRA_PARAMS="--retry $retry"
+    export EXTRA_PARAMS="--retry $RETRY"
 fi
 
 printRes() {
@@ -31,20 +31,20 @@ execDSigTest() {
     
     printf "    Verify existing signature                            "
     echo "$binfolder/xmlsec verify $2 $file.xml" >> $logfile
-    $VALGRIND $binfolder/xmlsec verify $2 $file.xml >> $logfile 2>> $logfile
+    $VALGRIND $binfolder/xmlsec verify $EXTRA_PARAMS $2 $file.xml >> $logfile 2>> $logfile
     printRes 
 
     if [ -n "$3" ] ; then
 	printf "    Create new signature                                 "
 	echo "$binfolder/xmlsec sign $3 $file.tmpl" >> $logfile
-	$VALGRIND $binfolder/xmlsec sign $3 $file.tmpl > $tmpfile 2>> $logfile
+	$VALGRIND $binfolder/xmlsec sign $EXTRA_PARAMS $3 $file.tmpl > $tmpfile 2>> $logfile
 	printRes
 	
 	if [ -n "$4" ] ; then 
 	    if [ -z "$VALGRIND" ] ; then 
 		printf "    Verify new signature                                 "
 		echo "$binfolder/xmlsec verify $4 $tmpfile" >> $logfile
-		$VALGRIND $binfolder/xmlsec verify $4 $tmpfile >> $logfile 2>> $logfile
+		$VALGRIND $binfolder/xmlsec verify $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
 		printRes
 	    fi
 	fi
@@ -54,6 +54,7 @@ execDSigTest() {
 echo "--- testDSig started ($timestamp)" 
 echo "--- log file is $logfile"
 echo "--- testDSig started ($timestamp)" >> $logfile
+
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
@@ -129,6 +130,11 @@ execDSigTest "merlin-xmldsig-twenty-three/signature" \
     "--trusted merlin-xmldsig-twenty-three/certs/merlin.pem" \
     "--privkey keys/dsakey.pem,keys/dsacert.pem,keys/ca2cert.pem" \
     "--trusted keys/cacert.pem --untrusted keys/ca2cert.pem"
+
+execDSigTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
+    "--keys merlin-xmlenc-five/keys.xml" \
+    "--session-key-hmac --keys merlin-xmlenc-five/keys.xml" \
+    "--keys merlin-xmlenc-five/keys.xml" 
     
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     " " \
@@ -164,6 +170,7 @@ execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
     "--hmackey keys/hmackey.bin" \
     "--hmackey keys/hmackey.bin" \
     "--hmackey keys/hmackey.bin" 
+
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \

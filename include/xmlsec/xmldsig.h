@@ -61,7 +61,7 @@ typedef struct _xmlSecDSigResult {
     int				sign;
     xmlSecTransformStatus	result;
     xmlSecTransformId		signMethod;
-    xmlSecKeyPtr		signKey;
+    xmlSecKeyPtr		key;
     xmlSecReferenceResultPtr	firstSignRef;	/* the link to the first reference */
     xmlSecReferenceResultPtr	lastSignRef;	/* the link to the last reference */    
     xmlSecReferenceResultPtr	firstManifestRef;
@@ -138,10 +138,12 @@ xmlNodePtr		xmlSecManifestAddReference		(xmlNodePtr manifestNode,
  */
 int			xmlSecDSigValidate			(xmlSecDSigCtxPtr ctx,
 								 void *context,
+								 xmlSecKeyPtr key,
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
 int			xmlSecDSigGenerate			(xmlSecDSigCtxPtr ctx,
 								 void *context,
+								 xmlSecKeyPtr key,								 
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
 /**

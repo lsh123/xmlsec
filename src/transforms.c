@@ -1,3 +1,14 @@
+/** 
+ * XML Security Library
+ *
+ * 
+ * See Copyright for the status of this software.
+ * 
+ * Author: Aleksey Sanin <aleksey@aleksey.com>
+ */
+
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -43,6 +54,9 @@ void xmlSecTransformsInit(void) {
 #ifndef XMLSEC_NO_SHA1    
     xmlSecAllTransforms[i++] = xmlSecDigestSha1;
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_RIPEMD160
+    xmlSecAllTransforms[i++] = xmlSecDigestRipemd160;
+#endif /* XMLSEC_NO_RIPEMD160 */
 
     /* MAC */ 
 #ifndef XMLSEC_NO_HMAC
@@ -90,6 +104,14 @@ void xmlSecTransformsInit(void) {
     xmlSecAllTransforms[i++] = xmlSecEncRsaPkcs1;
     xmlSecAllTransforms[i++] = xmlSecEncRsaOaep;
 #endif /* XMLSEC_NO_RSA */
+
+    /* key wrappers */
+#ifndef XMLSEC_NO_AES    
+    xmlSecAllTransforms[i++] = xmlSecKWDes3Cbc;
+    xmlSecAllTransforms[i++] = xmlSecKWAes128;
+    xmlSecAllTransforms[i++] = xmlSecKWAes192;
+    xmlSecAllTransforms[i++] = xmlSecKWAes256;
+#endif /* XMLSEC_NO_DES */
     
     /* Input/memory buffer */
     xmlSecAllTransforms[i++] = xmlSecInputUri;
@@ -139,7 +161,7 @@ void xmlSecTransformsInit(void) {
  */
 int
 xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, xmlNodePtr transformsNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformsNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformsNodeRead";
     xmlNodePtr cur;
     xmlSecTransformPtr transform;
     int ret;    
@@ -204,7 +226,7 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, xmlNodePtr transformsNod
 xmlSecTransformPtr	
 xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
 			int dontDestroy) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformNodeRead";
     xmlChar *href;
     xmlSecTransformId id;
     xmlSecTransformPtr transform;
@@ -276,8 +298,7 @@ xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
  */
 int
 xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformNodeWrite";
-    int ret;
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformNodeWrite";
     
     if((transformNode == NULL) && (id == xmlSecTransformUnknown)){
 #ifdef XMLSEC_DEBUG
@@ -340,7 +361,7 @@ xmlSecTransformFind(const xmlChar* href) {
 xmlSecTransformPtr	
 xmlSecTransformCreate(xmlSecTransformId id, xmlSecTransformUsage usage, 
 		      int dontDestroy) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreate";
     xmlSecTransformPtr transform;
     
     if((id == xmlSecTransformUnknown) || (id->create == NULL)){
@@ -384,7 +405,7 @@ xmlSecTransformCreate(xmlSecTransformId id, xmlSecTransformUsage usage,
  */
 void
 xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformDestroy";
     
     if((!xmlSecTransformIsValid(transform)) || (transform->id->destroy == NULL)){
 #ifdef XMLSEC_DEBUG
@@ -418,7 +439,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
  */
 int
 xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformRead";
 
     if(!xmlSecTransformIsValid(transform)){
 #ifdef XMLSEC_DEBUG
@@ -444,7 +465,7 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  */
 int
 xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformAddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformAddKey";
     xmlSecBinTransformId id;
         
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -472,7 +493,7 @@ xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 int
 xmlSecBinTransformRead(xmlSecTransformPtr transform, 
 		       unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformRead";
     xmlSecBinTransformId id;
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -499,7 +520,7 @@ xmlSecBinTransformRead(xmlSecTransformPtr transform,
 int
 xmlSecBinTransformWrite(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformWrite";
     xmlSecBinTransformId id;
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -526,7 +547,7 @@ xmlSecBinTransformWrite(xmlSecTransformPtr transform,
  */
 int
 xmlSecBinTransformFlush(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformFlush";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformFlush";
     xmlSecBinTransformId id;
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -553,7 +574,7 @@ xmlSecBinTransformFlush(xmlSecTransformPtr transform) {
 xmlSecTransformPtr	
 xmlSecBinTransformAddAfter(xmlSecTransformPtr curTransform, 
 			xmlSecTransformPtr newTransform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformAddAfter";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformAddAfter";
     xmlSecBinTransformPtr c;
     xmlSecBinTransformPtr n;
     
@@ -590,7 +611,7 @@ xmlSecBinTransformAddAfter(xmlSecTransformPtr curTransform,
 xmlSecTransformPtr	
 xmlSecBinTransformAddBefore(xmlSecTransformPtr curTransform, 
 			    xmlSecTransformPtr newTransform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformAddBefore";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformAddBefore";
     xmlSecBinTransformPtr c;
     xmlSecBinTransformPtr n;
 
@@ -628,7 +649,7 @@ xmlSecBinTransformAddBefore(xmlSecTransformPtr curTransform,
  */
 void
 xmlSecBinTransformRemove(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformRemove";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformRemove";
     xmlSecBinTransformPtr t;
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -657,7 +678,7 @@ xmlSecBinTransformRemove(xmlSecTransformPtr transform) {
  */
 void
 xmlSecBinTransformDestroyAll(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformDestroyAll";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformDestroyAll";
     xmlSecBinTransformPtr t;
 
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -681,7 +702,7 @@ xmlSecBinTransformDestroyAll(xmlSecTransformPtr transform) {
 
 void	
 xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBinTransformSetEncrypt";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBinTransformSetEncrypt";
     xmlSecBinTransformPtr t;
 
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
@@ -709,7 +730,7 @@ xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
 int
 xmlSecXmlTransformExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
 			  xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecXmlTransformExecute";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXmlTransformExecute";
     xmlSecXmlTransformId id;
     
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeXml)) {
@@ -741,7 +762,7 @@ int
 xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
 			   xmlDocPtr doc, xmlNodeSetPtr nodes,
 			   xmlOutputBufferPtr buffer) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecC14NTransformExecute";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformExecute";
     xmlSecC14NTransformId id;  
     
     if(transform != NULL) {
@@ -778,7 +799,7 @@ xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
  */
 xmlSecTransformStatePtr	
 xmlSecTransformStateCreate(xmlDocPtr doc, xmlNodeSetPtr nodeSet, const char *uri) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformStateCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateCreate";
     xmlSecTransformStatePtr state;
     int ret;
     /*
@@ -830,7 +851,7 @@ xmlSecTransformStateCreate(xmlDocPtr doc, xmlNodeSetPtr nodeSet, const char *uri
  */
 void
 xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformStateDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateDestroy";
 
     if(state == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -868,7 +889,7 @@ xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
  */
 int
 xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformStateUpdate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateUpdate";
     int ret;
     
     if((state == NULL) || !xmlSecTransformIsValid(transform)){
@@ -967,7 +988,7 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr tra
  */
 int
 xmlSecTransformStateFinal(xmlSecTransformStatePtr state, xmlSecTransformResult type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformStateFinal";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateFinal";
     int ret;
     
     if(state == NULL) {
@@ -1042,7 +1063,7 @@ xmlSecTransformStateFinal(xmlSecTransformStatePtr state, xmlSecTransformResult t
  */
 static int 
 xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformStateParseUri";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateParseUri";
     int len;
     char *ptr;
     char *id;
@@ -1179,7 +1200,7 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
  */
 static void 
 xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformStateDestroyCurrentDoc";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateDestroyCurrentDoc";
 
     if(state == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -1212,7 +1233,7 @@ xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformCreateXml";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateXml";
     int ret;
 
     if(state == NULL) {
@@ -1287,7 +1308,7 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
  */
 static int 
 xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformCreateBin";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateBin";
     int ret;
     
     if(state == NULL) {
@@ -1330,7 +1351,7 @@ xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformCreateBinFromXml";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateBinFromXml";
     xmlSecTransformPtr buffer;
     xmlOutputBufferPtr output;
     int ret;
@@ -1460,7 +1481,7 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformCreateBinFromUri";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformCreateBinFromUri";
     xmlSecTransformPtr ptr;
     unsigned char buffer[XMLSEC_TRANSFORM_BUFFER_SIZE];
     int ret;
@@ -1492,6 +1513,7 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
 	    "%s: failed to open uri \"%s\"\n",
 	    func, state->initUri);
 #endif	    
+	xmlSecTransformDestroy(ptr, 1);
 	return(-1);	
     }
     
@@ -1555,7 +1577,7 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
 static int 
 xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlNodeSetPtr nodeSet, 
 			       xmlOutputBufferPtr output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformPreBase64Decode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformPreBase64Decode";
     xmlNodePtr cur;
     int ret;
 

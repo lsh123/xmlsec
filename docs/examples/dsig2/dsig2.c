@@ -21,9 +21,8 @@
 xmlNodePtr addSignature(xmlDocPtr doc);
 
 int main(int argc, char **argv) {
-    xmlSecSimpleKeyMngrPtr keyMgr = NULL; 
+    xmlSecKeysMngrPtr keysMngr = NULL; 
     xmlSecDSigCtxPtr dsigCtx = NULL;
-    xmlSecKeysReadContext keysReadCtx;
     xmlDocPtr doc = NULL;
     xmlSecDSigResultPtr result = NULL;
     xmlNodePtr signatureNode;
@@ -59,8 +58,8 @@ int main(int argc, char **argv) {
     /** 
      * Create Keys managers
      */
-    keyMgr = xmlSecSimpleKeyMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
 	goto done;	
     }
@@ -68,21 +67,12 @@ int main(int argc, char **argv) {
     /** 
      * load key
      */
-    if(xmlSecSimpleKeyMngrLoadPrivateKey(keyMgr, argv[1], NULL, NULL) == NULL) {
+    if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
 	goto done;
     }
     
-    /**
-     * Create Signature Context 
-     */
-    memset(&keysReadCtx, 0, sizeof(keysReadCtx));
-
-    keysReadCtx.allowedOrigins = xmlSecKeyOriginAll;
-    keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;
-    keysReadCtx.findKeyContext = keyMgr;
-    
-    dsigCtx = xmlSecDSigCtxCreate(&keysReadCtx);
+    dsigCtx = xmlSecDSigCtxCreate(keysMngr);
     if(dsigCtx == NULL) {
     	fprintf(stderr,"Error: failed to create dsig context\n");
 	goto done; 
@@ -124,7 +114,7 @@ int main(int argc, char **argv) {
     /**
      * Sign It!
      */ 
-    ret = xmlSecDSigGenerate(dsigCtx, signatureNode, &result);
+    ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, signatureNode, &result);
     if(ret < 0) {
     	fprintf(stderr,"Error: signature failed\n");
 	goto done; 
@@ -155,8 +145,8 @@ done:
 	xmlFreeDoc(doc); 
     }
     
-    if(keyMgr != NULL) {
-	xmlSecSimpleKeyMngrDestroy(keyMgr);
+    if(keysMngr != NULL) {
+	xmlSecSimpleKeysMngrDestroy(keysMngr);
     }
     
     xmlSecShutdown();

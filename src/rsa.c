@@ -8,6 +8,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_RSA
 
 #include <stdlib.h>
@@ -203,7 +205,7 @@ xmlSecTransformId xmlSecEncRsaOaep = (xmlSecTransformId)&xmlSecEncRsaOaepId;
  */
 static xmlSecTransformPtr 
 xmlSecSignRsaSha1Create(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignRsaSha1Create";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Create";
     xmlSecDigestTransformPtr digest;
     
     if(id != xmlSecSignRsaSha1){
@@ -245,7 +247,7 @@ xmlSecSignRsaSha1Create(xmlSecTransformId id) {
  */
 static void 
 xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignRsaSha1Destroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Destroy";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecSignRsaSha1)) {
@@ -281,7 +283,7 @@ xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
 static int
 xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignRsaSha1Update";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Update";
     
     if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1)) {
 #ifdef XMLSEC_DEBUG
@@ -311,7 +313,7 @@ xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignRsaSha1Sign";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Sign";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     int ret;
         
@@ -363,7 +365,7 @@ xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignRsaSha1Verify";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Verify";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     int ret;
         
@@ -415,7 +417,7 @@ xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
  */																 
 static int
 xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignRsaSha1AddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1AddKey";
     xmlSecDigestTransformPtr digest;
     RSA *rsa;
     void *digestBuf;
@@ -490,7 +492,7 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static 
 RSA* xmlSecRsaDup(RSA *rsa) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaDup";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaDup";
     RSA *newRsa;
     
     if(rsa == NULL) {
@@ -501,6 +503,8 @@ RSA* xmlSecRsaDup(RSA *rsa) {
 #endif 	    
 	return(NULL);
     }
+
+    /* todo: increment reference counter nstead of coping */
     
     newRsa = RSA_new();
     if(newRsa == NULL) {
@@ -531,7 +535,7 @@ RSA* xmlSecRsaDup(RSA *rsa) {
  */
 static xmlSecKeyPtr	
 xmlSecRsaKeyCreate(xmlSecKeyId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaKeyCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyCreate";
     xmlSecKeyPtr key;
     
     if(id != xmlSecRsaKey) {
@@ -565,7 +569,7 @@ xmlSecRsaKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaKeyDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyDestroy";
 
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
 #ifdef XMLSEC_DEBUG
@@ -586,7 +590,7 @@ xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaKeyDuplicate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyDuplicate";
     xmlSecKeyPtr newKey;
     
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
@@ -636,7 +640,7 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaKeyGenerate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyGenerate";
     
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
 #ifdef XMLSEC_DEBUG
@@ -725,7 +729,7 @@ xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
  */
 static int
 xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaKeyRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyRead";
     xmlNodePtr cur;
     RSA *rsa;
     int privateKey = 0;
@@ -792,7 +796,7 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PrivateExponent", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PrivateExponent", xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
 	 * we are not sure exactly what do we read */
 	if(xmlSecNodeGetBNValue(cur, &(rsa->d)) == NULL) {
@@ -839,7 +843,7 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaKeyWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyWrite";
     xmlNodePtr cur;
     int ret;
     
@@ -896,7 +900,7 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
     if(((type == xmlSecKeyTypePrivate) || (type == xmlSecKeyTypeAny)) && 
         (key->type == xmlSecKeyTypePrivate)) { 
-	cur = xmlSecAddChild(parent, BAD_CAST "PrivateExponent", xmlSecDSigNs);
+	cur = xmlSecAddChild(parent, BAD_CAST "PrivateExponent", xmlSecNs);
 	if(cur == NULL) {
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
@@ -928,7 +932,7 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     
 static xmlSecTransformPtr 
 xmlSecRsaPkcs1Create(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaPkcs1Create";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1Create";
     xmlSecBufferedTransformPtr buffered;
     
     if(id != xmlSecEncRsaPkcs1){
@@ -960,7 +964,7 @@ xmlSecRsaPkcs1Create(xmlSecTransformId id) {
 
 static void 	
 xmlSecRsaPkcs1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaPkcs1Destroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1Destroy";
     xmlSecBufferedTransformPtr buffered;
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaPkcs1)) {
@@ -983,7 +987,7 @@ xmlSecRsaPkcs1Destroy(xmlSecTransformPtr transform) {
 
 static int
 xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaPkcs1AddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1AddKey";
     xmlSecBufferedTransformPtr buffered;
     RSA *rsa;
     
@@ -1005,28 +1009,17 @@ xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	    func);	
 #endif 	    
 	return(-1);
-    }
+    } 
 
-    rsa = RSA_new();
+    rsa = xmlSecRsaDup(xmlSecRsaKey(key)); 
     if(rsa == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create rsa key\n",
+    	    "%s: RSA duplication failed\n",
 	    func);	
 #endif 	    
-	return(-1);
+	return(-1);    
     }
-
-    if(xmlSecRsaKey(key)->n != NULL) {
-	rsa->n = BN_dup(xmlSecRsaKey(key)->n);
-    }
-    if(xmlSecRsaKey(key)->e != NULL) {
-	rsa->e = BN_dup(xmlSecRsaKey(key)->e);
-    }
-    if(xmlSecRsaKey(key)->d != NULL) {
-	rsa->d = BN_dup(xmlSecRsaKey(key)->d);
-    }
-
         
     if(xmlSecRsaPkcs1Rsa(buffered) != NULL) {
 	RSA_free(xmlSecRsaPkcs1Rsa(buffered));
@@ -1037,7 +1030,7 @@ xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaPkcs1Process";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1Process";
     size_t size;
     int ret;    
     
@@ -1094,7 +1087,7 @@ xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer)
     
 static xmlSecTransformPtr 
 xmlSecRsaOaepCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaOaepCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepCreate";
     xmlSecBufferedTransformPtr buffered;
     
     if(id != xmlSecEncRsaOaep){
@@ -1126,7 +1119,7 @@ xmlSecRsaOaepCreate(xmlSecTransformId id) {
 
 static void 	
 xmlSecRsaOaepDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaOaepDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepDestroy";
     xmlSecBufferedTransformPtr buffered;
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaOaep)) {
@@ -1152,7 +1145,7 @@ xmlSecRsaOaepDestroy(xmlSecTransformPtr transform) {
 
 static int 	
 xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaOaepReadNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepReadNode";
     xmlSecBufferedTransformPtr buffered;
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaOaep) || 
@@ -1179,7 +1172,7 @@ xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 int  	
 xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf, 
 			 size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncRsaOaepAddParam";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncRsaOaepAddParam";
     xmlNodePtr oaepParamNode;
     xmlChar *base64;
         
@@ -1229,7 +1222,7 @@ xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf,
 
 static int
 xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaOaepAddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepAddKey";
     xmlSecBufferedTransformPtr buffered;
     RSA *rsa;
     
@@ -1268,7 +1261,7 @@ xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRsaOaepProcess";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepProcess";
     size_t size;
     int rsa_size = 0;
     int ret;    

@@ -21,9 +21,8 @@
 
 
 int main(int argc, char **argv) {
-    xmlSecSimpleKeyMngrPtr keyMgr = NULL; 
+    xmlSecKeysMngrPtr keysMngr = NULL; 
     xmlSecDSigCtxPtr dsigCtx = NULL;
-    xmlSecKeysReadContext keysReadCtx;
     xmlDocPtr doc = NULL;
     xmlSecDSigResultPtr result = NULL;
     int ret = -1;
@@ -56,22 +55,13 @@ int main(int argc, char **argv) {
     /** 
      * Create Keys managers
      */
-    keyMgr = xmlSecSimpleKeyMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
 	goto done;	
     }
 
-    /**
-     * Create Signature Context 
-     */
-    memset(&keysReadCtx, 0, sizeof(keysReadCtx));
-
-    keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; /* by default all keys are accepted */
-    keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;
-    keysReadCtx.findKeyContext = keyMgr;
-    
-    dsigCtx = xmlSecDSigCtxCreate(&keysReadCtx);
+    dsigCtx = xmlSecDSigCtxCreate(keysMngr);
     if(dsigCtx == NULL) {
     	fprintf(stderr,"Error: failed to create dsig context\n");
 	goto done; 
@@ -112,7 +102,7 @@ int main(int argc, char **argv) {
 	goto done;
     }    
      
-    ret = xmlSecDSigValidate(dsigCtx, signNode, &result);
+    ret = xmlSecDSigValidate(dsigCtx, NULL, NULL, signNode, &result);
     if(ret < 0) {
     	fprintf(stderr,"Error: verification failed\n");
 	goto done; 
@@ -121,7 +111,7 @@ int main(int argc, char **argv) {
     /*
      * Print out result     
      */
-    xmlSecDSigResultDebugDump(stdout, result); 
+    xmlSecDSigResultDebugDump(result, stdout); 
 
 done:
     /*
@@ -137,8 +127,8 @@ done:
 	xmlFreeDoc(doc); 
     }
     
-    if(keyMgr != NULL) {
-	xmlSecSimpleKeyMngrDestroy(keyMgr);
+    if(keysMngr != NULL) {
+	xmlSecSimpleKeysMngrDestroy(keysMngr);
     }
     
     xmlSecShutdown();

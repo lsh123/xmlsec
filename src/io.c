@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h> 
 
@@ -85,7 +87,7 @@ typedef struct _xmlSecInputUriTransform {
  */
 int
 xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecInputUriTransformOpen";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformOpen";
     xmlSecInputUriTransformPtr t;
         
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri) || (uri == NULL)) {
@@ -107,13 +109,13 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
     } else 
 #endif /* LIBXML_HTTP_ENABLED */     
 
-#ifdef LIBXML_HTTP_ENABLED        
+#ifdef LIBXML_FTP_ENABLED        
     if(strncmp(uri, "ftp://", 6) == 0) { 
 	t->data = xmlNanoFTPOpen(uri);
 	t->readInputUri = (xmlSecInputUriTransformReadCallback)xmlNanoFTPRead;
 	t->closeInputUri = (xmlSecInputUriTransformCloseCallback)xmlNanoFTPClose;
     } else
-#endif /* LIBXML_HTTP_ENABLED */     
+#endif /* LIBXML_FTP_ENABLED */     
 
     {
 	FILE *fd;
@@ -159,7 +161,7 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
  */
 static xmlSecTransformPtr 
 xmlSecInputUriTransformCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecInputUriTransformCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformCreate";
     xmlSecInputUriTransformPtr ptr;
 
     if((id == NULL) || (id != xmlSecInputUri)){
@@ -197,7 +199,7 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecInputUriTransformDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformDestroy";
     xmlSecInputUriTransformPtr t;
     
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
@@ -228,7 +230,7 @@ xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
 static int
 xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform, 
 			 unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecInputUriTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformRead";
     xmlSecInputUriTransformPtr t;
     
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
@@ -268,7 +270,7 @@ xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform,
  */
 static int
 xmlSecFileRead(FILE *f,  unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecFileRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFileRead";
 
     if(f == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -280,4 +282,32 @@ xmlSecFileRead(FILE *f,  unsigned char *buf, size_t size) {
     }
     return (fread(buf, sizeof(unsigned char), size, f));
 }
+
+
+void
+xmlSecIOInit(void) {
+#ifdef LIBXML_HTTP_ENABLED
+    xmlNanoHTTPInit();
+#endif /* LIBXML_HTTP_ENABLED */
+#ifdef LIBXML_FTP_ENABLED       
+    xmlNanoFTPInit();
+#endif /* LIBXML_FTP_ENABLED */ 
+}
+
+void
+xmlSecIOShutdown(void) {
+#ifdef LIBXML_HTTP_ENABLED
+    xmlNanoHTTPCleanup();
+#endif /* LIBXML_HTTP_ENABLED */
+#ifdef LIBXML_FTP_ENABLED       
+    xmlNanoFTPCleanup();
+#endif /* LIBXML_FTP_ENABLED */ 
+}
+
+
+
+
+
+
+
 

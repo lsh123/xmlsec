@@ -44,6 +44,9 @@ typedef enum _xmlSecTransformStatus {
 extern xmlSecTransformId 	xmlSecEncAes128Cbc;
 extern xmlSecTransformId 	xmlSecEncAes192Cbc;
 extern xmlSecTransformId 	xmlSecEncAes256Cbc;
+extern xmlSecTransformId 	xmlSecKWAes128;
+extern xmlSecTransformId 	xmlSecKWAes192;
+extern xmlSecTransformId 	xmlSecKWAes256;
 extern xmlSecKeyId 	 	xmlSecAesKey;
 
 int	xmlSecAesKeyGenerate			(xmlSecKeyPtr key,
@@ -78,6 +81,7 @@ int	xmlSecC14NExclAddInclNamespaces		(xmlNodePtr transformNode,
  */
 #ifndef XMLSEC_NO_DES
 extern xmlSecTransformId 	xmlSecEncDes3Cbc;
+extern xmlSecTransformId 	xmlSecKWDes3Cbc;
 extern xmlSecKeyId 		xmlSecDesKey;
  
 int	xmlSecDesKeyGenerate			(xmlSecKeyPtr key,
@@ -120,6 +124,9 @@ int	xmlSecHmacAddOutputLength		(xmlNodePtr transformNode,
 						 size_t bitsLen);
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_RIPEMD160
+extern xmlSecTransformId 	xmlSecDigestRipemd160;
+#endif /* XMLSEC_NO_RIPEMD160 */
 
 /**
  * RSA transforms

@@ -23,6 +23,9 @@ extern const xmlChar xmlSecDSigNs[];
 /* XMLEnc namespace */
 extern const xmlChar xmlSecEncNs[];
 
+/* XMLSec namespace */
+extern const xmlChar xmlSecNs[];
+
 
 void 		xmlSecInit			(void);
 void 		xmlSecShutdown			(void);
@@ -40,18 +43,21 @@ void 		xmlSecShutdown			(void);
 
 
 
-
 /**
- * "Hide" warnings about 
- *     static const char func[] = "XXX";
- *  when debug messages are disabled
+ * ATTRIBUTE_UNUSED:
+ *
+ * Macro used to signal to GCC unused function parameters
  */
-#if defined(__GNUC__)
-#define _UNUSED_VARIABLE_ 	__attribute__((unused))
-#else /* __GCC__ */
-#define _UNUSED_VARIABLE_ 
-#endif /* __GCC__ */ 
-
+#ifdef __GNUC__
+#ifdef HAVE_ANSIDECL_H
+#include <ansidecl.h>
+#endif
+#ifndef ATTRIBUTE_UNUSED
+#define ATTRIBUTE_UNUSED
+#endif
+#else
+#define ATTRIBUTE_UNUSED
+#endif
 
 #ifdef __cplusplus
 }

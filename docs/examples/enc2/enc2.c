@@ -23,9 +23,9 @@ int		initEverything				(void);
 void		shutdownEverything			(void);
 int 		decrypt					(const char *filename);
 
-xmlSecKeysReadContext keysReadCtx;
-xmlSecSimpleKeyMngrPtr keyMgr = NULL; 
-xmlSecEncCtxPtr ctx = NULL;
+
+xmlSecKeysMngrPtr keysMngr = NULL; 
+xmlSecEncCtxPtr ctx;
 
 int main(int argc, char **argv) {
     int ret = -1;
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
     /** 
      * load key
      */
-    key = xmlSecSimpleKeyMngrLoadPrivateKey(keyMgr, argv[1], NULL, NULL);
+    key = xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
 	goto done;
@@ -103,7 +103,7 @@ decrypt(const char *filename) {
     /** 
      * Decrypt
      */
-    ret = xmlSecDecrypt(ctx, xmlDocGetRootElement(doc), &result);
+    ret = xmlSecDecrypt(ctx, NULL, NULL, xmlDocGetRootElement(doc), &result);
     if(ret < 0) {
 	fprintf(stderr, "Error: decryption failed\n");
 	goto done;    
@@ -151,25 +151,16 @@ int initEverything(void) {
     /** 
      * Create Keys managers
      */
-    keyMgr = xmlSecSimpleKeyMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
 	return(-1);	
     }
   
     /**
-     * Create Keys Search context
-     */
-    memset(&keysReadCtx, 0, sizeof(keysReadCtx));
-    keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; 
-    keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;
-    keysReadCtx.findKeyContext = keyMgr;
-    keysReadCtx.maxEncKeyLevels = 1;
-    
-    /**
      * Create enc context
      */
-    ctx = xmlSecEncCtxCreate(&keysReadCtx);
+    ctx = xmlSecEncCtxCreate(keysMngr);
     if(ctx == NULL) {
 	fprintf(stderr, "Error: template failed to create context\n");
 	return(-1);
@@ -186,8 +177,8 @@ void shutdownEverything(void) {
     }
     
     
-    if(keyMgr != NULL) {
-	xmlSecSimpleKeyMngrDestroy(keyMgr);
+    if(keysMngr != NULL) {
+	xmlSecSimpleKeysMngrDestroy(keysMngr);
     }
     
     /**

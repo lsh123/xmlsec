@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -37,7 +39,7 @@
 int  	
 xmlSecCipherTransformRead(xmlSecBinTransformPtr transform, 
 			  unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherTransformRead";
     xmlSecCipherTransformPtr cipher;
     size_t res = 0;
     int ret;
@@ -123,7 +125,7 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 	}
     }
 
-    while(res + cipher->id->bufOutSize < size) {
+    while(res + cipher->id->bufOutSize <= size) {
 	ret = xmlSecBinTransformRead((xmlSecTransformPtr)cipher->prev, 
 				     cipher->bufIn, cipher->id->bufInSize);	
 	if(ret < 0) {
@@ -178,7 +180,7 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 int  	
 xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform, 
                           const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherTransformWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherTransformWrite";
     xmlSecCipherTransformPtr cipher;
     size_t res = 0;
     size_t block;
@@ -310,7 +312,7 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
  */
 int
 xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherTransformFlush";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherTransformFlush";
     xmlSecCipherTransformPtr cipher;
     int ret;
     
@@ -376,7 +378,7 @@ xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
 int 	
 xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 			 const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEvpCipherUpdate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEvpCipherUpdate";
     int res;
     int ret;
 
@@ -424,7 +426,7 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
  */
 int 	
 xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEvpCipherFinal";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEvpCipherFinal";
     int res;
     int ret;
 
@@ -508,7 +510,7 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 int 	
 xmlSecCipherUpdate(xmlSecTransformPtr transform,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherUpdate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherUpdate";
     xmlSecCipherTransformPtr cipher;    
 
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {
@@ -536,7 +538,7 @@ xmlSecCipherUpdate(xmlSecTransformPtr transform,
  */
 int 	
 xmlSecCipherFinal(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCipherFinal";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherFinal";
     xmlSecCipherTransformPtr cipher;    
 
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {

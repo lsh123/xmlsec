@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -66,7 +68,7 @@ static const xmlChar envelopedXPath[] =
  */
 static xmlSecTransformPtr 
 xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformEnvelopedCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedCreate";
     xmlSecXmlTransformPtr xmlTransform; 
     
     if(id != xmlSecTransformEnveloped){
@@ -100,7 +102,7 @@ xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformEnvelopedDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedDestroy";
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped)) {
 #ifdef XMLSEC_DEBUG
@@ -122,7 +124,7 @@ xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
  */
 static int 
 xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformEnvelopedReadNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedReadNode";
     xmlSecXmlTransformPtr xmlTransform;
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
@@ -172,7 +174,7 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformEnvelopedExecute";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlXPathObjectPtr xpath; 
     xmlXPathContextPtr ctx; 

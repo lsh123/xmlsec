@@ -39,7 +39,7 @@ static const char bugs[] =
     "  http://www.aleksey.com/xmlsec\n";
 
 static const char usage[] = 
-    "Usage: xmlsec %s [<options>] [<filename> [<filename> [ ... ]]]\n";
+    "Usage: xmlsec %s [<options>] <file> [<file> [ ... ]]\n";
 
 static const char helpCommands[] =     
     "XMLSec commands are:\n"
@@ -75,6 +75,19 @@ static const char helpKeys[] =
     "  --gen-aes192 <name>  generate new AES 192 key and set the key name\n"
     "  --gen-aes256 <name>  generate new AES 256 key and set the key name\n"
     "\n";
+
+static const char helpKeySelect[] = 
+    "Key selection options:\n"
+    "  --session-key-hmac   generate and use session 24 bytes HMAC key\n"
+    "  --session-key-rsa    generate and use session RSA key\n"
+    "  --session-key-dsa    generate and use session DSA key\n"
+    "  --session-key-des3   generate and use session DES key\n"
+    "  --session-key-aes128 generate and use session AES 128 key\n"
+    "  --session-key-aes192 generate and use session AES 192 key\n"
+    "  --session-key-aes256 generate and use session AES 256 key\n"
+    "\n";
+
+
 
 static const char helpSign[] = 
     "Signs data in the file and outputs document in \"XML Signature\" format.\n"
@@ -252,6 +265,7 @@ int decrypt(xmlDocPtr doc);
  * Global data
  */
 xmlSecKeysMngrPtr keyMgr = NULL; 
+xmlSecKeyPtr sessionKey = NULL;
 
 char *nodeId = NULL;
 char *nodeName = NULL;
@@ -267,7 +281,8 @@ int main(int argc, char **argv) {
     int i;
     int pos;
     int ret;
-    
+    int templateRequired = 0;
+        
     /**
      * Read the command
      */
@@ -285,13 +300,19 @@ int main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XMLDSIG
     } else if(strcmp(argv[1], "sign") == 0) {
 	command = xmlsecCommandSign;
+	templateRequired = 1;
     } else if(strcmp(argv[1], "verify") == 0) {
 	command = xmlsecCommandVerify;
+	templateRequired = 1;
 #endif /* XMLSEC_NO_XMLDSIG */
+#ifndef XMLSEC_NO_XMLENC
     } else if(strcmp(argv[1], "encrypt") == 0) {
 	command = xmlsecCommandEncrypt;
+	templateRequired = 1;
     } else if(strcmp(argv[1], "decrypt") == 0) {
 	command = xmlsecCommandDecrypt;
+	templateRequired = 1;
+#endif /* XMLSEC_NO_XMLENC */
     } else if(strcmp(argv[1], "keys") == 0) {
 	command = xmlsecCommandKeys;
     } else {
@@ -361,6 +382,82 @@ int main(int argc, char **argv) {
 	} else if((strcmp(argv[pos], "--allowed") == 0) && (pos + 1 < argc)) {
 	    ret = readKeyOrigins(argv[++pos]);
 	} else 
+
+
+	/**
+	 * Key selection options
+	 */	
+	if((strcmp(argv[pos], "--session-key-hmac") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genHmac(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else if((strcmp(argv[pos], "--session-key-rsa") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genRsa(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else if((strcmp(argv[pos], "--session-key-dsa") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genDsa(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else if((strcmp(argv[pos], "--session-key-des3") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genDes3(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else if((strcmp(argv[pos], "--session-key-aes128") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genAes128(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else if((strcmp(argv[pos], "--session-key-aes192") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genAes192(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else if((strcmp(argv[pos], "--session-key-aes256") == 0)) {
+	    if(sessionKey != NULL) {
+		fprintf(stderr, "Error: session key already selected\n");
+		ret = -1;
+	    } else {    
+		sessionKey = genAes256(NULL);
+		if(sessionKey == NULL) {
+		    ret = -1;
+		}
+	    }
+	} else
 	
 	/**
 	 * X509 certificates options
@@ -379,7 +476,7 @@ int main(int argc, char **argv) {
 	} else 
 
 	/**
-	 * Keys. options
+	 * Keys options
 	 */	
 	if((strcmp(argv[pos], "--gen-hmac") == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
@@ -532,6 +629,7 @@ int main(int argc, char **argv) {
      */
     ret = 0; 
     while((pos < argc) && (ret >= 0)) {
+	templateRequired = 0;
 	for(i = 0; ((i < retries) && (ret >= 0)); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
@@ -579,9 +677,15 @@ int main(int argc, char **argv) {
 	}
 	++pos;
     }
+    if(templateRequired != 0) {
+	fprintf(stderr, "Error: no templates specified\n");
+ 	goto done;	    	    
+    }
+    
     if(retries > 1) {
         fprintf(stderr, "Executed %d tests in %ld msec\n", retries, total_time / (CLOCKS_PER_SEC / 1000));    
     }
+
     /* success */
     res = 0;
     
@@ -612,6 +716,7 @@ void printUsage(const char *command) {
 	fprintf(stderr, "%s", helpSign);
 	fprintf(stderr, "%s", helpNodeSelection);
 	fprintf(stderr, "%s", helpKeysMngmt);
+	fprintf(stderr, "%s", helpKeySelect);
 	fprintf(stderr, "%s", helpMisc);
     } else if(strcmp(command, "verify") == 0) {
 	fprintf(stderr, usage, command);
@@ -619,6 +724,7 @@ void printUsage(const char *command) {
 	fprintf(stderr, "%s", helpVerify);
 	fprintf(stderr, "%s", helpNodeSelection);
 	fprintf(stderr, "%s", helpKeysMngmt);
+	fprintf(stderr, "%s", helpKeySelect);
 	fprintf(stderr, "%s", helpX509);
 	fprintf(stderr, "%s", helpMisc);
     } else if(strcmp(command, "encrypt") == 0) {
@@ -627,6 +733,7 @@ void printUsage(const char *command) {
 	fprintf(stderr, "%s", helpEncrypt);
 	fprintf(stderr, "%s", helpNodeSelection);
 	fprintf(stderr, "%s", helpKeysMngmt);
+	fprintf(stderr, "%s", helpKeySelect);
 	fprintf(stderr, "%s", helpMisc);
     } else if(strcmp(command, "decrypt") == 0) {
 	fprintf(stderr, usage, command);
@@ -634,6 +741,7 @@ void printUsage(const char *command) {
 	fprintf(stderr, "%s", helpDecrypt);
 	fprintf(stderr, "%s", helpNodeSelection);
 	fprintf(stderr, "%s", helpKeysMngmt);
+	fprintf(stderr, "%s", helpKeySelect);
 	fprintf(stderr, "%s", helpX509);
 	fprintf(stderr, "%s", helpMisc);
     } else {
@@ -735,6 +843,11 @@ int init(xmlsecCommand command) {
 }
 
 void shutdown(void) {
+
+    if(sessionKey != NULL) {
+	xmlSecKeyDestroy(sessionKey);
+    }
+
     /* destroy xmlsec objects */
 #ifndef XMLSEC_NO_XMLENC
     if(encCtx != NULL) {
@@ -762,7 +875,6 @@ void shutdown(void) {
      */
     xsltCleanupGlobals();            
     xmlCleanupParser();
-    xmlMemoryDump();
 
     /**
      * Shutdown OpenSSL
@@ -772,7 +884,9 @@ void shutdown(void) {
 #ifndef XMLSEC_NO_X509
     X509_TRUST_cleanup();
 #endif /* XMLSEC_NO_X509 */    
+#ifdef XMLSEC_OPENSSL097
     CRYPTO_cleanup_all_ex_data();
+#endif /* XMLSEC_OPENSSL097 */     
     ERR_remove_state(0);
     ERR_free_strings();
 }
@@ -989,7 +1103,7 @@ int generateDSig(xmlDocPtr doc) {
     }    
 
     start_time = clock();
-    ret = xmlSecDSigGenerate(dsigCtx, NULL, signNode, &result);
+    ret = xmlSecDSigGenerate(dsigCtx, NULL, sessionKey, signNode, &result);
     total_time += clock() - start_time;    
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
@@ -1029,7 +1143,7 @@ int validateDSig(xmlDocPtr doc) {
 	return(-1);
     }    
         
-    ret = xmlSecDSigValidate(dsigCtx, NULL, signNode, &result);
+    ret = xmlSecDSigValidate(dsigCtx, NULL, sessionKey, signNode, &result);
     if((ret < 0) || (result == NULL)){
 	fprintf(stdout,"ERROR\n");
 	if(result != NULL) { 
@@ -1086,43 +1200,14 @@ int encrypt(xmlDocPtr tmpl) {
     int res = -1;
 
     if(binary && (data != NULL)) {
-	xmlBufferPtr buf = NULL;
-	FILE *f;
-	unsigned char tmp[1024];
-	
-	buf = xmlBufferCreate();
-	if(buf == NULL) {
-    	    fprintf(stderr,"Error: failed to create buffer\n");
-	    goto done;    
-	}
-	
-	f = fopen(data, "r");
-	if(f == NULL) {
-    	    fprintf(stderr,"Error: failed to open file \"%s\" (%d)\n", data, errno);
-	    xmlBufferFree(buf);
-	    goto done;    
-	}
-	while((ret = fread(tmp, 1, sizeof(tmp), f)) > 0) {
-	    xmlBufferAdd(buf, tmp, ret);
-	}
-
-	if(ret < 0){
-    	    fprintf(stderr,"Error: failed to read file \"%s\" (%d)\n", data, errno);
-	    fclose(f);
-	    xmlBufferFree(buf);
-	    goto done;    
-	}
-	fclose(f);
-	
-	ret = xmlSecEncryptMemory(encCtx, NULL, xmlDocGetRootElement(tmpl), 
-			          xmlBufferContent(buf), xmlBufferLength(buf), 
-				  &encResult);
+	ret = xmlSecEncryptUri(encCtx, NULL, sessionKey,
+				xmlDocGetRootElement(tmpl), data, 
+				&encResult);
 	if(ret < 0) {
-    	    fprintf(stderr,"Error: xmlSecEncryptMemory() failed \n");
-	    xmlBufferFree(buf);
+    	    fprintf(stderr,"Error: xmlSecEncryptUri() failed \n");
 	    goto done;    
 	} 
-	xmlBufferFree(buf);
+
     } else if(!binary && (data != NULL)) { 
 	xmlNodePtr cur;
 	
@@ -1154,7 +1239,8 @@ int encrypt(xmlDocPtr tmpl) {
 	    goto done;    
 	}
 	
-	ret = xmlSecEncryptXmlNode(encCtx, NULL, xmlDocGetRootElement(tmpl), 
+	ret = xmlSecEncryptXmlNode(encCtx, NULL, sessionKey,
+				xmlDocGetRootElement(tmpl), 
 				cur, &encResult);	
 	if(ret < 0) {
     	    fprintf(stderr,"Error: xmlSecEncryptXmlNode() failed \n");
@@ -1209,7 +1295,7 @@ int decrypt(xmlDocPtr doc) {
 	goto done;    
     }
     
-    ret = xmlSecDecrypt(encCtx, NULL, cur, &encResult);
+    ret = xmlSecDecrypt(encCtx, NULL, sessionKey, cur, &encResult);
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDecrypt() failed \n");
 	goto done;    
@@ -1334,7 +1420,7 @@ xmlSecKeyPtr genAes128(const char *name) {
 	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
 	return(NULL);
     }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 128);
+    ret = xmlSecAesKeyGenerate(key, NULL, 128 / 8);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);  
 	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
@@ -1359,7 +1445,7 @@ xmlSecKeyPtr genAes192(const char *name) {
 	fprintf(stderr, "Error: failed to create aes 192 key\n"); 
 	return(NULL);
     }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 192);
+    ret = xmlSecAesKeyGenerate(key, NULL, 192 / 8);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);  
 	fprintf(stderr, "Error: failed to create aes 192 key\n"); 
@@ -1384,7 +1470,7 @@ xmlSecKeyPtr genAes256(const char *name) {
 	fprintf(stderr, "Error: failed to create aes 256 key\n"); 
 	return(NULL);
     }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 256);
+    ret = xmlSecAesKeyGenerate(key, NULL, 256 / 8);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);  
 	fprintf(stderr, "Error: failed to create aes 256 key\n"); 

@@ -6,6 +6,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
  
@@ -34,7 +36,7 @@
 int 	
 xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode, 
 		 int removeOldContent) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSignNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSignNode";
     unsigned char *buffer = NULL;
     size_t size = 0;
     xmlChar* resultString = NULL;
@@ -95,7 +97,7 @@ xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode,
  */
 int
 xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestVerifyNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestVerifyNode";
     xmlChar *nodeContent;
     int ret;
     
@@ -160,7 +162,7 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
  */
 void
 xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSetPushMode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSetPushMode";
     xmlSecDigestTransformPtr digest;    
 
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
@@ -190,7 +192,7 @@ xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
 int
 xmlSecDigestUpdate(xmlSecTransformPtr transform,
 		   const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestUpdate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestUpdate";
     xmlSecDigestTransformPtr digest;    
 
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
@@ -220,7 +222,7 @@ xmlSecDigestUpdate(xmlSecTransformPtr transform,
 int
 xmlSecDigestSign(xmlSecTransformPtr transform, 
 		 unsigned char **buffer, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSign";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSign";
     xmlSecDigestTransformPtr digest;    
 
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
@@ -251,7 +253,7 @@ xmlSecDigestSign(xmlSecTransformPtr transform,
 int
 xmlSecDigestVerify(xmlSecTransformPtr transform,
 		const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestVerify";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestVerify";
     xmlSecDigestTransformPtr digest;    
 
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
@@ -286,7 +288,7 @@ xmlSecDigestVerify(xmlSecTransformPtr transform,
 int
 xmlSecDigestTransformRead(xmlSecBinTransformPtr transform, 
 			unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestTransformRead";
     xmlSecDigestTransformPtr digest;    
     int s;
     int ret;
@@ -367,7 +369,7 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
 int
 xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform, 
                         const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestTransformWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestTransformWrite";
     xmlSecDigestTransformPtr digest;    
     int ret;
     
@@ -408,7 +410,7 @@ xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform,
  */
 int
 xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestTransformFlush";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestTransformFlush";
     xmlSecDigestTransformPtr digest;    
     int ret;
 

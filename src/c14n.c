@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -101,7 +103,7 @@ xmlSecTransformId xmlSecC14NExclusiveWithComments = (xmlSecTransformId)&xmlSecC1
  */
 static xmlSecTransformPtr 
 xmlSecC14NTransformCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "";
+    static const char func[] ATTRIBUTE_UNUSED = "";
     xmlSecC14NTransformPtr transform;
     
     if((id != xmlSecC14NInclusive) && (id != xmlSecC14NInclusiveWithComments) &&
@@ -137,7 +139,7 @@ xmlSecC14NTransformCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecC14NTransformDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformDestroy";
     xmlSecC14NTransformPtr ptr;
 
     if(!xmlSecTransformCheckId(transform, xmlSecC14NInclusive) &&
@@ -173,7 +175,7 @@ xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecC14NTransformReadNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformReadNode";
     xmlSecC14NTransformPtr ptr;
     xmlNodePtr node;
     xmlChar *buffer;
@@ -280,7 +282,7 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
  */
 int		
 xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecC14NExclAddInclNamespaces";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NExclAddInclNamespaces";
     xmlNodePtr node;
     
     if((transformNode == NULL) || (prefixList == NULL)) {
@@ -329,7 +331,7 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
 static int
 xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
 			xmlNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecC14NTransformExec";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformExec";
     int ret;
         
     if(xmlSecTransformCheckId(transform, xmlSecC14NInclusive)) {    

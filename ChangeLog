@@ -1,3 +1,7 @@
+Mon 29 Apr 2002 12:07:35 AM PDT Aleksey Sanin <aleksey@aleksey.com>
+    * Significant API re-factoring (make it more simple and consistent)
+    * added symmetric Key Wrappers support (AES, DES)
+    * added RIPEMD-160 support
 Sat 30 Mar 2002 12:55:30 AM PST Aleksey Sanin <aleksey@aleksey.com>
     * Finished x509 supprot
     * Added functions to create signature "on-the-fly"

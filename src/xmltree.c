@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
  
@@ -37,7 +39,7 @@ typedef struct _xmlSecExtMemoryParserCtx {
  */
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecParseFile";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseFile";
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     char *directory = NULL;
@@ -84,7 +86,7 @@ xmlSecParseFile(const char *filename) {
 }
 
 static int xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecExtMemoryParserRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecExtMemoryParserRead";
     xmlSecExtMemoryParserCtxPtr ctx;
     size_t size;
     
@@ -130,7 +132,7 @@ xmlDocPtr
 xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
 		     const unsigned char *buffer, size_t bufferSize, 
 		     const unsigned char *postfix, size_t postfixSize) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecParseMemoryExt";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseMemoryExt";
     xmlSecExtMemoryParserCtx extCtx;
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
@@ -182,7 +184,7 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
  */
 xmlDocPtr
 xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecParseMemory";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseMemory";
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     
@@ -233,7 +235,7 @@ xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
  */
 xmlNodePtr
 xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecFindChild";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindChild";
     xmlNodePtr cur;
         
     if((parent == NULL) || (name == NULL)){
@@ -259,7 +261,7 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
 
 xmlNodePtr		
 xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecFindChild";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindChild";
     xmlNodePtr cur;
     xmlNodePtr ret;
         
@@ -299,7 +301,7 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
  */
 xmlNodePtr
 xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecFindNodeById";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindNodeById";
     xmlNodePtr cur;
     
     if((parent == NULL) || (id == NULL)){
@@ -347,7 +349,7 @@ xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
  */
 xmlNodeSetPtr
 xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withComments) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecGetChildNodeSet";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecGetChildNodeSet";
     xmlNodePtr cur;
     xmlAttrPtr attr;
     
@@ -427,7 +429,7 @@ xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withCo
  */
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCheckNodeName";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCheckNodeName";
     
     if((cur != NULL) && xmlStrEqual(cur->name, name)) {
 	if(cur->ns == NULL && ns == NULL) {
@@ -455,7 +457,7 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
  */
 xmlNodePtr		
 xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecAddChild";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddChild";
     xmlNodePtr cur;
     xmlNodePtr text;
         
@@ -526,7 +528,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
  */
 xmlNodePtr
 xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecAddNextSibling";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddNextSibling";
     xmlNodePtr cur;
     xmlNodePtr text;
     
@@ -584,7 +586,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
  */
 xmlNodePtr
 xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecAddPrevSibling";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddPrevSibling";
     xmlNodePtr cur;
     xmlNodePtr text;
     
@@ -657,7 +659,7 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReplaceNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReplaceNode";
     xmlNodePtr old;
     xmlNodePtr ptr;
     xmlNodePtr dummy;
@@ -723,7 +725,7 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReplaceContent";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReplaceContent";
     xmlNodePtr dummy;
     xmlNodePtr ptr;
 
@@ -776,7 +778,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReplaceNodeBuffer";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReplaceNodeBuffer";
     static const char dummyPrefix[] = "<dummy>";
     static const char dummyPostfix[] = "</dummy>";
     xmlDocPtr doc;

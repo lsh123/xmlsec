@@ -75,17 +75,20 @@ void 			xmlSecEncCtxDestroy		(xmlSecEncCtxPtr ctx);
  */
 int			xmlSecEncryptMemory		(xmlSecEncCtxPtr ctx,
 							 void *context,
+							 xmlSecKeyPtr key,
 							 xmlNodePtr encNode,
 							 const unsigned char *buf,
 							 size_t size,
 							 xmlSecEncResultPtr *result);
 int			xmlSecEncryptUri		(xmlSecEncCtxPtr ctx,
 							 void *context,
+							 xmlSecKeyPtr key,
 							 xmlNodePtr encNode,
 							 const char *uri,
 							 xmlSecEncResultPtr *result);
 int			xmlSecEncryptXmlNode		(xmlSecEncCtxPtr ctx,
 							 void *context,
+							 xmlSecKeyPtr key,
 							 xmlNodePtr encNode,
 							 xmlNodePtr src,
 							 xmlSecEncResultPtr *result);
@@ -94,6 +97,7 @@ int			xmlSecEncryptXmlNode		(xmlSecEncCtxPtr ctx,
  */
 int			xmlSecDecrypt			(xmlSecEncCtxPtr ctx,
 							 void *context,
+							 xmlSecKeyPtr key,
 							 xmlNodePtr encDataNode,
 							 xmlSecEncResultPtr *result);
 /**

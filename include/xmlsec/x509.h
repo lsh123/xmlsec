@@ -65,6 +65,8 @@ int			xmlSecX509StoreVerify		(xmlSecX509StorePtr store,
 int			xmlSecX509StoreLoadPemCert	(xmlSecX509StorePtr store,
 							const char *filename,
 							int trusted);						
+int			xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store, 
+							 const char *path);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -67,6 +67,8 @@ int			xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrPtr mngr,
 int			xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
 							 const char *filename,
 							 int trusted);
+int			xmlSecSimpleKeysMngrAddCertsDir	(xmlSecKeysMngrPtr mngr,
+							 const char *path);
 #endif /* XMLSEC_NO_X509 */
 
 

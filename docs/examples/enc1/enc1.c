@@ -24,8 +24,7 @@ void		shutdownEverything			(void);
 int 		encrypt					(void);
 int		generateAesKey				(void);
 
-xmlSecKeysReadContext keysReadCtx;
-xmlSecSimpleKeyMngrPtr keyMgr = NULL; 
+xmlSecKeysMngrPtr keysMngr = NULL; 
 xmlSecEncCtxPtr ctx = NULL;
 
 int main(int argc, char **argv) {
@@ -49,7 +48,7 @@ int main(int argc, char **argv) {
     /** 
      * load key
      */
-    key = xmlSecSimpleKeyMngrLoadPublicKey(keyMgr, argv[1], NULL, NULL);
+    key = xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 0);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
 	goto done;
@@ -191,7 +190,7 @@ encrypt(void) {
     /**
      * Finally encrypt everything
      */
-    ret = xmlSecEncryptMemory(ctx, encData, (const unsigned char*)buf,
+    ret = xmlSecEncryptMemory(ctx, NULL, NULL, encData, (const unsigned char*)buf,
 			     strlen(buf), &result);
     if(ret < 0) {
 	fprintf(stderr, "Error: memory encryption failed\n");
@@ -231,14 +230,14 @@ generateAesKey(void) {
     }        
     ret = xmlSecAesKeyGenerate(key, NULL, 128);
     if(ret < 0) {
-	xmlSecKeyDestroy(key, 1);  
+	xmlSecKeyDestroy(key);  
 	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
 	return(-1);
     }    
     key->name = xmlStrdup(BAD_CAST "test-aes128");
-    ret = xmlSecSimpleKeyMngrAddKey(keyMgr, key);
+    ret = xmlSecSimpleKeysMngrAddKey(keysMngr, key);
     if(ret < 0) {
-	xmlSecKeyDestroy(key, 1);
+	xmlSecKeyDestroy(key);
 	fprintf(stderr, "Error: failed to add aes 128 key\n"); 
 	return(-1);
     }
@@ -269,24 +268,20 @@ int initEverything(void) {
     /** 
      * Create Keys managers
      */
-    keyMgr = xmlSecSimpleKeyMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
 	return(-1);	
     }
-  
     /**
-     * Create Keys Search context
+     * We encrypt using our keys only
      */
-    memset(&keysReadCtx, 0, sizeof(keysReadCtx));
-    keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; 
-    keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;
-    keysReadCtx.findKeyContext = keyMgr;
-
+    keysMngr->allowedOrigins = xmlSecKeyOriginKeyManager | xmlSecKeyOriginKeyName;
+      
     /**
      * Create enc context
      */
-    ctx = xmlSecEncCtxCreate(&keysReadCtx);
+    ctx = xmlSecEncCtxCreate(keysMngr);
     if(ctx == NULL) {
 	fprintf(stderr, "Error: template failed to create context\n");
 	return(-1);
@@ -303,8 +298,8 @@ void shutdownEverything(void) {
     }
     
     
-    if(keyMgr != NULL) {
-	xmlSecSimpleKeyMngrDestroy(keyMgr);
+    if(keysMngr != NULL) {
+	xmlSecSimpleKeysMngrDestroy(keysMngr);
     }
     
     /**

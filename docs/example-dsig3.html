@@ -74,14 +74,12 @@ previous</a>
 Creating DSig context.             </h4>
              Before using the libraries we need to initialize them. This
 should    be  done  once in the beginning of your program.<br>
-             &nbsp; &nbsp;<code><br>
-             &nbsp;</code><code> &nbsp; int rnd_seed = 0;&nbsp;&nbsp;&nbsp; 
-      <br>
- &nbsp; &nbsp; xmlSecSimpleKeyMngrPtr keyMgr = NULL; <br>
+             <code>
+ &nbsp;&nbsp;&nbsp; int rnd_seed = 0;<br>
+ &nbsp;&nbsp;&nbsp; xmlSecKeysMngrPtr keysMngr = NULL; <br>
  &nbsp;&nbsp;&nbsp; xmlSecDSigCtxPtr dsigCtx = NULL;<br>
- &nbsp;&nbsp;&nbsp; xmlSecKeysReadContext keysReadCtx;</code><br>
-       <code>       <br>
-             &nbsp;&nbsp;&nbsp; /** <br>
+              <br>
+ &nbsp;&nbsp;&nbsp; /** <br>
  &nbsp;&nbsp;&nbsp;&nbsp; * Init OpenSSL<br>
  &nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;&nbsp;&nbsp; <br>
  &nbsp;&nbsp;&nbsp; while (RAND_status() != 1) {<br>
@@ -102,25 +100,15 @@ should    be  done  once in the beginning of your program.<br>
  &nbsp;&nbsp;&nbsp; /** <br>
  &nbsp;&nbsp;&nbsp;&nbsp; * Create Keys managers<br>
  &nbsp;&nbsp;&nbsp;&nbsp; */<br>
- &nbsp;&nbsp;&nbsp; keyMgr = xmlSecSimpleKeyMngrCreate();&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp; keysMngr = xmlSecSimpleKeysMngrCreate();&nbsp;&nbsp;&nbsp; 
       <br>
- &nbsp;&nbsp;&nbsp; if(keyMgr == NULL) {<br>
+ &nbsp;&nbsp;&nbsp; if(keysMngr == NULL) {<br>
  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; fprintf(stderr, "Error: failed to create 
 keys manager\n");<br>
  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; goto done;&nbsp;&nbsp;&nbsp; <br>
  &nbsp;&nbsp;&nbsp; }<br>
        <br>
- &nbsp;&nbsp;&nbsp; /**<br>
- &nbsp;&nbsp;&nbsp;&nbsp; * Create Signature Context <br>
- &nbsp;&nbsp;&nbsp;&nbsp; */<br>
- &nbsp;&nbsp;&nbsp; memset(&amp;keysReadCtx, 0, sizeof(keysReadCtx));<br>
-       <br>
- &nbsp;&nbsp;&nbsp; keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; /* by 
-default all keys are accepted */<br>
- &nbsp;&nbsp;&nbsp; keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;<br>
- &nbsp;&nbsp;&nbsp; keysReadCtx.findKeyContext = keyMgr;<br>
- &nbsp;&nbsp;&nbsp; <br>
- &nbsp;&nbsp;&nbsp; dsigCtx = xmlSecDSigCtxCreate(&amp;keysReadCtx);<br>
+ &nbsp;&nbsp;&nbsp; dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
  &nbsp;&nbsp;&nbsp; if(dsigCtx == NULL) {<br>
  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed to create 
 dsig context\n");<br>
@@ -192,7 +180,7 @@ to find Signature node\n");<br>
 &nbsp; &nbsp; /**<br>
  &nbsp;&nbsp;&nbsp;&nbsp; * Verify It!<br>
  &nbsp;&nbsp;&nbsp;&nbsp; */ <br>
- &nbsp;&nbsp;&nbsp; ret = xmlSecDSigValidate(dsigCtx, signNode, &amp;result);<br>
+ &nbsp;&nbsp;&nbsp; ret = xmlSecDSigValidate(dsigCtx, NULL, NULL, signNode, &amp;result);<br>
  &nbsp;&nbsp;&nbsp; if(ret &lt; 0) {<br>
  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;fprintf(stderr,"Error: verification
 failed\n");<br>
@@ -206,7 +194,7 @@ verification results. Real application should process signature objects list
  &nbsp; &nbsp; <code>&nbsp; /*<br>
  &nbsp;&nbsp;&nbsp;&nbsp; * Print out result&nbsp;&nbsp;&nbsp;&nbsp; <br>
  &nbsp;&nbsp;&nbsp;&nbsp; */<br>
- &nbsp;&nbsp;&nbsp; xmlSecDSigResultDebugDump(stdout, result); </code><br>
+ &nbsp;&nbsp;&nbsp; xmlSecDSigResultDebugDump(result, stdout); </code><br>
        
       <h4>Step 4. Cleanup.</h4>
              At the end we need to destroy DSig context, the doc and KeysManager; 
@@ -227,8 +215,8 @@ verification results. Real application should process signature objects list
  &nbsp;&nbsp; &nbsp; &nbsp;xmlFreeDoc(doc);<br>
  &nbsp;&nbsp;&nbsp; }<br>
  &nbsp;&nbsp; &nbsp;<br>
- &nbsp;&nbsp;&nbsp; if(keyMgr != NULL) {<br>
- &nbsp;&nbsp; &nbsp; &nbsp;xmlSecSimpleKeyMngrDestroy(keyMgr);<br>
+ &nbsp;&nbsp;&nbsp; if(keysMngr != NULL) {<br>
+ &nbsp;&nbsp; &nbsp; &nbsp;xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
  &nbsp;&nbsp;&nbsp; }<br>
  &nbsp;&nbsp; &nbsp;<br>
  &nbsp;&nbsp;&nbsp; xmlSecShutdown();<br>

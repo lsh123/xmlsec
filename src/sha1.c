@@ -1,10 +1,14 @@
 /** 
+ * XML Security Library
+ *
  * Encryption Algorithms: SHA1
  * 
  * See Copyright for the status of this software.
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_SHA1
 
 #include <stdlib.h>
@@ -75,7 +79,7 @@ xmlSecTransformId xmlSecDigestSha1 = (xmlSecTransformId)&xmlSecDigestSha1Id;
  */
 static xmlSecTransformPtr 
 xmlSecDigestSha1Create(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSha1Create";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Create";
     xmlSecDigestTransformPtr digest;
     
     if(id != xmlSecDigestSha1){
@@ -119,7 +123,7 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
  */
 static void 	
 xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSha1Destroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Destroy";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
@@ -148,7 +152,7 @@ xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
 static int 	
 xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSha1Update";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Update";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
@@ -181,7 +185,7 @@ xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
 static int 	
 xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSha1Sign";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Sign";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
@@ -219,7 +223,7 @@ xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
 static int
 xmlSecDigestSha1Verify(xmlSecDigestTransformPtr transform,
 			 const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDigestSha1Verify";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Verify";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {

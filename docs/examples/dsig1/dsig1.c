@@ -18,16 +18,17 @@
 #include <xmlsec/xmldsig.h> 
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/xmltree.h>
 
 
 
 int main(int argc, char **argv) {
-    xmlSecKeysReadContext keysReadCtx;
-    xmlSecSimpleKeyMngrPtr keyMgr = NULL; 
+    xmlSecKeysMngrPtr keysMngr = NULL; 
     xmlSecDSigCtxPtr dsigCtx = NULL;
     xmlDocPtr doc = NULL;
     xmlSecDSigResultPtr result = NULL;
     xmlChar* string;
+    xmlNodePtr node;
     int ret = -1;
     int rnd_seed = 0;
     int len; 
@@ -58,8 +59,8 @@ int main(int argc, char **argv) {
     /** 
      * Create Keys managers
      */
-    keyMgr = xmlSecSimpleKeyMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
 	goto done;	
     }
@@ -67,24 +68,15 @@ int main(int argc, char **argv) {
     /** 
      * load key
      */
-    if(xmlSecSimpleKeyMngrLoadPrivateKey(keyMgr, argv[1], NULL, NULL) == NULL) {
+    if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
 	goto done;
     }
   
     /**
-     * Create Keys Search context
-     */
-    memset(&keysReadCtx, 0, sizeof(keysReadCtx));
-
-    keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; 
-    keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;
-    keysReadCtx.findKeyContext = keyMgr;
-    
-    /**
      * Create Signature Context 
      */
-    dsigCtx = xmlSecDSigCtxCreate(&keysReadCtx);
+    dsigCtx = xmlSecDSigCtxCreate(keysMngr);
     if(dsigCtx == NULL) {
     	fprintf(stderr,"Error: failed to create dsig context\n");
 	goto done; 
@@ -127,7 +119,8 @@ int main(int argc, char **argv) {
     /**
      * Sign It!
      */ 
-    ret = xmlSecDSigGenerate(dsigCtx, xmlDocGetRootElement(doc), &result);
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST "Signature", xmlSecDSigNs);
+    ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, node, &result);
     if(ret < 0) {
     	fprintf(stderr,"Error: result failed\n");
 	goto done; 
@@ -158,8 +151,8 @@ done:
 	xmlFreeDoc(doc); 
     }
     
-    if(keyMgr != NULL) {
-	xmlSecSimpleKeyMngrDestroy(keyMgr);
+    if(keysMngr != NULL) {
+	xmlSecSimpleKeysMngrDestroy(keysMngr);
     }
     
     xmlSecShutdown();

@@ -40,6 +40,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
  
@@ -155,7 +157,7 @@ static const xmlChar xmlSecRawX509Cert[] = "http://www.w3.org/2000/09/xmldsig#ra
  */
 xmlNodePtr	
 xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoAddKeyName";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddKeyName";
     xmlNodePtr cur;
     
     if((keyInfoNode == NULL)) {
@@ -199,7 +201,7 @@ xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
  */
 xmlNodePtr
 xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoAddKeyValue";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddKeyValue";
     xmlNodePtr cur;
     
     if((keyInfoNode == NULL)) {
@@ -243,7 +245,7 @@ xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
  */
 xmlNodePtr
 xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoAddX509Data";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddX509Data";
     xmlNodePtr cur;
     
     if((keyInfoNode == NULL)) {
@@ -288,7 +290,7 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 xmlNodePtr
 xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 			     const xmlChar *type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoAddRetrievalMethod";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddRetrievalMethod";
     xmlNodePtr cur;
     
     if((keyInfoNode == NULL)) {
@@ -340,7 +342,7 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 xmlNodePtr
 xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
 			     xmlSecTransformId transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRetrievalMethodAddTransform";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRetrievalMethodAddTransform";
     xmlNodePtr transforms;
     xmlNodePtr cur;
     int ret;
@@ -403,7 +405,7 @@ xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
 xmlNodePtr		
 xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 			 const xmlChar *type, const xmlChar *recipient) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoAddEncryptedKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoAddEncryptedKey";
     xmlNodePtr encKey;
     xmlNodePtr cipherData;
     
@@ -465,7 +467,7 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 xmlSecKeyPtr	
 xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context, 
 		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoNodeRead";
     xmlSecKeyInfoNodeStatus status;
     xmlNodePtr cur;
 
@@ -503,7 +505,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
 int
 xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context,
 		xmlSecKeyPtr key, xmlSecKeyType type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoNodeWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoNodeWrite";
     xmlNodePtr cur;
     int ret;
         
@@ -566,7 +568,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void 
  */
 static xmlSecKeyPtr
 xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyInfoNodesListRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyInfoNodesListRead";
     xmlChar *keyName;
     xmlSecKeyPtr key;
     
@@ -636,7 +638,7 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
 static xmlSecKeyPtr
 xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
 		      xmlChar **name) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyNameNodeRead";    
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyNameNodeRead";    
     xmlSecKeyPtr key = NULL;
     xmlSecFindKeyCallback findKey;
     xmlChar *content;
@@ -686,7 +688,7 @@ xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
 static int 
 xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
 			 xmlSecKeysMngrPtr keysMngr) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyNameNodeWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyNameNodeWrite";
     
     if((keyNameNode == NULL) || (!xmlSecKeyIsValid(key))) {
 #ifdef XMLSEC_DEBUG
@@ -740,7 +742,7 @@ xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
 static xmlSecKeyPtr
 xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, 
 		       xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyValueNodeRead";   
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyValueNodeRead";   
     xmlNodePtr cur; 
     xmlSecKeyId keyId;
     xmlSecKeyPtr key;
@@ -795,7 +797,7 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode,
  */
 static int 
 xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyType type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyValueNodeWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyValueNodeWrite";
     xmlNodePtr cur;
     int ret;
     
@@ -837,7 +839,7 @@ xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyTyp
 
 static xmlSecKeyPtr	
 xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecRetrievalMethodNodeRead";			 
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRetrievalMethodNodeRead";			 
     xmlSecKeyPtr res = NULL;
     xmlNodePtr cur;
     xmlSecTransformStatePtr state = NULL;
@@ -1030,7 +1032,7 @@ done:
 
 static xmlSecKeyPtr 	
 xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncryptedKeyNodeRead";   
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptedKeyNodeRead";   
     xmlSecKeyPtr key = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     xmlSecEncResultPtr encResult = NULL; 
@@ -1073,7 +1075,7 @@ xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeyInfoNodeStatusPtr sta
     }
     encCtx->ignoreType = 1; /* do not substitute the node! */
     
-    ret = xmlSecDecrypt(encCtx, status->context, encKeyNode, &encResult);
+    ret = xmlSecDecrypt(encCtx, status->context, NULL, encKeyNode, &encResult);
     if((ret < 0) || (encResult == NULL) || (encResult->buffer == NULL)){
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -1112,7 +1114,7 @@ static int
 xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode, 
 			xmlSecKeysMngrPtr keysMngr, void *context,	 
 			xmlSecKeyPtr key, xmlSecKeyType type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecEncryptedKeyNodeWrite";   
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncryptedKeyNodeWrite";   
     xmlSecEncCtxPtr encCtx = NULL;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
@@ -1152,7 +1154,7 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode,
 	goto done;
     }
     
-    ret = xmlSecEncryptMemory(encCtx, context, encKeyNode, keyBuf, keySize, NULL);
+    ret = xmlSecEncryptMemory(encCtx, context, NULL, encKeyNode, keyBuf, keySize, NULL);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
 	xmlGenericError(xmlGenericErrorContext,
@@ -1264,7 +1266,7 @@ done:
  */
 static xmlSecKeyPtr	
 xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr status) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataNodeRead";   
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataNodeRead";   
     xmlNodePtr cur; 
     xmlSecX509DataPtr x509Data = NULL;
     xmlSecKeyPtr key = NULL;
@@ -1379,8 +1381,7 @@ done:
 
 static int
 xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509DataNodeWrite";
-    int ret;
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataNodeWrite";
     
     if((x509DataNode == NULL) || (!xmlSecKeyIsValid(key))) {
 #ifdef XMLSEC_DEBUG
@@ -1434,7 +1435,7 @@ xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
 static int 		
 xmlSecX509IssuerSerialNodeRead(xmlNodePtr serialNode, xmlSecX509DataPtr x509Data,
 			xmlSecKeysMngrPtr keysMngr, void *context) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509IssuerSerialNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509IssuerSerialNodeRead";
     xmlNodePtr cur;
     xmlChar *issuerName;
     xmlChar *issuerSerial;    
@@ -1532,7 +1533,7 @@ xmlSecX509IssuerSerialNodeRead(xmlNodePtr serialNode, xmlSecX509DataPtr x509Data
 static int
 xmlSecX509SKINodeRead(xmlNodePtr skiNode, xmlSecX509DataPtr x509Data,
 			xmlSecKeysMngrPtr keysMngr, void *context) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509SKINodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509SKINodeRead";
     xmlChar *ski;
     
     if((x509Data == NULL) || (skiNode == NULL)) {
@@ -1581,7 +1582,7 @@ xmlSecX509SKINodeRead(xmlNodePtr skiNode, xmlSecX509DataPtr x509Data,
 static int
 xmlSecX509SubjectNameNodeRead(xmlNodePtr subjectNode, xmlSecX509DataPtr x509Data,
 			xmlSecKeysMngrPtr keysMngr, void *context) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509SubjectNameNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509SubjectNameNodeRead";
     xmlChar *subjectName;
         
     if((x509Data == NULL) || (subjectNode == NULL)) {
@@ -1629,7 +1630,7 @@ xmlSecX509SubjectNameNodeRead(xmlNodePtr subjectNode, xmlSecX509DataPtr x509Data
 
 static int
 xmlSecX509CertificateNodeRead(xmlNodePtr certNode, xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509CertificateNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509CertificateNodeRead";
     xmlChar *content;
     int ret;
     
@@ -1669,7 +1670,7 @@ xmlSecX509CertificateNodeRead(xmlNodePtr certNode, xmlSecX509DataPtr x509Data) {
 
 static int
 xmlSecX509CRLNodeRead(xmlNodePtr crlNode, xmlSecX509DataPtr x509Data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecX509CRLNodeRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509CRLNodeRead";
     xmlChar *content;
     int ret;
     

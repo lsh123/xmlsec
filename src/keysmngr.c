@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,7 +48,7 @@ static void			xmlSecSimpleKeysDataDestroy	(xmlSecSimpleKeysDataPtr keysData);
  */
 xmlSecKeysMngrPtr	
 xmlSecSimpleKeysMngrCreate(void) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrCreate";
     xmlSecKeysMngrPtr mngr;
         
     mngr = (xmlSecKeysMngrPtr)xmlMalloc(sizeof(xmlSecKeysMngr));
@@ -104,7 +106,7 @@ xmlSecSimpleKeysMngrCreate(void) {
  */
 void
 xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrDestroy";
     
     if(mngr == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -136,10 +138,10 @@ xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
  * Lookups the first key that does match the given criteria
  */
 xmlSecKeyPtr 		
-xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context,
-			    const xmlChar *name, xmlSecKeyId id, 
-			    xmlSecKeyType type, xmlSecKeyUsage usage) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrFindKey";
+xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
+			    const xmlChar *name, xmlSecKeyId id, xmlSecKeyType type, 
+			    xmlSecKeyUsage usage ATTRIBUTE_UNUSED) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrFindKey";
     xmlSecSimpleKeysDataPtr keysData;
     xmlSecKeyPtr key;
     size_t i;
@@ -183,7 +185,7 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context,
  */
 int	
 xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrAddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrAddKey";
     xmlSecSimpleKeysDataPtr keysData;
 
     if((mngr == NULL) || (mngr->keysData == NULL) || (key == NULL)) {
@@ -240,7 +242,7 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
  */
 int
 xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrLoad";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoad";
     xmlSecKeysMngr keysMngr;
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -268,7 +270,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
     }
     
     root = xmlDocGetRootElement(doc);
-    if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecDSigNs)) {
+    if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: bad root node\n", 
@@ -333,7 +335,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 int
 xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr, 
 			const char *filename, xmlSecKeyType type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrSave";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrSave";
     xmlSecSimpleKeysDataPtr keysData;  
     xmlSecKeysMngr keysMngr;
     xmlDocPtr doc;
@@ -378,7 +380,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 	return(-1);
     }
     xmlDocSetRootElement(doc, root);
-    if(xmlNewNs(root, xmlSecDSigNs, NULL) == NULL) {
+    if(xmlNewNs(root, xmlSecNs, NULL) == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: failed to add ns to node\n",
@@ -475,7 +477,7 @@ xmlSecKeyPtr
 xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr, 
 			const char *keyfile, const char *keyPwd,
 			pem_password_cb *keyPwdCallback, int privateKey) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrLoadPemKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoadPemKey";
     xmlSecKeyPtr key = NULL;
     EVP_PKEY *pKey = NULL;    
     FILE *f;
@@ -578,7 +580,6 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
 	EVP_PKEY_free(pKey);
 	return(NULL);
     }
-
     EVP_PKEY_free(pKey);
     
     ret = xmlSecSimpleKeysMngrAddKey(mngr, key);
@@ -600,7 +601,7 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
  */
 static xmlSecSimpleKeysDataPtr	
 xmlSecSimpleKeysDataCreate(void) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysDataCreate";    
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysDataCreate";    
     xmlSecSimpleKeysDataPtr keysData;
         
     keysData = (xmlSecSimpleKeysDataPtr)xmlMalloc(sizeof(xmlSecSimpleKeysData));
@@ -618,7 +619,7 @@ xmlSecSimpleKeysDataCreate(void) {
 
 static void
 xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysDataDestroy";    
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysDataDestroy";    
 
     if(keysData == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -647,11 +648,11 @@ xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
 
 #ifndef XMLSEC_NO_X509						 
 xmlSecX509DataPtr
-xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context,
+xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
 			    xmlChar *subjectName, xmlChar *issuerName, 
 			    xmlChar *issuerSerial, xmlChar *ski, 
 			    xmlSecX509DataPtr cert) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrX509Find";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrX509Find";
     
     if(mngr == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -672,8 +673,9 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context,
 }
 
 int	
-xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context, xmlSecX509DataPtr cert) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrX509Verify";
+xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED, 
+			       xmlSecX509DataPtr cert) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrX509Verify";
 
     if(mngr == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -693,7 +695,7 @@ xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context, xmlSecX509
 int
 xmlSecSimpleKeysMngrLoadPemCert(xmlSecKeysMngrPtr mngr, const char *filename,
 				int trusted) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSimpleKeysMngrLoadPemCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoadPemCert";
 
     if((mngr == NULL) || (mngr->x509Data == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -706,4 +708,21 @@ xmlSecSimpleKeysMngrLoadPemCert(xmlSecKeysMngrPtr mngr, const char *filename,
     
     return(xmlSecX509StoreLoadPemCert((xmlSecX509StorePtr)mngr->x509Data, filename, trusted));
 }
+
+int	
+xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrAddCertsDir";
+
+    if((mngr == NULL) || (mngr->x509Data == NULL)) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: mngr or x509 data is null\n",
+	    func);	
+#endif 	    
+	return(-1);
+    }
+    
+    return(xmlSecX509StoreAddCertsDir((xmlSecX509StorePtr)mngr->x509Data, path));
+}
+
 #endif /* XMLSEC_NO_X509 */

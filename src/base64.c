@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -39,8 +41,8 @@ static const unsigned char base64[] =
 
 
 /* few macros to simplify the code */
-#define	XMLSEC_BASE64_INPUT_BUFFER_SIZE		8
-#define	XMLSEC_BASE64_OUTPUT_BUFFER_SIZE	5*8
+#define	XMLSEC_BASE64_INPUT_BUFFER_SIZE		64
+#define	XMLSEC_BASE64_OUTPUT_BUFFER_SIZE	5*XMLSEC_BASE64_INPUT_BUFFER_SIZE
 
 #define xmlSecBase64Encode1(a) 		(base64[((int)(a) >> 2) & 0x3F])
 #define xmlSecBase64Encode2(a, b) 	(base64[(((int)(a) << 4) & 0x30) + ((((int)(b)) >> 4) & 0x0F)])
@@ -154,7 +156,7 @@ xmlSecTransformId xmlSecEncBase64Decode = (xmlSecTransformId)&xmlSecBase64Decode
  */
 void
 xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64EncodeSetLineSize";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64EncodeSetLineSize";
     xmlSecBase64CtxPtr ctx;  
 
     if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) ||
@@ -183,7 +185,7 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
  */
 static xmlSecTransformPtr 
 xmlSecBase64Create(const xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64Create";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Create";
     xmlSecCipherTransformPtr cipher;
     int encode;
     
@@ -251,7 +253,7 @@ xmlSecBase64Create(const xmlSecTransformId id) {
  */
 static void
 xmlSecBase64Destroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64Destroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Destroy";
     xmlSecCipherTransformPtr cipher;
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) &&
@@ -282,7 +284,7 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 static int
 xmlSecBase64Update(xmlSecCipherTransformPtr cipher, 
 		 const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64Update";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Update";
     xmlSecBase64CtxPtr ctx;
     int ret;
         
@@ -325,7 +327,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
 
 static int
 xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64Final";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Final";
     xmlSecBase64CtxPtr ctx;
     int ret;
         
@@ -368,7 +370,7 @@ xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
  */
 static int
 xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64CtxEncode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxEncode";
     int outPos = 0;
     
     if(ctx == NULL) {
@@ -426,7 +428,7 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
  */
 static int
 xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64CtxDecode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxDecode";
     int outPos;
     
     if(ctx == NULL) {
@@ -473,7 +475,7 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {
  */
 xmlSecBase64CtxPtr	
 xmlSecBase64CtxCreate(int encode, int columns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64CtxCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxCreate";
     xmlSecBase64CtxPtr ctx;
     
     /*
@@ -502,7 +504,7 @@ xmlSecBase64CtxCreate(int encode, int columns) {
  */
 void
 xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64CtxDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxDestroy";
 
     if(ctx == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -534,7 +536,7 @@ int
 xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 		     const unsigned char *in, size_t inLen, 
 		     unsigned char *out, size_t outLen) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64CtxUpdate";		     
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxUpdate";		     
     unsigned char ch;
     size_t inPos, outPos;
     size_t size;
@@ -635,7 +637,7 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 int
 xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx, 
 		    unsigned char *out, size_t outLen) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64CtxFinal";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxFinal";
     int ret;
     size_t size;
             
@@ -704,7 +706,7 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
  */
 xmlChar*
 xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64Encode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Encode";
     xmlSecBase64CtxPtr ctx;
     xmlChar *ptr;
     size_t size;    
@@ -790,7 +792,7 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
  */
 int
 xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, size_t len) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBase64Decode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Decode";
     xmlSecBase64CtxPtr ctx;
     int size_update;
     int size_final;

@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -29,7 +31,7 @@
  */
 xmlChar*		
 xmlSecBN2CryptoBinary(const BIGNUM *a) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBN2CryptoBinary";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBN2CryptoBinary";
     unsigned char buf[512];
     unsigned char *buffer;
     size_t size;
@@ -107,7 +109,7 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
  */
 BIGNUM*
 xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecCryptoBinary2BN";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCryptoBinary2BN";
     unsigned char buf[512];
     unsigned char *buffer;
     size_t size;
@@ -186,7 +188,7 @@ xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
 
 BIGNUM*
 xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecNodeGetBNValue";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeGetBNValue";
     xmlChar* tmp;
     
     if(cur == NULL) {
@@ -238,7 +240,7 @@ xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 
 int
 xmlSecNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecNodeSetBNValue";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetBNValue";
     xmlChar* tmp;
     
     if((a == NULL) || (cur == NULL)) {

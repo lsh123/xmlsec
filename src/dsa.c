@@ -8,6 +8,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_DSA
 
 #include <stdlib.h>
@@ -127,7 +129,7 @@ xmlSecTransformId xmlSecSignDsaSha1 = (xmlSecTransformId)&xmlSecSignDsaSha1Id;
  */
 static xmlSecTransformPtr 
 xmlSecSignDsaSha1Create(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignDsaSha1Create";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Create";
     xmlSecDigestTransformPtr digest;
     
     if(id != xmlSecSignDsaSha1){
@@ -171,7 +173,7 @@ xmlSecSignDsaSha1Create(xmlSecTransformId id) {
  */
 static void 
 xmlSecSignDsaSha1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignDsaSha1Destroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Destroy";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecSignDsaSha1)) {
@@ -202,7 +204,7 @@ xmlSecSignDsaSha1Destroy(xmlSecTransformPtr transform) {
 static int
 xmlSecSignDsaSha1Update(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignDsaSha1Update";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Update";
     
     if(!xmlSecTransformCheckId(digest, xmlSecSignDsaSha1)) {
 #ifdef XMLSEC_DEBUG
@@ -232,7 +234,7 @@ xmlSecSignDsaSha1Update(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignDsaSha1Sign";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Sign";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     DSA_SIG *sig;
     int rSize, sSize;
@@ -301,7 +303,7 @@ xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignDsaSha1Verify";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Verify";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     DSA_SIG* sig;
     int ret;
@@ -379,7 +381,7 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
  */																 
 static int
 xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignDsaSha1AddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1AddKey";
     xmlSecDigestTransformPtr digest;
     DSA *dsa;
     
@@ -425,7 +427,7 @@ xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static 
 DSA* xmlSecDsaDup(DSA *dsa) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaDup";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaDup";
     DSA *newDsa;
         
     if(dsa == NULL) {
@@ -436,6 +438,8 @@ DSA* xmlSecDsaDup(DSA *dsa) {
 #endif 	    
 	return(NULL);
     }
+    
+    /* todo: increment reference counter nstead of coping */
     
     newDsa = DSA_new();
     if(newDsa == NULL) {
@@ -472,7 +476,7 @@ DSA* xmlSecDsaDup(DSA *dsa) {
  */
 static xmlSecKeyPtr	
 xmlSecDsaKeyCreate(xmlSecKeyId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaKeyCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyCreate";
     xmlSecKeyPtr key;
     
     if(id != xmlSecDsaKey) {
@@ -506,7 +510,7 @@ xmlSecDsaKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaKeyDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyDestroy";
 
     if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
 #ifdef XMLSEC_DEBUG
@@ -526,7 +530,7 @@ xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaKeyDuplicate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyDuplicate";
     xmlSecKeyPtr newKey;
     
     if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
@@ -576,7 +580,7 @@ xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecDsaKeyGenerate(xmlSecKeyPtr key, DSA *dsa) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaKeyGenerate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyGenerate";
     int counter_ret;
     unsigned long h_ret;
     int ret;
@@ -711,7 +715,7 @@ xmlSecDsaKeyGenerate(xmlSecKeyPtr key, DSA *dsa) {
  */
 static int
 xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaKeyRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyRead";
     xmlNodePtr cur;
     DSA *dsa;
     int privateKey = 0;
@@ -799,7 +803,7 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "X", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "X", xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
 	 * we are not sure exactly what do we read */
 	if(xmlSecNodeGetBNValue(cur, &(dsa->priv_key)) == NULL) {
@@ -877,7 +881,7 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDsaKeyWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyWrite";
     xmlNodePtr cur;
     int ret;
     
@@ -954,7 +958,7 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     /* next is X node: write it ONLY for private keys and ONLY if it is requested */
     if(((type == xmlSecKeyTypePrivate) || (type == xmlSecKeyTypeAny)) &&
 	(key->type == xmlSecKeyTypePrivate)) {
-	cur = xmlSecAddChild(parent, BAD_CAST "X", xmlSecDSigNs);
+	cur = xmlSecAddChild(parent, BAD_CAST "X", xmlSecNs);
 	if(cur == NULL) {
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,

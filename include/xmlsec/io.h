@@ -19,6 +19,9 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
+void		xmlSecIOInit				(void);
+void		xmlSecIOShutdown			(void);
+
 extern xmlSecTransformId xmlSecInputUri;
 
 typedef void* (*xmlSecInputUriTransformOpenCallback)	(const char *uri, 

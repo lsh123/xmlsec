@@ -8,6 +8,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_HMAC
  
 #include <stdlib.h>
@@ -80,7 +82,7 @@ static  int		xmlSecHmacKeyWriteBinary	(xmlSecKeyPtr key,
 struct _xmlSecKeyId xmlSecHmacKeyId = {
     /* xlmlSecKeyId data  */
     BAD_CAST "HMACKeyValue",		/* const xmlChar *keyValueNodeName; */
-    xmlSecDSigNs, 			/* const xmlChar *keyValueNodeNs; */
+    xmlSecNs,	 			/* const xmlChar *keyValueNodeNs; */
     
     /* xmlSecKeyId methods */
     xmlSecHmacKeyCreate,		/* xmlSecKeyCreateMethod create; */    
@@ -205,7 +207,7 @@ xmlSecTransformId xmlSecMacHmacRipeMd160 = (xmlSecTransformId)&xmlSecMacHmacRipe
  */
 static xmlSecTransformPtr 
 xmlSecMacHmacCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacCreate";
     xmlSecDigestTransformPtr digest;
     
     if((id != xmlSecMacHmacSha1) && 	
@@ -250,7 +252,7 @@ xmlSecMacHmacCreate(xmlSecTransformId id) {
  */
 static void 
 xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacDestroy";
     xmlSecDigestTransformPtr digest;
     
     if(!xmlSecTransformCheckId(transform, xmlSecMacHmacSha1) && 
@@ -301,7 +303,7 @@ xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacReadNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacReadNode";
     xmlNodePtr cur;
     xmlSecDigestTransformPtr digest;
     
@@ -351,7 +353,7 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  */
 int
 xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacAddOutputLength";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacAddOutputLength";
     xmlNodePtr node;
     char buf[32];
         
@@ -400,7 +402,7 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
 static int
 xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacUpdate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacUpdate";
     
     if(!xmlSecTransformCheckId(digest, xmlSecMacHmacSha1) && 
 	!xmlSecTransformCheckId(digest, xmlSecMacHmacRipeMd160) &&
@@ -432,7 +434,7 @@ xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest,
 static int
 xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacSign";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacSign";
     size_t digestSize = 0;
         
     if(!xmlSecTransformCheckId(digest, xmlSecMacHmacSha1) && 
@@ -473,7 +475,7 @@ xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
 static int
 xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacVerify";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacVerify";
     size_t digestSize = 0;
     
     if(!xmlSecTransformCheckId(digest, xmlSecMacHmacSha1) && 
@@ -514,7 +516,7 @@ xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
  */																 
 static int
 xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecMacHmacAddKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacAddKey";
     xmlSecDigestTransformPtr digest;
     xmlSecHmacKeyDataPtr ptr;
     const EVP_MD *md = NULL;
@@ -569,7 +571,7 @@ xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static xmlSecKeyPtr	
 xmlSecHmacKeyCreate(xmlSecKeyId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyCreate";
     xmlSecKeyPtr key;
     
     if((id != xmlSecHmacKey)) {
@@ -603,7 +605,7 @@ xmlSecHmacKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecHmacKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDestroy";
 
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
 #ifdef XMLSEC_DEBUG
@@ -624,7 +626,7 @@ xmlSecHmacKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyDuplicate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDuplicate";
     xmlSecKeyPtr newKey;
     
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
@@ -673,7 +675,7 @@ xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyGenerate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyGenerate";
     xmlSecHmacKeyDataPtr data;
     int ret;
     
@@ -728,7 +730,7 @@ xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
  */
 static int
 xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyRead";
     xmlChar *str;
     int ret;
     
@@ -795,7 +797,7 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyWrite";
     xmlSecHmacKeyDataPtr ptr;
     xmlChar *str;
     
@@ -843,7 +845,7 @@ xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
  */
 static  int
 xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyReadBinary";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyReadBinary";
     
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
 #ifdef XMLSEC_DEBUG
@@ -882,9 +884,9 @@ xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size)
  *
  */
 static  int
-xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type,
+xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 			unsigned char **buf, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyWriteBinary";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyWriteBinary";
     xmlSecHmacKeyDataPtr keyData;
         
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey) || 
@@ -898,6 +900,8 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type,
     }
     (*buf) = NULL;
     (*size) = 0;
+    
+    
     
     keyData = (xmlSecHmacKeyDataPtr)key->keyData;
     if((keyData == NULL) || (keyData->key == NULL) || (keyData->keySize <= 0)) {
@@ -934,7 +938,7 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type,
  */
 xmlSecHmacKeyDataPtr	
 xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyDataCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDataCreate";
     xmlSecHmacKeyDataPtr data;
     
     data = (xmlSecHmacKeyDataPtr) xmlMalloc(sizeof(xmlSecHmacKeyData) +
@@ -964,7 +968,7 @@ xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
  */
 void
 xmlSecHmacKeyDataDestroy(xmlSecHmacKeyDataPtr data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecHmacKeyDataDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDataDestroy";
 
     if(data == NULL) {
 #ifdef XMLSEC_DEBUG

@@ -32,6 +32,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_XSLT
 
 #include <stdlib.h>
@@ -96,7 +98,7 @@ xmlSecTransformId xmlSecTransformXslt = (xmlSecTransformId)&xmlSecTransformXsltI
  */
 static xmlSecTransformPtr 
 xmlSecTransformXsltCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltCreate";
     xmlSecBinTransformPtr ptr;
     
     if(id != xmlSecTransformXslt){
@@ -134,7 +136,7 @@ xmlSecTransformXsltCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecTransformXsltDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltDestroy";
     xmlSecBinTransformPtr xsltTransform;
             
     if(!xmlSecTransformCheckId(transform, xmlSecTransformXslt)) {
@@ -171,7 +173,7 @@ xmlSecTransformXsltDestroy(xmlSecTransformPtr transform) {
 static int
 xmlSecTransformXsltRead(xmlSecBinTransformPtr transform, 
 			unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltRead";
     xmlSecBinTransformPtr xsltTransform;
     xmlBufferPtr buffer;
     int ret;
@@ -264,7 +266,7 @@ xmlSecTransformXsltRead(xmlSecBinTransformPtr transform,
 static int
 xmlSecTransformXsltWrite(xmlSecBinTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltWrite";
     xmlSecBinTransformPtr xsltTransform;
     xmlBufferPtr ptr;
             
@@ -310,7 +312,7 @@ xmlSecTransformXsltWrite(xmlSecBinTransformPtr transform,
  */
 static int
 xmlSecTransformXsltFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltFlush";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltFlush";
     int ret;
     xmlSecBinTransformPtr xsltTransform;
         
@@ -391,7 +393,7 @@ xmlSecTransformXsltFlush(xmlSecBinTransformPtr transform) {
  */
 static int
 xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltReadNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltReadNode";
     xmlSecBinTransformPtr xsltTransform;
     xmlNodeSetPtr nodes = NULL;
     xmlOutputBufferPtr output = NULL;  
@@ -470,7 +472,7 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
  */
 int
 xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltAdd";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltAdd";
 
     if((transformNode == NULL) || (xslt == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -494,7 +496,7 @@ xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
  */
 static int
 xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXsltExecute";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXsltExecute";
     xmlDocPtr doc = NULL;
     xmlDocPtr docXslt = NULL;
     xsltStylesheetPtr cur = NULL;

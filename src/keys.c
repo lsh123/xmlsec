@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
  
@@ -67,7 +69,7 @@ xmlSecKeysInit(void) {
  */
 xmlSecKeyPtr	
 xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyCreate";
     xmlSecKeyPtr key;
     
     if((id == xmlSecKeyIdUnknown) || (id->create == NULL)) {
@@ -102,7 +104,7 @@ xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
  */
 void
 xmlSecKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyDestroy";
     
     if((!xmlSecKeyIsValid(key)) || (key->id->destroy == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -127,7 +129,7 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
 
 xmlSecKeyPtr	
 xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyDuplicate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyDuplicate";
     xmlSecKeyPtr newKey;
     
     if(!xmlSecKeyIsValid(key) || (key->id->duplicate == NULL)) {
@@ -171,7 +173,7 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
  */
 xmlSecKeyPtr	
 xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyReadXml";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadXml";
     xmlSecKeyPtr key;
     int ret;
     
@@ -230,7 +232,7 @@ xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
  */
 int
 xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyWriteXml";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyWriteXml";
     int ret;
     
     if((!xmlSecKeyIsValid(key)) || (node == NULL)) {
@@ -266,7 +268,7 @@ xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
 
 xmlSecKeyPtr	
 xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyReadBin";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadBin";
     xmlSecKeyPtr key;
     int ret;
     
@@ -317,7 +319,7 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
 int
 xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 		 unsigned char **buf, size_t *size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyWriteBin";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyWriteBin";
     int ret;
     
     if((!xmlSecKeyIsValid(key)) || (buf == NULL) || (size == NULL)) {
@@ -354,7 +356,7 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 
 int
 xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, xmlSecKeyType type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecVerifyKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecVerifyKey";
 	
     if(key == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -385,7 +387,7 @@ xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, xmlSecKey
  */
 void
 xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyDebugDump";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyDebugDump";
     
     if((output == NULL) || !xmlSecKeyIsValid(key)) {
 #ifdef XMLSEC_DEBUG
@@ -441,7 +443,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 #ifndef XMLSEC_NO_X509
 int		
 xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeyReadPemCert";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadPemCert";
     int ret;
 
     if(key == NULL) {
@@ -483,7 +485,7 @@ xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
 xmlSecKeyPtr 		
 xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
 		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecKeysMngrGetKey";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeysMngrGetKey";
     xmlSecKeyPtr key = NULL;
         
     if(mngr == NULL) {

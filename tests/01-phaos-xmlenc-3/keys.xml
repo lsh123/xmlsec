@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<Keys xmlns="http://www.w3.org/2000/09/xmldsig#">
-    <KeyInfo>
+<Keys xmlns="http://www.aleksey.com/xmlsec/2002">
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 	<KeyName>my-rsa-key</KeyName>
 	<KeyValue>
 	    <RSAKeyValue>
@@ -15,7 +15,7 @@
 		<Exponent>
 		    AQAB
 		</Exponent>
-		<PrivateExponent>
+		<PrivateExponent xmlns="http://www.aleksey.com/xmlsec/2002">
 		    Ur48iILiGpME2ONY6s/A0fdaaaBLyM9c6nng3MXX5tt8SuP4EYy8NHLygwNTEXva
 		    qC6MP9jdxqdZByXnlhzTj+AgZk1gc2i1RTHYzbW1Mg9y5m9FaPGyLnsguP8MeZCw
 		    nJf51yoO24TspTt22XC/JnyShZGk6D1hkMoumjWbYRPRGPI0Sb1++3qbdnBJrAD1
@@ -26,34 +26,34 @@
 	    </RSAKeyValue>
 	</KeyValue>
     </KeyInfo>
-    <KeyInfo>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
     <KeyName>my-3des-key</KeyName>
 	<KeyValue>
-	    <DESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    <DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
 		yI+J1f3puYAERjIcT6vfg6RitmKX8nD0
 	    </DESKeyValue>
 	</KeyValue>
     </KeyInfo>
-    <KeyInfo>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
     <KeyName>my-aes256-key</KeyName>
 	<KeyValue>
-	    <AESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
 		ZhZ4v3RlwTlCEOpIrHfLKVyJOBDtEJOOQDat/4xR1bA=
 	    </AESKeyValue>
 	</KeyValue>
     </KeyInfo>
-    <KeyInfo>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 	<KeyName>my-aes192-key</KeyName>
 	<KeyValue>
-	    <AESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
 		IlfuS40LvStVU0Mj8ePrrGHVhAb48y++
 	    </AESKeyValue>
 	</KeyValue>
     </KeyInfo>
-    <KeyInfo>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 	<KeyName>my-aes128-key</KeyName>
 	<KeyValue>
-	    <AESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
 		01+yuQ2huPS1+Qv0LH+zaQ==
 	    </AESKeyValue>
 	</KeyValue>

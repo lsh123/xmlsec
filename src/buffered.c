@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -37,7 +39,7 @@
 int  	
 xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform, 
 			  unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBufferedTransformRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedTransformRead";
     xmlSecBufferedTransformPtr buffered;
     size_t res = 0;
     int ret;
@@ -128,7 +130,7 @@ xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform,
 int  	
 xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform, 
                           const unsigned char *buf, size_t size) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBufferedTransformWrite";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedTransformWrite";
     xmlSecBufferedTransformPtr buffered;
     
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeBuffered)) {
@@ -175,7 +177,7 @@ xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform,
  */
 int
 xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBufferedTransformFlush";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedTransformFlush";
     xmlSecBufferedTransformPtr buffered;
     int ret;
     
@@ -237,7 +239,7 @@ xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
 
 void 	
 xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBufferedDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedDestroy";
     
     if(buffered == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -255,7 +257,7 @@ xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
 
 int 	
 xmlSecBufferedProcess(xmlSecBinTransformPtr transform, xmlBufferPtr buffer) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecBufferedProcess";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferedProcess";
     xmlSecBufferedTransformPtr buffered;
     
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeBuffered) ||

@@ -23,20 +23,16 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/x509mngr.h>
 
 
 int url_decode(char *buf, size_t size);
 
 int main(int argc, char **argv) {
-    xmlSecSimpleKeyMngrPtr keyMgr = NULL; 
-    xmlSecSimpleX509MngrPtr x509Mngr = NULL;
+    xmlSecKeysMngrPtr keysMngr = NULL; 
     xmlSecDSigCtxPtr dsigCtx = NULL;
-    xmlSecKeysReadContext keysReadCtx;
     xmlBufferPtr buffer = NULL;
     xmlDocPtr doc = NULL;
     xmlSecDSigResultPtr result = NULL;
-    X509_LOOKUP *lookup = NULL;
     unsigned char buf[1024];
     int ret = -1;
     int rnd_seed = 0;
@@ -69,8 +65,8 @@ int main(int argc, char **argv) {
     /** 
      * Create Keys managers
      */
-    keyMgr = xmlSecSimpleKeyMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stdout, "Error: failed to create keys manager\n");
 	goto done;	
     }
@@ -82,57 +78,39 @@ int main(int argc, char **argv) {
     }        
     ret = xmlSecHmacKeyGenerate(key, (unsigned char*)"secret", 6);
     if(ret < 0) {
-	xmlSecKeyDestroy(key, 1); 
+	xmlSecKeyDestroy(key); 
 	fprintf(stderr, "Error: failed to set hmac key params\n"); 
 	goto done;  
     }
 
-    ret = xmlSecSimpleKeyMngrAddKey(keyMgr, key);
+    ret = xmlSecSimpleKeysMngrAddKey(keysMngr, key);
     if(ret < 0) {
-	xmlSecKeyDestroy(key, 1);
+	xmlSecKeyDestroy(key);
 	fprintf(stdout, "Error: failed to add hmac key\n"); 
 	goto done;
     }
 
-    x509Mngr = xmlSecSimpleX509MngrCreate();
-    if(x509Mngr == NULL) {
-	fprintf(stdout, "Error: failed to create x509 manager\n");
-	return(-1);
-    }
     /* read Merlin's ca */
-    ret = xmlSecSimpleX509MngrAddTrustedCert(x509Mngr, "/etc/httpd/conf/ssl.crt/merlin.crt"); 
+    ret = xmlSecSimpleKeysMngrLoadPemCert(keysMngr, "/etc/httpd/conf/ssl.crt/merlin.crt", 1); 
     if(ret < 0) {
 	fprintf(stdout, "Error: failed to read Merlin's CA\n");
 	return(-1);
     }
     /* read Aleksey's ca */
-    ret = xmlSecSimpleX509MngrAddTrustedCert(x509Mngr, "/etc/httpd/conf/ssl.crt/aleksey.crt"); 
+    ret = xmlSecSimpleKeysMngrLoadPemCert(keysMngr, "/etc/httpd/conf/ssl.crt/aleksey.crt", 1); 
     if(ret < 0) {
 	fprintf(stdout, "Error: failed to read Aleksey's CA\n");
 	return(-1);
     }
+
     /* read root ca */
-    lookup = X509_STORE_add_lookup(x509Mngr->xst, X509_LOOKUP_hash_dir());
-    if(lookup == NULL) {
-	fprintf(stdout, "Error: failed to create hash lookup\n");
+    ret = xmlSecSimpleKeysMngrAddCertsDir(keysMngr, "/etc/httpd/conf/ssl.crt");
+    if(ret < 0) {
+	fprintf(stdout, "Error: failed to add certs dir lookup\n");
 	return(-1);
     }    
-    X509_LOOKUP_add_dir(lookup, "/etc/httpd/conf/ssl.crt", X509_FILETYPE_DEFAULT);
     
-    /**
-     * Create Signature Context 
-     */
-    memset(&keysReadCtx, 0, sizeof(keysReadCtx));
-
-    keysReadCtx.allowedOrigins = xmlSecKeyOriginAll; /* by default all keys are accepted */
-    keysReadCtx.maxRetrievals = 1;
-    keysReadCtx.findKeyCallback = xmlSecSimpleKeyMngrFindKey;
-    keysReadCtx.findKeyContext = keyMgr;
-    keysReadCtx.x509.context = x509Mngr; 
-    keysReadCtx.x509.verifyCallback = (xmlSecX509VerifyCallback)xmlSecSimpleX509MngrVerify;
-    keysReadCtx.x509.addCRLCallback = (xmlSecX509AddCRLCallback)xmlSecSimpleX509MngrAddCRL;
-    
-    dsigCtx = xmlSecDSigCtxCreate(&keysReadCtx);
+    dsigCtx = xmlSecDSigCtxCreate(keysMngr);
     if(dsigCtx == NULL) {
     	fprintf(stdout,"Error: failed to create dsig context\n");
 	goto done; 
@@ -185,7 +163,7 @@ int main(int argc, char **argv) {
     /**
      * Verify It!
      */ 
-    ret = xmlSecDSigValidate(dsigCtx, xmlDocGetRootElement(doc), &result);
+    ret = xmlSecDSigValidate(dsigCtx, NULL, NULL, xmlDocGetRootElement(doc), &result);
     if(ret < 0) {
     	fprintf(stdout,"Error: verification failed\n");
 	goto done; 
@@ -195,7 +173,7 @@ int main(int argc, char **argv) {
      * Print out result     
      */
     res = 0;
-    xmlSecDSigResultDebugDump(stdout, result); 
+    xmlSecDSigResultDebugDump(result, stdout); 
 
 done:
     
@@ -214,12 +192,8 @@ done:
     if(buffer != NULL) {
 	xmlBufferFree(buffer);
     }
-    
-    if(x509Mngr != NULL) {
-	xmlSecSimpleX509MngrDestroy(x509Mngr);
-    }
-    if(keyMgr != NULL) {
-	xmlSecSimpleKeyMngrDestroy(keyMgr);
+    if(keysMngr != NULL) {
+	xmlSecSimpleKeysMngrDestroy(keysMngr);
     }
     
     xmlSecShutdown();

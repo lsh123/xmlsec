@@ -9,6 +9,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #ifndef XMLSEC_NO_XMLDSIG
 
 #include <stdlib.h>
@@ -92,7 +94,7 @@ static int			xmlSecManifestRead		(xmlNodePtr manifestNode,
  */
 xmlNodePtr
 xmlSecSignatureCreate(const xmlChar *id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignatureCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureCreate";
     xmlNodePtr signNode;
     xmlNodePtr cur;
     
@@ -144,7 +146,7 @@ xmlSecSignatureCreate(const xmlChar *id) {
  */
 void
 xmlSecSignatureDestroy(xmlNodePtr signNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignatureDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureDestroy";
     
     if(signNode == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -171,7 +173,7 @@ xmlSecSignatureDestroy(xmlNodePtr signNode) {
  */
 xmlNodePtr
 xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignatureAddSignedInfo";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureAddSignedInfo";
     xmlNodePtr res;
     xmlNodePtr tmp;
     
@@ -227,7 +229,7 @@ xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
  */
 xmlNodePtr
 xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignatureAddKeyInfo";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureAddKeyInfo";
     xmlNodePtr res;
     xmlNodePtr tmp;
     
@@ -285,7 +287,7 @@ xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 xmlNodePtr
 xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *mimeType,
 		 const xmlChar *encoding) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignatureAddObject";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureAddObject";
     xmlNodePtr res;
 
     if(signNode == NULL) {
@@ -332,7 +334,7 @@ xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *
  */
 xmlNodePtr
 xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nMethod) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignedInfoAddC14NMethod";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoAddC14NMethod";
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
@@ -399,7 +401,7 @@ xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nM
  */
 xmlNodePtr
 xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signMethod) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignedInfoAddSignMethod";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoAddSignMethod";
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
@@ -469,7 +471,7 @@ xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signM
 xmlNodePtr	
 xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const xmlChar *uri,
 		    const xmlChar *type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignedInfoAddReference";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoAddReference";
     xmlNodePtr res;
     xmlNodePtr cur;
     
@@ -534,7 +536,7 @@ xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const
  */
 xmlNodePtr
 xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMethod) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReferenceAddDigestMethod";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceAddDigestMethod";
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
@@ -600,7 +602,7 @@ xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMetho
  */
 xmlNodePtr
 xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReferenceAddTransform";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceAddTransform";
     xmlNodePtr res;
     xmlNodePtr transformsNode;
     int ret;
@@ -673,7 +675,7 @@ xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
  */
 xmlNodePtr		
 xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xmlChar *target) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecObjectAddSignProperties";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecObjectAddSignProperties";
     xmlNodePtr res;
 
     if(objectNode == NULL) {
@@ -716,7 +718,7 @@ xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xm
  */
 xmlNodePtr
 xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecObjectAddManifest";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecObjectAddManifest";
     xmlNodePtr res;
 
     if(objectNode == NULL) {
@@ -758,7 +760,7 @@ xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
  */
 xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id, 
 		  const xmlChar *uri, const xmlChar *type) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecManifestAddReference";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecManifestAddReference";
     xmlNodePtr res;
     xmlNodePtr cur;
     
@@ -820,9 +822,9 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id
  *
  */
 int
-xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context,
+xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigValidate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigValidate";
     xmlSecDSigResultPtr res;    
     int ret;
     
@@ -854,7 +856,11 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context,
 #endif	
 	return(-1);
     }
-    
+
+    if(key != NULL) {
+	res->key = xmlSecKeyDuplicate(key, key->origin);    
+    }
+
     ret = xmlSecSignatureRead(signNode, 0, res);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG
@@ -879,9 +885,9 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context,
  *
  */
 int
-xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, 
+xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 		   xmlNodePtr signNode, xmlSecDSigResultPtr *result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigGenerate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigGenerate";
     xmlSecDSigResultPtr res;
     int ret;
     
@@ -914,6 +920,10 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context,
 #endif	
 	return(-1);
     }
+
+    if(key != NULL) {
+	res->key = xmlSecKeyDuplicate(key, key->origin);    
+    }
     
     ret = xmlSecSignatureRead(signNode, 1, res);
     if(ret < 0) {
@@ -944,7 +954,7 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context,
 xmlSecDSigResultPtr	
 xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context, 
 		       xmlNodePtr signNode, int sign) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigResultCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultCreate";
     xmlSecDSigResultPtr result;
     
     if((ctx == NULL) || (signNode == NULL)){
@@ -986,7 +996,7 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
  */
 void
 xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigResultDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultDestroy";
     
     if(result == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -1012,8 +1022,8 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
 	xmlBufferEmpty(result->buffer);
 	xmlBufferFree(result->buffer);     
     }
-    if(result->signKey != NULL) {
-	xmlSecKeyDestroy(result->signKey);
+    if(result->key != NULL) {
+	xmlSecKeyDestroy(result->key);
     }
     memset(result, 0, sizeof(xmlSecDSigResult));
     xmlFree(result);
@@ -1028,7 +1038,7 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
  */
 void
 xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigResultDebugDump";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultDebugDump";
     
     if((output == NULL) || (result == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -1046,8 +1056,8 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
     fprintf(output, "== sign method: %s\n", 
 	    (result->signMethod != NULL) ? 
 	    (char*)((result->signMethod)->href) : "NULL"); 
-    if(result->signKey != NULL) {
-	xmlSecKeyDebugDump(result->signKey, output);
+    if(result->key != NULL) {
+	xmlSecKeyDebugDump(result->key, output);
     }
     if(result->buffer != NULL) {
 	fprintf(output, "== start buffer:\n");
@@ -1080,7 +1090,7 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
  */
 static xmlSecReferenceResultPtr
 xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, xmlSecReferenceResultPtr ref) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigResultAddSignedInfoRef";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultAddSignedInfoRef";
     
     if(!xmlSecDSigResultIsValid(result) || (ref == NULL)){
 #ifdef XMLSEC_DEBUG
@@ -1113,7 +1123,7 @@ xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, xmlSecReferenceResu
  */
 static xmlSecReferenceResultPtr
 xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResultPtr ref) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigResultAddManifestRef";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigResultAddManifestRef";
     
     if(!xmlSecDSigResultIsValid(result) || (ref == NULL)){
 #ifdef XMLSEC_DEBUG
@@ -1150,7 +1160,7 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
  */
 xmlSecDSigCtxPtr		
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigCtxCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigCtxCreate";
     xmlSecDSigCtxPtr ctx;
     
     /*
@@ -1185,7 +1195,7 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
  */
 void
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigCtxDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigCtxDestroy";
     
     if(ctx == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -1235,7 +1245,7 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
  */
 static int			
 xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignatureRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignatureRead";
     xmlNodePtr signedInfoNode;
     xmlNodePtr signatureValueNode;
     xmlNodePtr keyInfoNode;
@@ -1367,7 +1377,7 @@ static int
 xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign, 
 		xmlSecTransformPtr c14nMethod, xmlSecTransformPtr signMethod, 
 		xmlNodePtr signatureValueNode, xmlSecDSigResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignedInfoCalculate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoCalculate";
     xmlNodeSetPtr nodeSet = NULL;
     xmlSecTransformStatePtr state = NULL;
     xmlSecTransformPtr memBuffer = NULL;
@@ -1545,7 +1555,7 @@ static int
 xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	   	      xmlNodePtr signatureValueNode, xmlNodePtr keyInfoNode,
 		      xmlSecDSigResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecSignedInfoRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoRead";
     xmlSecTransformPtr c14nMethod = NULL;
     xmlSecTransformPtr signMethod = NULL;
     xmlNodePtr cur;
@@ -1605,7 +1615,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
-    if((result->signKey == NULL) && (xmlSecDSigResultGetKeyCallback(result) != NULL)) {
+    if((result->key == NULL) && (xmlSecDSigResultGetKeyCallback(result) != NULL)) {
         xmlSecKeyId keyId;
         xmlSecKeyType keyType;    
         xmlSecKeyUsage keyUsage;
@@ -1619,12 +1629,12 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	}
 	keyId = xmlSecBinTransformIdGetKeyId(result->signMethod);
 		
-	result->signKey = xmlSecDSigResultGetKeyCallback(result)
+	result->key = xmlSecDSigResultGetKeyCallback(result)
 					(keyInfoNode, result->ctx->keysMngr, 
 					result->context, keyId, keyType, 
 					keyUsage); 
     }    
-    if(result->signKey == NULL) {
+    if(result->key == NULL) {
 #ifdef XMLSEC_DEBUG    
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: failed to find key\n",
@@ -1632,7 +1642,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 #endif	    
 	goto done;
     }
-    ret = xmlSecTransformAddKey(signMethod, result->signKey);
+    ret = xmlSecTransformAddKey(signMethod, result->key);
     if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
         xmlGenericError(xmlGenericErrorContext,
@@ -1645,7 +1655,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	/* update KeyInfo! */
 	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, 
 			result->ctx->keysMngr, result->context,
-		    	result->signKey, 
+		    	result->key, 
 			xmlSecBinTransformIdGetDecKeyType(result->signMethod));
 	if(ret < 0) {
 #ifdef XMLSEC_DEBUG    
@@ -1793,7 +1803,7 @@ done:
  */
 static int
 xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReferenceRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceRead";
     xmlNodePtr cur;
     xmlSecTransformStatePtr state = NULL;
     xmlSecTransformPtr digestMethod = NULL;
@@ -1979,7 +1989,7 @@ done:
  */
 static xmlSecReferenceResultPtr	
 xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr self) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReferenceCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceCreate";
     xmlSecReferenceResultPtr ref;
         
     if((ctx == NULL) || (self == NULL)) {
@@ -2020,7 +2030,7 @@ xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr
  */
 static void			
 xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReferenceDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceDestroy";
     
     if(ref == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -2067,7 +2077,7 @@ xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
  */
 static void
 xmlSecReferenceDestroyAll(xmlSecReferenceResultPtr ref) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecReferenceDestroyAll";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReferenceDestroyAll";
     
     if(ref == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -2094,7 +2104,7 @@ xmlSecReferenceDestroyAll(xmlSecReferenceResultPtr ref) {
  */
 static void
 xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigReferenceDebugDumpAll";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigReferenceDebugDumpAll";
     
     if((output == NULL) || (ref == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -2137,7 +2147,7 @@ xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
  */
 static void
 xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecDSigReferenceDebugDumpAll";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDSigReferenceDebugDumpAll";
     xmlSecReferenceResultPtr ptr;
     
     if((output == NULL) || (ref == NULL)) {
@@ -2194,7 +2204,7 @@ xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
  */
 static int
 xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecObjectRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecObjectRead";
     xmlNodePtr cur;
     int ret;
     
@@ -2260,7 +2270,7 @@ xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
  */
 static int
 xmlSecManifestRead(xmlNodePtr manifestNode, int sign, xmlSecDSigResultPtr result) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecManifestRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecManifestRead";
     xmlNodePtr cur;
     xmlSecReferenceResultPtr ref;
     int ret;

@@ -7,6 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
+#include "globals.h"
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -89,7 +91,7 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 static xmlSecTransformPtr 
 xmlSecTransformXPathCreate(xmlSecTransformId id) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXPathCreate";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPathCreate";
     xmlSecXmlTransformPtr xmlTransform; 
     
     if(id != xmlSecTransformXPath){
@@ -123,7 +125,7 @@ xmlSecTransformXPathCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecTransformXPathDestroy(xmlSecTransformPtr transform) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXPathDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPathDestroy";
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathTransformDataPtr data;
     
@@ -154,7 +156,7 @@ xmlSecTransformXPathDestroy(xmlSecTransformPtr transform) {
  */
 static int 
 xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXPathReadNode";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPathReadNode";
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathTransformDataPtr data;
     
@@ -198,7 +200,7 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
 int 	
 xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 			 const xmlChar **namespaces) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXPathAddExpression";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPathAddExpression";
     xmlNodePtr xpathNode;
     
     if((transformNode == NULL) || (expression == NULL)) {
@@ -281,7 +283,7 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 static int
 xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecTransformXPathExecute";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPathExecute";
     xmlChar *expr;    
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathTransformDataPtr data;
@@ -421,7 +423,7 @@ xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
  */
 xmlSecXPathTransformDataPtr	
 xmlSecXPathTransformDataCreate(void) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecXPathTransformDataCreate";    
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathTransformDataCreate";    
     xmlSecXPathTransformDataPtr data;
     
     data = (xmlSecXPathTransformDataPtr) xmlMalloc(sizeof(xmlSecXPathTransformData));
@@ -446,7 +448,7 @@ xmlSecXPathTransformDataCreate(void) {
  */
 void				
 xmlSecXPathTransformDataDestroy(xmlSecXPathTransformDataPtr data) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecXPathTransformDataDestroy";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathTransformDataDestroy";
     
     if(data == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -482,7 +484,7 @@ xmlSecXPathTransformDataDestroy(xmlSecXPathTransformDataPtr data) {
  */
 xmlSecXPathTransformDataPtr	
 xmlSecXPathTransformDataRead(const xmlNodePtr node) {
-    static const char func[] _UNUSED_VARIABLE_ = "xmlSecXPathTransformDataRead";
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathTransformDataRead";
     xmlSecXPathTransformDataPtr data;
     xmlNodePtr cur;
     xmlNsPtr ns;

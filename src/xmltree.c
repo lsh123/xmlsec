@@ -13,6 +13,7 @@
 #include <string.h>
  
 #include <libxml/tree.h>
+#include <libxml/valid.h>
 #include <libxml/xpath.h>
 #include <libxml/parser.h>
 #include <libxml/xpathInternals.h>
@@ -29,6 +30,71 @@ typedef struct _xmlSecExtMemoryParserCtx {
     const unsigned char 	*postfix;
     size_t 			postfixSize;
 } xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
+
+/* 
+ * hack for specifying ID attributes names for xml documents
+ * w/o schemas or DTD 
+ */
+static const xmlChar* id_attributes[100] = { 0 };
+
+/**
+ * xmlSecAddIdAttributeName:
+ * @id:
+ *
+ * Adds ID attribute to the list of known ID attributes
+ * (hack for specifying ID attributes names for xml documents
+ * w/o schemas or DTD). 
+ *
+ * Returns 0 for success or -1 for errors.
+ */
+int
+xmlSecAddIdAttributeName(const xmlChar *id) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddIdAttributeName";
+    size_t i;
+
+    if(id == NULL){
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: id is null\n", 
+	    func);	
+#endif
+	return(-1);	
+    }
+
+    for(i = 0; i < sizeof(id_attributes) / sizeof(id_attributes[0]) - 1; ++i) {
+	if(id_attributes[i] == NULL) {
+	    id_attributes[i] = xmlStrdup(id);
+	    id_attributes[i + 1] = NULL;
+	    return(0);
+	} else if(xmlStrEqual(id_attributes[i], id)) {
+	    /* already present */
+	    return(0);
+	}
+    }
+    xmlGenericError(xmlGenericErrorContext, 
+	    "%s: too many ID attributes specified, change the size in xmltree.c and recompile the library",
+	    func);
+    return(-1);    
+}
+
+/**
+ * xmlSecClearIdAttributeNames:
+ *
+ *
+ */
+void
+xmlSecClearIdAttributeNames(void) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecClearIdAttributeNames";
+    size_t i;
+
+    for(i = 0; i < sizeof(id_attributes) / sizeof(id_attributes[0]) - 1; ++i) {
+	if(id_attributes[i] == NULL) {
+	    break;
+	}	
+	xmlFree(id_attributes[i]);	
+    }
+    memset(id_attributes, 0, sizeof(id_attributes));
+}
 
 /* 
  * xmlSecParseFile:
@@ -323,6 +389,7 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
 xmlNodePtr
 xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindNodeById";
+    xmlAttrPtr attr;
     xmlNodePtr cur;
     
     if((parent == NULL) || (id == NULL)){
@@ -334,29 +401,40 @@ xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
 	return(NULL);	
     }
     
-    cur = parent;
-    while(cur != NULL) {
-        if(cur->type == XML_ELEMENT_NODE) {	    
-	    xmlChar* attr;
-	    xmlNodePtr ret;
+    attr = xmlGetID(parent->doc, id);
+    if(attr != NULL) {
+	return(attr->parent);
+    } else if(id_attributes[0] != NULL) {
+        xmlNodePtr cur;
+    
+	/* this is hack for Ids w/o dtd or schemas */
+    	cur = parent;
+	while(cur != NULL) {
+    	    if(cur->type == XML_ELEMENT_NODE) {	    
+		const xmlChar** p;
+		xmlChar* str;
+		xmlNodePtr ret;
 	
-	    attr = xmlGetProp(cur, BAD_CAST "Id");
-	    if(attr != NULL) {
-		if(xmlStrEqual(id, attr)) {
-		    xmlFree(attr);
-		    return(cur);
+		for(p = id_attributes; (*p != NULL); ++p){
+		    str = xmlGetProp(cur, *p);
+		    if(str != NULL) {
+			if(xmlStrEqual(id, str)) {
+			    xmlFree(str);
+			    return(cur);
+			}
+			xmlFree(str);
+		    }
 		}
-		xmlFree(attr);
-	    }
-	    
-	    if(cur->children != NULL) {
-	        ret = xmlSecFindNodeById(cur->children, id);
-		if(ret != NULL) {
-	    	    return(ret);	    
+
+		if(cur->children != NULL) {
+	    	    ret = xmlSecFindNodeById(cur->children, id);
+		    if(ret != NULL) {
+	    		return(ret);	    
+		    }
 		}
 	    }
+	    cur = cur->next;
 	}
-	cur = cur->next;
     }
     return(NULL);
 }

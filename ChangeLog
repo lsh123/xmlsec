@@ -1,3 +1,8 @@
+2002-06-19  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/xmltree.h src/xmlsec.c src/xmltree.c: 
+	fixed ID attribute bug found by Sascha Breite
+
 Mon Jun  3 21:18:54 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/enveloped.c: improved performance

@@ -202,13 +202,16 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);    
-    xmlSecAssert2(outSize == 0, -1);
     
     if(transform->status == xmlSecTransformStatusNone) {
 	transform->status = xmlSecTransformStatusWorking;
     } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
 	/* just do nothing */
+	xmlSecAssert2(outSize == 0, -1);
+
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+	xmlSecAssert2(outSize == 0, -1);
+
 	ret = xmlSecXslProcess(in, out, xmlSecXsltGetStylesheet(transform));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -232,7 +235,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 	transform->status = xmlSecTransformStatusFinished;
     } else if(transform->status == xmlSecTransformStatusFinished) {
 	/* the only way we can get here is if there is no input */
-	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+	xmlSecAssert2(inSize == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

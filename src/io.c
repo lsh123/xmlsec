@@ -55,9 +55,10 @@ static int xmlSecInputCallbackInitialized = 0;
 
 static int		xmlSecInputUriTransformInitialize	(xmlSecTransformPtr transform);
 static void		xmlSecInputUriTransformFinalize		(xmlSecTransformPtr transform);
-static int  		xmlSecInputUriTransformRead		(xmlSecTransformPtr transform, 
-								 unsigned char *buf, 
-								 size_t size);
+static int		xmlSecInputUriTransformPopBin		(xmlSecTransformPtr transform, 
+								 unsigned char* data,
+								 size_t* dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
 
 static const struct _xmlSecTransformKlass xmlSecInputUriTransformId = {
     /* klass/object sizes */
@@ -78,14 +79,14 @@ static const struct _xmlSecTransformKlass xmlSecInputUriTransformId = {
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecInputUriTransformPopBin,	/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary methods */
     NULL,
-    xmlSecInputUriTransformRead,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
     NULL,				/* xmlSecTransformWriteMethod writeBin; */
     NULL, 				/* xmlSecTransformFlushMethod flushBin; */
     
@@ -199,21 +200,19 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
     return(0);
 }
 
-/** 
- * xmlSecInputUriTransformRead:
- */
-static int
-xmlSecInputUriTransformRead(xmlSecTransformPtr transform, 
-			 unsigned char *buf, size_t size) {
-    xmlSecTransformPtr t;
+static int 
+xmlSecInputUriTransformPopBin(xmlSecTransformPtr transform, unsigned char* data,
+			    size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
     int ret;
-    
+    			    
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecInputUri), -1);
-    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
     
-    t = (xmlSecTransformPtr)transform;
-    if((t->reserved0 != NULL) && (xmlSecInputUriTransformReadClbk(t) != NULL)) {
-	ret = xmlSecInputUriTransformReadClbk(t)(t->reserved0, (char*)buf, (int)size);
+    if(xmlSecInputUriTransformReadClbk(transform) != NULL) {
+	ret = (xmlSecInputUriTransformReadClbk(transform))(transform->reserved0, 
+					    	(char*)data, (int)(*dataSize));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -222,7 +221,9 @@ xmlSecInputUriTransformRead(xmlSecTransformPtr transform,
 			"errno=%d", errno);
 	    return(-1);
 	}
-	return(ret);
+	(*dataSize) = ret;
+    } else {
+	(*dataSize) = 0;
     }
     return(0);
 }

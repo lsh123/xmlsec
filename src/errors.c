@@ -175,7 +175,7 @@ xmlSecError(const char* file, int line, const char* func,
     if(xmlSecErrorsClbk != NULL) {
 	char error_msg[XMLSEC_ERRORS_BUFFER_SIZE];
 	
-	if((msg != NULL) && (msg != XMLSEC_ERRORS_NO_MESSAGE)){
+	if(msg != NULL) {
 	    va_list va;
 
 	    va_start(va, msg);

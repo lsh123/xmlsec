@@ -178,37 +178,37 @@ XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform,
 								 const unsigned char* data,
 								 size_t dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformPushBin	(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformPushBin	(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformPopBin	(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformPopBin	(xmlSecTransformPtr transform, 
 								 unsigned char* data,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformPushXml	(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformPushXml	(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr nodes,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformPopXml	(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformPopXml	(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr* nodes,
 								 xmlSecTransformCtxPtr transformCtx);
 
 
 
-XMLSEC_EXPORT int			xmSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
 								 unsigned char* data,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr nodes,
 								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmSecTransformDefaultPopXml(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr* nodes,
 								 xmlSecTransformCtxPtr transformCtx);
 
@@ -440,19 +440,19 @@ typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform,
 								 const unsigned char* data,
 								 size_t dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
-typedef int		(*xmSecTransformPushBinMethod)		(xmlSecTransformPtr transform, 
+typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
-typedef int		(*xmSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
+typedef int		(*xmlSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
 								 unsigned char* data,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
-typedef int		(*xmSecTransformPushXmlMethod)		(xmlSecTransformPtr transform, 
+typedef int		(*xmlSecTransformPushXmlMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr nodes,
 								 xmlSecTransformCtxPtr transformCtx);
-typedef int		(*xmSecTransformPopXmlMethod)		(xmlSecTransformPtr transform, 
+typedef int		(*xmlSecTransformPopXmlMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr* nodes,
 								 xmlSecTransformCtxPtr transformCtx);
 typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform, 
@@ -557,10 +557,10 @@ struct _xmlSecTransformKlass {
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
     xmlSecTransformVerifyMethod		verify;
-    xmSecTransformPushBinMethod		pushBin;
-    xmSecTransformPopBinMethod		popBin;
-    xmSecTransformPushXmlMethod		pushXml;
-    xmSecTransformPopXmlMethod		popXml;
+    xmlSecTransformPushBinMethod		pushBin;
+    xmlSecTransformPopBinMethod		popBin;
+    xmlSecTransformPushXmlMethod		pushXml;
+    xmlSecTransformPopXmlMethod		popXml;
     
     /* low level method */
     xmlSecTransformExecuteMethod	execute;

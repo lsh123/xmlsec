@@ -100,10 +100,10 @@ struct _xmlSecTransformKlass xmlSecTransformXPathId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* bin transforms */
@@ -136,10 +136,10 @@ struct _xmlSecTransformKlass xmlSecTransformXPath2Id = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
@@ -172,10 +172,10 @@ struct _xmlSecTransformKlass xmlSecTransformXPointerId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */

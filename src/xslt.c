@@ -88,10 +88,10 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecXsltExecute,				/* xmlSecTransformExecuteMethod execute; */
     
     /* binary methods */

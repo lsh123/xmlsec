@@ -746,31 +746,31 @@ static const EVP_MD *xmlSecOpenSSLDsaEvp			(void);
 
 static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    xmlSecOpenSSLEvpSignatureSize,	/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecOpenSSLEvpSignatureSize,		/* size_t objSize */
 
     xmlSecNameDsaSha1,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
-    xmlSecHrefDsaSha1, 			/* xmlChar *href; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefDsaSha1, 				/* xmlChar *href; */
     
     xmlSecOpenSSLDsaSha1Initialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLDsaSha1Finalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadNodeMethod read; */
-    xmlSecOpenSSLDsaSha1SetKeyReq,	/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLDsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLDsaSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLDsaSha1Execute,	/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLDsaSha1Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLDsaSha1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLDsaSha1SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLDsaSha1Verify,			/* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLDsaSha1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,

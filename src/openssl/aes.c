@@ -262,10 +262,10 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     xmlSecOpenSSLAesCbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLAesCbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLAesCbcExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
@@ -294,10 +294,10 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     xmlSecOpenSSLAesCbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLAesCbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLAesCbcExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
@@ -326,10 +326,10 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     xmlSecOpenSSLAesCbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLAesCbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLAesCbcExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
@@ -486,10 +486,10 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
@@ -518,10 +518,10 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
@@ -550,10 +550,10 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmSecTransformDefaultPushBin,		/* xmSecTransformPushBinMethod pushBin; */
-    xmSecTransformDefaultPopBin,		/* xmSecTransformPopBinMethod popBin; */
-    NULL,					/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */

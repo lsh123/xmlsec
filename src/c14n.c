@@ -51,10 +51,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveTransformId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
@@ -88,10 +88,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveWithCommentsTransfo
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */
@@ -124,10 +124,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveTransformId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
     /* bin transforms */
@@ -160,10 +160,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveWithCommentsTransfo
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmSecTransformPopBinMethod popBin; */
-    NULL,				/* xmSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,				/* xmlSecTransformPopBinMethod popBin; */
+    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
     /* bin transforms */

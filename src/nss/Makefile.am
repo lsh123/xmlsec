@@ -1,5 +1,9 @@
 NULL =
 
+EXTRA_DIST = \
+	globals.h \
+$(NULL)
+
 INCLUDES = \
 -I$(top_srcdir) \
 -I$(top_srcdir)/include \

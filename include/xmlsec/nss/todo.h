@@ -11,8 +11,8 @@
  */
 #define xmlSecNssKeyDataAesId \
 	xmlSecNssKeyDataAesGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataAesGetKlass		(void);
-XMLSEC_EXPORT int		xmlSecNssKeyDataAesSet		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataAesGetKlass		(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataAesSet		(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
 /**
@@ -22,7 +22,7 @@ XMLSEC_EXPORT int		xmlSecNssKeyDataAesSet		(xmlSecKeyDataPtr data,
  */
 #define xmlSecNssTransformKWAes128Id \
 	xmlSecNssTransformKWAes128GetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes128GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes128GetKlass	(void);
 
 /**
  * xmlSecNssTransformKWAes192Id:
@@ -31,7 +31,7 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes128GetKlass	(void);
  */
 #define xmlSecNssTransformKWAes192Id \
 	xmlSecNssTransformKWAes192GetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes192GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes192GetKlass	(void);
 
 /**
  * xmlSecNssTransformKWAes256Id:
@@ -40,7 +40,7 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes192GetKlass	(void);
  */
 #define xmlSecNssTransformKWAes256Id \
 	xmlSecNssTransformKWAes256GetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes256GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes256GetKlass	(void);
 
 #endif /* XMLSEC_NO_AES */
 
@@ -57,7 +57,7 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformKWAes256GetKlass	(void);
  */
 #define xmlSecNssTransformKWDes3Id \
 	xmlSecNssTransformKWDes3GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass	(void);
 #endif /* XMLSEC_NO_DES */
 
 /********************************************************************
@@ -76,13 +76,13 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass	(void);
  */
 #define xmlSecNssKeyDataDsaId \
 	xmlSecNssKeyDataDsaGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataDsaGetKlass		(void);
-XMLSEC_EXPORT int		xmlSecNssKeyDataDsaAdoptDsa		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataDsaGetKlass		(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataDsaAdoptDsa		(xmlSecKeyDataPtr data,
 									 DSA* dsa);
-XMLSEC_EXPORT DSA*		xmlSecNssKeyDataDsaGetDsa		(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int		xmlSecNssKeyDataDsaAdoptEvp		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT DSA*		xmlSecNssKeyDataDsaGetDsa		(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataDsaAdoptEvp		(xmlSecKeyDataPtr data,
 									 EVP_PKEY* key);
-XMLSEC_EXPORT EVP_PKEY*		xmlSecNssKeyDataDsaGetEvp		(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecNssKeyDataDsaGetEvp		(xmlSecKeyDataPtr data);
 
 /**
  * xmlSecNssTransformDsaSha1Id:
@@ -91,7 +91,7 @@ XMLSEC_EXPORT EVP_PKEY*		xmlSecNssKeyDataDsaGetEvp		(xmlSecKeyDataPtr data);
  */
 #define xmlSecNssTransformDsaSha1Id \
 	xmlSecNssTransformDsaSha1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass	(void);
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -108,7 +108,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass	(void);
  */
 #define xmlSecNssTransformRipemd160Id \
 	xmlSecNssTransformRipemd160GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRipemd160GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRipemd160GetKlass	(void);
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 /********************************************************************
@@ -127,13 +127,13 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRipemd160GetKlass	(void);
  */
 #define xmlSecNssKeyDataRsaId \
 	xmlSecNssKeyDataRsaGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataRsaGetKlass		(void);
-XMLSEC_EXPORT int		xmlSecNssKeyDataRsaAdoptRsa		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataRsaGetKlass		(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataRsaAdoptRsa		(xmlSecKeyDataPtr data,
 									 RSA* rsa);
-XMLSEC_EXPORT RSA*		xmlSecNssKeyDataRsaGetRsa		(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int		xmlSecNssKeyDataRsaAdoptEvp		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT RSA*		xmlSecNssKeyDataRsaGetRsa		(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataRsaAdoptEvp		(xmlSecKeyDataPtr data,
 									 EVP_PKEY* key);
-XMLSEC_EXPORT EVP_PKEY*		xmlSecNssKeyDataRsaGetEvp		(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecNssKeyDataRsaGetEvp		(xmlSecKeyDataPtr data);
 
 /**
  * xmlSecNssTransformRsaSha1Id:
@@ -142,7 +142,7 @@ XMLSEC_EXPORT EVP_PKEY*		xmlSecNssKeyDataRsaGetEvp		(xmlSecKeyDataPtr data);
  */
 #define xmlSecNssTransformRsaSha1Id	\
 	xmlSecNssTransformRsaSha1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass	(void);
 
 /**
  * xmlSecNssTransformRsaPkcs1Id:
@@ -151,7 +151,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass	(void);
  */
 #define xmlSecNssTransformRsaPkcs1Id \
 	xmlSecNssTransformRsaPkcs1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass	(void);
 
 /**
  * xmlSecNssTransformRsaOaepId:
@@ -160,7 +160,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass	(void);
  */
 #define xmlSecNssTransformRsaOaepId \
 	xmlSecNssTransformRsaOaepGetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass	(void);
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -178,7 +178,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass	(void);
  */
 #define xmlSecNssTransformSha1Id \
 	xmlSecNssTransformSha1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass	(void);
 #endif /* XMLSEC_NO_SHA1 */
 
 
@@ -201,7 +201,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass	(void);
  */
 #define XMLSEC_NSS_ERRORS_FUNCTION			0
 
-XMLSEC_EXPORT void 	xmlSecNssErrorsDefaultCallback		(const char* file, 
+XMLSEC_CRYPTO_EXPORT void 	xmlSecNssErrorsDefaultCallback		(const char* file, 
 									 int line, 
 									 const char* func,
 									 const char* errorObject,

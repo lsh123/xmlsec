@@ -16,37 +16,8 @@ extern "C" {
 #include <libxml/tree.h>
 
 #include <xmlsec/version.h>
-
-#if !defined XMLSEC_EXPORT
-   /* Now, the export orgy begins. The following we must do for the 
-      Windows platform with MSVC compiler. */
-#  if defined _MSC_VER
-     /* if we compile libxmlsec itself: */
-#    if defined(IN_XMLSEC)
-#      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_EXPORT __declspec(dllexport) 
-#        define XMLSEC_EXPORT_VAR __declspec(dllexport) extern
-#      else
-#        define XMLSEC_EXPORT extern
-#        define XMLSEC_EXPORT_VAR extern
-#      endif
-     /* if a client program includes this file: */
-#    else
-#      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_EXPORT __declspec(dllimport) 
-#        define XMLSEC_EXPORT_VAR __declspec(dllimport) extern
-#      else
-#        define XMLSEC_EXPORT 
-#        define XMLSEC_EXPORT_VAR extern
-#      endif
-#    endif
-   /* This holds on all other platforms/compilers, which are easier to
-      handle in regard to this. */
-#  else
-#    define XMLSEC_EXPORT
-#    define XMLSEC_EXPORT_VAR extern
-#  endif
-#endif
+#include <xmlsec/exports.h>
+#include <xmlsec/strings.h>
 
 XMLSEC_EXPORT int	xmlSecInit			(void);
 XMLSEC_EXPORT int	xmlSecShutdown			(void);
@@ -90,8 +61,6 @@ typedef void*					xmlSecEncCtxPtr;
 #else
 #define ATTRIBUTE_UNUSED
 #endif
-
-#include <xmlsec/strings.h>
 
 #ifdef __cplusplus
 }

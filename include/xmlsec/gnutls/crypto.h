@@ -19,9 +19,9 @@ extern "C" {
 /**
  * Init shutdown
  */
-XMLSEC_EXPORT int		xmlSecGnuTLSInit				(void);
-XMLSEC_EXPORT int		xmlSecGnuTLSShutdown			(void);
-XMLSEC_EXPORT int		xmlSecGnuTLSGenerateRandom			(xmlSecBufferPtr buffer,
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSInit				(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSShutdown			(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSGenerateRandom			(xmlSecBufferPtr buffer,
 									 size_t sizeBytes);
 
 
@@ -38,8 +38,8 @@ XMLSEC_EXPORT int		xmlSecGnuTLSGenerateRandom			(xmlSecBufferPtr buffer,
  */
 #define xmlSecGnuTLSKeyDataAesId \
 	xmlSecGnuTLSKeyDataAesGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecGnuTLSKeyDataAesGetKlass		(void);
-XMLSEC_EXPORT int		xmlSecGnuTLSKeyDataAesSet			(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecGnuTLSKeyDataAesGetKlass		(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataAesSet			(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
 /**
@@ -49,7 +49,7 @@ XMLSEC_EXPORT int		xmlSecGnuTLSKeyDataAesSet			(xmlSecKeyDataPtr data,
  */
 #define xmlSecGnuTLSTransformAes128CbcId \
 	xmlSecGnuTLSTransformAes128CbcGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes128CbcGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes128CbcGetKlass	(void);
 
 /**
  * xmlSecGnuTLSTransformAes192CbcId:
@@ -58,7 +58,7 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes128CbcGetKlass	(void);
  */
 #define xmlSecGnuTLSTransformAes192CbcId \
 	xmlSecGnuTLSTransformAes192CbcGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes192CbcGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes192CbcGetKlass	(void);
 
 /**
  * xmlSecGnuTLSTransformAes256CbcId:
@@ -67,7 +67,7 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes192CbcGetKlass	(void);
  */
 #define xmlSecGnuTLSTransformAes256CbcId \
 	xmlSecGnuTLSTransformAes256CbcGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes256CbcGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes256CbcGetKlass	(void);
 
 #endif /* XMLSEC_NO_AES */
 
@@ -84,8 +84,8 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes256CbcGetKlass	(void);
  */
 #define xmlSecGnuTLSKeyDataDesId \
 	xmlSecGnuTLSKeyDataDesGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecGnuTLSKeyDataDesGetKlass		(void);
-XMLSEC_EXPORT int		xmlSecGnuTLSKeyDataDesSet			(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecGnuTLSKeyDataDesGetKlass		(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataDesSet			(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
 
@@ -96,7 +96,7 @@ XMLSEC_EXPORT int		xmlSecGnuTLSKeyDataDesSet			(xmlSecKeyDataPtr data,
  */
 #define xmlSecGnuTLSTransformDes3CbcId \
 	xmlSecGnuTLSTransformDes3CbcGetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass	(void);
 
 #endif /* XMLSEC_NO_DES */
 
@@ -113,8 +113,8 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass	(void);
  */
 #define xmlSecGnuTLSKeyDataHmacId \
 	xmlSecGnuTLSKeyDataHmacGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId	xmlSecGnuTLSKeyDataHmacGetKlass	(void);
-XMLSEC_EXPORT int		xmlSecGnuTLSKeyDataHmacSet		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId	xmlSecGnuTLSKeyDataHmacGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataHmacSet		(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
 /**
@@ -124,7 +124,7 @@ XMLSEC_EXPORT int		xmlSecGnuTLSKeyDataHmacSet		(xmlSecKeyDataPtr data,
  */
 #define xmlSecGnuTLSTransformHmacSha1Id \
 	xmlSecGnuTLSTransformHmacSha1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass	(void);
 
 /**
  * xmlSecGnuTLSTransformHmacRipeMd160Id:
@@ -133,7 +133,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass	(void);
  */
 #define xmlSecGnuTLSTransformHmacRipemd160Id \
 	xmlSecGnuTLSTransformHmacRipemd160GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlass(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlass(void);
 
 /**
  * xmlSecGnuTLSTransformHmacMd5Id:
@@ -142,7 +142,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlass(void)
  */
 #define xmlSecGnuTLSTransformHmacMd5Id \
 	xmlSecGnuTLSTransformHmacMd5GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass	(void);
 
 
 #endif /* XMLSEC_NO_HMAC */
@@ -161,7 +161,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass	(void);
  */
 #define xmlSecGnuTLSTransformSha1Id \
 	xmlSecGnuTLSTransformSha1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha1GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha1GetKlass	(void);
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifdef __cplusplus

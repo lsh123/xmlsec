@@ -10,6 +10,7 @@ $(LIBXML_CFLAGS) \
 $(NULL)
 
 EXTRA_DIST = \
+	globals.h \
 $(NULL)
 
 lib_LTLIBRARIES = libxmlsec.la

@@ -20,25 +20,25 @@ extern "C" {
 /**
  * Init/shutdown
  */
-XMLSEC_EXPORT int		xmlSecGnuTLSAppInit			(const char* config);
-XMLSEC_EXPORT int		xmlSecGnuTLSAppShutdown			(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSAppInit			(const char* config);
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSAppShutdown			(void);
 
 /** 
  * Keys Manager
  */
-XMLSEC_EXPORT int		xmlSecGnuTLSAppSimpleKeysMngrInit		(xmlSecKeysMngrPtr mngr);
-XMLSEC_EXPORT int 		xmlSecGnuTLSAppSimpleKeysMngrAdoptKey	(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSAppSimpleKeysMngrInit		(xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int 		xmlSecGnuTLSAppSimpleKeysMngrAdoptKey	(xmlSecKeysMngrPtr mngr,
 									 xmlSecKeyPtr key);
-XMLSEC_EXPORT int 		xmlSecGnuTLSAppSimpleKeysMngrLoad		(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 		xmlSecGnuTLSAppSimpleKeysMngrLoad		(xmlSecKeysMngrPtr mngr,
 									 const char* uri);
-XMLSEC_EXPORT int 		xmlSecGnuTLSAppSimpleKeysMngrSave		(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 		xmlSecGnuTLSAppSimpleKeysMngrSave		(xmlSecKeysMngrPtr mngr,
 									 const char* filename,
 									 xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509
-XMLSEC_EXPORT int		xmlSecGnuTLSAppKeysMngrPemCertLoad		(xmlSecKeysMngrPtr mngr, 
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSAppKeysMngrPemCertLoad		(xmlSecKeysMngrPtr mngr, 
 									 const char *filename, 
 									 int trusted);
-XMLSEC_EXPORT int		xmlSecGnuTLSAppKeysMngrAddCertsPath	(xmlSecKeysMngrPtr mngr, 
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSAppKeysMngrAddCertsPath	(xmlSecKeysMngrPtr mngr, 
 									 const char *path);
 #endif /* XMLSEC_NO_X509 */
 
@@ -46,14 +46,14 @@ XMLSEC_EXPORT int		xmlSecGnuTLSAppKeysMngrAddCertsPath	(xmlSecKeysMngrPtr mngr,
 /** 
  * Keys
  */
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecGnuTLSAppPemKeyLoad			(const char *keyfile, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecGnuTLSAppPemKeyLoad			(const char *keyfile, 
 									 const char *keyPwd,
 									 void *keyPwdCallback, 
 									 int privateKey);
 #ifndef XMLSEC_NO_X509
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecGnuTLSAppPkcs12Load			(const char *filename, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecGnuTLSAppPkcs12Load			(const char *filename, 
 									 const char *pwd);
-XMLSEC_EXPORT int		xmlSecGnuTLSAppKeyPemCertLoad		(xmlSecKeyPtr key,
+XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSAppKeyPemCertLoad		(xmlSecKeyPtr key,
 									 const char* filename);
 #endif /* XMLSEC_NO_X509 */
 

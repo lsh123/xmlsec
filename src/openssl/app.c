@@ -189,7 +189,8 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
-    X509 *cert;
+    X509 *cert = NULL;
+    X509 *tmpcert = NULL;
     int i;
     int ret;
 
@@ -235,7 +236,6 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 	goto done;
     }    
 
-    /* todo: should we put the key cert into stack */
     sk_X509_push(chain, cert);
     x509Data = xmlSecKeyDataCreate(xmlSecKeyDataX509Id);
     if(x509Data == NULL) {
@@ -244,9 +244,18 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    "xmlSecKeyDataCreate");
 	goto done;
     }    
+
+    ret = xmlSecOpenSSLKeyDataX509AdoptVerified(x509Data, cert);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	goto done;
+    }
+
     for(i = 0; i < sk_X509_num(chain); ++i) {
-	cert = sk_X509_value(chain, i);
-	ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, cert);
+	tmpcert = sk_X509_value(chain, i);
+	ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -254,6 +263,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 	    goto done;
 	}
     }
+    
     
     key = xmlSecKeyCreate();
     if(key == NULL) {

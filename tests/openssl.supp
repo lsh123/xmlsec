@@ -18,45 +18,45 @@
 ##----------------------------------------------------------------------##
 {
    OpenSSL BN_*(Cond)
-   Cond
+   Memcheck:Cond
    fun:BN_*
 }
 
 {
    OpenSSL BN_*(Value4)
-   Value4
+   Memcheck:Value4
    fun:BN_*
 }
 
 {
    OpenSSL bn_*(Cond)
-   Cond
+   Memcheck:Cond
    fun:bn_*
 }
 
 {
    OpenSSL bn_*(Value4)
-   Value4
+   Memcheck:Value4
    fun:bn_*
 }
 
 {
    OpenSSL AES_encrypt(Value4)
-   Value4
+   Memcheck:Value4
    fun:AES_encrypt
    fun:AES_cbc_encrypt
 }
 
 {
    OpenSSL DES_encrypt*(Value4)
-   Value4
+   Memcheck:Value4
    fun:DES_encrypt2
    fun:DES_encrypt3
 }
 
 {
    OpenSSL RSA_padding_add_PKCS1_type_2(Cond)
-   Cond
+   Memcheck:Cond
    fun:RSA_padding_add_PKCS1_type_2
    fun:RSA_eay_public_encrypt
 }

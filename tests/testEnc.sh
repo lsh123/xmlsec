@@ -8,10 +8,12 @@ tmpfile=/tmp/testEnc.$timestamp-$$.tmp
 logfile=/tmp/testEnc.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
+valgrind_suppression="$topfolder/openssl.supp"
+valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppression"
 
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
-    export REPEAT=1
+    export VALGRIND="valgrind $valgrind_options"
+    export REPEAT=3
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 

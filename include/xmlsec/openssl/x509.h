@@ -30,6 +30,8 @@ extern "C" {
 XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataX509GetKlass	(void);
 
 XMLSEC_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetVerified	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int		xmlSecOpenSSLKeyDataX509AdoptVerified	(xmlSecKeyDataPtr data, 
+									 X509* cert);
 
 XMLSEC_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCert	(xmlSecKeyDataPtr data,
 									 X509* cert);

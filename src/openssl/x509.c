@@ -247,6 +247,18 @@ xmlSecOpenSSLKeyDataX509GetVerified(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLKeyDataX509GetVerifiedCert(data));
 }
 
+int
+xmlSecOpenSSLKeyDataX509AdoptVerified(xmlSecKeyDataPtr data, X509* cert) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(cert != NULL, -1);
+    
+    if(xmlSecOpenSSLKeyDataX509GetVerifiedCert(data) != NULL) {
+	X509_free(xmlSecOpenSSLKeyDataX509GetVerifiedCert(data));
+    }
+    data->reserved2 = cert;
+    return(0);
+}
+
 int 
 xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     STACK_OF(X509)* certs;
@@ -472,7 +484,15 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr data) {
 	    xmlSecKeyDataDestroy(newData);
 	    return(NULL);
 	}
-	newData->reserved2 = cert2;
+	ret = xmlSecOpenSSLKeyDataX509AdoptVerified(newData, cert2);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509AdoptVerified");
+	    X509_free(cert2);
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
     }
     
     /* 
@@ -1108,12 +1128,21 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 			    keyInfoCtx);
 	if(verifiedCert != NULL) {
 	    xmlSecKeyDataPtr keyValue;
-
-	    data->reserved2 = X509_dup(verifiedCert);
-	    if(data->reserved2 == NULL) {
+	    X509* cert;
+	    
+	    cert = X509_dup(verifiedCert);
+	    if(cert == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    "X509_dup");
+		return(-1);
+	    }
+	    ret = xmlSecOpenSSLKeyDataX509AdoptVerified(data, cert);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecOpenSSLKeyDataX509AdoptVerified");
+		X509_free(cert);
 		return(-1);
 	    }
 	

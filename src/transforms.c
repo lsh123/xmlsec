@@ -53,6 +53,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/io.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
@@ -513,6 +514,183 @@ xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     return((transform->id->execute)(transform, last, transformCtx));
 }
 
+
+/************************************************************************
+ *
+ * Operations on transforms chain
+ *
+ ************************************************************************/ 
+/**
+ * xmlSecTransformConnect:
+ * 
+ * @left:
+ * @right:
+ *
+ * If the data object is a node-set and the next transform requires octets, 
+ * the signature application MUST attempt to convert the node-set to an octet 
+ * stream using Canonical XML [XML-C14N].  
+ *
+ * The story is different if the right transform is base64 decode:
+ *
+ * http://www.w3.org/TR/xmldsig-core/#sec-Base-64
+ *
+ * This transform requires an octet stream for input. If an XPath node-set 
+ * (or sufficiently functional alternative) is given as input, then it is 
+ * converted to an octet stream by performing operations logically equivalent 
+ * to 1) applying an XPath transform with expression self::text(), then 2) 
+ * taking the string-value of the node-set. Thus, if an XML element is 
+ * identified by a barename XPointer in the Reference URI, and its content 
+ * consists solely of base64 encoded character data, then this transform 
+ * automatically strips away the start and end tags of the identified element 
+ * and any of its descendant elements as well as any descendant comments and 
+ * processing instructions. The output of this transform is an octet stream.
+ */
+int 
+xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right, 
+		       xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformDataType leftType;
+    xmlSecTransformDataType rightType;
+    xmlSecTransformId middleId;
+    xmlSecTransformPtr middle;
+        
+    xmlSecAssert2(xmlSecTransformIsValid(left), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(right), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
+    rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
+
+    /* happy case first: nothing need to be done */    
+    if((((leftType & xmlSecTransformDataTypeBin) != 0) && 
+        ((rightType & xmlSecTransformDataTypeBin) != 0)) || 
+       (((leftType & xmlSecTransformDataTypeXml) != 0) && 
+        ((rightType & xmlSecTransformDataTypeXml) != 0))) {
+	
+	xmlSecTransformAddAfter(left, right);
+	return(0);
+    } 
+    
+    if(((leftType & xmlSecTransformDataTypeBin) != 0) && 
+        ((rightType & xmlSecTransformDataTypeXml) != 0)) {
+	    
+	/* need to insert parser */
+	middleId = xmlSecTransformXmlParserId;
+    } else if(((leftType & xmlSecTransformDataTypeXml) != 0) && 
+        ((rightType & xmlSecTransformDataTypeBin) != 0)) {
+
+	/* need to insert c14n */
+	middleId = xmlSecTransformInclC14NId;
+    } else {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(right)),
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "leftType=%d;rightType=%d", 
+		    leftType, rightType);
+	return(-1);	
+    }
+    
+    /* insert transform */
+    middle = xmlSecTransformCreate(middleId, 0);
+    if(middle == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
+		    "xmlSecTransformCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(middleId)));
+	return(-1);
+    }	
+    xmlSecTransformAddAfter(left, middle);
+    xmlSecTransformAddAfter(middle, right);
+    return(0);
+}
+
+
+/**
+ * xmlSecTransformAddAfter:
+ * @curTransform: the pointer to current transform (may be NULL).
+ * @newTransform: the pointer to new transform.
+ * 
+ * Adds @newTransform after the @curTransform.
+ *
+ * Returns pointer to the new transforms chain or NULL if an error occurs.
+ */
+xmlSecTransformPtr	
+xmlSecTransformAddAfter(xmlSecTransformPtr curTransform, 
+			xmlSecTransformPtr newTransform) {
+    xmlSecAssert2(xmlSecTransformIsValid(newTransform), NULL);
+
+    if(curTransform != NULL) {
+	xmlSecAssert2(xmlSecTransformIsValid(curTransform), NULL);
+
+	newTransform->prev = curTransform;
+	newTransform->next = curTransform->next;
+	curTransform->next = newTransform;
+	if(newTransform->next != NULL) {
+	    newTransform->next->prev = newTransform;
+	}
+    } else {
+ 	newTransform->next = newTransform->prev = NULL;
+    }
+    return(newTransform);
+}
+
+/**
+ * xmlSecTransformAddBefore
+ * @curTransform: the pointer to current transform (may be NULL).
+ * @newTransform: the pointer to new transform.
+ * 
+ * Adds @newTransform before the @curTransform.
+ *
+ * Returns pointer to the new transforms chain or NULL if an error occurs.
+ */
+xmlSecTransformPtr	
+xmlSecTransformAddBefore(xmlSecTransformPtr curTransform, 
+			    xmlSecTransformPtr newTransform) {
+    xmlSecAssert2(xmlSecTransformIsValid(newTransform), NULL);
+
+    if(curTransform != NULL) {
+	xmlSecAssert2(xmlSecTransformIsValid(curTransform), NULL);
+
+	newTransform->next = curTransform;
+	newTransform->prev = curTransform->prev;
+	curTransform->prev = newTransform;
+	if(newTransform->prev != NULL) {
+	    newTransform->prev->next = newTransform;
+	}
+    } else {
+	newTransform->next = newTransform->prev = NULL;
+    }
+    return(newTransform);
+    
+}
+
+/**
+ * xmlSecTransformRemove:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * Removes @transform from the chain. This method MUST be called by any 
+ * bin transform id destructor.
+ */
+void
+xmlSecTransformRemove(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+
+    if(transform->next != NULL) {
+	transform->next->prev = transform->prev;
+    }
+    if(transform->prev != NULL) {
+	transform->prev->next = transform->next;
+    }
+    transform->next = transform->prev = NULL;
+}
+
+
+/************************************************************************
+ *
+ * Default callbacks, most of the transforms can use them
+ *
+ ************************************************************************/ 
 xmlSecTransformDataType 
 xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode,
 				  xmlSecTransformCtxPtr transformCtx) {

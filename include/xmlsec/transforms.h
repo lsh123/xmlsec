@@ -176,27 +176,6 @@ XMLSEC_EXPORT int 			xmlSecTransformExecute	(xmlSecTransformPtr transform,
 								 int last, 
 								 xmlSecTransformCtxPtr transformCtx);
 
-XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
-								 xmlSecTransformMode mode,
-								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
-								 size_t dataSize,
-								 int final,
-								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
-								 unsigned char* data,
-								 size_t maxDataSize,
-								 size_t* dataSize,
-								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr nodes,
-								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr* nodes,
-								 xmlSecTransformCtxPtr transformCtx);
-
-
 #define xmlSecTransformGetName(transform) \
 	((xmlSecTransformIsValid((transform))) ? \
 	  xmlSecTransformKlassGetName((transform)->id) : NULL)
@@ -251,6 +230,45 @@ XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform,
  	(xmlSecTransformIsValid(( transform )) && \
 	((( transform )->id->objSize) >= ( size )))
 
+
+/************************************************************************
+ *
+ * Operations on transforms chain
+ *
+ ************************************************************************/ 
+XMLSEC_EXPORT int			xmlSecTransformConnect	(xmlSecTransformPtr left,
+								 xmlSecTransformPtr right,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddAfter	(xmlSecTransformPtr curTransform,
+								 xmlSecTransformPtr newTransform);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr curTransform,
+								 xmlSecTransformPtr newTransform);
+XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
+
+/************************************************************************
+ *
+ * Default callbacks, most of the transforms can use them
+ *
+ ************************************************************************/ 
+XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
+								 xmlSecTransformMode mode,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 int final,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int			xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
+								 unsigned char* data,
+								 size_t maxDataSize,
+								 size_t* dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int			xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
+								 xmlSecNodeSetPtr nodes,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, 
+								 xmlSecNodeSetPtr* nodes,
+								 xmlSecTransformCtxPtr transformCtx);
 
 /************************************************************************
  *

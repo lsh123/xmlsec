@@ -17,32 +17,9 @@ XMLSEC_EXPORT int 			xmlSecTransformExecuteC14N(xmlSecTransformPtr transform,
 
 
 XMLSEC_EXPORT void			xmlSecTransformDestroyAll(xmlSecTransformPtr transform);	
-XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddAfter	(xmlSecTransformPtr curTransform,
-								 xmlSecTransformPtr newTransform);
-XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr curTransform,
-								 xmlSecTransformPtr newTransform);
-XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
 
 
 
-/**************************************************************************
- *
- * xmlSecTransformType
- *
- *************************************************************************/
-/**
- * xmlSecTransformType:
- * @xmlSecTransformTypeBinary: input - binary; output - binary.
- * @xmlSecTransformTypeXml: input - XML; output - XML.
- * @xmlSecTransformTypeC14N: input - XML; output - binary.
- *
- * The transform input/output types.
- */
-typedef enum  {
-    xmlSecTransformTypeBinary,
-    xmlSecTransformTypeXml,
-    xmlSecTransformTypeC14N
-} xmlSecTransformType;
 
 /**************************************************************************
  *
@@ -123,3 +100,21 @@ typedef int 		(*xmlSecTransformExecuteC14NMethod)	(xmlSecTransformPtr transform,
 								 xmlSecNodeSetPtr nodes,
 								 xmlOutputBufferPtr buffer);
 
+/**************************************************************************
+ *
+ * xmlSecTransformType
+ *
+ *************************************************************************/
+/**
+ * xmlSecTransformType:
+ * @xmlSecTransformTypeBinary: input - binary; output - binary.
+ * @xmlSecTransformTypeXml: input - XML; output - XML.
+ * @xmlSecTransformTypeC14N: input - XML; output - binary.
+ *
+ * The transform input/output types.
+ */
+typedef enum  {
+    xmlSecTransformTypeBinary,
+    xmlSecTransformTypeXml,
+    xmlSecTransformTypeC14N
+} xmlSecTransformType;

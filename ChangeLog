@@ -1,3 +1,11 @@
+Tue Apr  8 20:26:48 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/Makefile.am src/Makefile.am
+	xmlsec-config.in xmlsec.pc xmlsec.pc.in xmlsec.spec 
+	xmlsec.spec.in: new include files location is ${prefix}/xmlsec0/xmlsec
+	* configure.in docs/download.html docs/index.html docs/news.html
+	include/xmlsec/version.h: preparation for new 0.0.15 release
+
 Mon Apr  7 08:20:01 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c src/x509.c: use "b" flag in fopen() calls

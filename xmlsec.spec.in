@@ -66,6 +66,7 @@ fi
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/bin
 mkdir -p $RPM_BUILD_ROOT/usr/include
+mkdir -p $RPM_BUILD_ROOT/usr/include/xmlsec0
 mkdir -p $RPM_BUILD_ROOT/usr/lib
 mkdir -p $RPM_BUILD_ROOT/usr/man/man1
 make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
@@ -94,7 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man1/xmlsec-config.1*  
 %doc docs/* 
 %{prefix}/bin/xmlsec-config
-%{prefix}/include/*
+%{prefix}/include/xmlsec0/*
 %{prefix}/lib/*a
 %{prefix}/lib/pkgconfig/xmlsec.pc
 

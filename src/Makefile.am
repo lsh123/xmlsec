@@ -52,8 +52,3 @@ $(NULL)
         
 libxmlsec_la_LDFLAGS = -version-info @XMLSEC_VERSION_INFO@
 
-# what is this include dir ?
-libxmlsecincdir = $(includedir)/xmlsec
-
-libxmlsecinc_HEADERS = \
-$(NULL)

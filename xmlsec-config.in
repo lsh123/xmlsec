@@ -90,7 +90,7 @@ if test "@LIBXSLT_WITHOUT@" = "no"; then
     the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
 fi    
 
-the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include -I${prefix}/include/xmlsec `@LIBXML_CONFIG@ --cflags` $the_xslt_flags @OPENSSL_CFLAGS@"
+the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include/xmlsec0 `@LIBXML_CONFIG@ --cflags` $the_xslt_flags @OPENSSL_CFLAGS@"
 the_libs="$the_libs -L${exec_prefix}/lib -lxmlsec `@LIBXML_CONFIG@ --libs` $the_xslt_libs @OPENSSL_LIBS@"
 
 if $cflags; then

@@ -1,3 +1,8 @@
+Mon Feb  9 08:40:26 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xmltree.c: fixed bug with encrypting nodes with
+	no content (reported by Tomas Seiger)
+
 Sat Feb  7 22:42:11 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/* src/* tests/*: added XKMS SOAP 1.2 bindings

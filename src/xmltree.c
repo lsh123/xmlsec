@@ -515,7 +515,6 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
     xmlNodePtr ptr1, ptr2;
 
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(buffer != NULL, -1);    
     
     doc = xmlSecParseMemoryExt((xmlSecByte*)dummyPrefix, strlen(dummyPrefix),
 			       buffer, size,

@@ -15,9 +15,10 @@
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include <dirent.h>
+#include <errno.h>
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -31,8 +32,11 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/xkms.h>
-#include <xmlsec/app.h>
 #include <xmlsec/crypto.h>
+
+#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
+#include <xmlsec/app.h>
+#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
 #ifdef UNIX_SOCKETS
 #include <netinet/in.h> 
@@ -59,13 +63,21 @@
 #define LOG_LEVEL_DATA			2
 #define LOG_LEVEL_DEBUG			3
 
+#ifdef UNIX_SOCKETS
 static int  sockfd    = -1; 
+#endif /* UNIX_SOCKETS */
+
+#ifdef WIN32_SOCKETS
+static SOCKET sockfd  = -1; 
+#endif /* WIN32_SOCKETS */ 
+
 static int  finished  = 0;
 static int  log_level = LOG_LEVEL_INFO;
 
 static int  init_server(unsigned short port);
 static void stop_server();
 static void int_signal_handler(int sig_num);
+static const xmlChar* my_strnstr(const xmlChar* str, xmlSecSize strLen, const xmlChar* tmpl, xmlSecSize tmplLen);
 
 static int  handle_connection(int fd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFormat format);
 static int  read_request(int fd, const char* in_ip, xmlSecBufferPtr buffer);
@@ -83,7 +95,7 @@ static char http_503[] =
 
 int main(int argc, char** argv) {
     int argpos;
-    int port = DEFAULT_PORT;
+    unsigned short port = DEFAULT_PORT;
     xmlSecKeysMngrPtr mngr = NULL;
     xmlSecXkmsServerCtxPtr xkmsCtx = NULL;
     xmlSecXkmsServerFormat format = xmlSecXkmsServerFormatPlain;
@@ -102,13 +114,13 @@ int main(int argc, char** argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	fprintf(stderr, "Error %d: xmlsec initialization failed.\n", errno);
 	return(-1);
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
-	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+	fprintf(stderr, "Error %d: loaded xmlsec library version is not compatible.\n", errno);
 	return(-1);
     }
 
@@ -119,40 +131,40 @@ int main(int argc, char** argv) {
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) < 0) {
-	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+	fprintf(stderr, "Error %d: unable to load default xmlsec-crypto library. Make sure\n"
 			"that you have it installed and check shared libraries path\n"
-			"(LD_LIBRARY_PATH) envornment variable.\n");
+			"(LD_LIBRARY_PATH) envornment variable.\n", errno);
 	return(-1);	
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
+	fprintf(stderr, "Error %d: crypto initialization failed.\n", errno);
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	fprintf(stderr, "Error %d: xmlsec-crypto initialization failed.\n", errno);
 	return(-1);
     }
     
     /* Create and initialize keys manager */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
+	fprintf(stderr, "Error %d: failed to create keys manager.\n", errno);
 	goto done;
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
-	fprintf(stderr, "Error: failed to initialize keys manager.\n");
+	fprintf(stderr, "Error %d: failed to initialize keys manager.\n", errno);
 	goto done;
     }    
 
     /* Create XKMS server context */
     xkmsCtx = xmlSecXkmsServerCtxCreate(mngr);
     if(xkmsCtx == NULL) {
-	fprintf(stderr, "Error: XKMS server context initialization failed\n");
+	fprintf(stderr, "Error %d: XKMS server context initialization failed\n", errno);
 	goto done;
     }
 
@@ -162,33 +174,33 @@ int main(int argc, char** argv) {
 	    argpos++;
 	    port = atoi(argv[argpos]);
 	    if(port == 0) {
-		fprintf(stderr, "Error: invalid port number \"%s\".\nUsage: %s %s\n", argv[argpos], argv[0], usage);
+		fprintf(stderr, "Error %d: invalid port number \"%s\".\nUsage: %s %s\n", errno, argv[argpos], argv[0], usage);
 		goto done;
 	    }
 	} else if((strcmp(argv[argpos], "--format") == 0) || (strcmp(argv[argpos], "-f") == 0)) {
 	    argpos++;
 	    format = xmlSecXkmsServerFormatFromString(BAD_CAST argv[argpos]);
 	    if(format == xmlSecXkmsServerFormatUnknown) {
-		fprintf(stderr, "Error: invalid format \"%s\".\nUsage: %s %s\n", argv[argpos], argv[0], usage);
+		fprintf(stderr, "Error %d: invalid format \"%s\".\nUsage: %s %s\n", errno, argv[argpos], argv[0], usage);
 		goto done;
 	    }
 	} else if((strcmp(argv[argpos], "--log-level") == 0) || (strcmp(argv[argpos], "-l") == 0)) {
 	    argpos++;
 	    log_level = atoi(argv[argpos]);
 	} else {
-	    fprintf(stderr, "Error: unknown parameter \"%s\".\nUsage: %s %s\n", argv[argpos], argv[0], usage);
+	    fprintf(stderr, "Error %d: unknown parameter \"%s\".\nUsage: %s %s\n", errno, argv[argpos], argv[0], usage);
 	    goto done;
 	}
     }
     if(argpos >= argc) {
-	fprintf(stderr, "Error: keys file is not specified.\nUsage: %s %s\n", argv[0], usage);
+	fprintf(stderr, "Error %d: keys file is not specified.\nUsage: %s %s\n", errno, argv[0], usage);
 	goto done;
     }
     
     /* Load keys */
     for(; argpos < argc; argpos++) {
         if(xmlSecCryptoAppDefaultKeysMngrLoad(mngr, argv[argpos]) < 0) {
-	    fprintf(stderr, "Error: failed to load xml keys file \"%s\".\nUsage: %s %s\n", argv[argpos], argv[0], usage);
+	    fprintf(stderr, "Error %d: failed to load xml keys file \"%s\".\nUsage: %s %s\n", errno, argv[argpos], argv[0], usage);
 	    goto done;
 	}   
 	if(log_level >= LOG_LEVEL_INFO) {
@@ -198,7 +210,7 @@ int main(int argc, char** argv) {
     
     /* Startup TCP server */
     if(init_server(port) < 0) {
-	fprintf(stderr, "Error: server initialization failed\n");
+	fprintf(stderr, "Error, errno: server initialization failed\n", errno);
 	goto done;
     }
     assert(sockfd != -1);
@@ -220,7 +232,7 @@ int main(int argc, char** argv) {
 	}
 
 	if(handle_connection(sockfd, xkmsCtx, format) < 0) {
-	    fprintf(stderr, "Error: unable to accept incomming connection\n");
+	    fprintf(stderr, "Error %d: unable to accept incomming connection\n");
 	    goto done;
 	}
     }
@@ -266,7 +278,7 @@ done:
 
 /**
  * init_server:
- * @port:		the server's TCP port number.
+ * @port:		the server'xmlSecBufferGetData(buffer) TCP port number.
  *
  * Starts up a TCP server listening on given @port.
  *
@@ -282,34 +294,44 @@ init_server(unsigned short port) {
     
 #ifdef WIN32_SOCKETS
     if(WSAStartup(MAKEWORD(1,1), &data)) {
-	fprintf(stderr, "Error: WSAStartup() failed\n");
+	fprintf(stderr, "Error %d: WSAStartup() failed\n", errno);
 	return(-1);
     }
 #endif /* WIN32_SOCKETS */
 
     /* create socket */
-    if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1) {
-	fprintf(stderr, "Error: socket() failed\n");
+    sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+#ifdef UNIX_SOCKETS
+    if(sockfd == -1) {
+#endif /* UNIX_SOCKETS */
+
+#ifdef WIN32_SOCKETS
+    if(sockfd == INVALID_SOCKET) {
+#endif /* WIN32_SOCKETS */
+
+	fprintf(stderr, "Error %d: socket() failed\n", errno);
 	return(-1);
     }
 
     /* enable reuse of address */
     flags = 1;
     if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (char *)&flags, sizeof(flags)) != 0) {
-	fprintf(stderr, "Error: setsockopt(SO_REUSEADDR) failed\n");
+	fprintf(stderr, "Error %d: setsockopt(SO_REUSEADDR) failed\n", errno);
 	return(-1);
     }
 
+#ifdef UNIX_SOCKETS
     /* set non-blocking */
     flags = fcntl(sockfd, F_GETFL);
     if(flags < 0) {
-	fprintf(stderr, "Error: fcntl(F_GETFL) failed\n");
+	fprintf(stderr, "Error %d: fcntl(F_GETFL) failed\n", errno);
 	return(-1);
     }
     if(fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) < 0) {
-	fprintf(stderr, "Error: fcntl(F_SETFL) failed\n");
+	fprintf(stderr, "Error %d: fcntl(F_SETFL) failed\n", errno);
 	return(-1);
     }
+#endif /* UNIX_SOCKETS */
     
     /* preset socket structure for socket binding */
     memset(&saddr, 0, sizeof(saddr));
@@ -317,13 +339,13 @@ init_server(unsigned short port) {
     saddr.sin_port 		= htons(port);
     saddr.sin_addr.s_addr	= INADDR_ANY;
     if(bind(sockfd, (struct sockaddr *)&saddr, sizeof(struct sockaddr)) != 0) {
-	fprintf(stderr, "Error: bind() failed\n");
+	fprintf(stderr, "Error %d: bind() failed\n", errno);
 	return(-1);
     }
     
     /* prepare for listening */
     if(listen(sockfd, PENDING_QUEUE_SIZE) != 0) {
-	fprintf(stderr, "Error: listen() failed\n");
+	fprintf(stderr, "Error %d: listen() failed\n", errno);
 	return(-1);	
     }
 
@@ -348,15 +370,14 @@ stop_server() {
 #ifdef UNIX_SOCKETS
     if(sockfd != -1) {
         shutdown(sockfd, SHUT_RDWR);
-	close(sockfd);
-	sockfd = -1;
+        close(sockfd);
+        sockfd = -1;
     }
 #endif /* UNIX_SOCKETS */ 
 
 #ifdef WIN32_SOCKETS
     if(sockfd != -1) {
-        shutdown(sockfd, SHUT_RDWR);
-	closesocket(sockfd);
+    	close(sockfd);
 	sockfd = -1;
     }
 #endif /* WIN32_SOCKETS */ 
@@ -392,8 +413,15 @@ int_signal_handler(int sig_num) {
  */
 static int
 handle_connection(int sockfd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFormat format) {
+#ifdef UNIX_SOCKETS
+    int fd = -1; 
+#endif /* UNIX_SOCKETS */
+
+#ifdef WIN32_SOCKETS
+    SOCKET fd = -1; 
+#endif /* WIN32_SOCKETS */ 
+
     int in_child_process = 0;
-    int fd = -1;
     struct sockaddr_in saddr;
     int saddr_size;
     xmlSecXkmsServerCtxPtr xkmsCtx2 = NULL;
@@ -410,8 +438,17 @@ handle_connection(int sockfd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFo
 
     /* Get the socket connection */
     saddr_size = sizeof(struct sockaddr_in);
-    if((fd = accept(sockfd, (struct sockaddr *)&saddr, &saddr_size)) == -1) {
-	fprintf(stderr, "Error: accept() failed\n");
+    fd = accept(sockfd, (struct sockaddr *)&saddr, &saddr_size);
+
+#ifdef UNIX_SOCKETS
+    if(sockfd == -1) {
+#endif /* UNIX_SOCKETS */
+
+#ifdef WIN32_SOCKETS
+    if(sockfd == INVALID_SOCKET) {
+#endif /* WIN32_SOCKETS */
+
+	fprintf(stderr, "Error %d: accept() failed\n", errno);
 	return(-1);
     }
     if(log_level >= LOG_LEVEL_INFO) {
@@ -421,11 +458,11 @@ handle_connection(int sockfd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFo
     /* Create a copy of XKMS server context */
     xkmsCtx2 = xmlSecXkmsServerCtxCreate(NULL);
     if(xkmsCtx2 == NULL) {
-	fprintf(stderr, "Error [%s]: a copy of XKMS server context initialization failed\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: a copy of XKMS server context initialization failed\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;
     }
     if(xmlSecXkmsServerCtxCopyUserPref(xkmsCtx2, xkmsCtx) < 0) {
-	fprintf(stderr, "Error [%s]: XKMS server context copy failed\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: XKMS server context copy failed\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;
     }
 
@@ -443,21 +480,21 @@ handle_connection(int sockfd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFo
 
     buffer = xmlSecBufferCreate(0);
     if(buffer == NULL) {
-	fprintf(stderr, "Error [%s]: xmlSecBufferCreate() failed\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: xmlSecBufferCreate() failed\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;	
     }
 
     /* read input request */
     ret = read_request(fd, inet_ntoa(saddr.sin_addr), buffer);
     if(ret < 0) {
-	fprintf(stderr, "Error [%s]: read_request() failed\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: read_request() failed\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;	
     }
 
     /* parse request */
     inDoc = xmlParseMemory(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer) );
     if((inDoc == NULL) || (xmlDocGetRootElement(inDoc) == NULL)) {
-	fprintf(stderr, "Error [%s]: failed to parse request\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: failed to parse request\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;	
     }
     xmlSecBufferEmpty(buffer);
@@ -465,13 +502,13 @@ handle_connection(int sockfd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFo
     /* prepare result document */
     outDoc = xmlNewDoc(BAD_CAST "1.0");
     if(outDoc == NULL) {
-	fprintf(stderr, "Error [%s]: failed to create result doc\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: failed to create result doc\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;
     }
     
     result = xmlSecXkmsServerCtxProcess(xkmsCtx2, xmlDocGetRootElement(inDoc), format, outDoc);
     if(result == NULL) {
-	fprintf(stderr, "Error [%s]: failed to process xkms server request\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: failed to process xkms server request\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;
     }
 
@@ -481,7 +518,7 @@ handle_connection(int sockfd, xmlSecXkmsServerCtxPtr xkmsCtx, xmlSecXkmsServerFo
     /* create LibXML2 output buffer */    
     output = xmlSecBufferCreateOutputBuffer(buffer);
     if(output == NULL) {
-	fprintf(stderr, "Error [%s]: xmlSecBufferCreateOutputBuffer() failed\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: xmlSecBufferCreateOutputBuffer() failed\n", errno, inet_ntoa(saddr.sin_addr));
 	goto done;
     }
     xmlNodeDumpOutput(output, result->doc, result, 0, 0, NULL);
@@ -504,7 +541,7 @@ done:
 	ret = -1;
     }
     if(ret < 0) {
-	fprintf(stderr, "Error [%s]: send_response() failed\n", inet_ntoa(saddr.sin_addr));
+	fprintf(stderr, "Error %d [%s]: send_response() failed\n", errno, inet_ntoa(saddr.sin_addr));
     }
     
     /* cleanup */
@@ -534,8 +571,15 @@ done:
     }
     
     if(fd >= 0) {
+#ifdef UNIX_SOCKETS
 	shutdown(fd, SHUT_RDWR);
 	close(fd);
+#endif /* UNIX_SCOKETS */
+
+#ifdef WIN32_SOCKETS
+	close(fd);
+#endif /* WIN32_SCOKETS */
+
 	fd = -1;
     }
 
@@ -563,33 +607,43 @@ read_request(int fd, const char* in_ip, xmlSecBufferPtr buffer) {
     int nread;
     int length = 0;
     int found = 0;
+    int counter;
     
     assert(fd != -1);
     assert(in_ip != NULL);
     assert(buffer);
 
-    /* first read as much data from socket as possible and this should give us all the http headers */
-    do {
-	nread = read(fd, buf, sizeof(buf));
-	if(nread < 0) {
-	    fprintf(stderr, "Error [%s]: read() failed\n", in_ip);
-	    return(-1);
-	} else if(nread == 0) {
-	    break;
-	}
-	assert(nread > 0);
+    /* first read the http headers */
+    counter = 5;
+    while(my_strnstr(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), BAD_CAST "\r\n\r\n", 4) == NULL) {
+	    nread = recv(fd, buf, sizeof(buf), 0);
+	    if(nread < 0) {
+	        fprintf(stderr, "Error %d [%s]: read() failed\n", errno, in_ip);
+	        return(-1);
+	    }
 
-	if(xmlSecBufferAppend(buffer, buf, nread) < 0) {
-	    fprintf(stderr, "Error [%s]: xmlSecBufferAppend(%d) failed\n", in_ip, nread);
-	    return(-1);
-	}
-    } while(nread >= sizeof(buf));
+	    if((nread > 0) && (xmlSecBufferAppend(buffer, buf, nread) < 0)) {
+	        fprintf(stderr, "Error %d [%s]: xmlSecBufferAppend(%d) failed\n", errno, in_ip, nread);
+	        return(-1);
+	    }
+
+        if(nread < sizeof(buffer)) {
+            counter--;
+            if(counter <= 0) {
+                break;
+            }
+        }
+    }    
     
-    /* to simplify the request processing, add \0 at the end */
-    xmlSecBufferAppend(buffer, BAD_CAST "\0", 1);
-    assert(xmlSecBufferGetData(buffer) != NULL);
+    if(xmlSecBufferGetData(buffer) == NULL) {
+        fprintf(stderr, "Error %d [%s]: no bytes read\n", errno, in_ip);
+	    return(-1);
+    }
+
     if(log_level >= LOG_LEVEL_DEBUG) {
+	    xmlSecBufferAppend(buffer, BAD_CAST "\0", 1);
         fprintf(stdout, "Debug [%s]: request headers:\n%s\n", in_ip, xmlSecBufferGetData(buffer));
+	    xmlSecBufferRemoveTail(buffer, 1);
     }
     
     /* Parse the request and extract the body. We expect the request to look
@@ -604,79 +658,83 @@ read_request(int fd, const char* in_ip, xmlSecBufferPtr buffer) {
      */
      
     /* analyze the first line */
-    s = xmlSecBufferGetData(buffer);
-    p = xmlStrstr(s, "\r\n");
+    p = my_strnstr(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), BAD_CAST "\r\n", 2);
     if(p == NULL) {
-	fprintf(stderr, "Error [%s]: there is no HTTP header\n", in_ip);
-	return(-1);
+	    fprintf(stderr, "Error %d [%s]: there is no HTTP header\n", errno, in_ip);
+	    return(-1);
     }
-    if(xmlStrncasecmp(s, BAD_CAST "POST ", 5) != 0) {
-	fprintf(stderr, "Error [%s]: not a POST request\n", in_ip);
-	return(-1);
+    if(xmlStrncasecmp(xmlSecBufferGetData(buffer), BAD_CAST "POST ", 5) != 0) {
+	    fprintf(stderr, "Error %d [%s]: not a POST request\n", errno, in_ip);
+	    return(-1);
     }
     /* "POST " + " HTTP/1.x" == 14 */
+    s = xmlSecBufferGetData(buffer);
     if(p - s <= 14) {
-	fprintf(stderr, "Error [%s]: first line has bad length\n", in_ip);
-	return(-1);
+	    fprintf(stderr, "Error %d [%s]: first line has bad length\n", errno, in_ip);
+	    return(-1);
     }
     if((xmlStrncasecmp(p - 9, BAD_CAST " HTTP/1.0", 9) != 0) && 
        (xmlStrncasecmp(p - 9, BAD_CAST " HTTP/1.1", 9) != 0)) {
-	fprintf(stderr, "Error [%s]: first line does not end with \" HTTP/1.x\"\n", in_ip);
-	return(-1);
+	    
+        fprintf(stderr, "Error %d [%s]: first line does not end with \" HTTP/1.x\"\n", errno, in_ip);
+	    return(-1);
     }
-    if(xmlSecBufferRemoveHead(buffer, p - s + 2) < 0) {
-	fprintf(stderr, "Error [%s]: failed to skip first line\n", in_ip);
-	return(-1);
+    if(xmlSecBufferRemoveHead(buffer, p - xmlSecBufferGetData(buffer) + 2) < 0) {
+	    fprintf(stderr, "Error %d [%s]: failed to skip first line\n", errno, in_ip);
+	    return(-1);
     }
     
     /* now skip all the headers (i.e. everything until empty line) */
     found = 0;
     while(!found) {
-	s = s;
-	p = xmlStrstr(s, "\r\n");
+        p = my_strnstr(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), BAD_CAST "\r\n", 2);
         if(p == NULL) {
-    	    fprintf(stderr, "Error [%s]: there is no HTTP body\n", in_ip);
-	    return(-1);
-	}
+            fprintf(stderr, "Error %d [%s]: there is no HTTP body\n", errno, in_ip);
+	        return(-1);
+	    }
 	
-	if(s == p) {
-	    found = 1;
-	} else if(xmlStrncasecmp(s, BAD_CAST "Content-length: ", 16) == 0) {
-	    length = atoi(s + 16);
-	}
+	    if(p == xmlSecBufferGetData(buffer)) {
+	        found = 1;
+	    } else if(xmlStrncasecmp(xmlSecBufferGetData(buffer), BAD_CAST "Content-length: ", 16) == 0) {
+	        length = atoi(xmlSecBufferGetData(buffer) + 16);
+	    }
 	
-	if(xmlSecBufferRemoveHead(buffer, p - s + 2) < 0) {
-	    fprintf(stderr, "Error [%s]: failed to skip header line\n", in_ip);
-	    return(-1);
-	}
+	    if(xmlSecBufferRemoveHead(buffer, p - xmlSecBufferGetData(buffer) + 2) < 0) {
+	        fprintf(stderr, "Error %d [%s]: failed to skip header line\n", errno, in_ip);
+	        return(-1);
+	    }
     }
     
     /* remove the trailing \0 we added */
     xmlSecBufferRemoveTail(buffer, 1);
     
     /* now read the body */
+    counter = 5;
     while(xmlSecBufferGetSize(buffer) < length) {
-	nread = read(fd, buf, sizeof(buf));
-	if(nread < 0) {
-	    fprintf(stderr, "Error [%s]: read() failed\n", in_ip);
-	    return(-1);
-	} else if(nread == 0) {
-	    break;
-	}
-	assert(nread > 0);
+	    nread = recv(fd, buf, sizeof(buf), 0);
+	    if(nread < 0) {
+	        fprintf(stderr, "Error %d [%s]: read() failed\n", errno, in_ip);
+	        return(-1);
+	    }
 
-	if(xmlSecBufferAppend(buffer, buf, nread) < 0) {
-	    fprintf(stderr, "Error [%s]: xmlSecBufferAppend(%d) failed\n", nread, in_ip, nread);
-	    return(-1);
-	}
+	    if((nread > 0) && (xmlSecBufferAppend(buffer, buf, nread) < 0)) {
+	        fprintf(stderr, "Error %d [%s]: xmlSecBufferAppend(%d) failed\n", errno, in_ip, nread);
+	        return(-1);
+	    }
+        if(nread < sizeof(buffer)) {
+            counter--;
+            if(counter <= 0) {
+                break;
+            }
+        }
     }
     if(log_level >= LOG_LEVEL_INFO) {
-	fprintf(stdout, "Log [%s]: body size is %d bytes\n", in_ip, xmlSecBufferGetSize(buffer));
+	    fprintf(stdout, "Log [%s]: body size is %d bytes\n", in_ip, xmlSecBufferGetSize(buffer));
     }
     if(log_level >= LOG_LEVEL_DATA) {
-	xmlSecBufferAppend(buffer, BAD_CAST "\0", 1);
+	    xmlSecBufferAppend(buffer, BAD_CAST "\0", 1);
         fprintf(stdout, "Log [%s]: request body:\n%s\n", in_ip, xmlSecBufferGetData(buffer));
-	xmlSecBufferRemoveTail(buffer, 1);
+	    xmlSecBufferRemoveTail(buffer, 1);
     }
     return(0);
 }
@@ -703,9 +761,9 @@ send_response(int fd, const char* in_ip, int resp_code, const char* body, int bo
     assert(body != NULL);
     
     /* prepare and send http header */
-    snprintf(header, sizeof(header), http_header, resp_code, body_size);
+    sprintf(header, http_header, resp_code, body_size);
     if(send(fd, header, strlen(header), 0) == -1) {
-	fprintf(stderr, "Error [%s]: send(header) failed\n", in_ip);
+	fprintf(stderr, "Error %d [%s]: send(header) failed\n", errno, in_ip);
 	return(-1);
     }
 
@@ -717,9 +775,37 @@ send_response(int fd, const char* in_ip, int resp_code, const char* body, int bo
 
     /* send body */
     if(send(fd, body, body_size, 0) == -1) {
-	fprintf(stderr, "Error [%s]: send(body) failed\n", in_ip);
+	fprintf(stderr, "Error %d [%s]: send(body) failed\n", errno, in_ip);
 	return(-1);
     }
     
     return(0);
 }
+
+/**
+ * my_strnstr:
+ * @str:            the soruce string.
+ * @strLen:         the source string length.
+ * @tmpl:           the template string.
+ * @tmplLen:        the template string length.
+ *
+ * Searches for the first occurence of @tmpl in @str.
+ * 
+ * Returns pointer to the first occurence of @tmpl in @str or NULL if it is not found.
+ */
+static const xmlChar* 
+my_strnstr(const xmlChar* str, xmlSecSize strLen, const xmlChar* tmpl, xmlSecSize tmplLen) {
+    xmlSecSize pos;
+
+    if((str == NULL) || (tmpl == NULL)) {
+        return(NULL);
+    }
+    for(pos = 0; pos + tmplLen <= strLen; pos++) {
+        if(xmlStrncmp(str + pos, tmpl, tmplLen) == 0) {
+            return(str + pos);
+        }
+    }
+
+    return(NULL);
+}
+

@@ -8,7 +8,7 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
-SET XMLSEC_PREFIX=e:\sdk
+SET XMLSEC_PREFIX=d:\sdk
 SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include
 SET XMLSEC_LIB=%XMLSEC_PREFIX%\lib
 

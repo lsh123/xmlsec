@@ -64,7 +64,7 @@ CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /DWIN32_SOCKETS /W1 /MD $(X
 
 # The linker and its options.
 LD = link.exe
-LDFLAGS = /nologo $(XMLSEC_LIBS) winsock32.lib
+LDFLAGS = /nologo $(XMLSEC_LIBS) wsock32.lib
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"

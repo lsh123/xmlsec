@@ -912,19 +912,37 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     		    xmlSecErrorsSafeString(href));
         return(NULL);
     }
+        
+    if((ns != NULL) && (ns->prefix != NULL)) {
+	xmlSecSize len;
+        len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 1;
 
-    qname = xmlBuildQName(local, (ns != NULL) ? ns->prefix : NULL, NULL, 0);
-    if(qname == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlBuildQName",
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(node->name));
-        return(NULL);
+        qname = xmlMalloc(len);
+        if(qname == NULL) {
+  	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlMalloc",
+	    	        XMLSEC_ERRORS_R_MALLOC_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(node->name));
+            return(NULL);
+        }
+        xmlSecStrPrintf(qname, len, BAD_CAST "%s:%s", ns->prefix, local);
+    } else {
+        qname = xmlStrdup(local);
+        if(qname == NULL) {
+  	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+	    	        XMLSEC_ERRORS_R_MALLOC_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(node->name));
+            return(NULL);
+        }
     }
-    /* xmlBuildQName function may return just local part */
-    return ((qname != local) ? qname : xmlStrdup(qname));
+
+
+    return(qname);
 }
 
 

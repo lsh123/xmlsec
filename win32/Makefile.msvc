@@ -141,6 +141,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\membuf.obj \
 	$(XMLSEC_INTDIR)\nodeset.obj \
 	$(XMLSEC_INTDIR)\parser.obj \
+	$(XMLSEC_INTDIR)\soap.obj \
 	$(XMLSEC_INTDIR)\strings.obj \
 	$(XMLSEC_INTDIR)\templates.obj \
 	$(XMLSEC_INTDIR)\transforms.obj \
@@ -170,6 +171,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\membuf.obj \
 	$(XMLSEC_INTDIR_A)\nodeset.obj \
 	$(XMLSEC_INTDIR_A)\parser.obj \
+	$(XMLSEC_INTDIR_A)\soap.obj \
 	$(XMLSEC_INTDIR_A)\strings.obj \
 	$(XMLSEC_INTDIR_A)\templates.obj \
 	$(XMLSEC_INTDIR_A)\transforms.obj \
@@ -300,9 +302,6 @@ CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
 CFLAGS 			= $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
 CFLAGS 			= $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
 CFLAGS 			= $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
-
-# TODO: XKMS is not really implemented yet
-CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_XKMS"
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
@@ -473,6 +472,13 @@ check-enc : $(BINDIR)\$(APP_NAME)
 	if not exist win32\tmp mkdir win32\tmp
 	set TMPFOLDER=win32\tmp
 	sh ./tests/testEnc.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	cd win32
+
+check-xkms : $(BINDIR)\$(APP_NAME)
+	cd ..
+	if not exist win32\tmp mkdir win32\tmp
+	set TMPFOLDER=win32\tmp
+	sh ./tests/testXKMS.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 		
 clean :

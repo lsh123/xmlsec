@@ -42,6 +42,7 @@ extern "C" {
 #ifdef XMLSEC_CRYPTO_MSCRYPTO
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
+#include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/symbols.h>
 #else /* XMLSEC_CRYPTO_MSCRYPTO */
 #ifdef XMLSEC_CRYPTO_NSS

@@ -81,6 +81,15 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataGetEncMethodNode	(xmlNodePtr encNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform	(xmlNodePtr cipherReferenceNode,
 								 xmlSecTransformId transformId);
 
+/***********************************************************************
+ *
+ * <enc:EncryptedKey> node
+ *
+ **********************************************************************/ 
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode,
+                                                                 const xmlChar *uri);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddKeyReference	(xmlNodePtr encNode,
+                                                                 const xmlChar *uri);
 
 /***********************************************************************
  *

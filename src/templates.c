@@ -1025,6 +1025,131 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
 }
 
 
+/***********************************************************************
+ *
+ * <enc:EncryptedKey> node
+ *
+ **********************************************************************/ 
+
+/** 
+ * xmlSecTmplReferenceListAddDataReference:
+ * @encNode: 	                the pointer to <enc:EncryptedKey/> node.
+ * @uri:                        uri to reference (optional)
+ *
+ * Adds <enc:DataReference/> and the parent <enc:ReferenceList/> node (if needed).
+ *
+ * Returns the pointer to newly created <enc:DataReference/> node or 
+ * NULL if an error occurs.
+ */
+xmlNodePtr
+xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) {
+    xmlNodePtr refListNode, res;
+
+    xmlSecAssert2(encNode != NULL, NULL);
+    
+    refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    if(refListNode == NULL) {
+	refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+	if(refListNode == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAddChild",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeReferenceList));
+	    return(NULL);	
+	}
+    }
+    
+    res = xmlSecAddChild(refListNode,  xmlSecNodeDataReference, xmlSecEncNs);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeDataReference));
+	return(NULL);	
+    }
+ 
+    if(uri != NULL) {
+        if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSetProp",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        "name=%s,value=%s",
+		        xmlSecErrorsSafeString(xmlSecAttrURI),
+		        xmlSecErrorsSafeString(uri));
+	    xmlUnlinkNode(res);
+	    xmlFreeNode(res);
+	    return(NULL);	        	
+        }
+    }
+
+    return(res);
+}
+
+/** 
+ * xmlSecTmplReferenceListAddKeyReference:
+ * @encNode: 	                the pointer to <enc:EncryptedKey/> node.
+ * @uri:                        uri to reference (optional)
+ *
+ * Adds <enc:KeyReference/> and the parent <enc:ReferenceList/> node (if needed).
+ *
+ * Returns the pointer to newly created <enc:KeyReference/> node or 
+ * NULL if an error occurs.
+ */
+xmlNodePtr
+xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
+    xmlNodePtr refListNode, res;
+
+    xmlSecAssert2(encNode != NULL, NULL);
+    
+    refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+    if(refListNode == NULL) {
+	refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
+	if(refListNode == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAddChild",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeReferenceList));
+	    return(NULL);	
+	}
+    }
+    
+    res = xmlSecAddChild(refListNode,  xmlSecNodeKeyReference, xmlSecEncNs);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeKeyReference));
+	return(NULL);	
+    }
+ 
+    if(uri != NULL) {
+        if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSetProp",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        "name=%s,value=%s",
+		        xmlSecErrorsSafeString(xmlSecAttrURI),
+		        xmlSecErrorsSafeString(uri));
+	    xmlUnlinkNode(res);
+	    xmlFreeNode(res);
+	    return(NULL);	        	
+        }
+    }
+
+    return(res);
+}
+
+
 /**************************************************************************
  *
  * <dsig:KeyInfo/> node

@@ -62,6 +62,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherData[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherReference[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeReferenceList[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDataReference[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKeyReference[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCarriedKeyName[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncContent[];

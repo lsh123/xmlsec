@@ -56,6 +56,9 @@ const xmlChar xmlSecNodeCipherData[]		= "CipherData";
 const xmlChar xmlSecNodeCipherValue[]		= "CipherValue";
 const xmlChar xmlSecNodeCipherReference[]	= "CipherReference";
 const xmlChar xmlSecNodeReferenceList[]		= "ReferenceList";
+const xmlChar xmlSecNodeDataReference[]         = "DataReference";
+const xmlChar xmlSecNodeKeyReference[]          = "KeyReference";
+
 const xmlChar xmlSecNodeCarriedKeyName[]	= "CarriedKeyName";
 
 const xmlChar xmlSecTypeEncContent[]		= "http://www.w3.org/2001/04/xmlenc#Content";

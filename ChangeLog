@@ -1,3 +1,10 @@
+Sat Oct 11 21:16:54 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/strings.h include/xmlsec/templates.h 
+	src/strings.c src/templates.c: added template functions
+	for creating <enc:KeyReference/> and <enc:DataReference/>
+	nodes (based on patch from Wouter)
+
 Thu 09 Oct 2003 03:59:02 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/nodeset.c src/transforms.c: don't ignore nodes on the document

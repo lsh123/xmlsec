@@ -1,3 +1,7 @@
+Sun Sep 29 20:12:17 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* win32/Makefile.msvc: resolved further static link issues.
+
 Sat Sep 28 19:14:40 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/xmlsec/errors.h: added MSVC to the list of compilers with

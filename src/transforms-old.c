@@ -31,14 +31,7 @@ xmlSecTransformsInit(void) {
     xmlSecAllTransformIds[0] = xmlSecTransformIdUnknown;
     
     /* encoding */
-    if(xmlSecTransformRegister(xmlSecEncBase64Encode) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register base64 encode transform");
-	return(-1);
-    }
-    
-    if(xmlSecTransformRegister(xmlSecEncBase64Decode) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformBase64Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register base64 decode transform");
@@ -891,7 +884,7 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
      * processing instructions. The output of this transform is an octet stream.
      */
     if((state->curC14NTransform == NULL) && 
-	xmlSecTransformCheckId(state->curFirstBinTransform, xmlSecEncBase64Decode)) {
+	xmlSecTransformCheckId(state->curFirstBinTransform, xmlSecTransformBase64Id)) {
         ret = xmlSecTransformPreBase64Decode(state->curDoc->children, 
 					     state->curNodeSet, output);
     } else {
@@ -1072,18 +1065,20 @@ xmlSecTransformStateFinalToNode(xmlSecTransformStatePtr state, xmlNodePtr node,
     if(addBase64) {
 	xmlSecTransformPtr base64;
 	
-	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0);
+	base64 = xmlSecTransformCreate(xmlSecTransformBase64Id, 0);
 	if(base64 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformCreate(xmlSecEncBase64Encode)");
+			"xmlSecTransformCreate(xmlSecTransformBase64Id)");
 	    return(-1);
 	}
+	base64->encode = 1;
+	
 	ret = xmlSecTransformStateUpdate(state, base64);
 	if(ret < 0) {    
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformStateUpdate(xmlSecEncBase64Encode) - %d", ret);
+			"xmlSecTransformStateUpdate(xmlSecTransformBase64Id) - %d", ret);
 	    xmlSecTransformDestroy(base64, 1); 
 	    return(-1);
 	}

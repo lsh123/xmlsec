@@ -1,33 +1,4 @@
 
-
-/******************************************************************** 
- *
- * Base64 Transform
- *
- *******************************************************************/
-/**
- * XMLSEC_BASE64_LINESIZE:
- *
- * The default max line size for base64 encoding
- */ 
-#define XMLSEC_BASE64_LINESIZE			64
-/**
- * xmlSecEncBase64Encode:
- * 
- * The base64 encode transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncBase64Encode;
-/**
- * xmlSecEncBase64Decode:
- * 
- * The base64 decode transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncBase64Decode;
-
-XMLSEC_EXPORT     void xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform,
-						 size_t lineSize);
-
-
 /********************************************************************
  *
  * C14N transforms 

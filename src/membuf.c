@@ -519,3 +519,4 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     }
     return(0);
 }
+

@@ -32,6 +32,24 @@ typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr
 
 
 
+/******************************************************************** 
+ *
+ * Base64 Transform
+ *
+ *******************************************************************/
+#define XMLSEC_BASE64_LINESIZE			64
+/**
+ * XMLSEC_BASE64_LINESIZE:
+ *
+ * The default max line size for base64 encoding
+ */ 
+#define xmlSecTransformBase64Id \
+	xmlSecTransformBase64GetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
+XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr transform,
+									 size_t lineSize);
+
+
 /********************************************************************
  *
  * Memory Buffer transform 

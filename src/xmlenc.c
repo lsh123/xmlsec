@@ -1100,18 +1100,20 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	xmlSecTransformPtr base64;
 	/* last transform for encryption is base64 encode */
 	
-	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0);
+	base64 = xmlSecTransformCreate(xmlSecTransformBase64Id, 0);
 	if(base64 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformCreate(xmlSecEncBase64Encode)");
+			"xmlSecTransformCreate(xmlSecTransformBase64Id)");
 	    return(-1);
 	}
+	base64->encode = 1;
+	
 	ret = xmlSecEncStateAddTransform(state, base64);
 	if(ret < 0) {    
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecEncStateAddTransform(xmlSecEncBase64Encode) - %d", ret);
+			"xmlSecEncStateAddTransform(xmlSecTransformBase64Id) - %d", ret);
 	    xmlSecTransformDestroy(base64, 1); 
 	    return(-1);
 	}
@@ -1250,11 +1252,11 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     xmlSecAssert2(result != NULL, -1);
     
     /* first transform for decryption is base64 decode */	
-    base64 = xmlSecTransformCreate(xmlSecEncBase64Decode, 0);
+    base64 = xmlSecTransformCreate(xmlSecTransformBase64Id, 0);
     if(base64 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformCreate(xmlSecEncBase64Decode)");
+		    "xmlSecTransformCreate(xmlSecTransformBase64Id)");
 	return(-1);
     }
 
@@ -1262,7 +1264,7 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     if(ret < 0) {    
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecEncStateAddFirstTransform(xmlSecEncBase64Decode) - %d", ret);
+		    "xmlSecEncStateAddFirstTransform(xmlSecTransformBase64Id) - %d", ret);
 	xmlSecTransformDestroy(base64, 1); 
 	return(-1);
     }

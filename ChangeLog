@@ -1,3 +1,7 @@
+Wed Jun  4 19:12:21 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: added _ALL_SOURCE define for aix
+
 Wed Jun  4 08:25:46 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/x509.c: fix my_gmtime function

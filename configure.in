@@ -80,6 +80,16 @@ fi
 
 
 dnl ==========================================================================
+dnl Perform host specific configuration
+dnl ==========================================================================
+case "${host}" in
+    *aix* )
+	CFLAGS="${CFLAGS} -D_ALL_SOURCE"
+	;;
+esac
+
+
+dnl ==========================================================================
 dnl check do we have size_t and its size, 
 dnl TODO: will need to replace this and the xmlSecSize define with 
 dnl typedef on next ABI refresh

@@ -236,9 +236,10 @@ xmlSecOpenSSLEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 /**
  * Misc EVP functions
  */
-xmlSecKeyValuePtr	
+xmlSecKeyPtr	
 xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
-    xmlSecKeyValuePtr key = NULL;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyValuePtr keyValue = NULL;
     int ret;
     
     xmlSecAssert2(pKey != NULL, NULL);
@@ -246,40 +247,40 @@ xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
     switch(pKey->type) {	
 #ifndef XMLSEC_NO_RSA    
     case EVP_PKEY_RSA:
-	key = xmlSecKeyValueCreate(xmlSecRsaKeyValue, xmlSecKeyOriginX509);
-	if(key == NULL) {
+	keyValue = xmlSecKeyValueCreate(xmlSecRsaKeyValue, xmlSecKeyOriginX509);
+	if(keyValue == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyValueCreate");
 	    return(NULL);	    
 	}
 	
-	ret = xmlSecKeyValueSet(key, pKey->pkey.rsa, sizeof(RSA));
+	ret = xmlSecKeyValueSet(keyValue, pKey->pkey.rsa, sizeof(RSA));
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecRsaKeyGenerate");
-	    xmlSecKeyValueDestroy(key);
+	    xmlSecKeyValueDestroy(keyValue);
 	    return(NULL);	    
 	}
 	break;
 #endif /* XMLSEC_NO_RSA */	
 #ifndef XMLSEC_NO_DSA	
     case EVP_PKEY_DSA:
-	key = xmlSecKeyValueCreate(xmlSecDsaKeyValue, xmlSecKeyOriginX509);
-	if(key == NULL) {
+	keyValue = xmlSecKeyValueCreate(xmlSecDsaKeyValue, xmlSecKeyOriginX509);
+	if(keyValue == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyValueCreate");
 	    return(NULL);	    
 	}
 	
-	ret = xmlSecKeyValueSet(key, pKey->pkey.dsa, sizeof(DSA));
+	ret = xmlSecKeyValueSet(keyValue, pKey->pkey.dsa, sizeof(DSA));
 	if(ret < 0) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecDsaKeySet");
-	    xmlSecKeyValueDestroy(key);
+	    xmlSecKeyValueDestroy(keyValue);
 	    return(NULL);	    
 	}
 	break;
@@ -290,6 +291,16 @@ xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
 		    "key type %d not supported", pKey->type);
 	return(NULL);
     }
+
+    key = xmlSecKeyCreate(keyValue, NULL);
+    if(key == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyValueCreate");
+	xmlSecKeyValueDestroy(keyValue);
+	return(NULL);	    
+    }
+    xmlSecKeyValueDestroy(keyValue);
     
     return(key);
 }

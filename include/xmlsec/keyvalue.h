@@ -20,7 +20,7 @@ extern "C" {
 /**
  * xmlSecKeyValueId:
  *
- * The key id (key type information).
+ * The key value id (key value type information).
  */
 typedef const struct _xmlSecKeyValueIdStruct	*xmlSecKeyValueId; 
 typedef struct _xmlSecKeyValue	 		xmlSecKeyValue, *xmlSecKeyValuePtr; 
@@ -111,7 +111,7 @@ typedef long				xmlSecKeyOrigin;
  */
 #define xmlSecKeyValueIdUnknown		NULL
 
-
+#include <xmlsec/keys.h>
 #include <xmlsec/x509.h>
 
 
@@ -119,7 +119,6 @@ typedef long				xmlSecKeyOrigin;
  * xmlSecKeyValue:
  * @id: the key id (#xmlSecKeyValueId).
  * @type: the key type (private/public).
- * @name: the key name (may be NULL).
  * @origin: the key origin.
  * @x509Data: the pointer to X509 cert data (if key was extracted from a cert).
  * @keyData: key specific data.
@@ -129,7 +128,6 @@ typedef long				xmlSecKeyOrigin;
 struct _xmlSecKeyValue {
     xmlSecKeyValueId			id;
     xmlSecKeyValueType			type;
-    xmlChar				*name;
     xmlSecKeyOrigin			origin;
     xmlSecX509DataPtr			x509Data;
     void				*keyData;
@@ -141,17 +139,12 @@ XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueCreate	(xmlSecKeyValueId id,
 XMLSEC_EXPORT void		xmlSecKeyValueDestroy	(xmlSecKeyValuePtr key);
 XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueGenerate	(xmlSecKeyValueId id,
 							 int keySize,
-							 xmlSecKeyOrigin origin,
-							 const char* name);
+							 xmlSecKeyOrigin origin);
 XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueDuplicate	(xmlSecKeyValuePtr key,
 							 xmlSecKeyOrigin origin);
 XMLSEC_EXPORT int		xmlSecKeyValueSet	(xmlSecKeyValuePtr key, 
 							 void* data,
 							 int dataSize);
-XMLSEC_EXPORT int		xmlSecKeyValueCheck	(xmlSecKeyValuePtr key, 
-							 const xmlChar *name,
-							 xmlSecKeyValueId id, 
-							 xmlSecKeyValueType type);
 XMLSEC_EXPORT void		xmlSecKeyValueDebugDump	(xmlSecKeyValuePtr key,
 							 FILE *output);
 XMLSEC_EXPORT void		xmlSecKeyValueDebugXmlDump(xmlSecKeyValuePtr key,
@@ -172,7 +165,7 @@ XMLSEC_EXPORT int		xmlSecKeyValueWriteBin	(xmlSecKeyValuePtr key,
 
 
 #ifndef XMLSEC_NO_X509
-XMLSEC_EXPORT int		xmlSecKeyValueReadPemCert(xmlSecKeyValuePtr key,
+XMLSEC_EXPORT int		xmlSecKeyReadPemCert	(xmlSecKeyPtr key,
 							 const char *filename);
 #endif /* XMLSEC_NO_X509 */
 

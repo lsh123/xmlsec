@@ -80,7 +80,7 @@ struct _xmlSecDSigResult {
     int				sign;
     xmlSecTransformStatus	result;
     xmlSecTransformId		signMethod;
-    xmlSecKeyValuePtr		key;
+    xmlSecKeyPtr		key;
     xmlSecReferenceResultPtr	firstSignRef;
     xmlSecReferenceResultPtr	lastSignRef;
     xmlSecReferenceResultPtr	firstManifestRef;
@@ -179,12 +179,12 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecManifestAddReference	(xmlNodePtr manifestNode,
  */
 XMLSEC_EXPORT int		xmlSecDSigValidate		(xmlSecDSigCtxPtr ctx,
 								 void *context,
-								 xmlSecKeyValuePtr key,
+								 xmlSecKeyPtr key,
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
 XMLSEC_EXPORT int		xmlSecDSigGenerate		(xmlSecDSigCtxPtr ctx,
 								 void *context,
-								 xmlSecKeyValuePtr key,								 
+								 xmlSecKeyPtr key,								 
 								 xmlNodePtr signNode,
 								 xmlSecDSigResultPtr *result);
 /**

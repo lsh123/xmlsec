@@ -604,7 +604,7 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
+xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -623,7 +623,9 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
+	res->key = xmlSecKeyDuplicate(key);    
+	/* todo: check key */
+	res->key->origin = key->origin;    
     }
     
     /* add ids for Encrypted nodes */
@@ -699,7 +701,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
+xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -720,7 +722,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
+	res->key = xmlSecKeyDuplicate(key);
+	/* todo: check key */
+	res->key->origin = key->origin;    
     }
 
     /* add ids for Encrypted nodes */
@@ -822,7 +826,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
+xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -842,7 +846,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
+	res->key = xmlSecKeyDuplicate(key);
+	/* todo: check key */
+	res->key->origin = key->origin;    
     }
 
     /* add ids for Encrypted nodes */
@@ -989,7 +995,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key, 
+xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
@@ -1007,7 +1013,9 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyValuePtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyValueDuplicate(key, key->origin);    
+	res->key = xmlSecKeyDuplicate(key);
+    	/* todo: check key */
+	res->key->origin = key->origin;    
     }
 
     /* add ids for Encrypted nodes */
@@ -1298,7 +1306,7 @@ xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
     xmlSecAssert(result != NULL);
     
     if(result->key != NULL) {
-	xmlSecKeyValueDestroy(result->key);
+	xmlSecKeyDestroy(result->key);
     }
 
     if(result->buffer != NULL) {
@@ -1356,7 +1364,7 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
     }
     
     if(result->key != NULL) {
-	xmlSecKeyValueDebugDump(result->key, output);
+	xmlSecKeyDebugDump(result->key, output);
     }
 
     if(result->buffer != NULL) {
@@ -1402,7 +1410,7 @@ xmlSecEncResultDebugXmlDump(xmlSecEncResultPtr result, FILE *output) {
     }
     
     if(result->key != NULL) {
-	xmlSecKeyValueDebugXmlDump(result->key, output);
+	xmlSecKeyDebugXmlDump(result->key, output);
     }
 
     if(result->buffer != NULL) {
@@ -1505,7 +1513,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 		    " ");
 	return(-1);
     }
-    ret = xmlSecBinTransformAddKey(encryptionMethod, result->key);
+    ret = xmlSecBinTransformAddKey(encryptionMethod, result->key->value);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

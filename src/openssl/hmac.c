@@ -540,8 +540,7 @@ xmlSecHmacKeyValueDestroy(xmlSecKeyValuePtr key) {
     if(key->keyData != NULL) {
 	xmlSecHmacKeyValueDataDestroy((xmlSecHmacKeyValueDataPtr)key->keyData);
     }    
-    memset(key, 0, sizeof(xmlSecKeyValue));
-    
+    memset(key, 0, sizeof(xmlSecKeyValue));    
     xmlFree(key);		    
 }
 

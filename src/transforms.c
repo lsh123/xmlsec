@@ -444,7 +444,7 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 /**
  * xmlSecBinTransformAddKey:
  * @transform: the pointer to #xmlSecTransform structure.
- * @key: the pointer to #xmlSecKeyValue structure. 
+ * @keyValue: the pointer to #xmlSecKeyValue structure. 
  *
  * Sets the key for binary transform (wrapper for transform specific 
  * addBinKey() method).
@@ -452,11 +452,11 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecBinTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyValuePtr key) {
+xmlSecBinTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyValuePtr keyValue) {
     xmlSecBinTransformId id;
 
     xmlSecAssert2(transform != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keyValue != NULL, -1);
         
     if(!xmlSecTransformCheckType(transform, xmlSecTransformTypeBinary)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -467,7 +467,7 @@ xmlSecBinTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyValuePtr key) {
 
     id = ((xmlSecBinTransformId)(transform->id));
     if(id->addBinKey != NULL) {
-	return((id->addBinKey)((xmlSecBinTransformPtr)transform, key));
+	return((id->addBinKey)((xmlSecBinTransformPtr)transform, keyValue));
     }
     return(0);
 }

@@ -36,7 +36,7 @@
 #define XMLSEC_SIMPLEKEYMNGR_DEFAULT			16
 
 typedef struct _xmlSecSimpleKeysMngrData {
-     xmlSecKeyValuePtr			*keys;
+     xmlSecKeyPtr			*keys;
      size_t				curSize;
      size_t				maxSize;
 } xmlSecSimpleKeysData, *xmlSecSimpleKeysDataPtr;
@@ -49,7 +49,7 @@ static void			xmlSecSimpleKeysDataDestroy	(xmlSecSimpleKeysDataPtr keysData);
  * 
  * Creates new simple keys manager.
  *
- * Returns a pointer to newly allocated #xmlSecKeyValuesMngr structure or
+ * Returns a pointer to newly allocated #xmlSecKeysMngr structure or
  * NULL if an error occurs.
  */
 xmlSecKeysMngrPtr	
@@ -136,12 +136,12 @@ xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-xmlSecKeyValuePtr 		
+xmlSecKeyPtr 		
 xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
 			    const xmlChar *name, xmlSecKeyValueId id, xmlSecKeyValueType type, 
 			    xmlSecKeyUsage usage ATTRIBUTE_UNUSED) {
     xmlSecSimpleKeysDataPtr keysData;
-    xmlSecKeyValuePtr key;
+    xmlSecKeyPtr key;
     size_t i;
 
     xmlSecAssert2(mngr != NULL, NULL);
@@ -149,12 +149,12 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUS
 
     keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);    
     for(i = 0; i < keysData->curSize; ++i) {
-	if(xmlSecKeyValueCheck(keysData->keys[i], name, id, type) == 1) {
-	    key = xmlSecKeyValueDuplicate(keysData->keys[i], xmlSecKeyOriginKeyManager);
+	if(xmlSecKeyCheck(keysData->keys[i], name, id, type) == 1) {
+	    key = xmlSecKeyDuplicate(keysData->keys[i]);
 	    if(key == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecKeyValueDuplicate");
+			    "xmlSecKeyDuplicate");
 		return(NULL);    
 	    }
 	    return(key);
@@ -168,14 +168,14 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUS
 /**
  * xmlSecSimpleKeysMngrAddKey:
  * @mngr: the pointer to the simple keys manager.
- * @key: the pointer to the #xmlSecKeyValue structure.
+ * @key: the pointer to the #xmlSecValue structure.
  *
  * Adds new key to the key manager
  *
  * Returns 0 on success or a negative value otherwise.
  */
 int	
-xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyValuePtr key) {
+xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecSimpleKeysDataPtr keysData;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -185,27 +185,27 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyValuePtr key) {
     keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
         
     if(keysData->maxSize == 0) {
-	keysData->keys = (xmlSecKeyValuePtr *) xmlMalloc(XMLSEC_SIMPLEKEYMNGR_DEFAULT *
-					    sizeof(xmlSecKeyValuePtr));
+	keysData->keys = (xmlSecKeyPtr *) xmlMalloc(XMLSEC_SIMPLEKEYMNGR_DEFAULT *
+					    sizeof(xmlSecKeyPtr));
 	if(keysData->keys == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
 			"%d", 
-			XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyValuePtr));
+			XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr));
 	    return(-1);
 	}
-	memset(keysData->keys, 0, XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyValuePtr)); 
+	memset(keysData->keys, 0, XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr)); 
 	keysData->maxSize = XMLSEC_SIMPLEKEYMNGR_DEFAULT;
     } else if(keysData->curSize == keysData->maxSize) {
-	xmlSecKeyValuePtr *newKeys;
+	xmlSecKeyPtr *newKeys;
 	size_t newMax;
 	
 	newMax = keysData->maxSize * 2;
-	newKeys = (xmlSecKeyValuePtr *) xmlRealloc(keysData->keys, newMax * sizeof(xmlSecKeyValuePtr));
+	newKeys = (xmlSecKeyPtr *) xmlRealloc(keysData->keys, newMax * sizeof(xmlSecKeyPtr));
 	if(newKeys == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d", newMax * sizeof(xmlSecKeyValuePtr));
+			"%d", newMax * sizeof(xmlSecKeyPtr));
 	    return(-1);	
 	}
 	keysData->maxSize = newMax;
@@ -232,7 +232,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;
-    xmlSecKeyValuePtr key;
+    xmlSecKeyPtr key;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -275,7 +275,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecSimpleKeysMngrAddKey - %d", ret);
-		xmlSecKeyValueDestroy(key);
+		xmlSecKeyDestroy(key);
 		xmlFreeDoc(doc);
 		return(-1);	
 	    }
@@ -423,14 +423,14 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
  *
  * Reads the key from a PEM file @keyfile.
  * 
- * Returns the pointer to a newly allocated #xmlSecKeyValue structure or NULL
+ * Returns the pointer to a newly allocated #xmlSecKey structure or NULL
  * if an error occurs.
  */
-xmlSecKeyValuePtr
+xmlSecKeyPtr
 xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr, 
 			const char *keyfile, const char *keyPwd,
 			int privateKey) {
-    xmlSecKeyValuePtr key = NULL;
+    xmlSecKeyPtr key = NULL;
     EVP_PKEY *pKey = NULL;    
     FILE *f;
     int ret;
@@ -475,7 +475,7 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecSimpleKeysMngrAddKey - %d", ret);
-	xmlSecKeyValueDestroy(key);
+	xmlSecKeyDestroy(key);
 	return(NULL);
     }
     
@@ -512,10 +512,10 @@ xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
 	
 	for(i = 0; i < keysData->curSize; ++i) {
 	    if(keysData->keys[i] != NULL) {
-		xmlSecKeyValueDestroy(keysData->keys[i]);
+		xmlSecKeyDestroy(keysData->keys[i]);
 	    }
 	}
-	memset(keysData->keys, 0, keysData->maxSize * sizeof(xmlSecKeyValuePtr));
+	memset(keysData->keys, 0, keysData->maxSize * sizeof(xmlSecKeyPtr));
 	xmlFree(keysData->keys);
     }
     memset(keysData, 0, sizeof(xmlSecSimpleKeysData));
@@ -636,7 +636,7 @@ xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
 int	
 xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
 			    const char *filename, const char *pwd) {
-    xmlSecKeyValuePtr key;
+    xmlSecKeyPtr key;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -659,7 +659,7 @@ xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecSimpleKeysMngrAddKey - %d", ret);
-	xmlSecKeyValueDestroy(key);
+	xmlSecKeyDestroy(key);
 	return(-1);
     }
     

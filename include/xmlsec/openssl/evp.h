@@ -80,7 +80,7 @@ XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherFinal	(xmlSecCipherTransformPtr cipher)
 /**
  * Misc EVP functions
  */
-xmlSecKeyValuePtr	xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
+xmlSecKeyPtr		xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
 
 #ifdef __cplusplus
 }

@@ -14,11 +14,8 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#ifndef XMLSEC_NO_X509
 
-/* forward declarations */
-typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
-typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
+#ifndef XMLSEC_NO_X509
 
 typedef enum {
     xmlSecX509DataTypeUnknown = 0,
@@ -28,8 +25,14 @@ typedef enum {
     xmlSecX509DataTypeCrl
 } xmlSecX509DataType;
 
+/* forward declarations */
+typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
+typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
+
+
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
 XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataCreate		(void);
@@ -53,7 +56,7 @@ XMLSEC_EXPORT xmlChar*		xmlSecX509DataWriteDerCrl	(xmlSecX509DataPtr x509Data,
 XMLSEC_EXPORT int		xmlSecX509DataReadPemCert	(xmlSecX509DataPtr x509Data,
 							 	const char *filename);
 XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataDup		(xmlSecX509DataPtr x509Data);
-XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecX509DataCreateKey		(xmlSecX509DataPtr x509Data);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecX509DataCreateKey		(xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT void		xmlSecX509DataDebugDump		(xmlSecX509DataPtr x509Data,
 							 	FILE *output);
 XMLSEC_EXPORT void		xmlSecX509DataDebugXmlDump	(xmlSecX509DataPtr x509Data,
@@ -75,7 +78,7 @@ XMLSEC_EXPORT int		xmlSecX509StoreLoadPemCert	(xmlSecX509StorePtr store,
 								 int trusted);
 XMLSEC_EXPORT int		xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store, 
 							 	 const char *path);
-XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecPKCS12ReadKey		(const char *filename, 
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
 								 const char *pwd);
 
 

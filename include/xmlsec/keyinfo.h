@@ -21,7 +21,7 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-XMLSEC_EXPORT xmlSecKeyValuePtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
 							 xmlSecKeyValueId keyId,
@@ -31,7 +31,7 @@ XMLSEC_EXPORT xmlSecKeyValuePtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
 XMLSEC_EXPORT int 	xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,
-							 xmlSecKeyValuePtr key,
+							 xmlSecKeyPtr key,
 							 xmlSecKeyValueType type);
 
 

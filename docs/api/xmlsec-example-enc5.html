@@ -326,7 +326,8 @@ files_keys_store_get_klass(void) {
  * @name:		the desired key name.
  * @keyInfoCtx:		the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *  
- * Lookups key in the @store.
+ * Lookups key in the @store. The caller is responsible for destroying
+ * returned key with #xmlSecKeyDestroy function.
  *
  * Returns pointer to key or NULL if key not found or an error occurs.
  */
@@ -387,7 +388,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 </div>
 </td></tr>
 <tr><td>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
 </td></tr>
 </table></td>
 </tr></table></body>

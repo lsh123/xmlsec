@@ -93,3 +93,34 @@ folder with any other input files:
 	./decrypt3 encrypt2-res.xml
 	./decrypt3 encrypt3-res.xml
     
+4. Using xmlsec command line tool.
+-------------------------
+For Windows, use "xmlsec" instead of "xmlsec1".
+	xmlsec1 sign --privkey rsakey.pem --output sign1.xml sign1-tmpl.xml
+	xmlsec1 verify --pubkey rsapub.pem sign1.xml
+	xmlsec1 verify --pubkey rsapub.pem sign1-res.xml
+	xmlsec1 verify --pubkey rsapub.pem sign2-res.xml
+	xmlsec1 verify --trusted rootcert.pem sign3-res.xml
+	xmlsec1 verify --trusted rootcert.pem verify4-res.xml
+	 
+	xmlsec1 encrypt --deskey deskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
+    	xmlsec1 decrypt --deskey deskey.bin encrypt1.xml
+	xmlsec1 decrypt --deskey deskey.bin encrypt1-res.xml
+	xmlsec1 decrypt --deskey deskey.bin encrypt2-res.xml
+	xmlsec1 decrypt --privkey rsakey.pem encrypt3-res.xml
+
+	
+	
+	 
+	 
+	 
+	 
+	 
+
+	 
+	 
+	 
+	 
+	 
+	 
+

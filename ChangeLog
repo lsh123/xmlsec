@@ -1,3 +1,8 @@
+Wed 16 Jul 2003 10:11:23 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
+	* examples/README, examples/binary.dat: added examples of using
+	command line tool
+
 Wed 16 Jul 2003 12:50:00 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
     
 	* examples/myw32make.bat win32/mycfg-nss.bat: rename these

@@ -179,11 +179,12 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacMd5;
  *******************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160
 /**
- * xmlSecDigestRipemd160:
+ * xmlSecOpenSSLTransformRipemd160Id:
  * 
  * The RIPEMD160 digest transform id.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecDigestRipemd160;
+#define xmlSecOpenSSLTransformRipemd160Id	xmlSecOpenSSLTransformRipemd160GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformRipemd160GetKlass(void);
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 /********************************************************************
@@ -237,11 +238,12 @@ XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode,
  *******************************************************************/
 #ifndef XMLSEC_NO_SHA1
 /**
- * xmlSecDigestSha1:
+ * xmlSecOpenSSLTransformSha1Id:
  * 
  * The SHA1 digest transform id.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecDigestSha1;
+#define xmlSecOpenSSLTransformSha1Id		xmlSecOpenSSLTransformSha1GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformSha1GetKlass	(void);
 #endif /* XMLSEC_NO_SHA1 */
 
 

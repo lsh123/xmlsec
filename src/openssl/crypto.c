@@ -157,7 +157,7 @@ static int
 xmlSecOpenSSLTransformsInit(void) {
     /* digest methods */
 #ifndef XMLSEC_NO_SHA1    
-    if(xmlSecTransformRegister(xmlSecDigestSha1) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register sha1 digest transform");
@@ -166,7 +166,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_RIPEMD160
-    if(xmlSecTransformRegister(xmlSecDigestRipemd160) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformRipemd160Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register ripemd160 digest transform");

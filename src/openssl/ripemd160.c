@@ -10,219 +10,137 @@
 #include "globals.h"
 
 #ifndef XMLSEC_NO_RIPEMD160
-
-#include <stdlib.h>
 #include <string.h>
-
-#include <openssl/ripemd.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/digests.h>
 #include <xmlsec/errors.h>
 
-static xmlSecTransformPtr xmlSecDigestRipemd160Create(xmlSecTransformId id);
-static void 	xmlSecDigestRipemd160Destroy	(xmlSecTransformPtr transform);
-static int 	xmlSecDigestRipemd160Update	(xmlSecDigestTransformPtr transform,
-						 const unsigned char *buffer,
-						 size_t size);
-static int 	xmlSecDigestRipemd160Sign	(xmlSecDigestTransformPtr transform,
-						 unsigned char **buffer,
-						 size_t *size);
-static int 	xmlSecDigestRipemd160Verify	(xmlSecDigestTransformPtr transform,
-						 const unsigned char *buffer,
-						 size_t size);
+#include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
+
+static xmlSecTransformPtr xmlSecOpenSSLRipemd160Create		(xmlSecTransformId id);
+static void 	xmlSecOpenSSLRipemd160Destroy			(xmlSecTransformPtr transform);
 
 
+static int 	xmlSecOpenSSLRipemd160Initialize		(xmlSecTransformPtr transform);
+static void 	xmlSecOpenSSLRipemd160Finalize			(xmlSecTransformPtr transform);
+static int  	xmlSecOpenSSLRipemd160Verify			(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+static int  	xmlSecOpenSSLRipemd160Execute			(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
 
-struct _xmlSecDigestTransformIdStruct xmlSecDigestRipemd160Id = {
+
+static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     /* same as xmlSecTransformId */    
-    BAD_CAST "dgst-ripemd160",
+    xmlSecNameRipemd160,
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#ripemd160", /* xmlChar *href; */
+    xmlSecTransformUsageDigestMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefRipemd160, 		/* xmlChar *href; */
     
-    xmlSecDigestRipemd160Create,	/* xmlSecTransformCreateMethod create; */
-    xmlSecDigestRipemd160Destroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLRipemd160Create,	/* xmlSecTransformCreateMethod create; */
+    xmlSecOpenSSLRipemd160Destroy,	/* xmlSecTransformDestroyMethod destroy; */
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLRipemd160Verify,	/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLRipemd160Execute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecDigestTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecDigestTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecDigestTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
-    
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+
     NULL,
     NULL,
-        
-    /* xmlSecDigestTransform data/methods */
-    xmlSecDigestRipemd160Update,	/* xmlSecDigestUpdateMethod digestUpdate; */
-    xmlSecDigestRipemd160Sign,		/* xmlSecDigestSignMethod digestSign; */
-    xmlSecDigestRipemd160Verify		/* xmlSecDigestVerifyMethod digestVerify; */
 };
-xmlSecTransformId xmlSecDigestRipemd160 = (xmlSecTransformId)&xmlSecDigestRipemd160Id;  
+
+xmlSecTransformId 
+xmlSecOpenSSLTransformRipemd160GetKlass(void) {
+    return(&xmlSecOpenSSLRipemd160Klass);
+}
 
 
-#define XMLSEC_RIPEMD160_TRANSFORM_SIZE \
-    (sizeof(xmlSecDigestTransform) + sizeof(RIPEMD160_CTX) +  RIPEMD160_DIGEST_LENGTH)
-#define xmlSecDigestRipemd160Context(t) \
-    ((RIPEMD160_CTX*)(((xmlSecDigestTransformPtr)( t ))->digestData))
+static int 
+xmlSecOpenSSLRipemd160Initialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id), -1);
+    
+    return(xmlSecOpenSSLEvpDigestInitialize(transform, EVP_ripemd160()));
+}
+
+static void 
+xmlSecOpenSSLRipemd160Finalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id));
+
+    xmlSecOpenSSLEvpDigestFinalize(transform);
+}
+
+static int 
+xmlSecOpenSSLRipemd160Verify(xmlSecTransformPtr transform, const unsigned char* data,
+		    size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id), -1);
+
+    return(xmlSecOpenSSLEvpDigestVerify(transform, data, dataSize, transformCtx));
+}
+
+static int 
+xmlSecOpenSSLRipemd160Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id), -1);
+    
+    return(xmlSecOpenSSLEvpDigestExecute(transform, last, transformCtx));
+}
+/****************************************************************************/
 
 /**
- * xmlSecDigestRipemd160Create:
- */
+ * xmlSecOpenSSLRipemd160Create:
+ */ 
 static xmlSecTransformPtr 
-xmlSecDigestRipemd160Create(xmlSecTransformId id) {
-    xmlSecDigestTransformPtr digest;
-
-    xmlSecAssert2(id != NULL, NULL);
+xmlSecOpenSSLRipemd160Create(xmlSecTransformId id) {
+    xmlSecTransformPtr transform;
+    int ret;
         
-    if(id != xmlSecDigestRipemd160){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecDigestRipemd160");
-	return(NULL);
-    }
-
-    /*
-     * Allocate a new xmlSecTransform and fill the fields.
-     */
-    digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_RIPEMD160_TRANSFORM_SIZE);
-    if(digest == NULL) {
+    xmlSecAssert2(id == xmlSecOpenSSLTransformRipemd160Id, NULL);        
+    
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", XMLSEC_RIPEMD160_TRANSFORM_SIZE);
+		    "%d", sizeof(xmlSecTransform));
 	return(NULL);
     }
-    memset(digest, 0, XMLSEC_RIPEMD160_TRANSFORM_SIZE);
-    
-    digest->id = id;
-    digest->digestData = ((unsigned char*)digest) + sizeof(xmlSecDigestTransform);
-    digest->digest = ((unsigned char*)digest->digestData) + sizeof(RIPEMD160_CTX);
-    digest->digestSize = RIPEMD160_DIGEST_LENGTH;
 
-    RIPEMD160_Init(xmlSecDigestRipemd160Context(digest));    
+    memset(transform, 0, sizeof(xmlSecTransform));
+    transform->id = id;
 
-    return((xmlSecTransformPtr)digest);
+    ret = xmlSecOpenSSLRipemd160Initialize(transform);	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLRipemd160Initialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    return(transform);
 }
 
 /**
- * xmlSecDigestRipemd160Destroy:
- */
+ * xmlSecOpenSSLRipemd160Destroy:
+ */ 
 static void 	
-xmlSecDigestRipemd160Destroy(xmlSecTransformPtr transform) {
-    xmlSecDigestTransformPtr digest;
+xmlSecOpenSSLRipemd160Destroy(xmlSecTransformPtr transform) {
 
-    xmlSecAssert(transform != NULL);
-        
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecDigestRipemd160");
-	return;
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id));
 
-    memset(digest, 0, XMLSEC_RIPEMD160_TRANSFORM_SIZE);
-    xmlFree(digest);
-}
+    xmlSecOpenSSLRipemd160Finalize(transform);
 
-/**
- * xmlSecDigestRipemd160Update:
- */
-static int 	
-xmlSecDigestRipemd160Update(xmlSecDigestTransformPtr transform,
-			const unsigned char *buffer, size_t size) {
-    xmlSecDigestTransformPtr digest;
-
-    xmlSecAssert2(transform != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecDigestRipemd160");
-	return(-1);
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-    
-    if((buffer == NULL) || (size == 0) || (digest->status != xmlSecTransformStatusNone)) {
-	/* nothing to update */
-	return(0);
-    }
-    
-    RIPEMD160_Update(xmlSecDigestRipemd160Context(digest), buffer, size);
-    return(0);
-}
-
-/**
- * xmlSecDigestRipemd160Sign:
- */
-static int 	
-xmlSecDigestRipemd160Sign(xmlSecDigestTransformPtr transform,
-			unsigned char **buffer, size_t *size) {
-    xmlSecDigestTransformPtr digest;
-
-    xmlSecAssert2(transform != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecDigestRipemd160");
-	return(-1);
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-    if(digest->status != xmlSecTransformStatusNone) {
-	return(0);
-    }
-    
-    RIPEMD160_Final(digest->digest, xmlSecDigestRipemd160Context(digest));
-    if(buffer != NULL) {
-	(*buffer) = digest->digest;
-    }        
-    if(size != NULL) {
-	(*size) = digest->digestSize;
-    }        
-    digest->status = xmlSecTransformStatusOk;
-    return(0);
-}
-
-/**
- * xmlSecDigestRipemd160Verify:
- */
-static int
-xmlSecDigestRipemd160Verify(xmlSecDigestTransformPtr transform,
-			 const unsigned char *buffer, size_t size) {
-    xmlSecDigestTransformPtr digest;
-
-    xmlSecAssert2(transform != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecDigestRipemd160");
-	return(-1);
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-
-    if(digest->status != xmlSecTransformStatusNone) {
-	return(0);
-    }
-    
-    RIPEMD160_Final(digest->digest, xmlSecDigestRipemd160Context(digest));
-    if((buffer == NULL) || (size != digest->digestSize) || (digest->digest == NULL)) {
-	digest->status = xmlSecTransformStatusFail;
-    } else if(memcmp(digest->digest, buffer, digest->digestSize) != 0){
-	digest->status = xmlSecTransformStatusFail;
-    } else {
-	digest->status = xmlSecTransformStatusOk;
-    }
-    return(0);
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
 }
 
 #endif /* XMLSEC_NO_RIPEMD160 */

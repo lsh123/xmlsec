@@ -59,12 +59,28 @@ const xmlChar xmlSecHrefHMACKeyValue[]	= "http://www.aleksey.com/xmlsec/2002#HMA
 
 /*************************************************************************
  *
+ * RIPEMD160 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameRipemd160[]	= "ripemd160";
+const xmlChar xmlSecHrefRipemd160[]	= "http://www.w3.org/2001/04/xmlenc#ripemd160";
+
+/*************************************************************************
+ *
  * RSA strings
  *
  ************************************************************************/
 const xmlChar xmlSecNameRSAKeyValue[]	= "rsa";
 const xmlChar xmlSecNodeRSAKeyValue[]	= "RSAKeyValue";
 const xmlChar xmlSecHrefRSAKeyValue[]	= "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
+
+/*************************************************************************
+ *
+ * SHA1 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameSha1[]		= "sha1";
+const xmlChar xmlSecHrefSha1[]		= "http://www.w3.org/2000/09/xmldsig#sha1";
 
 /*************************************************************************
  *

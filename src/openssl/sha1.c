@@ -10,8 +10,6 @@
 #include "globals.h"
 
 #ifndef XMLSEC_NO_SHA1
-
-#include <stdlib.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
@@ -23,46 +21,93 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
-static xmlSecTransformPtr xmlSecSha1Create	(xmlSecTransformId id);
-static void 	xmlSecSha1Destroy		(xmlSecTransformPtr transform);
 
 
+static xmlSecTransformPtr xmlSecOpenSSLSha1Create		(xmlSecTransformId id);
+static void 	xmlSecOpenSSLSha1Destroy			(xmlSecTransformPtr transform);
 
-static xmlSecTransformKlass xmlSecDigestSha1Id = {
+
+static int 	xmlSecOpenSSLSha1Initialize			(xmlSecTransformPtr transform);
+static void 	xmlSecOpenSSLSha1Finalize			(xmlSecTransformPtr transform);
+static int  	xmlSecOpenSSLSha1Verify				(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+static int  	xmlSecOpenSSLSha1Execute			(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
+static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     /* same as xmlSecTransformId */    
-    BAD_CAST "dgst-sha1",
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
-    xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#sha1", /* xmlChar *href; */
+    xmlSecNameSha1,
+    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
+    xmlSecTransformUsageDigestMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefSha1, 			/* xmlChar *href; */
     
-    xmlSecSha1Create,			/* xmlSecTransformCreateMethod create; */
-    xmlSecSha1Destroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLSha1Create,		/* xmlSecTransformCreateMethod create; */
+    xmlSecOpenSSLSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLEvpDigestVerify,	/* xmlSecTransformVerifyMethod verify; */
-    xmlSecOpenSSLEvpDigestExecute,	/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLSha1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
 };
-xmlSecTransformId xmlSecDigestSha1 = (xmlSecTransformId)&xmlSecDigestSha1Id;  
+
+xmlSecTransformId 
+xmlSecOpenSSLTransformSha1GetKlass(void) {
+    return(&xmlSecOpenSSLSha1Klass);
+}
+
+
+static int 
+xmlSecOpenSSLSha1Initialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id), -1);
+    
+    return(xmlSecOpenSSLEvpDigestInitialize(transform, EVP_sha1()));
+}
+
+static void 
+xmlSecOpenSSLSha1Finalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id));
+
+    xmlSecOpenSSLEvpDigestFinalize(transform);
+}
+
+static int 
+xmlSecOpenSSLSha1Verify(xmlSecTransformPtr transform, const unsigned char* data,
+		    size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id), -1);
+
+    return(xmlSecOpenSSLEvpDigestVerify(transform, data, dataSize, transformCtx));
+}
+
+static int 
+xmlSecOpenSSLSha1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id), -1);
+    
+    return(xmlSecOpenSSLEvpDigestExecute(transform, last, transformCtx));
+}
+/****************************************************************************/
 
 /**
- * xmlSecSha1Create:
+ * xmlSecOpenSSLSha1Create:
  */ 
 static xmlSecTransformPtr 
-xmlSecSha1Create(xmlSecTransformId id) {
+xmlSecOpenSSLSha1Create(xmlSecTransformId id) {
     xmlSecTransformPtr transform;
     int ret;
         
-    xmlSecAssert2(id == xmlSecDigestSha1, NULL);        
+    xmlSecAssert2(id == xmlSecOpenSSLTransformSha1Id, NULL);        
     
     transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
     if(transform == NULL) {
@@ -75,11 +120,11 @@ xmlSecSha1Create(xmlSecTransformId id) {
     memset(transform, 0, sizeof(xmlSecTransform));
     transform->id = id;
 
-    ret = xmlSecOpenSSLEvpDigestInitialize(transform, EVP_sha1());	
+    ret = xmlSecOpenSSLSha1Initialize(transform);	
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpDigestInitialize");
+		    "xmlSecOpenSSLSha1Initialize");
 	xmlSecTransformDestroy(transform, 1);
 	return(NULL);
     }
@@ -87,18 +132,19 @@ xmlSecSha1Create(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecSha1Destroy:
+ * xmlSecOpenSSLSha1Destroy:
  */ 
 static void 	
-xmlSecSha1Destroy(xmlSecTransformPtr transform) {
+xmlSecOpenSSLSha1Destroy(xmlSecTransformPtr transform) {
 
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecDigestSha1));
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id));
 
-    xmlSecOpenSSLEvpDigestFinalize(transform);
+    xmlSecOpenSSLSha1Finalize(transform);
 
     memset(transform, 0, sizeof(xmlSecTransform));
     xmlFree(transform);
 }
+
 
 
 #endif /* XMLSEC_NO_SHA1 */

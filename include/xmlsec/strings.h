@@ -82,12 +82,28 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHMACKeyValue[];
 
 /*************************************************************************
  *
+ * RIPEMD160 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRipemd160[];
+
+/*************************************************************************
+ *
  * RSA strings
  *
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRSAKeyValue[];
+
+/*************************************************************************
+ *
+ * SHA1 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha1[];
 
 /*************************************************************************
  *

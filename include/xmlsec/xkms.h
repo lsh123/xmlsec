@@ -30,6 +30,10 @@ extern "C" {
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
+typedef struct _xmlSecXkmsRespondWithKlass	xmlSecXkmsRespondWithKlass, 
+						*xmlSecXkmsRespondWithId;
+
+
 /**
  * xmlXkmsCtxMode:
  * @xmlXkmsCtxModeLocateRequest: 	the <xkms:LocateRequest/> node processing.
@@ -60,20 +64,21 @@ struct _xmlSecXkmsCtx {
     void*			userData;
     unsigned int		flags;
     unsigned int		flags2;    
-    xmlXkmsCtxMode		mode;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
+    xmlSecPtrList		enabledRespondWith;
     
     /* these data are returned */
     xmlDocPtr			result;
     xmlSecPtrList		keys;
 
     /* these are internal data, nobody should change that except us */
+    xmlXkmsCtxMode		mode;
     xmlNodePtr			opaqueClientDataNode;
     xmlNodePtr 			firtsMsgExtNode;
     xmlNodePtr 			firtsRespMechNode;
-    xmlNodePtr 			firtsRespWithNode;
     xmlNodePtr 			keyInfoNode;
+    xmlSecPtrList		respWithList;
     
     /* reserved for future */
     void*			reserved0;
@@ -96,6 +101,174 @@ XMLSEC_EXPORT void		xmlSecXkmsCtxDebugDump		(xmlSecXkmsCtxPtr xkmsCtx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecXkmsCtxDebugXmlDump	(xmlSecXkmsCtxPtr xkmsCtx,
 								 FILE* output);
+
+
+/**********************************************************************
+ *
+ * Hi-level functions
+ *
+ *********************************************************************/
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecXkmsRespondWithIdsGet	(void);
+XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsInit	(void);
+XMLSEC_EXPORT void 		xmlSecXkmsRespondWithIdsShutdown(void);
+XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsRegisterDefault(void);
+XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
+
+/************************************************************************
+ *
+ * XKMS RespondWith Klass
+ *
+ ************************************************************************/ 
+XMLSEC_EXPORT int  		xmlSecXkmsRespondWithReadNode	(xmlSecXkmsRespondWithId id,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int  		xmlSecXkmsRespondWithWriteNode	(xmlSecXkmsRespondWithId id,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugDump	(xmlSecXkmsRespondWithId id,
+								 FILE* output);
+XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugXmlDump(xmlSecXkmsRespondWithId id,
+								 FILE* output);
+XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultReadNode(xmlSecXkmsRespondWithId id,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultWriteNode(xmlSecXkmsRespondWithId id,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+
+typedef int  		(*xmlSecXkmsRespondWithReadNodeMethod)	(xmlSecXkmsRespondWithId id,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+typedef int  		(*xmlSecXkmsRespondWithWriteNodeMethod)	(xmlSecXkmsRespondWithId id,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+struct _xmlSecXkmsRespondWithKlass {
+    const xmlChar*				name;
+    const xmlChar*				nodeName;
+    const xmlChar*				nodeNs;
+    
+    xmlSecXkmsRespondWithReadNodeMethod		readNode;
+    xmlSecXkmsRespondWithWriteNodeMethod	writeNode;
+};
+
+#define xmlSecXkmsRespondWithKlassGetName(id) \
+	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
+
+/************************************************************************
+ *
+ * XKMS RespondWith Klass List
+ *
+ ************************************************************************/ 
+/**
+ * xmlSecXkmsRespondWithIdListId:
+ *
+ * XKMS RespondWith  klasses list klass.
+ */
+#define xmlSecXkmsRespondWithIdListId	xmlSecXkmsRespondWithIdListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsRespondWithIdListGetKlass(void);
+XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListFind	(xmlSecPtrListPtr list,
+								 xmlSecXkmsRespondWithId id);
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithIdListFindByName
+								(xmlSecPtrListPtr list,
+								 const xmlChar* name);
+XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPtr list,
+								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+
+/******************************************************************** 
+ *
+ * XML Sec Library RespondWith Ids
+ *
+ *******************************************************************/
+/**
+ * xmlSecXkmsRespondWithIdUnknown:
+ *
+ * The "unknown" RespondWith id (NULL).
+ */
+#define xmlSecXkmsRespondWithIdUnknown			NULL
+
+/**
+ * xmlSecXkmsRespondWithKeyNameId:
+ *
+ * The respond with KeyName klass.
+ */ 
+#define xmlSecXkmsRespondWithKeyNameId \
+	xmlSecXkmsRespondWithKeyNameGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithKeyNameGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithKeyValueId:
+ *
+ * The respond with KeyValue klass.
+ */ 
+#define xmlSecXkmsRespondWithKeyValueId \
+	xmlSecXkmsRespondWithKeyValueGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithKeyValueGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithPrivateKeyId:
+ *
+ * The respond with PrivateKey klass.
+ */ 
+#define xmlSecXkmsRespondWithPrivateKeyId \
+	xmlSecXkmsRespondWithPrivateKeyGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithPrivateKeyGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithRetrievalMethodId:
+ *
+ * The respond with RetrievalMethod klass.
+ */ 
+#define xmlSecXkmsRespondWithRetrievalMethodId \
+	xmlSecXkmsRespondWithRetrievalMethodGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithRetrievalMethodGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithX509CertId:
+ *
+ * The respond with X509Cert klass.
+ */ 
+#define xmlSecXkmsRespondWithX509CertId \
+	xmlSecXkmsRespondWithX509CertGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithX509CertGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithX509ChainId:
+ *
+ * The respond with X509Chain klass.
+ */ 
+#define xmlSecXkmsRespondWithX509ChainId \
+	xmlSecXkmsRespondWithX509ChainGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithX509ChainGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithX509CRLId:
+ *
+ * The respond with X509CRL klass.
+ */ 
+#define xmlSecXkmsRespondWithX509CRLId \
+	xmlSecXkmsRespondWithX509CRLGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithX509CRLGetKlass(void);
+
+
+/**
+ * xmlSecXkmsRespondWithPGPId:
+ *
+ * The respond with PGP klass.
+ */ 
+#define xmlSecXkmsRespondWithPGPId \
+	xmlSecXkmsRespondWithPGPGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithPGPGetKlass(void);
+
+/**
+ * xmlSecXkmsRespondWithSPKIId:
+ *
+ * The respond with SPKI klass.
+ */ 
+#define xmlSecXkmsRespondWithSPKIId \
+	xmlSecXkmsRespondWithSPKIGetKlass()
+XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithSPKIGetKlass(void);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

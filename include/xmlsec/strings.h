@@ -398,6 +398,24 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Store[];
 
 /*************************************************************************
  *
+ * PGP strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePGPData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePGPData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefPGPData[];
+
+/*************************************************************************
+ *
+ * SPKI strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSPKIData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSPKIData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSPKIData[];
+
+/*************************************************************************
+ *
  * XPath/XPointer strings
  *
  ************************************************************************/

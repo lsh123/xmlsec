@@ -349,7 +349,9 @@ static xmlSecAppCmdLineParam sessionKeyParam = {
 };    
 
 static xmlSecAppCmdLineParam outputParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--output",
     "-o",
     "--output <filename>"
@@ -360,7 +362,9 @@ static xmlSecAppCmdLineParam outputParam = {
 };
 
 static xmlSecAppCmdLineParam nodeIdParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--node-id",
     NULL,
     "--node-id <id>"
@@ -371,7 +375,9 @@ static xmlSecAppCmdLineParam nodeIdParam = {
 };    
 
 static xmlSecAppCmdLineParam nodeNameParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--node-name",
     NULL,   
     "--node-name [<namespace-uri>:]<name>"
@@ -383,7 +389,9 @@ static xmlSecAppCmdLineParam nodeNameParam = {
 };    
     
 static xmlSecAppCmdLineParam nodeXPathParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--node-xpath",
     NULL,   
     "--node-xpath <expr>"
@@ -393,9 +401,11 @@ static xmlSecAppCmdLineParam nodeXPathParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };    
-    
+
 static xmlSecAppCmdLineParam dtdFileParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--dtd-file",
     NULL,   
     "--dtd-file <file>"
@@ -406,7 +416,9 @@ static xmlSecAppCmdLineParam dtdFileParam = {
 };    
 
 static xmlSecAppCmdLineParam printDebugParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--print-debug",
     NULL,   
     "--print-debug"
@@ -417,7 +429,9 @@ static xmlSecAppCmdLineParam printDebugParam = {
 };    
 
 static xmlSecAppCmdLineParam printXmlDebugParam = { 
-    xmlSecAppCmdLineTopicDSigCommon | xmlSecAppCmdLineTopicEncCommon,
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
     "--print-xml-debug",
     NULL,   
     "--print-xml-debug"

@@ -575,7 +575,7 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     xmlDocPtr doc;
     xmlNodePtr root;
 
-    xmlSecAssert2(rootNodeName != NULL, -1);
+    xmlSecAssert2(rootNodeName != NULL, NULL);
 
     /* create doc */
     doc = xmlNewDoc(BAD_CAST "1.0");

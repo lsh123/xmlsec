@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LocateRequest xmlns="http://www.w3.org/2002/03/xkms#" Id="I97a5c09bff0fe094d27facf5e5adb206" Service="http://www.aleksey.com/xmlsec/examples/XKMS">
   <RespondWith>KeyValue</RespondWith>
+  <RespondWith>X509Chain</RespondWith>
   <QueryKeyBinding>
     <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
       <X509Data>

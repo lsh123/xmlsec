@@ -388,6 +388,24 @@ const xmlChar xmlSecNameX509Store[]		= "x509-store";
 
 /*************************************************************************
  *
+ * PGP strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNamePGPData[]		= "pgp";
+const xmlChar xmlSecNodePGPData[]		= "PGPData";
+const xmlChar xmlSecHrefPGPData[]		= "http://www.w3.org/2000/09/xmldsig#PGPData";
+
+/*************************************************************************
+ *
+ * SPKI strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameSPKIData[]		= "spki";
+const xmlChar xmlSecNodeSPKIData[]		= "SPKIData";
+const xmlChar xmlSecHrefSPKIData[]		= "http://www.w3.org/2000/09/xmldsig#SPKIData";
+
+/*************************************************************************
+ *
  * XPath/XPointer strings
  *
  ************************************************************************/

@@ -20,6 +20,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/io.h>
+#include <xmlsec/xkms.h>
 #include <xmlsec/errors.h>
 
 /**
@@ -53,6 +54,17 @@ xmlSecInit(void) {
 	return(-1);
     }
     
+#ifndef XMLSEC_NO_XKMS    
+    if(xmlSecXkmsRespondWithIdsInit() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsRespondWithIdsInit",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_XKMS */
+
     return(0);
 }
 
@@ -65,6 +77,11 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
+
+#ifndef XMLSEC_NO_XKMS    
+    xmlSecXkmsRespondWithIdsShutdown();
+#endif /* XMLSEC_NO_XKMS */
+
     xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();
     xmlSecIOShutdown();

@@ -449,8 +449,9 @@ xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
         
-    while(1) {
+    while(outRes == 0) {
 	if(((transform->binBufSize + XMLSEC_TRANSFORM_MIN_BLOCK_SIZE) < sizeof(transform->binBuf)) && 
 	    (transform->prev != NULL) && 
 	    !xmlSecTransformStatusIsDone(transform->prev->status)) {
@@ -515,6 +516,7 @@ xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform,
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
     if(buf == NULL) {
 	return(0);
@@ -543,7 +545,7 @@ xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform,
 	    return(-1);
 	}
 	if(inRes > 0) {
-	    xmlSecAssert2(inRes < size, -1);
+	    xmlSecAssert2(inRes <= size, -1);
 	    buf += inRes;
 	    size -= inRes;
 	}
@@ -567,6 +569,7 @@ xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
     do {
 	if((transform->binBufSize > 0) && (transform->next != NULL)) {
@@ -594,6 +597,15 @@ xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
 	transform->binBufSize = outRes;
     } while(outRes > 0);
     
+    if(transform->next != NULL) {
+	ret = xmlSecTransformFlushBin(transform->next);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformFlushBin");
+	    return(-1);
+	}
+    }
     return(0);
 }
 

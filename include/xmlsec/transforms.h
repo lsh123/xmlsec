@@ -22,13 +22,12 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/nodeset.h>
 
-#define XMLSEC_TRANSFORM_BUFFER_SIZE			256
+#define XMLSEC_TRANSFORM_MIN_BLOCK_SIZE			32	/* should be less than XMLSEC_TRANSFORM_BUFFER_SIZE */
+#define XMLSEC_TRANSFORM_BUFFER_SIZE			64	/* should be greater than XMLSEC_TRANSFORM_MIN_BLOCK_SIZE */
 
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
 typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
 typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
-typedef struct _xmlSecTransformBinData			xmlSecTransformBinData, *xmlSecTransformBinDataPtr; 
-
 
 /**************************************************************************
  *
@@ -45,30 +44,15 @@ typedef struct _xmlSecTransformBinData			xmlSecTransformBinData, *xmlSecTransfor
  */
 typedef enum  {
     xmlSecTransformStatusNone = 0,
-    xmlSecTransformStatusMoreData,
-    xmlSecTransformStatusLastData,
+    xmlSecTransformStatusWorking,
+    xmlSecTransformStatusFinished,
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
 } xmlSecTransformStatus;
 
-/**************************************************************************
- *
- * xmlSecTransformBinData
- *
- *************************************************************************/
-/**
- * xmlSecTransformBinData:
- *
- * The binary.
- */
-struct _xmlSecTransformBinData {
-    unsigned char*		buf;
-    size_t			maxSize;
-    size_t			startPos;
-    size_t			endPos;
-    xmlSecTransformStatus	status;
-};
-
+#define xmlSecTransformStatusIsDone(status) \
+    (((status) != xmlSecTransformStatusNone) && \
+     ((status) != xmlSecTransformStatusWorking))
 
 /**************************************************************************
  *
@@ -133,9 +117,12 @@ XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform,
 XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int			xmlSecTransformExecuteBin(xmlSecTransformPtr transform,
-								 xmlSecTransformBinDataPtr in,
-								 xmlSecTransformBinDataPtr out);
-
+								 const unsigned char* in,
+								 size_t inSize,
+								 size_t* inRes,
+								 unsigned char* out,
+								 size_t outSize,
+								 size_t* outRes);
 XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
 								 unsigned char *buf,
 								 size_t size);		
@@ -329,12 +316,12 @@ typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 
 typedef int 		(*xmlSecTransformExecuteBinMethod)	(xmlSecTransformPtr transform, 
-								 xmlSecTransformBinDataPtr in,
-								 xmlSecTransformBinDataPtr out);
-			
-
-
-
+								 const unsigned char* in,
+								 size_t inSize,
+								 size_t* inRes,
+								 unsigned char* out,
+								 size_t outSize,
+								 size_t* outRes);
 /**
  * xmlSecTransformReadMethod:
  * @transform: the pointer to #xmlSecTransform structure.

@@ -1,4 +1,11 @@
 2005-02-25  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/mscrypto/certkeys.c: use default context when 
+	getting public key from a cert (based on the OO.org patch)
+	* src/mscrypto/x509vfy.c: search both trusted and untrusted 
+	cert stores when cert with given parameters is needed or
+	when certs chain is constructed (based on the OO.org patch)
+
+2005-02-25  Aleksey Sanin  <aleksey@aleksey.com>
 	* include/xmlsec/mscrypto/app.h include/xmlsec/mscrypto/x509.h
 	src/mscrypto/app.c src/mscrypto/x509vfy.c:
 	added function to add custom MS cert stores
@@ -1358,4 +1365,4 @@ Tue 26 Mar 2002 06:30:10 PM PST Aleksey Sanin <aleksey@aleksey.com>
 	  adter the first change because both are based on Transforms)
         *: Added XSLT support (based on libxslt from Daniel Veillard)
     
-      
+     

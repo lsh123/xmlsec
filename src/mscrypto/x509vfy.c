@@ -125,15 +125,25 @@ xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectNam
 				xmlChar *issuerName, xmlChar *issuerSerial,
 				xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
+    PCCERT_CONTEXT pCert = NULL;
     
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     ctx = xmlSecMSCryptoX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
-    xmlSecAssert2(ctx->untrusted != NULL, NULL);
 
-    return(xmlSecMSCryptoX509FindCert(ctx->untrusted, subjectName, issuerName, issuerSerial, ski));
+    /* search untrusted certs store */
+    if((ctx->untrusted != NULL) && (pCert == NULL)) {
+        pCert = xmlSecMSCryptoX509FindCert(ctx->untrusted, subjectName, issuerName, issuerSerial, ski);
+    }
+
+    /* search untrusted certs store */
+    if((ctx->trusted != NULL) && (pCert == NULL)) {
+        pCert = xmlSecMSCryptoX509FindCert(ctx->trusted, subjectName, issuerName, issuerSerial, ski);
+    }
+
+    return pCert;
 }
 
 
@@ -271,71 +281,41 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     xmlSecAssert2(ctx->untrusted != NULL, FALSE);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
-	/* convert the time to FILETIME */
-	xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+	    /* convert the time to FILETIME */
+    	xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
     } else {
-	/* Defaults to current time */
-	GetSystemTimeAsFileTime(&fTime);
+	    /* Defaults to current time */
+	    GetSystemTimeAsFileTime(&fTime);
     }
 
     if (!xmlSecMSCrypoVerifyCertTime(cert, &fTime)) {
-	xmlSecMSCryptoX509StoreCertError(store, cert, CERT_STORE_TIME_VALIDITY_FLAG);
-	return(FALSE);
+    	xmlSecMSCryptoX509StoreCertError(store, cert, CERT_STORE_TIME_VALIDITY_FLAG);
+	    return(FALSE);
     }
 
     if (!xmlSecMSCryptoCheckRevocation(certs, cert)) {
-	return(FALSE);
+    	return(FALSE);
     }
 
-    /* try the untrusted certs in the chain */
-    issuerCert = CertFindCertificateInStore(certs, 
+    /**
+     * Try to find the cert in the trusted cert store. We will trust
+     * the certificate in the trusted store.
+	 */
+    issuerCert = CertFindCertificateInStore(ctx->trusted, 
 			    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
 			    0,
 			    CERT_FIND_SUBJECT_NAME,
-			    &(cert->pCertInfo->Issuer),
+			    &(cert->pCertInfo->Subject),
 			    NULL);
-    if(issuerCert == cert) {
-	/* self signed cert, forget it */
-	CertFreeCertificateContext(issuerCert);
-    } else if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-	if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
-	    xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
-	    CertFreeCertificateContext(issuerCert);
-	    return(FALSE);
-        }
-	if(!xmlSecMSCryptoX509StoreConstructCertsChain(store, issuerCert, certs, keyInfoCtx)) {
-	    xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
-	    CertFreeCertificateContext(issuerCert);
-	    return(FALSE);
-	}
-	CertFreeCertificateContext(issuerCert);
-	return(TRUE);
+    if( issuerCert != NULL) {
+		/* We have found the trusted cert, so return true */
+		CertFreeCertificateContext( issuerCert ) ;
+		return( TRUE ) ;
     }
 
-    /* try the untrusted certs in the store */
-    issuerCert = CertFindCertificateInStore(ctx->untrusted, 
-			    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-			    0,
-			    CERT_FIND_SUBJECT_NAME,
-			    &(cert->pCertInfo->Issuer),
-			    NULL);
-    if(issuerCert == cert) {
-	/* self signed cert, forget it */
-	CertFreeCertificateContext(issuerCert);
-    } else if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-	if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
-	    xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
-	    CertFreeCertificateContext(issuerCert);
-	    return(FALSE);
-        }
-	if(!xmlSecMSCryptoX509StoreConstructCertsChain(store, issuerCert, certs, keyInfoCtx)) {
-	    CertFreeCertificateContext(issuerCert);
-	    return(FALSE);
-	}
-	CertFreeCertificateContext(issuerCert);
-	return(TRUE);
+    /* Check whether the certificate is self signed certificate */
+    if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, &(cert->pCertInfo->Subject), &(cert->pCertInfo->Issuer))) {
+        return(FALSE);
     }
 
     /* try to find issuer cert in the trusted cert in the store */
@@ -347,14 +327,59 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
 			    NULL);
     if(issuerCert != NULL) {
         flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-	if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
-	    xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
-	    CertFreeCertificateContext(issuerCert);
-	    return(FALSE);
+	    if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
+	        xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+	        CertFreeCertificateContext(issuerCert);
+	        return(FALSE);
         }
-	/* todo: do we want to verify the trusted cert? */
-	CertFreeCertificateContext(issuerCert);
-	return(TRUE);
+	    /* todo: do we want to verify the trusted cert? */
+	    CertFreeCertificateContext(issuerCert);
+	    return(TRUE);
+    }
+
+    /* try the untrusted certs in the chain */
+    issuerCert = CertFindCertificateInStore(certs, 
+			    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+			    0,
+			    CERT_FIND_SUBJECT_NAME,
+			    &(cert->pCertInfo->Issuer),
+			    NULL);
+    if(issuerCert != NULL) {
+        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+	    if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
+	        xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+	        CertFreeCertificateContext(issuerCert);
+	        return(FALSE);
+        }
+    	if(!xmlSecMSCryptoX509StoreConstructCertsChain(store, issuerCert, certs, keyInfoCtx)) {
+	        xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+	        CertFreeCertificateContext(issuerCert);
+	        return(FALSE);
+	    }
+	    CertFreeCertificateContext(issuerCert);
+	    return(TRUE);
+    }
+
+    /* try the untrusted certs in the store */
+    issuerCert = CertFindCertificateInStore(ctx->untrusted, 
+			    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+			    0,
+			    CERT_FIND_SUBJECT_NAME,
+			    &(cert->pCertInfo->Issuer),
+			    NULL);
+    if(issuerCert != NULL) {
+        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+	    if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
+	        xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+	        CertFreeCertificateContext(issuerCert);
+	        return(FALSE);
+        }
+	    if(!xmlSecMSCryptoX509StoreConstructCertsChain(store, issuerCert, certs, keyInfoCtx)) {
+	        CertFreeCertificateContext(issuerCert);
+	        return(FALSE);
+	    }
+    	CertFreeCertificateContext(issuerCert);
+	    return(TRUE);
     }
 
     return(FALSE);
@@ -380,25 +405,32 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL){
-	PCCERT_CONTEXT nextCert = NULL;
-    
-	xmlSecAssert2(cert->pCertInfo != NULL, NULL);
+	    PCCERT_CONTEXT nextCert = NULL;
+        unsigned char selected = 1;
+        
+	    xmlSecAssert2(cert->pCertInfo != NULL, NULL);
 
-	/* if cert is the issuer of any other cert in the list, then it is 
-	* to be skipped */
-	nextCert = CertFindCertificateInStore(certs,
-				X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-				0,
-				CERT_FIND_ISSUER_NAME,
-				&(cert->pCertInfo->Subject),
-				NULL);
-	if(nextCert != NULL) {
-	    CertFreeCertificateContext(nextCert);
-	    continue;
-	}
-	if(xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
-	    return(cert);
-	}
+	    /* if cert is the issuer of any other cert in the list, then it is 
+ 	     * to be skipped except a case of a celf-signed cert*/
+        do {
+            nextCert = CertFindCertificateInStore(certs,
+				    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+				    0,
+				    CERT_FIND_ISSUER_NAME,
+				    &(cert->pCertInfo->Subject),
+				    nextCert);
+            if((nextCert != NULL) && !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 
+                                        &(nextCert->pCertInfo->Subject), &(nextCert->pCertInfo->Issuer))) {
+                selected = 0;
+            }    
+        } while((selected == 1) && (nextCert != NULL));
+        if(nextCert != NULL) {
+	        CertFreeCertificateContext(nextCert);	            
+	    }
+
+	    if((selected == 1) && xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
+	        return(cert);
+	    }
     }
 
     return (NULL);
@@ -562,6 +594,9 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
 static int
 xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
+	HCERTSTORE hTrustedMemStore ;
+	HCERTSTORE hUntrustedMemStore ;
+
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
 
     ctx = xmlSecMSCryptoX509StoreGetCtx(store);
@@ -569,35 +604,103 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoX509StoreCtx));
 
-    /* create trusted certs store */
-    ctx->trusted = CertOpenStore(CERT_STORE_PROV_MEMORY,
-			       X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+    /* create trusted certs store collection */
+    ctx->trusted = CertOpenStore(CERT_STORE_PROV_COLLECTION,
 			       0,
-			       CERT_STORE_CREATE_NEW_FLAG,
+			       0,
+			       0,
 			       NULL);
     if(ctx->trusted == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-		    "CertOpenStore",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		        "CertOpenStore",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
     }
 
     /* create trusted certs store */
-    ctx->untrusted = CertOpenStore(CERT_STORE_PROV_MEMORY,
+    hTrustedMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
 			       X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
 			       0,
 			       CERT_STORE_CREATE_NEW_FLAG,
 			       NULL);
-    if(ctx->untrusted == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-		    "CertOpenStore",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+    if(hTrustedMemStore == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		        "CertOpenStore",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    ctx->trusted = NULL ;
+	    return(-1);
     }
+
+	/* add the memory trusted certs store to trusted certs store collection */
+	if( !CertAddStoreToCollection( ctx->trusted, hTrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		        "CertAddStoreToCollection",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    CertCloseStore(hTrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+	    ctx->trusted = NULL ;
+    	return(-1);
+	}
+	CertCloseStore(hTrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+
+    /* create untrusted certs store collection */
+    ctx->untrusted = CertOpenStore(CERT_STORE_PROV_COLLECTION,
+			       0,
+			       0,
+			       0,
+			       NULL);
+    if(ctx->untrusted == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		        "CertOpenStore",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    ctx->trusted = NULL ;
+	    return(-1);
+	}
+
+    /* create untrusted certs store */
+    hUntrustedMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
+			       X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+			       0,
+			       CERT_STORE_CREATE_NEW_FLAG,
+			       NULL);
+    if(hUntrustedMemStore == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		        "CertOpenStore",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    ctx->trusted = NULL ;
+	    ctx->untrusted = NULL ;
+	    return(-1);
+    }
+
+	/* add the memory trusted certs store to untrusted certs store collection */
+	if( !CertAddStoreToCollection( ctx->untrusted, hUntrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		        "CertAddStoreToCollection",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+	    CertCloseStore(hUntrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+	    ctx->trusted = NULL ;
+	    ctx->untrusted = NULL ;
+    	return(-1);
+	}
+	CertCloseStore(hUntrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
 
     return(0);    
 }
@@ -689,7 +792,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
     /* get issuer name */
 	cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
 					   issuerName,
-					   CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+					   CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
 					   &cNameLen);
 	if(cName == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,

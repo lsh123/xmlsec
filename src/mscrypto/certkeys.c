@@ -89,22 +89,22 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
     xmlSecAssert2(ctx != NULL, -1);
 
     if (ctx->hKey != 0) {
-	CryptDestroyKey(ctx->hKey);
-	ctx->hKey = 0;
+	    CryptDestroyKey(ctx->hKey);
+	    ctx->hKey = 0;
     }
 
     if(ctx->pCert != NULL) {
-	CertFreeCertificateContext(ctx->pCert);
-	ctx->pCert = NULL;
+	    CertFreeCertificateContext(ctx->pCert);
+	    ctx->pCert = NULL;
     }
 
     if ((ctx->hProv != 0) && (ctx->fCallerFreeProv)) {
-	CryptReleaseContext(ctx->hProv, 0);
-	ctx->hProv = 0;
-	ctx->fCallerFreeProv = FALSE;
+	    CryptReleaseContext(ctx->hProv, 0);
+	    ctx->hProv = 0;
+	    ctx->fCallerFreeProv = FALSE;
     } else {
-	ctx->hProv = 0;
-	ctx->fCallerFreeProv = FALSE;
+	    ctx->hProv = 0;
+	    ctx->fCallerFreeProv = FALSE;
     }
 
     ctx->type = type;
@@ -119,35 +119,35 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
 					       &(ctx->hProv), 
 					       &(ctx->dwKeySpec), 
 					       &(ctx->fCallerFreeProv))) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CryptAcquireCertificatePrivateKey",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "CryptAcquireCertificatePrivateKey",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+	        return(-1);
+	    }
     } else if((type & xmlSecKeyDataTypePublic) != 0){
-	if (!CryptAcquireContext(&(ctx->hProv), 
-				 NULL, 
-				 ctx->providerName, 
-				 ctx->providerType, 
-				 CRYPT_VERIFYCONTEXT)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CryptAcquireContext",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-	ctx->dwKeySpec = 0;
-	ctx->fCallerFreeProv = TRUE;
+	    if (!CryptAcquireContext(&(ctx->hProv), 
+				    NULL, 
+				    NULL, /* ctx->providerName, */
+				    ctx->providerType, 
+				    CRYPT_VERIFYCONTEXT)) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "CryptAcquireContext",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+	        return(-1);
+	    }
+	    ctx->dwKeySpec = 0;
+	    ctx->fCallerFreeProv = TRUE;
     } else {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "Unsupported keytype");
-	return(-1);
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        NULL,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "Unsupported keytype");
+	    return(-1);
     }
 
     /* CryptImportPublicKeyInfo is only needed when a real key handle
@@ -158,9 +158,9 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
      * made. WK
      */
     if(!CryptImportPublicKeyInfo(ctx->hProv, 
-	X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 
-	&(pCert->pCertInfo->SubjectPublicKeyInfo), 
-	&(ctx->hKey))) {
+	        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 
+	        &(pCert->pCertInfo->SubjectPublicKeyInfo), 
+	        &(ctx->hKey))) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"CryptImportPublicKeyInfo",
@@ -2021,45 +2021,45 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
 
     if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, 0)) {
-	if (NTE_BAD_KEYSET == GetLastError()) {
-	    if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, CRYPT_NEWKEYSET)) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
+	    if (NTE_BAD_KEYSET == GetLastError()) {
+	        if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, CRYPT_NEWKEYSET)) {
+		        xmlSecError(XMLSEC_ERRORS_HERE,
+			            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			            "CryptAcquireContext",
+			            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			            XMLSEC_ERRORS_NO_MESSAGE);
+		        return(-1);
+	        }
+	    } else {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
 			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 			    "CryptAcquireContext",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
+	        return(-1);
 	    }
-	} else {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			"CryptAcquireContext",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
     }
 
     dwKeySpec = AT_SIGNATURE;
     dwSize = ((sizeBits << 16) | CRYPT_EXPORTABLE);
     if (!CryptGenKey(hProv, CALG_DSS_SIGN, dwSize, &hKey)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "CryptGenKey",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		        "CryptGenKey",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
     }
 
     ret = xmlSecMSCryptoKeyDataAdoptKey(data, hProv, TRUE, hKey, dwKeySpec, 
 	xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "xmlSecMSCryptoKeyDataAdoptKey",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		        "xmlSecMSCryptoKeyDataAdoptKey",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
     }
     hProv = 0;
     hKey = 0;
@@ -2069,11 +2069,11 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
 
 done:
     if (hProv != 0) {
-	CryptReleaseContext(ctx->hProv, 0);
+    	CryptReleaseContext(ctx->hProv, 0);
     }
 
     if (hKey != 0) {
-	CryptDestroyKey(hKey);
+	    CryptDestroyKey(hKey);
     }
 
     return(res);

@@ -251,7 +251,7 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 }
 
 /**
- * xmlSecKeyInfoAddRetrievalMethod
+ * xmlSecKeyInfoAddRetrievalMethod:
  * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
  * @uri: the URI attribute (optional).
  * @type: the Type attribute(optional).

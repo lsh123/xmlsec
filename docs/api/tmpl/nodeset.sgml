@@ -131,9 +131,11 @@ The enchanced nodes set imlmentation.
 </para>
 
 @nset: 
-@func: 
+@walkFunc: 
 @data: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@func: 
 
 
 <!-- ##### FUNCTION xmlSecNodeSetDebugDump ##### -->

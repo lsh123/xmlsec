@@ -73,10 +73,7 @@ xmlSecTransformId xmlSecDigestRipemd160 = (xmlSecTransformId)&xmlSecDigestRipemd
     ((RIPEMD160_CTX*)(((xmlSecDigestTransformPtr)( t ))->digestData))
 
 /**
- * xmlSecDigestRipemd160Create
- * @id:
- *  
- * Creates transform
+ * xmlSecDigestRipemd160Create:
  */
 static xmlSecTransformPtr 
 xmlSecDigestRipemd160Create(xmlSecTransformId id) {
@@ -114,10 +111,7 @@ xmlSecDigestRipemd160Create(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecDigestRipemd160Destroy
- * 
- * @transform
- *
+ * xmlSecDigestRipemd160Destroy:
  */
 static void 	
 xmlSecDigestRipemd160Destroy(xmlSecTransformPtr transform) {
@@ -138,13 +132,7 @@ xmlSecDigestRipemd160Destroy(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecDigestRipemd160Update
- *
- * @transform:
- * @buffer:
- * @size:
- *
- * Simply call RIPEMD160_Update
+ * xmlSecDigestRipemd160Update:
  */
 static int 	
 xmlSecDigestRipemd160Update(xmlSecDigestTransformPtr transform,
@@ -171,12 +159,7 @@ xmlSecDigestRipemd160Update(xmlSecDigestTransformPtr transform,
 }
 
 /**
- * xmlSecDigestRipemd160Sign
- * @transform:
- * @buffer:
- * @size:
- *
- * Call RIPEMD160_Final, store digest in internal buffer and return the result
+ * xmlSecDigestRipemd160Sign:
  */
 static int 	
 xmlSecDigestRipemd160Sign(xmlSecDigestTransformPtr transform,
@@ -209,11 +192,6 @@ xmlSecDigestRipemd160Sign(xmlSecDigestTransformPtr transform,
 
 /**
  * xmlSecDigestRipemd160Verify:
- * @transform: 
- * @buffer: 
- * @size:
- *
- * Call RIPEMD160_Final and compare result with data in given buffer
  */
 static int
 xmlSecDigestRipemd160Verify(xmlSecDigestTransformPtr transform,

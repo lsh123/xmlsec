@@ -200,10 +200,6 @@ xmlSecTransformId xmlSecEncRsaOaep = (xmlSecTransformId)&xmlSecEncRsaOaepId;
 
 /**
  * xmlSecSignRsaSha1Create:
- * @id:
- *
- *
- *
  */
 static xmlSecTransformPtr 
 xmlSecSignRsaSha1Create(xmlSecTransformId id) {
@@ -238,11 +234,7 @@ xmlSecSignRsaSha1Create(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecSignRsaSha1Destroy
- * @transform:
- * 
- *
- *
+ * xmlSecSignRsaSha1Destroy:
  */
 static void 
 xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
@@ -272,11 +264,7 @@ xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecSignRsaSha1Update
- * @digest:
- * @buffer:
- * @size:
- *
+ * xmlSecSignRsaSha1Update:
  */
 static int
 xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
@@ -300,11 +288,7 @@ xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
 }
 
 /**
- * xmlSecSignRsaSha1Sign
- * @digest:
- * @buffer:
- * @size
- *
+ * xmlSecSignRsaSha1Sign:
  */
 static int
 xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
@@ -350,11 +334,7 @@ xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
 }
 
 /**
- * xmlSecSignRsaSha1Verify
- * @digest:
- * @buffer:
- * @size:
- *
+ * xmlSecSignRsaSha1Verify:
  */
 static int
 xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
@@ -395,9 +375,6 @@ xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
 
 /**
  * xmlSecSignRsaSha1AddKey:
- * @transform:
- * @key:
- *
  */																 
 static int
 xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
@@ -450,9 +427,11 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-/**
+/***********************************************************************
+ *
  * RSA key
- */
+ *
+ **********************************************************************/
 static 
 RSA* xmlSecRsaDup(RSA *rsa) {
     RSA *newRsa;
@@ -487,9 +466,7 @@ RSA* xmlSecRsaDup(RSA *rsa) {
 }
  
 /**
- * xmlSecRsaKeyCreate
- * @id:
- *
+ * xmlSecRsaKeyCreate:
  */
 static xmlSecKeyPtr	
 xmlSecRsaKeyCreate(xmlSecKeyId id) {
@@ -519,9 +496,7 @@ xmlSecRsaKeyCreate(xmlSecKeyId id) {
 }
 
 /**
- * xmlSecRsaKeyDestroy
- * @key:
- *
+ * xmlSecRsaKeyDestroy:
  */
 static void
 xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
@@ -582,10 +557,7 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecRsaKeyGenerate
- * @key:
- * @context:
- *
+ * xmlSecRsaKeyGenerate:
  */
 int		
 xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
@@ -630,9 +602,7 @@ xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
 }
 
 /**
- * xmlSecRsaKeyRead
- * @key:
- * @node:
+ * xmlSecRsaKeyRead:
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
  * The RSAKeyValue Element
@@ -765,11 +735,7 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 }
 
 /**
- * xmlSecRsaKeyWrite
- * @key:
- * @type:
- * @parent:
- *
+ * xmlSecRsaKeyWrite:
  */
 static int
 xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
@@ -842,9 +808,11 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 }
 
 
-/**
+/**************************************************************************
+ *
  * RSA-PKCS1 
- */
+ *
+ **************************************************************************/
 #define xmlSecRsaPkcs1Rsa(t) \
     ((RSA*)(((xmlSecBufferedTransformPtr)( t ))->binData))
     
@@ -979,11 +947,11 @@ xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer)
     return(0);
 }
 
-
-
-/**
+/***************************************************************************
+ *
  * RSA-OAEP
- */
+ *
+ ***************************************************************************/
 #define xmlSecRsaOaepRsa(t) \
     ((RSA*)(((xmlSecBufferedTransformPtr)( t ))->binData))
     
@@ -1062,10 +1030,14 @@ xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 }
 
 /**
- * xmlSecEncRsaOaepAddParam:
- * @transformNode:	the tranform node
- * @buf:		the OAEP param buffer
- * @size:		the OAEP param buffer size
+ * xmlSecEncRsaOaepAddParam::
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @buf: the OAEP param buffer.
+ * @size: the OAEP param buffer size.
+ * 
+ * Creates <enc:OAEPParam> child node in the @transformNode.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int  	
 xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf, 

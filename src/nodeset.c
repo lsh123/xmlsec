@@ -34,6 +34,17 @@ static int	xmlSecNodeSetWalkRecursive		(xmlSecNodeSetPtr nset,
 							 xmlNodePtr cur, 
 							 xmlNodePtr parent);
 
+/**
+ * xmlSecNodeSetCreate:
+ * @doc: the pointer to parent XML document.
+ * @nodes: the list of nodes.
+ * @type: the nodes set type.
+ *
+ * Creates new nodes set.
+ *
+ * Returns pointer to newly allocated #xmlSecNodeSet structure 
+ * or NULL if an error occurs.
+ */
 xmlSecNodeSetPtr
 xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) {
     xmlSecNodeSetPtr nset;
@@ -55,6 +66,12 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
     return(nset);
 }
 
+/**
+ * xmlSecNodeSetDestroy:
+ * @nset: the pointer to #xmlSecNodeSet structure.
+ *
+ * Destroys the nodes set.
+ */
 void
 xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
     xmlSecNodeSetPtr tmp;
@@ -151,6 +168,17 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
     return(0);
 }
 
+/**
+ * xmlSecNodeSetContains:
+ * @nset: the pointer to #xmlSecNodeSet structure.
+ * @node: the pointer to XML node to check.
+ * @parent: the pointer to @node parent node.
+ *
+ * Checks whether the @node is in the nodes set or not.
+ *
+ * Returns 1 if the @node is in the nodes set @nset, 0 if it is not
+ * and a negative value if an error occurs.
+ */
 int
 xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
     int status = 1;
@@ -194,8 +222,20 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
     return(status);
 }
 
+/**
+ * xmlSecNodeSetAdd:
+ * @nset: the pointer to currrent nodes set (or NULL).
+ * @newNSet: the pointer to new nodes set.
+ * @op: the operation type.
+ *
+ * Adds @newNSet to the @nset using operation @op. 
+ *
+ * Returns the pointer to combined nodes set or NULL if an error 
+ * occurs.
+ */
 xmlSecNodeSetPtr	
-xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
+xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, 
+		 xmlSecNodeSetOp op) {
     xmlSecAssert2(newNSet != NULL, NULL);
     xmlSecAssert2(newNSet->next == newNSet, NULL);
 
@@ -211,6 +251,17 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetO
     return(nset);
 }
 
+/**
+ * xmlSecNodeSetAddList:
+ * @nset: the pointer to currrent nodes set (or NULL).
+ * @newNSet: the pointer to new nodes set.
+ * @op: the operation type.
+ *
+ * Adds @newNSet to the @nset as child using operation @op. 
+ *
+ * Returns the pointer to combined nodes set or NULL if an error 
+ * occurs.
+ */
 xmlSecNodeSetPtr	
 xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
     xmlSecNodeSetPtr tmp1, tmp2;
@@ -238,6 +289,18 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
 }
 
  
+/**
+ * xmlSecNodeSetWalk:
+ * @nset: the pointer to #xmlSecNodeSet structure.
+ * @walkFunc: the callback functions.
+ * @data: the application specific data passed to the @walkFunc.
+ *
+ * Calls the function @walkFunc once per each node in the nodes set @nset.
+ * If the @walkFunc returns a negative value, then the walk procedure 
+ * is interrupted.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
     xmlSecAssert2(nset != NULL, -1);
@@ -348,6 +411,27 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
     return(0);
 }
 
+/**
+ * xmlSecNodeSetGetChildren:
+ * @doc: the pointer to an XML document.
+ * @parent: the pointer to parent XML node.
+ * @withComments: the flag include  comments or not.
+ * @invert: the "invert" flag.
+ *
+ * Creates a new nodes set that contains:
+ *  - if @withComments is not 0 and @invert is 0:
+ *    all nodes in the @parent subtree;
+ *  - if @withComments is 0 and @invert is 0:
+ *    all nodes in the @parent subtree except comment nodes;
+ *  - if @withComments is not 0 and @invert not is 0:
+ *    all nodes in the @doc except nodes in the @parent subtree;
+ *  - if @withComments is 0 and @invert is 0:
+ *    all nodes in the @doc except nodes in the @parent subtree 
+ *    and comment nodes.
+ *
+ * Returns pointer to the newly created #xmlSecNodeSet structure
+ * or NULL if an error occurs.
+ */
 xmlSecNodeSetPtr	
 xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComments, int invert) {
     xmlNodeSetPtr nodes;
@@ -377,6 +461,13 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     return(xmlSecNodeSetCreate(doc, nodes, type));
 }
 
+/**
+ * xmlSecNodeSetDebugDump: 
+ * @nset: the pointer to #xmlSecNodeSet structure.
+ * @output: the pointer to FILE.
+ * 
+ * Prints information about @nset to the @output.
+ */
 void
 xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     int i, l;

@@ -1,6 +1,6 @@
-65% symbol docs coverage.
-243 symbols documented.
-130 not documented.
+70% symbol docs coverage.
+261 symbols documented.
+112 not documented.
 
 
 xmlSecAssert
@@ -40,14 +40,7 @@ xmlSecDigestVerifyMethod
 xmlSecEncCtx
 xmlSecEncResult
 xmlSecEncResultDestroy
-xmlSecEncRsaOaepAddParam
 xmlSecFindNode
-xmlSecHmacAddOutputLength
-xmlSecHmacKeyGenerate
-xmlSecIOInit
-xmlSecIOShutdown
-xmlSecInputUri
-xmlSecInputUriTransformOpen
 xmlSecKey
 xmlSecKeyCheckId
 xmlSecKeyCheckTransform
@@ -64,20 +57,9 @@ xmlSecKeyUsage
 xmlSecKeyWriteBinaryMethod
 xmlSecKeyWriteXmlMethod
 xmlSecKeysInit
-xmlSecMemBuf
-xmlSecMemBufTransformGetBuffer
 xmlSecNodeSet
-xmlSecNodeSetAdd
-xmlSecNodeSetAddList
-xmlSecNodeSetContains
-xmlSecNodeSetCreate
-xmlSecNodeSetDebugDump
-xmlSecNodeSetDestroy
-xmlSecNodeSetGetChildren
 xmlSecNodeSetOp
 xmlSecNodeSetType
-xmlSecNodeSetWalk
-xmlSecNodeSetWalkCallback
 xmlSecPKCS12ReadKey
 xmlSecParseFile
 xmlSecParseMemory

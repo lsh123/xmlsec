@@ -56,9 +56,12 @@ xmlSecTransformId xmlSecMemBuf = (xmlSecTransformId)&xmlSecMemBufTransformId;
 
 /**
  * xmlSecMemBufTransformGetBuffer:
- * @transform:
- * @removeBuffer:
+ * @transform: the pointer to memory buffer transform.
+ * @removeBuffer: the flag that indicates whether the buffer
+ * 	will be removed from the transform.
  * 
+ * Gets the memory transform buffer. 
+ *
  * Returns the xmlBufferPtr. If @removeBuffer is set to 1 then the buffer 
  * is removed from transform and the caller is responsible for freeing it
  */
@@ -84,9 +87,6 @@ xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
 
 /**
  * xmlSecMemBufTransformCreate:
- * @id:
- *
- * Creates new memory buffer object
  */
 static xmlSecTransformPtr 
 xmlSecMemBufTransformCreate(xmlSecTransformId id) {
@@ -120,9 +120,6 @@ xmlSecMemBufTransformCreate(xmlSecTransformId id) {
 
 /**
  * xmlSecMemBufTransformDestroy:
- * @transform:
- *
- * Destroys the current object
  */
 static void
 xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
@@ -145,11 +142,6 @@ xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
 
 /**
  * xmlSecMemBufTransformRead
- * @transform:
- * @buf:
- * @size:
- *
- * Reads data from previous transform and stores them in the buffer
  */
 static int
 xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform, 
@@ -200,11 +192,6 @@ xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform,
 
 /**
  * xmlSecMemBufTransformWrite
- * @transform:
- * @buf:
- * @size:
- *
- * Writes data to the next buffer and stores them in the memory
  */
 static int
 xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform, 
@@ -258,11 +245,7 @@ xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecMemBufTransformFlush
- * @transform:
- *
- * Flushes the next transform
- *
+ * xmlSecMemBufTransformFlush:
  */
 static int
 xmlSecMemBufTransformFlush(xmlSecBinTransformPtr transform) {

@@ -14,6 +14,15 @@ The transforms functions.
 
 </para>
 
+<!-- ##### ENUM xmlSecTransformStatus ##### -->
+<para>
+
+</para>
+
+@xmlSecTransformStatusNone: 
+@xmlSecTransformStatusOk: 
+@xmlSecTransformStatusFail: 
+
 <!-- ##### TYPEDEF xmlSecTransformId ##### -->
 <para>
 
@@ -26,15 +35,6 @@ The transforms functions.
 </para>
 
 
-
-<!-- ##### ENUM xmlSecTransformStatus ##### -->
-<para>
-
-</para>
-
-@xmlSecTransformStatusNone: 
-@xmlSecTransformStatusOk: 
-@xmlSecTransformStatusFail: 
 
 <!-- ##### VARIABLE xmlSecEncAes128Cbc ##### -->
 <para>
@@ -72,30 +72,6 @@ The transforms functions.
 </para>
 
 
-<!-- ##### VARIABLE xmlSecAesKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecAesKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### MACRO XMLSEC_BASE64_LINESIZE ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### VARIABLE xmlSecEncBase64Encode ##### -->
 <para>
 
@@ -106,15 +82,6 @@ The transforms functions.
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION xmlSecBase64EncodeSetLineSize ##### -->
-<para>
-
-</para>
-
-@transform: 
-@lineSize: 
 
 
 <!-- ##### VARIABLE xmlSecC14NInclusive ##### -->
@@ -141,16 +108,6 @@ The transforms functions.
 </para>
 
 
-<!-- ##### FUNCTION xmlSecC14NExclAddInclNamespaces ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@prefixList: 
-@Returns: 
-
-
 <!-- ##### VARIABLE xmlSecEncDes3Cbc ##### -->
 <para>
 
@@ -163,43 +120,10 @@ The transforms functions.
 </para>
 
 
-<!-- ##### VARIABLE xmlSecDesKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecDesKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@buf: 
-@size: 
-@Returns: 
-
-
 <!-- ##### VARIABLE xmlSecSignDsaSha1 ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### VARIABLE xmlSecDsaKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecDsaKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@dsa: 
-@Returns: 
 
 
 <!-- ##### VARIABLE xmlSecTransformEnveloped ##### -->
@@ -226,33 +150,6 @@ The transforms functions.
 </para>
 
 
-<!-- ##### VARIABLE xmlSecHmacKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecHmacKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@buf: 
-@size: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@bitsLen: 
-@Returns: 
-
-
 <!-- ##### VARIABLE xmlSecDigestRipemd160 ##### -->
 <para>
 
@@ -277,47 +174,11 @@ The transforms functions.
 </para>
 
 
-<!-- ##### VARIABLE xmlSecRsaKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecRsaKeyGenerate ##### -->
-<para>
-
-</para>
-
-@key: 
-@rsa: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
-<para>
-
-</para>
-
-@transformNode: 
-@buf: 
-@size: 
-@Returns: 
-
-
 <!-- ##### VARIABLE xmlSecDigestSha1 ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### ENUM xmlSecXPath2TransformType ##### -->
-<para>
-
-</para>
-
-@xmlSecXPathTransformIntersect: 
-@xmlSecXPathTransformSubtract: 
-@xmlSecXPathTransformUnion: 
 
 <!-- ##### VARIABLE xmlSecTransformXPath ##### -->
 <para>
@@ -337,6 +198,43 @@ The transforms functions.
 </para>
 
 
+<!-- ##### VARIABLE xmlSecTransformXslt ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecC14NExclAddInclNamespaces ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@prefixList: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@bitsLen: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@buf: 
+@size: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecTransformXPathAdd ##### -->
 <para>
 
@@ -347,6 +245,15 @@ The transforms functions.
 @namespaces: 
 @Returns: 
 
+
+<!-- ##### ENUM xmlSecXPath2TransformType ##### -->
+<para>
+
+</para>
+
+@xmlSecXPathTransformIntersect: 
+@xmlSecXPathTransformSubtract: 
+@xmlSecXPathTransformUnion: 
 
 <!-- ##### FUNCTION xmlSecTransformXPath2Add ##### -->
 <para>
@@ -371,12 +278,6 @@ The transforms functions.
 @Returns: 
 
 
-<!-- ##### VARIABLE xmlSecTransformXslt ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION xmlSecTransformXsltAdd ##### -->
 <para>
 
@@ -385,5 +286,104 @@ The transforms functions.
 @transformNode: 
 @xslt: 
 @Returns: 
+
+
+<!-- ##### VARIABLE xmlSecAesKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecDesKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecDsaKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecHmacKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE xmlSecRsaKey ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecAesKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDesKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDsaKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@dsa: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecHmacKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecRsaKeyGenerate ##### -->
+<para>
+
+</para>
+
+@key: 
+@rsa: 
+@Returns: 
+
+
+<!-- ##### MACRO XMLSEC_BASE64_LINESIZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecBase64EncodeSetLineSize ##### -->
+<para>
+
+</para>
+
+@transform: 
+@lineSize: 
 
 

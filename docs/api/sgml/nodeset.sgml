@@ -39,7 +39,7 @@ int         <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>  
                                              int withComments,
                                              int invert);
 int         <link linkend="xmlSecNodeSetWalk">xmlSecNodeSetWalk</link>               (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
-                                             <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> func,
+                                             <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> walkFunc,
                                              void *data);
 void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>          (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
@@ -62,13 +62,22 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 <refsect2>
 <title><anchor id="xmlSecNodeSetType">enum xmlSecNodeSetType</title>
 <programlisting>typedef enum {
-xmlSecNodeSetNormal = 0,
-xmlSecNodeSetInvert,
-xmlSecNodeSetTree,
-xmlSecNodeSetTreeWithoutComments,
-xmlSecNodeSetTreeInvert,
-xmlSecNodeSetTreeWithoutCommentsInvert,
-xmlSecNodeSetList
+xmlSecNodeSetNormal = 0,		/* nodes set = nodes in the list */
+xmlSecNodeSetInvert,		/* nodes set = all document nodes 
+					   minus nodes in the list */
+xmlSecNodeSetTree,			/* nodes set = nodes in the list and 
+					   all their subtress */
+xmlSecNodeSetTreeWithoutComments,   /* nodes set = nodes in the list and 
+all their subtress but no comment 
+					   nodes */
+xmlSecNodeSetTreeInvert,		/* nodes set = all document nodes 
+					   minus nodes in the list and all 
+					   their subtress */
+xmlSecNodeSetTreeWithoutCommentsInvert, /* nodes set = all document nodes 
+					    minus (nodes in the list and all 
+					    their subtress plus all comment nodes) */
+xmlSecNodeSetList			/* nodes set = all nodes in the 
+					    chidren list of nodes sets */
 } xmlSecNodeSetType;
 </programlisting>
 <para>
@@ -77,9 +86,9 @@ xmlSecNodeSetList
 <refsect2>
 <title><anchor id="xmlSecNodeSetOp">enum xmlSecNodeSetOp</title>
 <programlisting>typedef enum {
-xmlSecNodeSetIntersection = 0,
-xmlSecNodeSetSubtraction,
-xmlSecNodeSetUnion
+xmlSecNodeSetIntersection = 0,	/* intersection */
+xmlSecNodeSetSubtraction,		/* subtraction */
+xmlSecNodeSetUnion			/* union */
 } xmlSecNodeSetOp;
 </programlisting>
 <para>
@@ -88,14 +97,14 @@ xmlSecNodeSetUnion
 <refsect2>
 <title><anchor id="xmlSecNodeSet">struct xmlSecNodeSet</title>
 <programlisting>struct xmlSecNodeSet {
-xmlNodeSetPtr	nodes;
-xmlDocPtr		doc;
-xmlSecNodeSetType	type;
-xmlSecNodeSetOp	op;
-
-xmlSecNodeSetPtr	next;
-xmlSecNodeSetPtr	prev;
-xmlSecNodeSetPtr	children;
+xmlNodeSetPtr	nodes;		/* nodes list */
+xmlDocPtr		doc;		/* the parent XML document */
+xmlSecNodeSetType	type;		/* nodes set type */
+xmlSecNodeSetOp	op;		/* the operation type */    
+xmlSecNodeSetPtr	next;		/* next nodes set */
+xmlSecNodeSetPtr	prev;		/* previous nodes set */
+xmlSecNodeSetPtr	children;	/* the children list (valid only 
+					   if type equal to xmlSecNodeSetList */
 };
 </programlisting>
 <para>
@@ -108,6 +117,8 @@ xmlSecNodeSetPtr	children;
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
                                              void *data);</programlisting>
 <para>
+The callback function called once per each node in the nodes set.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -115,20 +126,19 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer current XML node.
 </entry></row>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <parameter>cur</parameter> parent node.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to application specific data.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs
+an walk procedure should be interrupted.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -137,6 +147,8 @@ xmlSecNodeSetPtr	children;
                                              <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);</programlisting>
 <para>
+Creates new nodes set.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -144,22 +156,23 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to parent XML document.
 </entry></row>
 <row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>
+<entry> the list of nodes.
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> the nodes set type.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure 
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy ()</title>
 <programlisting>void        xmlSecNodeSetDestroy            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);</programlisting>
+<para>
+Destroys the nodes set.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -168,9 +181,7 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -179,6 +190,8 @@ xmlSecNodeSetPtr	children;
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> parent);</programlisting>
 <para>
+Checks whether the <parameter>node</parameter> is in the nodes set or not.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -186,17 +199,16 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to XML node to check.
 </entry></row>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to <parameter>node</parameter> parent node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the <parameter>node</parameter> is in the nodes set <parameter>nset</parameter>, 0 if it is not
+and a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -205,31 +217,7 @@ xmlSecNodeSetPtr	children;
                                              <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
                                              <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>newNSet</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>op</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecNodeSetAddList">xmlSecNodeSetAddList ()</title>
-<programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetAddList       (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
-                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
-                                             <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
+Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> using operation <parameter>op</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -238,17 +226,43 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to currrent nodes set (or NULL).
 </entry></row>
 <row><entry align="right"><parameter>newNSet</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to new nodes set.
 </entry></row>
 <row><entry align="right"><parameter>op</parameter>&nbsp;:</entry>
-<entry>
+<entry> the operation type.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to combined nodes set or NULL if an error 
+occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetAddList">xmlSecNodeSetAddList ()</title>
+<programlisting><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> xmlSecNodeSetAddList       (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> newNSet,
+                                             <link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> op);</programlisting>
+<para>
+Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> as child using operation <parameter>op</parameter>.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry> the pointer to currrent nodes set (or NULL).
+</entry></row>
+<row><entry align="right"><parameter>newNSet</parameter>&nbsp;:</entry>
+<entry> the pointer to new nodes set.
+</entry></row>
+<row><entry align="right"><parameter>op</parameter>&nbsp;:</entry>
+<entry> the operation type.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to combined nodes set or NULL if an error 
+occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -258,6 +272,17 @@ xmlSecNodeSetPtr	children;
                                              int withComments,
                                              int invert);</programlisting>
 <para>
+Creates a new nodes set that contains:
+ - if <parameter>withComments</parameter> is not 0 and <parameter>invert</parameter> is 0:
+   all nodes in the <parameter>parent</parameter> subtree;
+ - if <parameter>withComments</parameter> is 0 and <parameter>invert</parameter> is 0:
+   all nodes in the <parameter>parent</parameter> subtree except comment nodes;
+ - if <parameter>withComments</parameter> is not 0 and <parameter>invert</parameter> not is 0:
+   all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree;
+ - if <parameter>withComments</parameter> is 0 and <parameter>invert</parameter> is 0:
+   all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree 
+   and comment nodes.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -265,27 +290,30 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML document.
 </entry></row>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to parent XML node.
 </entry></row>
 <row><entry align="right"><parameter>withComments</parameter>&nbsp;:</entry>
-<entry>
+<entry> the flag include  comments or not.
 </entry></row>
 <row><entry align="right"><parameter>invert</parameter>&nbsp;:</entry>
-<entry>
+<entry> the "invert" flag.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the newly created <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetWalk">xmlSecNodeSetWalk ()</title>
 <programlisting>int         xmlSecNodeSetWalk               (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
-                                             <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> func,
+                                             <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> walkFunc,
                                              void *data);</programlisting>
+<para>
+Calls the function <parameter>walkFunc</parameter> once per each node in the nodes set <parameter>nset</parameter>.
+If the <parameter>walkFunc</parameter> returns a negative value, then the walk procedure 
+is interrupted.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -294,17 +322,15 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
 </entry></row>
-<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry>
+<row><entry align="right"><parameter>walkFunc</parameter>&nbsp;:</entry>
+<entry> the callback functions.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry> the application specific data passed to the <parameter>walkFunc</parameter>.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -312,6 +338,8 @@ xmlSecNodeSetPtr	children;
 <programlisting>void        xmlSecNodeSetDebugDump          (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
+Prints information about <parameter>nset</parameter> to the <parameter>output</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -319,12 +347,10 @@ xmlSecNodeSetPtr	children;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> the pointer to FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

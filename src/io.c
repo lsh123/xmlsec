@@ -94,9 +94,6 @@ xmlSecTransformId xmlSecInputUri = (xmlSecTransformId)&xmlSecInputUriTransformId
 
 /** 
  * xmlSecInputUriTransformCreate:
- * @id: 
- *
- * Creates new trasnform object.
  */
 static xmlSecTransformPtr 
 xmlSecInputUriTransformCreate(xmlSecTransformId id) {
@@ -130,9 +127,6 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
 
 /** 
  * xmlSecInputUriTransformDestroy:
- * @transform:
- *
- * Destroys the object
  */
 static void
 xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
@@ -157,7 +151,12 @@ xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
 
 /** 
  * xmlSecInputUriTransformOpen:
+ * @transform: the pointer to IO transform.
+ * @uri: the URL to open.
  *
+ * Opens the given @uri for reading.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
@@ -227,11 +226,6 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
 
 /** 
  * xmlSecInputUriTransformRead:
- * @transform:
- * @buf:
- * @size:
- *
- * Reads data from buffer
  */
 static int
 xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform, 
@@ -263,6 +257,12 @@ xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform,
     return(0);
 }
 
+/**
+ * xmlSecIOInit:
+ *
+ * The IO initialization (called from xmlSecInit() function).
+ * Applications should not call this function directly.
+ */ 
 void
 xmlSecIOInit(void) {    
 #ifdef LIBXML_HTTP_ENABLED
@@ -274,6 +274,12 @@ xmlSecIOInit(void) {
     xmlSecRegisterDefaultInputCallbacks();
 }
 
+/**
+ * xmlSecIOShutdown:
+ *
+ * The IO clenaup (called from xmlSecShutdown() function).
+ * Applications should not call this function directly.
+ */ 
 void
 xmlSecIOShutdown(void) {
 #ifdef LIBXML_HTTP_ENABLED
@@ -285,13 +291,10 @@ xmlSecIOShutdown(void) {
     xmlSecCleanupInputCallbacks();
 }
 
-
-
-
 /**
  * xmlSecCleanupInputCallbacks:
  *
- * clears the entire input callback table. this includes the
+ * Clears the entire input callback table. this includes the
  * compiled-in I/O. 
  */
 void
@@ -338,14 +341,15 @@ xmlSecRegisterDefaultInputCallbacks(void) {
 
 /**
  * xmlSecRegisterInputCallbacks:
- * @matchFunc:  the xmlInputMatchCallback
- * @openFunc:  the xmlInputOpenCallback
- * @readFunc:  the xmlInputReadCallback
- * @closeFunc:  the xmlInputCloseCallback
+ * @matchFunc:  the xmlInputMatchCallback.
+ * @openFunc:  the xmlInputOpenCallback.
+ * @readFunc:  the xmlInputReadCallback.
+ * @closeFunc:  the xmlInputCloseCallback.
  *
  * Register a new set of I/O callback for handling parser input.
  *
- * Returns the registered handler number or -1 in case of error
+ * Returns the registered handler number or a negative value if 
+ * an error occurs.
  */
 int
 xmlSecRegisterInputCallbacks(xmlInputMatchCallback matchFunc,

@@ -121,7 +121,7 @@ NAME="XMLSEC-IO">io.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN5682"
+NAME="AEN5687"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN5682"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN5685"><H2
+NAME="AEN5690"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -197,7 +197,7 @@ HREF="XMLINPUTCLOSECALLBACK"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5700"
+NAME="AEN5705"
 ></A
 ><H2
 >Description</H2
@@ -207,14 +207,14 @@ NAME="AEN5700"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5703"
+NAME="AEN5708"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5705"
+NAME="AEN5710"
 ></A
 ><H3
 ><A
@@ -235,12 +235,18 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The IO initialization (called from <A
+HREF="xmlsec-xmlsec.html#XMLSECINIT"
+>xmlSecInit</A
+>() function).
+Applications should not call this function directly.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5710"
+NAME="AEN5717"
 ></A
 ><H3
 ><A
@@ -261,12 +267,18 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The IO clenaup (called from <A
+HREF="xmlsec-xmlsec.html#XMLSECSHUTDOWN"
+>xmlSecShutdown</A
+>() function).
+Applications should not call this function directly.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5715"
+NAME="AEN5724"
 ></A
 ><H3
 ><A
@@ -287,12 +299,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The input URI transform id.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5720"
+NAME="AEN5730"
 ></A
 ><H3
 ><A
@@ -317,13 +331,18 @@ HREF="XMLSECTRANSFORMPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Opens the given <TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+> for reading.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5727"><P
+NAME="AEN5738"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -348,7 +367,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to IO transform.</TD
 ></TR
 ><TR
 ><TD
@@ -365,7 +384,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the URL to open.</TD
 ></TR
 ><TR
 ><TD
@@ -383,7 +402,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -394,7 +413,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5744"
+NAME="AEN5755"
 ></A
 ><H3
 ><A
@@ -415,7 +434,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
->clears the entire input callback table. this includes the
+>Clears the entire input callback table. this includes the
 compiled-in I/O.</P
 ><P
 ></P
@@ -423,7 +442,7 @@ compiled-in I/O.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5750"
+NAME="AEN5761"
 ></A
 ><H3
 ><A
@@ -452,7 +471,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5756"
+NAME="AEN5767"
 ></A
 ><H3
 ><A
@@ -494,7 +513,7 @@ HREF="XMLINPUTCLOSECALLBACK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5766"><P
+NAME="AEN5777"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -519,7 +538,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputMatchCallback</TD
+>  the xmlInputMatchCallback.</TD
 ></TR
 ><TR
 ><TD
@@ -536,7 +555,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputOpenCallback</TD
+>  the xmlInputOpenCallback.</TD
 ></TR
 ><TR
 ><TD
@@ -553,7 +572,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputReadCallback</TD
+>  the xmlInputReadCallback.</TD
 ></TR
 ><TR
 ><TD
@@ -570,7 +589,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->  the xmlInputCloseCallback</TD
+>  the xmlInputCloseCallback.</TD
 ></TR
 ><TR
 ><TD
@@ -588,7 +607,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the registered handler number or -1 in case of error</TD
+>the registered handler number or a negative value if 
+an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE

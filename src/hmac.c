@@ -62,9 +62,9 @@ typedef struct _xmlSecHmacKeyData {
     size_t			keySize;
 } xmlSecHmacKeyData, *xmlSecHmacKeyDataPtr;
  
-xmlSecHmacKeyDataPtr	xmlSecHmacKeyDataCreate		(const unsigned char *key,
+static xmlSecHmacKeyDataPtr xmlSecHmacKeyDataCreate	(const unsigned char *key,
 							size_t keySize);
-void			xmlSecHmacKeyDataDestroy	(xmlSecHmacKeyDataPtr data);
+static void		xmlSecHmacKeyDataDestroy	(xmlSecHmacKeyDataPtr data);
 static xmlSecKeyPtr	xmlSecHmacKeyCreate		(xmlSecKeyId id);
 static void		xmlSecHmacKeyDestroy		(xmlSecKeyPtr key);
 static xmlSecKeyPtr	xmlSecHmacKeyDuplicate		(xmlSecKeyPtr key);
@@ -201,11 +201,6 @@ xmlSecTransformId xmlSecMacHmacRipeMd160 = (xmlSecTransformId)&xmlSecMacHmacRipe
 
 /**
  * xmlSecMacHmacCreate:
- * @id: the HMAC transform id.
- *
- * Creates new HMAC transform.
- *
- * Returns new HMAC transform or NULL if an error occurs.
  */
 static xmlSecTransformPtr 
 xmlSecMacHmacCreate(xmlSecTransformId id) {
@@ -244,10 +239,7 @@ xmlSecMacHmacCreate(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecMacHmacDestroy
- * @transform: the HMAC transform. 
- * 
- * Destroys the HMAC transform. 
+ * xmlSecMacHmacDestroy:
  */
 static void 
 xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
@@ -278,8 +270,6 @@ xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
 
 /**
  * xmlSecMacHmacReadNode:
- * @transform:
- * @transformNode:
  *
  * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
  *
@@ -344,9 +334,13 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 
 /**
  * xmlSecHmacAddOutputLength:
- * @transformNode: the transform node
+ * @transformNode: the pointer to <dsig:Transform> node
  * @bitsLen: the required length in bits
  *
+ * Creates <dsig:HMACOutputLength>child for the HMAC transform 
+ * node @transformNode.
+ *
+ * Returns 0 on success and a negatie value otherwise.
  */
 int
 xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
@@ -379,11 +373,7 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
 
 
 /**
- * xmlSecMacHmacUpdate
- * @transform:
- * @buffer:
- * @size:
- *
+ * xmlSecMacHmacUpdate:
  */
 static int
 xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest, const unsigned char *buffer, size_t size) {
@@ -410,14 +400,7 @@ xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest, const unsigned char *buffer
 }
 
 /**
- * xmlSecMacHmacSign
- * @transform: the  HMAC transform
- * @buffer: the pointer to result signature buffer.
- * @size: the pointer to result signature size.
- *
- * Signs the data from internal buffer and puts the result into
- * allocated buffer. The caller is responsible for deleting the returned
- * buffer with xmlFree() function.
+ * xmlSecMacHmacSign:
  */
 static int
 xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
@@ -454,11 +437,7 @@ xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
 }
 
 /**
- * xmlSecMacHmacVerify
- * @transform:
- * @buffer:
- * @size:
- *
+ * xmlSecMacHmacVerify:
  */
 static int
 xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
@@ -498,9 +477,6 @@ xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
 
 /**
  * xmlSecMacHmacAddKey:
- * @transform:
- * @key:
- *
  */																 
 static int
 xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
@@ -551,12 +527,7 @@ xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  *
  ************************************************************************/
 /**
- * xmlSecHmacKeyCreate
- * @id: the HMAC key id.
- * 
- * Creates new HMAC key.
- *
- * Returns new HMAC key or NULL if an error occurs.
+ * xmlSecHmacKeyCreate:
  */
 static xmlSecKeyPtr	
 xmlSecHmacKeyCreate(xmlSecKeyId id) {
@@ -586,10 +557,7 @@ xmlSecHmacKeyCreate(xmlSecKeyId id) {
 }
 
 /**
- * xmlSecHmacKeyDestroy
- * @key: the HMAC key
- *
- * Destroys HMAC key.
+ * xmlSecHmacKeyDestroy:
  */
 static void
 xmlSecHmacKeyDestroy(xmlSecKeyPtr key) {
@@ -649,10 +617,15 @@ xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecHmacKeyGenerate
- * @key:
- * @context:
+ * xmlSecHmacKeyGenerate:
+ * @key: the pointer to HMAC key.
+ * @buf: the HMAC key binary data or NULL.
+ * @size: the binary data size.
  *
+ * Sets the HMAC key @key to data in @buf or generates a new HMAC key 
+ * if @buf is NULL.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int		
 xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -698,11 +671,7 @@ xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 }
 
 /**
- * xmlSecHmacKeyRead
- * @key:
- * @node:
- *
- *
+ * xmlSecHmacKeyRead:
  */
 static int
 xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
@@ -758,11 +727,7 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 }
 
 /**
- * xmlSecHmacKeyWrite
- * @key:
- * @type:
- * @parent:
- *
+ * xmlSecHmacKeyWrite:
  */
 static int
 xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
@@ -805,13 +770,6 @@ xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 
 /**
  * xmlSecHmacKeyReadBinary:
- * @key: the HMAC key.
- * @buf: the key binary data buffer
- * @size: the key binary data size
- *
- * Reads HMAC key from binary buffer.
- *
- * Returns 0 if success or a negative value if an error occurs.
  */
 static  int
 xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -843,15 +801,7 @@ xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size)
 }
 
 /**
- * xmlSecHmacKeyWriteBinary
- * @key: the HMAC key.
- * @buf: the pointer to key binary data buffer
- * @size: the pointer key binary data size
- *
- * Writes binary HMAC key into allocated buffer. The caller is responsible
- * for deleting the returned buffer with xmlFree() function.
- *
- * Returns 0 if success or a negative value if an error occurs.
+ * xmlSecHmacKeyWriteBinary:
  */
 static  int
 xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
@@ -896,13 +846,9 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 
 
 /**
- * xmlSecHmacKeyDataCreate
- * @key:
- * @size:
- *
- *
+ * xmlSecHmacKeyDataCreate:
  */
-xmlSecHmacKeyDataPtr	
+static xmlSecHmacKeyDataPtr	
 xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
     xmlSecHmacKeyDataPtr data;
     size_t size;
@@ -926,11 +872,9 @@ xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
 }
 
 /**
- * xmlSecHmacKeyDataDestroy
- * @data:
- *
+ * xmlSecHmacKeyDataDestroy:
  */
-void
+static void
 xmlSecHmacKeyDataDestroy(xmlSecHmacKeyDataPtr data) {
     xmlSecAssert(data != NULL);
     

@@ -121,7 +121,7 @@ NAME="XMLSEC-NODESET">nodeset.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6267"
+NAME="AEN6279"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN6267"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6270"><H2
+NAME="AEN6282"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -272,7 +272,7 @@ HREF="XMLSECNODESETPTR"
                                              <A
 HREF="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK"
 >xmlSecNodeSetWalkCallback</A
-> func,
+> walkFunc,
                                              void *data);
 void        <A
 HREF="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP"
@@ -292,7 +292,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6311"
+NAME="AEN6323"
 ></A
 ><H2
 >Description</H2
@@ -302,14 +302,14 @@ NAME="AEN6311"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6314"
+NAME="AEN6326"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6316"
+NAME="AEN6328"
 ></A
 ><H3
 ><A
@@ -326,13 +326,22 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-xmlSecNodeSetNormal = 0,
-xmlSecNodeSetInvert,
-xmlSecNodeSetTree,
-xmlSecNodeSetTreeWithoutComments,
-xmlSecNodeSetTreeInvert,
-xmlSecNodeSetTreeWithoutCommentsInvert,
-xmlSecNodeSetList
+xmlSecNodeSetNormal = 0,		/* nodes set = nodes in the list */
+xmlSecNodeSetInvert,		/* nodes set = all document nodes 
+					   minus nodes in the list */
+xmlSecNodeSetTree,			/* nodes set = nodes in the list and 
+					   all their subtress */
+xmlSecNodeSetTreeWithoutComments,   /* nodes set = nodes in the list and 
+all their subtress but no comment 
+					   nodes */
+xmlSecNodeSetTreeInvert,		/* nodes set = all document nodes 
+					   minus nodes in the list and all 
+					   their subtress */
+xmlSecNodeSetTreeWithoutCommentsInvert, /* nodes set = all document nodes 
+					    minus (nodes in the list and all 
+					    their subtress plus all comment nodes) */
+xmlSecNodeSetList			/* nodes set = all nodes in the 
+					    chidren list of nodes sets */
 } xmlSecNodeSetType;</PRE
 ></TD
 ></TR
@@ -343,7 +352,7 @@ xmlSecNodeSetList
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6321"
+NAME="AEN6333"
 ></A
 ><H3
 ><A
@@ -360,9 +369,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-xmlSecNodeSetIntersection = 0,
-xmlSecNodeSetSubtraction,
-xmlSecNodeSetUnion
+xmlSecNodeSetIntersection = 0,	/* intersection */
+xmlSecNodeSetSubtraction,		/* subtraction */
+xmlSecNodeSetUnion			/* union */
 } xmlSecNodeSetOp;</PRE
 ></TD
 ></TR
@@ -373,7 +382,7 @@ xmlSecNodeSetUnion
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6326"
+NAME="AEN6338"
 ></A
 ><H3
 ><A
@@ -390,14 +399,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecNodeSet {
-xmlNodeSetPtr	nodes;
-xmlDocPtr		doc;
-xmlSecNodeSetType	type;
-xmlSecNodeSetOp	op;
-
-xmlSecNodeSetPtr	next;
-xmlSecNodeSetPtr	prev;
-xmlSecNodeSetPtr	children;
+xmlNodeSetPtr	nodes;		/* nodes list */
+xmlDocPtr		doc;		/* the parent XML document */
+xmlSecNodeSetType	type;		/* nodes set type */
+xmlSecNodeSetOp	op;		/* the operation type */    
+xmlSecNodeSetPtr	next;		/* next nodes set */
+xmlSecNodeSetPtr	prev;		/* previous nodes set */
+xmlSecNodeSetPtr	children;	/* the children list (valid only 
+					   if type equal to xmlSecNodeSetList */
 };</PRE
 ></TD
 ></TR
@@ -408,7 +417,7 @@ xmlSecNodeSetPtr	children;
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6331"
+NAME="AEN6343"
 ></A
 ><H3
 ><A
@@ -441,11 +450,13 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>The callback function called once per each node in the nodes set.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6339"><P
+NAME="AEN6352"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -470,7 +481,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -487,7 +501,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer current XML node.</TD
 ></TR
 ><TR
 ><TD
@@ -504,7 +518,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+> parent node.</TD
 ></TR
 ><TR
 ><TD
@@ -521,7 +540,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -539,7 +558,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value if an error occurs
+an walk procedure should be interrupted.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -550,7 +570,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6364"
+NAME="AEN6379"
 ></A
 ><H3
 ><A
@@ -585,11 +605,13 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
 ></TR
 ></TABLE
 ><P
+>Creates new nodes set.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6373"><P
+NAME="AEN6389"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -614,7 +636,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to parent XML document.</TD
 ></TR
 ><TR
 ><TD
@@ -631,7 +653,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the list of nodes.</TD
 ></TR
 ><TR
 ><TD
@@ -648,7 +670,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the nodes set type.</TD
 ></TR
 ><TR
 ><TD
@@ -666,7 +688,11 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>pointer to newly allocated <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure 
+or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -677,7 +703,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6394"
+NAME="AEN6411"
 ></A
 ><H3
 ><A
@@ -701,11 +727,13 @@ HREF="XMLSECNODESETPTR"
 ></TR
 ></TABLE
 ><P
+>Destroys the nodes set.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6400"><P
+NAME="AEN6418"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -730,7 +758,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -741,7 +772,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6409"
+NAME="AEN6428"
 ></A
 ><H3
 ><A
@@ -773,11 +804,18 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>Checks whether the <TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+> is in the nodes set or not.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6417"><P
+NAME="AEN6438"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -802,7 +840,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -819,7 +860,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to XML node to check.</TD
 ></TR
 ><TR
 ><TD
@@ -836,7 +877,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+> parent node.</TD
 ></TR
 ><TR
 ><TD
@@ -854,7 +900,18 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if the <TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+> is in the nodes set <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>, 0 if it is not
+and a negative value if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -865,7 +922,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6438"
+NAME="AEN6463"
 ></A
 ><H3
 ><A
@@ -900,11 +957,28 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
 ></TR
 ></TABLE
 ><P
+>Adds <TT
+CLASS="PARAMETER"
+><I
+>newNSet</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+> using operation <TT
+CLASS="PARAMETER"
+><I
+>op</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6447"><P
+NAME="AEN6476"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -929,7 +1003,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to currrent nodes set (or NULL).</TD
 ></TR
 ><TR
 ><TD
@@ -946,7 +1020,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to new nodes set.</TD
 ></TR
 ><TR
 ><TD
@@ -963,7 +1037,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the operation type.</TD
 ></TR
 ><TR
 ><TD
@@ -981,7 +1055,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to combined nodes set or NULL if an error 
+occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -992,7 +1067,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6468"
+NAME="AEN6497"
 ></A
 ><H3
 ><A
@@ -1027,11 +1102,28 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
 ></TR
 ></TABLE
 ><P
+>Adds <TT
+CLASS="PARAMETER"
+><I
+>newNSet</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+> as child using operation <TT
+CLASS="PARAMETER"
+><I
+>op</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6477"><P
+NAME="AEN6510"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1056,7 +1148,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to currrent nodes set (or NULL).</TD
 ></TR
 ><TR
 ><TD
@@ -1073,7 +1165,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to new nodes set.</TD
 ></TR
 ><TR
 ><TD
@@ -1090,7 +1182,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the operation type.</TD
 ></TR
 ><TR
 ><TD
@@ -1108,7 +1200,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to combined nodes set or NULL if an error 
+occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1119,7 +1212,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6498"
+NAME="AEN6531"
 ></A
 ><H3
 ><A
@@ -1152,11 +1245,92 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
+>Creates a new nodes set that contains:
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is not 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree;
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree except comment nodes;
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is not 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> not is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+> except nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree;
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+> except nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree 
+   and comment nodes.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6506"><P
+NAME="AEN6554"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1181,7 +1355,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to an XML document.</TD
 ></TR
 ><TR
 ><TD
@@ -1198,7 +1372,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to parent XML node.</TD
 ></TR
 ><TR
 ><TD
@@ -1215,7 +1389,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the flag include  comments or not.</TD
 ></TR
 ><TR
 ><TD
@@ -1232,7 +1406,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the "invert" flag.</TD
 ></TR
 ><TR
 ><TD
@@ -1250,7 +1424,11 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>pointer to the newly created <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure
+or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1261,7 +1439,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6531"
+NAME="AEN6580"
 ></A
 ><H3
 ><A
@@ -1284,17 +1462,36 @@ HREF="XMLSECNODESETPTR"
                                              <A
 HREF="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK"
 >xmlSecNodeSetWalkCallback</A
-> func,
+> walkFunc,
                                              void *data);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>Calls the function <TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+> once per each node in the nodes set <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>.
+If the <TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+> returns a negative value, then the walk procedure 
+is interrupted.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6538"><P
+NAME="AEN6591"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1319,7 +1516,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -1329,14 +1529,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->func</I
+>walkFunc</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the callback functions.</TD
 ></TR
 ><TR
 ><TD
@@ -1353,7 +1553,12 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the application specific data passed to the <TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+>.</TD
 ></TR
 ><TR
 ><TD
@@ -1371,7 +1576,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1382,7 +1587,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6559"
+NAME="AEN6614"
 ></A
 ><H3
 ><A
@@ -1410,11 +1615,23 @@ HREF="FILE-CAPS"
 ></TR
 ></TABLE
 ><P
+>Prints information about <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6566"><P
+NAME="AEN6624"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1439,7 +1656,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -1456,7 +1676,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to FILE.</TD
 ></TR
 ></TBODY
 ></TABLE

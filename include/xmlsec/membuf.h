@@ -19,6 +19,11 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
+/**
+ * xmlSecMemBuf:
+ *
+ * The memory buffer transform id.
+ */
 XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecMemBuf;
 
 XMLSEC_EXPORT xmlBufferPtr	xmlSecMemBufTransformGetBuffer		

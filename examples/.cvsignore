@@ -12,8 +12,6 @@ decrypt1
 decrypt2
 decrypt3
 .kdbgrc*
-Makefile
-Makefile.in
 libtool
 aclocal.m4
 auto*.cache

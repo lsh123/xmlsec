@@ -62,7 +62,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoad		(const char *filenam
 									 const char *pwd,
 									 void *pwdCallback,
 									 void* pwdCallbackCtx);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory	(const xmlSecByte* bdata, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory	(const xmlSecByte* data, 
 									 xmlSecSize dataSize, 
 									 xmlSecKeyDataFormat format,
 									 const char *pwd,
@@ -73,7 +73,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12Load		(const char *file
 									 const char *pwd,
 		    							 void* pwdCallback, 
 									 void* pwdCallbackCtx);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12LoadMemory	(const xmlSecByte* bdata,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12LoadMemory	(const xmlSecByte* data,
 									 xmlSecSize dataSize, 
 									 const char* pwd,
 									 void* pwdCallback, 

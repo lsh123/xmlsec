@@ -43,44 +43,6 @@ XMLSEC_CRYPTO_EXPORT void		xmlSecMSCryptoErrorsDefaultCallback(const char* file,
 
 /********************************************************************
  *
- * HMAC transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_HMAC
-/** 
- * xmlSecMSCryptoKeyDataHmacId:
- * 
- * The DHMAC key data klass.
- */
-#define xmlSecMSCryptoKeyDataHmacId \
-	xmlSecMSCryptoKeyDataHmacGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId	xmlSecMSCryptoKeyDataHmacGetKlass(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataHmacSet	(xmlSecKeyDataPtr data,
-									 const xmlSecByte* buf,
-									 xmlSecSize bufSize);
-/**
- * xmlSecMSCryptoTransformHmacSha1Id:
- * 
- * The HMAC with SHA1 signature transform klass.
- */
-#define xmlSecMSCryptoTransformHmacSha1Id \
-	xmlSecMSCryptoTransformHmacSha1GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha1GetKlass(void);
-
-/**
- * xmlSecMSCryptoTransformHmacMd5Id:
- * 
- * The HMAC with MD5 signature transform klass.
- */
-#define xmlSecMSCryptoTransformHmacMd5Id \
-	xmlSecMSCryptoTransformHmacMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacMd5GetKlass(void);
-
-
-#endif /* XMLSEC_NO_HMAC */
-
-/********************************************************************
- *
  * DSA transform
  *
  *******************************************************************/
@@ -226,16 +188,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes256CbcGetKlass(
 #ifndef XMLSEC_NO_DES
 
 /**
- * xmlSecNssKeyDataDesId:
+ * xmlSecMSCryptoKeyDataDesId:
  * 
  * The DES key data klass.
  */
 #define xmlSecMSCryptoKeyDataDesId \
 	xmlSecMSCryptoKeyDataDesGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDesGetKlass(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataDesSet	(xmlSecKeyDataPtr data,
-									 const xmlSecByte* buf,
-									 xmlSecSize bufSize);
 
 /**
  * xmlSecMSCryptoTransformDes3CbcId:

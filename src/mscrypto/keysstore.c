@@ -369,11 +369,11 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 			    NULL,
 			    &len,
 			    NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
+	    /* xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"CertStrToName",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			XMLSEC_ERRORS_NO_MESSAGE); */
 	    CertCloseStore(hStoreHandle, 0);
 	    return(NULL);
 	}

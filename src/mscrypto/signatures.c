@@ -160,19 +160,11 @@ static int xmlSecMSCryptoSignatureSetKey(xmlSecTransformPtr transform, xmlSecKey
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);
 
-    ctx->data = xmlSecKeyDataCreate(ctx->keyId);
-    if (ctx->data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecMSCryptoKeyDataRsaId");
-	return (-1);
-    }
-    if (xmlSecMSCryptoKeyDataDuplicate(ctx->data, value) == -1) {
+    ctx->data = xmlSecKeyDataDuplicate(value);
+    if(ctx->data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecMSCryptoKeyDataDuplicate",
+		    "xmlSecKeyDataDuplicate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);

@@ -62,7 +62,7 @@ struct _xmlSecMSCryptoKeyDataCtx {
 #define xmlSecMSCryptoKeyDataGetCtx(data) \
     ((xmlSecMSCryptoKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
-int     		xmlSecMSCryptoKeyDataDuplicate	(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
+static int     		xmlSecMSCryptoKeyDataDuplicate	(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src);
 static void		xmlSecMSCryptoKeyDataFinalize	(xmlSecKeyDataPtr data);
 static int		xmlSecMSCryptoKeyDataGetSize	(xmlSecKeyDataPtr data);
 
@@ -218,6 +218,16 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
     return(0);
 }
 
+/**
+ * xmlSecMSCryptoKeyDataGetKey:
+ * @data:		the key data to retrieve certificate from.
+ * @type:              type of key requested (public/private)
+ *
+ * Native MSCrypto key retrieval from xmlsec keydata. The 
+ * returned HKEY must not be destroyed by the caller.
+ * 
+ * Returns HKEY on success or NULL otherwise.
+ */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
@@ -231,6 +241,15 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     return(ctx->hKey);
 }
 
+/**
+ * xmlSecMSCryptoKeyDataGetCert:
+ * @data:		the key data to retrieve certificate from.
+ * 
+ * Native MSCrypto certificate retrieval from xmlsec keydata. The 
+ * returned PCCERT_CONTEXT must not be released by the caller.
+ * 
+ * Returns PCCERT_CONTEXT on success or NULL otherwise.
+ */
 PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
@@ -270,7 +289,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {
     return(ctx->dwKeySpec);
 }
 
-int 
+static int 
 xmlSecMSCryptoKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecMSCryptoKeyDataCtxPtr ctxDst;
     xmlSecMSCryptoKeyDataCtxPtr ctxSrc;

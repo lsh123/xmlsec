@@ -175,22 +175,14 @@ xmlSecMSCryptoRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data == NULL, -1);
 
-    ctx->data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataRsaId);
-    if (ctx->data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataCreate",
+    ctx->data = xmlSecKeyDataDuplicate(xmlSecKeyGetValue(key));
+    if(ctx->data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecKeyDataDuplicate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecMSCryptoKeyDataRsaId");
-	return (-1);
-    }
-    if (xmlSecMSCryptoKeyDataDuplicate(ctx->data, xmlSecKeyGetValue(key)) == -1) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "xmlSecMSCryptoKeyDataDuplicate",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
     }
 
     return(0);

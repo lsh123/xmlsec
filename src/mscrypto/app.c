@@ -184,7 +184,7 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
 /**
  * xmlSecMSCryptoAppKeyLoadMemory:
- * @bdata:		the key binary data.
+ * @data:		the key binary data.
  * @dataSize:		the key data size.
  * @format:		the key format.
  * @pwd:		the key password.
@@ -196,20 +196,20 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  * Returns pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
-xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xmlSecKeyDataFormat format,
+xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
 			       const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     PCCERT_CONTEXT pCert = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
-    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
     int ret;
 
-    xmlSecAssert2(bdata != NULL, NULL);
+    xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
 
-    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, bdata, dataSize);
+    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
     if (NULL == pCert) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -254,8 +254,8 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xml
     }
     tmpcert = NULL;
 
-    data = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePublic);
-    if(data == NULL) {
+    keyData = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePublic);
+    if(keyData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecMSCryptoCertAdopt",
@@ -275,7 +275,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xml
 	goto done;
     }    
     
-    ret = xmlSecKeySetValue(key, data);
+    ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -287,7 +287,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xml
 	key = NULL;
 	goto done;
     }
-    data = NULL;
+    keyData = NULL;
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
@@ -313,8 +313,8 @@ done:
     if(x509Data != NULL) {
 	xmlSecKeyDataDestroy(x509Data);
     }
-    if(data != NULL) {
-        xmlSecKeyDataDestroy(data);
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
     }
 
     return(key); 
@@ -386,7 +386,17 @@ xmlSecMSCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     return(0);        
 }
 
-
+/**
+ * xmlSecMSCryptoAppKeyCertLoadMemory:
+ * @key:		the pointer to key.
+ * @data:		the binary certificate.
+ * @dataSize:           size of certificate binary (data)
+ * @format:		the certificate file format.
+ *
+ * Reads the certificate from $@data and adds it to key.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
 int		
 xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, 
 				   xmlSecKeyDataFormat format) {
@@ -457,7 +467,6 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
  * @pwdCallbackCtx:	the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file
- * (not implemented yet).
  *
  * Returns pointer to the key or NULL if an error occurs.
  */
@@ -512,8 +521,20 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
     return(key);        
 }
 
+/**
+ * xmlSecMSCryptoAppPkcs12LoadMemory:
+ * @data:		the binary PKCS12 key in data.
+ * @dataSize:           size of binary pkcs12 data
+ * @pwd:		the PKCS12 file password.
+ * @pwdCallback:	the password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 binary
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr	
-xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
+xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 				  xmlSecSize dataSize, 
 				  const char *pwd,
 				  void* pwdCallback ATTRIBUTE_UNUSED, 
@@ -525,17 +546,17 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
     PCCERT_CONTEXT pCert = NULL;
     WCHAR * wcPwd;
     xmlSecKeyDataPtr x509Data = NULL;
-    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
     DWORD dwData, dwDataLen;
     BOOL bres;
 
-    xmlSecAssert2(bdata != NULL, NULL);
+    xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
     xmlSecAssert2(pwd != NULL, NULL);
 
     memset(&pfx, 0, sizeof(pfx));
-    pfx.pbData = (BYTE *)bdata;
+    pfx.pbData = (BYTE *)data;
     pfx.cbData = dataSize;
 
     if(FALSE == PFXIsPFXBlob(&pfx)) {
@@ -614,8 +635,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
         DWORD dwDataLen = sizeof(DWORD);
 
 	if((TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
-	    data = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-	    if(data == NULL) {
+	    keyData = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+	    if(keyData == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
 			    "xmlSecMSCryptoCertAdopt",
@@ -696,7 +717,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
 	}
     }
 
-    if (data == NULL) {
+    if (keyData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecMSCryptoAppPkcs12Load",
@@ -715,7 +736,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
 	goto done;
     }    
     
-    ret = xmlSecKeySetValue(key, data);
+    ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -727,7 +748,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
 	key = NULL;
 	goto done;
     }
-    data = NULL;
+    keyData = NULL;
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
@@ -753,8 +774,8 @@ done:
     if(x509Data != NULL) {
 	xmlSecKeyDataDestroy(x509Data);
     }
-    if(data != NULL) {
-        xmlSecKeyDataDestroy(data);
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
     }
     
     return(key); 
@@ -823,8 +844,22 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     return(ret);                         
 }
 
+/**
+ * xmlSecMSCryptoAppKeysMngrCertLoadMemory:
+ * @mngr: 		the keys manager.
+ * @data: 		the binary certificate.
+ * @dataSize:           size of binary certificate (data)
+ * @format:		the certificate file format.
+ * @type: 		the flag that indicates is the certificate in @filename
+ *    			trusted or not.
+ *
+ * Reads cert from @data and adds to the list of trusted or known
+ * untrusted certs in @store.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
-xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* bdata,
+xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
                                         xmlSecSize dataSize, xmlSecKeyDataFormat format, 
                                         xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecKeyDataStorePtr x509Store;
@@ -832,7 +867,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
-    xmlSecAssert2(bdata != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
@@ -850,7 +885,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
 	case xmlSecKeyDataFormatDer:
 	case xmlSecKeyDataFormatCertDer:
 	    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-						 bdata, dataSize);
+						 data, dataSize);
 	    if (NULL == pCert) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
@@ -886,7 +921,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecMSCryptoAppSimpleKeysMngrInit:
+ * xmlSecMSCryptoAppDefaultKeysMngrInit:
  * @mngr: 		the pointer to keys manager.
  *
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
@@ -941,11 +976,11 @@ xmlSecMSCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecMSCryptoAppSimpleKeysMngrAdoptKey:
+ * xmlSecMSCryptoAppDefaultKeysMngrAdoptKey:
  * @mngr: 		the pointer to keys manager.
  * @key:		the pointer to key.
  *
- * Adds @key to the keys manager @mngr created with #xmlSecMSCryptoAppSimpleKeysMngrInit
+ * Adds @key to the keys manager @mngr created with #xmlSecMSCryptoAppDefaultKeysMngrInit
  * function.
  *  
  * Returns 0 on success or a negative value otherwise.
@@ -982,12 +1017,12 @@ xmlSecMSCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
 }
 
 /**
- * xmlSecMSCryptoAppSimpleKeysMngrLoad:
+ * xmlSecMSCryptoAppDefaultKeysMngrLoad:
  * @mngr: 		the pointer to keys manager.
  * @uri:		the uri.
  *
  * Loads XML keys file from @uri to the keys manager @mngr created 
- * with #xmlSecMSCryptoAppSimpleKeysMngrInit function.
+ * with #xmlSecMSCryptoAppDefaultKeysMngrInit function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
@@ -1023,7 +1058,7 @@ xmlSecMSCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecMSCryptoAppSimpleKeysMngrSave:
+ * xmlSecMSCryptoAppDefaultKeysMngrSave:
  * @mngr: 		the pointer to keys manager.
  * @filename:		the destination filename.
  * @type:		the type of keys to save (public/private/symmetric).

@@ -684,7 +684,7 @@ if required) to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Retrieval
 <varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
 <listitem><simpara> 	the transform id.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-dsig:Transforms">&lt;dsig:dsig:Transforms/&gt;</ulink> node or
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transforms">&lt;dsig:Transforms/&gt;</ulink> node or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

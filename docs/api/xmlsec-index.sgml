@@ -930,6 +930,11 @@
 <listitem><para><link linkend="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplX509DataAddCertificate">xmlSecTmplX509DataAddCertificate</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplX509DataAddCRL">xmlSecTmplX509DataAddCRL</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplX509DataAddIssuerSerial">xmlSecTmplX509DataAddIssuerSerial</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplX509DataAddSKI">xmlSecTmplX509DataAddSKI</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplX509DataAddSubjectName">xmlSecTmplX509DataAddSubjectName</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformAes128CbcGetKlass">xmlSecTransformAes128CbcGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformAes192CbcGetKlass">xmlSecTransformAes192CbcGetKlass</link></para></listitem>

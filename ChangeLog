@@ -1,5 +1,9 @@
 2005-02-22  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* docs/*: updated docs
+
+2005-02-22  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* docs/index.html docs/news.html include/xmlsec/templates.h
 	src/templates.c: added functions to create <X509Data/> node 
 	children in the signature template

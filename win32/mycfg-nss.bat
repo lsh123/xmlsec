@@ -17,8 +17,7 @@ REM SET XMLSEC_INCLUDE=%ICONV%\include;%LIBXML2%\include;%LIBXSLT%\include;%OPEN
 REM SET XMLSEC_LIB=%ICONV%\lib;%LIBXML2%\lib;%LIBXSLT%\lib;%OPENSSL%\lib
 
 SET XMLSEC_PREFIX=d:\sdk
-SET MOZILLA_INCLUDES=%XMLSEC_PREFIX%\include\mozilla;%XMLSEC_PREFIX%\include\mozilla\nspr;%XMLSEC_PREFIX%\include\mozilla\public;%XMLSEC_PREFIX%\include\mozilla\public\nss
-SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include;%MOZILLA_INCLUDES%
+SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include;%XMLSEC_PREFIX%\include\mozilla
 SET XMLSEC_LIB=%XMLSEC_PREFIX%\lib
 SET XMLSEC_OPTIONS=static=no debug=yes xslt=yes crypto=nss
 

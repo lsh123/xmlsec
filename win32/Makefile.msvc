@@ -233,8 +233,8 @@ XMLSEC_CRYPTO_INTDIR   = $(XMLSEC_NSS_INTDIR)
 XMLSEC_CRYPTO_INTDIR_A = $(XMLSEC_NSS_INTDIR_A)
 XMLSEC_CRYPTO_SRCDIR   = $(XMLSEC_SRCDIR)\nss
 XMLSEC_CRYPTO_CFLAGS   = /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_CRYPTO=\"nss\""
-XMLSEC_CRYPTO_SOLIBS   = nss3.lib nspr4.lib plds4.lib plc4.lib	
-XMLSEC_CRYPTO_ALIBS    = nss3.lib nspr4.lib plds4.lib plc4.lib
+XMLSEC_CRYPTO_SOLIBS   = smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib	
+XMLSEC_CRYPTO_ALIBS    = smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib
 !endif
 
 # Names of various input and output components.

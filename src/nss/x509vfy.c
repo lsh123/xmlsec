@@ -381,7 +381,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
 	}
 
 	nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
-				      CERT_NameTemplate);
+				      SEC_ASN1_GET(CERT_NameTemplate));
 	if (nameitem == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -430,7 +430,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
 	}
 
 	nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
-				      CERT_NameTemplate);
+				      SEC_ASN1_GET(CERT_NameTemplate));
 	if (nameitem == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,

@@ -205,6 +205,7 @@ static const char helpX509[] =
     "  --pwd <password>      the password to use for reading keys and certs\n"
     "  --verification-time <time> the local time in \"YYYY-MM-DD HH:MM:SS\"\n"
     "                       format used certificates verification\n"
+    "  --depth <number>      maximum chain depth\n"
 #else /* XMLSEC_NO_X509 */
     "x509 certificates support was disabled during compilation\n"
 #endif /* XMLSEC_NO_X509 */        
@@ -328,7 +329,8 @@ int main(int argc, char **argv) {
     int pos;
     int ret;
     int templateRequired = 0;
-        
+    int depth = 0;
+            
     /**
      * Read the command
      */
@@ -558,6 +560,11 @@ int main(int argc, char **argv) {
     		ret = 0;
 	    } else {
     		ret = -1;
+	    }
+    	} else if((strncmp(argv[pos], "--depth", 7) == 0) && (pos + 1 < argc)) {
+	    depth = atoi(argv[++pos]);
+            if(keyMgr != NULL) {
+               xmlSecSimpleKeysMngrSetVerifyDepth(keyMgr, depth);
 	    }
 	} else 
 

@@ -1,3 +1,10 @@
+Wed Feb  5 09:49:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c include/xmlsec/keysmngr.h
+	src/keysmngr.c src/x509.c: provide an ability
+	to specify max cert verification depth
+	(based on patch from Jean-Etienne SCHWARTZ)
+
 Sun Jan 26 22:04:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* config.h.in configure.in include/xmlsec/version.h

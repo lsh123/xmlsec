@@ -885,7 +885,8 @@ xmlSecX509StoreCreate(void) {
 	xmlSecX509StoreDestroy(store);
 	return(NULL);
     }
-	
+    store->xst->depth = 9; /* the default cert verification path in openssl */	
+    
     store->untrusted = sk_X509_new_null();
     if(store->untrusted == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -977,7 +978,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 	int i;
 	STACK_OF(X509)* certs;
 	X509 *err_cert = NULL;
-        int err = 0, depth;
+        int err = 0, depth = 0;
 
 	/** 
          * dup certs and add untrusted certs to the stack
@@ -1041,6 +1042,9 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		    X509_STORE_CTX_set_flags(&xsc, 
 			store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME));
 		}
+                if (store->xst->depth >= 0) {
+		    X509_STORE_CTX_set_depth (&xsc, store->xst->depth);
+		}
 		ret = X509_verify_cert(&xsc); 
 		err_cert = X509_STORE_CTX_get_current_cert(&xsc);
 		err	 = X509_STORE_CTX_get_error(&xsc);
@@ -1064,33 +1068,33 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 
 	if((err != 0) && (err_cert != NULL)) {
 	    char buf[256];
+	    X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
 	    switch (err) {
 	    case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
-		X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-		        "error=%d (%s); issuer=\"%s\"", err,
-		        X509_verify_cert_error_string(err), buf);
+            		"error=%d (%s); depth=%d, issuer=\"%s\"", err,
+			X509_verify_cert_error_string(err), depth, buf);
 		break;
 	    case X509_V_ERR_CERT_NOT_YET_VALID:
 	    case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
+            		"error=%d (%s); depth=%d, issuer=\"%s\"", err,
+			X509_verify_cert_error_string(err), depth, buf);
 		break;
 	    case X509_V_ERR_CERT_HAS_EXPIRED:
 	    case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
+            		"error=%d (%s); depth=%d, issuer=\"%s\"", err,
+			X509_verify_cert_error_string(err), depth, buf);
 		break;
 	    default:			
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
+            		"error=%d (%s); depth=%d, issuer=\"%s\"", err,
+			X509_verify_cert_error_string(err), depth, buf);
 	    }		    
 	}
 	sk_X509_free(certs);

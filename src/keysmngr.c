@@ -718,4 +718,15 @@ xmlSecSimpleKeysMngrSetCertsFlags(xmlSecKeysMngrPtr mngr, unsigned long flags) {
 }
 
 
+void
+xmlSecSimpleKeysMngrSetVerifyDepth(xmlSecKeysMngrPtr mngr, int depth) {
+    xmlSecAssert(mngr != NULL);
+    xmlSecAssert(mngr->x509Data != NULL);
+    xmlSecAssert(((xmlSecX509StorePtr)mngr->x509Data)->xst != NULL);
+    
+    if (depth > 0) {
+       ((xmlSecX509StorePtr)mngr->x509Data)->xst->depth = depth ;
+    }
+}
 #endif /* XMLSEC_NO_X509 */
+

@@ -1061,3 +1061,15 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
     return(0);
 }
 
+/**
+ * xmlSecNssAppGetDefaultPwdCallback:
+ *
+ * Gets default password callback.
+ *
+ * Returns default password callback.
+ */
+void*
+xmlSecNssAppGetDefaultPwdCallback(void) {
+    return(NULL);
+}
+

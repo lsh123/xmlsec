@@ -9,6 +9,10 @@
 #ifndef __XMLSEC_GNUTLS_SYMBOLS_H__
 #define __XMLSEC_GNUTLS_SYMBOLS_H__    
 
+#if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+#error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING
+#endif /* !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
@@ -73,10 +77,10 @@ extern "C" {
 #define xmlSecCryptoAppDefaultKeysMngrLoad	xmlSecGnuTLSAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave	xmlSecGnuTLSAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad		xmlSecGnuTLSAppKeysMngrCertLoad
-#define xmlSecCryptoAppKeysMngrAddCertsPath	xmlSecGnuTLSAppKeysMngrAddCertsPath
 #define xmlSecCryptoAppKeyLoad			xmlSecGnuTLSAppKeyLoad
 #define xmlSecCryptoAppPkcs12Load		xmlSecGnuTLSAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad		xmlSecGnuTLSAppKeyCertLoad
+#define xmlSecCryptoAppGetDefaultPwdCallback	xmlSecGnuTLSAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_GNUTLS */
 

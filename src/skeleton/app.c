@@ -175,30 +175,6 @@ xmlSecSkeletonAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     return(-1);
 }
 
-/**
- * xmlSecSkeletonAppKeysMngrAddCertsPath:
- * @mngr: 		the keys manager.
- * @path:		the path to trusted certificates.
- * 
- * Reads cert from @path and adds to the list of trusted certificates
- * (not implemented yet).
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecSkeletonAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
-    xmlSecAssert2(mngr != NULL, -1);
-    xmlSecAssert2(path != NULL, -1);
-
-    /* TODO: load trusted cert from path */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		"xmlSecSkeletonAppKeysMngrAddCertsPath",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
-}
-
 #endif /* XMLSEC_NO_X509 */
 
 /**
@@ -394,5 +370,18 @@ xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
     }
     
     return(0);
+}
+
+/**
+ * xmlSecSkeletonAppGetDefaultPwdCallback:
+ *
+ * Gets default password callback.
+ *
+ * Returns default password callback.
+ */
+void*
+xmlSecSkeletonAppGetDefaultPwdCallback(void) {
+    /* TODO */
+    return(NULL);
 }
 

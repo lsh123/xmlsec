@@ -1,8 +1,9 @@
 #!/bin/sh 
 
-topfolder=$1
-xmlsec_app=$2
-file_format=$3
+crypto=$1
+topfolder=$2
+xmlsec_app=$3
+file_format=$4
 
 pub_key_format=$file_format
 cert_format=$file_format
@@ -18,18 +19,24 @@ keysfile=$topfolder/keys.xml
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
 
+
+if [ "z$crypto" != "z" -a "z$crypto" != "zdefault" ] ; then
+    xmlsec_params="$xmlsec_params --crypto $crypto"
+fi
+xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
+
 if [ -n "$DEBUG_MEMORY" ] ; then 
     export VALGRIND="valgrind $valgrind_options"
     export REPEAT=3
-    export EXTRA_PARAMS="--repeat $REPEAT"
+    xmlsec_params="$xmlsec_params --repeat $REPEAT"
 fi
 
 if [ -n "$PERF_TEST" ] ; then 
-    export EXTRA_PARAMS="--repeat $PERF_TEST"
+    export xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
 fi
 
 printRes() {
-    if [ $? = 0 ]; then
+    if [ $1 = 0 ]; then
 	echo "   OK"
     else 
         echo " Fail"
@@ -47,11 +54,11 @@ execEncTest() {
     printf "    Decrypt existing document                            "
     rm -f $tmpfile
 
-    echo "$xmlsec_app decrypt --crypto-config $crypto_config $2 $file.xml" >>  $logfile 
-    $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config $EXTRA_PARAMS $2 $file.xml > $tmpfile 2>> $logfile
+    echo "$xmlsec_app decrypt $xmlsec_params $2 $file.xml" >>  $logfile 
+    $VALGRIND $xmlsec_app decrypt xmlsec_params $2 $file.xml > $tmpfile 2>> $logfile
     if [ $? = 0 ]; then
 	diff $file.data $tmpfile >> $logfile 2>> $logfile
-	printRes 
+	printRes $?
     else 
 	echo " Error"
     fi
@@ -59,18 +66,18 @@ execEncTest() {
     if [ -n "$3"  -a -z "$PERF_TEST" ] ; then
 	printf "    Encrypt document                                     "
 	rm -f $tmpfile
-	echo "$xmlsec_app encrypt --crypto-config $crypto_config $3 $file.tmpl" >>  $logfile 
-	$VALGRIND $xmlsec_app encrypt --crypto-config $crypto_config --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
-	printRes
+	echo "$xmlsec_app encrypt $xmlsec_params $3 --output $tmpfile $file.tmpl" >>  $logfile 
+	$VALGRIND $xmlsec_app encrypt $xmlsec_params $3 --output $tmpfile $file.tmpl >> $logfile 2>> $logfile
+	printRes $?
 	
 	if [ -n "$4" ] ; then 
 	    if [ -z "$VALGRIND" ] ; then
 	        printf "    Decrypt new document                                 "
-		echo "$xmlsec_app decrypt --crypto-config $crypto_config $4 $tmpfile" >>  $logfile 
-	        $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config --output $tmpfile.2 $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
+		echo "$xmlsec_app decrypt $xmlsec_params $4 --output $tmpfile.2 $tmpfile" >>  $logfile 
+	        $VALGRIND $xmlsec_app decrypt $xmlsec_params $4 --output $tmpfile.2 $tmpfile >> $logfile 2>> $logfile
 		if [ $? = 0 ]; then
 		    diff $file.data $tmpfile.2 >> $logfile 2>> $logfile
-		    printRes
+		    printRes $?
     		else 
 		    echo " Error"
 		fi
@@ -296,13 +303,14 @@ execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
 # test dynamic encryption
 echo "Dynamic encryption template"
 printf "    Encrypt template                                     "
-echo "$xmlsec_app encrypt-tmpl --crypto-config $crypto_config --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app encrypt-tmpl --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
-printRes
+echo "$xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+printRes $?
 printf "    Decrypt document                                     "
-echo "$xmlsec_app decrypt --crypto-config $crypto_config --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
-printRes
+echo "$xmlsec_app decrypt $xmlsec_params $topfolder/keys.xml $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app decrypt $xmlsec_params --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
+printRes $?
+
 
 
 echo "--------- Negative Testing: Following tests MUST FAIL ----------"

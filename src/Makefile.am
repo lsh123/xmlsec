@@ -3,6 +3,7 @@ NULL =
 SUBDIRS = $(XMLSEC_CRYPTO_LIST)
 
 INCLUDES = \
+	-DPACKAGE=\"@PACKAGE@\" \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
@@ -12,6 +13,8 @@ INCLUDES = \
 
 EXTRA_DIST = \
 	globals.h \
+	ltdl.h ltdl.c \
+	xmlsec-ltdl.h xmlsec-ltdl.c.patch \
 	skeleton \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
@@ -20,10 +23,13 @@ lib_LTLIBRARIES = \
 	libxmlsec1.la \
 	$(NULL)
 
-libxmlsec1_la_SOURCES =\
+libxmlsec1_la_SOURCES = \
+	$(LTDL_SOURCE_FILES) \
+	app.c \
 	base64.c \
 	buffer.c \
 	c14n.c \
+	dl.c \
 	enveloped.c \
 	errors.c \
 	io.c \
@@ -56,4 +62,28 @@ libxmlsec1_la_LIBADD = \
 libxmlsec1_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	$(NULL)
+
+if XMLSEC_APPS_NO_CRYPTO_DYNAMIC_LOADING
+LTDL_SOURCE_FILES = \
+	$(NULL)
+else 
+LTDL_SOURCE_FILES = \
+	xmlsec-ltdl.c \
+	$(NULL)
+
+LTDL_PARSE = \
+	sed s/ltdl.h/xmlsec-ltdl.h/g | \
+	sed s/lt_/xmlsec_lt_/g | \
+	sed s/ltdl_/xmlsec_ltdl_/g \
+	$(NULL)	
+
+xmlsec-ltdl.c: xmlsec-ltdl.c.patch xmlsec-ltdl.h ltdl.c 
+	@(cat ltdl.c | $(LTDL_PARSE) > xmlsec-ltdl.c && patch -p0 < xmlsec-ltdl.c.patch)
+
+xmlsec-ltdl.h: ltdl.h
+	@(cat ltdl.h | $(LTDL_PARSE) > xmlsec-ltdl.h)
+
+endif
+
+
 

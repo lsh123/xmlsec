@@ -17,11 +17,94 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/dl.h>
+#include <xmlsec/private.h>
 
+#include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
 
-static int		xmlSecGnuTLSKeysInit			(void);
-static int		xmlSecGnuTLSTransformsInit		(void);
+static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
+
+xmlSecCryptoDLFunctionsPtr
+xmlSecCryptoGetFunctions_gnutls(void) {
+    static xmlSecCryptoDLFunctions functions;
+    
+    if(gXmlSecGnuTLSFunctions != NULL) {
+	return(gXmlSecGnuTLSFunctions);
+    }
+
+    memset(&functions, 0, sizeof(functions));
+    gXmlSecGnuTLSFunctions = &functions;
+
+    /**  
+     * Crypto Init/shutdown
+     */
+    gXmlSecGnuTLSFunctions->cryptoInit 			= xmlSecGnuTLSInit;
+    gXmlSecGnuTLSFunctions->cryptoShutdown 		= xmlSecGnuTLSShutdown;
+    gXmlSecGnuTLSFunctions->cryptoKeysMngrInit 		= xmlSecGnuTLSKeysMngrInit;
+
+    /**
+     * Key data ids
+     */
+#ifndef XMLSEC_NO_AES    
+    gXmlSecGnuTLSFunctions->keyDataAesGetKlass		= xmlSecGnuTLSKeyDataAesGetKlass;
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES    
+    gXmlSecGnuTLSFunctions->keyDataDesGetKlass 		= xmlSecGnuTLSKeyDataDesGetKlass;
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_HMAC  
+    gXmlSecGnuTLSFunctions->keyDataHmacGetKlass 	= xmlSecGnuTLSKeyDataHmacGetKlass;
+#endif /* XMLSEC_NO_HMAC */    
+
+    /**
+     * Key data store ids
+     */
+
+    /**
+     * Crypto transforms ids
+     */
+#ifndef XMLSEC_NO_AES    
+    gXmlSecGnuTLSFunctions->transformAes128CbcGetKlass 		= xmlSecGnuTLSTransformAes128CbcGetKlass;
+    gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass 		= xmlSecGnuTLSTransformAes192CbcGetKlass;
+    gXmlSecGnuTLSFunctions->transformAes256CbcGetKlass 		= xmlSecGnuTLSTransformAes256CbcGetKlass;
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES    
+    gXmlSecGnuTLSFunctions->transformDes3CbcGetKlass 		= xmlSecGnuTLSTransformDes3CbcGetKlass;
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_HMAC
+    gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass 		= xmlSecGnuTLSTransformHmacSha1GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass 	= xmlSecGnuTLSTransformHmacRipemd160GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass 		= xmlSecGnuTLSTransformHmacMd5GetKlass;
+#endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_SHA1    
+    gXmlSecGnuTLSFunctions->transformSha1GetKlass 		= xmlSecGnuTLSTransformSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+    /**
+     * High level routines form xmlsec command line utility
+     */ 
+    gXmlSecGnuTLSFunctions->cryptoAppInit 			= xmlSecGnuTLSAppInit;
+    gXmlSecGnuTLSFunctions->cryptoAppShutdown 			= xmlSecGnuTLSAppShutdown;
+    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrInit 	= xmlSecGnuTLSAppDefaultKeysMngrInit;
+    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrAdoptKey 	= xmlSecGnuTLSAppDefaultKeysMngrAdoptKey;
+    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrLoad 	= xmlSecGnuTLSAppDefaultKeysMngrLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrSave 	= xmlSecGnuTLSAppDefaultKeysMngrSave;
+#ifndef XMLSEC_NO_X509
+    gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoad 		= xmlSecGnuTLSAppKeysMngrCertLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load  		= xmlSecGnuTLSAppPkcs12Load; 
+    gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad 		= xmlSecGnuTLSAppKeyCertLoad;
+#endif /* XMLSEC_NO_X509 */
+    gXmlSecGnuTLSFunctions->cryptoAppKeyLoad 			= xmlSecGnuTLSAppKeyLoad; 
+    gXmlSecGnuTLSFunctions->cryptoAppDefaultPwdCallback		= (void*)xmlSecGnuTLSAppGetDefaultPwdCallback;
+
+    return(gXmlSecGnuTLSFunctions);
+}
+
 
 /**
  * xmlSecGnuTLSInit:
@@ -32,18 +115,10 @@ static int		xmlSecGnuTLSTransformsInit		(void);
  */
 int 
 xmlSecGnuTLSInit (void)  {
-    if(xmlSecGnuTLSKeysInit() < 0) {
+    if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_gnutls()) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecGnuTLSKeysInit",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecGnuTLSTransformsInit() < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecGnuTLSTransformsInit",
+		    "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -110,126 +185,3 @@ xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     gcry_randomize(xmlSecBufferGetData(buffer), size, GCRY_STRONG_RANDOM);
     return(0);
 }
-
-
-static int		
-xmlSecGnuTLSKeysInit(void) {
-
-#ifndef XMLSEC_NO_AES    
-    if(xmlSecKeyDataIdsRegister(xmlSecGnuTLSKeyDataAesId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecGnuTLSKeyDataAesId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_AES */
-
-#ifndef XMLSEC_NO_DES    
-    if(xmlSecKeyDataIdsRegister(xmlSecGnuTLSKeyDataDesId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecGnuTLSKeyDataDesId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_DES */
-
-#ifndef XMLSEC_NO_HMAC  
-    if(xmlSecKeyDataIdsRegister(xmlSecGnuTLSKeyDataHmacId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecGnuTLSKeyDataHmacId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_HMAC */    
-
-    return(0);
-}
-
-static int 
-xmlSecGnuTLSTransformsInit(void) {
-
-#ifndef XMLSEC_NO_HMAC
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformHmacSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformHmacSha1Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformHmacRipemd160Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformHmacRipemd160Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformHmacMd5Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformHmacMd5Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_HMAC */
-
-#ifndef XMLSEC_NO_SHA1    
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformSha1Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_DES    
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformDes3CbcId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformDes3CbcId)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_DES */
-
-#ifndef XMLSEC_NO_AES    
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformAes128CbcId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformAes128CbcId)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformAes192CbcId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformAes192CbcId)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecTransformIdsRegister(xmlSecGnuTLSTransformAes256CbcId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecGnuTLSTransformAes256CbcId)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_AES */
-
-    return(0);
-}
-

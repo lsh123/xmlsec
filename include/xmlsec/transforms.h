@@ -847,7 +847,7 @@ XMLSEC_EXPORT void		xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list,
  *
  * The "unknown" transform id (NULL).
  */
-#define xmlSecTransformIdUnknown			NULL
+#define xmlSecTransformIdUnknown			((xmlSecTransformId)NULL)
 
 /**
  * xmlSecTransformBase64Id:

@@ -21,6 +21,13 @@ extern "C" {
 #ifndef IN_XMLSEC
 #ifndef IN_XMLSEC_CRYPTO
 
+#if defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+#error Dynamic loading for xmlsec-crypto libraries is disabled during library compilation
+#endif /* defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+
+#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
+#include <xmlsec/app.h>
+#else /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 #ifdef XMLSEC_CRYPTO_OPENSSL
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
@@ -41,6 +48,7 @@ extern "C" {
 #endif /* XMLSEC_CRYPTO_GNUTLS */
 #endif /* XMLSEC_CRYPTO_NSS */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
+#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
 #endif /* IN_XMLSEC_CRYPTO */
 #endif /* IN_XMLSEC */

@@ -156,16 +156,31 @@ static xmlSecAppCmdLineParam helpParam = {
     NULL
 };    
 
+#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+static xmlSecAppCmdLineParam cryptoParam = { 
+    xmlSecAppCmdLineTopicGeneral,
+    "--crypto",
+    NULL,
+    "--crypto <name>"
+    "\n\tthe name of the crypto engine to use (if not specified, the default"
+    "\n\tcrypto engine is used)",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};    
+#endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+
 static xmlSecAppCmdLineParam cryptoConfigParam = { 
     xmlSecAppCmdLineTopicGeneral,
     "--crypto-config",
     NULL,
-    "--crypto-config"
+    "--crypto-config <path>"
     "\n\tpath to crypto engine configuration",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };    
+
 
 static xmlSecAppCmdLineParam repeatParam = { 
     xmlSecAppCmdLineTopicGeneral,
@@ -195,7 +210,7 @@ static xmlSecAppCmdLineParam printCryptoErrorMsgsParam = {
     "--print-crypto-error-msgs",
     NULL,
     "--print-crypto-error-msgs"
-    "\n\tprint openssl errors stack at the end",
+    "\n\tprint errors stack at the end",
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -740,6 +755,9 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #endif /* XMLSEC_NO_X509 */    
     
     /* General configuration params */
+#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+    &cryptoParam,
+#endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
     &cryptoConfigParam,
     &repeatParam,
     &disableErrorMsgsParam,
@@ -832,6 +850,8 @@ xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
 clock_t total_time = 0;
+const char* xmlsec_crypto = XMLSEC_CRYPTO;
+const char* tmp = NULL;
 
 int main(int argc, const char **argv) {
     xmlSecAppCmdLineParamTopic cmdLineTopics;
@@ -856,7 +876,7 @@ int main(int argc, const char **argv) {
 	xmlSecAppPrintHelp(subCommand, cmdLineTopics);
 	goto success;
     } else if(command == xmlSecAppCommandVersion) {
-	fprintf(stdout, "%s %s (%s)\n", XMLSEC_PACKAGE, XMLSEC_VERSION, XMLSEC_CRYPTO);
+	fprintf(stdout, "%s %s (%s)\n", XMLSEC_PACKAGE, XMLSEC_VERSION, xmlsec_crypto);
 	goto success;
     }
     
@@ -894,6 +914,13 @@ int main(int argc, const char **argv) {
     }
     
     /* now init the xmlsec and all other libs */
+#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+    tmp = xmlSecAppCmdLineParamGetString(&cryptoParam);
+    if((tmp != NULL) && (strcmp(tmp, "default") != 0)) {
+	xmlsec_crypto = tmp;
+    }
+#endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+    
     if(xmlSecAppInit() < 0) {
 	fprintf(stderr, "Error: initialization failed\n");
 	xmlSecAppPrintUsage();
@@ -2189,6 +2216,13 @@ xmlSecAppInit(void) {
 	fprintf(stderr, "Error: xmlsec intialization failed.\n");
 	return(-1);
     }
+
+#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST xmlsec_crypto) < 0) {
+	fprintf(stderr, "Error: unable to load xmlsec-%s library. Check shared libraries path or use \"--crypto\" option to specify different crypto engine.\n", xmlsec_crypto);
+	return(-1);	
+    }
+#endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 
     /* Init Crypto */
     if(xmlSecAppCryptoInit(xmlSecAppCmdLineParamGetString(&cryptoConfigParam)) < 0) {

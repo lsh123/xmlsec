@@ -357,7 +357,7 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
  *
  * The "unknown" id.
  */
-#define xmlSecKeyDataIdUnknown 			NULL
+#define xmlSecKeyDataIdUnknown 			((xmlSecKeyDataId)NULL)
 
 /** 
  * xmlSecKeyDataInitMethod:

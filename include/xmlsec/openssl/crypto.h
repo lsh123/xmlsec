@@ -16,9 +16,12 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/dl.h>
 
 #include <openssl/err.h>
 
+
+XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr	xmlSecCryptoGetFunctions_openssl(void);
 
 /**
  * Init shutdown

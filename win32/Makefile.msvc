@@ -32,6 +32,11 @@ AUTOCONF = .\configure.txt
 #WITH_XMLSEC_DEBUG = 1
 #DEBUG = 0
 #WITH_CRYPTO=openssl
+#WITH_CRYPTO=openssl
+#WITH_DEFAULT_CRYPTO=openssl
+#WITH_OPENSSL=1
+#WITH_OPENSSL_096=0
+#WITH_NSS=0
 #WITH_LIBXSLT=1
 #STATIC = 0
 #PREFIX = . # set this to the right value.
@@ -71,6 +76,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\base64.obj\
 	$(XMLSEC_INTDIR)\buffer.obj \
 	$(XMLSEC_INTDIR)\c14n.obj \
+	$(XMLSEC_INTDIR)\dl.obj \
 	$(XMLSEC_INTDIR)\enveloped.obj \
 	$(XMLSEC_INTDIR)\errors.obj \
 	$(XMLSEC_INTDIR)\io.obj \
@@ -99,6 +105,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\base64.obj\
 	$(XMLSEC_INTDIR_A)\buffer.obj \
 	$(XMLSEC_INTDIR_A)\c14n.obj \
+	$(XMLSEC_INTDIR_A)\dl.obj \
 	$(XMLSEC_INTDIR_A)\enveloped.obj \
 	$(XMLSEC_INTDIR_A)\errors.obj \
 	$(XMLSEC_INTDIR_A)\io.obj \
@@ -197,60 +204,79 @@ XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\kw_aes.obj\
 	$(XMLSEC_NSS_INTDIR_A)\strings.obj
 
+# source folders
+XMLSEC_OPENSSL_SRCDIR   = $(XMLSEC_SRCDIR)\openssl
+XMLSEC_NSS_SRCDIR   	= $(XMLSEC_SRCDIR)\nss
+
+# compilation cflags
+!if "$(WITH_OPENSSL_096)" == "1"
+XMLSEC_OPENSSL_CFLAGS   = /D "XMLSEC_OPENSSL_096"  /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_CRYPTO=\"openssl\""
+!else
+XMLSEC_OPENSSL_CFLAGS   = /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_CRYPTO=\"openssl\""
+!endif
+XMLSEC_NSS_CFLAGS   	= /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_CRYPTO=\"nss\""
+
+# libs
+XMLSEC_OPENSSL_SOLIBS   = libeay32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib
+XMLSEC_OPENSSL_ALIBS    = libeay32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib
+XMLSEC_NSS_SOLIBS   	= smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib kernel32.lib user32.lib gdi32.lib
+XMLSEC_NSS_ALIBS    	= smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib kernel32.lib user32.lib gdi32.lib
+
+# Names of various input and output components.
+XMLSEC_NAME 		= xmlsec
+XMLSEC_BASENAME 	= lib$(XMLSEC_NAME)
+XMLSEC_SO 		= $(XMLSEC_BASENAME).dll
+XMLSEC_IMP 		= $(XMLSEC_BASENAME).lib
+XMLSEC_A 		= $(XMLSEC_BASENAME)_a.lib
+
+XMLSEC_OPENSSL_NAME 	= $(XMLSEC_NAME)-openssl
+XMLSEC_OPENSSL_BASENAME = lib$(XMLSEC_OPENSSL_NAME)
+XMLSEC_OPENSSL_SO 	= $(XMLSEC_OPENSSL_BASENAME).dll
+XMLSEC_OPENSSL_IMP 	= $(XMLSEC_OPENSSL_BASENAME).lib
+XMLSEC_OPENSSL_A 	= $(XMLSEC_OPENSSL_BASENAME)_a.lib
+
+XMLSEC_NSS_NAME 	= $(XMLSEC_NAME)-nss
+XMLSEC_NSS_BASENAME 	= lib$(XMLSEC_NSS_NAME)
+XMLSEC_NSS_SO 		= $(XMLSEC_NSS_BASENAME).dll
+XMLSEC_NSS_IMP 		= $(XMLSEC_NSS_BASENAME).lib
+XMLSEC_NSS_A 		= $(XMLSEC_NSS_BASENAME)_a.lib
+
 # configurable options
 !if "$(WITH_LIBXSLT)" == "1"
 !else 
 CFLAGS = $(CFLAGS) /DXMLSEC_NO_XSLT=1
 !endif
 
-!if "$(WITH_CRYPTO)" == "openssl"
-XMLSEC_CRYPTO          = "openssl"
-XMLSEC_CRYPTO_OBJS     = $(XMLSEC_OPENSSL_OBJS)
-XMLSEC_CRYPTO_OBJS_A   = $(XMLSEC_OPENSSL_OBJS_A)
-XMLSEC_CRYPTO_INTDIR   = $(XMLSEC_OPENSSL_INTDIR)
-XMLSEC_CRYPTO_INTDIR_A = $(XMLSEC_OPENSSL_INTDIR_A)
-XMLSEC_CRYPTO_SRCDIR   = $(XMLSEC_SRCDIR)\openssl
-XMLSEC_CRYPTO_CFLAGS   = /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_CRYPTO=\"openssl\""
-XMLSEC_CRYPTO_SOLIBS   = libeay32.lib wsock32.lib user32.lib gdi32.lib
-XMLSEC_CRYPTO_ALIBS    = libeay32.lib wsock32.lib user32.lib gdi32.lib
+!if "$(WITH_DEFAULT_CRYPTO)" == "openssl" 
+XMLSEC_CRYPTO          	= "openssl"
+XMLSEC_CRYPTO_CFLAGS   	= $(XMLSEC_OPENSSL_CFLAGS)
+XMLSEC_CRYPTO_SOLIBS  	= $(XMLSEC_OPENSSL_SOLIBS)
+XMLSEC_CRYPTO_ALIBS    	= $(XMLSEC_OPENSSL_ALIBS)
+XMLSEC_CRYPTO_SO        = $(XMLSEC_OPENSSL_SO)
+XMLSEC_CRYPTO_IMP	= $(XMLSEC_OPENSSL_IMP)
+XMLSEC_CRYPTO_A		= $(XMLSEC_OPENSSL_A)
 !endif
 
-!if "$(WITH_CRYPTO)" == "openssl_096"
-XMLSEC_CRYPTO          = "openssl"
-XMLSEC_CRYPTO_OBJS     = $(XMLSEC_OPENSSL_OBJS)
-XMLSEC_CRYPTO_OBJS_A   = $(XMLSEC_OPENSSL_OBJS_A)
-XMLSEC_CRYPTO_INTDIR   = $(XMLSEC_OPENSSL_INTDIR)
-XMLSEC_CRYPTO_INTDIR_A = $(XMLSEC_OPENSSL_INTDIR_A)
-XMLSEC_CRYPTO_SRCDIR   = $(XMLSEC_SRCDIR)\openssl
-XMLSEC_CRYPTO_CFLAGS   = /D "XMLSEC_OPENSSL_096"  /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_CRYPTO=\"openssl\""
-XMLSEC_CRYPTO_SOLIBS   = libeay32.lib wsock32.lib user32.lib gdi32.lib
-XMLSEC_CRYPTO_ALIBS    = libeay32_a.lib wsock32.lib user32.lib gdi32.lib
+!if "$(WITH_DEFAULT_CRYPTO)" == "openssl_096"
+XMLSEC_CRYPTO          	= "openssl"
+XMLSEC_CRYPTO_CFLAGS   	= $(XMLSEC_OPENSSL_CFLAGS)
+XMLSEC_CRYPTO_SOLIBS  	= $(XMLSEC_OPENSSL_SOLIBS)
+XMLSEC_CRYPTO_ALIBS    	= $(XMLSEC_OPENSSL_ALIBS)
+XMLSEC_CRYPTO_SO        = $(XMLSEC_OPENSSL_SO)
+XMLSEC_CRYPTO_IMP	= $(XMLSEC_OPENSSL_IMP)
+XMLSEC_CRYPTO_A		= $(XMLSEC_OPENSSL_A)
 !endif
 
-!if "$(WITH_CRYPTO)" == "nss"
-XMLSEC_CRYPTO          = "nss"
-XMLSEC_CRYPTO_OBJS     = $(XMLSEC_NSS_OBJS)
-XMLSEC_CRYPTO_OBJS_A   = $(XMLSEC_NSS_OBJS_A)
-XMLSEC_CRYPTO_INTDIR   = $(XMLSEC_NSS_INTDIR)
-XMLSEC_CRYPTO_INTDIR_A = $(XMLSEC_NSS_INTDIR_A)
-XMLSEC_CRYPTO_SRCDIR   = $(XMLSEC_SRCDIR)\nss
-XMLSEC_CRYPTO_CFLAGS   = /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_CRYPTO=\"nss\""
-XMLSEC_CRYPTO_SOLIBS   = smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib	
-XMLSEC_CRYPTO_ALIBS    = smime3.lib ssl3.lib nss3.lib libnspr4_s.lib libplds4_s.lib libplc4_s.lib
+!if "$(WITH_DEFAULT_CRYPTO)" == "nss"
+XMLSEC_CRYPTO          	= "nss"
+XMLSEC_CRYPTO_CFLAGS   	= $(XMLSEC_NSS_CFLAGS)
+XMLSEC_CRYPTO_SOLIBS   	= $(XMLSEC_NSS_SOLIBS)
+XMLSEC_CRYPTO_ALIBS    	= $(XMLSEC_NSS_ALIBS)
+XMLSEC_CRYPTO_SO        = $(XMLSEC_NSS_SO)
+XMLSEC_CRYPTO_IMP	= $(XMLSEC_NSS_IMP)
+XMLSEC_CRYPTO_A		= $(XMLSEC_NSS_A)
 !endif
 
-# Names of various input and output components.
-XMLSEC_NAME = xmlsec
-XMLSEC_BASENAME = lib$(XMLSEC_NAME)
-XMLSEC_SO = $(XMLSEC_BASENAME).dll
-XMLSEC_IMP = $(XMLSEC_BASENAME).lib
-XMLSEC_A = $(XMLSEC_BASENAME)_a.lib
-
-XMLSEC_CRYPTO_NAME = xmlsec-$(XMLSEC_CRYPTO)
-XMLSEC_CRYPTO_BASENAME = lib$(XMLSEC_CRYPTO_NAME)
-XMLSEC_CRYPTO_SO = $(XMLSEC_CRYPTO_BASENAME).dll
-XMLSEC_CRYPTO_IMP = $(XMLSEC_CRYPTO_BASENAME).lib
-XMLSEC_CRYPTO_A = $(XMLSEC_CRYPTO_BASENAME)_a.lib
 
 # The preprocessor and its options.
 CPP = cl.exe /EP
@@ -258,9 +284,10 @@ CPPFLAGS = /nologo
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_REENTRANT" /W1 /MD $(XMLSEC_CRYPTO_CFLAGS)
-CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include /I$(XMLSEC_SRCDIR)
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_REENTRANT"  /W1 /MD 
+CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS = $(CFLAGS) /I$(INCPREFIX)
+CFLAGS = $(CFLAGS) /D PACKAGE="$(XMLSEC_NAME)" /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
 
 # The linker and its options.
 LD = link.exe
@@ -281,8 +308,6 @@ CFLAGS = $(CFLAGS) /D "NDEBUG" /O2
 LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 !endif
 
-
-
 SOLIBS = $(LIBS) libxml2.lib 
 ALIBS = $(LIBS) libxml2_a.lib 
 !if "$(WITH_ICONV)" == "1"
@@ -296,26 +321,45 @@ ALIBS = $(ALIBS) libxslt_a.lib
 
 # XmlSec and friends executables.
 !if "$(STATIC)" == "1"
-APPS = $(BINDIR)\xmlseca.exe
-APPLIBS = $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
+APP_NAME = xmlseca.exe
+APPLIBS  = $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
 !else
-APPS = $(BINDIR)\xmlsec.exe
-APPLIBS = $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
+APP_NAME = xmlsec.exe
+APPLIBS  = $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !endif
 
-all : xmlsec xmlseca apps
+all : xmlsec xmlseca $(WITH_CRYPTO) apps 
 
-xmlsec : $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(BINDIR)\$(XMLSEC_CRYPTO_SO) 
+xmlsec : $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(WITH_DEFAULT_CRYPTO)
 
-xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(BINDIR)\$(XMLSEC_CRYPTO_A)
+xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(WITH_DEFAULT_CRYPTO)
 
-apps : $(APPS)
+openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO) $(BINDIR)\$(XMLSEC_OPENSSL_A)
+
+openssl_096: $(BINDIR)\$(XMLSEC_OPENSSL_SO) $(BINDIR)\$(XMLSEC_OPENSSL_A)
+
+nss: $(BINDIR)\$(XMLSEC_NSS_SO) $(BINDIR)\$(XMLSEC_NSS_A)
+
+apps : $(BINDIR)\$(APP_NAME)
+
+check : check-keys check-dsig check-enc
+
+check-keys : $(BINDIR)\$(APP_NAME)
+	sh ../tests/testKeys.sh default ../tests $(BINDIR)/$(APP_NAME) der
+
+check-dsig : $(BINDIR)\$(APP_NAME)
+	sh ../tests/testDSig.sh default ../tests $(BINDIR)/$(APP_NAME) der
+
+check-enc : $(BINDIR)\$(APP_NAME)
+	sh ../tests/testEnc.sh default ../tests $(BINDIR)/$(APP_NAME) der
 
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)
 	if exist $(XMLSEC_INTDIR_A) rmdir /S /Q $(XMLSEC_INTDIR_A)
-	if exist $(XMLSEC_CRYPTO_INTDIR) rmdir /S /Q $(XMLSEC_CRYPTO_INTDIR)
-	if exist $(XMLSEC_CRYPTO_INTDIR_A) rmdir /S /Q $(XMLSEC_CRYPTO_INTDIR_A)
+	if exist $(XMLSEC_OPENSSL_INTDIR) rmdir /S /Q $(XMLSEC_OPENSSL_INTDIR)
+	if exist $(XMLSEC_OPENSSL_INTDIR_A) rmdir /S /Q $(XMLSEC_OPENSSL_INTDIR_A)
+	if exist $(XMLSEC_NSS_INTDIR) rmdir /S /Q $(XMLSEC_NSS_INTDIR)
+	if exist $(XMLSEC_NSS_INTDIR_A) rmdir /S /Q $(XMLSEC_NSS_INTDIR_A)
 	if exist $(XMLSEC_APPS_INTDIR) rmdir /S /Q $(XMLSEC_APPS_INTDIR)
 	if exist $(XMLSEC_APPS_INTDIR_A) rmdir /S /Q $(XMLSEC_APPS_INTDIR_A)
 	if exist $(BINDIR) rmdir /S /Q $(BINDIR)
@@ -324,18 +368,36 @@ rebuild : clean all
 
 install : all
 	if not exist $(INCPREFIX)\$(XMLSEC_NAME) mkdir $(INCPREFIX)\$(XMLSEC_NAME)
-	if not exist $(INCPREFIX)\$(XMLSEC_NAME)\$(XMLSEC_CRYPTO) mkdir $(INCPREFIX)\$(XMLSEC_NAME)\$(XMLSEC_CRYPTO)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+	if exist $(BINDIR)\$(XMLSEC_NSS_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
 	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
 	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
 	copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)
-	copy $(BASEDIR)\include\$(XMLSEC_NAME)\$(XMLSEC_CRYPTO)\*.h $(INCPREFIX)\$(XMLSEC_NAME)\$(XMLSEC_CRYPTO)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+	if exist $(BINDIR)\$(XMLSEC_NSS_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\nss\*.h $(INCPREFIX)\$(XMLSEC_NAME)\nss
 	copy $(BINDIR)\$(XMLSEC_SO) $(SOPREFIX)
 	copy $(BINDIR)\$(XMLSEC_A) $(LIBPREFIX)
 	copy $(BINDIR)\$(XMLSEC_IMP) $(LIBPREFIX)
-	copy $(BINDIR)\$(XMLSEC_CRYPTO_SO) $(SOPREFIX)
-	copy $(BINDIR)\$(XMLSEC_CRYPTO_A) $(LIBPREFIX)
-	copy $(BINDIR)\$(XMLSEC_CRYPTO_IMP) $(LIBPREFIX)
-	copy $(BINDIR)\*.exe $(BINPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BINDIR)\$(XMLSEC_OPENSSL_SO) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) copy $(BINDIR)\$(XMLSEC_OPENSSL_A) $(LIBPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_IMP) copy $(BINDIR)\$(XMLSEC_OPENSSL_IMP) $(LIBPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_NSS_SO) copy $(BINDIR)\$(XMLSEC_NSS_SO) $(SOPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_NSS_A) copy $(BINDIR)\$(XMLSEC_NSS_A) $(LIBPREFIX)
+	if exist $(BINDIR)\$(XMLSEC_NSS_IMP) copy $(BINDIR)\$(XMLSEC_NSS_IMP) $(LIBPREFIX)
+	copy $(BINDIR)\$(APP_NAME) $(BINPREFIX)
+
+uninstall :
+	if exist $(INCPREFIX)\$(XMLSEC_NAME) rmdir /S /Q $(INCPREFIX)\$(XMLSEC_NAME)
+	if exist $(SOPREFIX)\$(XMLSEC_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_SO)
+	if exist $(LIBPREFIX)\$(XMLSEC_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_A)
+	if exist $(LIBPREFIX)\$(XMLSEC_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_IMP)
+	if exist $(SOPREFIX)\$(XMLSEC_OPENSSL_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_OPENSSL_SO)
+	if exist $(LIBPREFIX)\$(XMLSEC_OPENSSL_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_OPENSSL_A)
+	if exist $(LIBPREFIX)\$(XMLSEC_OPENSSL_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_OPENSSL_IMP)
+	if exist $(SOPREFIX)\$(XMLSEC_NSS_SO) del /F /S /Q $(SOPREFIX)\$(XMLSEC_NSS_SO)
+	if exist $(LIBPREFIX)\$(XMLSEC_NSS_A) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_NSS_A)
+	if exist $(LIBPREFIX)\$(XMLSEC_NSS_IMP) del /F /S /Q $(LIBPREFIX)\$(XMLSEC_NSS_IMP)
+	if exist $(BINPREFIX)\$(APP_NAME) del /F /S /Q $(BINPREFIX)\$(APP_NAME)
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)
@@ -358,37 +420,48 @@ $(XMLSEC_INTDIR) :
 $(XMLSEC_INTDIR_A) :
 	if not exist $(XMLSEC_INTDIR_A) mkdir $(XMLSEC_INTDIR_A)
 
-# Makes the xmlsec-crypto intermediate directory.
-$(XMLSEC_CRYPTO_INTDIR) :
-	if not exist $(XMLSEC_CRYPTO_INTDIR) mkdir $(XMLSEC_CRYPTO_INTDIR)
-
-# Makes the static xmlsec-crypto intermediate directory.
-$(XMLSEC_CRYPTO_INTDIR_A) :
-	if not exist $(XMLSEC_CRYPTO_INTDIR_A) mkdir $(XMLSEC_CRYPTO_INTDIR_A)
+# Makes the xmlsec-crypto intermediate directories
+$(XMLSEC_OPENSSL_INTDIR) :
+	if not exist $(XMLSEC_OPENSSL_INTDIR) mkdir $(XMLSEC_OPENSSL_INTDIR)
+$(XMLSEC_OPENSSL_INTDIR_A) :
+	if not exist $(XMLSEC_OPENSSL_INTDIR_A) mkdir $(XMLSEC_OPENSSL_INTDIR_A)
+$(XMLSEC_NSS_INTDIR) :
+	if not exist $(XMLSEC_NSS_INTDIR) mkdir $(XMLSEC_NSS_INTDIR)
+$(XMLSEC_NSS_INTDIR_A) :
+	if not exist $(XMLSEC_NSS_INTDIR_A) mkdir $(XMLSEC_NSS_INTDIR_A)
 
 # An implicit rule for xmlsec compilation.
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR)}.obj::
-	$(CC) $(CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
+	$(CC) $(CFLAGS) $(XMLSEC_CRYPTO_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
 {$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR)}.obj::
 	$(CC) $(CFLAGS) /Fo$(XMLSEC_INTDIR)\ /c $<
-{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_CRYPTO_INTDIR)}.obj::
-	$(CC) $(CFLAGS) /Fo$(XMLSEC_CRYPTO_INTDIR)\ /c $<
-{$(XMLSEC_CRYPTO_SRCDIR)}.c{$(XMLSEC_CRYPTO_INTDIR)}.obj::
-	$(CC) $(CFLAGS) /Fo$(XMLSEC_CRYPTO_INTDIR)\ /c $<
-
+{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_OPENSSL_INTDIR)}.obj::
+	$(CC) $(CFLAGS) /Fo$(XMLSEC_OPENSSL_INTDIR)\ /c $<
+{$(XMLSEC_OPENSSL_SRCDIR)}.c{$(XMLSEC_OPENSSL_INTDIR)}.obj::
+	$(CC) $(CFLAGS) $(XMLSEC_OPENSSL_CFLAGS) /Fo$(XMLSEC_OPENSSL_INTDIR)\ /c $<
+{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_NSS_INTDIR)}.obj::
+	$(CC) $(CFLAGS) $(XMLSEC_NSS_CFLAGS) /Fo$(XMLSEC_NSS_INTDIR)\ /c $<
+{$(XMLSEC_NSS_SRCDIR)}.c{$(XMLSEC_NSS_INTDIR)}.obj::
+	$(CC) $(CFLAGS) $(XMLSEC_NSS_CFLAGS) /Fo$(XMLSEC_NSS_INTDIR)\ /c $<
 # An implicit rule for static xmlsec compilation.
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
-		$(CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\ /c $<
+		$(CFLAGS) $(XMLSEC_CRYPTO_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\ /c $<
 {$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
-		$(CFLAGS) /Fo$(XMLSEC_INTDIR_A)\ /c $<
-{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_CRYPTO_INTDIR_A)}.obj::
+		$(CFLAGS) $(XMLSEC_OPENSSL_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS) /Fo$(XMLSEC_INTDIR_A)\ /c $<
+{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_OPENSSL_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
-		$(CFLAGS) /Fo$(XMLSEC_CRYPTO_INTDIR_A)\ /c $<
-{$(XMLSEC_CRYPTO_SRCDIR)}.c{$(XMLSEC_CRYPTO_INTDIR_A)}.obj::
+		$(CFLAGS) $(XMLSEC_OPENSSL_CFLAGS) /Fo$(XMLSEC_OPENSSL_INTDIR_A)\ /c $<
+{$(XMLSEC_OPENSSL_SRCDIR)}.c{$(XMLSEC_OPENSSL_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
-		$(CFLAGS) /Fo$(XMLSEC_CRYPTO_INTDIR_A)\ /c $<
+		$(CFLAGS)  $(XMLSEC_OPENSSL_CFLAGS) /Fo$(XMLSEC_OPENSSL_INTDIR_A)\ /c $<
+{$(XMLSEC_SRCDIR)}.c{$(XMLSEC_NSS_INTDIR_A)}.obj::
+	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
+		$(CFLAGS) $(XMLSEC_NSS_CFLAGS) /Fo$(XMLSEC_NSS_INTDIR_A)\ /c $<
+{$(XMLSEC_NSS_SRCDIR)}.c{$(XMLSEC_NSS_INTDIR_A)}.obj::
+	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
+		$(CFLAGS) $(XMLSEC_NSS_CFLAGS) /Fo$(XMLSEC_NSS_INTDIR_A)\ /c $<
 
 # An implicit rule for strings file
 # Compiles xmlsec source. Uses the implicit rule for commands.
@@ -398,11 +471,10 @@ $(XMLSEC_OBJS) : $(XMLSEC_INTDIR)
 $(XMLSEC_OBJS_A) : $(XMLSEC_INTDIR_A)
 
 # Compiles xmlsec-crypto source. Uses the implicit rule for commands.
-$(XMLSEC_CRYPTO_OBJS) : $(XMLSEC_CRYPTO_INTDIR)
-
-# Compiles static xmlsec-crypto source. Uses the implicit rule for commands.
-$(XMLSEC_CRYPTO_OBJS_A) : $(XMLSEC_CRYPTO_INTDIR_A)
-
+$(XMLSEC_OPENSSL_OBJS) : $(XMLSEC_OPENSSL_INTDIR)
+$(XMLSEC_OPENSSL_OBJS_A) : $(XMLSEC_OPENSSL_INTDIR_A)
+$(XMLSEC_NSS_OBJS) : $(XMLSEC_NSS_INTDIR)
+$(XMLSEC_NSS_OBJS_A) : $(XMLSEC_NSS_INTDIR_A)
 # Creates the xmlsec shared object.
 $(BINDIR)\$(XMLSEC_SO) : $(BINDIR) $(XMLSEC_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
@@ -413,16 +485,20 @@ $(BINDIR)\$(XMLSEC_SO) : $(BINDIR) $(XMLSEC_OBJS)
 $(BINDIR)\$(XMLSEC_A) : $(BINDIR) $(XMLSEC_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_A) $(XMLSEC_OBJS_A)
 
-# Creates the xmlsec-crypto shared object.
-$(BINDIR)\$(XMLSEC_CRYPTO_SO) : $(BINDIR) $(XMLSEC_CRYPTO_OBJS)
+# Creates the xmlsec-crypto shared object and archive.
+$(BINDIR)\$(XMLSEC_OPENSSL_SO) : $(BINDIR) $(XMLSEC_OPENSSL_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
-		/IMPLIB:$(BINDIR)\$(XMLSEC_CRYPTO_IMP) /OUT:$(BINDIR)\$(XMLSEC_CRYPTO_SO) \
-		$(XMLSEC_CRYPTO_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
+		/IMPLIB:$(BINDIR)\$(XMLSEC_OPENSSL_IMP) /OUT:$(BINDIR)\$(XMLSEC_OPENSSL_SO) \
+		$(XMLSEC_OPENSSL_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_OPENSSL_SOLIBS)
+$(BINDIR)\$(XMLSEC_OPENSSL_A) : $(BINDIR) $(XMLSEC_OPENSSL_OBJS_A)
+	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_OPENSSL_A) $(XMLSEC_OPENSSL_OBJS_A)
 
-# Creates the xmlsec-crypto archive.
-$(BINDIR)\$(XMLSEC_CRYPTO_A) : $(BINDIR) $(XMLSEC_CRYPTO_OBJS_A)
-	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_CRYPTO_A) $(XMLSEC_CRYPTO_OBJS_A)
-
+$(BINDIR)\$(XMLSEC_NSS_SO) : $(BINDIR) $(XMLSEC_NSS_OBJS)
+	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
+		/IMPLIB:$(BINDIR)\$(XMLSEC_NSS_IMP) /OUT:$(BINDIR)\$(XMLSEC_NSS_SO) \
+		$(XMLSEC_NSS_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_NSS_SOLIBS)
+$(BINDIR)\$(XMLSEC_NSS_A) : $(BINDIR) $(XMLSEC_NSS_OBJS_A)
+	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_NSS_A) $(XMLSEC_NSS_OBJS_A)
 
 # Creates the apps intermediate directory.
 $(XMLSEC_APPS_INTDIR) :
@@ -438,7 +514,7 @@ $(BINDIR)\xmlsec.exe: $(BINDIR) $(XMLSEC_APPS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APPLIBS) $(XMLSEC_APPS_OBJS)
 
 # Builds xmlsec and friends. Uses the implicit rule for commands.
-$(APPS) : $(BINDIR) xmlsec xmlseca
+$(BINDIR)\$(APP_NAME) : $(BINDIR) xmlsec xmlseca
 
 # Source dependences should be autogenerated somehow here, but how to
 # do it? I have no clue.

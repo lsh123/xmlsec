@@ -112,7 +112,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(files != NULL, -1);
 
     /* first is the key file */
-    key = xmlSecCryptoAppKeyLoad(files, format, pwd, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(files, format, pwd, 
+		xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -181,32 +182,14 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 int 
 xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd, const char *name) {
     xmlSecKeyPtr key;
-    char buf[1024] = "";
-    char prompt[2048];
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
-#ifdef XMLSEC_CRYPTO_OPENSSL
-    if(pwd == NULL) {
-	snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
-	ret = EVP_read_pw_string(buf, sizeof(buf), prompt, 0);
-	if(ret != 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"EVP_read_pw_string",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-	pwd = buf;
-    } 
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-
-    key = xmlSecCryptoAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, 
-		    		 pwd, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, pwd, 
+		    xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -214,10 +197,8 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "filename=%s",
 		    xmlSecErrorsSafeString(filename));
-	memset(buf, 0, sizeof(buf));
 	return(-1);
     }
-    memset(buf, 0, sizeof(buf));
         
     if(name != NULL) {
 	ret = xmlSecKeySetName(key, BAD_CAST name);

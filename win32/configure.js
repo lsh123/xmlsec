@@ -38,6 +38,10 @@ var verMicroXmlSec;
 
 /* Libxmlsec features. */
 var withCrypto = "openssl";
+var withDefaultCrypto = "openssl";
+var withOpenSSL = 0;
+var withOpenSSL096 = 0;
+var withNss = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
 
@@ -88,7 +92,8 @@ function usage()
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
-	txt += "  crypto:     Crypto engine: \"openssl\", \"openssl_096\", \"nss\" (\"" + withCrypto + "\");\n"
+	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
+	txt += "              \"openssl_096\", \"nss\", (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
@@ -116,6 +121,7 @@ function usage()
 function discoverVersion()
 {
 	var fso, cf, vf, ln, s;
+
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	cf = fso.OpenTextFile(configFile, 1);
 	vf = fso.CreateTextFile(versionFile, true);
@@ -142,7 +148,11 @@ function discoverVersion()
 	vf.WriteLine("XMLSEC_SRCDIR=" + srcDir);
 	vf.WriteLine("APPS_SRCDIR=" + srcDirApps);
 	vf.WriteLine("BINDIR=" + binDir);
-	vf.WriteLine("WITH_CRYPTO=" + withCrypto);
+	vf.WriteLine("WITH_CRYPTO=" + withCrypto);	
+	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);	
+	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);	
+	vf.WriteLine("WITH_OPENSSL_096=" + withOpenSSL096);	
+	vf.WriteLine("WITH_NSS=" + withNss);	
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
@@ -293,6 +303,31 @@ if (error != 0) {
 	WScript.Quit(error);
 }
 
+// Discover crypto support
+var crlist, j;
+crlist = withCrypto.split(",");			
+withCrypto = "";
+for (j = 0; j < crlist.length; j++) {		
+	if (crlist[j] == "openssl")
+		withOpenSSL = 1;
+	else if (crlist[j] == "openssl_096")
+		withOpenSSL096 = 1;
+	else if (crlist[j] == "nss")
+		withNss = 1;
+	else {
+		WScript.Echo("Unknown crypto engine \"" + crlist[j] + "\" is found. Aborting.");
+		WScript.Quit(error);
+	}
+	withCrypto = withCrypto + " " + crlist[j];
+}
+if ((withOpenSSL == 1) && (withOpenSSL096 == 1)) {
+	WScript.Echo("Only one of \"openssl\" and \"openssl_096\" could be specified. Aborting.");
+	WScript.Quit(error);
+}
+withDefaultCrypto = crlist[0];
+if (withDefaultCrypto == "openssl_096")
+	withDefaultCrypto = "openssl";
+
 // Discover the version.
 discoverVersion();
 if (error != 0) {
@@ -300,6 +335,7 @@ if (error != 0) {
 	WScript.Quit(error);
 }
 WScript.Echo(baseName + " version: " + verMajorXmlSec + "." + verMinorXmlSec + "." + verMicroXmlSec);
+
 
 // Configure libxmlsec.
 configureXmlSec();
@@ -318,6 +354,10 @@ WScript.Echo("Created Makefile.");
 var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
 txtOut += "        Use Crypto: " + withCrypto + "\n";
+txtOut += "Use Default Crypto: " + withDefaultCrypto + "\n";
+txtOut += "       Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
+txtOut += "   Use OpenSSL 096: " + boolToStr(withOpenSSL096) + "\n";
+txtOut += "           Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "       Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "         Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += "\n";

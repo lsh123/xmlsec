@@ -158,7 +158,7 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyStoreFindKey		(xmlSecKeyStorePtr store,
  *
  * The "unknown" id.
  */
-#define xmlSecKeyStoreIdUnknown 			NULL
+#define xmlSecKeyStoreIdUnknown 			((xmlSecKeyDataStoreId)NULL)
 
 /** 
  * xmlSecKeyStoreInitializeMethod:

@@ -37,7 +37,7 @@ var verMinorXmlSec;
 var verMicroXmlSec;
 
 /* Libxmlsec features. */
-var withOpenSSL096 = 0;
+var withCrypto = "openssl";
 var withLibXSLT = 1;
 var withIconv = 1;
 
@@ -88,7 +88,7 @@ function usage()
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
- 	txt += "  openssl_096: OpenSSL 0.9.6 is used: disable some features (" + (withOpenSSL096? "yes" : "no")  + ")\n";	
+	txt += "  ctypto:     Crypto engine: \"openssl\", \"openssl_096\", \"nss\" (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is not used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
@@ -142,7 +142,7 @@ function discoverVersion()
 	vf.WriteLine("XMLSEC_SRCDIR=" + srcDir);
 	vf.WriteLine("APPS_SRCDIR=" + srcDirApps);
 	vf.WriteLine("BINDIR=" + binDir);
-	vf.WriteLine("WITH_OPENSSL096=" + (withOpenSSL096? "1" : "0"));
+	vf.WriteLine("WITH_CRYPTO=" + withCrypto);
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
@@ -246,8 +246,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 	if (opt.length == 0)
 		opt = arg.substring(0, arg.indexOf(":"));
 	if (opt.length > 0) {
-		if (opt == "openssl_096")
-			withOpenSSL096 = strToBool(arg.substring(opt.length + 1, arg.length));
+		if (opt == "crypto")
+			withCrypto = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "xslt")
 			withLibXSLT = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "iconv")
@@ -317,7 +317,7 @@ WScript.Echo("Created Makefile.");
 // Display the final configuration.
 var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
-txtOut += "   Use OpenSSL 096: " + boolToStr(withOpenSSL096) + "\n";
+txtOut += "        Use Crypto: " + withCrypto + "\n";
 txtOut += "       Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "         Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += "\n";

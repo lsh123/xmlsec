@@ -91,6 +91,7 @@ xmlSecTransformXmlParserPushBin(xmlSecTransformPtr transform, const unsigned cha
     } else if(transform->status == xmlSecTransformStatusFinished) {
 	/* the only way we can get here is if there is no input */
 	xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
+	return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

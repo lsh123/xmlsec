@@ -96,7 +96,7 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 	    xmlSecNodeSetDestroy(tmp->children);
 	}
 	if((tmp->doc != NULL) && (tmp->destroyDoc != 0)) {
-	    xmlFreeDoc(nset->doc);
+	    xmlFreeDoc(tmp->doc);
 	}
 	memset(tmp, 0,  sizeof(xmlSecNodeSet));
         xmlFree(tmp);

@@ -928,7 +928,17 @@ xmlSecAppVerifyFile(const char* filename) {
     }
     total_time += clock() - start_time;    
 
-    if(repeats <= 1) { 
+    if((repeats <= 1) && (dsigCtx.status != xmlSecDSigStatusSucceeded)){ 
+	/* return an error if signature does not match */
+	goto done;
+    }
+
+    res = 0;
+done:
+    /* print debug info if requested */
+    if(repeats <= 1) {
+	xmlSecDSigReferenceCtxPtr dsigRefCtx;
+	size_t good, i, size;
 	FILE* f;
         
 	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
@@ -937,6 +947,8 @@ xmlSecAppVerifyFile(const char* filename) {
 		    xmlSecAppCmdLineParamGetString(&outputParam));
 	    goto done;
 	}
+	xmlSecAppCloseFile(f);
+
 	switch(dsigCtx.status) {
 	    case xmlSecDSigStatusUnknown:
 		fprintf(stderr, "ERROR\n");
@@ -948,19 +960,34 @@ xmlSecAppVerifyFile(const char* filename) {
 		fprintf(stderr, "FAIL\n");
 		break;
 	}    
-	/* TODO: print stats about # of good/bad references */
-	xmlSecAppCloseFile(f);
 
-	/* return an error if signature does not match */
-	if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
-	    goto done;
+	/* print stats about # of good/bad references/manifests */
+	size = xmlSecPtrListGetSize(&(dsigCtx.references));
+	for(i = good = 0; i < size; ++i) {
+	    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.references), i);
+	    if(dsigRefCtx == NULL) {
+		fprintf(stderr,"Error: reference ctx is null\n");
+		goto done;
+	    }
+	    if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
+		++good;
+	    }
 	}
-    }
+	fprintf(stderr, "SignedInfo References (ok/all): %d/%d\n", good, size);
 
-    res = 0;
-done:
-    /* print debug info if requested */
-    if(repeats <= 1) {
+	size = xmlSecPtrListGetSize(&(dsigCtx.manifests));
+	for(i = good = 0; i < size; ++i) {
+	    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.manifests), i);
+	    if(dsigRefCtx == NULL) {
+		fprintf(stderr,"Error: reference ctx is null\n");
+		goto done;
+	    }
+	    if(dsigRefCtx->status == xmlSecDSigStatusSucceeded) {
+		++good;
+	    }
+	}
+	fprintf(stderr, "Manifests References (ok/all): %d/%d\n", good, size);
+
     	xmlSecAppPrintDSigCtx(&dsigCtx);
     }
     xmlSecDSigCtxFinalize(&dsigCtx);

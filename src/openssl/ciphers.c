@@ -30,6 +30,7 @@ typedef struct _xmlSecOpenSSLEvpBlockCipherCtx		xmlSecOpenSSLEvpBlockCipherCtx,
 							*xmlSecOpenSSLEvpBlockCipherCtxPtr;
 struct _xmlSecOpenSSLEvpBlockCipherCtx {
     const EVP_CIPHER*	cipher;
+    xmlSecKeyDataId	keyId;
     EVP_CIPHER_CTX	cipherCtx;
     int			ctxInitialized;
     unsigned char	key[EVP_MAX_KEY_LENGTH];
@@ -431,6 +432,29 @@ static int	xmlSecOpenSSLEvpBlockCipherExecute	(xmlSecTransformPtr transform,
 static int	xmlSecOpenSSLEvpBlockCipherCheckId	(xmlSecTransformPtr transform);
 							 
 
+
+static int
+xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
+#ifndef XMLSEC_NO_DES
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDes3CbcId)) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_AES
+#ifndef XMLSEC_OPENSSL_096
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes128CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId)) {
+       
+       return(1);
+    }
+#endif /* XMLSEC_NO_AES */
+#endif /* XMLSEC_OPENSSL_096 */
+    
+    return(0);
+}
+
 static int 
 xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
@@ -445,23 +469,27 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
-	ctx->cipher = EVP_des_ede3_cbc();
+	ctx->cipher 	= EVP_des_ede3_cbc();
+	ctx->keyId 	= xmlSecOpenSSLKeyDataDesId;
     } else 
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
 #ifndef XMLSEC_OPENSSL_096
     if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
-	ctx->cipher = EVP_aes_128_cbc();	
+	ctx->cipher 	= EVP_aes_128_cbc();	
+	ctx->keyId 	= xmlSecOpenSSLKeyDataAesId;
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
-	ctx->cipher = EVP_aes_192_cbc();	
+	ctx->cipher 	= EVP_aes_192_cbc();	
+	ctx->keyId 	= xmlSecOpenSSLKeyDataAesId;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
-	ctx->cipher = EVP_aes_256_cbc();	
+	ctx->cipher 	= EVP_aes_256_cbc();	
+	ctx->keyId 	= xmlSecOpenSSLKeyDataAesId;
     } else 
 #endif /* XMLSEC_NO_AES */
 #endif /* XMLSEC_OPENSSL_096 */
-    
-    {
+
+    if(1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -498,35 +526,10 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInf
 
     ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyId != NULL, -1);
 
-#ifndef XMLSEC_NO_DES
-    if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
-	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataDesId;
-    } else 
-#endif /* XMLSEC_NO_DES */
-    
-#ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL_096
-    if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
-	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataAesId;
-    } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
-	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataAesId;
-    } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
-	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataAesId;
-    } else 
-#endif /* XMLSEC_NO_AES */
-#endif /* XMLSEC_OPENSSL_096 */
-    
-    {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }        
-
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
+    keyInfoCtx->keyId 	= ctx->keyId;
+    keyInfoCtx->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
 	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
@@ -654,28 +657,6 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
     return(0);
 }
 
-
-static int
-xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_DES
-    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDes3CbcId)) {
-	return(1);
-    }
-#endif /* XMLSEC_NO_DES */
-
-#ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL_096
-    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes128CbcId) ||
-       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192CbcId) ||
-       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId)) {
-       
-       return(1);
-    }
-#endif /* XMLSEC_NO_AES */
-#endif /* XMLSEC_OPENSSL_096 */
-    
-    return(0);
-}
 
 #ifndef XMLSEC_NO_AES
 #ifndef XMLSEC_OPENSSL_096

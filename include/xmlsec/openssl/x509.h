@@ -30,21 +30,21 @@ extern "C" {
 	xmlSecOpenSSLKeyDataX509GetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataX509GetKlass	(void);
 
-XMLSEC_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetVerified	(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int		xmlSecOpenSSLKeyDataX509AdoptVerified	(xmlSecKeyDataPtr data, 
+XMLSEC_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetKeyCert	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int		xmlSecOpenSSLKeyDataX509AdoptKeyCert	(xmlSecKeyDataPtr data, 
 									 X509* cert);
 
 XMLSEC_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCert	(xmlSecKeyDataPtr data,
 									 X509* cert);
 XMLSEC_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetCert		(xmlSecKeyDataPtr data,
 									 size_t pos);
-XMLSEC_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCertsNumber	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCertsSize	(xmlSecKeyDataPtr data);
 
 XMLSEC_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCrl	(xmlSecKeyDataPtr data,
 									 X509_CRL* crl);
 XMLSEC_EXPORT X509_CRL*		xmlSecOpenSSLKeyDataX509GetCrl		(xmlSecKeyDataPtr data,
 									 size_t pos);
-XMLSEC_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsNumber	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsSize	(xmlSecKeyDataPtr data);
 
 
 /****************************************************************************

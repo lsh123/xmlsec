@@ -120,6 +120,8 @@ XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetGetChildren(xmlDocPtr doc,
 XMLSEC_EXPORT int		xmlSecNodeSetWalk	(xmlSecNodeSetPtr nset,
 							 xmlSecNodeSetWalkCallback walkFunc,
 							 void* data);
+XMLSEC_EXPORT int		xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset,
+							xmlOutputBufferPtr out);
 XMLSEC_EXPORT void		xmlSecNodeSetDebugDump	(xmlSecNodeSetPtr nset,
 							 FILE *output);
 							 

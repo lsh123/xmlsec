@@ -475,6 +475,15 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NGetKlass		(void);
 	xmlSecTransformExclC14NWithCommentsGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NWithCommentsGetKlass(void);
 
+/**
+ * xmlSecTransformRemoveXmlTagsC14NId:
+ * 
+ * The "remove all xml tags" transform id (used before base64 transforms).
+ */
+#define xmlSecTransformRemoveXmlTagsC14NId \
+	xmlSecTransformRemoveXmlTagsC14NGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformRemoveXmlTagsC14NGetKlass(void);
+
 /********************************************************************
  *
  * Enveloped transform 

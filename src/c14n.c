@@ -41,7 +41,8 @@
 
 #define xmlSecTransformC14NCheckId(transform) \
     (xmlSecTransformInclC14NCheckId((transform)) || \
-     xmlSecTransformExclC14NCheckId((transform)) )
+     xmlSecTransformExclC14NCheckId((transform)) || \
+     xmlSecTransformCheckId((transform), xmlSecTransformRemoveXmlTagsC14NId))
 #define xmlSecTransformInclC14NCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformInclC14NId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformInclC14NWithCommentsId))
@@ -283,8 +284,8 @@ static int
 xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
 			    size_t maxDataSize, size_t* dataSize,
 			    xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBufferPtr out;
     xmlSecPtrListPtr nsList;
+    xmlSecBufferPtr out;
     int ret;
         
     xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
@@ -326,16 +327,16 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
-
+	    
 	/* we are using a semi-hack here: we know that xmlSecPtrList keeps
 	 * all pointers in the big array */
 	nsList = xmlSecTransformC14NGetNsList(transform);
 	xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
 
-        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
-        if(ret < 0) {
+    	ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
+    	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecTransformC14NExecute",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -418,6 +419,8 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
 	ret = xmlC14NExecute(nodes->doc, 
 			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 1, nsList, 1, buf);
+    } else if(id == xmlSecTransformRemoveXmlTagsC14NId) { 
+    	ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {
 	/* shoudn't be possible to come here, actually */
 	xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -439,10 +442,6 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
     
     return(0);
 }
-
-
-
-
 
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
@@ -573,8 +572,54 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
     return(&xmlSecTransformExclC14NWithCommentsKlass);
 }
 
+static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    xmlSecTransformC14NSize,		/* size_t objSize */
 
+    BAD_CAST "remove-xml-tags-c14n-transform",
+    xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
+    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
+    NULL, 				/* const xmlChar href; */
 
+    xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,				/* xmlSecTransformExecuteMethod execute; */
+
+    NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,				/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
+};
+
+/**
+ * xmlSecTransformRemoveXmlTagsGetKlass:
+ *
+ * http://www.w3.org/TR/xmldsig-core/#sec-Base-64:
+ *
+ * Base64 transform requires an octet stream for input. If an XPath node-set 
+ * (or sufficiently functional alternative) is given as input, then it is 
+ * converted to an octet stream by performing operations logically equivalent 
+ * to 1) applying an XPath transform with expression self::text(), then 2) 
+ * taking the string-value of the node-set. Thus, if an XML element is 
+ * identified by a barename XPointer in the Reference URI, and its content 
+ * consists solely of base64 encoded character data, then this transform 
+ * automatically strips away the start and end tags of the identified element 
+ * and any of its descendant elements as well as any descendant comments and 
+ * processing instructions. The output of this transform is an octet stream.
+ *
+ */
+xmlSecTransformId 
+xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {
+    return(&xmlSecTransformRemoveXmlTagsC14NKlass);
+}
 
 
 /*************************** delete this asap :) ************************/

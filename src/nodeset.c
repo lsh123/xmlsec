@@ -485,6 +485,29 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     return(xmlSecNodeSetCreate(doc, nodes, type));
 }
 
+static int
+xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur, 
+				   xmlNodePtr parent ATTRIBUTE_UNUSED, 
+				   void* data) {
+    xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+
+    if(cur->type == XML_TEXT_NODE) {
+	xmlOutputBufferWriteString((xmlOutputBufferPtr)data, 
+				    (char*)(cur->content)); 
+    }
+    return(0);
+}
+
+int 
+xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
+    xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    return(xmlSecNodeSetWalk(nset, xmlSecNodeSetDumpTextNodesWalkCallback, out));
+}
+
 /**
  * xmlSecNodeSetDebugDump: 
  * @nset: the pointer to #xmlSecNodeSet structure.

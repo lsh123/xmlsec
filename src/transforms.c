@@ -577,9 +577,13 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
 	middleId = xmlSecTransformXmlParserId;
     } else if(((leftType & xmlSecTransformDataTypeXml) != 0) && 
         ((rightType & xmlSecTransformDataTypeBin) != 0)) {
-
-	/* need to insert c14n */
-	middleId = xmlSecTransformInclC14NId;
+	
+	/* need to insert c14n or special pre-base64 transform */
+	if(xmlSecTransformCheckId(right, xmlSecTransformBase64Id)) {
+	    middleId = xmlSecTransformRemoveXmlTagsC14NId;
+	} else {
+	    middleId = xmlSecTransformInclC14NId;
+	}
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),

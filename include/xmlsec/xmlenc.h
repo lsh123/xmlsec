@@ -74,6 +74,10 @@ XMLSEC_EXPORT void 		xmlSecEncCtxDestroy		(xmlSecEncCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecEncCtxInitialize		(xmlSecEncCtxPtr ctx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecEncCtxFinalize		(xmlSecEncCtxPtr ctx);
+XMLSEC_EXPORT int		xmlSecEncCtxBinaryEncrypt	(xmlSecEncCtxPtr ctx,
+								 xmlNodePtr tmpl,
+								 const unsigned char* data,
+								 size_t dataSize);
 XMLSEC_EXPORT int		xmlSecEncCtxXmlEncrypt		(xmlSecEncCtxPtr ctx,
 								 xmlNodePtr tmpl,
 								 xmlNodePtr node);

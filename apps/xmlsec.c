@@ -1170,6 +1170,9 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 
 static int 
 xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAppCmdLineValuePtr value;
+    int ret;
+    
     if(keyInfoCtx == NULL) {
 	fprintf(stderr, "Error: key info context is null\n");
 	return(-1);
@@ -1180,6 +1183,24 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
 	keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
+    }
+
+    /* read allowed key data list */
+    for(value = allowedParam.value; value != NULL; value = value->next) {
+	if(value->strListValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", allowedParam.fullName);
+	    return(-1);
+	} else {
+	    const char* p;
+	    
+	    for(p = value->strListValue; (p != NULL) && ((*p) != '\0'); p += strlen(p)) {
+		ret = xmlSecKeyInfoCtxEnableKeyDataByName(keyInfoCtx, BAD_CAST p);
+		if(ret < 0) {
+	    	    fprintf(stderr, "Error: invalid (unkown) key data name \"%s\".\n", p);
+		    return(-1);
+		}
+	    }
+	}
     }
 
     return(0);

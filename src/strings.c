@@ -50,6 +50,8 @@ const xmlChar xmlSecNodeEncryptionProperties[]	= "EncryptionProperties";
 const xmlChar xmlSecNodeCipherData[]		= "CipherData";
 const xmlChar xmlSecNodeCipherValue[]		= "CipherValue";
 const xmlChar xmlSecNodeCipherReference[]	= "CipherReference";
+const xmlChar xmlSecNodeReferenceList[]		= "ReferenceList";
+const xmlChar xmlSecNodeCarriedKeyName[]	= "CarriedKeyName";
 
 const xmlChar xmlSecTypeEncContent[]		= "http://www.w3.org/2001/04/xmlenc#Content";
 const xmlChar xmlSecTypeEncElement[]		= "http://www.w3.org/2001/04/xmlenc#Element";
@@ -76,6 +78,7 @@ const xmlChar xmlSecAttrMimeType[]		= "MimeType";
 const xmlChar xmlSecAttrEncoding[]		= "Encoding";
 const xmlChar xmlSecAttrAlgorithm[]		= "Algorithm";
 const xmlChar xmlSecAttrFilter[]		= "Filter";
+const xmlChar xmlSecAttrRecipient[]		= "Recipient";
 
 /*************************************************************************
  *
@@ -173,7 +176,7 @@ const xmlChar xmlSecHrefDsaSha1[]		= "http://www.w3.org/2000/09/xmldsig#dsa-sha1
  * EncryptedKey
  *
  ************************************************************************/
-const xmlChar xmlSecNameEncryptedKey[]		= "enc-key-transform";
+const xmlChar xmlSecNameEncryptedKey[]		= "enc-key";
 const xmlChar xmlSecNodeEncryptedKey[]		= "EncryptedKey";
 const xmlChar xmlSecHrefEncryptedKey[]		= "http://www.w3.org/2001/04/xmlenc#EncryptedKey";
 
@@ -279,7 +282,7 @@ const xmlChar xmlSecHrefSha1[]			= "http://www.w3.org/2000/09/xmldsig#sha1";
  * X509 strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameX509Data[]		= "x509-data";
+const xmlChar xmlSecNameX509Data[]		= "x509";
 const xmlChar xmlSecNodeX509Data[]		= "X509Data";
 const xmlChar xmlSecHrefX509Data[]		= "http://www.w3.org/2000/09/xmldsig#X509Data";
 

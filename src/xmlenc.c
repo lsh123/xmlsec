@@ -141,6 +141,58 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr ctx) {
 }
 
 int 
+xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, 
+			  const unsigned char* data, size_t dataSize) {
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->encResult == NULL, -1);
+    xmlSecAssert2(tmpl != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+
+    /* initialize context and add ID atributes to the list of known ids */    
+    ctx->encrypt = 1;
+    xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
+
+    /* read the template and set encryption method, key, etc. */
+    ret = xmlSecEncCtxEncDataNodeRead(ctx, tmpl);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecEncCtxEncDataNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    ret = xmlSecTransformCtxBinaryExecute(&(ctx->transformCtx), data, dataSize);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCtxBinaryExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "dataSize=%d",
+		    dataSize);
+	return(-1);
+    }
+
+    ctx->encResult = ctx->transformCtx.result;
+    xmlSecAssert2(ctx->encResult != NULL, -1);
+    
+    ret = xmlSecEncCtxCipherDataNodeWrite(ctx);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecEncCtxCipherDataNodeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    return(0);    
+}
+
+
+int 
 xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
     xmlOutputBufferPtr output;
     int ret;
@@ -503,8 +555,21 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
+    /* TODO: add a flag to distinguish between EncryptedData and EncryptedKey */
+    
     /* next is optional EncryptionProperties node (we simply ignore it) */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeEncryptionProperties, xmlSecEncNs))) {
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional ReferenceList node (we simply ignore it) */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReferenceList, xmlSecEncNs))) {
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* TODO: load carried key name */
+    /* next is optional CarriedKeyName node (we simply ignore it) */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCarriedKeyName, xmlSecEncNs))) {
 	cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -842,4 +907,3 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
 
 #include "xmlenc-old.c"
 #endif /* XMLSEC_NO_XMLENC */
-

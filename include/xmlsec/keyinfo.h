@@ -66,13 +66,13 @@ XMLSEC_EXPORT void			xmlSecKeyInfoCtxDestroy		(xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int			xmlSecKeyInfoCtxInitialize	(xmlSecKeyInfoCtxPtr keyInfoCtx,
 									 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void			xmlSecKeyInfoCtxFinalize	(xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int 			xmlSecKeyInfoCtxCreateEncCtx	(xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int			xmlSecKeyInfoCtxCopyUserPref	(xmlSecKeyInfoCtxPtr dst,
 									 xmlSecKeyInfoCtxPtr src);
 XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyData	(xmlSecKeyInfoCtxPtr keyInfoCtx,
 									 xmlSecKeyDataId dataId);
 XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyDataByName(xmlSecKeyInfoCtxPtr keyInfoCtx,
 									 const xmlChar* name);
-
 
 
 #define xmlSecKeyInfoNodeCheckOrigin(status, origin) \

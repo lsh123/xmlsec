@@ -164,14 +164,10 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
 	nodeName = cur->name;
 	nodeNs = xmlSecGetNodeNsHref(cur);
 
-	/* use global list only if we don't have a local one */
-	if(keyInfoCtx->allowedKeyDataIds != NULL) {
-	    dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->allowedKeyDataIds,
-			    nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeWrite);
-	} else {	
-    	    dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
-			    nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeWrite);
-	}
+	/* always use global list for writing */
+    	dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+			    nodeName, nodeNs, 
+			    xmlSecKeyDataUsageKeyInfoNodeWrite);
 	if(dataId == xmlSecKeyDataIdUnknown) {
 	    /* todo: laxi schema validation */
 	    if(0) {
@@ -278,6 +274,46 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 }
 
 int 
+xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int ret;
+    
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->encCtx == NULL, -1);
+
+#ifndef XMLSEC_NO_XMLENC
+    keyInfoCtx->encCtx = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
+    if(keyInfoCtx->encCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecEncCtxCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    /* copy user preferences from our current ctx */
+    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoCtx), keyInfoCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyInfoCtxCopyUserPref",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }    
+    
+    return(0);
+#else /* XMLSEC_NO_XMLENC */    
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xml encryption",
+		XMLSEC_ERRORS_R_DISABLED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+#endif /* XMLSEC_NO_XMLENC */    
+}
+
+int 
 xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(dst->allowedKeyDataIds == NULL, -1);
@@ -303,7 +339,7 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     /* TODO: copy transormCtx */
     
     dst->encKeysLevel	= src->encKeysLevel;
-    /* TODO: copy encCtx */
+    /* TODO: copy encCtx - might be a recursion with xmlSecKeyInfoCtxCreateEncCtx! */
     
     dst->failIfCertNotFound 	= src->failIfCertNotFound;
     dst->certsVerificationTime	= src->certsVerificationTime;
@@ -374,6 +410,8 @@ xmlSecKeyInfoCtxEnableKeyDataByName(xmlSecKeyInfoCtxPtr keyInfoCtx, const xmlCha
     
     return(0);
 }
+
+/* TODO: debug dump key info ctx */
 
 
 /**************************************************************************
@@ -1027,14 +1065,14 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
  * <enc:EncryptedKey> processing
  *
  *************************************************************************/
-static int			xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id,
-								 xmlSecKeyPtr key,
-								 xmlNodePtr node,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int			xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id,
-								 xmlSecKeyPtr key,
-								 xmlNodePtr node,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int	xmlSecKeyDataEncryptedKeyXmlRead	(xmlSecKeyDataId id,
+							 xmlSecKeyPtr key,
+							 xmlNodePtr node,
+							 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int	xmlSecKeyDataEncryptedKeyXmlWrite	(xmlSecKeyDataId id,
+							 xmlSecKeyPtr key,
+							 xmlNodePtr node,
+							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
 
@@ -1079,9 +1117,7 @@ xmlSecKeyDataEncryptedKeyGetKlass(void) {
 
 static int 
 xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecEncOldCtxPtr encCtx = NULL;
-    xmlSecEncResultPtr encResult = NULL; 
-    int res = -1;
+    xmlSecBufferPtr result;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
@@ -1089,15 +1125,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    if(!xmlSecKeyInfoNodeCheckOrigin(keyInfoCtx, xmlSecKeyOriginEncryptedKey) ){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyInfoNodeCheckOrigin",
-		    XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN,
-		    "xmlSecKeyOriginEncryptedKey");
-	return(0);
-    }
-    
+    /* TODO:actually check the enc level */    
     if(!xmlSecKeyInfoNodeCheckEncKeysLevel(keyInfoCtx)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
@@ -1106,36 +1134,35 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 		    "%d", keyInfoCtx->encKeysLevel);
 	return(-1);
     }
-    
     ++keyInfoCtx->encKeysLevel;
 
-    /**
-     * Init Enc context
-     */    
-    encCtx = xmlSecEncOldCtxCreate(keyInfoCtx->keysMngr);
-    if(encCtx == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecEncOldCtxCreate",
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecEncOldCtxCreate");
-	goto done;
+    /* Init Enc context if needed */    
+    if(keyInfoCtx->encCtx == NULL) {
+	ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+			"xmlSecKeyInfoCtxCreateEncCtx",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);		
+	}
     }
-    encCtx->ignoreType = 1; /* do not substitute the node! */
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
     
-    ret = xmlSecDecrypt(encCtx, keyInfoCtx->userData, NULL, node, &encResult);
-    if((ret < 0) || (encResult == NULL) || (encResult->buffer == NULL)){
+    result = xmlSecEncCtxDecryptToBuffer(keyInfoCtx->encCtx, node);
+    if((result == NULL) || (xmlSecBufferGetData(result) == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecDecrypt",
+		    "xmlSecEncCtxDecryptToBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", ret);
-	goto done;
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
     } 
 
     ret = xmlSecKeyDataBinRead(keyInfoCtx->keyReq.keyId, key,
-			   xmlSecBufferGetData(encResult->buffer),
-			   xmlSecBufferGetSize(encResult->buffer),
+			   xmlSecBufferGetData(result),
+			   xmlSecBufferGetSize(result),
 			   keyInfoCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1143,29 +1170,19 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 		    "xmlSecKeyDataBinRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
+	return(-1);
     }			   
-    
-    res = 0; /* success */
 
-done:
-    if(encResult != NULL) {
-	xmlSecEncResultDestroy(encResult);
-    }
-    if(encCtx != NULL) {
-	xmlSecEncOldCtxDestroy(encCtx);
-    }    
-    return(res);
+    return(0);
 }
 
 static int 
 xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecEncOldCtxPtr encCtx = NULL;
-    xmlSecKeyReq keyReq;
+    xmlSecKeyInfoCtx keyInfoCtx2;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
-    int ret;
     int res = -1;
+    int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataEncryptedKeyId, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -1182,45 +1199,62 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     }
 
     /* dump key to a binary buffer */
+    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx2, NULL);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecKeyInfoCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
+    }
+    
+    ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx2, keyInfoCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecKeyInfoCtxCopyUserPref",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
+	goto done;
+    }
 
-    /* remeber key parameters we have */
-    xmlSecKeyReqCopy(&keyReq, &(keyInfoCtx->keyReq));
-    xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
-    keyInfoCtx->keyReq.keyType = xmlSecKeyDataTypeAny;
-    ret = xmlSecKeyDataBinWrite(key->value->id, key, &keyBuf, &keySize, keyInfoCtx);
+    keyInfoCtx2.keyReq.keyType = xmlSecKeyDataTypeAny;
+    ret = xmlSecKeyDataBinWrite(key->value->id, key, &keyBuf, &keySize, &keyInfoCtx2);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataBinWrite",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
 	goto done;
     }
-    /* restore key requirements */
-    xmlSecKeyReqCopy(&(keyInfoCtx->keyReq), &keyReq);
+    xmlSecKeyInfoCtxFinalize(&keyInfoCtx2);
     
-    /**
-     * Init Enc context
-     */    
-    encCtx = xmlSecEncOldCtxCreate(keyInfoCtx->keysMngr);
-    if(encCtx == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecEncOldCtxCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
+    /* Init Enc context if needed */    
+    if(keyInfoCtx->encCtx == NULL) {
+	ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+			"xmlSecKeyInfoCtxCreateEncCtx",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;	
+	}
     }
-    encCtx->ignoreType = 1; /* do not substitute the node! */
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
-    ret = xmlSecEncryptMemory(encCtx, keyInfoCtx->userData, NULL, node, keyBuf, keySize, NULL);
+    ret = xmlSecEncCtxBinaryEncrypt(keyInfoCtx->encCtx, node, keyBuf, keySize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecEncryptMemory",
+		    "xmlSecEncCtxBinaryEncrypt",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
+	goto done;	
     }
     
     res = 0;
@@ -1230,9 +1264,6 @@ done:
 	memset(keyBuf, 0, keySize);
 	xmlFree(keyBuf); keyBuf = NULL;
     }
-    if(encCtx != NULL) {
-	xmlSecEncOldCtxDestroy(encCtx);
-    }    
     return(res);
 }
 

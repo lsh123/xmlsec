@@ -19,7 +19,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/ciphers.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
@@ -91,18 +90,17 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
 							 int final);
 
 
+/**************************************************************
+ *
+ * Base64 Transform
+ *
+ **************************************************************/
 static xmlSecTransformPtr xmlSecBase64Create		(xmlSecTransformId id);
 static void		xmlSecBase64Destroy		(xmlSecTransformPtr transform);
 static int 		xmlSecBase64ExecuteBin		(xmlSecTransformPtr transform,
 							 xmlSecTransformBinDataPtr in,
 							 xmlSecTransformBinDataPtr out);
-static int  		xmlSecBase64Update		(xmlSecCipherTransformPtr transform, 
-							 const unsigned char *buf, 
-							 size_t size);
-static int  		xmlSecBase64Final		(xmlSecCipherTransformPtr transform);
-							 
-static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
-    /* same as xmlSecTransformId */    
+static xmlSecTransformKlass xmlSecBase64EncodeId = {
     BAD_CAST "base64-encode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
@@ -116,26 +114,17 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     
     /* binary data/methods */
     xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
-    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefaultReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefaultWriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefaultFlushBin,	/* xmlSecTransformFlushMethod flushBin; */
 
     /* xml/c14n methods */
     NULL,
     NULL,
-    
-    /* xmlSecCipherTransform data/methods */
-    xmlSecBase64Update,			/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecBase64Final,			/* xmlSecCipherFinalMethod cipherFinal; */
-    0,					/* size_t keySize; */
-    0,					/* size_t ivSize; */
-    XMLSEC_BASE64_INPUT_BUFFER_SIZE,	/* size_t bufInSize */
-    XMLSEC_BASE64_OUTPUT_BUFFER_SIZE	/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncBase64Encode = (xmlSecTransformId)&xmlSecBase64EncodeId;
 
-static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
-    /* same as xmlSecTransformId */    
+static xmlSecTransformKlass xmlSecBase64DecodeId = {
     BAD_CAST "base64-decode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
@@ -149,30 +138,18 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     
     /* binary data/methods */
     xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
-    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefaultReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefaultWriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefaultFlushBin,	/* xmlSecTransformFlushMethod flushBin; */
 
     /* xml/c14n methods */
     NULL,
     NULL,
-
-    /* xmlSecCipherTransform data/methods */
-    xmlSecBase64Update,			/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecBase64Final,			/* xmlSecCipherFinalMethod cipherFinal; */
-    0,					/* size_t keySize; */
-    0,					/* size_t ivSize; */
-    XMLSEC_BASE64_INPUT_BUFFER_SIZE,	/* size_t bufInSize */
-    XMLSEC_BASE64_INPUT_BUFFER_SIZE	/* size_t bufOutSize */    
 };
 xmlSecTransformId xmlSecEncBase64Decode = (xmlSecTransformId)&xmlSecBase64DecodeId;
 
-
-/**************************************************************
- *
- * Base64 Transform
- *
- **************************************************************/
+#define xmlSecBase64GetCtx(transform) \
+	((xmlSecBase64CtxPtr) (transform)->reserved0)
 
 /**
  * xmlSecBase64EncodeSetLineSize:
@@ -183,20 +160,10 @@ xmlSecTransformId xmlSecEncBase64Decode = (xmlSecTransformId)&xmlSecBase64Decode
  */
 void
 xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
-    xmlSecBase64CtxPtr ctx;  
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) != NULL);
+    xmlSecAssert(xmlSecBase64GetCtx(transform) != NULL);
     
-    xmlSecAssert(transform != NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) ||
-       (transform->reserved0 == NULL)) {
-       
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncBase64Encode");
-	return;
-    }
-    ctx = (xmlSecBase64CtxPtr)(transform->reserved0);
-    ctx->columns = lineSize;    
+    xmlSecBase64GetCtx(transform)->columns = lineSize;    
 }
 
 /**
@@ -204,8 +171,7 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
  */
 static xmlSecTransformPtr 
 xmlSecBase64Create(xmlSecTransformId id) {
-    xmlSecCipherTransformPtr cipher;
-    xmlSecCipherTransformId cipherId;
+    xmlSecTransformPtr transform;
     int encode;
     
     xmlSecAssert2(id != NULL, NULL);
@@ -221,36 +187,29 @@ xmlSecBase64Create(xmlSecTransformId id) {
 	return(NULL);	
     }
     
-    cipher = (xmlSecCipherTransformPtr)xmlMalloc(sizeof(xmlSecCipherTransform) +
-		 sizeof(unsigned char) * (XMLSEC_BASE64_OUTPUT_BUFFER_SIZE + 
-					  XMLSEC_BASE64_INPUT_BUFFER_SIZE));    
-    if(cipher == NULL) {
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_MALLOC_FAILED,	
 		    "%d",
 		    XMLSEC_BASE64_OUTPUT_BUFFER_SIZE + XMLSEC_BASE64_INPUT_BUFFER_SIZE);
 	return(NULL);
     }
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
-		 sizeof(unsigned char) * (XMLSEC_BASE64_INPUT_BUFFER_SIZE + 
-		 XMLSEC_BASE64_OUTPUT_BUFFER_SIZE));
+    memset(transform, 0, sizeof(xmlSecTransform));
 
-    cipherId = (xmlSecCipherTransformId)id;
-    cipher->id = id;
-    cipher->encode = encode;    
-    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecCipherTransform);
-    cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
-        
-    cipher->reserved0 = xmlSecBase64CtxCreate(encode, XMLSEC_BASE64_LINESIZE);    
-    if(cipher->reserved0 == NULL) {
+    transform->id = id;
+    transform->encode = encode;    
+
+    transform->reserved0 = xmlSecBase64CtxCreate(encode, XMLSEC_BASE64_LINESIZE);    
+    if(transform->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecBase64CtxCreate");
-	xmlSecTransformDestroy((xmlSecTransformPtr)cipher, 1);	
+	xmlSecTransformDestroy(transform, 1);	
 	return(NULL);
     }
     
-    return((xmlSecTransformPtr)cipher);
+    return(transform);
 }
 
 /**
@@ -258,18 +217,13 @@ xmlSecBase64Create(xmlSecTransformId id) {
  */
 static void
 xmlSecBase64Destroy(xmlSecTransformPtr transform) {
-    xmlSecCipherTransformPtr cipher;
-
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode));
     
-    cipher = (xmlSecCipherTransformPtr) transform;
-    if(cipher->reserved0 != NULL) {
-	xmlSecBase64CtxDestroy((xmlSecBase64CtxPtr)transform->reserved0);
+    if(xmlSecBase64GetCtx(transform) != NULL) {
+	xmlSecBase64CtxDestroy(xmlSecBase64GetCtx(transform));
     }    
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
-		      sizeof(unsigned char) * (XMLSEC_BASE64_INPUT_BUFFER_SIZE + 
-		    			       XMLSEC_BASE64_OUTPUT_BUFFER_SIZE));
-    xmlFree(cipher);
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
 }
 
 static int 
@@ -282,7 +236,7 @@ xmlSecBase64ExecuteBin(xmlSecTransformPtr transform, xmlSecTransformBinDataPtr i
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     
-    ctx = (xmlSecBase64CtxPtr)transform->reserved0;
+    ctx = xmlSecBase64GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     for(; (in->startPos < in->endPos) && (out->endPos < out->maxSize); ) {
@@ -328,81 +282,6 @@ xmlSecBase64ExecuteBin(xmlSecTransformPtr transform, xmlSecTransformBinDataPtr i
     }
     return(0);
 }
-
-/**
- * xmlSecBase64Update:
- */
-static int
-xmlSecBase64Update(xmlSecCipherTransformPtr cipher, 
-		 const unsigned char *buf, size_t size) {
-    xmlSecCipherTransformId cipherId;
-    xmlSecBase64CtxPtr ctx;
-    int ret;
-    
-    xmlSecAssert2(cipher != NULL, -1);
-        
-    if(!xmlSecTransformCheckId(cipher, xmlSecEncBase64Encode) &&
-       !xmlSecTransformCheckId(cipher, xmlSecEncBase64Decode)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
-	return(-1);
-    }
-    
-    if((buf == NULL) || (size == 0)) {
-	return(0);
-    }
-
-
-    cipherId = (xmlSecCipherTransformId)cipher->id;
-    ctx = (xmlSecBase64CtxPtr)cipher->reserved0;
-    if(size > cipherId->bufInSize) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA,
-		    " ");
-	return(-1);
-    }
-    
-    ret = xmlSecBase64CtxUpdate(ctx, buf, size, cipher->bufOut, cipherId->bufOutSize);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    " ");
-	return(-1);
-    }
-    return(ret);
-}
-
-static int
-xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
-    xmlSecCipherTransformId cipherId;
-    xmlSecBase64CtxPtr ctx;
-    int ret;
-
-    xmlSecAssert2(cipher != NULL, -1);
-        
-    if(!xmlSecTransformCheckId(cipher, xmlSecEncBase64Encode) &&
-       !xmlSecTransformCheckId(cipher, xmlSecEncBase64Decode)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
-	return(-1);
-    }    
-    cipherId = (xmlSecCipherTransformId)cipher->id;
-    ctx = (xmlSecBase64CtxPtr)cipher->reserved0;
-    
-    ret = xmlSecBase64CtxFinal(ctx, cipher->bufOut, cipherId->bufOutSize);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    " ");
-	return(-1);
-    }
-    return(ret);
-}
-
 
 
 /************************************************************************
@@ -499,6 +378,10 @@ xmlSecBase64CtxPush(xmlSecBase64CtxPtr ctx, const unsigned char* in, size_t inSi
     xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
     xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
     xmlSecAssert2(in != NULL, -1);
+    
+    if(ctx->outPos > 0) {
+	return(0);
+    }
     
     inBlockSize = (ctx->encode) ? 3 : 4;
     if(ctx->encode) {

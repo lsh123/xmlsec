@@ -188,12 +188,16 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyInfoCtxPtr keyIn
  */
 int
 xmlSecTransformExecuteBin(xmlSecTransformPtr transform, 
-			xmlSecTransformBinDataPtr in,
-			xmlSecTransformBinDataPtr out) {
+		const unsigned char* in, size_t inSize, size_t* inRes,
+		unsigned char* out, size_t outSize, size_t* outRes) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    
+    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
+    xmlSecAssert2(inRes != NULL, -1);
+    xmlSecAssert2(outRes != NULL, -1);
+
+    (*inRes) = (*outRes) = 0;
     if(transform->id->executeBin != NULL) {
-	return((transform->id->executeBin)(transform, in, out));
+	return((transform->id->executeBin)(transform, in, inSize, inRes, out, outSize, outRes));
     }
     return(0);
 }
@@ -441,42 +445,30 @@ xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
 int
 xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform, 
 		       unsigned char *buf, size_t size) {
-    xmlSecTransformBinData in, out;
+    size_t inRes = 0, outRes = 0;
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    
-    /* set the in/out data */
-    memset(&in, 0, sizeof(xmlSecTransformBinData));
-    in.buf 	= transform->binBuf;
-    in.maxSize 	= sizeof(transform->binBuf);
-    in.endPos	= transform->binBufSize;
-
-    memset(&out, 0, sizeof(xmlSecTransformBinData));
-    out.buf	= buf;
-    out.maxSize	= size;
-    
-    
-    do {
-	if((transform->prev != NULL) && (in.endPos < in.maxSize)) {
-	    ret = xmlSecTransformReadBin(transform->prev,
-					in.buf + in.endPos,
-					in.maxSize - in.endPos);
+        
+    while(1) {
+	if(((transform->binBufSize + XMLSEC_TRANSFORM_MIN_BLOCK_SIZE) < sizeof(transform->binBuf)) && 
+	    (transform->prev != NULL) && 
+	    !xmlSecTransformStatusIsDone(transform->prev->status)) {
+	
+	    ret = xmlSecTransformReadBin(transform->prev, transform->binBuf,
+			sizeof(transform->binBuf) - transform->binBufSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecTransformReadBin");
 		return(-1);
-	    } else if(ret == 0) {
-		in.status = xmlSecTransformStatusLastData;
-	    } else {
-		in.endPos += ret;
-		in.status = xmlSecTransformStatusMoreData;
-	    }	    
+	    }
+	    transform->binBufSize += ret;
 	}
 	
-	ret = xmlSecTransformExecuteBin(transform, &in, &out);
+	ret = xmlSecTransformExecuteBin(transform, 
+			    transform->binBuf, transform->binBufSize, &inRes,
+			    buf, size, &outRes);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -484,38 +476,25 @@ xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform,
 	    return(-1);
 	}
 	
-	if(in.startPos > 0) {
-	    if(in.startPos < in.endPos) {
-	        memmove(in.buf, in.buf + in.startPos, in.endPos - in.startPos);
-		in.endPos -= in.startPos;
-	    } else {
-		in.endPos = 0;
-	    }
-	    in.startPos = 0;
-	} else if(in.status == xmlSecTransformStatusLastData) {
-	    /* we have no more data in the input, seems that this tranasform 
-	     * returns nothing to the caller.
-	     */
+	if(inRes > 0) {
+	    xmlSecAssert2(inRes <= transform->binBufSize, -1);
+	    if(inRes < transform->binBufSize) {
+	        memmove(transform->binBuf, transform->binBuf + inRes, transform->binBufSize - inRes);
+	    }	
+	    transform->binBufSize -= inRes;
+	} else if(outRes > 0) {
+	    /* we have something to return to the caller */
 	    break;
-	} else if(in.endPos >= in.maxSize) {
-	    /* we are full but the transform consumed nothing, 
-	     * this should never happen
+	} else {
+	    /* if we processed nothing and have nothing in return
+	     * then we had nothing to process and it's the end
 	     */
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"no data processed by \"%s\"",
-			transform->id->name);
-	    return(-1);	     
+	     xmlSecAssert2(transform->binBufSize == 0, -1);
+	     break;
 	}
-    } while(out.endPos == 0);
-
-    /* remember current status for the future */    
-    if(in.startPos < in.endPos) {
-	transform->binBufSize = in.endPos - in.startPos;
-    } else {
-	transform->binBufSize = 0;
     }
-    return(out.endPos);
+
+    return(outRes);
 }
 
 /**
@@ -532,46 +511,45 @@ xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform,
 int
 xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    xmlSecTransformBinData in, out;
+    size_t inRes = 0, outRes = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(buf != NULL, -1);
 
-    memset(&in, 0, sizeof(xmlSecTransformBinData));
-    in.buf 	= (unsigned char*)buf;
-    in.maxSize 	= size;
-    in.endPos	= size;
-    in.status 	= xmlSecTransformStatusMoreData;
-    
-    memset(&out, 0, sizeof(xmlSecTransformBinData));
-    out.buf 	= transform->binBuf;
-    out.maxSize = sizeof(transform->binBuf);
-    
- 
-    do {
-	out.startPos = out.endPos = 0;
-	ret = xmlSecTransformExecuteBin(transform, &in, &out);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecuteBin");
-	    return(-1);
-	}
-	
-	if((out.startPos < out.endPos) && (transform->next != NULL)) {
+    if(buf == NULL) {
+	return(0);
+    }
+
+    while(size > 0) {
+	if((transform->binBufSize > 0) && (transform->next != NULL)) {
 	    ret = xmlSecTransformWriteBin(transform->next,
-					  out.buf + out.startPos,
-					  out.endPos - out.startPos);
+					  transform->binBuf,
+					  transform->binBufSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecTransformWriteBin");
 		return(-1);
 	    }
+	    transform->binBufSize = 0;
 	}
-    } while(in.startPos < in.endPos);
-
+	
+	ret = xmlSecTransformExecuteBin(transform, buf, size, &inRes,
+			transform->binBuf, sizeof(transform->binBuf), &outRes);
+    	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformExecuteBin");
+	    return(-1);
+	}
+	if(inRes > 0) {
+	    xmlSecAssert2(inRes < size, -1);
+	    buf += inRes;
+	    size -= inRes;
+	}
+	transform->binBufSize = outRes;
+    };
+    
     return(0);
 }
 
@@ -585,54 +563,37 @@ xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform,
  */
 int
 xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
-    xmlSecTransformBinData in, out;
+    size_t inRes = 0, outRes = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
 
-    memset(&in, 0, sizeof(xmlSecTransformBinData));
-    in.buf 	= NULL;
-    in.maxSize 	= 0;
-    in.endPos	= 0;
-    in.status 	= xmlSecTransformStatusLastData;
-    
-    memset(&out, 0, sizeof(xmlSecTransformBinData));
-    out.buf 	= transform->binBuf;
-    out.maxSize = sizeof(transform->binBuf);
-
     do {
-	out.startPos = out.endPos = 0;
-	ret = xmlSecTransformExecuteBin(transform, &in, &out);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecuteBin");
-	    return(-1);
-	}
-	
-	if((out.startPos < out.endPos) && (transform->next != NULL)) {
+	if((transform->binBufSize > 0) && (transform->next != NULL)) {
 	    ret = xmlSecTransformWriteBin(transform->next,
-					  out.buf + out.startPos,
-					  out.endPos - out.startPos);
+					  transform->binBuf,
+					  transform->binBufSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecTransformWriteBin");
 		return(-1);
 	    }
+	    transform->binBufSize = 0;
 	}
-    } while(out.status != xmlSecTransformStatusLastData);
-
-    if(transform->next != NULL) {
-	ret = xmlSecTransformFlushBin(transform->next);
-	if(ret < 0) {
+	
+	ret = xmlSecTransformExecuteBin(transform, NULL, 0, &inRes,
+			transform->binBuf, sizeof(transform->binBuf), &outRes);
+    	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformFlushBin");
+			"xmlSecTransformExecuteBin");
 	    return(-1);
 	}
-    }
-    	
+	xmlSecAssert2(inRes == 0, -1);
+	transform->binBufSize = outRes;
+    } while(outRes > 0);
+    
     return(0);
 }
 

@@ -267,11 +267,12 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     xmlSecAssert2(filename != NULL, -1);
 
     /* find requested data */
-    dataId = xmlSecKeyDataIdsFindByName(BAD_CAST keyKlass, xmlSecKeyDataUsageAny);
+    dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST keyKlass, 
+					   xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecKeyDataIdsFindByName",
+		    "xmlSecKeyDataIdListFindByName",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(keyKlass));

@@ -86,7 +86,6 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
     
     memset(ctx, 0, sizeof(xmlSecEncCtx));
 
-#ifdef TODO
     /* initialize key info */
     ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoCtx), keysMngr);
     if(ret < 0) {
@@ -97,9 +96,6 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);   
     }
-#else /* TODO */
-    ctx->keyInfoCtx.keysMngr = keysMngr;
-#endif /* TODO */  
 
     /* initializes transforms ctx */
     ret = xmlSecTransformCtxInitialize(&(ctx->transformCtx));
@@ -120,9 +116,7 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformCtxFinalize(&(ctx->transformCtx));
-#ifdef TODO
     xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoCtx));
-#endif /* TODO */  
 
     if(ctx->defEncMethod != NULL) {
 	xmlSecTransformDestroy(ctx->defEncMethod, 1);
@@ -384,8 +378,6 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
 
 xmlSecBufferPtr
 xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
-    xmlChar* data = NULL;
-    size_t dataSize = 0;
     int ret;
     
     xmlSecAssert2(ctx != NULL, NULL);

@@ -20,6 +20,7 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
 
 /**
@@ -41,7 +42,7 @@ XMLSEC_EXPORT int 		xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataNameGetKlass		(void);
 
 /**
- * xmlSecKeyDataValueId
+	 * xmlSecKeyDataValueId
  *
  * The <dsig:KeyValue> processing class.
  */
@@ -74,20 +75,40 @@ XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataEncryptedKeyGetKlass	(void);
  * TODO
  */
 struct _xmlSecKeyInfoCtx {
+    void*				userData;
     xmlSecKeysMngrPtr			keysMngr;
-    void				*context;
-    
-    xmlSecKeyReq			keyReq;
-
     int					base64LineSize;
+    xmlSecPtrListPtr			allowedKeyDataIds;
+    
+    /* RetrievalMethod */
     int 				retrievalsLevel;
+
+    /* EncryptedKey */
     int					encKeysLevel;                
 
-    /* x509 certificate */
+    /* x509 certificates */
     int					failIfCertNotFound;
     time_t				certsVerificationTime;
     int					certsVerificationDepth;
+    
+    /* internal data */
+    xmlSecKeyReq			keyReq;
+
 };
+
+XMLSEC_EXPORT xmlSecKeyInfoCtxPtr 	xmlSecKeyInfoCtxCreate		(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void			xmlSecKeyInfoCtxDestroy		(xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int			xmlSecKeyInfoCtxInitialize	(xmlSecKeyInfoCtxPtr keyInfoCtx,
+									 xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void			xmlSecKeyInfoCtxFinalize	(xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int			xmlSecKeyInfoCtxCopyUserPref	(xmlSecKeyInfoCtxPtr dst,
+									 xmlSecKeyInfoCtxPtr src);
+XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyData	(xmlSecKeyInfoCtxPtr keyInfoCtx,
+									 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyDataByName(xmlSecKeyInfoCtxPtr keyInfoCtx,
+									 const xmlChar* name);
+
+
 
 #define xmlSecKeyInfoNodeCheckOrigin(status, origin) \
 	( ( ((status) != NULL) && \

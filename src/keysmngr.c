@@ -421,9 +421,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;
-    xmlSecKeyDataId dataId;
     xmlSecKeyDataPtr data;
-    size_t idsSize, j;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
@@ -472,8 +470,15 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 
     list = xmlSecSimpleKeysStoreGetList(store);
     if(list != NULL) {
+	xmlSecPtrListPtr idsList;
+	xmlSecKeyDataId dataId;
+	size_t idsSize, j;
+	
+	idsList = xmlSecKeyDataIdsGet();	
+	xmlSecAssert2(idsList != NULL, -1);
+	
         keysSize = xmlSecPtrListGetSize(list);
-	idsSize = xmlSecKeyDataIdsGetSize();
+	idsSize = xmlSecPtrListGetSize(idsList);
 	for(i = 0; i < keysSize; ++i) {
 	    key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, i);
 	    xmlSecAssert2(key != NULL, -1);
@@ -504,10 +509,9 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     
 	    /* create nodes for other keys data */
 	    for(j = 0; j < idsSize; ++j) {
-		dataId = xmlSecKeyDataIdsGetId(j);
-		if(dataId == xmlSecKeyDataIdUnknown) {
-		    break;
-		}
+		dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(idsList, j);
+		xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, -1);
+
 		if(dataId->dataNodeName == NULL) {
 		    continue;
 		}

@@ -81,21 +81,12 @@ typedef unsigned int				xmlSecKeyDataType;
  * Global xmlSecKeyDataIds methods
  *
  *************************************************************************/
-XMLSEC_EXPORT	int		xmlSecKeyDataIdsInit		(void);
-XMLSEC_EXPORT	int 		xmlSecKeyDataIdsRegisterDefault	(void);
-XMLSEC_EXPORT	int 		xmlSecKeyDataIdsRegister	(xmlSecKeyDataId id);
-XMLSEC_EXPORT	void 		xmlSecKeyDataIdsClear		(void);
-XMLSEC_EXPORT	size_t 		xmlSecKeyDataIdsGetSize		(void);
-XMLSEC_EXPORT	xmlSecKeyDataId	xmlSecKeyDataIdsGetId		(size_t pos);
-XMLSEC_EXPORT	xmlSecKeyDataId	xmlSecKeyDataIdsFindByNode	(const xmlChar* nodeName,
-								 const xmlChar* nodeNs,
-								 xmlSecKeyDataUsage usage);
-XMLSEC_EXPORT	xmlSecKeyDataId	xmlSecKeyDataIdsFindByHref	(const xmlChar* href,
-								 xmlSecKeyDataUsage usage);
-XMLSEC_EXPORT	xmlSecKeyDataId	xmlSecKeyDataIdsFindByName	(const xmlChar* name,
-								 xmlSecKeyDataUsage usage);
-
-
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecKeyDataIdsGet		(void);
+XMLSEC_EXPORT int		xmlSecKeyDataIdsInit		(void);
+XMLSEC_EXPORT void		xmlSecKeyDataIdsShutdown	(void);
+XMLSEC_EXPORT int 		xmlSecKeyDataIdsRegisterDefault	(void);
+XMLSEC_EXPORT int 		xmlSecKeyDataIdsRegister	(xmlSecKeyDataId id);
+	
 /**************************************************************************
  *
  * xmlSecKeyData
@@ -406,8 +397,26 @@ struct _xmlSecKeyDataKlass {
  * Key Data list
  *
  **********************************************************************/
-#define xmlSecKeyDataPtrListId	xmlSecKeyDataPtrListGetKlass()
-XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataPtrListGetKlass		(void);
+#define xmlSecKeyDataListId	xmlSecKeyDataListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataListGetKlass	(void);
+
+/***********************************************************************
+ *
+ * Key Data Ids list
+ *
+ **********************************************************************/
+#define xmlSecKeyDataIdListId	xmlSecKeyDataIdListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataIdListGetKlass	(void);
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataIdListFindByNode	(xmlSecPtrListPtr list,
+								 const xmlChar* nodeName,
+								 const xmlChar* nodeNs,
+								 xmlSecKeyDataUsage usage);
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataIdListFindByHref	(xmlSecPtrListPtr list,
+								 const xmlChar* href,
+								 xmlSecKeyDataUsage usage);
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataIdListFindByName	(xmlSecPtrListPtr list,
+								 const xmlChar* name,
+								 xmlSecKeyDataUsage usage);
 
 
 /**************************************************************************

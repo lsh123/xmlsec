@@ -278,6 +278,24 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
 
 /***********************************************************************
  *
+ * Static Objects list
+ *
+ **********************************************************************/
+static xmlSecPtrListKlass xmlSecStaticObjectListKlass = {
+    BAD_CAST "static-objects-list",
+    NULL,					/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    NULL,					/* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,					/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,					/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId 
+xmlSecStaticObjectListGetKlass(void) {
+    return(&xmlSecStaticObjectListKlass);
+}
+
+/***********************************************************************
+ *
  * strings list
  *
  **********************************************************************/

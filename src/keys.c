@@ -394,13 +394,13 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
     }
     
     if(key->dataList == NULL) {
-	key->dataList = xmlSecPtrListCreate(xmlSecKeyDataPtrListId);
+	key->dataList = xmlSecPtrListCreate(xmlSecKeyDataListId);
 	if(key->dataList == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			"xmlSecKey",
 			"xmlSecPtrListCreate",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataPtrListId");
+			"xmlSecKeyDataListId");
 	    return(-1);
 	}
     }
@@ -562,11 +562,11 @@ xmlSecKeyGenerate(const xmlChar* klass, const xmlChar* name, size_t sizeBits, xm
     
     xmlSecAssert2(klass != NULL, NULL);
     
-    dataId = xmlSecKeyDataIdsFindByName(klass, xmlSecKeyDataUsageAny);
+    dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), klass, xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    "xmlSecKey",
-		    "xmlSecKeyDataIdsFindByName",
+		    "xmlSecKeyDataIdListFindByName",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "klass=%s", klass);
 	return(NULL);    

@@ -103,6 +103,15 @@ struct _xmlSecPtrListKlass {
 
 /**************************************************************************
  *
+ * xmlSecStaticObjectListKlass:
+ *
+ *************************************************************************/
+#define xmlSecStaticObjectListId \
+	xmlSecStaticObjectListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecStaticObjectListGetKlass	(void);
+
+/**************************************************************************
+ *
  * xmlSecStringListKlass
  *
  *************************************************************************/

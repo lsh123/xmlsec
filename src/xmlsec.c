@@ -65,6 +65,7 @@ xmlSecInit(void) {
 int
 xmlSecShutdown(void) {
     xmlSecIOShutdown();
+    xmlSecKeyDataIdsShutdown();
     xmlSecErrorsShutdown();
     
     return(0);

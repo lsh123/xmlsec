@@ -29,14 +29,26 @@
  * Global xmlSecKeyDataIds list functions
  *
  *************************************************************************/
-static xmlSecKeyDataId xmlSecAllKeyDataIds[100];
+static xmlSecPtrList xmlSecAllKeyDataIds;
+
+xmlSecPtrListPtr
+xmlSecKeyDataIdsGet(void) {
+    return(&xmlSecAllKeyDataIds);
+}
 
 int 
 xmlSecKeyDataIdsInit(void) {
     int ret;
     
-    memset(xmlSecAllKeyDataIds, 0, sizeof(xmlSecAllKeyDataIds));
-    xmlSecAllKeyDataIds[0] = xmlSecKeyDataIdUnknown;
+    ret = xmlSecPtrListInitialize(xmlSecKeyDataIdsGet(), xmlSecKeyDataIdListId);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListPtrInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataIdListId");
+        return(-1);
+    }
     
     ret = xmlSecKeyDataIdsRegisterDefault();
     if(ret < 0) {
@@ -49,6 +61,11 @@ xmlSecKeyDataIdsInit(void) {
     }
     
     return(0);
+}
+
+void
+xmlSecKeyDataIdsShutdown(void) {
+    xmlSecPtrListFinalize(xmlSecKeyDataIdsGet());
 }
 
 int 
@@ -93,98 +110,21 @@ xmlSecKeyDataIdsRegisterDefault(void) {
 
 int 
 xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
-    unsigned int i;
+    int ret;
+        
+    xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     
-    xmlSecAssert2(id != NULL, -1);
-    
-    for(i = 0; i < sizeof(xmlSecAllKeyDataIds) / sizeof(xmlSecAllKeyDataIds[0]) - 1; ++i) {
-	if(xmlSecAllKeyDataIds[i] == xmlSecKeyDataIdUnknown) {
-	    xmlSecAllKeyDataIds[i++] = id;
-	    xmlSecAllKeyDataIds[i++] = xmlSecKeyDataIdUnknown;
-	    
-	    return(0);
-	}
+    ret = xmlSecPtrListAdd(xmlSecKeyDataIdsGet(), (xmlSecPtr)id);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListAdd",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		NULL,
-		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		"no more key slots available; increase xmlSecAllKeyDataIds table size");
-    return(-1);    
-}
-
-void
-xmlSecKeyDataIdsClear(void) {
-    memset(xmlSecAllKeyDataIds, 0, sizeof(xmlSecAllKeyDataIds));
-    xmlSecAllKeyDataIds[0] = xmlSecKeyDataIdUnknown;
-}
-
-size_t 	
-xmlSecKeyDataIdsGetSize(void) {
-    size_t res = 0;
-    size_t i;
-            
-    for(i = 0; xmlSecAllKeyDataIds[i] != xmlSecKeyDataIdUnknown; ++i) {
-	++res;
-    }
-    
-    return(res);
-}
-
-xmlSecKeyDataId	
-xmlSecKeyDataIdsGetId(size_t pos) {
-    /* todo: add checks !!! */
-    return(xmlSecAllKeyDataIds[pos]);
-}
-
-xmlSecKeyDataId	
-xmlSecKeyDataIdsFindByNode(const xmlChar* nodeName, const xmlChar* nodeNs, xmlSecKeyDataUsage usage) {
-    unsigned int i;
-
-    xmlSecAssert2(nodeName != NULL, xmlSecKeyDataIdUnknown);
-    for(i = 0; xmlSecAllKeyDataIds[i] != xmlSecKeyDataIdUnknown; ++i) {
-	if(((usage & xmlSecAllKeyDataIds[i]->usage) != 0) &&
-	   xmlStrEqual(nodeName, xmlSecAllKeyDataIds[i]->dataNodeName) &&
-	   xmlStrEqual(nodeNs, xmlSecAllKeyDataIds[i]->dataNodeNs)) {
-	    
-	   return(xmlSecAllKeyDataIds[i]);	   
-	}
-    }
-    
-    return(xmlSecKeyDataIdUnknown);
-}
-
-xmlSecKeyDataId	
-xmlSecKeyDataIdsFindByHref(const xmlChar* href, xmlSecKeyDataUsage usage) {
-    unsigned int i;
-
-    xmlSecAssert2(href != NULL, xmlSecKeyDataIdUnknown);
-    for(i = 0; xmlSecAllKeyDataIds[i] != xmlSecKeyDataIdUnknown; ++i) {
-	if(((usage & xmlSecAllKeyDataIds[i]->usage) != 0) &&
-	   xmlStrEqual(href, xmlSecAllKeyDataIds[i]->href)) {
-	   
-	   return(xmlSecAllKeyDataIds[i]);	   
-	}
-    }
-    
-    return(xmlSecKeyDataIdUnknown);
-}
-
-xmlSecKeyDataId	
-xmlSecKeyDataIdsFindByName(const xmlChar* name, xmlSecKeyDataUsage usage) {
-    unsigned int i;
-
-    xmlSecAssert2(name != NULL, xmlSecKeyDataIdUnknown);
-    for(i = 0; xmlSecAllKeyDataIds[i] != xmlSecKeyDataIdUnknown; ++i) {
-	if(((usage & xmlSecAllKeyDataIds[i]->usage) != 0) &&
-	   xmlStrEqual(name, BAD_CAST xmlSecAllKeyDataIds[i]->name)) {
-	   
-	   return(xmlSecAllKeyDataIds[i]);	   
-	}
-    }
-    
-    return(xmlSecKeyDataIdUnknown);
+    return(0);    
 }
 
 /**************************************************************************
@@ -927,8 +867,8 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, const unsigned char* bu
  * Keys Data list
  *
  **********************************************************************/
-static xmlSecPtrListKlass xmlSecKeyDataPtrListKlass = {
-    BAD_CAST "keys-data-list",
+static xmlSecPtrListKlass xmlSecKeyDataListKlass = {
+    BAD_CAST "key-data-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDataDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
     (xmlSecPtrDestroyItemMethod)xmlSecKeyDataDestroy,		/* xmlSecPtrDestroyItemMethod destroyItem; */
     (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDataDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
@@ -936,8 +876,94 @@ static xmlSecPtrListKlass xmlSecKeyDataPtrListKlass = {
 };
 
 xmlSecPtrListId 
-xmlSecKeyDataPtrListGetKlass(void) {
-    return(&xmlSecKeyDataPtrListKlass);
+xmlSecKeyDataListGetKlass(void) {
+    return(&xmlSecKeyDataListKlass);
+}
+
+
+/***********************************************************************
+ *
+ * Keys Data Ids list
+ * TODO: debug dump
+ **********************************************************************/
+static xmlSecPtrListKlass xmlSecKeyDataIdListKlass = {
+    BAD_CAST "key-data-ids-list",
+    NULL, 							/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    NULL,							/* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,							/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,							/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId 
+xmlSecKeyDataIdListGetKlass(void) {
+    return(&xmlSecKeyDataIdListKlass);
+}
+
+xmlSecKeyDataId	
+xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
+			    const xmlChar* nodeNs, xmlSecKeyDataUsage usage) {
+    xmlSecKeyDataId dataId;
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
+    xmlSecAssert2(nodeName != NULL, xmlSecKeyDataIdUnknown);
+    
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
+
+	if(((usage & dataId->usage) != 0) &&
+	   xmlStrEqual(nodeName, dataId->dataNodeName) &&
+	   xmlStrEqual(nodeNs, dataId->dataNodeNs)) {
+	    
+	   return(dataId);	   
+	}
+    }
+    return(xmlSecKeyDataIdUnknown);
+}
+
+xmlSecKeyDataId	
+xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
+			    xmlSecKeyDataUsage usage) {
+    xmlSecKeyDataId dataId;
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
+
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
+
+	if(((usage & dataId->usage) != 0) &&
+	   xmlStrEqual(href, dataId->href)) {
+	   
+	   return(dataId);	   
+	}
+    }
+    return(xmlSecKeyDataIdUnknown);
+}
+
+xmlSecKeyDataId	
+xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name, 
+			    xmlSecKeyDataUsage usage) {
+    xmlSecKeyDataId dataId;
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), xmlSecKeyDataIdUnknown);
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
+
+	if(((usage & dataId->usage) != 0) &&
+	   xmlStrEqual(name, BAD_CAST dataId->name)) {
+	   
+	   return(dataId);	   
+	}
+    }
+    return(xmlSecKeyDataIdUnknown);
 }
 
 /**************************************************************************

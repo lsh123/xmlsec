@@ -33,6 +33,8 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(keyReq != NULL, -1);
     
     memset(keyReq, 0, sizeof(xmlSecKeyReq));
+    
+    keyReq->keyUsage	= xmlSecKeyUsageAny;	/* by default you can do whatever you want with the key */
     return(0);
 }
 
@@ -60,8 +62,10 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     if((xmlSecKeyGetType(key) & keyReq->keyType) == 0) {
 	 return(0);
     }
-    /* todo: key usage? */
-    
+    if((keyReq->keyUsage & key->usage) == 0) {
+	return(0);
+    }
+
     return(xmlSecKeyReqMatchKeyValue(keyReq, xmlSecKeyGetValue(key)));
 }
 
@@ -108,6 +112,7 @@ xmlSecKeyCreate(void)  {
 	return(NULL);
     }
     memset(key, 0, sizeof(xmlSecKey));    
+    key->usage = xmlSecKeyUsageAny;	
     return(key);
 }
 
@@ -151,18 +156,6 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     xmlSecKeyEmpty(keyDst);
 
     /* copy everything */    
-    if(keySrc->value != NULL) {
-	keyDst->value = xmlSecKeyDataDuplicate(keySrc->value);
-	if(keyDst->value == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKey",
-			"xmlSecKeyDataDuplicate",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);	
-        }
-    }
-    
     if(keySrc->name != NULL) {
 	keyDst->name = xmlStrdup(keySrc->name);
 	if(keyDst->name == NULL) {
@@ -175,6 +168,18 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
         }
     }
 
+    if(keySrc->value != NULL) {
+	keyDst->value = xmlSecKeyDataDuplicate(keySrc->value);
+	if(keyDst->value == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			"xmlSecKey",
+			"xmlSecKeyDataDuplicate",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);	
+        }
+    }
+    
     if(keySrc->dataList != NULL) {
 	keyDst->dataList = xmlSecPtrListDuplicate(keySrc->dataList);
 	if(keyDst->dataList == NULL) {
@@ -186,7 +191,8 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
 	    return(-1);
         }
     }
-
+    
+    keyDst->usage = keySrc->usage;
     return(0);
 }
 

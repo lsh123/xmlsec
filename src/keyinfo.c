@@ -249,6 +249,8 @@ xmlSecKeyInfoCtxDestroy(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
 int 
 xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr keysMngr) {
+    int ret;
+    
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
@@ -258,6 +260,16 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     keyInfoCtx->allowedRetrievalMethodUris 	= xmlSecUriTypeAny;
     keyInfoCtx->maxEncryptedKeyLevel 		= 1;
     keyInfoCtx->certsVerificationDepth 		= 9;
+    
+    ret = xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyReqInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
     
     return(0);
 }
@@ -277,6 +289,9 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	xmlSecEncCtxDestroy(keyInfoCtx->encCtx);
     }
 #endif /* XMLSEC_NO_XMLENC */
+
+    xmlSecKeyReqFinalize(&(keyInfoCtx->keyReq));
+    
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
 }
 
@@ -338,6 +353,8 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
 int 
 xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
+    int ret;
+    
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(dst->allowedKeyDataIds == NULL, -1);
     xmlSecAssert2(src != NULL, -1);
@@ -368,6 +385,16 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     dst->failIfCertNotFound 	= src->failIfCertNotFound;
     dst->certsVerificationTime	= src->certsVerificationTime;
     dst->certsVerificationDepth	= src->certsVerificationDepth;
+
+    ret = xmlSecKeyReqCopy(&(dst->keyReq), &(src->keyReq));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyReqCopy",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
     
     return(0);
 }

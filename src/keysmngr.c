@@ -610,7 +610,7 @@ xmlSecSimpleKeysStoreFinalize(xmlSecKeyDataStorePtr store) {
     list = xmlSecSimpleKeysStoreGetList(store);
     xmlSecAssert(list != NULL);
     
-    xmlSecPtrListDestroy(list);
+    xmlSecPtrListFinalize(list);
 }
 
 static int

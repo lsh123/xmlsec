@@ -30,14 +30,12 @@ extern "C" {
  *
  * The key usage.
  */
-typedef enum  {
-    xmlSecKeyUsageAny = 0,
-    xmlSecKeyUsageSign,
-    xmlSecKeyUsageVerify,
-    xmlSecKeyUsageEncrypt,
-    xmlSecKeyUsageDecrypt
-} xmlSecKeyUsage;
-
+typedef unsigned int 			xmlSecKeyUsage;
+#define	xmlSecKeyUsageSign		0x0001
+#define	xmlSecKeyUsageVerify		0x0002
+#define	xmlSecKeyUsageEncrypt		0x0004
+#define	xmlSecKeyUsageDecrypt		0x0008
+#define	xmlSecKeyUsageAny		0xFFFF
 
 /**************************************************************************
  *
@@ -69,10 +67,11 @@ XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
  * The key.
  */
 struct _xmlSecKey {
-    xmlSecKeyDataPtr			value;
     xmlChar*				name;
+    xmlSecKeyDataPtr			value;
     xmlSecPtrListPtr			dataList;
-
+    xmlSecKeyUsage			usage;
+    
     /* for the future */
     void*				reserved0;
     void*				reserved1;

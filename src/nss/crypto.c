@@ -296,6 +296,8 @@ xmlSecNssTransformsInit(void) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+    /* This is not supported by NSS yet */
+#if 0    
     if(xmlSecTransformIdsRegister(xmlSecNssTransformRsaPkcs1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformRsaPkcs1Id)),
@@ -304,6 +306,7 @@ xmlSecNssTransformsInit(void) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+#endif /* 0 */
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -1,3 +1,7 @@
+7/28/2003
+       1. RSA Encryption/Decryption using PKCS#1 v1.5 padding not currently
+          exposed in NSS. This causes some tests to fail.
+          (http://bugzilla.mozilla.org/show_bug.cgi?id=214236)
 
 7/24/2003
 

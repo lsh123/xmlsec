@@ -182,7 +182,6 @@ int
 xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd, const char *name) {
     xmlSecKeyPtr key;
     char buf[1024] = "";
-    char prompt[1024];
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);

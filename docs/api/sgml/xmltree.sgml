@@ -39,9 +39,6 @@ int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>      
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNodeById">xmlSecFindNodeById</link>              (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *id);
-<link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> <link linkend="xmlSecGetChildNodeSet">xmlSecGetChildNodeSet</link>         (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodeSet,
-                                             int withComments);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChild">xmlSecAddChild</link>                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
@@ -305,35 +302,6 @@ node subtree</para>
 <entry>
 </entry></row>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGetChildNodeSet">xmlSecGetChildNodeSet ()</title>
-<programlisting><link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> xmlSecGetChildNodeSet         (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodeSet,
-                                             int withComments);</programlisting>
-<para>
-Creates a node set that includes all nodes in given subtree</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>nodeSet</parameter>&nbsp;:</entry>
-<entry>
-<parameter>withComments</parameter>
-</entry></row>
-<row><entry align="right"><parameter>withComments</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>

@@ -72,7 +72,6 @@ extern      xmlSecTransformId 	<link linkend="xmlSecDigestSha1">xmlSecDigestSha1
 enum        <link linkend="xmlSecXPath2TransformType">xmlSecXPath2TransformType</link>;
 extern      xmlSecTransformId 	<link linkend="xmlSecTransformXPath">xmlSecTransformXPath</link>;
 extern      xmlSecTransformId 	<link linkend="xmlSecTransformXPath2">xmlSecTransformXPath2</link>;
-extern      xmlSecTransformId 	<link linkend="xmlSecXPathAlt">xmlSecXPathAlt</link>;
 int         <link linkend="xmlSecTransformXPathAdd">xmlSecTransformXPathAdd</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *expression,
                                              const <link linkend="xmlChar">xmlChar</link> **namespaces);
@@ -562,8 +561,7 @@ Adds "inclusive" namespaces to the ExcC14N transform node</para>
 <refsect2>
 <title><anchor id="xmlSecXPath2TransformType">enum xmlSecXPath2TransformType</title>
 <programlisting>typedef enum {
-    xmlSecXPathTransformUnknown = 0,
-    xmlSecXPathTransformIntersect,
+    xmlSecXPathTransformIntersect = 0,
     xmlSecXPathTransformSubtract,
     xmlSecXPathTransformUnion
 } xmlSecXPath2TransformType;
@@ -581,13 +579,6 @@ Adds "inclusive" namespaces to the ExcC14N transform node</para>
 <refsect2>
 <title><anchor id="xmlSecTransformXPath2">xmlSecTransformXPath2</title>
 <programlisting>extern xmlSecTransformId 	xmlSecTransformXPath2;
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecXPathAlt">xmlSecXPathAlt</title>
-<programlisting>extern xmlSecTransformId 	xmlSecXPathAlt;
 </programlisting>
 <para>
 

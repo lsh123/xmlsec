@@ -49,13 +49,13 @@ int         (<link linkend="xmlSecXmlTransformExecuteMethod">*xmlSecXmlTransform
                                             (<link linkend="xmlSecXmlTransformPtr">xmlSecXmlTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> ctxDoc,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> *doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> *nodes);
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> *nodes);
 typedef     <link linkend="xmlSecXmlTransformId">xmlSecXmlTransformId</link>;
 struct      <link linkend="xmlSecXmlTransformIdStruct">xmlSecXmlTransformIdStruct</link>;
 int         (<link linkend="xmlSecC14NTransformExecuteMethod">*xmlSecC14NTransformExecuteMethod</link>)
                                             (<link linkend="xmlSecC14NTransformPtr">xmlSecC14NTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> buffer);
 typedef     <link linkend="xmlSecC14NTransformId">xmlSecC14NTransformId</link>;
 struct      <link linkend="xmlSecC14NTransformIdStruct">xmlSecC14NTransformIdStruct</link>;
@@ -105,16 +105,16 @@ void        <link linkend="xmlSecBinTransformSetEncrypt">xmlSecBinTransformSetEn
 int         <link linkend="xmlSecXmlTransformExecute">xmlSecXmlTransformExecute</link>       (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> ctxDoc,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> *doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> *nodes);
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> *nodes);
 void        <link linkend="xmlSecXmlTransformSetHere">xmlSecXmlTransformSetHere</link>       (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> trasnform,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> here);
 int         <link linkend="xmlSecC14NTransformExecute">xmlSecC14NTransformExecute</link>      (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> buffer);
 <link linkend="xmlSecTransformStatePtr">xmlSecTransformStatePtr</link> <link linkend="xmlSecTransformStateCreate">xmlSecTransformStateCreate</link>
                                             (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodeSet,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodeSet,
                                              const char *uri);
 void        <link linkend="xmlSecTransformStateDestroy">xmlSecTransformStateDestroy</link>     (<link linkend="xmlSecTransformStatePtr">xmlSecTransformStatePtr</link> state);
 int         <link linkend="xmlSecTransformStateUpdate">xmlSecTransformStateUpdate</link>      (<link linkend="xmlSecTransformStatePtr">xmlSecTransformStatePtr</link> state,
@@ -429,7 +429,7 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
                                             (<link linkend="xmlSecXmlTransformPtr">xmlSecXmlTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> ctxDoc,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> *doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> *nodes);</programlisting>
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> *nodes);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -485,7 +485,7 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <programlisting>int         (*xmlSecC14NTransformExecuteMethod)
                                             (<link linkend="xmlSecC14NTransformPtr">xmlSecC14NTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> buffer);</programlisting>
 <para>
 
@@ -1100,7 +1100,7 @@ Destroys all transforms in the chain</para>
 <programlisting>int         xmlSecXmlTransformExecute       (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> ctxDoc,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> *doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> *nodes);</programlisting>
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> *nodes);</programlisting>
 <para>
 </para>
 <para>
@@ -1151,7 +1151,7 @@ Destroys all transforms in the chain</para>
 <title><anchor id="xmlSecC14NTransformExecute">xmlSecC14NTransformExecute ()</title>
 <programlisting>int         xmlSecC14NTransformExecute      (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> buffer);</programlisting>
 <para>
 </para>
@@ -1183,7 +1183,7 @@ Destroys all transforms in the chain</para>
 <title><anchor id="xmlSecTransformStateCreate">xmlSecTransformStateCreate ()</title>
 <programlisting><link linkend="xmlSecTransformStatePtr">xmlSecTransformStatePtr</link> xmlSecTransformStateCreate
                                             (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodeSet,
+                                             <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodeSet,
                                              const char *uri);</programlisting>
 <para>
 </para>

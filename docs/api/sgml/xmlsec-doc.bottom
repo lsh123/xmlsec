@@ -19,3 +19,4 @@
     &xmlsec-xmlsec;
     &xmlsec-xmltree;
     &xmlsec-xpath;
+    &xmlsec-nodeset;

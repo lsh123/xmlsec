@@ -145,7 +145,13 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
 	    xmlNs ns;
 	    
 	    memcpy(&ns, node, sizeof(ns)); 
-	    ns.next = (xmlNsPtr)parent; /* this is a libxml hack! check xpath.c for details */
+	    
+	    /* this is a libxml hack! check xpath.c for details */
+	    if((parent != NULL) && (parent->type == XML_ATTRIBUTE_NODE)) {
+		ns.next = (xmlNsPtr)parent->parent;
+	    } else {
+		ns.next = (xmlNsPtr)parent; 
+	    }
 
 	    /* 
 	     * If the input is an XPath node-set, then the node-set must explicitly 

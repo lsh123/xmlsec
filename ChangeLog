@@ -1,3 +1,7 @@
+2004-04-19  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/nodeset.c: fixing C14N bug with processing namespaces from attributes
+
 2004-04-13  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html docs/news.html:

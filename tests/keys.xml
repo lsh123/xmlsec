@@ -3,25 +3,25 @@
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes256</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">8BdhoYdwvsPOQykZ1GXYiEspbNxm92xTEYfOI+6jlF0=</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">2ZmZ1OPSX7uAPI67y3sQKS9TxOlsvIJ6u2XWQr4W+sE=</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes192</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">8gJu2yw1X5odHUky98DWiF/4MalW7aR5</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">oDohUcek7qpXM387uiQaS7hW7rjqFaj3</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes128</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">AET3MX1CUD/zJylDPRNdvA==</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">JO7vJ442rKxfU5qehhcnVw==</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-des</KeyName>
 <KeyValue>
-<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">EvwAcFLhIzTMhLSfBlzit1c5JWxnQi42</DESKeyValue>
+<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">xrDDQ3sZtcVUowE02slMFXgvl0maa7fl</DESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -29,22 +29,22 @@
 <KeyValue>
 <DSAKeyValue>
 <P>
-ty9K0GIq14X9bdweeZSjJwWh7tS6rie4Eooup32LNj/I7I1/80IhbNYpOMb2LZYo
-VxAjZ6EMBAFhwkNx9u0KQ48hx27DeuUCuwbc6nZcrjue/Bvxg/cgtX+vpeqqseY9
-1aWoAYAljCQCfTw0MK7gKnphbZCSDGidg8bFnpPl2iU=
+2oLIwo1x8yFTawAxGqCsdVVrfa+kiMZC5tXpCbTCK3sv2dXLfjy0t2hfHP4AU+Gm
+HmrdRdSDrFeFun4FP5TS2Giwg2BHLD2a8rShIg16PXLcTHYbbiFBf+jNDxBdCVqj
+I1Q1+Qxgd3iHnFttjw6VdyCuJaQfH1KrGsgsY0f56h0=
 </P>
 <Q>
-h0U4hS/jljQbdoGxxdLgI3azwJ0=
+hBW3ZCnYpDiCfI7+rs7aSGR460k=
 </Q>
 <G>
-M7gp9of4jxx6fvrU3e5+snspEl0X9FbPFr7AvZ/vNJqlhJ18YtlxwuhnCy7J0u04
-TjY7V71u7bpIQfKiAJOn5r2l4nzsr/D0lCO1bP9YelndpJvgSkusLtsFxGv54E5t
-qwu9jF9h06LQ3S5rLRIbaMVB6q+hf0cJg6kuAnGpVz4=
+SMfdp9wtu2qPr2i/gEf45NrVhHT8NmpxM6CLX7uKNfeVLwvMhQbREGuQ6PhaDRLL
+wMafcp3+twwNUf3iyjhaWh3YL87+6WjoFZfzrtxHxa4phfZ5A0blhEwtEylqD+/c
+9KaZfP0d+0OK+M9WdZg5b+xgR/EjwKdHjRik3UDbMug=
 </G>
 <Y>
-ssy33XB2msKTO21wtYUcHx6yQndBxMfI4YdRr/lh+kJArV3WnGAfR8+R0mlxTo2I
-ojU/1QZEa3wJMV24MngRCXTdR4zRa8/7yZ/XIgZpNpa5h2xszYhegHmP6TCedvIK
-tz/8WvDYCskdC4lldljqA5WWM4T7oT8l3RRo4sBFKVw=
+c3GAyT0x/0e9HvF7hjuboMCeSyAjYzucIWEk7C5keg1hv/0kiY18aXd5dDi1oLu4
+ws84pImV4lE+SaLiwanpcgrWVD4+HwVOdBAqqpfO0IihURW0KzxBZ5jhjlHPHaEY
+5ieSxWU2TaqAPjnQYgxwgh7nSVx4ApLD/Pb9+h2VbJQ=
 </Y>
 </DSAKeyValue>
 </KeyValue>
@@ -54,20 +54,14 @@ tz/8WvDYCskdC4lldljqA5WWM4T7oT8l3RRo4sBFKVw=
 <KeyValue>
 <RSAKeyValue>
 <Modulus>
-5pPNbYDPBCSoz05/OYXJU2CqF4gO2U8ehIpA4JYhl78JGgKi9W+oeDPb6WJqCHgm
-azoYdPPEzSxRKsWJaQZat+Xm5flk6DgmPMqTdnC/HeXUQyIyUmGA4tPFknrjgZqw
-ZQ6KRbttyVGr1ViBOMpN2sO/0d4lqYTBJ5X6WlnjCN0=
+p8lbqjsOhpk0aGYDB/lmSI2cDwUZ0k9faLqYwic1eFCFmUEcrKH2kxhpJhFQ3GV5
+LnYuCK1Y+B4JnbUvwchzEcsPfJPDVJVV4vcIffOytwn0CTgLdLogDDMotJN3/uFA
+6FGGoT7laK6qO1D1fUuumj3xyCIKvFRkO0eosKx1Tg0=
 </Modulus>
 <Exponent>
 AQAB
 </Exponent>
 </RSAKeyValue>
-</KeyValue>
-</KeyInfo>
-<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-<KeyName>test-hmac-sha1</KeyName>
-<KeyValue>
-<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">WU7QdgxWkF4YU6eV2zDwHisKRpm22qWV</HMACKeyValue>
 </KeyValue>
 </KeyInfo>
 </Keys>

@@ -265,7 +265,7 @@ XMLSEC_MSCRYPTO_OBJS = \
 	$(XMLSEC_MSCRYPTO_INTDIR)\signatures.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\certkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\keysstore.obj \
-	$(XMLSEC_MSCRYPTO_INTDIR)\msx509.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\x509.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\x509vfy.obj
 XMLSEC_MSCRYPTO_OBJS_A = \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\app.obj\
@@ -279,7 +279,7 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\signatures.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\certkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\keysstore.obj \
-	$(XMLSEC_MSCRYPTO_INTDIR_A)\msx509.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\x509.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\x509vfy.obj
 
 #
@@ -454,18 +454,26 @@ apps : $(BINDIR)\$(APP_NAME)
 
 check : check-keys check-dsig check-enc
 
-check-keys : check-tmp $(BINDIR)\$(APP_NAME)
-	sh ../tests/testKeys.sh default ../tests $(BINDIR)/$(APP_NAME) der
-
-check-dsig : check-tmp $(BINDIR)\$(APP_NAME)
-	sh ../tests/testDSig.sh default ../tests $(BINDIR)/$(APP_NAME) der
-
-check-enc : check-tmp $(BINDIR)\$(APP_NAME)
-	sh ../tests/testEnc.sh default ../tests $(BINDIR)/$(APP_NAME) der
-
-check-tmp :
-	if not exist tmp mkdir tmp
+check-keys : $(BINDIR)\$(APP_NAME)
+	cd ..
+	if not exist win32\tmp mkdir win32\tmp
 	set TMPFOLDER=.\tmp
+	sh ./tests/testKeys.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	cd win32
+
+check-dsig : $(BINDIR)\$(APP_NAME)	
+	cd ..
+	if not exist win32\tmp mkdir win32\tmp
+	set TMPFOLDER=win32\tmp
+	sh ./tests/testDSig.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	cd win32
+
+check-enc : $(BINDIR)\$(APP_NAME)
+	cd ..
+	if not exist win32\tmp mkdir win32\tmp
+	set TMPFOLDER=.\tmp
+	sh ./tests/testEnc.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
+	cd win32
 		
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)

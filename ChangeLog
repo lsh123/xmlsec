@@ -1,3 +1,10 @@
+Wed Jul 30 18:35:15 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* xmlsec-gnutls.pc.in xmlsec-nss.pc.in xmlsec-openssl.pc.in: and
+	one more change for the same bug #118685 - don't put "crypto" 
+	in version, use xmlsec1-crypto name instead of xmlsec-crypto,
+	don't include nss flags and libs for xmlsec1-nss.pc
+
 Wed Jul 30 15:23:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am configure.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in 

@@ -1,3 +1,7 @@
+Thu Jul 11 9:19:45 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* Makefile.am configure.in docs/api/*: added API docs
+	generation
+
 Wed Jul 10 21:39:59 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* AUTHORS Makefile.am debian/* : added Debian packaging scripts from 
 	John Belmonte  <jvb@prairienet.org>

@@ -475,5 +475,6 @@ src/Makefile
 apps/Makefile
 tests/Makefile
 man/Makefile
+docs/api/Makefile
 ])
 

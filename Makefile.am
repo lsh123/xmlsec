@@ -19,3 +19,5 @@ EXTRA_DIST = \
 	$(NULL)
 
 
+api-doc:
+	@cd docs/api;make

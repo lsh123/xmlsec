@@ -1,0 +1,107 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!ENTITY xmlsec-base64 SYSTEM "sgml/base64.sgml">
+<!ENTITY xmlsec-bn SYSTEM "sgml/bn.sgml">
+<!ENTITY xmlsec-buffered SYSTEM "sgml/buffered.sgml">
+<!ENTITY xmlsec-ciphers SYSTEM "sgml/ciphers.sgml">
+<!ENTITY xmlsec-debug SYSTEM "sgml/debug.sgml">
+<!ENTITY xmlsec-digests SYSTEM "sgml/digests.sgml">
+<!ENTITY xmlsec-io SYSTEM "sgml/io.sgml">
+<!ENTITY xmlsec-keyinfo SYSTEM "sgml/keyinfo.sgml">
+<!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
+<!ENTITY xmlsec-keysInternal SYSTEM "sgml/keysInternal.sgml">
+<!ENTITY xmlsec-keysmngr SYSTEM "sgml/keysmngr.sgml">
+<!ENTITY xmlsec-membuf SYSTEM "sgml/membuf.sgml">
+<!ENTITY xmlsec-transforms SYSTEM "sgml/transforms.sgml">
+<!ENTITY xmlsec-transformsInternal SYSTEM "sgml/transformsInternal.sgml">
+<!ENTITY xmlsec-version SYSTEM "sgml/version.sgml">
+<!ENTITY xmlsec-x509 SYSTEM "sgml/x509.sgml">
+<!ENTITY xmlsec-xmldsig SYSTEM "sgml/xmldsig.sgml">
+<!ENTITY xmlsec-xmlenc SYSTEM "sgml/xmlenc.sgml">
+<!ENTITY xmlsec-xmlsec SYSTEM "sgml/xmlsec.sgml">
+<!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
+<!ENTITY xmlsec-xpath SYSTEM "sgml/xpath.sgml">
+]>
+<book id="index">
+  <bookinfo>
+    <title>XML Security Library Reference Manual</title>
+    <authorgroup>
+      <author>
+        <firstname>Aleksey</firstname>
+        <surname>Sanin</surname>
+        <affiliation>
+	  <address>
+	    <email>aleksey@aleksey.com</email>
+	  </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <copyright>
+      <year>2002</year>
+      <holder>Aleksey Sanin</holder>
+    </copyright>	
+    <legalnotice>
+      <para>Permission is granted to make and distribute verbatim
+      copies of this manual provided the copyright notice and this
+      permission notice are preserved on all copies.</para>
+
+      <para>Permission is granted to copy and distribute modified
+      versions of this manual under the conditions for verbatim
+      copying, provided also that the entire resulting derived work is
+      distributed under the terms of a permission notice identical to
+      this one.</para>
+
+      <para>Permission is granted to copy and distribute translations
+      of this manual into another language, under the above conditions
+      for modified versions.</para>
+    </legalnotice>
+
+    <abstract>
+      <para>This manual documents the interfaces of the xmlsec
+      library and has some short notes to help get you up to speed
+      with using the library.</para>
+    </abstract>
+
+  </bookinfo>
+
+  <chapter id="xmlsec-notes">
+     <title>XML Security Library Programming Notes</title>
+
+     <para>XML Security Library combines the power of 
+     <ulink url="http://www.openssl.org">OpenSSL</ulink> and 
+     <ulink url="http://www.xmlsoft.org">LibXML2</ulink>
+     libraries and provides implementation for major XML Security 
+     standards:
+    </para>
+  </chapter>
+
+  <chapter id="xmlsec-ref">
+    <title>XML Security Library Reference</title>
+    <para>This section contains the API reference for xmlsec. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+    &xmlsec-base64;
+    &xmlsec-bn;
+    &xmlsec-buffered;
+    &xmlsec-ciphers;
+    &xmlsec-debug;
+    &xmlsec-digests;
+    &xmlsec-io;
+    &xmlsec-keyinfo;
+    &xmlsec-keys;
+    &xmlsec-keysInternal;
+    &xmlsec-keysmngr;
+    &xmlsec-membuf;
+    &xmlsec-transforms;
+    &xmlsec-transformsInternal;
+    &xmlsec-version;
+    &xmlsec-x509;
+    &xmlsec-xmldsig;
+    &xmlsec-xmlenc;
+    &xmlsec-xmlsec;
+    &xmlsec-xmltree;
+    &xmlsec-xpath;
+  </chapter>
+</book>
+
+
+

@@ -86,14 +86,18 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
 								 xmlSecEncResultPtr result);
 
 
-/**
+/****************************************************************************
+ *
  * XML Encrypiton context methods
- */
+ *
+ ***************************************************************************/
 /**
- * xmlSecEncCtxCreate:
+ * xmlSecEncCtxCreate
+ * @keysMngr:
+ * 
+ * Creates new encryption context.
  *
- *
- *
+ * Returns new encryption context or NULL if an error occurs.
  */
 xmlSecEncCtxPtr		
 xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {

@@ -1,3 +1,8 @@
+Thu Jul  3 07:57:25 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/openssl/x509vfy.c: added a const word to suppress
+	warnings (Roumen)
+
 Wed Jul  2 08:53:50 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/x509vfy.c: fixed certificates subject 

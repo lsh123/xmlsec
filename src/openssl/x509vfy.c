@@ -958,7 +958,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
 static
 int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b) {
     int i,ret;
-    X509_NAME_ENTRY *na,*nb;
+    const X509_NAME_ENTRY *na,*nb;
 
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(b != NULL, 1);

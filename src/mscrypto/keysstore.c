@@ -13,6 +13,7 @@
  * distribution for precise wording.
  * 
  * Copyrigth (C) 2003 Cordys R&D BV, All rights reserved.
+ * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 

@@ -1,3 +1,7 @@
+Wed Jul 31 15:56:17 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* apps/xmlsec.c src/xpath.c tests/testDSig.sh: improved
+	XPath2 performance
+
 Wed Jul 31 11:45:09 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* include/xmlsec/xmlsec.h src/keyinfo.c src/xmlsec.c src/xpath.c
 	tests/Makefile.am tests/testDSig.sh tests/merlin-xpath-filter2-three:

@@ -345,7 +345,9 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "Error: init failed\n");
 	goto done;
     }
-    
+
+    xmlSecTimerInit();
+        
     ret = 0;
     pos = 2;
     while((pos < argc) && (argv[pos][0] == '-')) {
@@ -661,7 +663,7 @@ int main(int argc, char **argv) {
     ret = 0; 
     while((pos < argc) && (ret >= 0)) {
 	templateRequired = 0;
-	for(i = 0; ((i < repeats) && (ret >= 0)); ++i) {
+	for(i = 0; (i < repeats); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
 		ret = xmlSecSimpleKeysMngrSave(keyMgr,  argv[pos], 
@@ -700,7 +702,7 @@ int main(int argc, char **argv) {
 		    goto done;	    
 		}
 	    }
-	    if(ret < 0) {
+	    if((ret < 0) && (repeats <= 1)) {
 		fprintf(stderr, "Error: operation failed\n");
  		goto done;	    	    
 	    }

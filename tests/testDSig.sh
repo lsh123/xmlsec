@@ -172,6 +172,11 @@ execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
+execDSigTest "merlin-xpath-filter2-three/sign-xfdl" \
+    ""
+
+execDSigTest "merlin-xpath-filter2-three/sign-spec" \
+    ""
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \

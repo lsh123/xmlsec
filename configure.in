@@ -401,7 +401,8 @@ dnl See if we can find GnuTLS
 dnl ==========================================================================
 GNUTLS_CONFIG="libgnutls-config"
 XMLSEC_NO_GNUTLS="1"
-GNUTLS_MIN_VERSION="1.0.4"
+GNUTLS_MIN_VERSION="0.8.1"
+GNUTLS_NEW_MIN_VERSION="1.0.0"
 GNUTLS_VERSION=""
 GNUTLS_CFLAGS=""
 GNUTLS_LIBS=""
@@ -413,9 +414,16 @@ if test "z$with_gnutls" = "zno" ; then
     AC_MSG_RESULT(no)
     GNUTLS_FOUND="without"
 elif test "z$with_gnutls" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
-    PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
+    PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_NEW_MIN_VERSION,
 	[GNUTLS_FOUND=yes],
 	[GNUTLS_FOUND=no])
+
+    if test "z$GNUTLS_FOUND" = "zno" ; then 
+	PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
+	    [GNUTLS_FOUND=yes],
+	    [GNUTLS_FOUND=no])
+	GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
+    fi
 fi
 
 if test "z$GNUTLS_FOUND" = "zno" ; then 
@@ -436,6 +444,11 @@ if test "z$GNUTLS_FOUND" = "zno" ; then
 	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS `$GNUTLS_CONFIG --cflags`"
     	    GNUTLS_LIBS="$GNUTLS_LIBS `$GNUTLS_CONFIG --libs`"
 	    GNUTLS_FOUND=yes
+	
+	    new_minvers=`echo $GNUTLS_NEW_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	    if test "$vers" -lt "$new_minvers" ; then
+		GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
+	    fi    
 	    AC_MSG_RESULT(yes)
 	else
     	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $PACKAGE)

@@ -74,7 +74,9 @@ xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
 static int 
 xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSDigestCtxPtr ctx;
+#ifndef XMLSEC_GNUTLS_OLD
     gpg_err_code_t ret;
+#endif /* XMLSEC_GNUTLS_OLD */
 
     xmlSecAssert2(xmlSecGnuTLSDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize), -1);
@@ -100,8 +102,13 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
     
+#ifndef XMLSEC_GNUTLS_OLD
     ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(ret != GPG_ERR_NO_ERROR) {
+#else /* XMLSEC_GNUTLS_OLD */
+    ctx->digestCtx = gcry_md_open(ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
+    if(ctx->digestCtx == NULL) {
+#endif /* XMLSEC_GNUTLS_OLD */
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "gcry_md_open",

@@ -19,10 +19,11 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
-/**
+/***********************************************************************
+ *
  * <dsig:Signature> node
- */
-
+ *
+ **********************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate		(xmlDocPtr doc,
 								 xmlSecTransformId c14nMethodId,
 								 xmlSecTransformId signMethodId,
@@ -54,10 +55,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplManifestAddReference		(xmlNodePtr manifestNod
 								 const xmlChar *uri,
 								 const xmlChar *type);
 
-/** 
+/***********************************************************************
+ *
  * <enc:EncryptedData> node
- */
- 
+ *
+ **********************************************************************/ 
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataCreate		(xmlDocPtr doc,
 								 xmlSecTransformId encMethodId,
 								 const xmlChar *id,
@@ -79,10 +81,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform	(xmlNodePtr ciphe
 								 xmlSecTransformId transformId);
 
 
-/**
+/***********************************************************************
+ *
  * <dsig:KeyInfo> node
- */
- 
+ *
+ **********************************************************************/ 
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyName		(xmlNodePtr keyInfoNode,
 								 const xmlChar* name);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyValue		(xmlNodePtr keyInfoNode);
@@ -98,13 +101,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNod
 								 const xmlChar *type,
 								 const xmlChar *recipient);
     
-
-
-
-/**
+/***********************************************************************
+ *
  * <dsig:Transform> node
- */
- 
+ *
+ **********************************************************************/ 
 XMLSEC_EXPORT int	xmlSecTmplTransformAddHmacOutputLength	(xmlNodePtr transformNode,
 								 size_t bitsLen);
 XMLSEC_EXPORT int  	xmlSecTmplTransformAddRsaOaepParam	(xmlNodePtr transformNode,

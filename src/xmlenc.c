@@ -95,12 +95,12 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
  *
  ***************************************************************************/
 /**
- * xmlSecEncCtxCreate
- * @keysMngr:
+ * xmlSecEncCtxCreate:
+ * @keysMngr: the pointer to #xmlSecKeysMngr structure.
  * 
  * Creates new encryption context.
  *
- * Returns new encryption context or NULL if an error occurs.
+ * Returns newly allocated #xmlSecEncCtx structure or NULL if an error occurs.
  */
 xmlSecEncCtxPtr		
 xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
@@ -124,10 +124,10 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 }
 
 /**
- * xmlSecEncCtxDestroy
+ * xmlSecEncCtxDestroy:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
  *
- *
- *
+ * Destroys the #xmlSecEncCtx structure.
  */
 void
 xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
@@ -138,19 +138,23 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
 }
 
 
-/** 
- * Encryption Template
- */
+/**************************************************************************
+ * 
+ * Encryption Templates
+ *
+ *************************************************************************/
+ 
 /** 
  * xmlSecEncDataCreate:
- * @id: the Id attribute of EncryptedData node (optional)
- * @type: the Type attribute of EncryptedData node (optional)
- * @mimeType: the MimeType attribute of EncryptedData node (optional)
- * @encoding: the Encoding attribute of EncryptedData node (optional)
+ * @id: the Id attribute (optional).
+ * @type: the Type attribute (optional)
+ * @mimeType: the MimeType attribute (optional)
+ * @encoding: the Encoding attribute (optional)
  *
- * Creates new encryption template. 
+ * Creates new <enc:EncryptedData> node for encryption template. 
  *
- * Returns the new template or NULL if an error occurs
+ * Returns the pointer newly created  <enc:EncryptedData> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr		
 xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
@@ -198,10 +202,10 @@ xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
 }
 
 /** 
- * xmlSecEncDataDestroy
+ * xmlSecEncDataDestroy:
+ * @encNode: the pointer to <enc:EncryptedData> node.
  *
- *
- *
+ * Destroys the <enc:EncryptedData> node @encNode.
  */
 void
 xmlSecEncDataDestroy(xmlNodePtr encNode) {
@@ -212,13 +216,18 @@ xmlSecEncDataDestroy(xmlNodePtr encNode) {
 }
 
 /** 
- * xmlSecEncDataAddEncMethod
+ * xmlSecEncDataAddEncMethod:
+ * @encNode: the pointer to <enc:EncryptedData> node.
+ * @encMethod: the encryption method id.
  *
+ * Adds <enc:EncryptionMethod> node with specified encryption 
+ * algorithm (@encMethodId) to the  <enc:EncryptedData> node @encNode.
  *
- *
+ * Returns the pointer to newly created <enc:EncryptionMethod> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
-xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
+xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethod) {
     xmlNodePtr encMethod;
     xmlNodePtr tmp;
     int ret;
@@ -260,10 +269,13 @@ xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethodId) {
 }
 
 /** 
- * xmlSecEncDataAddKeyInfo
+ * xmlSecEncDataAddKeyInfo:
+ * @encNode: the pointer to <enc:EncryptedData> node.
  *
+ * Adds <dsig:KeyInfo> to the  <enc:EncryptedData> node @encNode.
  *
- *
+ * Returns the pointer to newly created <dsig:KeyInfo> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
@@ -301,9 +313,14 @@ xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
 
 /** 
  * xmlSecEncDataAddEncProperties
+ * @encNode: the pointer to <enc:EncryptedData> node.
+ * @id: the Id attribute (optional).
  *
+ * Adds <enc:EncryptionProperties> node to the <enc:EncryptedData> 
+ * node @encNode.
  *
- *
+ * Returns the pointer to newly created <enc:EncryptionProperties> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
@@ -334,13 +351,20 @@ xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
 }
 
 /** 
- * xmlSecEncDataAddEncProperty
+ * xmlSecEncDataAddEncProperty:
+ * @encNode: the pointer to <enc:EncryptedData> node.
+ * @id: the Id attribute (optional).
+ * @target: the Target attribute (optional).
  *
+ * Adds <enc:EncryptionProperty> node (and the parent 
+ * <enc:EncryptionProperties> node if required) to the 
+ * <enc:EncryptedData> node @encNode.
  *
- *
+ * Returns the pointer to newly created <enc:EncryptionProperty> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr	
-xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id,  const xmlChar *target) {
+xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xmlChar *target) {
     xmlNodePtr encProp;
     xmlNodePtr encProps;
         
@@ -375,10 +399,13 @@ xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id,  const xmlCha
 }
 
 /** 
- * xmlSecEncDataAddCipherValue
+ * xmlSecEncDataAddCipherValue:
+ * @encNode: the pointer to <enc:EncryptedData> node.
  *
+ * Adds <enc:CipherValue> to the <enc:EncryptedData> node @encNode.
  *
- *
+ * Returns the pointer to newly created <enc:CipherValue> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
@@ -424,10 +451,15 @@ xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
 }
 
 /** 
- * xmlSecEncDataAddCipherReference
+ * xmlSecEncDataAddCipherReference:
+ * @encNode: the pointer to <enc:EncryptedData> node.
+ * @uri: the URI attribute (may be NULL).
  *
+ * Adds <enc:CipherReference> node with specified URI attribute @uri
+ * to the <enc:EncryptedData> node @encNode.
  *
- *
+ * Returns the pointer to newly created <enc:CipherReference> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
@@ -477,10 +509,16 @@ xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
 }
 
 /** 
- * xmlSecCipherReferenceAddTransform
+ * xmlSecCipherReferenceAddTransform:
+ * @encNode: the pointer to <enc:EncryptedData> node.
+ * @transform: the transform id.
  *
+ * Adds <dsig:Transform> node (and the parent <dsig:Transforms> node)
+ * with specified transform methods @transform to the <enc:CipherReference>
+ * child node of the <enc:EncryptedData> node @encNode.
  *
- *
+ * Returns the pointer to newly created <dsig:Transform> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, 
@@ -541,15 +579,29 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
 }
 
 
-/**
- * Encryption
- */
+/*************************************************************************
+ *
+ * Encryption functions
+ *
+ *************************************************************************/
 
 /**
- * xmlSecEncryptMemory
+ * xmlSecEncryptMemory:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
+ *     will be used).   
+ * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
+ * @buf: the pointer to data to encrypt.
+ * @size: the size of the data in @buf.
+ * @result: the pointer where to store encryption results.
  *
+ * Encrypts binary data from the @buf according to the template in the
+ * <enc:EncryptionData> node. After the encrytion the result XML is in 
+ * the @encNode node.
  *
- *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
@@ -630,10 +682,21 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecEncryptUri
+ * xmlSecEncryptUri:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
+ *     will be used).   
+ * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
+ * @uri: the URI to data to encrypt.
+ * @result: the pointer where to store encryption results.
  *
+ * Encrypts binary data from the @uri according to the template in the
+ * <enc:EncryptionData> node. After the encrytion the result XML is in 
+ * the @encNode node.
  *
- *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
@@ -742,10 +805,21 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecEncryptXmlNode
+ * xmlSecEncryptXmlNode:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
+ *     will be used).   
+ * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
+ * @src: the pointer to XML node to encrypt.
+ * @result: the pointer where to store encryption results.
  *
+ * Encrypts XML data from the @encNode according to the template in the
+ * <enc:EncryptionData> node. After the encrytion the result XML is in 
+ * the @src node.
  *
- *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
@@ -894,16 +968,25 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     return(0);
 }
 
-/**
- * Decryption
- */
+/************************************************************************
+ *
+ * Decryption function
+ *
+ ***********************************************************************/
  
 /**
- * xmlSecDecrypt
+ * xmlSecDecrypt:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
+ *     will be used).   
+ * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
+ * @result: the pointer where to store encryption results.
  *
+ * Decrypts data from the <enc:EncryptionData> node. 
  *
- *
- *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
@@ -1001,15 +1084,14 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     return(0);
 }
 							 
-/** 
+/*************************************************************************
+ *
  * XMLS Enc state
- */
+ *
+ ************************************************************************/
 
 /** 
- * xmlSecEncStateCreate
- *
- *
- *
+ * xmlSecEncStateCreate:
  */ 
 static xmlSecEncStatePtr
 xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSecEncResultPtr result) {
@@ -1050,10 +1132,7 @@ xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSe
 }
 
 /** 
- * xmlSecEncStateDestroy
- *
- *
- *
+ * xmlSecEncStateDestroy:
  */ 
 static void
 xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
@@ -1070,10 +1149,7 @@ xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
 }
 
 /**
- * xmlSecEncStateWriteResult
- *
- *
- *
+ * xmlSecEncStateWriteResult:
  */
 static int
 xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
@@ -1110,11 +1186,7 @@ xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
 }
 
 /**
- * xmlSecEncStateAddTransform
- *
- *
- *
- *
+ * xmlSecEncStateAddTransform:
  */
 static int
 xmlSecEncStateAddTransform(xmlSecEncStatePtr state, 
@@ -1144,11 +1216,7 @@ xmlSecEncStateAddTransform(xmlSecEncStatePtr state,
 }
 
 /**
- * xmlSecEncStateAddFirstTransform
- *
- *
- *
- *
+ * xmlSecEncStateAddFirstTransform:
  */
 static int
 xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr transform) {
@@ -1175,15 +1243,23 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
     return(0);
 }
 
+/**************************************************************************
+ *
+ * XML Enc Result functions
+ *
+ *************************************************************************/
 /**
- * XML Enc Result
- */
-/**
- * xmlSecEncResultCreate
+ * xmlSecEncResultCreate:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @encrypt: the encrypt/decrypt flag.
+ * @node: the pointer to <enc:EncryptedData> node.
+ * 
+ * Creates new #xmlSecEncResult structure.
  *
- *
- *
- *
+ * Returns newly created #xmlSecEncResult structure or NULL 
+ * if an error occurs.
  */ 		
 xmlSecEncResultPtr		
 xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
@@ -1212,11 +1288,10 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePt
 }
 
 /**
- * xmlSecEncResultDestoy
+ * xmlSecEncResultDestoy:
+ * @result: the pointer to #xmlSecEncResult structure.
  *
- *
- *
- *
+ * Destroys #xmlSecEncResult structure @result.
  */ 		
 void
 xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
@@ -1250,10 +1325,11 @@ xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
 
 
 /**
- * xmlSecEncResultDebugDump
+ * xmlSecEncResultDebugDump:
+ * @result: the pointer to #xmlSecEncResult structure.
+ * @output: the pointer to destination FILE.
  *
- *
- *
+ * Prints the #xmlSecEncResult structure @result to file @output.
  */
 void
 xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
@@ -1293,11 +1369,8 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
 
 }
 
-
 /**
- * xmlSecEncryptedDataNodeRead
- *
- *
+ * xmlSecEncryptedDataNodeRead:
  */
 static int
 xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecEncResultPtr result) {
@@ -1466,8 +1539,9 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     return(0);
 }
 
-
-
+/**
+ * xmlSecCipherDataNodeRead:
+ */
 static int
 xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state, 
 			 xmlSecEncResultPtr result) {
@@ -1512,11 +1586,7 @@ xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state,
 
 
 /**
- * xmlSecCipherDataNodeWrite
- *
- *
- *
- *
+ * xmlSecCipherDataNodeWrite:
  */
 static int
 xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
@@ -1557,7 +1627,9 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
     return(0);
 }
 
-
+/**
+ * xmlSecCipherValueNodeRead:
+ */
 static int
 xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state, 
 			  xmlSecEncResultPtr result) {

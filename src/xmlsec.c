@@ -29,7 +29,12 @@ const xmlChar xmlSecXPathNs[] 	= "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[] 	= "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]= "http://www.w3.org/2001/04/xmldsig-more/xptr";
 
-
+/**
+ * xmlSecInit:
+ *
+ * Initializes XML Security Library. The depended libraries
+ * (LibXML, LibXSLT and OpenSSL) must be initialized before.
+ */
 void
 xmlSecInit(void) {
     xmlSecErrorsInit();
@@ -38,6 +43,11 @@ xmlSecInit(void) {
     xmlSecIOInit();
 }
 
+/**
+ * xmlSecShutdown:
+ *
+ * Clean ups the XML Security Library.
+ */
 void
 xmlSecShutdown(void) {
     xmlSecIOShutdown();

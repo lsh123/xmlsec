@@ -1,3 +1,15 @@
+<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO extern ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION xmlSecAddIdAttributeName ##### -->
 <para>
 
@@ -30,6 +42,20 @@
 @nodeSet: 
 @withComments: 
 @Returns: 
+
+<!-- ##### MACRO xmlSecGetHex ##### -->
+<para>
+
+</para>
+
+@c: 
+
+<!-- ##### MACRO xmlSecIsHex ##### -->
+<para>
+
+</para>
+
+@c: 
 
 <!-- ##### FUNCTION xmlSecNodeSetContain ##### -->
 <para>

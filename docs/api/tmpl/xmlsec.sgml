@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-xmlsec
+xmlsec.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The XML Security Library initalization/cleanup functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -14,13 +14,6 @@ xmlsec
 
 </para>
 
-<!-- ##### MACRO extern ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION xmlSecInit ##### -->
 <para>
 
@@ -29,29 +22,6 @@ xmlsec
 
 
 <!-- ##### FUNCTION xmlSecShutdown ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO xmlSecIsHex ##### -->
-<para>
-
-</para>
-
-@c: 
-
-
-<!-- ##### MACRO xmlSecGetHex ##### -->
-<para>
-
-</para>
-
-@c: 
-
-
-<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
 <para>
 
 </para>

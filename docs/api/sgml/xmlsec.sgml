@@ -1,12 +1,12 @@
 <refentry id="xmlsec-xmlsec">
 <refmeta>
-<refentrytitle>xmlsec</refentrytitle>
+<refentrytitle>xmlsec.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>xmlsec</refname><refpurpose></refpurpose>
+<refname>xmlsec.h</refname><refpurpose>The XML Security Library initalization/cleanup functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -14,12 +14,8 @@
 
 
 
-#define     <link linkend="extern">extern</link>
 void        <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
 void        <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
-#define     <link linkend="xmlSecIsHex">xmlSecIsHex</link>                     (c)
-#define     <link linkend="xmlSecGetHex">xmlSecGetHex</link>                    (c)
-#define     <link linkend="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -37,15 +33,11 @@ void        <link linkend="xmlSecShutdown">xmlSecShutdown</link>                
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="extern">extern</title>
-<programlisting>#define  extern
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="xmlSecInit">xmlSecInit ()</title>
 <programlisting>void        xmlSecInit                      (void);</programlisting>
+<para>
+Initializes XML Security Library. The depended libraries
+(LibXML, LibXSLT and OpenSSL) must be initialized before.</para>
 <para>
 
 </para></refsect2>
@@ -53,45 +45,7 @@ void        <link linkend="xmlSecShutdown">xmlSecShutdown</link>                
 <title><anchor id="xmlSecShutdown">xmlSecShutdown ()</title>
 <programlisting>void        xmlSecShutdown                  (void);</programlisting>
 <para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecIsHex">xmlSecIsHex()</title>
-<programlisting>#define     xmlSecIsHex(c)</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGetHex">xmlSecGetHex()</title>
-<programlisting>#define     xmlSecGetHex(c)</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</title>
-<programlisting>#define     ATTRIBUTE_UNUSED</programlisting>
-<para>
-Macro used to signal to GCC unused function parameters</para>
+Clean ups the XML Security Library.</para>
 <para>
 
 </para></refsect2>

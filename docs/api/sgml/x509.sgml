@@ -1,12 +1,12 @@
 <refentry id="xmlsec-x509">
 <refmeta>
-<refentrytitle>x509</refentrytitle>
+<refentrytitle>x509.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>x509</refname><refpurpose></refpurpose>
+<refname>x509.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

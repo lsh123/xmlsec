@@ -113,9 +113,9 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecSignatureAddObject	(xmlNodePtr signNode,
 								 const xmlChar *mimeType,
 								 const xmlChar *encoding);
 XMLSEC_EXPORT xmlNodePtr	xmlSecSignedInfoAddC14NMethod	(xmlNodePtr signedInfoNode,
-								 xmlSecTransformId encMethod);
+								 xmlSecTransformId c14nMethod);
 XMLSEC_EXPORT xmlNodePtr	xmlSecSignedInfoAddSignMethod	(xmlNodePtr signedInfoNode,
-								 xmlSecTransformId encMethod);
+								 xmlSecTransformId signMethod);
 XMLSEC_EXPORT xmlNodePtr	xmlSecSignedInfoAddReference	(xmlNodePtr signedInfoNode,
 								 const xmlChar *id, 
 								 const xmlChar *uri,

@@ -1,12 +1,12 @@
 <refentry id="xmlsec-xpath">
 <refmeta>
-<refentrytitle>xpath</refentrytitle>
+<refentrytitle>xpath.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>xpath</refname><refpurpose></refpurpose>
+<refname>xpath.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

@@ -1,12 +1,12 @@
 <refentry id="xmlsec-xmltree">
 <refmeta>
-<refentrytitle>xmltree</refentrytitle>
+<refentrytitle>xmltree.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>xmltree</refname><refpurpose></refpurpose>
+<refname>xmltree.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

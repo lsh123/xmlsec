@@ -1,50 +1,14 @@
-20% symbol docs coverage.
-73 symbols documented.
-299 not documented.
+37% symbol docs coverage.
+135 symbols documented.
+233 not documented.
 
 
 XMLSEC_BASE64_LINESIZE
-XMLSEC_ERRORS_FUNCTION
-XMLSEC_ERRORS_HERE
-XMLSEC_ERRORS_LIB
-XMLSEC_ERRORS_R_ASSERTION
-XMLSEC_ERRORS_R_CERT_NOT_FOUND
-XMLSEC_ERRORS_R_CERT_REVOKED
-XMLSEC_ERRORS_R_CERT_VERIFY_FAILED
-XMLSEC_ERRORS_R_CRYPTO_FAILED
-XMLSEC_ERRORS_R_DISABLED
-XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE
-XMLSEC_ERRORS_R_INVALID_DATA
-XMLSEC_ERRORS_R_INVALID_KEY
-XMLSEC_ERRORS_R_INVALID_KEY_DATA
-XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN
-XMLSEC_ERRORS_R_INVALID_KEY_SIZE
-XMLSEC_ERRORS_R_INVALID_NODE
-XMLSEC_ERRORS_R_INVALID_NODESET
-XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE
-XMLSEC_ERRORS_R_INVALID_NODE_CONTENT
-XMLSEC_ERRORS_R_INVALID_SIZE
-XMLSEC_ERRORS_R_INVALID_TRANSFORM
-XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA
-XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY
-XMLSEC_ERRORS_R_INVALID_TYPE
-XMLSEC_ERRORS_R_INVALID_USAGE
-XMLSEC_ERRORS_R_IO_FAILED
-XMLSEC_ERRORS_R_KEY_NOT_FOUND
-XMLSEC_ERRORS_R_MALLOC_FAILED
-XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL
-XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT
-XMLSEC_ERRORS_R_NODE_NOT_FOUND
-XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED
-XMLSEC_ERRORS_R_XMLSEC_FAILED
-XMLSEC_ERRORS_R_XML_FAILED
-XMLSEC_ERRORS_R_XSLT_FAILED
 XMLSEC_VERSION
 XMLSEC_VERSION_INFO
 XMLSEC_VERSION_MAJOR
 XMLSEC_VERSION_MINOR
 XMLSEC_VERSION_SUBMINOR
-extern
 xmlSecAddChild
 xmlSecAddIDs
 xmlSecAddNextSibling
@@ -80,7 +44,6 @@ xmlSecC14NTransformId
 xmlSecC14NTransformIdStruct
 xmlSecCipherFinal
 xmlSecCipherFinalMethod
-xmlSecCipherReferenceAddTransform
 xmlSecCipherTransformFlush
 xmlSecCipherTransformId
 xmlSecCipherTransformIdStruct
@@ -88,12 +51,6 @@ xmlSecCipherTransformRead
 xmlSecCipherTransformWrite
 xmlSecCipherUpdate
 xmlSecCipherUpdateMethod
-xmlSecDSigCtxCreate
-xmlSecDSigCtxDestroy
-xmlSecDSigGenerate
-xmlSecDSigResultDebugDump
-xmlSecDSigValidate
-xmlSecDecrypt
 xmlSecDesKey
 xmlSecDesKeyGenerate
 xmlSecDigestRipemd160
@@ -110,35 +67,16 @@ xmlSecEncAes192Cbc
 xmlSecEncAes256Cbc
 xmlSecEncBase64Decode
 xmlSecEncBase64Encode
-xmlSecEncCtxDestroy
-xmlSecEncDataAddCipherReference
-xmlSecEncDataAddCipherValue
-xmlSecEncDataAddEncMethod
-xmlSecEncDataAddEncProperties
-xmlSecEncDataAddEncProperty
-xmlSecEncDataAddKeyInfo
-xmlSecEncDataDestroy
 xmlSecEncDes3Cbc
-xmlSecEncResultCreate
-xmlSecEncResultDebugDump
 xmlSecEncResultDestroy
 xmlSecEncRsaOaep
 xmlSecEncRsaOaepAddParam
 xmlSecEncRsaPkcs1
-xmlSecEncryptMemory
-xmlSecEncryptUri
-xmlSecEncryptXmlNode
-xmlSecError
-xmlSecErrorsCallback
-xmlSecErrorsInit
-xmlSecErrorsSetCallback
-xmlSecErrorsShutdown
 xmlSecEvpCipherFinal
 xmlSecEvpCipherUpdate
 xmlSecFindKeyCallback
 xmlSecFindNode
 xmlSecFindParent
-xmlSecGetHex
 xmlSecGetKeyCallback
 xmlSecGetNextElementNode
 xmlSecHmacAddOutputLength
@@ -146,10 +84,8 @@ xmlSecHmacKey
 xmlSecHmacKeyGenerate
 xmlSecIOInit
 xmlSecIOShutdown
-xmlSecInit
 xmlSecInputUri
 xmlSecInputUriTransformOpen
-xmlSecIsHex
 xmlSecKWAes128
 xmlSecKWAes192
 xmlSecKWAes256
@@ -217,7 +153,6 @@ xmlSecPKCS12ReadKey
 xmlSecParseFile
 xmlSecParseMemory
 xmlSecParseMemoryExt
-xmlSecPrintErrorMessages
 xmlSecReferenceType
 xmlSecReplaceContent
 xmlSecReplaceNode
@@ -225,7 +160,6 @@ xmlSecReplaceNodeBuffer
 xmlSecRetrievalMethodAddTransform
 xmlSecRsaKey
 xmlSecRsaKeyGenerate
-xmlSecShutdown
 xmlSecSignDsaSha1
 xmlSecSignRsaSha1
 xmlSecSimpleKeysMngrAddCertsDir

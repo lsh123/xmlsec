@@ -98,7 +98,7 @@ XMLSEC_EXPORT int		xmlSecEncryptXmlNode	(xmlSecEncCtxPtr ctx,
 XMLSEC_EXPORT int		xmlSecDecrypt		(xmlSecEncCtxPtr ctx,
 							 void *context,
 							 xmlSecKeyPtr key,
-							 xmlNodePtr encDataNode,
+							 xmlNodePtr encNode,
 							 xmlSecEncResultPtr *result);
 /**
  * XML Enc Result

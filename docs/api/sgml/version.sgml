@@ -1,12 +1,12 @@
 <refentry id="xmlsec-version">
 <refmeta>
-<refentrytitle>version</refentrytitle>
+<refentrytitle>version.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>version</refname><refpurpose></refpurpose>
+<refname>version.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

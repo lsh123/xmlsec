@@ -1,8 +1,9 @@
 <!-- ##### SECTION Title ##### -->
-xmlenc
+xmlenc.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The <ulink url="http://www.w3.org/Encryption/">XML Encrypiton</ulink> 
+standard implementation.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -82,9 +83,11 @@ xmlenc
 @ctx: 
 @context: 
 @key: 
-@encDataNode: 
+@encNode: 
 @result: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@encDataNode: 
 
 
 <!-- ##### FUNCTION xmlSecEncResultCreate ##### -->

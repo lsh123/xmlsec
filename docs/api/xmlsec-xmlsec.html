@@ -1,7 +1,7 @@
 <HTML
 ><HEAD
 ><TITLE
->xmlsec</TITLE
+>xmlsec.h</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
@@ -16,7 +16,7 @@ REL="PREVIOUS"
 TITLE="XML Security Library Reference"
 HREF="xmlsec-ref.html"><LINK
 REL="NEXT"
-TITLE="xmldsig"
+TITLE="xmldsig.h"
 HREF="xmlsec-xmldsig.html"></HEAD
 ><BODY
 CLASS="REFENTRY"
@@ -117,7 +117,7 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="XMLSEC-XMLSEC">xmlsec</H1
+NAME="XMLSEC-XMLSEC">xmlsec.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
@@ -125,7 +125,7 @@ NAME="AEN35"
 ></A
 ><H2
 >Name</H2
->xmlsec&nbsp;--&nbsp;</DIV
+>xmlsec.h&nbsp;--&nbsp;The XML Security Library initalization/cleanup functions.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
@@ -142,10 +142,6 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
-#define     <A
-HREF="xmlsec-xmlsec.html#EXTERN"
->extern</A
->
 void        <A
 HREF="xmlsec-xmlsec.html#XMLSECINIT"
 >xmlSecInit</A
@@ -153,19 +149,7 @@ HREF="xmlsec-xmlsec.html#XMLSECINIT"
 void        <A
 HREF="xmlsec-xmlsec.html#XMLSECSHUTDOWN"
 >xmlSecShutdown</A
->                  (void);
-#define     <A
-HREF="xmlsec-xmlsec.html#XMLSECISHEX"
->xmlSecIsHex</A
->                     (c)
-#define     <A
-HREF="xmlsec-xmlsec.html#XMLSECGETHEX"
->xmlSecGetHex</A
->                    (c)
-#define     <A
-HREF="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED-CAPS"
->ATTRIBUTE_UNUSED</A
-></PRE
+>                  (void);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -173,7 +157,7 @@ HREF="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED-CAPS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN47"
+NAME="AEN43"
 ></A
 ><H2
 >Description</H2
@@ -183,40 +167,14 @@ NAME="AEN47"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN50"
+NAME="AEN46"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN52"
-></A
-><H3
-><A
-NAME="EXTERN"
-></A
->extern</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define  extern&#13;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN57"
+NAME="AEN48"
 ></A
 ><H3
 ><A
@@ -237,12 +195,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Initializes XML Security Library. The depended libraries
+(LibXML, LibXSLT and OpenSSL) must be initialized before.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN62"
+NAME="AEN54"
 ></A
 ><H3
 ><A
@@ -263,155 +224,7 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN67"
-></A
-><H3
-><A
-NAME="XMLSECISHEX"
-></A
->xmlSecIsHex()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecIsHex(c)</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN72"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN81"
-></A
-><H3
-><A
-NAME="XMLSECGETHEX"
-></A
->xmlSecGetHex()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecGetHex(c)</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN86"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->c</I
-></TT
->:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN95"
-></A
-><H3
-><A
-NAME="ATTRIBUTE-UNUSED-CAPS"
-></A
->ATTRIBUTE_UNUSED</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     ATTRIBUTE_UNUSED</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro used to signal to GCC unused function parameters</P
+>Clean ups the XML Security Library.</P
 ><P
 ></P
 ></DIV
@@ -513,7 +326,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xmldsig</B
+>xmldsig.h</B
 ></FONT
 ></TD
 ></TR

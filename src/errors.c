@@ -63,24 +63,52 @@ static void xmlSecErrorsDefaultCallback		(const char* file, int line,
 static xmlSecErrorsCallback xmlSecErrorsClbk = xmlSecErrorsDefaultCallback;
 int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed immidiatelly */
 
+/** 
+ * xmlSecErrorsInit:
+ *
+ * Initializes the errors reporting. It is called from xmlSecInit() function.
+ * and applications must not call this function directly.
+ */
 void 
 xmlSecErrorsInit(void) {
     ERR_load_crypto_strings();
     ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrReasons);
 }
 
+/** 
+ * xmlSecErrorsShutdown:
+ *
+ * Cleanups the errors reporting. It is called from xmlSecShutdown() function.
+ * and applications must not call this function directly.
+ */
 void 
 xmlSecErrorsShutdown(void) {
     ERR_remove_state(0);
     ERR_free_strings();
 }
 
-
+/**
+ * xmlSecErrorsSetCallback:
+ * @callback: the errors callback function.
+ *
+ * Sets the errors callback function @callback that will be called 
+ * every time an error occurs.
+ */
 void 
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
     xmlSecErrorsClbk = callback;
 }
 
+/**
+ * xmlSecError:
+ * @file: the error origin filename (__FILE__).
+ * @line: the error origin line number (__LINE__).
+ * @func: the error origin function (__FUNCTIION__).
+ * @reason: the error code.
+ * @msg: the error message in printf format.
+ *
+ * Reports an error.
+ */
 void	
 xmlSecError(const char* file, int line, const char* func, 
   	    int reason, const char* msg, ...) {
@@ -105,7 +133,9 @@ xmlSecError(const char* file, int line, const char* func,
     }	
 }
  
-
+/**
+ * xmlSecErrorsDefaultCallback:
+ */
 static void 
 xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 			    int reason, const char* msg) {
@@ -133,16 +163,6 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 	    (msg != NULL) ? msg : "");
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

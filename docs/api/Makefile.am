@@ -15,8 +15,7 @@ DOC_SOURCE_FILES=$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
 all: sgml html
 
 html: sgml xmlsec.sgml
-	@(export SGML_CATALOG_FILES=$(SGML_CATALOG_FILES); \
-	gtkdoc-mkhtml $(MODULE) xmlsec.sgml)
+	gtkdoc-mkhtml $(MODULE) xmlsec.sgml
 	
 sgml: templates
 	@gtkdoc-mkdb --module=$(MODULE)  --source-dir=$(DOC_SOURCE_DIR) 
@@ -32,7 +31,9 @@ doc_sources: $(DOC_SOURCE_FILES)
 	    folder_name=`echo $$i | sed 's#$(TOP)/##' | sed 's#/[^/]*$$##'`; \
 	    file_name=`echo $$i | sed 's#.*/##'`; \
 	    test -d $(DOC_SOURCE_DIR)/$$folder_name || mkdir -p $(DOC_SOURCE_DIR)/$$folder_name; \
-	    cat $$i | sed 's/XMLSEC_EXPORT//' > $(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
+	    cat $$i | sed 's/XMLSEC_EXPORT//' | \
+		      sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' \
+		       > $(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
 	done)
 
 clean:

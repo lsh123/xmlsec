@@ -83,19 +83,22 @@ static int			xmlSecManifestRead		(xmlNodePtr manifestNode,
 static const xmlChar*		xmlSecDSigIds[] = { BAD_CAST "Id", NULL };
 
 
-/**
- * Creating DSig template
- */
+/**************************************************************************
+ *
+ * Creating XML DSig template
+ *
+ *************************************************************************/
+
 /**
  * xmlSecSignatureCreate:
- * @id: the node id (may be NULL)
+ * @id: the node id (may be NULL).
  *
- * Creates new <Signature> node (http://www.w3.org/TR/xmldsig-core/#sec-Signature)
- * The application is responsible for inserting the <Signature> node 
- * in the XML document. The mantadory <SignatureValue> child node
- * will be created automatically when <Signature> node is created
+ * Creates new <dsig:Signature> node with the mantadory <dsig:SignatureValue> 
+ * child. The application is responsible for inserting the returned node
+ * in the XML document. 
  *
- * Returns the pointer to <Signature> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:Signature> node or NULL if an 
+ * error occurs.
  */
 xmlNodePtr
 xmlSecSignatureCreate(const xmlChar *id) {
@@ -137,10 +140,10 @@ xmlSecSignatureCreate(const xmlChar *id) {
 
 /**
  * xmlSecSignatureDestroy:
- * @signNode: the pointer to <Signature> node
+ * @signNode: the pointer to <dsig:Signature> node.
  *
- * Destroys <Signature> node by calling xmlFreeNode(). You should not call 
- * this method if you've inserted <Signature> node in the XML document!
+ * Destroys standalone <dsig:Signature> node. You MUST not call this function 
+ * if the <dsig:Signature> node was inserted in the XML document.
  */
 void
 xmlSecSignatureDestroy(xmlNodePtr signNode) {
@@ -152,14 +155,13 @@ xmlSecSignatureDestroy(xmlNodePtr signNode) {
 
 /**
  * xmlSecSignatureAddSignedInfo:
- * @signNode: the  pointer to <Signature> node
- * @id: the node id (may be NULL)
+ * @signNode: the  pointer to <dsig:Signature> node.
+ * @id: the node id (may be NULL).
  *
- * Adds <SignedInfo> node (http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo)
- * to the XML Signature. The application may add additional parameters
- * by calling SignedInfo node methods
+ * Adds <dsig:SignedInfo> node to the <dsig:Signature> node @signNode. 
  *
- * Returns the pointer to <SignedInfo> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:SignedInfo> node or NULL if 
+ * an error occurs.
  */
 xmlNodePtr
 xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
@@ -196,14 +198,13 @@ xmlSecSignatureAddSignedInfo(xmlNodePtr signNode, const xmlChar *id) {
 
 /**
  * xmlSecSignatureAddKeyInfo:
- * @signNode: the  pointer to <Signature> node
- * @id: the node id (may be NULL)
+ * @signNode: the  pointer to <dsig:Signature> node.
+ * @id: the node id (may be NULL).
  *
- * Adds <KeyInfo> node (http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo)
- * to the XML Signature. The application may add additional parameters
- * by calling KeyInfo node methods
+ * Adds <dsig:KeyInfo> node to the <dsig:Signature> node @signNode. 
  *
- * Returns the pointer to <KeyInfo> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:KeyInfo> node or NULL if an 
+ * error occurs.
  */
 xmlNodePtr
 xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
@@ -240,15 +241,15 @@ xmlSecSignatureAddKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
 
 /**
  * xmlSecSignatureAddObject:
- * @signNode: the  pointer to <Signature> node
- * @id: the node id (may be NULL)
- * @mimeType: the object mime type (may be NULL)
- * @encoding: the object encoding (may be NULL)
+ * @signNode: the pointer to <dsig:Signature> node.
+ * @id: the node id (may be NULL).
+ * @mimeType: the object mime type (may be NULL).
+ * @encoding: the object encoding (may be NULL).
  *
- * Adds <Object> node (http://www.w3.org/TR/xmldsig-core/#sec-Object)
- * to the XML Signature
+ * Adds <dsig:Object> node to the <dsig:Signature> node @signNode. 
  *
- * Returns the pointer to <Object> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:Object> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr
 xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *mimeType,
@@ -278,15 +279,14 @@ xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *
 
 /**
  * xmlSecSignedInfoAddC14NMethod:
- * @signedInfoNode: the  pointer to <Signature> node
- * @c14nMethod: the c14n method id
+ * @signedInfoNode: the  pointer to <dsig:SignedInfo> node.
+ * @c14nMethod: the c14n method id.
  *
- * Adds <CanonicalizationMethod> node (http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod)
- * to the XML Signature. The application may set additional parameters
- * for C14N method by calling corresponding C14N method function.
+ * Adds <dsig:CanonicalizationMethod> node with specified C14N algorithm
+ * @c14nMethod to the <dsig:SignedInfo> node @signedInfoNode.
  *
- * Returns the pointer to <CanonicalizationMethod> node or NULL if an 
- * error occurs
+ * Returns the pointer to newly created <dsig:CanonicalizationMethod> node or 
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nMethod) {
@@ -332,17 +332,18 @@ xmlSecSignedInfoAddC14NMethod(xmlNodePtr signedInfoNode, xmlSecTransformId c14nM
 
 /**
  * xmlSecSignedInfoAddSignMethod:
- * @signedInfoNode: the  pointer to <SignedInfo> node
- * @signMethod: the result method id     
+ * @signedInfoNode: the  pointer to <dsig:SignedInfo> node.
+ * @signMethod: the result method id.     
  *
- * Adds <SignatureMethod> node (http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod)
- * to the XML Signature. The application may set additional parameters
- * for result method by calling corresponding result method function.
+ * Adds <dsig:SignatureMethod> node with given signature algorithm
+ * @signMethod to the <dsig:SignedInfo> node @signedInfoNode. 
  *
- * Returns the pointer to <SignatureMethod> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:SignatureMethod> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr
-xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signMethod) {
+xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, 
+			      xmlSecTransformId signMethod) {
     xmlNodePtr res;
     xmlNodePtr tmp;
     int ret;
@@ -384,21 +385,21 @@ xmlSecSignedInfoAddSignMethod(xmlNodePtr signedInfoNode, xmlSecTransformId signM
 
 /**
  * xmlSecSignedInfoAddReference:
- * @signedInfoNode: the pointer to <Signature> node
- * @id: the node id (may be NULL)
- * @uri: the reference node uri (may be NULL)
- * @type: the reference node type (may be NULL)
+ * @signedInfoNode: the pointer to <dsig:SignedInfo> node.
+ * @id: the node id (may be NULL).
+ * @uri: the reference node uri (may be NULL).
+ * @type: the reference node type (may be NULL).
  *
- * Adds <Reference> node (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
- * to XML Signature. The required child node <DigestValue> is added
- * automatically.
+ * Adds <dsig:Reference> node with given URI (@uri), Id (@id) and 
+ * Type (@type) attributes and the required child node <dsig:DigestValue> 
+ * to the <dsig:SignedInfo> node @signedInfoNode. 
  *
- * Returns the pointer to <Reference> node or NULL if an error occurs
- *
+ * Returns the pointer to newly created <dsig:Reference> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr	
-xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const xmlChar *uri,
-		    const xmlChar *type) {
+xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, 
+			    const xmlChar *uri, const xmlChar *type) {
     xmlNodePtr res;
     xmlNodePtr cur;
     
@@ -441,14 +442,14 @@ xmlSecSignedInfoAddReference(xmlNodePtr signedInfoNode, const xmlChar *id, const
 
 /**
  * xmlSecReferenceAddDigestMethod:
- * @refNode: the pointer to <Reference> node
- * @digestMethod: the digest method id
+ * @refNode: the pointer to <dsig:Reference> node.
+ * @digestMethod: the digest method id.
  *
- * Adds <DigestMethod> node (http://www.w3.org/TR/xmldsig-core/#sec-DigestMethod)
- * to the <Reference> node in XML Signature. The application may set additional
- * parameters for digest method by calling corresponding method function.
+ * Adds <dsig:DigestMethod> node with given digest algorithm 
+ * (@digestMethod) to the <dsig:Reference> node @refNode.
  * 
- * Returns the pointer to <DigestMethod> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:DigestMethod> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr
 xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMethod) {
@@ -494,14 +495,13 @@ xmlSecReferenceAddDigestMethod(xmlNodePtr refNode, xmlSecTransformId digestMetho
 
 /**
  * xmlSecReferenceAddTransform:
- * @refNode: the pointer to <Reference> node
- * @transform: the transform method id
+ * @refNode: the pointer to <dsig:Reference> node.
+ * @transform: the transform method id.
  *
- * Adds <Transform> node (http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
- * to the <Reference> node in XML Signature. The application may set additional
- * parameters for transform method by calling corresponding method function.
+ * Adds <dsig:Transform> node to the <dsig:Reference> node @refNode.
  * 
- * Returns the pointer to <Transform> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:Transform> node or NULL if an 
+ * error occurs.
  */
 xmlNodePtr
 xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
@@ -553,15 +553,14 @@ xmlSecReferenceAddTransform(xmlNodePtr refNode, xmlSecTransformId transform) {
 
 /**
  * xmlSecObjectAddSignProperties:
- * @objectNode: the  pointer to <Object> node
- * @id: the node id (may be NULL)
- * @target: the Target  (may be NULL)                                                
+ * @objectNode: the  pointer to <dsig:Object> node.
+ * @id: the node id (may be NULL).
+ * @target: the Target  (may be NULL).
  *
- * Adds <SignatureProperties> node (http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties)
- * to the XML Signature
+ * Adds <dsig:SignatureProperties> node to the <dsig:Object> node @objectNode.
  *
- * Returns the pointer to <SignatureProperties> node or NULL if an error occurs
- *
+ * Returns the pointer to newly created <dsig:SignatureProperties> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr		
 xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xmlChar *target) {
@@ -587,15 +586,13 @@ xmlSecObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xm
 
 /**
  * xmlSecObjectAddManifest:
- * @objectNode: the  pointer to <Object> node
- * @id: the node id (may be NULL)
+ * @objectNode: the  pointer to <dsig:Object> node.
+ * @id: the node id (may be NULL).
  *
+ * Adds <dsig:Manifest> node to the <dsig:Object> node @objectNode.
  *
- * Adds <Manifest> node (http://www.w3.org/TR/xmldsig-core/#sec-Manifest)
- * to the XML Signature
- *
- * Returns the pointer to <Manifest> node or NULL if an error occurs
- *
+ * Returns the pointer to newly created <dsig:Manifest> node or NULL 
+ * if an error occurs.
  */
 xmlNodePtr
 xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
@@ -619,18 +616,20 @@ xmlSecObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
 
 /**
  * xmlSecManifestAddReference:
- * @id: the node id (may be NULL)
- * @uri: the reference node uri (may be NULL)
- * @type: the reference node type (may be NULL)
+ * @manifestNode: the pointer to <dsig:Manifest> node.
+ * @id: the node id (may be NULL).
+ * @uri: the reference node uri (may be NULL).
+ * @type: the reference node type (may be NULL).
  *
- * Adds <Reference> node (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
- * to <Manifest> node in XML Signature. The mantadory <DigestValue> node
- * is added automatically
+ * Adds <dsig:Reference> node with specified URI (@uri), Id (@id) and 
+ * Type (@type) attributes and the required child node <dsig:DigestValue> 
+ * to the <dsig:Manifest> node @manifestNode:.
  *
- * Returns the pointer to <Reference> node or NULL if an error occurs
+ * Returns the pointer to newly created <dsig:Reference> node or NULL 
+ * if an error occurs.
  */
-xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id, 
-		  const xmlChar *uri, const xmlChar *type) {
+xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, 
+	    const xmlChar *id, const xmlChar *uri, const xmlChar *type) {
     xmlNodePtr res;
     xmlNodePtr cur;
     
@@ -670,15 +669,27 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode, const xmlChar *id
     return(res);    
 }
 
-/**
- * DSig generation/validation
- */
-/**
- * xmlSecDSigValidate
- * @ctx: 
- * @signNode:
- * @result:
+/**************************************************************************
  *
+ * XML DSig generation/validation functions
+ *
+ **************************************************************************/
+/**
+ * xmlSecDSigValidate:
+ * @ctx: the pointer to #xmlSecDSigCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
+ *     will be used).   
+ * @signNode: the pointer to <dsig:Signature> node that will be validated.
+ * @result: the pointer where to store validation results.
+ *
+ * Validates the signature in @signNode and stores the pointer to validation 
+ * result structure #xmlSecDSigResult in the @result. 
+ *
+ * Returns 0 if there were no processing errors during validation or a negative
+ * value otherwise. The return value equal to 0 DOES NOT mean that the signature
+ * is valid: check the #result member of #xmlSecDSigResult structure instead.
  */
 int
 xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
@@ -729,10 +740,17 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
 /**
  * xmlSecDSigGenerate
- * @ctx:
- * @signNode:
- * @result:
+ * @ctx: the pointer to #xmlSecDSigCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
+ *     will be used).   
+ * @signNode: the pointer to <dsig:Signature> node that will be validated.
+ * @result: the pointer where to store validation results.
  *
+ * Signs the data according to the template in @signNode node.
+ *
+ * Returns 0 on success and a negative value otherwise.
  */
 int
 xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
@@ -789,15 +807,17 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
  *
  ****************************************************************************/
 /**
- * xmlSecDSigResultCreate
- * @ctx: the DSig context
- * @context: the application context
- * @signNode: the <Signature> node
- * @sign: the sign or verify flag
+ * xmlSecDSigResultCreate:
+ * @ctx: the pointer to #xmlSecDSigCtx structure.
+ * @context: the pointer application specific data that will be 
+ *     passed to all callback functions.
+ * @signNode: the pointer to <dsig:Signature> node that will be validated.
+ * @sign: the sign or verify flag.
  * 
- * Creates new DSig result.
+ * Creates new #xmlSecDSigResult structure.
  *
- * Returns new DSig result or NULL if an error occurs.
+ * Returns newly created #xmlSecDSigResult structure or NULL 
+ * if an error occurs.
  */
 xmlSecDSigResultPtr	
 xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context, 
@@ -807,9 +827,7 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(signNode != NULL, NULL);
 
-    /*
-     * Allocate a new xmlSecSignature and fill the fields.
-     */
+    /* Allocate a new xmlSecSignature and fill the fields */
     result = (xmlSecDSigResultPtr) xmlMalloc(sizeof(xmlSecDSigResult));
     if(result == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -829,10 +847,10 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
 
 
 /**
- * xmlSecDSigResultDestroy
- * @result: the DSig result
+ * xmlSecDSigResultDestroy:
+ * @result: the pointer to #xmlSecDSigResult structure.
  *
- * Destroys DSig result
+ * Destroys the #xmlSecDSigResult structure @result.
  */
 void
 xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
@@ -861,11 +879,11 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
 }
 
 /** 
- * xmlSecDSigResultDebugDump
- * @output:
- * @result:
+ * xmlSecDSigResultDebugDump:
+ * @result: the pointer to #xmlSecDSigResult structure.
+ * @output: the pointer to destination FILE.
  *
- *
+ * Prints the #xmlSecDSigResult structure @result to file @output.
  */
 void
 xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
@@ -905,13 +923,6 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
 }
 
 
-/**
- * xmlSecDSigResultAddSignedInfoRef
- * @result:
- * @ref:
- *
- *
- */
 static xmlSecReferenceResultPtr
 xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result, 
 				 xmlSecReferenceResultPtr ref) {
@@ -931,13 +942,6 @@ xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result,
     return(ref);
 }
 
-/**
- * xmlSecDSigResultAddManifestRef:
- * @result:
- * @ref:
- *
- *
- */
 static xmlSecReferenceResultPtr
 xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResultPtr ref) {
     xmlSecAssert2(result != NULL, NULL);
@@ -959,15 +963,17 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
 							 
 /**************************************************************************
  *
- * DSig context methods
+ * XML DSig context methods
  *
  **************************************************************************/
 /**
- * xmlSecDSigCtxCreate
- * @keysMngr:
+ * xmlSecDSigCtxCreate:
+ * @keysMngr: the pointer to #xmlSecKeysMngr structure
  *
+ * Creates new #xmlSecDSigCtx structure.
  *
- *
+ * Returns pointer to newly allocated #xmlSecDSigCtx structure or NULL
+ * if an error occurs.
  */
 xmlSecDSigCtxPtr		
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
@@ -997,10 +1003,9 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecDSigCtxDestroy:
- * @ctx:
+ * @ctx: the pointer to #xmlSecDSigCtx structure.
  *
- *
- *
+ * Destroys #xmlSecDSigCtx structure @ctx.
  */
 void
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {    
@@ -1014,9 +1019,6 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
 
 /**
  * xmlSecSignatureRead:
- * @signNode:
- * @sign:
- * @result:
  *
  * The Signature  element (http://www.w3.org/TR/xmldsig-core/#sec-Signature)
  *
@@ -1130,11 +1132,6 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
 
 /**
  * xmlSecSignedInfoCalculate:
- * @result:
- * @signedInfoNode:
- * @c14nMethod:
- * @signMethod:
- * @signatureValueNode:
  *
  *  The way in which the SignedInfo element is presented to the 
  *  canonicalization method is dependent on that method. The following 
@@ -1281,11 +1278,6 @@ done:
 
 /** 
  * xmlSecSignedInfoRead:
- * @result:
- * @signNode:
- * @sign:
- * @signatureValueNode:
- * @keyInfoNode:
  *
  * The SignedInfo  Element (http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo)
  * 
@@ -1496,9 +1488,6 @@ done:
 
 /**
  * xmlSecReferenceRead:
- * @ref:
- * @self:
- * @sign:
  *
  * The Reference  Element (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
  * 
@@ -1686,10 +1675,7 @@ done:
 
 
 /**
- * xmlSecReferenceCreate
- * @ctx:
- * @self:
- *
+ * xmlSecReferenceCreate:
  *
  */
 static xmlSecReferenceResultPtr	
@@ -1719,11 +1705,7 @@ xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr
 }
 
 /**
- * xmlSecReferenceDestroy
- * @ref:
- *
- *
- *
+ * xmlSecReferenceDestroy:
  */
 static void			
 xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
@@ -1759,9 +1741,6 @@ xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
 
 /**
  * xmlSecReferenceDestroyAll:
- * @ref:
- *
- *
  */
 static void
 xmlSecReferenceDestroyAll(xmlSecReferenceResultPtr ref) {
@@ -1777,10 +1756,7 @@ xmlSecReferenceDestroyAll(xmlSecReferenceResultPtr ref) {
 }
 
 /**
- * xmlSecDSiggReferenceDebugDumpAll:
- * @output:
- * @ref:
- *
+ * xmlSecDSiggReferenceDebugDump:
  */
 static void
 xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
@@ -1813,9 +1789,6 @@ xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
 
 /**
  * xmlSecDSigReferenceDebugDumpAll:
- * @output:
- * @ref:
- *
  */
 static void
 xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
@@ -1839,8 +1812,6 @@ xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
 
 /**
  * xmlSecObjectRead:
- * @result:
- * @objectNode:
  * 
  * The Object Element (http://www.w3.org/TR/xmldsig-core/#sec-Object)
  * 
@@ -1894,9 +1865,6 @@ xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
 
 /**
  * xmlSecManifestRead: 
- * @result:
- * @manifestNode:
- * @sign:
  *
  * The Manifest  Element (http://www.w3.org/TR/xmldsig-core/#sec-Manifest)
  *

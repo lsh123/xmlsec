@@ -1,12 +1,12 @@
 <refentry id="xmlsec-base64">
 <refmeta>
-<refentrytitle>base64</refentrytitle>
+<refentrytitle>base64.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>base64</refname><refpurpose></refpurpose>
+<refname>base64.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

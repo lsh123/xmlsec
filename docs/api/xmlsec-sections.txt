@@ -320,9 +320,17 @@ xmlSecX509StorePtr
 
 <SECTION>
 <FILE>xmldsig</FILE>
-xmlSecReferenceType
 xmlSecDSigCtxCreate
 xmlSecDSigCtxDestroy
+xmlSecReferenceType
+
+xmlSecDSigValidate
+xmlSecDSigGenerate
+
+xmlSecDSigResultCreate
+xmlSecDSigResultDestroy
+xmlSecDSigResultDebugDump
+
 xmlSecSignatureCreate
 xmlSecSignatureDestroy
 xmlSecSignatureAddSignedInfo
@@ -336,24 +344,22 @@ xmlSecReferenceAddTransform
 xmlSecObjectAddSignProperties
 xmlSecObjectAddManifest
 xmlSecManifestAddReference
-xmlSecDSigValidate
-xmlSecDSigGenerate
-xmlSecDSigResultCreate
-xmlSecDSigResultDestroy
-xmlSecDSigResultDebugDump
 </SECTION>
 
 <SECTION>
 <FILE>xmlenc</FILE>
 xmlSecEncCtxCreate
 xmlSecEncCtxDestroy
+
 xmlSecEncryptMemory
 xmlSecEncryptUri
 xmlSecEncryptXmlNode
 xmlSecDecrypt
+
 xmlSecEncResultCreate
 xmlSecEncResultDestroy
 xmlSecEncResultDebugDump
+
 xmlSecEncDataCreate
 xmlSecEncDataDestroy
 xmlSecEncDataAddEncMethod
@@ -367,12 +373,8 @@ xmlSecCipherReferenceAddTransform
 
 <SECTION>
 <FILE>xmlsec</FILE>
-extern
 xmlSecInit
 xmlSecShutdown
-xmlSecIsHex
-xmlSecGetHex
-ATTRIBUTE_UNUSED
 </SECTION>
 
 <SECTION>

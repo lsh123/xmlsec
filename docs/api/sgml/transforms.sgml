@@ -1,12 +1,12 @@
 <refentry id="xmlsec-transforms">
 <refmeta>
-<refentrytitle>transforms</refentrytitle>
+<refentrytitle>transforms.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>transforms</refname><refpurpose></refpurpose>
+<refname>transforms.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

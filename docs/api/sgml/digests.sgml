@@ -1,12 +1,12 @@
 <refentry id="xmlsec-digests">
 <refmeta>
-<refentrytitle>digests</refentrytitle>
+<refentrytitle>digests.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>digests</refname><refpurpose></refpurpose>
+<refname>digests.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

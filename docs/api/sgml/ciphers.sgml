@@ -1,12 +1,12 @@
 <refentry id="xmlsec-ciphers">
 <refmeta>
-<refentrytitle>ciphers</refentrytitle>
+<refentrytitle>ciphers.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>ciphers</refname><refpurpose></refpurpose>
+<refname>ciphers.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

@@ -1,12 +1,12 @@
 <refentry id="xmlsec-io">
 <refmeta>
-<refentrytitle>io</refentrytitle>
+<refentrytitle>io.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>io</refname><refpurpose></refpurpose>
+<refname>io.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

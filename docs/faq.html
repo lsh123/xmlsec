@@ -140,6 +140,18 @@
       Can I disable some of them?</h4>
       Yes, you can. Please run <code>./configure --help</code>
       for the list of possible configuration options.
+
+
+      <h3>3. Programming with XMLSec.</h3>
+      <h4>3.1. xmlSecDSigValidate() function returned 0. Does this mean
+      that the signature is valid?</h4>
+      <b>No!</b> Function xmlSecDSigValidate() returns 0 when there
+      were no <i>processing</i> errors during signature validation
+      (i.e. the document has correct syntax, all keys were found, etc.).
+      The signature is valid if and only if the xmlSecDSigValidate() 
+      function returns 0 <b>and</b> the <code>result</code> member
+      of the returned <code>xmlSecDSigResult</code> structure is equal
+      to <code>xmlSecTransformStatusOk</code>.
       
       <p><a href="bugs.html">Aleksey Sanin</a></p>
       </td>

@@ -1,7 +1,7 @@
 <HTML
 ><HEAD
 ><TITLE
->errors</TITLE
+>errors.h</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
@@ -13,10 +13,10 @@ REL="UP"
 TITLE="XML Security Library Reference"
 HREF="xmlsec-ref.html"><LINK
 REL="PREVIOUS"
-TITLE="xmlenc"
+TITLE="xmlenc.h"
 HREF="xmlsec-xmlenc.html"><LINK
 REL="NEXT"
-TITLE="debug"
+TITLE="debug.h"
 HREF="xmlsec-debug.html"></HEAD
 ><BODY
 CLASS="REFENTRY"
@@ -117,19 +117,19 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="XMLSEC-ERRORS">errors</H1
+NAME="XMLSEC-ERRORS">errors.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN1362"
+NAME="AEN1387"
 ></A
 ><H2
 >Name</H2
->errors&nbsp;--&nbsp;</DIV
+>errors.h&nbsp;--&nbsp;The errors reporting functions.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN1365"><H2
+NAME="AEN1390"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -316,7 +316,8 @@ HREF="xmlsec-errors.html#XMLSECERROR"
                                              int line,
                                              const char *func,
                                              int reason,
-                                             const char *msg);
+                                             const char *msg,
+                                             ...);
 #define     <A
 HREF="xmlsec-errors.html#XMLSECASSERT"
 >xmlSecAssert</A
@@ -332,24 +333,33 @@ HREF="xmlsec-errors.html#XMLSECASSERT2"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1412"
+NAME="AEN1437"
 ></A
 ><H2
 >Description</H2
 ><P
-></P
+>All errors are reported to application provided callback function.
+The default callback function reports an error to OpenSSL using
+<GTKDOCLINK
+HREF="ERR-PUT-ERROR"
+>ERR_put_error</GTKDOCLINK
+>() function and to LibXML using <GTKDOCLINK
+HREF="XMLGENERICERROR"
+>xmlGenericError</GTKDOCLINK
+>() 
+function.</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1415"
+NAME="AEN1442"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1417"
+NAME="AEN1444"
 ></A
 ><H3
 ><A
@@ -365,17 +375,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_LIB				(ERR_LIB_USER + 57)</PRE
+>#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Macro. The XMLSec library id for OpenSSL errors reporting functions.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1422"
+NAME="AEN1450"
 ></A
 ><H3
 ><A
@@ -391,17 +403,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_FUNCTION				0</PRE
+>#define XMLSEC_ERRORS_FUNCTION			0</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Macro. The XMLSec library functions OpenSSL errors reporting functions.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1427"
+NAME="AEN1456"
 ></A
 ><H3
 ><A
@@ -417,17 +431,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1  	/* "failed to allocate memory" */</PRE
+>#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Failed to allocate memory error.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1432"
+NAME="AEN1462"
 ></A
 ><H3
 ><A
@@ -443,17 +459,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2	/* "xmlsec operation failed" */</PRE
+>#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>An XMLSec function failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1437"
+NAME="AEN1468"
 ></A
 ><H3
 ><A
@@ -469,17 +487,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3	/* "crypto operation failed" */</PRE
+>#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Crypto (OpenSSL) function failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1442"
+NAME="AEN1474"
 ></A
 ><H3
 ><A
@@ -495,17 +515,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_XML_FAILED		 4	/* "xml operation failed" */</PRE
+>#define XMLSEC_ERRORS_R_XML_FAILED		 4</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>LibXML function failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1447"
+NAME="AEN1480"
 ></A
 ><H3
 ><A
@@ -521,17 +543,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_XSLT_FAILED		 5	/* "xslt operation failed" */</PRE
+>#define XMLSEC_ERRORS_R_XSLT_FAILED		 5</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>LibXSLT function failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1452"
+NAME="AEN1486"
 ></A
 ><H3
 ><A
@@ -547,17 +571,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_IO_FAILED		 6	/* "io operation failed" */</PRE
+>#define XMLSEC_ERRORS_R_IO_FAILED		 6</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>IO operation failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1457"
+NAME="AEN1492"
 ></A
 ><H3
 ><A
@@ -573,17 +599,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10	/* "invlaid transform" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invlaid transform.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1462"
+NAME="AEN1498"
 ></A
 ><H3
 ><A
@@ -599,17 +627,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11	/* "invlaid transform data	" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invlaid transform data.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1467"
+NAME="AEN1504"
 ></A
 ><H3
 ><A
@@ -625,17 +655,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12	/* "invalid transform or key" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid transform or key.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1472"
+NAME="AEN1510"
 ></A
 ><H3
 ><A
@@ -651,17 +683,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_KEY		 13	/* "key is invalid" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_KEY		 13</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Key is invalid.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1477"
+NAME="AEN1516"
 ></A
 ><H3
 ><A
@@ -677,17 +711,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14	/* "key data is invalid" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Key data is invalid.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1482"
+NAME="AEN1522"
 ></A
 ><H3
 ><A
@@ -703,17 +739,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15	/* "invalid key size" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid key size.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1487"
+NAME="AEN1528"
 ></A
 ><H3
 ><A
@@ -729,17 +767,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16	/* "invalid key origin" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid key origin.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1492"
+NAME="AEN1534"
 ></A
 ><H3
 ><A
@@ -755,17 +795,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17	/* "key not found" */</PRE
+>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Key not found.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1497"
+NAME="AEN1540"
 ></A
 ><H3
 ><A
@@ -781,17 +823,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_SIZE		 18	/* "invalid size" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_SIZE		 18</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid size.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1502"
+NAME="AEN1546"
 ></A
 ><H3
 ><A
@@ -807,17 +851,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_DATA		 19	/* "invalid data" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_DATA		 19</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid data.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1507"
+NAME="AEN1552"
 ></A
 ><H3
 ><A
@@ -833,17 +879,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_TYPE		 21	/* "invalid type" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_TYPE		 21</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid type.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1512"
+NAME="AEN1558"
 ></A
 ><H3
 ><A
@@ -859,17 +907,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_USAGE		 22	/* "invalid usage" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_USAGE		 22</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid usage.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1517"
+NAME="AEN1564"
 ></A
 ><H3
 ><A
@@ -885,17 +935,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23	/* "invalid node" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid node,</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1522"
+NAME="AEN1570"
 ></A
 ><H3
 ><A
@@ -911,17 +963,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24	/* "invalid nodes set" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid nodes set,</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1527"
+NAME="AEN1576"
 ></A
 ><H3
 ><A
@@ -937,17 +991,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25	/* "invalid node content" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid node content.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1532"
+NAME="AEN1582"
 ></A
 ><H3
 ><A
@@ -963,17 +1019,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26	/* "invalid node attribute" */</PRE
+>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid node attribute.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1537"
+NAME="AEN1588"
 ></A
 ><H3
 ><A
@@ -989,17 +1047,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27	/* "node already present" */</PRE
+>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Node already present,</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1542"
+NAME="AEN1594"
 ></A
 ><H3
 ><A
@@ -1015,17 +1075,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28	/* "same document required" */</PRE
+>#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The transform requires the same document.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1547"
+NAME="AEN1600"
 ></A
 ><H3
 ><A
@@ -1041,17 +1103,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29	/* "node not found" */</PRE
+>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Node not found.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1552"
+NAME="AEN1606"
 ></A
 ><H3
 ><A
@@ -1067,17 +1131,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30	/* "max retrievals level reached" */</PRE
+>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Max allowed retrievals level reached.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1557"
+NAME="AEN1612"
 ></A
 ><H3
 ><A
@@ -1093,17 +1159,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31	/* "cert verification failed" */</PRE
+>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Certificate verification failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1562"
+NAME="AEN1618"
 ></A
 ><H3
 ><A
@@ -1119,17 +1187,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32	/* "cert not found" */</PRE
+>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Requested certificate is not found.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1567"
+NAME="AEN1624"
 ></A
 ><H3
 ><A
@@ -1145,17 +1215,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_CERT_REVOKED		 33	/* "cert revoked" */</PRE
+>#define XMLSEC_ERRORS_R_CERT_REVOKED		 33</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The certificate is revoked.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1572"
+NAME="AEN1630"
 ></A
 ><H3
 ><A
@@ -1171,17 +1243,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34	/* "invalid reference" */</PRE
+>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The &lt;dsig:Reference&gt; validation failed.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1577"
+NAME="AEN1636"
 ></A
 ><H3
 ><A
@@ -1197,17 +1271,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_ASSERTION		 100	/* "assertion" */</PRE
+>#define XMLSEC_ERRORS_R_ASSERTION		 100</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Invalid assertion.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1582"
+NAME="AEN1642"
 ></A
 ><H3
 ><A
@@ -1223,17 +1299,21 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_ERRORS_R_DISABLED		 101	/* "disabled" */</PRE
+>#define XMLSEC_ERRORS_R_DISABLED		 101</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The feature is disabled during compilation.
+Check './configure --help' for details on how to
+enable it.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1587"
+NAME="AEN1648"
 ></A
 ><H3
 ><A
@@ -1258,11 +1338,13 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The errors reporting callback function typedef.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1592"><P
+NAME="AEN1654"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1282,12 +1364,12 @@ CLASS="PARAMETER"
 ><I
 >file</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error origin filename (__FILE__).</TD
 ></TR
 ><TR
 ><TD
@@ -1299,12 +1381,12 @@ CLASS="PARAMETER"
 ><I
 >line</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error origin line number (__LINE__).</TD
 ></TR
 ><TR
 ><TD
@@ -1316,12 +1398,12 @@ CLASS="PARAMETER"
 ><I
 >func</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error origin function (__FUNCTIION__).</TD
 ></TR
 ><TR
 ><TD
@@ -1333,12 +1415,12 @@ CLASS="PARAMETER"
 ><I
 >reason</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error code.</TD
 ></TR
 ><TR
 ><TD
@@ -1350,12 +1432,12 @@ CLASS="PARAMETER"
 ><I
 >msg</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error message.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1366,7 +1448,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1617"
+NAME="AEN1679"
 ></A
 ><H3
 ><A
@@ -1387,12 +1469,18 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Initializes the errors reporting. It is called from <A
+HREF="xmlsec-xmlsec.html#XMLSECINIT"
+>xmlSecInit</A
+>() function.
+and applications must not call this function directly.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1622"
+NAME="AEN1686"
 ></A
 ><H3
 ><A
@@ -1413,12 +1501,18 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Cleanups the errors reporting. It is called from <A
+HREF="xmlsec-xmlsec.html#XMLSECSHUTDOWN"
+>xmlSecShutdown</A
+>() function.
+and applications must not call this function directly.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1627"
+NAME="AEN1693"
 ></A
 ><H3
 ><A
@@ -1442,11 +1536,19 @@ HREF="xmlsec-errors.html#XMLSECERRORSCALLBACK"
 ></TR
 ></TABLE
 ><P
+>Sets the errors callback function <TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> that will be called 
+every time an error occurs.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1633"><P
+NAME="AEN1701"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1466,12 +1568,12 @@ CLASS="PARAMETER"
 ><I
 >callback</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the errors callback function.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1482,7 +1584,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1642"
+NAME="AEN1710"
 ></A
 ><H3
 ><A
@@ -1498,17 +1600,21 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->extern int xmlSecPrintErrorMessages;	/* whether the error messages will be printed immidiatelly */</PRE
+>extern int xmlSecPrintErrorMessages;</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The flag that determines whether the error message will be printed
+out immidiatelly. For default errors reporting callback, this flag
+determines whether the error is reported to LibXML library or not.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1647"
+NAME="AEN1716"
 ></A
 ><H3
 ><A
@@ -1529,12 +1635,18 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The macro that specifies the location (file, line and function)
+for the <A
+HREF="xmlsec-errors.html#XMLSECERROR"
+>xmlSecError</A
+>() function.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1652"
+NAME="AEN1723"
 ></A
 ><H3
 ><A
@@ -1554,16 +1666,19 @@ CLASS="PROGRAMLISTING"
                                              int line,
                                              const char *func,
                                              int reason,
-                                             const char *msg);</PRE
+                                             const char *msg,
+                                             ...);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Reports an error.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1657"><P
+NAME="AEN1729"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1583,12 +1698,12 @@ CLASS="PARAMETER"
 ><I
 >file</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error origin filename (__FILE__).</TD
 ></TR
 ><TR
 ><TD
@@ -1600,12 +1715,12 @@ CLASS="PARAMETER"
 ><I
 >line</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error origin line number (__LINE__).</TD
 ></TR
 ><TR
 ><TD
@@ -1617,12 +1732,12 @@ CLASS="PARAMETER"
 ><I
 >func</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error origin function (__FUNCTIION__).</TD
 ></TR
 ><TR
 ><TD
@@ -1634,12 +1749,12 @@ CLASS="PARAMETER"
 ><I
 >reason</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the error code.</TD
 ></TR
 ><TR
 ><TD
@@ -1651,7 +1766,24 @@ CLASS="PARAMETER"
 ><I
 >msg</I
 ></TT
->:</TD
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the error message in printf format.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>...</I
+></TT
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1667,7 +1799,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1682"
+NAME="AEN1758"
 ></A
 ><H3
 ><A
@@ -1692,7 +1824,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1687"><P
+NAME="AEN1763"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1712,7 +1844,7 @@ CLASS="PARAMETER"
 ><I
 >p</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1728,7 +1860,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1696"
+NAME="AEN1772"
 ></A
 ><H3
 ><A
@@ -1753,7 +1885,7 @@ CLASS="PROGRAMLISTING"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1701"><P
+NAME="AEN1777"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1773,7 +1905,7 @@ CLASS="PARAMETER"
 ><I
 >p</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1790,7 +1922,7 @@ CLASS="PARAMETER"
 ><I
 >ret</I
 ></TT
->:</TD
+>&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
@@ -1891,7 +2023,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->xmlenc</B
+>xmlenc.h</B
 ></FONT
 ></TD
 ><TD
@@ -1901,7 +2033,7 @@ ALIGN="right"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->debug</B
+>debug.h</B
 ></FONT
 ></TD
 ></TR

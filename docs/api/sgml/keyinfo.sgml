@@ -1,12 +1,12 @@
 <refentry id="xmlsec-keyinfo">
 <refmeta>
-<refentrytitle>keyinfo</refentrytitle>
+<refentrytitle>keyinfo.h</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>keyinfo</refname><refpurpose></refpurpose>
+<refname>keyinfo.h</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

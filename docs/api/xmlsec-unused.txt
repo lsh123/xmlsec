@@ -1,0 +1,4 @@
+xmlSecGetHex
+xmlSecIsHex
+extern
+ATTRIBUTE_UNUSED

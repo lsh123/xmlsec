@@ -1,20 +1,21 @@
 <!-- ##### SECTION Title ##### -->
-errors
+errors.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The errors reporting functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+All errors are reported to application provided callback function.
+The default callback function reports an error to OpenSSL using
+ERR_put_error() function and to LibXML using xmlGenericError() 
+function.
 </para>
-
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO XMLSEC_ERRORS_LIB ##### -->
 <para>
@@ -311,6 +312,7 @@ errors
 @func: 
 @reason: 
 @msg: 
+@Varargs: 
 
 
 <!-- ##### MACRO xmlSecAssert ##### -->

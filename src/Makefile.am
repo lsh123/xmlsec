@@ -1,6 +1,6 @@
 NULL =
 
-SUBDIRS = openssl
+SUBDIRS = $(XMLSEC_CRYPTO_LIST)
 
 INCLUDES = \
 -I$(top_srcdir) \

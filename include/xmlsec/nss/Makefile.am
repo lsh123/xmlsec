@@ -1,11 +1,13 @@
-NULL=
+NULL =
 
-xmlsecincdir = $(includedir)/xmlsec
+xmlsecnssincdir = $(includedir)/xmlsec/nss
 
-xmlsecinc_HEADERS = \
-errors.h \
+xmlsecnssinc_HEADERS = \
+app.h \
+crypto.h \
+symbols.h \
 $(NULL)
 
 install-exec-hook:
-	$(mkinstalldirs) $(DESTDIR)$(xmlsecincdir)
+	$(mkinstalldirs) $(DESTDIR)$(xmlsecnssincdir)
 

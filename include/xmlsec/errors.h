@@ -248,6 +248,12 @@ extern "C" {
  * enable it.
  */
 #define XMLSEC_ERRORS_R_DISABLED		 101
+/**
+ * XMLSEC_ERRORS_R_NOT_IMPLEMENTED:
+ *
+ * Feature is not implemented.
+ */
+#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 102
 
 
 

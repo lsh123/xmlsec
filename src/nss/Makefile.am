@@ -3,6 +3,7 @@ NULL =
 INCLUDES = \
 -I$(top_srcdir) \
 -I$(top_srcdir)/include \
+$(XMLSEC_NSS_DEFINES) \
 $(NSS_CFLAGS) \
 $(LIBXSLT_CFLAGS) \
 $(LIBXML_CFLAGS) \
@@ -12,8 +13,8 @@ $(NULL)
 lib_LTLIBRARIES = libxmlsec-nss.la
 
 libxmlsec_nss_la_SOURCES =\
+app.c \
 crypto.c \
-keysmngr.c \
 $(NULL)
 
 libxmlsec_nss_la_LIBADD = \

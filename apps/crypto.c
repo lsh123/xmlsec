@@ -68,7 +68,7 @@ int
 xmlSecAppCryptoSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
 
-    return(xmlSecOpenSSLAppSimpleKeysMngrInit(mngr));
+    return(xmlSecCryptoAppSimpleKeysMngrInit(mngr));
 }
 
 int
@@ -76,7 +76,7 @@ xmlSecAppCryptoSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *filename) 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     
-    return(xmlSecOpenSSLAppSimpleKeysMngrLoad(mngr, filename));
+    return(xmlSecCryptoAppSimpleKeysMngrLoad(mngr, filename));
 }
 
 int 
@@ -84,7 +84,7 @@ xmlSecAppCryptoSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char *filename, 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     
-    return(xmlSecOpenSSLAppSimpleKeysMngrSave(mngr, filename, type));
+    return(xmlSecCryptoAppSimpleKeysMngrSave(mngr, filename, type));
 }
 
 int 
@@ -93,7 +93,7 @@ xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *fil
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509	    
-    return(xmlSecOpenSSLAppKeysMngrPemCertLoad(mngr, filename, trusted));
+    return(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, filename, trusted));
 #else /* XMLSEC_NO_X509 */
     return(-1);
 #endif /* XMLSEC_NO_X509 */    
@@ -188,6 +188,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
+#ifdef XMLSEC_CRYPTO_OPENSSL
     if(pwd == NULL) {
 	snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
 	ret = EVP_read_pw_string(buf, sizeof(buf), prompt, 0);
@@ -239,6 +240,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
+#endif /* XMLSEC_CRYPTO_OPENSSL */
     
     return(0);
 #else /* XMLSEC_NO_X509 */

@@ -24,6 +24,14 @@ extern "C" {
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/x509.h>
 #include <xmlsec/openssl/symbols.h>
+#else /* XMLSEC_CRYPTO_OPENSSL */
+#ifdef XMLSEC_CRYPTO_NSS
+#include <xmlsec/nss/app.h>
+#include <xmlsec/nss/crypto.h>
+#include <xmlsec/nss/symbols.h>
+#else /* XMLSEC_CRYPTO_NSS */
+#error No Crypto library defined
+#endif /* XMLSEC_CRYPTO_NSS */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 
 XMLSEC_EXPORT int	xmlSecAppCryptoInit			(void);

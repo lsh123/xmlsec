@@ -16,8 +16,23 @@ XMLSEC_CRYPTO_LIBS = \
     $(OPENSSL_LDADDS) \
     $(NULL)
 else 
+if XMLSEC_CRYPTO_NSS
+XMLSEC_CRYPTO_INCLUDES = \
+    -DXMLSEC_CRYPTO_NSS=1 \
+    $(NSS_CFLAGS) \
+    $(NULL) 
+
+XMLSEC_CRYPTO_LIB=\
+    $(top_builddir)/src/nss/libxmlsec-nss.la \
+    $(NULL)
+
+XMLSEC_CRYPTO_LIBS = \
+    $(NSS_LDADDS) \
+    $(NULL)
+else 
     "Error: no crypto library defined"
-endif 
+endif
+endif
 
 INCLUDES = \
     -I$(top_srcdir)/include \

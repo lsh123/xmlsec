@@ -98,7 +98,7 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 
     xmlSecAssert2(filename != NULL, NULL);
         
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_IO_FAILED,

@@ -1212,7 +1212,7 @@ int readHmacKey(char *filename, char *name) {
     xmlSecKeyPtr key;
     int ret;    
     
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if(f == NULL) {
 	fprintf(stderr, "Error: failed to open file \"%s\" \n", filename);
 	return(-1);

@@ -127,6 +127,7 @@
 <listitem><para><link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC-DSIG-FLAGS-STORE-SIGNATURE</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS">XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES</link></para></listitem>
+<listitem><para><link linkend="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferenceCtxDebugXmlDump</link></para></listitem>
@@ -497,6 +498,7 @@
 <listitem><para><link linkend="xmlSecMSCryptoAppShutdown">xmlSecMSCryptoAppShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoErrorsDefaultCallback</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoGenerateRandom">xmlSecMSCryptoGenerateRandom</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoInit">xmlSecMSCryptoInit</link></para></listitem>
@@ -693,6 +695,7 @@
 <listitem><para><link linkend="xmlSecOpenSSLEvpKeyDataGetEvp">xmlSecOpenSSLEvpKeyDataGetEvp</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLEvpKeyDup">xmlSecOpenSSLEvpKeyDup</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLGetDefaultTrustedCertsFolder">xmlSecOpenSSLGetDefaultTrustedCertsFolder</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLInit">xmlSecOpenSSLInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLKeyDataAesGetKlass">xmlSecOpenSSLKeyDataAesGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</link></para></listitem>
@@ -730,6 +733,7 @@
 <listitem><para><link linkend="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLSetDefaultTrustedCertsFolder">xmlSecOpenSSLSetDefaultTrustedCertsFolder</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLTransformAes128CbcGetKlass">xmlSecOpenSSLTransformAes128CbcGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLTransformAes128CbcId">xmlSecOpenSSLTransformAes128CbcId</link></para></listitem>
@@ -815,6 +819,8 @@
 <listitem><para><link linkend="XMLSEC-STACK-OF-X509-CAPS">XMLSEC-STACK-OF-X509</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListId">xmlSecStringListId</link></para></listitem>
+<listitem><para><link linkend="xmlSecStrPrintf">xmlSecStrPrintf</link></para></listitem>
+<listitem><para><link linkend="xmlSecStrVPrintf">xmlSecStrVPrintf</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplEncDataAddEncProperty">xmlSecTmplEncDataAddEncProperty</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplEncDataCreate">xmlSecTmplEncDataCreate</link></para></listitem>
@@ -832,6 +838,8 @@
 <listitem><para><link linkend="xmlSecTmplObjectAddManifest">xmlSecTmplObjectAddManifest</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplObjectAddSignProperties">xmlSecTmplObjectAddSignProperties</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplReferenceListAddDataReference">xmlSecTmplReferenceListAddDataReference</link></para></listitem>
+<listitem><para><link linkend="xmlSecTmplReferenceListAddKeyReference">xmlSecTmplReferenceListAddKeyReference</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplRetrievalMethodAddTransform">xmlSecTmplRetrievalMethodAddTransform</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplSignatureAddReference">xmlSecTmplSignatureAddReference</link></para></listitem>
@@ -874,6 +882,7 @@
 <listitem><para><link linkend="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCtxExecute">xmlSecTransformCtxExecute</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize</link></para></listitem>
+<listitem><para><link linkend="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCtxNodeRead">xmlSecTransformCtxNodeRead</link></para></listitem>
@@ -1006,6 +1015,9 @@
 <listitem><para><link linkend="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformVerify">xmlSecTransformVerify</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformVerifyNodeContent">xmlSecTransformVerifyNodeContent</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformVisa3DHackGetKlass">xmlSecTransformVisa3DHackGetKlass</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformVisa3DHackId">xmlSecTransformVisa3DHackId</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformVisa3DHackSetID">xmlSecTransformVisa3DHackSetID</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformXPath2GetKlass">xmlSecTransformXPath2GetKlass</link></para></listitem>

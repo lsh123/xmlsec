@@ -243,6 +243,13 @@ transforms
 @Returns: 
 
 
+<!-- ##### MACRO XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT xmlSecTransformCtx ##### -->
 <para>
 
@@ -1215,6 +1222,31 @@ transforms
 
 </para>
 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformVisa3DHackId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformVisa3DHackGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformVisa3DHackSetID ##### -->
+<para>
+
+</para>
+
+@transform: 
+@id: 
 @Returns: 
 
 

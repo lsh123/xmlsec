@@ -229,3 +229,17 @@ private
 @cryptoAppKeyCertLoadMemory: 
 @cryptoAppDefaultPwdCallback: 
 
+<!-- ##### MACRO xmlSecStrPrintf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecStrVPrintf ##### -->
+<para>
+
+</para>
+
+
+

@@ -2,12 +2,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>app</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
 <link rel="PREVIOUS" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
 <link rel="NEXT" title="bignum" href="xmlsec-nss-bignum.html">
+<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<style type="text/css">.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+    padding: 0.5em;
+}
+.programlisting {
+    background: #eeeeff;
+    border: solid 1px #aaaaff;
+    padding: 0.5em;
+}
+.variablelist {
+    padding: 4px;
+    margin-left: 3em;
+}
+.navigation {
+    background: #ffeeee;
+    border: solid 1px #ffaaaa;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.navigation a {
+    color: #770000;
+}
+.navigation a:visited {
+    color: #550000;
+}
+.navigation .title {
+    font-size: 200%;
+}</style>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -49,22 +78,20 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-nss-bignum.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-nss-ref.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-nss-bignum.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <h1>
 <a name="XMLSEC-NSS-APP"></a>app</h1>
 <div class="REFNAMEDIV">
-<a name="AEN19922"></a><h2>Name</h2>app -- </div>
+<a name="AEN20089"></a><h2>Name</h2>app -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN19925"></a><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+<a name="AEN20092"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">
 
 int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPINIT">xmlSecNssAppInit</a>                (const char *config);
 int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPSHUTDOWN">xmlSecNssAppShutdown</a>            (void);
@@ -135,640 +162,630 @@ int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYCERTLOADSECITEM">xmlSecN
                                             (<font>SECItem</font> *secItem,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);
 void*       <a href="xmlsec-nss-app.html#XMLSECNSSAPPGETDEFAULTPWDCALLBACK">xmlSecNssAppGetDefaultPwdCallback</a>
-                                            (void);</pre></td></tr></table>
+                                            (void);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN19993"></a><h2>Description</h2>
+<a name="AEN20160"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN19996"></a><h2>Details</h2>
+<a name="AEN20163"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN19998"></a><h3>
+<a name="AEN20165"></a><h3>
 <a name="XMLSECNSSAPPINIT"></a>xmlSecNssAppInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppInit                (const char *config);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">int         xmlSecNssAppInit                (const char *config);</pre>
 <p>General crypto engine initialization. This function is used
 by XMLSec command line utility and called before 
-<tt class="PARAMETER"><i>xmlSecInit</i></tt> function.</p>
+<var class="PARAMETER">xmlSecInit</var> function.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20006"><span style="white-space: nowrap"><tt class="PARAMETER"><i>config</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the path to NSS database files.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20173"><span style="white-space: nowrap"><var class="PARAMETER">config</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the path to NSS database files.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20011"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20178"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20016"></a><h3>
+<a name="AEN20183"></a><h3>
 <a name="XMLSECNSSAPPSHUTDOWN"></a>xmlSecNssAppShutdown ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppShutdown            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">int         xmlSecNssAppShutdown            (void);</pre>
 <p>General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after 
-<tt class="PARAMETER"><i>xmlSecShutdown</i></tt> function.</p>
+<var class="PARAMETER">xmlSecShutdown</var> function.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20024"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN20191"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20029"></a><h3>
+<a name="AEN20196"></a><h3>
 <a name="XMLSECNSSAPPDEFAULTKEYSMNGRINIT"></a>xmlSecNssAppDefaultKeysMngrInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrInit (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
-<p>Initializes <tt class="PARAMETER"><i>mngr</i></tt> with NSS keys store <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREID">xmlSecNssKeysStoreId</a>
+<pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrInit (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre>
+<p>Initializes <var class="PARAMETER">mngr</var> with NSS keys store <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREID">xmlSecNssKeysStoreId</a>
 and a default NSS crypto key data stores.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20039"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20206"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20044"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20211"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20049"></a><h3>
+<a name="AEN20216"></a><h3>
 <a name="XMLSECNSSAPPDEFAULTKEYSMNGRADOPTKEY"></a>xmlSecNssAppDefaultKeysMngrAdoptKey ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrAdoptKey
+<pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrAdoptKey
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
-<p>Adds <tt class="PARAMETER"><i>key</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created with <a href="xmlsec-nss-app.html#XMLSECNSSAPPDEFAULTKEYSMNGRINIT">xmlSecNssAppDefaultKeysMngrInit</a>
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<p>Adds <var class="PARAMETER">key</var> to the keys manager <var class="PARAMETER">mngr</var> created with <a href="xmlsec-nss-app.html#XMLSECNSSAPPDEFAULTKEYSMNGRINIT">xmlSecNssAppDefaultKeysMngrInit</a>
 function.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20061"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20228"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20066"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20233"><span style="white-space: nowrap"><var class="PARAMETER">key</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20071"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20238"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20076"></a><h3>
+<a name="AEN20243"></a><h3>
 <a name="XMLSECNSSAPPDEFAULTKEYSMNGRLOAD"></a>xmlSecNssAppDefaultKeysMngrLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrLoad (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
-                                             const char *uri);</pre></td></tr></table>
-<p>Loads XML keys file from <tt class="PARAMETER"><i>uri</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created 
+<pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrLoad (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *uri);</pre>
+<p>Loads XML keys file from <var class="PARAMETER">uri</var> to the keys manager <var class="PARAMETER">mngr</var> created 
 with <a href="xmlsec-nss-app.html#XMLSECNSSAPPDEFAULTKEYSMNGRINIT">xmlSecNssAppDefaultKeysMngrInit</a> function.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20087"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20254"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20092"><span style="white-space: nowrap"><tt class="PARAMETER"><i>uri</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the uri.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20259"><span style="white-space: nowrap"><var class="PARAMETER">uri</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the uri.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20097"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20264"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20102"></a><h3>
+<a name="AEN20269"></a><h3>
 <a name="XMLSECNSSAPPDEFAULTKEYSMNGRSAVE"></a>xmlSecNssAppDefaultKeysMngrSave ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrSave (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+<pre class="PROGRAMLISTING">int         xmlSecNssAppDefaultKeysMngrSave (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
-<p>Saves keys from <tt class="PARAMETER"><i>mngr</i></tt> to  XML keys file.</p>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<p>Saves keys from <var class="PARAMETER">mngr</var> to  XML keys file.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20112"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20279"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20117"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the destination filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20284"><span style="white-space: nowrap"><var class="PARAMETER">filename</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the destination filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20122"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the type of keys to save (public/private/symmetric).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20289"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the type of keys to save (public/private/symmetric).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20127"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20294"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20132"></a><h3>
+<a name="AEN20299"></a><h3>
 <a name="XMLSECNSSAPPKEYSMNGRCERTLOAD"></a>xmlSecNssAppKeysMngrCertLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrCertLoad    (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+<pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrCertLoad    (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
-<p>Reads cert from <tt class="PARAMETER"><i>filename</i></tt> and adds to the list of trusted or known
-untrusted certs in <tt class="PARAMETER"><i>store</i></tt>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<p>Reads cert from <var class="PARAMETER">filename</var> and adds to the list of trusted or known
+untrusted certs in <var class="PARAMETER">store</var>
 </p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20144"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20311"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20149"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the certificate file.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20316"><span style="white-space: nowrap"><var class="PARAMETER">filename</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the certificate file.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20154"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate file format (PEM or DER).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20321"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate file format (PEM or DER).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20159"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the certificate type (trusted/untrusted).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20326"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the certificate type (trusted/untrusted).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20164"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20331"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20169"></a><h3>
+<a name="AEN20336"></a><h3>
 <a name="XMLSECNSSAPPKEYSMNGRCERTLOADMEMORY"></a>xmlSecNssAppKeysMngrCertLoadMemory ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrCertLoadMemory
+<pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrCertLoadMemory
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
-<p>Reads cert from <tt class="PARAMETER"><i>data</i></tt> and adds to the list of trusted or known
-untrusted certs in <tt class="PARAMETER"><i>store</i></tt>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<p>Reads cert from <var class="PARAMETER">data</var> and adds to the list of trusted or known
+untrusted certs in <var class="PARAMETER">store</var>
 </p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20183"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20350"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20188"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20355"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20193"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20360"><span style="white-space: nowrap"><var class="PARAMETER">dataSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data size.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20198"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate format (PEM or DER).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20365"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate format (PEM or DER).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20203"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the certificate type (trusted/untrusted).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20370"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the certificate type (trusted/untrusted).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20208"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20375"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20213"></a><h3>
+<a name="AEN20380"></a><h3>
 <a name="XMLSECNSSAPPKEYSMNGRCERTLOADSECITEM"></a>xmlSecNssAppKeysMngrCertLoadSECItem ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrCertLoadSECItem
+<pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrCertLoadSECItem
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              <font>SECItem</font> *secItem,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
-<p>Reads cert from <tt class="PARAMETER"><i>secItem</i></tt> and adds to the list of trusted or known
-untrusted certs in <tt class="PARAMETER"><i>store</i></tt>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<p>Reads cert from <var class="PARAMETER">secItem</var> and adds to the list of trusted or known
+untrusted certs in <var class="PARAMETER">store</var>
 </p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20226"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20393"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20231"><span style="white-space: nowrap"><tt class="PARAMETER"><i>secItem</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to SECItem.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20398"><span style="white-space: nowrap"><var class="PARAMETER">secItem</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to SECItem.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20236"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate format (PEM or DER).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20403"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate format (PEM or DER).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20241"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the certificate type (trusted/untrusted).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20408"><span style="white-space: nowrap"><var class="PARAMETER">type</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the certificate type (trusted/untrusted).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20246"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20413"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20251"></a><h3>
+<a name="AEN20418"></a><h3>
 <a name="XMLSECNSSAPPKEYLOAD"></a>xmlSecNssAppKeyLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyLoad            (const char *filename,
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyLoad            (const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              void *pwdCallback,
-                                             void *pwdCallbackCtx);</pre></td></tr></table>
+                                             void *pwdCallbackCtx);</pre>
 <p>Reads key from a file</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20260"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20427"><span style="white-space: nowrap"><var class="PARAMETER">filename</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20265"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key file format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20432"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key file format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20270"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key file password.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20437"><span style="white-space: nowrap"><var class="PARAMETER">pwd</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key file password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20275"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the key password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20442"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallback</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the key password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20280"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20447"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallbackCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20285"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20452"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20290"></a><h3>
+<a name="AEN20457"></a><h3>
 <a name="XMLSECNSSAPPKEYLOADMEMORY"></a>xmlSecNssAppKeyLoadMemory ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyLoadMemory      (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyLoadMemory      (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              void *pwdCallback,
-                                             void *pwdCallbackCtx);</pre></td></tr></table>
-<p>Reads key from a binary <tt class="PARAMETER"><i>data</i></tt>.</p>
+                                             void *pwdCallbackCtx);</pre>
+<p>Reads key from a binary <var class="PARAMETER">data</var>.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20302"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20469"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20307"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20474"><span style="white-space: nowrap"><var class="PARAMETER">dataSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data size.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20312"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key data format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20479"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key data format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20317"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key data2 password.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20484"><span style="white-space: nowrap"><var class="PARAMETER">pwd</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key data2 password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20322"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the key password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20489"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallback</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the key password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20327"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20494"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallbackCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20332"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20499"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20337"></a><h3>
+<a name="AEN20504"></a><h3>
 <a name="XMLSECNSSAPPKEYLOADSECITEM"></a>xmlSecNssAppKeyLoadSECItem ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyLoadSECItem     (<font>SECItem</font> *secItem,
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyLoadSECItem     (<font>SECItem</font> *secItem,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              void *pwdCallback,
-                                             void *pwdCallbackCtx);</pre></td></tr></table>
+                                             void *pwdCallbackCtx);</pre>
 <p>Reads key from a file</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20347"><span style="white-space: nowrap"><tt class="PARAMETER"><i>secItem</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to sec item.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20514"><span style="white-space: nowrap"><var class="PARAMETER">secItem</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to sec item.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20352"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20519"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20357"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key password.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20524"><span style="white-space: nowrap"><var class="PARAMETER">pwd</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20362"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the key password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20529"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallback</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the key password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20367"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20534"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallbackCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20372"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20539"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20377"></a><h3>
+<a name="AEN20544"></a><h3>
 <a name="XMLSECNSSAPPPKCS12LOAD"></a>xmlSecNssAppPkcs12Load ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12Load         (const char *filename,
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12Load         (const char *filename,
                                              const char *pwd,
                                              void *pwdCallback,
-                                             void *pwdCallbackCtx);</pre></td></tr></table>
+                                             void *pwdCallbackCtx);</pre>
 <p>Reads key and all associated certificates from the PKCS12 file.
 For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20385"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 key filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20552"><span style="white-space: nowrap"><var class="PARAMETER">filename</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the PKCS12 key filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20390"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 file password.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20557"><span style="white-space: nowrap"><var class="PARAMETER">pwd</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the PKCS12 file password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20395"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20562"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallback</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20400"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20567"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallbackCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20405"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20572"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20410"></a><h3>
+<a name="AEN20577"></a><h3>
 <a name="XMLSECNSSAPPPKCS12LOADMEMORY"></a>xmlSecNssAppPkcs12LoadMemory ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12LoadMemory   (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12LoadMemory   (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
                                              const char *pwd,
                                              void *pwdCallback,
-                                             void *pwdCallbackCtx);</pre></td></tr></table>
+                                             void *pwdCallbackCtx);</pre>
 <p>Reads key and all associated certificates from the PKCS12 binary data.
 For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20420"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20587"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20425"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20592"><span style="white-space: nowrap"><var class="PARAMETER">dataSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data size.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20430"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 password.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20597"><span style="white-space: nowrap"><var class="PARAMETER">pwd</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the PKCS12 password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20435"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20602"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallback</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20440"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20607"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallbackCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20445"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20612"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20450"></a><h3>
+<a name="AEN20617"></a><h3>
 <a name="XMLSECNSSAPPPKCS12LOADSECITEM"></a>xmlSecNssAppPkcs12LoadSECItem ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12LoadSECItem  (<font>SECItem</font> *secItem,
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12LoadSECItem  (<font>SECItem</font> *secItem,
                                              const char *pwd,
                                              void *pwdCallback,
-                                             void *pwdCallbackCtx);</pre></td></tr></table>
+                                             void *pwdCallbackCtx);</pre>
 <p>Reads key and all associated certificates from the PKCS12 SECItem.
 For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20459"><span style="white-space: nowrap"><tt class="PARAMETER"><i>secItem</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the <tt class="PARAMETER"><i>SECItem</i></tt> object.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20626"><span style="white-space: nowrap"><var class="PARAMETER">secItem</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the <var class="PARAMETER">SECItem</var> object.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20465"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 file password.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20632"><span style="white-space: nowrap"><var class="PARAMETER">pwd</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the PKCS12 file password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20470"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20637"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallback</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20475"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20642"><span style="white-space: nowrap"><var class="PARAMETER">pwdCallbackCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20480"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20647"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20485"></a><h3>
+<a name="AEN20652"></a><h3>
 <a name="XMLSECNSSAPPKEYCERTLOAD"></a>xmlSecNssAppKeyCertLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeyCertLoad         (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+<pre class="PROGRAMLISTING">int         xmlSecNssAppKeyCertLoad         (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const char *filename,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
-<p>Reads the certificate from $<tt class="PARAMETER"><i>filename</i></tt> and adds it to key</p>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre>
+<p>Reads the certificate from $<var class="PARAMETER">filename</var> and adds it to key</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20495"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20662"><span style="white-space: nowrap"><var class="PARAMETER">key</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20500"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20667"><span style="white-space: nowrap"><var class="PARAMETER">filename</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20505"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate file format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20672"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate file format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20510"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20677"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20515"></a><h3>
+<a name="AEN20682"></a><h3>
 <a name="XMLSECNSSAPPKEYCERTLOADMEMORY"></a>xmlSecNssAppKeyCertLoadMemory ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeyCertLoadMemory   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+<pre class="PROGRAMLISTING">int         xmlSecNssAppKeyCertLoadMemory   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
-<p>Reads the certificate from <tt class="PARAMETER"><i>data</i></tt> and adds it to key</p>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre>
+<p>Reads the certificate from <var class="PARAMETER">data</var> and adds it to key</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20527"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20694"><span style="white-space: nowrap"><var class="PARAMETER">key</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20532"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20699"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20537"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key binary data size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20704"><span style="white-space: nowrap"><var class="PARAMETER">dataSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key binary data size.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20542"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20709"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20547"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20714"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20552"></a><h3>
+<a name="AEN20719"></a><h3>
 <a name="XMLSECNSSAPPKEYCERTLOADSECITEM"></a>xmlSecNssAppKeyCertLoadSECItem ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeyCertLoadSECItem  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+<pre class="PROGRAMLISTING">int         xmlSecNssAppKeyCertLoadSECItem  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>SECItem</font> *secItem,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
-<p>Reads the certificate from <tt class="PARAMETER"><i>secItem</i></tt> and adds it to key</p>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre>
+<p>Reads the certificate from <var class="PARAMETER">secItem</var> and adds it to key</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20563"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20730"><span style="white-space: nowrap"><var class="PARAMETER">key</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20568"><span style="white-space: nowrap"><tt class="PARAMETER"><i>secItem</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to SECItem.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20735"><span style="white-space: nowrap"><var class="PARAMETER">secItem</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to SECItem.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20573"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the certificate format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20740"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the certificate format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20578"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20745"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20583"></a><h3>
+<a name="AEN20750"></a><h3>
 <a name="XMLSECNSSAPPKEYFROMCERTLOADSECITEM"></a>xmlSecNssAppKeyFromCertLoadSECItem ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyFromCertLoadSECItem
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppKeyFromCertLoadSECItem
                                             (<font>SECItem</font> *secItem,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre>
 <p>Loads public key from cert.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20593"><span style="white-space: nowrap"><tt class="PARAMETER"><i>secItem</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the <tt class="PARAMETER"><i>SECItem</i></tt> object.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20760"><span style="white-space: nowrap"><var class="PARAMETER">secItem</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the <var class="PARAMETER">SECItem</var> object.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20599"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the cert format.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20766"><span style="white-space: nowrap"><var class="PARAMETER">format</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the cert format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20604"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN20771"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20609"></a><h3>
+<a name="AEN20776"></a><h3>
 <a name="XMLSECNSSAPPGETDEFAULTPWDCALLBACK"></a>xmlSecNssAppGetDefaultPwdCallback ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void*       xmlSecNssAppGetDefaultPwdCallback
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">void*       xmlSecNssAppGetDefaultPwdCallback
+                                            (void);</pre>
 <p>Gets default password callback.</p>
 <p></p>
 </div>
 </div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-nss-bignum.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library for NSS API Reference.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>bignum</b></font></td>
-</tr>
-</table>
-</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-nss-ref.html"><b>&lt;&lt;&lt; XML Security Library for NSS API Reference.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-nss-bignum.html"><b>bignum &gt;&gt;&gt;</b></a></td>
+</tr></table>
 </td></tr>
 <tr><td>
 <br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>

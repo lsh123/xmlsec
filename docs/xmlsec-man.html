@@ -44,11 +44,11 @@
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
 <h1>XMLSEC1</h1>
-<p> Section: User Commands (1)<br>Updated: September 2003<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a>
+<p> Section: User Commands (1)<br>Updated: November 2003<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a>
 </p>
 <hr>
 <a name="lbAB"> </a><h2>NAME</h2>
-<p>  xmlsec1 - manual page for xmlsec1 1.2.0 (openssl) <a name="lbAC"> </a> </p>
+<p>  xmlsec1 - manual page for xmlsec1 1.2.2 (openssl) <a name="lbAC"> </a> </p>
 <h2>SYNOPSIS</h2>
 <b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;file&gt;</i>] <a name="lbAD"> </a> </p>
 <h2>DESCRIPTION</h2>
@@ -98,6 +98,10 @@
 </dt>
 <dd> <dd>comma separated list of of the following values: "empty", "same-doc", "local","remote" to restrict possible URI attribute values for the &lt;dsig:Reference&gt; element </dd>
 </dd>
+<dt> <b>--enable-visa3d-hack</b> <dt></dt>
+</dt>
+<dd> <dd>enables Visa3D protocol specific hack for URI attributes processing when we are trying not to use XPath/XPointer engine; this is a hack and I don't know what else might be broken in your application when you use it (also check "--id-attr" option because you might need it) </dd>
+</dd>
 <dt> <b>--binary-data</b> &lt;file&gt; <dt></dt>
 </dt>
 <dd> <dd>binary &lt;file&gt; to encrypt </dd>
@@ -141,6 +145,10 @@
 <dt> <b>--node-xpath</b> &lt;expr&gt; <dt></dt>
 </dt>
 <dd> <dd>set the operation start point to the first node selected by the specified XPath expression </dd>
+</dd>
+<dt> <b>--id-attr[</b>:&lt;attr-name&gt;] [&lt;node-namespace-uri&gt;:]&lt;node-name&gt; <dt></dt>
+</dt>
+<dd> <dd>adds attributes &lt;attr-name&gt; (default value "id") from all nodes with&lt;node-name&gt; and namespace &lt;node-namespace-uri&gt; to the list of known ID attributes; this is a hack and if you can use DTD or schema to declare ID attributes instead (see "--dtd-file" option), I don't know what else might be broken in your application when you use this hack </dd>
 </dd>
 <dt> <b>--enabled-key-data</b> &lt;list&gt; <dt></dt>
 </dt>
@@ -268,14 +276,7 @@
 <h2>REPORTING BUGS</h2>
 <p>  Report bugs to <a href="http://www.aleksey.com/xmlsec/bugs.html">http://www.aleksey.com/xmlsec/bugs.html</a> <a name="lbAH"> </a> </p>
 <h2>COPYRIGHT</h2>
-<p>  Copyright © 2002-2003 Aleksey Sanin. <br>  This is free software: see the source for copying information. <a name="lbAI"> </a> </p>
-<h2>SEE ALSO</h2>
-<p>  The full documentation for <b>xmlsec1</b>  is maintained as a Texinfo manual.  If the <b>info</b>  and <b>xmlsec1</b>  programs are properly installed at your site, the command </p>
-<dl compact>
-<dt></dt>
-<dd> <b>info xmlsec1</b>  </dd>
-</dl>
-<p>  should give you access to the complete manual. </p>
+<p>  Copyright © 2002-2003 Aleksey Sanin. <br>  This is free software: see the source for copying information. </p>
 <p>  </p>
 <hr>
 <a name="index"> </a><h2>Index</h2>
@@ -294,11 +295,9 @@
 <dd> </dd>
 <dt><a href="#lbAH">COPYRIGHT</a></dt>
 <dd> </dd>
-<dt><a href="#lbAI">SEE ALSO</a></dt>
-<dd> </dd>
 </dl>
 <hr>
-<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 20:29:31 GMT, September 26, 2003 </p>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 02:29:50 GMT, November 12, 2003 </p>
 </td></tr>
 <tr><td>
 <br><br><p><a href="bugs.html">Aleksey Sanin</a></p>

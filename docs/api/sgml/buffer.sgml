@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -101,6 +102,7 @@ The memory allocation mode (used by <parameter>xmlSecBuffer</parameter> and <par
 <refsect2>
 <title><anchor id="xmlSecBuffer">struct xmlSecBuffer</title>
 <programlisting>struct xmlSecBuffer {
+
     xmlSecByte* 	data;
     xmlSecSize 		size;
     xmlSecSize		maxSize;

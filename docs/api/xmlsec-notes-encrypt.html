@@ -2,12 +2,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Encrypting data.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
 <link rel="PREVIOUS" title="Signing a document." href="xmlsec-notes-sign.html">
 <link rel="NEXT" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
+<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<style type="text/css">.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+    padding: 0.5em;
+}
+.programlisting {
+    background: #eeeeff;
+    border: solid 1px #aaaaff;
+    padding: 0.5em;
+}
+.variablelist {
+    padding: 4px;
+    margin-left: 3em;
+}
+.navigation {
+    background: #ffeeee;
+    border: solid 1px #ffaaaa;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.navigation a {
+    color: #770000;
+}
+.navigation a:visited {
+    color: #550000;
+}
+.navigation .title {
+    font-size: 200%;
+}</style>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -49,18 +78,15 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-notes-sign.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-sign-encrypt.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-notes-templates.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <br clear="all"><div class="SECT1">
-<h1 class="SECT1">
-<a name="XMLSEC-NOTES-ENCRYPT"></a>Encrypting data.</h1>
+<h1 class="SECT1"><a name="XMLSEC-NOTES-ENCRYPT">Encrypting data.</a></h1>
 <p>The typical encryption process includes following steps:
 	  </p>
 <p></p>
@@ -77,7 +103,7 @@
 	    </p></li>
 <li><p>		Load encryption key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
 		or generate a session key and set it in the encryption context
-		(<tt class="STRUCTFIELD"><i>encKey</i></tt> member of 
+		(<code class="STRUCTFIELD">encKey</code> member of 
 		<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure).
 	    </p></li>
 <li>
@@ -104,7 +130,7 @@
 <p>	     </p>
 <div class="EXAMPLE">
 <a name="AEN227"></a><p><b>Example 2. Encrypting binary data with a template.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
+<pre class="PROGRAMLISTING">/**
  * encrypt_file:
  * @tmpl_file:		the encryption template file name.
  * @key_file:		the Triple DES key file.
@@ -184,25 +210,15 @@ done:
     }
     return(res);
 }
-		</pre></td></tr></table>
+		</pre>
 <p><a href="xmlsec-encrypt-template-file.html#XMLSEC-EXAMPLE-ENCRYPT1">Full program listing</a></p>
 <p><a href="xmlsec-encrypt-template-file.html#XMLSEC-EXAMPLE-ENCRYPT1-TMPL">Simple encryption template file</a></p>
 </div>
 	</div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Signing a document.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Creating dynamic templates.</b></font></td>
-</tr>
-</table>
-</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-notes-sign.html"><b>&lt;&lt;&lt; Signing a document.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-notes-templates.html"><b>Creating dynamic templates. &gt;&gt;&gt;</b></a></td>
+</tr></table>
 </td></tr>
 <tr><td>
 <br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>

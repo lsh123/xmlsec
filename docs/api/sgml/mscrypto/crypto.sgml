@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -29,6 +30,10 @@ void        <link linkend="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoEr
                                              const char *errorSubject,
                                              int reason,
                                              const char *msg);
+<link linkend="BYTE-CAPS">BYTE</link>*       <link linkend="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</link>     (<link linkend="DWORD-CAPS">DWORD</link> dwCertEncodingType,
+                                             <link linkend="LPCTSTR-CAPS">LPCTSTR</link> pszX500,
+                                             <link linkend="DWORD-CAPS">DWORD</link> dwStrType,
+                                             <link linkend="DWORD-CAPS">DWORD</link> *len);
 #define     <link linkend="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</link>
                                             (void);
@@ -188,6 +193,32 @@ The default errors reporting callback function.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
 <listitem><simpara>		the additional error message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName ()</title>
+<programlisting><link linkend="BYTE-CAPS">BYTE</link>*       xmlSecMSCryptoCertStrToName     (<link linkend="DWORD-CAPS">DWORD</link> dwCertEncodingType,
+                                             <link linkend="LPCTSTR-CAPS">LPCTSTR</link> pszX500,
+                                             <link linkend="DWORD-CAPS">DWORD</link> dwStrType,
+                                             <link linkend="DWORD-CAPS">DWORD</link> *len);</programlisting>
+<para>
+Converts input string to name by calling <parameter>CertStrToName</parameter> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dwCertEncodingType</parameter>&nbsp;:</term>
+<listitem><simpara>		the encoding used.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pszX500</parameter>&nbsp;:</term>
+<listitem><simpara>			the string to convert.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dwStrType</parameter>&nbsp;:</term>
+<listitem><simpara>			the string type.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&nbsp;:</term>
+<listitem><simpara>			the result len.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>a pointer to newly allocated string or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

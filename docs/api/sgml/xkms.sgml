@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -157,6 +158,7 @@ XKMS request processing mode.</para>
 <refsect2>
 <title><anchor id="xmlSecXkissServerCtx">struct xmlSecXkissServerCtx</title>
 <programlisting>struct xmlSecXkissServerCtx {
+
     /* these data user can set before performing the operation */
     void*			userData;
     unsigned int		flags;
@@ -683,6 +685,7 @@ Writes debug information about <parameter>id</parameter> into the <parameter>out
 <refsect2>
 <title><anchor id="xmlSecXkmsRespondWithKlass">struct xmlSecXkmsRespondWithKlass</title>
 <programlisting>struct xmlSecXkmsRespondWithKlass {
+
     const xmlChar*				name;
     const xmlChar*				nodeName;
     const xmlChar*				nodeNs;

@@ -2,12 +2,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>xmltree</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="xmlsec" href="xmlsec-xmlsec.html">
 <link rel="NEXT" title="x509" href="xmlsec-x509.html">
+<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<style type="text/css">.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+    padding: 0.5em;
+}
+.programlisting {
+    background: #eeeeff;
+    border: solid 1px #aaaaff;
+    padding: 0.5em;
+}
+.variablelist {
+    padding: 4px;
+    margin-left: 3em;
+}
+.navigation {
+    background: #ffeeee;
+    border: solid 1px #ffaaaa;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.navigation a {
+    color: #770000;
+}
+.navigation a:visited {
+    color: #550000;
+}
+.navigation .title {
+    font-size: 200%;
+}</style>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -49,22 +78,20 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmlsec.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-xmlsec.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-x509.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <h1>
 <a name="XMLSEC-XMLTREE"></a>xmltree</h1>
 <div class="REFNAMEDIV">
-<a name="AEN16127"></a><h2>Name</h2>xmltree -- </div>
+<a name="AEN16259"></a><h2>Name</h2>xmltree -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN16130"></a><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+<a name="AEN16262"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-xmltree.html#XMLSECNODEGETNAME">xmlSecNodeGetName</a>               (node)
 const <font>xmlChar</font>* <a href="xmlsec-xmltree.html#XMLSECGETNODENSHREF">xmlSecGetNodeNsHref</a>          (const <font>xmlNodePtr</font> cur);
@@ -105,479 +132,469 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 int         <a href="xmlsec-xmltree.html#XMLSECISEMPTYNODE">xmlSecIsEmptyNode</a>               (<font>xmlNodePtr</font> node);
 int         <a href="xmlsec-xmltree.html#XMLSECISEMPTYSTRING">xmlSecIsEmptyString</a>             (const <font>xmlChar</font> *str);
 #define     <a href="xmlsec-xmltree.html#XMLSECISHEX">xmlSecIsHex</a>                     (c)
-#define     <a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a>                    (c)</pre></td></tr></table>
+#define     <a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a>                    (c)</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN16198"></a><h2>Description</h2>
+<a name="AEN16330"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN16201"></a><h2>Details</h2>
+<a name="AEN16333"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN16203"></a><h3>
+<a name="AEN16335"></a><h3>
 <a name="XMLSECNODEGETNAME"></a>xmlSecNodeGetName()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNodeGetName(node)</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNodeGetName(node)</pre>
 <p>Macro. Returns node's name.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16210"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to node.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN16342"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to node.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16215"></a><h3>
+<a name="AEN16347"></a><h3>
 <a name="XMLSECGETNODENSHREF"></a>xmlSecGetNodeNsHref ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecGetNodeNsHref          (const <font>xmlNodePtr</font> cur);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecGetNodeNsHref          (const <font>xmlNodePtr</font> cur);</pre>
 <p>Get's node's namespace href.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16224"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16356"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16229"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>node's namespace href.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16361"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>node's namespace href.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16234"></a><h3>
+<a name="AEN16366"></a><h3>
 <a name="XMLSECCHECKNODENAME"></a>xmlSecCheckNodeName ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCheckNodeName             (const <font>xmlNodePtr</font> cur,
+<pre class="PROGRAMLISTING">int         xmlSecCheckNodeName             (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
+                                             const <font>xmlChar</font> *ns);</pre>
 <p>Checks that the node has a given name and a given namespace href.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16244"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16376"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16249"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the name,</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16381"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the name,</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16254"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the namespace href.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16386"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the namespace href.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16259"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>1 if the node matches or 0 otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16391"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>1 if the node matches or 0 otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16264"></a><h3>
+<a name="AEN16396"></a><h3>
 <a name="XMLSECGETNEXTELEMENTNODE"></a>xmlSecGetNextElementNode ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecGetNextElementNode        (<font>xmlNodePtr</font> cur);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecGetNextElementNode        (<font>xmlNodePtr</font> cur);</pre>
 <p>Seraches for the next element node.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16273"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16405"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16278"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the pointer to next element node or NULL if it is not found.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16410"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to next element node or NULL if it is not found.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16283"></a><h3>
+<a name="AEN16415"></a><h3>
 <a name="XMLSECFINDCHILD"></a>xmlSecFindChild ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindChild                 (const <font>xmlNodePtr</font> parent,
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindChild                 (const <font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
-<p>Searches a direct child of the <tt class="PARAMETER"><i>parent</i></tt> node having given name and 
+                                             const <font>xmlChar</font> *ns);</pre>
+<p>Searches a direct child of the <var class="PARAMETER">parent</var> node having given name and 
 namespace href.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16295"><span style="white-space: nowrap"><tt class="PARAMETER"><i>parent</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to XML node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16427"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to XML node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16300"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16432"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the name.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16305"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the namespace href (may be NULL).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16437"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the namespace href (may be NULL).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16310"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the pointer to the found node or NULL if an error occurs or 
+<td align="LEFT" valign="TOP"><a name="AEN16442"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to the found node or NULL if an error occurs or 
 node is not found.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16315"></a><h3>
-<a name="XMLSECFINDPARENT"></a>xmlSecFindParent ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindParent                (const <font>xmlNodePtr</font> cur,
-                                             const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
-<p>Searches the ancestors axis of the <tt class="PARAMETER"><i>cur</i></tt> node for a node having given name 
-and namespace href.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16327"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16332"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the name.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16337"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the namespace href (may be NULL).</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the pointer to the found node or NULL if an error occurs or 
-node is not found.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16347"></a><h3>
-<a name="XMLSECFINDNODE"></a>xmlSecFindNode ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindNode                  (const <font>xmlNodePtr</font> parent,
-                                             const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
-<p>Searches all children of the <tt class="PARAMETER"><i>parent</i></tt> node having given name and 
-namespace href.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16359"><span style="white-space: nowrap"><tt class="PARAMETER"><i>parent</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to XML node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16364"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the name.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16369"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the namespace href (may be NULL).</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16374"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the pointer to the found node or NULL if an error occurs or 
-node is not found.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16379"></a><h3>
-<a name="XMLSECADDCHILD"></a>xmlSecAddChild ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddChild                  (<font>xmlNodePtr</font> parent,
-                                             const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
-<p>Adds a child to the node <tt class="PARAMETER"><i>parent</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16393"><span style="white-space: nowrap"><tt class="PARAMETER"><i>parent</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16398"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node name.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16403"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node namespace.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16408"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the new node or NULL if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16413"></a><h3>
-<a name="XMLSECADDNEXTSIBLING"></a>xmlSecAddNextSibling ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddNextSibling            (<font>xmlNodePtr</font> node,
-                                             const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
-<p>Adds next sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16427"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16432"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node name.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16437"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node namespace.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16442"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the new node or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="AEN16447"></a><h3>
-<a name="XMLSECADDPREVSIBLING"></a>xmlSecAddPrevSibling ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddPrevSibling            (<font>xmlNodePtr</font> node,
+<a name="XMLSECFINDPARENT"></a>xmlSecFindParent ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindParent                (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
-                                             const <font>xmlChar</font> *ns);</pre></td></tr></table>
-<p>Adds prev sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
+                                             const <font>xmlChar</font> *ns);</pre>
+<p>Searches the ancestors axis of the <var class="PARAMETER">cur</var> node for a node having given name 
+and namespace href.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16461"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16459"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16466"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16464"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the name.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16471"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ns</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node namespace.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16469"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the namespace href (may be NULL).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16476"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the new node or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16474"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to the found node or NULL if an error occurs or 
+node is not found.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16481"></a><h3>
+<a name="AEN16479"></a><h3>
+<a name="XMLSECFINDNODE"></a>xmlSecFindNode ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindNode                  (const <font>xmlNodePtr</font> parent,
+                                             const <font>xmlChar</font> *name,
+                                             const <font>xmlChar</font> *ns);</pre>
+<p>Searches all children of the <var class="PARAMETER">parent</var> node having given name and 
+namespace href.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16491"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to XML node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16496"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the name.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16501"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the namespace href (may be NULL).</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16506"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to the found node or NULL if an error occurs or 
+node is not found.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16511"></a><h3>
+<a name="XMLSECADDCHILD"></a>xmlSecAddChild ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddChild                  (<font>xmlNodePtr</font> parent,
+                                             const <font>xmlChar</font> *name,
+                                             const <font>xmlChar</font> *ns);</pre>
+<p>Adds a child to the node <var class="PARAMETER">parent</var> with given <var class="PARAMETER">name</var> and namespace <var class="PARAMETER">ns</var>.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16525"><span style="white-space: nowrap"><var class="PARAMETER">parent</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16530"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node name.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16535"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node namespace.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16540"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16545"></a><h3>
+<a name="XMLSECADDNEXTSIBLING"></a>xmlSecAddNextSibling ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddNextSibling            (<font>xmlNodePtr</font> node,
+                                             const <font>xmlChar</font> *name,
+                                             const <font>xmlChar</font> *ns);</pre>
+<p>Adds next sibling to the node <var class="PARAMETER">node</var> with given <var class="PARAMETER">name</var> and namespace <var class="PARAMETER">ns</var>.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16559"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16564"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node name.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16569"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node namespace.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16574"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16579"></a><h3>
+<a name="XMLSECADDPREVSIBLING"></a>xmlSecAddPrevSibling ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddPrevSibling            (<font>xmlNodePtr</font> node,
+                                             const <font>xmlChar</font> *name,
+                                             const <font>xmlChar</font> *ns);</pre>
+<p>Adds prev sibling to the node <var class="PARAMETER">node</var> with given <var class="PARAMETER">name</var> and namespace <var class="PARAMETER">ns</var>.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16593"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16598"><span style="white-space: nowrap"><var class="PARAMETER">name</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node name.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16603"><span style="white-space: nowrap"><var class="PARAMETER">ns</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node namespace.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16608"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the new node or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16613"></a><h3>
 <a name="XMLSECREPLACENODE"></a>xmlSecReplaceNode ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNode               (<font>xmlNodePtr</font> node,
-                                             <font>xmlNodePtr</font> newNode);</pre></td></tr></table>
-<p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt> in the XML tree.</p>
+<pre class="PROGRAMLISTING">int         xmlSecReplaceNode               (<font>xmlNodePtr</font> node,
+                                             <font>xmlNodePtr</font> newNode);</pre>
+<p>Swaps the <var class="PARAMETER">node</var> and <var class="PARAMETER">newNode</var> in the XML tree.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16492"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the current node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16624"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the current node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16497"><span style="white-space: nowrap"><tt class="PARAMETER"><i>newNode</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16629"><span style="white-space: nowrap"><var class="PARAMETER">newNode</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16502"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16507"></a><h3>
-<a name="XMLSECREPLACECONTENT"></a>xmlSecReplaceContent ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceContent            (<font>xmlNodePtr</font> node,
-                                             <font>xmlNodePtr</font> newNode);</pre></td></tr></table>
-<p>Swaps the content of <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt>.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16518"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the current node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16523"><span style="white-space: nowrap"><tt class="PARAMETER"><i>newNode</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the new node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16528"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16533"></a><h3>
-<a name="XMLSECREPLACENODEBUFFER"></a>xmlSecReplaceNodeBuffer ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNodeBuffer         (<font>xmlNodePtr</font> node,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre></td></tr></table>
-<p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and the parsed XML data from the <tt class="PARAMETER"><i>buffer</i></tt> in the XML tree.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16545"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the current node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16550"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buffer</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the XML data.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16555"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the XML data size.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16560"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16565"></a><h3>
-<a name="XMLSECADDIDS"></a>xmlSecAddIDs ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecAddIDs                    (<font>xmlDocPtr</font> doc,
-                                             <font>xmlNodePtr</font> cur,
-                                             const <font>xmlChar</font> **ids);</pre></td></tr></table>
-<p>Walks thru all children of the <tt class="PARAMETER"><i>cur</i></tt> node and adds all attributes 
-from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"><i>doc</i></tt> document IDs attributes hash.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16578"><span style="white-space: nowrap"><tt class="PARAMETER"><i>doc</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML document.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16583"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to an XML node.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16588"><span style="white-space: nowrap"><tt class="PARAMETER"><i>ids</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to a NULL terminated list of ID attributes.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16593"></a><h3>
-<a name="XMLSECCREATETREE"></a>xmlSecCreateTree ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecCreateTree                (const <font>xmlChar</font> *rootNodeName,
-                                             const <font>xmlChar</font> *rootNodeNs);</pre></td></tr></table>
-<p>Creates a new XML tree with one root node <tt class="PARAMETER"><i>rootNodeName</i></tt>.</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16604"><span style="white-space: nowrap"><tt class="PARAMETER"><i>rootNodeName</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the root node name.</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16609"><span style="white-space: nowrap"><tt class="PARAMETER"><i>rootNodeNs</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the root node namespace (otpional).</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16614"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to the newly created tree or NULL if an error occurs.</p></td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN16619"></a><h3>
-<a name="XMLSECISEMPTYNODE"></a>xmlSecIsEmptyNode ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIsEmptyNode               (<font>xmlNodePtr</font> node);</pre></td></tr></table>
-<p>Checks whethere the <tt class="PARAMETER"><i>node</i></tt> is empty (i.e. has only whitespaces children).</p>
-<p></p>
-<p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16628"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the node to check</p></td>
-</tr>
-<tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16633"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>1 if <tt class="PARAMETER"><i>node</i></tt> is empty, 0 otherwise or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16634"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="AEN16639"></a><h3>
-<a name="XMLSECISEMPTYSTRING"></a>xmlSecIsEmptyString ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIsEmptyString             (const <font>xmlChar</font> *str);</pre></td></tr></table>
-<p>Checks whethere the <tt class="PARAMETER"><i>str</i></tt> is empty (i.e. has only whitespaces children).</p>
+<a name="XMLSECREPLACECONTENT"></a>xmlSecReplaceContent ()</h3>
+<pre class="PROGRAMLISTING">int         xmlSecReplaceContent            (<font>xmlNodePtr</font> node,
+                                             <font>xmlNodePtr</font> newNode);</pre>
+<p>Swaps the content of <var class="PARAMETER">node</var> and <var class="PARAMETER">newNode</var>.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16648"><span style="white-space: nowrap"><tt class="PARAMETER"><i>str</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the string to check</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16650"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the current node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16653"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>1 if <tt class="PARAMETER"><i>str</i></tt> is empty, 0 otherwise or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN16655"><span style="white-space: nowrap"><var class="PARAMETER">newNode</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the new node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16660"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16659"></a><h3>
+<a name="AEN16665"></a><h3>
+<a name="XMLSECREPLACENODEBUFFER"></a>xmlSecReplaceNodeBuffer ()</h3>
+<pre class="PROGRAMLISTING">int         xmlSecReplaceNodeBuffer         (<font>xmlNodePtr</font> node,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre>
+<p>Swaps the <var class="PARAMETER">node</var> and the parsed XML data from the <var class="PARAMETER">buffer</var> in the XML tree.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16677"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the current node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16682"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the XML data.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16687"><span style="white-space: nowrap"><var class="PARAMETER">size</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the XML data size.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16692"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16697"></a><h3>
+<a name="XMLSECADDIDS"></a>xmlSecAddIDs ()</h3>
+<pre class="PROGRAMLISTING">void        xmlSecAddIDs                    (<font>xmlDocPtr</font> doc,
+                                             <font>xmlNodePtr</font> cur,
+                                             const <font>xmlChar</font> **ids);</pre>
+<p>Walks thru all children of the <var class="PARAMETER">cur</var> node and adds all attributes 
+from the <var class="PARAMETER">ids</var> list to the <var class="PARAMETER">doc</var> document IDs attributes hash.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16710"><span style="white-space: nowrap"><var class="PARAMETER">doc</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML document.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16715"><span style="white-space: nowrap"><var class="PARAMETER">cur</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to an XML node.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16720"><span style="white-space: nowrap"><var class="PARAMETER">ids</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 		the pointer to a NULL terminated list of ID attributes.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16725"></a><h3>
+<a name="XMLSECCREATETREE"></a>xmlSecCreateTree ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecCreateTree                (const <font>xmlChar</font> *rootNodeName,
+                                             const <font>xmlChar</font> *rootNodeNs);</pre>
+<p>Creates a new XML tree with one root node <var class="PARAMETER">rootNodeName</var>.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16736"><span style="white-space: nowrap"><var class="PARAMETER">rootNodeName</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the root node name.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16741"><span style="white-space: nowrap"><var class="PARAMETER">rootNodeNs</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the root node namespace (otpional).</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16746"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to the newly created tree or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16751"></a><h3>
+<a name="XMLSECISEMPTYNODE"></a>xmlSecIsEmptyNode ()</h3>
+<pre class="PROGRAMLISTING">int         xmlSecIsEmptyNode               (<font>xmlNodePtr</font> node);</pre>
+<p>Checks whethere the <var class="PARAMETER">node</var> is empty (i.e. has only whitespaces children).</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16760"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the node to check</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16765"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>1 if <var class="PARAMETER">node</var> is empty, 0 otherwise or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16771"></a><h3>
+<a name="XMLSECISEMPTYSTRING"></a>xmlSecIsEmptyString ()</h3>
+<pre class="PROGRAMLISTING">int         xmlSecIsEmptyString             (const <font>xmlChar</font> *str);</pre>
+<p>Checks whethere the <var class="PARAMETER">str</var> is empty (i.e. has only whitespaces children).</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16780"><span style="white-space: nowrap"><var class="PARAMETER">str</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the string to check</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN16785"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>1 if <var class="PARAMETER">str</var> is empty, 0 otherwise or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN16791"></a><h3>
 <a name="XMLSECISHEX"></a>xmlSecIsHex()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecIsHex(c)</pre></td></tr></table>
-<p>Macro. Returns 1 if <tt class="PARAMETER"><i>c</i></tt> is a hex digit or 0 other wise.</p>
+<pre class="PROGRAMLISTING">#define     xmlSecIsHex(c)</pre>
+<p>Macro. Returns 1 if <var class="PARAMETER">c</var> is a hex digit or 0 other wise.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16667"><span style="white-space: nowrap"><tt class="PARAMETER"><i>c</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 			the character.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN16799"><span style="white-space: nowrap"><var class="PARAMETER">c</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 			the character.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16672"></a><h3>
+<a name="AEN16804"></a><h3>
 <a name="XMLSECGETHEX"></a>xmlSecGetHex()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGetHex(c)</pre></td></tr></table>
-<p>Macro. Returns the hex value of the <tt class="PARAMETER"><i>c</i></tt>.</p>
+<pre class="PROGRAMLISTING">#define     xmlSecGetHex(c)</pre>
+<p>Macro. Returns the hex value of the <var class="PARAMETER">c</var>.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN16680"><span style="white-space: nowrap"><tt class="PARAMETER"><i>c</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p> 			the character,</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN16812"><span style="white-space: nowrap"><var class="PARAMETER">c</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 			the character,</p></td>
 </tr></tbody></table>
 </div>
 </div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmlsec.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>xmlsec</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>x509</b></font></td>
-</tr>
-</table>
-</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-xmlsec.html"><b>&lt;&lt;&lt; xmlsec</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-x509.html"><b>x509 &gt;&gt;&gt;</b></a></td>
+</tr></table>
 </td></tr>
 <tr><td>
 <br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>

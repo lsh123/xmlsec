@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -122,7 +123,7 @@ by XMLSec command line utility and called before
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>config</parameter>&nbsp;:</term>
-<listitem><simpara>		the path to crypto library configuration (unused).
+<listitem><simpara>		the path to certs.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>

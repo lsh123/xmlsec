@@ -2,12 +2,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>crypto</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
 <link rel="PREVIOUS" title="bignum" href="xmlsec-nss-bignum.html">
 <link rel="NEXT" title="keysstore" href="xmlsec-nss-keysstore.html">
+<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<style type="text/css">.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+    padding: 0.5em;
+}
+.programlisting {
+    background: #eeeeff;
+    border: solid 1px #aaaaff;
+    padding: 0.5em;
+}
+.variablelist {
+    padding: 4px;
+    margin-left: 3em;
+}
+.navigation {
+    background: #ffeeee;
+    border: solid 1px #ffaaaa;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.navigation a {
+    color: #770000;
+}
+.navigation a:visited {
+    color: #550000;
+}
+.navigation .title {
+    font-size: 200%;
+}</style>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -49,22 +78,20 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-bignum.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-nss-keysstore.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-nss-bignum.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-nss-keysstore.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <h1>
 <a name="XMLSEC-NSS-CRYPTO"></a>crypto</h1>
 <div class="REFNAMEDIV">
-<a name="AEN20706"></a><h2>Name</h2>crypto -- </div>
+<a name="AEN20873"></a><h2>Name</h2>crypto -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN20709"></a><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+<a name="AEN20876"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">
 
 <font>xmlSecCryptoDLFunctionsPtr</font> <a href="xmlsec-nss-crypto.html#XMLSECCRYPTOGETFUNCTIONS-NSS">xmlSecCryptoGetFunctions_nss</a>
                                             (void);
@@ -144,679 +171,669 @@ int         <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACSET">xmlSecNssKe
                                             (void);
 #define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1ID">xmlSecNssTransformSha1Id</a>
 <font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1GETKLASS">xmlSecNssTransformSha1GetKlass</a>
-                                            (void);</pre></td></tr></table>
+                                            (void);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN20794"></a><h2>Description</h2>
+<a name="AEN20961"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN20797"></a><h2>Details</h2>
+<a name="AEN20964"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN20799"></a><h3>
+<a name="AEN20966"></a><h3>
 <a name="XMLSECCRYPTOGETFUNCTIONS-NSS"></a>xmlSecCryptoGetFunctions_nss ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font> xmlSecCryptoGetFunctions_nss
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font> xmlSecCryptoGetFunctions_nss
+                                            (void);</pre>
 <p>Gets the pointer to xmlsec-nss functions table.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20807"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the xmlsec-nss functions table or NULL if an error occurs.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN20974"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the xmlsec-nss functions table or NULL if an error occurs.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20812"></a><h3>
+<a name="AEN20979"></a><h3>
 <a name="XMLSECNSSINIT"></a>xmlSecNssInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssInit                   (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">int         xmlSecNssInit                   (void);</pre>
 <p>XMLSec library specific crypto engine initialization.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20819"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN20986"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20824"></a><h3>
+<a name="AEN20991"></a><h3>
 <a name="XMLSECNSSSHUTDOWN"></a>xmlSecNssShutdown ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssShutdown               (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">int         xmlSecNssShutdown               (void);</pre>
 <p>XMLSec library specific crypto engine shutdown.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20831"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN20998"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20836"></a><h3>
+<a name="AEN21003"></a><h3>
 <a name="XMLSECNSSKEYSMNGRINIT"></a>xmlSecNssKeysMngrInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeysMngrInit           (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
+<pre class="PROGRAMLISTING">int         xmlSecNssKeysMngrInit           (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre>
 <p>Adds NSS specific key data stores in keys manager.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20844"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21011"><span style="white-space: nowrap"><var class="PARAMETER">mngr</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20849"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21016"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20854"></a><h3>
+<a name="AEN21021"></a><h3>
 <a name="XMLSECNSSGENERATERANDOM"></a>xmlSecNssGenerateRandom ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssGenerateRandom         (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buffer,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre></td></tr></table>
-<p>Generates <tt class="PARAMETER"><i>size</i></tt> random bytes and puts result in <tt class="PARAMETER"><i>buffer</i></tt>.</p>
+<pre class="PROGRAMLISTING">int         xmlSecNssGenerateRandom         (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buffer,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre>
+<p>Generates <var class="PARAMETER">size</var> random bytes and puts result in <var class="PARAMETER">buffer</var>.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20865"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buffer</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the destination buffer.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21032"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the destination buffer.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20870"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the numer of bytes to generate.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21037"><span style="white-space: nowrap"><var class="PARAMETER">size</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the numer of bytes to generate.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20875"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21042"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20880"></a><h3>
+<a name="AEN21047"></a><h3>
 <a name="XMLSECNSSERRORSDEFAULTCALLBACK"></a>xmlSecNssErrorsDefaultCallback ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNssErrorsDefaultCallback  (const char *file,
+<pre class="PROGRAMLISTING">void        xmlSecNssErrorsDefaultCallback  (const char *file,
                                              int line,
                                              const char *func,
                                              const char *errorObject,
                                              const char *errorSubject,
                                              int reason,
-                                             const char *msg);</pre></td></tr></table>
+                                             const char *msg);</pre>
 <p>The default errors reporting callback function.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20887"><span style="white-space: nowrap"><tt class="PARAMETER"><i>file</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the error location file name (__FILE__ macro).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21054"><span style="white-space: nowrap"><var class="PARAMETER">file</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the error location file name (__FILE__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20892"><span style="white-space: nowrap"><tt class="PARAMETER"><i>line</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the error location line number (__LINE__ macro).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21059"><span style="white-space: nowrap"><var class="PARAMETER">line</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the error location line number (__LINE__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20897"><span style="white-space: nowrap"><tt class="PARAMETER"><i>func</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the error location function name (__FUNCTION__ macro).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21064"><span style="white-space: nowrap"><var class="PARAMETER">func</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the error location function name (__FUNCTION__ macro).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20902"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorObject</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the error specific error object </p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21069"><span style="white-space: nowrap"><var class="PARAMETER">errorObject</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the error specific error object </p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20907"><span style="white-space: nowrap"><tt class="PARAMETER"><i>errorSubject</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>	the error specific error subject.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21074"><span style="white-space: nowrap"><var class="PARAMETER">errorSubject</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the error specific error subject.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20912"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reason</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the error code.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21079"><span style="white-space: nowrap"><var class="PARAMETER">reason</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the error code.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20917"><span style="white-space: nowrap"><tt class="PARAMETER"><i>msg</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the additional error message.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21084"><span style="white-space: nowrap"><var class="PARAMETER">msg</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the additional error message.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20922"></a><h3>
+<a name="AEN21089"></a><h3>
 <a name="XMLSECNSSKEYDATAAESID"></a>xmlSecNssKeyDataAesId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataAesId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataAesId</pre>
 <p>The AES key data klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20928"></a><h3>
+<a name="AEN21095"></a><h3>
 <a name="XMLSECNSSKEYDATAAESGETKLASS"></a>xmlSecNssKeyDataAesGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataAesGetKlass (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataAesGetKlass (void);</pre>
 <p>The AES key data klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20936"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>AES key data klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21103"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>AES key data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20941"></a><h3>
+<a name="AEN21108"></a><h3>
 <a name="XMLSECNSSKEYDATAAESSET"></a>xmlSecNssKeyDataAesSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeyDataAesSet          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+<pre class="PROGRAMLISTING">int         xmlSecNssKeyDataAesSet          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre></td></tr></table>
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre>
 <p>Sets the value of AES key data.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20951"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to AES key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21118"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to AES key data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20956"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key value.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21123"><span style="white-space: nowrap"><var class="PARAMETER">buf</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20961"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bufSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key value size (in bytes).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21128"><span style="white-space: nowrap"><var class="PARAMETER">bufSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20966"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21133"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20971"></a><h3>
+<a name="AEN21138"></a><h3>
 <a name="XMLSECNSSTRANSFORMAES128CBCID"></a>xmlSecNssTransformAes128CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes128CbcId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes128CbcId</pre>
 <p>The AES128 CBC cipher transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20977"></a><h3>
+<a name="AEN21144"></a><h3>
 <a name="XMLSECNSSTRANSFORMAES128CBCGETKLASS"></a>xmlSecNssTransformAes128CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes128CbcGetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes128CbcGetKlass
+                                            (void);</pre>
 <p>AES 128 CBC encryption transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN20985"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to AES 128 CBC encryption transform.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21152"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to AES 128 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20990"></a><h3>
+<a name="AEN21157"></a><h3>
 <a name="XMLSECNSSTRANSFORMAES192CBCID"></a>xmlSecNssTransformAes192CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes192CbcId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes192CbcId</pre>
 <p>The AES192 CBC cipher transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN20996"></a><h3>
+<a name="AEN21163"></a><h3>
 <a name="XMLSECNSSTRANSFORMAES192CBCGETKLASS"></a>xmlSecNssTransformAes192CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes192CbcGetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes192CbcGetKlass
+                                            (void);</pre>
 <p>AES 192 CBC encryption transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21004"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to AES 192 CBC encryption transform.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21171"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to AES 192 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21009"></a><h3>
+<a name="AEN21176"></a><h3>
 <a name="XMLSECNSSTRANSFORMAES256CBCID"></a>xmlSecNssTransformAes256CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes256CbcId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes256CbcId</pre>
 <p>The AES256 CBC cipher transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21015"></a><h3>
+<a name="AEN21182"></a><h3>
 <a name="XMLSECNSSTRANSFORMAES256CBCGETKLASS"></a>xmlSecNssTransformAes256CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes256CbcGetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes256CbcGetKlass
+                                            (void);</pre>
 <p>AES 256 CBC encryption transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21023"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to AES 256 CBC encryption transform.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21190"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to AES 256 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21028"></a><h3>
+<a name="AEN21195"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWAES128ID"></a>xmlSecNssTransformKWAes128Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWAes128Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWAes128Id</pre>
 <p>The AES 128 key wrap transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21034"></a><h3>
+<a name="AEN21201"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWAES128GETKLASS"></a>xmlSecNssTransformKWAes128GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWAes128GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWAes128GetKlass
+                                            (void);</pre>
 <p>The AES-128 key wrapper transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21042"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>AES-128 key wrapper transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21209"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>AES-128 key wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21047"></a><h3>
+<a name="AEN21214"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWAES192ID"></a>xmlSecNssTransformKWAes192Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWAes192Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWAes192Id</pre>
 <p>The AES 192 key wrap transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21053"></a><h3>
+<a name="AEN21220"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWAES192GETKLASS"></a>xmlSecNssTransformKWAes192GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWAes192GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWAes192GetKlass
+                                            (void);</pre>
 <p>The AES-192 key wrapper transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21061"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>AES-192 key wrapper transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21228"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>AES-192 key wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21066"></a><h3>
+<a name="AEN21233"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWAES256ID"></a>xmlSecNssTransformKWAes256Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWAes256Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWAes256Id</pre>
 <p>The AES 256 key wrap transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21072"></a><h3>
+<a name="AEN21239"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWAES256GETKLASS"></a>xmlSecNssTransformKWAes256GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWAes256GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWAes256GetKlass
+                                            (void);</pre>
 <p>The AES-256 key wrapper transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21080"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>AES-256 key wrapper transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21247"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>AES-256 key wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21085"></a><h3>
+<a name="AEN21252"></a><h3>
 <a name="XMLSECNSSKEYDATADESID"></a>xmlSecNssKeyDataDesId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataDesId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataDesId</pre>
 <p>The DES key data klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21091"></a><h3>
+<a name="AEN21258"></a><h3>
 <a name="XMLSECNSSKEYDATADESGETKLASS"></a>xmlSecNssKeyDataDesGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataDesGetKlass (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataDesGetKlass (void);</pre>
 <p>The DES key data klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21099"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>DES key data klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21266"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>DES key data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21104"></a><h3>
+<a name="AEN21271"></a><h3>
 <a name="XMLSECNSSKEYDATADESSET"></a>xmlSecNssKeyDataDesSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeyDataDesSet          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+<pre class="PROGRAMLISTING">int         xmlSecNssKeyDataDesSet          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre></td></tr></table>
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre>
 <p>Sets the value of DES key data.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21114"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to DES key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21281"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to DES key data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21119"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key value.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21286"><span style="white-space: nowrap"><var class="PARAMETER">buf</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21124"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bufSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key value size (in bytes).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21291"><span style="white-space: nowrap"><var class="PARAMETER">bufSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21129"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21296"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21134"></a><h3>
+<a name="AEN21301"></a><h3>
 <a name="XMLSECNSSTRANSFORMDES3CBCID"></a>xmlSecNssTransformDes3CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformDes3CbcId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformDes3CbcId</pre>
 <p>The Triple DES CBC cipher transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21140"></a><h3>
+<a name="AEN21307"></a><h3>
 <a name="XMLSECNSSTRANSFORMDES3CBCGETKLASS"></a>xmlSecNssTransformDes3CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformDes3CbcGetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformDes3CbcGetKlass
+                                            (void);</pre>
 <p>Triple DES CBC encryption transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21148"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to Triple DES encryption transform.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21315"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to Triple DES encryption transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21153"></a><h3>
+<a name="AEN21320"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWDES3ID"></a>xmlSecNssTransformKWDes3Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWDes3Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformKWDes3Id</pre>
 <p>The DES3 CBC cipher transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21159"></a><h3>
+<a name="AEN21326"></a><h3>
 <a name="XMLSECNSSTRANSFORMKWDES3GETKLASS"></a>xmlSecNssTransformKWDes3GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWDes3GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformKWDes3GetKlass
+                                            (void);</pre>
 <p>The Triple DES key wrapper transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21167"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>Triple DES key wrapper transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21334"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>Triple DES key wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21172"></a><h3>
+<a name="AEN21339"></a><h3>
 <a name="XMLSECNSSKEYDATADSAID"></a>xmlSecNssKeyDataDsaId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataDsaId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataDsaId</pre>
 <p>The DSA key klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21178"></a><h3>
+<a name="AEN21345"></a><h3>
 <a name="XMLSECNSSKEYDATADSAGETKLASS"></a>xmlSecNssKeyDataDsaGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataDsaGetKlass (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataDsaGetKlass (void);</pre>
 <p>The DSA key data klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21186"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to DSA key data klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21353"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to DSA key data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21191"></a><h3>
+<a name="AEN21358"></a><h3>
 <a name="XMLSECNSSTRANSFORMDSASHA1ID"></a>xmlSecNssTransformDsaSha1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformDsaSha1Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformDsaSha1Id</pre>
 <p>The DSA SHA1 signature transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21197"></a><h3>
+<a name="AEN21364"></a><h3>
 <a name="XMLSECNSSTRANSFORMDSASHA1GETKLASS"></a>xmlSecNssTransformDsaSha1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformDsaSha1GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformDsaSha1GetKlass
+                                            (void);</pre>
 <p>The DSA-SHA1 signature transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21205"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>DSA-SHA1 signature transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21372"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>DSA-SHA1 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21210"></a><h3>
+<a name="AEN21377"></a><h3>
 <a name="XMLSECNSSKEYDATAHMACID"></a>xmlSecNssKeyDataHmacId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataHmacId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataHmacId</pre>
 <p>The DHMAC key data klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21216"></a><h3>
+<a name="AEN21383"></a><h3>
 <a name="XMLSECNSSKEYDATAHMACGETKLASS"></a>xmlSecNssKeyDataHmacGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataHmacGetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataHmacGetKlass
+                                            (void);</pre>
 <p>The HMAC key data klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21224"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>HMAC key data klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21391"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>HMAC key data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21229"></a><h3>
+<a name="AEN21396"></a><h3>
 <a name="XMLSECNSSKEYDATAHMACSET"></a>xmlSecNssKeyDataHmacSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeyDataHmacSet         (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+<pre class="PROGRAMLISTING">int         xmlSecNssKeyDataHmacSet         (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre></td></tr></table>
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre>
 <p>Sets the value of HMAC key data.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21239"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to HMAC key data.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21406"><span style="white-space: nowrap"><var class="PARAMETER">data</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to HMAC key data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21244"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key value.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21411"><span style="white-space: nowrap"><var class="PARAMETER">buf</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21249"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bufSize</i></tt> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>		the key value size (in bytes).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21416"><span style="white-space: nowrap"><var class="PARAMETER">bufSize</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21254"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN21421"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21259"></a><h3>
+<a name="AEN21426"></a><h3>
 <a name="XMLSECNSSTRANSFORMHMACSHA1ID"></a>xmlSecNssTransformHmacSha1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacSha1Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacSha1Id</pre>
 <p>The HMAC with SHA1 signature transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21265"></a><h3>
+<a name="AEN21432"></a><h3>
 <a name="XMLSECNSSTRANSFORMHMACSHA1GETKLASS"></a>xmlSecNssTransformHmacSha1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacSha1GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacSha1GetKlass
+                                            (void);</pre>
 <p>The HMAC-SHA1 transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21273"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the HMAC-SHA1 transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21440"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the HMAC-SHA1 transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21278"></a><h3>
+<a name="AEN21445"></a><h3>
 <a name="XMLSECNSSTRANSFORMHMACRIPEMD160ID"></a>xmlSecNssTransformHmacRipemd160Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacRipemd160Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacRipemd160Id</pre>
 <p>The HMAC with RipeMD160 signature transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21284"></a><h3>
+<a name="AEN21451"></a><h3>
 <a name="XMLSECNSSTRANSFORMHMACRIPEMD160GETKLASS"></a>xmlSecNssTransformHmacRipemd160GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacRipemd160GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacRipemd160GetKlass
+                                            (void);</pre>
 <p>The HMAC-RIPEMD160 transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21292"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the HMAC-RIPEMD160 transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21459"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the HMAC-RIPEMD160 transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21297"></a><h3>
+<a name="AEN21464"></a><h3>
 <a name="XMLSECNSSTRANSFORMHMACMD5ID"></a>xmlSecNssTransformHmacMd5Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacMd5Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacMd5Id</pre>
 <p>The HMAC with MD5 signature transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21303"></a><h3>
+<a name="AEN21470"></a><h3>
 <a name="XMLSECNSSTRANSFORMHMACMD5GETKLASS"></a>xmlSecNssTransformHmacMd5GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacMd5GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacMd5GetKlass
+                                            (void);</pre>
 <p>The HMAC-MD5 transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21311"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>the HMAC-MD5 transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21478"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the HMAC-MD5 transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21316"></a><h3>
+<a name="AEN21483"></a><h3>
 <a name="XMLSECNSSKEYDATARSAID"></a>xmlSecNssKeyDataRsaId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataRsaId</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataRsaId</pre>
 <p>The RSA key klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21322"></a><h3>
+<a name="AEN21489"></a><h3>
 <a name="XMLSECNSSKEYDATARSAGETKLASS"></a>xmlSecNssKeyDataRsaGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataRsaGetKlass (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataRsaGetKlass (void);</pre>
 <p>The RSA key data klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21330"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to RSA key data klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21497"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to RSA key data klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21335"></a><h3>
+<a name="AEN21502"></a><h3>
 <a name="XMLSECNSSTRANSFORMRSASHA1ID"></a>xmlSecNssTransformRsaSha1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformRsaSha1Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformRsaSha1Id</pre>
 <p>The RSA-SHA1 signature transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21341"></a><h3>
+<a name="AEN21508"></a><h3>
 <a name="XMLSECNSSTRANSFORMRSASHA1GETKLASS"></a>xmlSecNssTransformRsaSha1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformRsaSha1GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformRsaSha1GetKlass
+                                            (void);</pre>
 <p>The RSA-SHA1 signature transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21349"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>RSA-SHA1 signature transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21516"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>RSA-SHA1 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21354"></a><h3>
+<a name="AEN21521"></a><h3>
 <a name="XMLSECNSSTRANSFORMRSAPKCS1ID"></a>xmlSecNssTransformRsaPkcs1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformRsaPkcs1Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformRsaPkcs1Id</pre>
 <p>The RSA PKCS1 key transport transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21360"></a><h3>
+<a name="AEN21527"></a><h3>
 <a name="XMLSECNSSTRANSFORMRSAPKCS1GETKLASS"></a>xmlSecNssTransformRsaPkcs1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformRsaPkcs1GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformRsaPkcs1GetKlass
+                                            (void);</pre>
 <p>The RSA-PKCS1 key transport transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21368"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>RSA-PKCS1 key transport transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21535"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>RSA-PKCS1 key transport transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21373"></a><h3>
+<a name="AEN21540"></a><h3>
 <a name="XMLSECNSSTRANSFORMSHA1ID"></a>xmlSecNssTransformSha1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformSha1Id</pre></td></tr></table>
+<pre class="PROGRAMLISTING">#define     xmlSecNssTransformSha1Id</pre>
 <p>The SHA1 digest transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21379"></a><h3>
+<a name="AEN21546"></a><h3>
 <a name="XMLSECNSSTRANSFORMSHA1GETKLASS"></a>xmlSecNssTransformSha1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformSha1GetKlass
-                                            (void);</pre></td></tr></table>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformSha1GetKlass
+                                            (void);</pre>
 <p>SHA-1 digest transform klass.</p>
 <p></p>
 <p></p>
-<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21387"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP" width="80%"><p>pointer to SHA-1 digest transform klass.</p></td>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN21554"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>pointer to SHA-1 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
 </div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-bignum.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-nss-keysstore.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>bignum</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keysstore</b></font></td>
-</tr>
-</table>
-</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-nss-bignum.html"><b>&lt;&lt;&lt; bignum</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-nss-keysstore.html"><b>keysstore &gt;&gt;&gt;</b></a></td>
+</tr></table>
 </td></tr>
 <tr><td>
 <br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>

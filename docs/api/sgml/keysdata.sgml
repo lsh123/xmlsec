@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -539,6 +540,7 @@ Registers <parameter>id</parameter> in the global list of key data klasses.</par
 <refsect2>
 <title><anchor id="xmlSecKeyData">struct xmlSecKeyData</title>
 <programlisting>struct xmlSecKeyData {
+
     xmlSecKeyDataId			id;
     void*				reserved0;
     void*				reserved1;
@@ -1140,6 +1142,7 @@ Key data specific method for printing debug info.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataKlass">struct xmlSecKeyDataKlass</title>
 <programlisting>struct xmlSecKeyDataKlass {
+
     xmlSecSize				klassSize;
     xmlSecSize				objSize;
 
@@ -1728,6 +1731,7 @@ Sets the value of <parameter>data</parameter> to <parameter>buf</parameter>.</pa
 <refsect2>
 <title><anchor id="xmlSecKeyDataStore">struct xmlSecKeyDataStore</title>
 <programlisting>struct xmlSecKeyDataStore {
+
     xmlSecKeyDataStoreId		id;
 
     /* for the future */
@@ -1883,6 +1887,7 @@ Key data store specific finalization (destroy) method.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStoreKlass">struct xmlSecKeyDataStoreKlass</title>
 <programlisting>struct xmlSecKeyDataStoreKlass {
+
     xmlSecSize				klassSize;
     xmlSecSize				objSize;
 

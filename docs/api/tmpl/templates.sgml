@@ -206,6 +206,26 @@ templates
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecTmplReferenceListAddDataReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplReferenceListAddKeyReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyName ##### -->
 <para>
 

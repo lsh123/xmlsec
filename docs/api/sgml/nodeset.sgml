@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -153,6 +154,7 @@ The simple nodes sets operations.</para>
 <refsect2>
 <title><anchor id="xmlSecNodeSet">struct xmlSecNodeSet</title>
 <programlisting>struct xmlSecNodeSet {
+
     xmlNodeSetPtr	nodes;
     xmlDocPtr		doc;
     int			destroyDoc;
@@ -378,7 +380,7 @@ Creates a new nodes set that contains:
 <listitem><simpara> 		the pointer to an XML document.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
-<listitem><simpara>	 	the pointer to parent XML node.
+<listitem><simpara>	 	the pointer to parent XML node or NULL if we want to include all document nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>withComments</parameter>&nbsp;:</term>
 <listitem><simpara> 	the flag include  comments or not.

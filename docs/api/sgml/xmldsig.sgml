@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -19,6 +20,7 @@ enum        <link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>;
 #define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</link>
 #define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</link>
 #define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link>
+#define     <link linkend="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</link>
 struct      <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
 <link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
 void        <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
@@ -152,8 +154,20 @@ element processing will be stored in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</title>
+<programlisting>#define XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK			0x00000010
+</programlisting>
+<para>
+If this flag is set then URI ID references are resolved directly
+without using XPointers. This allows one to sign/verify Visa3D
+documents that don't follow XML, XPointer and XML DSig specifications.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecDSigCtx">struct xmlSecDSigCtx</title>
 <programlisting>struct xmlSecDSigCtx {
+
     /* these data user can set before performing the operation */
     void*			userData;
     unsigned int		flags;
@@ -534,6 +548,7 @@ node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtx">struct xmlSecDSigReferenceCtx</title>
 <programlisting>struct xmlSecDSigReferenceCtx {
+
     void*			userData;
     xmlSecDSigCtxPtr		dsigCtx;
     xmlSecDSigReferenceOrigin	origin;

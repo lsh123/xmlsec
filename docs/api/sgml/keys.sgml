@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -149,6 +150,7 @@ A decryption key.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyReq">struct xmlSecKeyReq</title>
 <programlisting>struct xmlSecKeyReq {
+
     xmlSecKeyDataId			keyId;
     xmlSecKeyDataType			keyType;
     xmlSecKeyUsage			keyUsage;
@@ -280,6 +282,7 @@ if an error occurs.
 <refsect2>
 <title><anchor id="xmlSecKey">struct xmlSecKey</title>
 <programlisting>struct xmlSecKey {
+
     xmlChar*				name;
     xmlSecKeyDataPtr			value;
     xmlSecPtrListPtr			dataList;

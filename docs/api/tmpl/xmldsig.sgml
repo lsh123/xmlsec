@@ -51,6 +51,13 @@ xmldsig
 
 
 
+<!-- ##### MACRO XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT xmlSecDSigCtx ##### -->
 <para>
 

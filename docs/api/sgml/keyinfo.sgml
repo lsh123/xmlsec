@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -277,6 +278,7 @@ If the flag is set then we'll skip strict checking of certs and CRLs</para>
 <refsect2>
 <title><anchor id="xmlSecKeyInfoCtx">struct xmlSecKeyInfoCtx</title>
 <programlisting>struct xmlSecKeyInfoCtx {
+
     void*				userData;
     unsigned int			flags;
     unsigned int			flags2;

@@ -354,7 +354,8 @@ xmlSecOpenSSLErrorsInit(void) {
 
 /**
  * xmlSecOpenSSLSetDefaultTrustedCertsFolder:
- * 
+ * @path: 	the default trusted certs path.
+ *
  * Sets the default trusted certs folder.
  *
  * Returns 0 on success or a negative value if an error occurs.

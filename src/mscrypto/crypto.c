@@ -320,7 +320,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  * xmlSecMSCryptoCertStrToName:
  * @dwCertEncodingType:		the encoding used.
  * @pszX500:			the string to convert.
- * @dsStrType:			the string type.
+ * @dwStrType:			the string type.
  * @len:			the result len.
  *
  * Converts input string to name by calling @CertStrToName function.

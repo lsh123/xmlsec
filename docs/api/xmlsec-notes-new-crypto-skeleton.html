@@ -2,12 +2,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Creating a framework from the skeleton.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
 <link rel="PREVIOUS" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
 <link rel="NEXT" title="xmlSecCryptoApp* functions." href="xmlsec-notes-new-crypto-functions.html">
+<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<style type="text/css">.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+    padding: 0.5em;
+}
+.programlisting {
+    background: #eeeeff;
+    border: solid 1px #aaaaff;
+    padding: 0.5em;
+}
+.variablelist {
+    padding: 4px;
+    margin-left: 3em;
+}
+.navigation {
+    background: #ffeeee;
+    border: solid 1px #ffaaaa;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.navigation a {
+    color: #770000;
+}
+.navigation a:visited {
+    color: #550000;
+}
+.navigation .title {
+    font-size: 200%;
+}</style>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -49,18 +78,15 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-new-crypto-functions.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-notes-new-crypto.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-notes-new-crypto-functions.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <br clear="all"><div class="SECT1">
-<h1 class="SECT1">
-<a name="XMLSEC-NOTES-NEW-CRYPTO-SKELETON"></a>Creating a framework from the skeleton.</h1>
+<h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-SKELETON">Creating a framework from the skeleton.</a></h1>
 <p>	The XML Security Library contains a "skeleton" for creating new
 	"xmlsec-&lt;crypto&gt;" libraries. In order to create "xmlsec-mycrypto"
 	library framework, do the following (this example assumes that you 
@@ -74,7 +100,7 @@
 	</p>
 <div class="EXAMPLE">
 <a name="AEN512"></a><p><b>Example 1. Coping skeleton folders.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">cd src
+<pre class="PROGRAMLISTING">cd src
 cp -r skeleton mycrypto
 cd mycrypto
 rm -rf CVS
@@ -84,7 +110,7 @@ cp -r skeleton mycrypto
 cd mycrypto
 rm -rf CVS
 cd ../../..
-	    </pre></td></tr></table>
+	    </pre>
 </div>	
 	</li>
 <li>
@@ -93,14 +119,14 @@ cd ../../..
 	</p>
 <div class="EXAMPLE">
 <a name="AEN517"></a><p><b>Example 2. Replacing "skeleton" with "mycrypto".</b></p>
-<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">for i in `ls include/xmlsec/mycrypto/* src/mycrypto/*`;  do 
+<pre class="PROGRAMLISTING">for i in `ls include/xmlsec/mycrypto/* src/mycrypto/*`;  do 
     echo Processing $i ..;
     sed 's/skeleton/mycrypto/g' $i | \
     sed 's/SKELETON/MYCRYPTO/g' | \
     sed 's/Skeleton/MyCrypto/g' &gt; $i.tmp;
     mv $i.tmp $i;
 done
-	    </pre></td></tr></table>
+	    </pre>
 </div>
 	</li>
 <li>
@@ -108,7 +134,7 @@ done
 	</p>
 <div class="EXAMPLE">
 <a name="AEN522"></a><p><b>Example 3. Modifying include/xmlsec/crypto.h file.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">...	    
+<pre class="PROGRAMLISTING">...	    
 #ifdef XMLSEC_CRYPTO_MYCRYPTO
 #include &lt;xmlsec/mycrypto/app.h&gt;
 #include &lt;xmlsec/mycrypto/crypto.h&gt;
@@ -117,7 +143,7 @@ done
 ...
 #endif /* XMLSEC_CRYPTO_MYCRYPTO */
 ...
-	    </pre></td></tr></table>
+	    </pre>
 </div>
 	</li>
 <li>
@@ -127,7 +153,7 @@ done
 	</p>
 <div class="EXAMPLE">
 <a name="AEN527"></a><p><b>Example 4. Modifying configure.in file.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">dnl ==========================================================================
+<pre class="PROGRAMLISTING">dnl ==========================================================================
 dnl See if we can find MyCrypto
 dnl ==========================================================================
 XMLSEC_MYCRYPTO_DEFINES=""
@@ -200,7 +226,7 @@ include/xmlsec/mycrypto/Makefile
 src/mycrypto/Makefile
 ...
 ])
-	    </pre></td></tr></table>
+	    </pre>
 </div>
 	</li>
 <li><p>Modify "xmlsec.spec.in" file to create "xmlsec-mycrypto"
@@ -214,26 +240,16 @@ src/mycrypto/Makefile
 	library):
 	<div class="EXAMPLE">
 <a name="AEN532"></a><p><b>Example 5. Compiling the results.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">./autogen.sh --without-openssl --without-nss --without-gnutls \
+<pre class="PROGRAMLISTING">./autogen.sh --without-openssl --without-nss --without-gnutls \
     	     --with-mycrypto=$HOME --disable-tmpl-tests
 make	
-	    </pre></td></tr></table>
+	    </pre>
 </div>
 	</div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-new-crypto-functions.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Adding support for new cryptographic library.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>xmlSecCryptoApp* functions.</b></font></td>
-</tr>
-</table>
-</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-notes-new-crypto.html"><b>&lt;&lt;&lt; Adding support for new cryptographic library.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-notes-new-crypto-functions.html"><b>xmlSecCryptoApp* functions. &gt;&gt;&gt;</b></a></td>
+</tr></table>
 </td></tr>
 <tr><td>
 <br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>

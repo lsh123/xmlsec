@@ -2,12 +2,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Signing data with X509 certificate.</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
 <link rel="PREVIOUS" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
 <link rel="NEXT" title="Verifing document signed with X509 certificates." href="xmlsec-notes-verify-x509.html">
+<meta name="GENERATOR" content="GTK-Doc V1.1 (SGML mode)">
+<style type="text/css">.synopsis, .classsynopsis {
+    background: #eeeeee;
+    border: solid 1px #aaaaaa;
+    padding: 0.5em;
+}
+.programlisting {
+    background: #eeeeff;
+    border: solid 1px #aaaaff;
+    padding: 0.5em;
+}
+.variablelist {
+    padding: 4px;
+    margin-left: 3em;
+}
+.navigation {
+    background: #ffeeee;
+    border: solid 1px #ffaaaa;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.navigation a {
+    color: #770000;
+}
+.navigation a:visited {
+    color: #550000;
+}
+.navigation .title {
+    font-size: 200%;
+}</style>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -49,18 +78,15 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
+<table width="100%" class="navigation" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="xmlsec-notes-x509.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="xmlsec-notes-x509.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">XML Security Library Reference Manual</th>
+<td><a accesskey="n" href="xmlsec-notes-verify-x509.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
 <br clear="all"><div class="SECT1">
-<h1 class="SECT1">
-<a name="XMLSEC-NOTES-SIGN-X509"></a>Signing data with X509 certificate.</h1>
+<h1 class="SECT1"><a name="XMLSEC-NOTES-SIGN-X509">Signing data with X509 certificate.</a></h1>
 <p>To sign a file using X509 certificate, 
 	an application need to associate the certificate (or certificates) 
 	with the private key using one of the following functions:
@@ -79,7 +105,7 @@
 </ul>
 <div class="EXAMPLE">
 <a name="AEN423"></a><p><b>Example 1. Loading private key and X509 certificate.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* load private key, assuming that there is not password */
+<pre class="PROGRAMLISTING">    /* load private key, assuming that there is not password */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
@@ -91,7 +117,7 @@
         fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
 	goto done;
     }
-	    </pre></td></tr></table>
+	    </pre>
 <p><a href="xmlsec-examples-sign-x509.html#XMLSEC-EXAMPLE-SIGN3">Full program listing</a></p>
 </div>
 	<p>Next step is to prepare signature template with &lt;dsig:X509Data/&gt;
@@ -102,7 +128,7 @@
 	</p>
 <div class="EXAMPLE">
 <a name="AEN429"></a><p><b>Example 2. Dynamicaly creating a signature template for signing document using X509 certificate.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* create signature template for RSA-SHA1 enveloped signature */
+<pre class="PROGRAMLISTING">    /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
@@ -138,24 +164,14 @@
 	fprintf(stderr, "Error: failed to add X509Data node\n");
 	goto done;		
     }
-	    </pre></td></tr></table>
+	    </pre>
 <p><a href="xmlsec-examples-sign-x509.html#XMLSEC-EXAMPLE-SIGN3">Full program listing</a></p>
 </div>
 	</div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Using X509 Certificates.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Verifing document signed with X509 certificates.</b></font></td>
-</tr>
-</table>
-</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td align="left"><a accesskey="p" href="xmlsec-notes-x509.html"><b>&lt;&lt;&lt; Using X509 Certificates.</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-notes-verify-x509.html"><b>Verifing document signed with X509 certificates. &gt;&gt;&gt;</b></a></td>
+</tr></table>
 </td></tr>
 <tr><td>
 <br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>

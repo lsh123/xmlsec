@@ -71,6 +71,18 @@ crypto
 @msg: 
 
 
+<!-- ##### FUNCTION xmlSecMSCryptoCertStrToName ##### -->
+<para>
+
+</para>
+
+@dwCertEncodingType: 
+@pszX500: 
+@dwStrType: 
+@len: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecMSCryptoKeyDataDsaId ##### -->
 <para>
 

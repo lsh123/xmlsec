@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -86,6 +87,7 @@ The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
 <refsect2>
 <title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
 <programlisting>struct xmlSecEncCtx {
+
     /* these data user can set before performing the operation */
     void*			userData;
     unsigned int		flags;

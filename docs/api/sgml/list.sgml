@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -74,6 +75,7 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <refsect2>
 <title><anchor id="xmlSecPtrList">struct xmlSecPtrList</title>
 <programlisting>struct xmlSecPtrList {
+
     xmlSecPtrListId		id;        
 
     xmlSecPtr*			data;
@@ -453,6 +455,7 @@ Prints debug information about <parameter>item</parameter> to <parameter>output<
 <refsect2>
 <title><anchor id="xmlSecPtrListKlass">struct xmlSecPtrListKlass</title>
 <programlisting>struct xmlSecPtrListKlass {
+
     const xmlChar*			name;
     xmlSecPtrDuplicateItemMethod	duplicateItem;
     xmlSecPtrDestroyItemMethod		destroyItem;

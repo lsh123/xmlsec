@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -71,6 +72,12 @@
 <link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform</link>
                                             (<link linkend="xmlNode">xmlNodePtr</link> cipherReferenceNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceListAddDataReference">xmlSecTmplReferenceListAddDataReference</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceListAddKeyReference">xmlSecTmplReferenceListAddKeyReference</link>
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddKeyName">xmlSecTmplKeyInfoAddKeyName</link>     (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              const <link linkend="xmlChar">xmlChar</link> *name);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplKeyInfoAddKeyValue">xmlSecTmplKeyInfoAddKeyValue</link>    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);
@@ -542,6 +549,46 @@ child node of the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedDat
 <listitem><simpara> 		the transform id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or 
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplReferenceListAddDataReference">xmlSecTmplReferenceListAddDataReference ()</title>
+<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddDataReference
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-DataReference">&lt;enc:DataReference/&gt;</ulink> and the parent <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">&lt;enc:ReferenceList/&gt;</ulink> node (if needed).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	                the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                        uri to reference (optional)
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-DataReference">&lt;enc:DataReference/&gt;</ulink> node or 
+NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplReferenceListAddKeyReference">xmlSecTmplReferenceListAddKeyReference ()</title>
+<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplReferenceListAddKeyReference
+                                            (<link linkend="xmlNode">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
+<para>
+Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyReference">&lt;enc:KeyReference/&gt;</ulink> and the parent <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-ReferenceList">&lt;enc:ReferenceList/&gt;</ulink> node (if needed).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	                the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>                        uri to reference (optional)
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyReference">&lt;enc:KeyReference/&gt;</ulink> node or 
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

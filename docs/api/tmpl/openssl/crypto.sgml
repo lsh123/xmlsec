@@ -57,6 +57,23 @@ crypto
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLSetDefaultTrustedCertsFolder ##### -->
+<para>
+
+</para>
+
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLGetDefaultTrustedCertsFolder ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecOpenSSLKeyDataAesId ##### -->
 <para>
 

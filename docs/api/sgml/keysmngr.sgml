@@ -10,6 +10,7 @@
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
+
 <synopsis>
 
 
@@ -222,7 +223,8 @@ an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngr">struct xmlSecKeysMngr</title>
-<programlisting>struct xmlSecKeysMngr {	
+<programlisting>struct xmlSecKeysMngr {
+	
     xmlSecKeyStorePtr		keysStore;	
     xmlSecPtrList		storesList;	
     xmlSecGetKeyCallback	getKey;		
@@ -271,6 +273,7 @@ an error occurs.
 <refsect2>
 <title><anchor id="xmlSecKeyStore">struct xmlSecKeyStore</title>
 <programlisting>struct xmlSecKeyStore {
+
     xmlSecKeyStoreId			id;
 
     /* for the future */
@@ -466,6 +469,7 @@ the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> 
 <refsect2>
 <title><anchor id="xmlSecKeyStoreKlass">struct xmlSecKeyStoreKlass</title>
 <programlisting>struct xmlSecKeyStoreKlass {
+
     xmlSecSize				klassSize;
     xmlSecSize				objSize;
 

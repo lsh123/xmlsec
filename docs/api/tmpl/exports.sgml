@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-transforms-old
+exports
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -13,4 +13,18 @@ transforms-old
 <para>
 
 </para>
+
+<!-- ##### MACRO extern ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_CRYPTO_EXPORT ##### -->
+<para>
+
+</para>
+
+
 

@@ -339,6 +339,9 @@ xmlSecCryptoDLInit(void) {
         return(-1);
     }
 
+    /* use xmlMalloc/xmlFree */
+    xmlsec_lt_dlmalloc	= xmlSecCryptoDLMalloc;
+    xmlsec_lt_dlfree	= xmlSecCryptoDLFree;
     ret = xmlsec_lt_dlinit ();
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -350,9 +353,6 @@ xmlSecCryptoDLInit(void) {
     }
     /* TODO: LTDL_SET_PRELOADED_SYMBOLS(); */
     
-    /* use xmlMalloc/xmlFree */
-    xmlsec_lt_dlmalloc	= xmlSecCryptoDLMalloc;
-    xmlsec_lt_dlfree	= xmlSecCryptoDLFree;
     return(0);
 }
 

@@ -1,3 +1,7 @@
+2004-10-27  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/dl.c: set dl memory functions before initialization (Daniel Vogelheim)
+
 2004-10-14  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/x509vfy.c: fixed bug #155329 (parsing quoted values

@@ -1,3 +1,9 @@
+Thu Sep 25 11:39:22 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: added root nodes namespaces registration
+	for "--node-xpath" command line option processing (by request
+	from Jan-Olof)
+
 Sat 20 Sep 2003 11:19:14 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 	* HACKING: added more info about hacking with xmlsec

@@ -11,16 +11,4 @@
     linebreaks.
     5) Create platform independent test files format and generate
     test*.sh, test*.bat, etc scripts "on the fly".
-    6) Fix /tmp issue: if the folder path is=/tmp/<filename>, 
-    for cygwin the absolute path to /tmp/<filename> is 
-    c:\cygwin\tmp\<filename>. The windows application,xmlsec.exe 
-    in this case, gets the same path (/tmp/<filename>) andcreates 
-    there the file. However for xmlsec.exe, that runs outside 
-    cygwin environment, the absolute path is: C:\tmp\<filename>. 
-    After creation theshell script takes over and does some checks, 
-    but then can't find the,since it's located at another position. 
-    So in the first place c:\tmpfolder *must* exist to run the dsig 
-    tests, and the diff command in theenc test script will fail because 
-    it can't find the files.
-    
     

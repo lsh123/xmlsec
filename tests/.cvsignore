@@ -30,3 +30,4 @@ xmlsec-*.dbg
 xmlsec.spec
 core
 keys.xml
+*.db

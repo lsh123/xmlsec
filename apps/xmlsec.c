@@ -2351,12 +2351,35 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
     } else if(xmlSecAppCmdLineParamGetString(&nodeXPathParam) != NULL) {
 	xmlXPathContextPtr ctx = NULL;
 	xmlXPathObjectPtr obj = NULL;
+	xmlNodePtr rootNode;
+	xmlNsPtr ns;
+	int ret;
+
+	rootNode = xmlDocGetRootElement(data->doc);
+	if(rootNode == NULL) {
+	    fprintf(stderr, "Error: failed to find root node\n"); 
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
 	
 	ctx = xmlXPathNewContext(data->doc);
 	if(ctx == NULL) {
 	    fprintf(stderr, "Error: failed to create xpath context\n");
 	    xmlSecAppXmlDataDestroy(data);
 	    return(NULL);    
+	}
+	
+	/* register namespaces from the root node */
+	for(ns = rootNode->nsDef; ns != NULL; ns = ns->next) {
+	    if(ns->prefix != NULL){
+	        ret = xmlXPathRegisterNs(ctx, ns->prefix, ns->href);
+		if(ret != 0) {
+		    fprintf(stderr, "Error: failed to register namespace \"%s\"\n", ns->prefix);
+		    xmlXPathFreeContext(ctx);
+		    xmlSecAppXmlDataDestroy(data);
+		    return(NULL);    
+		}
+	    }
 	}
 	
 	obj = xmlXPathEval(BAD_CAST xmlSecAppCmdLineParamGetString(&nodeXPathParam), ctx);

@@ -292,7 +292,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 	    xmlFree(res);
     	    return (NULL);
 	}
-	xmlSecAssert2(nn < sizeof(xmlSecBnRevLookupTable), NULL);
+	xmlSecAssert2((size_t)nn < sizeof(xmlSecBnRevLookupTable), NULL);
 	res[i] = xmlSecBnRevLookupTable[nn];
     }
     xmlSecAssert2(i < len, NULL);
@@ -486,10 +486,10 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
-    xmlSecAssert2(nn > 0, -1);
+    xmlSecAssert2(delta > 0, -1);
 
     data = xmlSecBufferGetData(bn);
-    for(over = nn, i = xmlSecBufferGetSize(bn); i > 0;) {
+    for(over = delta, i = xmlSecBufferGetSize(bn); i > 0;) {
 	xmlSecAssert2(data != NULL, -1);
 	
 	over   += data[--i];

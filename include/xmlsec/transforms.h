@@ -23,7 +23,7 @@ extern "C" {
 #include <xmlsec/nodeset.h>
 #include <xmlsec/keys.h>
 
-#define XMLSEC_TRANSFORM_BINARY_CHUNK		64
+#define XMLSEC_TRANSFORM_BINARY_CHUNK			64
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, 
 							*xmlSecTransformId;
 
@@ -58,7 +58,7 @@ typedef enum  {
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
 } xmlSecTransformStatus;
-		    
+
 /**************************************************************************
  *
  * xmlSecTransformMode:
@@ -77,16 +77,33 @@ typedef enum  {
 
 /**************************************************************************
  *
+ * xmlSecTransformOperation:
+ *
+ * The transform operation
+ *
+ *************************************************************************/
+typedef enum  {
+    xmlSecTransformOperationNone = 0,
+    xmlSecTransformOperationEncode,
+    xmlSecTransformOperationDecode,
+    xmlSecTransformOperationSign,
+    xmlSecTransformOperationVerify,
+    xmlSecTransformOperationEncrypt,
+    xmlSecTransformOperationDecrypt
+} xmlSecTransformOperation;
+
+/**************************************************************************
+ *
  * TODO: rename local to same document
  *
  *************************************************************************/
-typedef unsigned int				xmlSecUriType;
-#define xmlSecUriTypeNone			0x0000
-#define xmlSecUriTypeLocalEmpty			0x0001
-#define xmlSecUriTypeLocalXPointer		0x0002		
-#define xmlSecUriTypeRemote			0x0004
-#define xmlSecUriTypeAny			0xFFFF
-XMLSEC_EXPORT int 			xmlSecUriTypeCheck		(xmlSecUriType type,
+typedef unsigned int				xmlSecTransformUriType;
+#define xmlSecTransformUriTypeNone		0x0000
+#define xmlSecTransformUriTypeLocalEmpty	0x0001
+#define xmlSecTransformUriTypeLocalXPointer	0x0002		
+#define xmlSecTransformUriTypeRemote		0x0004
+#define xmlSecTransformUriTypeAny		0xFFFF
+XMLSEC_EXPORT int 			xmlSecTransformUriTypeCheck	(xmlSecTransformUriType type,
 									 const xmlChar* uri);
 /**************************************************************************
  *
@@ -123,9 +140,7 @@ typedef unsigned int				xmlSecTransformUsage;
  * Transform could be used in <dsig:DigestMethod>.
  */
 #define xmlSecTransformUsageDigestMethod	0x0004
-/**
- * xmlSecTransformUsageSignatureMethod:
- *
+/** * xmlSecTransformUsageSignatureMethod: *
  * Transform could be used in <dsig:SignatureMethod>.
  */
 #define xmlSecTransformUsageSignatureMethod	0x0008
@@ -153,28 +168,33 @@ typedef unsigned int				xmlSecTransformUsage;
  * The transform context.
  */
 struct _xmlSecTransformCtx {
-    /* input */
-    xmlSecUriType		allowedUris;
+    /* user settings */
+    void*				userData;
+    unsigned int			flags1;
+    unsigned int			flags2;
+    xmlSecTransformUriType		allowedUris;
+    xmlSecPtrList			allowedTransforms;
 
-    /* output */
-    xmlSecBufferPtr		result;
-    xmlSecTransformStatus	status;
-    xmlChar*			uri;
-    xmlChar*			xptrExpr;
-                
-    /* internal data */
-    xmlSecTransformPtr		first;
-    xmlSecTransformPtr		last;
+    /* results */
+    xmlSecBufferPtr			result;
+    xmlSecTransformStatus		status;
+    xmlChar*				uri;
+    xmlChar*				xptrExpr;
+    xmlSecTransformPtr			first;
+    xmlSecTransformPtr			last;
 
     /* for the future */
     void*				reserved0;
     void*				reserved1;
 };
 
-XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize	(xmlSecTransformCtxPtr ctx);
-XMLSEC_EXPORT void			xmlSecTransformCtxFinalize  	(xmlSecTransformCtxPtr ctx);
 XMLSEC_EXPORT xmlSecTransformCtxPtr	xmlSecTransformCtxCreate    	(void);
 XMLSEC_EXPORT void			xmlSecTransformCtxDestroy   	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT void			xmlSecTransformCtxFinalize  	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT void			xmlSecTransformCtxReset   	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT int			xmlSecTransformCtxCopyUserPref	(xmlSecTransformCtxPtr dst,
+									 xmlSecTransformCtxPtr src);
 XMLSEC_EXPORT int			xmlSecTransformCtxSetUri	(xmlSecTransformCtxPtr ctx,
 									 const xmlChar* uri,
 									 xmlNodePtr hereNode);
@@ -208,7 +228,7 @@ XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump 	(xmlSecTransformCtxPtr ctx,
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump	(xmlSecTransformCtxPtr ctx,
 									 FILE* output);
 	
-/**************************************************************************
+/*******************************************		*******************************
  *
  * xmlSecTransform
  *
@@ -223,11 +243,13 @@ XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump	(xmlSecTransformCtxPtr ctx,
  */
 struct _xmlSecTransform {
     xmlSecTransformId 			id; 
+    xmlSecTransformOperation		operation;
     xmlSecTransformStatus		status;
+    xmlNodePtr				hereNode;
+
+    /* transforms chain */
     xmlSecTransformPtr			next;
     xmlSecTransformPtr			prev;
-    int					encode;	/* TODO: rename */
-    xmlNodePtr				hereNode;
 
     /* binary data */
     xmlSecBuffer			inBuf;

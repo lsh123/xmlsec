@@ -257,7 +257,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     keyInfoCtx->keysMngr 			= keysMngr;
     keyInfoCtx->stopWhenKeyFound		= 1;
     keyInfoCtx->maxRetrievalMethodLevel		= 1;
-    keyInfoCtx->allowedRetrievalMethodUris 	= xmlSecUriTypeAny;
+    keyInfoCtx->allowedRetrievalMethodUris 	= xmlSecTransformUriTypeAny;
     keyInfoCtx->maxEncryptedKeyLevel 		= 1;
     keyInfoCtx->certsVerificationDepth 		= 9;
     
@@ -999,22 +999,12 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     }
     ++keyInfoCtx->curRetrievalMethodLevel;
 
-    /* check the allowed uri */
-    uri = xmlGetProp(node, xmlSecAttrURI);
-    if(xmlSecUriTypeCheck(keyInfoCtx->allowedRetrievalMethodUris, uri) != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
-		    "uri=\"%s\"", xmlSecErrorsSafeString(uri));
-	goto done;
-    }
-    
     /* destroy prev retrieval method context and create a new one */
     if(keyInfoCtx->retrievalMethodTransformCtx != NULL) {
 	xmlSecTransformCtxDestroy(keyInfoCtx->retrievalMethodTransformCtx);
 	keyInfoCtx->retrievalMethodTransformCtx = NULL;
     }
+
     keyInfoCtx->retrievalMethodTransformCtx = xmlSecTransformCtxCreate();
     if(keyInfoCtx->retrievalMethodTransformCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1024,20 +1014,19 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
+    keyInfoCtx->retrievalMethodTransformCtx->allowedUris = keyInfoCtx->allowedRetrievalMethodUris;
 
-    /* set start URI */
-    if(uri != NULL) {    
-        ret = xmlSecTransformCtxSetUri(keyInfoCtx->retrievalMethodTransformCtx, 
-					uri, node);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			"xmlSecTransformCtxSetUri",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"uri=%s",
-			xmlSecErrorsSafeString(uri));
-	    goto done;
-	}		
+    /* set start URI and check that it is allowed */
+    uri = xmlGetProp(node, xmlSecAttrURI);
+    ret = xmlSecTransformCtxSetUri(keyInfoCtx->retrievalMethodTransformCtx, uri, node);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecTransformCtxSetUri",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "uri=%s",
+		    xmlSecErrorsSafeString(uri));
+	goto done;
     }
 
     /* the only one node is optional Transforms node */

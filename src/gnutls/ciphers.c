@@ -521,6 +521,7 @@ xmlSecGnuTLSBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
     xmlSecGnuTLSBlockCipherCtxPtr ctx;
 
     xmlSecAssert2(xmlSecGnuTLSBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSBlockCipherSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
@@ -531,7 +532,7 @@ xmlSecGnuTLSBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
 
     keyReq->keyId 	= ctx->keyId;
     keyReq->keyType 	= xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
 	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
@@ -549,6 +550,7 @@ xmlSecGnuTLSBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     int ret;
     
     xmlSecAssert2(xmlSecGnuTLSBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSBlockCipherSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
@@ -598,6 +600,7 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     int ret;
     
     xmlSecAssert2(xmlSecGnuTLSBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSBlockCipherSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -613,9 +616,9 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
     if(transform->status == xmlSecTransformStatusWorking) {
 	if(ctx->ctxInitialized == 0) {
-    	    ret = xmlSecGnuTLSBlockCipherCtxInit(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+    	    ret = xmlSecGnuTLSBlockCipherCtxInit(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -634,9 +637,9 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 	    return(-1);
 	}
 	if(ctx->ctxInitialized != 0) {
-	    ret = xmlSecGnuTLSBlockCipherCtxUpdate(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+	    ret = xmlSecGnuTLSBlockCipherCtxUpdate(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -648,9 +651,9 @@ xmlSecGnuTLSBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 	}
 	
 	if(last) {
-	    ret = xmlSecGnuTLSBlockCipherCtxFinal(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+	    ret = xmlSecGnuTLSBlockCipherCtxFinal(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

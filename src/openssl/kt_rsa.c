@@ -137,6 +137,7 @@ xmlSecOpenSSLRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
@@ -144,7 +145,7 @@ xmlSecOpenSSLRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
     xmlSecAssert2(ctx != NULL, -1);
 
     keyReq->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyType  = xmlSecKeyDataTypePublic;
 	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
@@ -160,6 +161,7 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     EVP_PKEY* pKey;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
@@ -199,6 +201,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -246,6 +249,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -267,14 +271,14 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
-    if((transform->encode) && (inSize >= keySize)) {
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "%d when expected less than %d", inSize, keySize);
 	return(-1);
-    } else if((!transform->encode) && (inSize != keySize)) {
+    } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != keySize)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -294,7 +298,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 	return(-1);
     }
 
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
 	ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
 				xmlSecBufferGetData(out), 
 				ctx->pKey->pkey.rsa, RSA_PKCS1_PADDING);
@@ -535,6 +539,7 @@ xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr key
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
@@ -542,7 +547,7 @@ xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr key
     xmlSecAssert2(ctx != NULL, -1);
 
     keyReq->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyType  = xmlSecKeyDataTypePublic;
 	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
@@ -559,6 +564,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     EVP_PKEY* pKey;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
@@ -598,6 +604,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -646,6 +653,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -667,14 +675,14 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
-    if((transform->encode) && (inSize >= keySize)) {
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "%d when expected less than %d", inSize, keySize);
 	return(-1);
-    } else if((!transform->encode) && (inSize != keySize)) {
+    } else if((transform->operation == xmlSecTransformOperationDecrypt) && (inSize != keySize)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -695,7 +703,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     }
 
     paramsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-    if(transform->encode && (paramsSize == 0)) {
+    if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize == 0)) {
 	/* encode w/o OAEPParams --> simple */
 	ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
 				xmlSecBufferGetData(out), 
@@ -709,7 +717,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 	    return(-1);
 	}
 	outSize = ret;
-    } else if(transform->encode && (paramsSize > 0)) {
+    } else if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize > 0)) {
 	xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
 	
 	/* add space for padding */
@@ -751,7 +759,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 	    return(-1);
 	}
 	outSize = ret;
-    } else if((transform->encode == 0) && (paramsSize == 0)) {
+    } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize == 0)) {
 	ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
 				xmlSecBufferGetData(out), 
 				ctx->pKey->pkey.rsa, RSA_PKCS1_OAEP_PADDING);
@@ -764,7 +772,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 	    return(-1);
 	}
 	outSize = ret;
-    } else if((transform->encode == 0) && (paramsSize != 0)) {
+    } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize != 0)) {
 	BIGNUM bn;
 	
 	ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),

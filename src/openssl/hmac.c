@@ -189,12 +189,13 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
 static int  
 xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId 	 = xmlSecOpenSSLKeyDataHmacId;
-    keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
+    keyReq->keyId   = xmlSecOpenSSLKeyDataHmacId;
+    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
+    if(transform->operation == xmlSecTransformOperationSign) {
 	keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageVerify;
@@ -210,6 +211,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
@@ -254,7 +256,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
         
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
-    xmlSecAssert2(transform->encode == 0, -1);
+    xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -310,6 +312,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -365,7 +368,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 	    }
 	    
 	    /* finally write result to output */    
-	    if(transform->encode) {
+	    if(transform->operation == xmlSecTransformOperationSign) {
 		ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 

@@ -152,6 +152,7 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     EVP_PKEY* pKey;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
@@ -196,6 +197,7 @@ xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPt
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
@@ -203,8 +205,8 @@ xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPt
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
-    keyReq->keyId 	     = ctx->keyId;
-    if(transform->encode) {
+    keyReq->keyId        = ctx->keyId;
+    if(transform->operation == xmlSecTransformOperationSign) {
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
 	keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
@@ -223,8 +225,8 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
+    xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
-    xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -262,6 +264,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -280,7 +283,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     xmlSecAssert2(ctx->pKey != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationSign) {
 #ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_SignInit(&(ctx->digestCtx), ctx->digest);
 	    if(ret != 1) {
@@ -313,7 +316,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     }
     
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationSign) {
 #ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
@@ -355,7 +358,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationSign) {
 	    /* this is a hack: for rsa signatures 
 	     * we get size from EVP_PKEY_size(),
 	     * for dsa signature we use a fixed constant */

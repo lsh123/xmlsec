@@ -32,41 +32,6 @@ xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, size_t defInitial
     gInitialSize = defInitialSize;
 }
 
-int 
-xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
-    xmlSecAssert2(id != xmlSecPtrListIdUnknown, -1);
-    xmlSecAssert2(list != NULL, -1);
-
-    memset(list, 0, sizeof(xmlSecPtrList));    
-    list->id = id;
-    list->allocMode = gAllocMode;
-    
-    return(0);
-}
-
-void
-xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
-    xmlSecAssert(xmlSecPtrListIsValid(list));
-
-    if(list->id->destroyItem != NULL) {
-	size_t pos;
-	
-	for(pos = 0; pos < list->use; ++pos) {
-	    xmlSecAssert(list->data != NULL);
-	    if(list->data[pos] != NULL) {
-		list->id->destroyItem(list->data[pos]);
-	    }
-	}
-    }
-    if(list->max > 0) {
-	xmlSecAssert(list->data != NULL);
-
-	memset(list->data, 0, sizeof(xmlSecPtr) * list->use);
-	xmlFree(list->data);
-    }
-    memset(list, 0, sizeof(xmlSecPtrList));    
-}
-
 xmlSecPtrListPtr 
 xmlSecPtrListCreate(xmlSecPtrListId id) {
     xmlSecPtrListPtr list;
@@ -107,6 +72,83 @@ xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
     xmlFree(list);
 }
 
+int 
+xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
+    xmlSecAssert2(id != xmlSecPtrListIdUnknown, -1);
+    xmlSecAssert2(list != NULL, -1);
+
+    memset(list, 0, sizeof(xmlSecPtrList));    
+    list->id = id;
+    list->allocMode = gAllocMode;
+    
+    return(0);
+}
+
+void
+xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
+    xmlSecAssert(xmlSecPtrListIsValid(list));
+
+    if(list->id->destroyItem != NULL) {
+	size_t pos;
+	
+	for(pos = 0; pos < list->use; ++pos) {
+	    xmlSecAssert(list->data != NULL);
+	    if(list->data[pos] != NULL) {
+		list->id->destroyItem(list->data[pos]);
+	    }
+	}
+    }
+    if(list->max > 0) {
+	xmlSecAssert(list->data != NULL);
+
+	memset(list->data, 0, sizeof(xmlSecPtr) * list->use);
+	xmlFree(list->data);
+    }
+    memset(list, 0, sizeof(xmlSecPtrList));    
+}
+
+int
+xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
+    size_t i;
+    int ret;
+    
+    xmlSecAssert2(xmlSecPtrListIsValid(dst), -1);
+    xmlSecAssert2(xmlSecPtrListIsValid(src), -1);
+    xmlSecAssert2(dst->id == src->id, -1);
+    
+    /* allocate memory */
+    ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecPtrListGetName(src)),
+		    "xmlSecPtrListEnsureSize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "%d", src->use);
+	return(-1);
+    }
+
+    /* copy one item after another */    
+    for(i = 0; i < src->use; ++i, ++dst->use) {
+	xmlSecAssert2(src->data != NULL, -1);
+	xmlSecAssert2(dst->data != NULL, -1);
+	
+	if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
+	    dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
+	    if(dst->data[dst->use] == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecPtrListGetName(src)),
+			    "duplicateItem",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	} else {
+	    dst->data[dst->use] = src->data[i];
+	}
+    }
+    
+    return(0);
+}
 
 xmlSecPtrListPtr 
 xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
@@ -125,35 +167,15 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
 	return(NULL);
     }
     
-    ret = xmlSecPtrListEnsureSize(newList, list->use);
+    ret = xmlSecPtrListCopy(newList, list);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-		    "xmlSecPtrListEnsureSize",
+		    "xmlSecPtrListCopy",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", list->use);
-	xmlSecPtrListDestroy(newList); 
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecPtrListDestroy(newList);
 	return(NULL);
-    }
-    
-    for(newList->use = 0; newList->use < list->use; ++newList->use) {
-	xmlSecAssert2(list->data != NULL, NULL);
-	xmlSecAssert2(newList->data != NULL, NULL);
-	
-	if((newList->id->duplicateItem != NULL) && (list->data[newList->use] != NULL)) {
-	    newList->data[newList->use] = newList->id->duplicateItem(list->data[newList->use]);
-	    if(newList->data[newList->use] == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-			    "duplicateItem",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecPtrListDestroy(newList);
-		return(NULL);		
-	    }
-	} else {
-	    newList->data[newList->use] = list->data[newList->use];
-	}
     }
     return(newList);
 }

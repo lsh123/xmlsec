@@ -53,16 +53,16 @@ struct _xmlSecEncCtx {
     xmlEncCtxMode		mode;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
-    xmlSecUriType		allowedCipherReferenceUris;
     xmlSecTransformCtx		encTransformCtx;
+
     xmlSecTransformPtr		encMethod;
     xmlSecKeyPtr		encKey;
 
     /* these data are returned */
     xmlSecBufferPtr		result;
+    xmlSecTransformOperation	operation;
     int				resultBase64Encoded;
     int				resultReplaced;
-    int				encrypt;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;

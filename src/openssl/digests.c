@@ -139,7 +139,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
-    xmlSecAssert2(transform->encode == 0, -1);
+    xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -180,6 +180,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -258,7 +259,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	    xmlSecAssert2(ctx->dgstSize > 0, -1);
 	    
 	    /* copy result to output */
-	    if(transform->encode) {
+	    if(transform->operation == xmlSecTransformOperationSign) {
 		ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 

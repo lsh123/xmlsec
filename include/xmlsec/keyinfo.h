@@ -53,7 +53,7 @@ struct _xmlSecKeyInfoCtx {
         
     /* RetrievalMethod */
     xmlSecTransformCtxPtr		retrievalMethodTransformCtx;
-    xmlSecUriType			allowedRetrievalMethodUris;
+    xmlSecTransformUriType		allowedRetrievalMethodUris;
     int 				maxRetrievalMethodLevel;
     int					stopWhenUnknownRetrievalMethodHrefFound;
 

@@ -692,8 +692,8 @@ xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     ctx = xmlSecBase64GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    transform->encode = 0;
-    ret = xmlSecBase64CtxInitialize(ctx, transform->encode, XMLSEC_BASE64_LINESIZE);
+    transform->operation = xmlSecTransformOperationDecode;
+    ret = xmlSecBase64CtxInitialize(ctx, 0, XMLSEC_BASE64_LINESIZE);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -730,6 +730,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformBase64Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncode) || (transform->operation == xmlSecTransformOperationDecode), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     
     ctx = xmlSecBase64GetCtx(transform);
@@ -739,7 +740,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     out = &(transform->outBuf);
 
     if(transform->status == xmlSecTransformStatusNone) {
-	ctx->encode = transform->encode;
+	ctx->encode = (transform->operation == xmlSecTransformOperationEncode) ? 1 : 0;
 	transform->status = xmlSecTransformStatusWorking;
     }
 

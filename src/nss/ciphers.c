@@ -523,6 +523,7 @@ xmlSecNssEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
     xmlSecNssEvpBlockCipherCtxPtr ctx;
 
     xmlSecAssert2(xmlSecNssEvpBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssEvpBlockCipherSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
@@ -532,7 +533,7 @@ xmlSecNssEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
 
     keyReq->keyId 	= ctx->keyId;
     keyReq->keyType 	= xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
 	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
@@ -547,6 +548,7 @@ xmlSecNssEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecNssEvpBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssEvpBlockCipherSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
@@ -587,6 +589,7 @@ xmlSecNssEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     int ret;
     
     xmlSecAssert2(xmlSecNssEvpBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssEvpBlockCipherSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -602,9 +605,9 @@ xmlSecNssEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
     if(transform->status == xmlSecTransformStatusWorking) {
 	if(ctx->ctxInitialized == 0) {
-	    ret = xmlSecNssEvpBlockCipherCtxInit(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+	    ret = xmlSecNssEvpBlockCipherCtxInit(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -624,9 +627,9 @@ xmlSecNssEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 	}
 
 	if(ctx->ctxInitialized != 0) {
-	    ret = xmlSecNssEvpBlockCipherCtxUpdate(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+	    ret = xmlSecNssEvpBlockCipherCtxUpdate(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -638,9 +641,9 @@ xmlSecNssEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 	}
 	
 	if(last) {
-	    ret = xmlSecNssEvpBlockCipherCtxFinal(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+	    ret = xmlSecNssEvpBlockCipherCtxFinal(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

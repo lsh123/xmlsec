@@ -532,6 +532,7 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
     int cipherKeyLen;
 
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
@@ -542,7 +543,7 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
 
     keyReq->keyId 	= ctx->keyId;
     keyReq->keyType = xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
 	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
@@ -562,6 +563,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     int cipherKeyLen;
     
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
@@ -603,6 +605,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -618,9 +621,9 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 
     if(transform->status == xmlSecTransformStatusWorking) {    
 	if(ctx->ctxInitialized == 0) {
-	    ret = xmlSecOpenSSLEvpBlockCipherCtxInit(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
+	    ret = xmlSecOpenSSLEvpBlockCipherCtxInit(ctx, in, out, 
+			(transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
+			xmlSecTransformGetName(transform), transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

@@ -39,6 +39,9 @@ XMLSEC_EXPORT int		xmlSecPtrListInitialize		(xmlSecPtrListPtr list,
 XMLSEC_EXPORT void		xmlSecPtrListFinalize		(xmlSecPtrListPtr list);
 XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListCreate		(xmlSecPtrListId id);
 XMLSEC_EXPORT void		xmlSecPtrListDestroy		(xmlSecPtrListPtr list);
+
+XMLSEC_EXPORT int		xmlSecPtrListCopy		(xmlSecPtrListPtr dst,
+								 xmlSecPtrListPtr src);
 XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate		(xmlSecPtrListPtr list);
 
 XMLSEC_EXPORT size_t		xmlSecPtrListGetSize		(xmlSecPtrListPtr list);

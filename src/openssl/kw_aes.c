@@ -205,12 +205,13 @@ xmlSecOpenSSLKWAesFinalize(xmlSecTransformPtr transform) {
 static int  
 xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     keyReq->keyId 	 = xmlSecOpenSSLKeyDataAesId;
     keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
 	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
@@ -228,6 +229,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(xmlSecOpenSSLKWAesGetKey(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -270,6 +272,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -302,7 +305,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	    return(-1);
 	}	
 	
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationEncrypt) {
 	    /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
 	    outSize = inSize + XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE + 
 			       XMLSEC_OPENSSL_AES_BLOCK_SIZE;
@@ -320,7 +323,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	    return(-1);
 	}
 
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationEncrypt) {
 	    ret = xmlSecOpenSSLKWAesEncode(xmlSecBufferGetData(key), keySize,
 					    xmlSecBufferGetData(in), inSize,
 					    xmlSecBufferGetData(out), outSize);

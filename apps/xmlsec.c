@@ -675,7 +675,7 @@ static int			xmlSecAppPrepareEncCtx		(xmlSecEncCtxPtr encCtx);
 static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
 
-static xmlSecUriType		xmlSecAppGetUriType		(const char* string);
+static xmlSecTransformUriType	xmlSecAppGetUriType		(const char* string);
 static FILE* 			xmlSecAppOpenFile		(const char* filename);
 static void			xmlSecAppCloseFile		(FILE* file);
 static int			xmlSecAppWriteResult		(xmlDocPtr doc,
@@ -1269,9 +1269,9 @@ xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {
     }
 
     if(xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam) != NULL) {
-	encCtx->allowedCipherReferenceUris = xmlSecAppGetUriType(
+	encCtx->encTransformCtx.allowedUris = xmlSecAppGetUriType(
 		    xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam));
-	if(encCtx->allowedCipherReferenceUris == xmlSecUriTypeNone) {
+	if(encCtx->encTransformCtx.allowedUris == xmlSecTransformUriTypeNone) {
 	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
 		    xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam));
 	    return(-1);
@@ -1356,7 +1356,7 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam) != NULL) {
 	keyInfoCtx->allowedRetrievalMethodUris = xmlSecAppGetUriType(
 		    xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam));
-	if(keyInfoCtx->allowedRetrievalMethodUris == xmlSecUriTypeNone) {
+	if(keyInfoCtx->allowedRetrievalMethodUris == xmlSecTransformUriTypeNone) {
 	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
 		    xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam));
 	    return(-1);
@@ -1868,17 +1868,17 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     fprintf(stdout, "%s\n", copyright);
 }
 
-static xmlSecUriType 
+static xmlSecTransformUriType 
 xmlSecAppGetUriType(const char* string) {
     if((string == NULL) || (strcmp(string, "all") == 0)) {
-	return(xmlSecUriTypeAny);
+	return(xmlSecTransformUriTypeAny);
     } else if(strcmp(string, "empty-local") == 0) {
-	return(xmlSecUriTypeLocalEmpty);
+	return(xmlSecTransformUriTypeLocalEmpty);
     } else if(strcmp(string, "local") == 0) {
-	return(xmlSecUriTypeLocalEmpty | xmlSecUriTypeLocalXPointer);
+	return(xmlSecTransformUriTypeLocalEmpty | xmlSecTransformUriTypeLocalXPointer);
     }
     fprintf(stderr, "Error: invalid uri type: \"%s\"\n", string);
-    return(xmlSecUriTypeNone);
+    return(xmlSecTransformUriTypeNone);
 }
 
 static FILE* 

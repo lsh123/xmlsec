@@ -141,12 +141,13 @@ xmlSecOpenSSLKWDes3Finalize(xmlSecTransformPtr transform) {
 static int  
 xmlSecOpenSSLKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     keyReq->keyId 	= xmlSecOpenSSLKeyDataDesId;
     keyReq->keyType 	= xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
+    if(transform->operation == xmlSecTransformOperationEncrypt) {
 	keyReq->keyUsage= xmlSecKeyUsageEncrypt;
     } else {
 	keyReq->keyUsage= xmlSecKeyUsageDecrypt;
@@ -162,6 +163,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     int ret;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(xmlSecOpenSSLKWDes3GetKey(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -203,6 +205,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -235,7 +238,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 	    return(-1);
 	}	
 	
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationEncrypt) {
 	    /* the encoded key might be 16 bytes longer plus one block just in case */
 	    outSize = inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH +
 			       XMLSEC_OPENSSL_DES3_BLOCK_LENGTH +
@@ -254,7 +257,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 	    return(-1);
 	}
 
-	if(transform->encode) {
+	if(transform->operation == xmlSecTransformOperationEncrypt) {
 	    ret = xmlSecOpenSSLKWDes3Encode(xmlSecBufferGetData(key), keySize,
 					    xmlSecBufferGetData(in), inSize,
 					    xmlSecBufferGetData(out), outSize);

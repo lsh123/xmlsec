@@ -57,17 +57,17 @@ struct _xmlSecDSigCtx {
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		signTransformCtx;
-    xmlSecKeyPtr		signKey;
     int				processManifests;
     int				storeSignatures;
     int				storeReferences;
     int				storeManifests;	
-    xmlSecUriType		allowedRefernceUriTypes;
-    xmlSecTransformId		defaultDigestTransformId;
-    xmlSecTransformId		defaultC14NTransformId;
+
+    xmlSecTransformUriType	allowedReferenceUris;
+    xmlSecPtrListPtr		allowedReferenceTransforms;
     
     /* these data are returned */
-    int				sign;
+    xmlSecTransformOperation	operation;
+    xmlSecKeyPtr		signKey;
     xmlSecBufferPtr		result;
     xmlSecDSigStatus		status;
     xmlSecTransformPtr		signMethod;
@@ -87,12 +87,18 @@ struct _xmlSecDSigCtx {
     void*			reserved1;    
 };						
 
-
+/* constructor/destructor */
 XMLSEC_EXPORT xmlSecDSigCtxPtr	xmlSecDSigCtxCreate		(xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void 		xmlSecDSigCtxDestroy		(xmlSecDSigCtxPtr dsigCtx);
 XMLSEC_EXPORT int		xmlSecDSigCtxInitialize		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecDSigCtxFinalize		(xmlSecDSigCtxPtr dsigCtx);
+
+/* set signature/verification parameters */
+XMLSEC_EXPORT int		xmlSecDSigCtxAdoptSignatureKey	(xmlSecDSigCtxPtr dsigCtx,
+								 xmlSecKeyPtr key);
+
+
 XMLSEC_EXPORT int		xmlSecDSigCtxSign		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlNodePtr tmpl);
 XMLSEC_EXPORT int		xmlSecDSigCtxVerify		(xmlSecDSigCtxPtr dsigCtx,

@@ -234,15 +234,15 @@ xmlSecTransformIdsRegisterDefault(void) {
  *
  *************************************************************************/
 int 
-xmlSecUriTypeCheck(xmlSecUriType type, const xmlChar* uri) {
-    xmlSecUriType uriType = 0;
+xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
+    xmlSecTransformUriType uriType = 0;
 
     if((uri == NULL) || (xmlStrlen(uri) == 0)) {
-	uriType = xmlSecUriTypeLocalEmpty;
+	uriType = xmlSecTransformUriTypeLocalEmpty;
     } else if(uri[0] == '#') {
-	uriType = xmlSecUriTypeLocalXPointer;
+	uriType = xmlSecTransformUriTypeLocalXPointer;
     } else {
-	uriType = xmlSecUriTypeRemote;
+	uriType = xmlSecTransformUriTypeRemote;
     }    
     return(((uriType & type) != 0) ? 1 : 0);
 }
@@ -252,35 +252,6 @@ xmlSecUriTypeCheck(xmlSecUriType type, const xmlChar* uri) {
  * xmlSecTransformCtx
  *
  *************************************************************************/
-int 
-xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
-    xmlSecAssert2(ctx != NULL, -1);
-    
-    memset(ctx, 0, sizeof(xmlSecTransformCtx));
-    return(0);
-}
-
-void 
-xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
-    xmlSecTransformPtr transform, tmp;    
-    
-    xmlSecAssert(ctx != NULL);
-    
-    if(ctx->uri != NULL) {
-	xmlFree(ctx->uri);
-    }
-    if(ctx->xptrExpr != NULL) {
-	xmlFree(ctx->xptrExpr);
-    }
-    
-    /* destroy transforms chain */
-    for(transform = ctx->first; transform != NULL; transform = tmp) {
-	tmp = transform->next;
-	xmlSecTransformDestroy(transform);
-    }
-    memset(ctx, 0, sizeof(xmlSecTransformCtx));
-}
-
 xmlSecTransformCtxPtr 
 xmlSecTransformCtxCreate(void) {
     xmlSecTransformCtxPtr ctx;
@@ -317,6 +288,88 @@ xmlSecTransformCtxDestroy(xmlSecTransformCtxPtr ctx) {
     
     xmlSecTransformCtxFinalize(ctx);
     xmlFree(ctx);
+}
+
+int 
+xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    memset(ctx, 0, sizeof(xmlSecTransformCtx));
+
+    ret = xmlSecPtrListInitialize(&(ctx->allowedTransforms), xmlSecTransformIdListId);
+    if(ret < 0) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    ctx->allowedUris = xmlSecTransformUriTypeAny;
+    return(0);
+}
+
+void 
+xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+    
+    xmlSecTransformCtxReset(ctx);
+    xmlSecPtrListFinalize(&(ctx->allowedTransforms));
+    memset(ctx, 0, sizeof(xmlSecTransformCtx));
+}
+
+void 
+xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
+    xmlSecTransformPtr transform, tmp;    
+    
+    xmlSecAssert(ctx != NULL);
+
+    ctx->result = NULL;
+    ctx->status = xmlSecTransformStatusNone;
+    
+    /* destroy uri */
+    if(ctx->uri != NULL) {
+	xmlFree(ctx->uri);
+	ctx->uri = NULL;
+    }
+    if(ctx->xptrExpr != NULL) {
+	xmlFree(ctx->xptrExpr);
+	ctx->xptrExpr = NULL;
+    }
+    
+    /* destroy transforms chain */
+    for(transform = ctx->first; transform != NULL; transform = tmp) {
+	tmp = transform->next;
+	xmlSecTransformDestroy(transform);
+    }
+    ctx->first = ctx->last = NULL;
+}
+
+int 
+xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr src) {
+    int ret;
+    
+    xmlSecAssert2(dst != NULL, -1);
+    xmlSecAssert2(src != NULL, -1);
+    
+    dst->userData 	= src->userData;  
+    dst->flags1		= src->flags1;  
+    dst->flags2		= src->flags2;  
+    dst->allowedUris	= src->allowedUris;
+    ret = xmlSecPtrListCopy(&(dst->allowedTransforms), &(src->allowedTransforms));
+    if(ret < 0) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListCCCopy",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    return(0);
 }
 
 int 
@@ -573,8 +626,22 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecAssert2(ctx->uri == NULL, -1);
     xmlSecAssert2(ctx->xptrExpr == NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
-    xmlSecAssert2(uri != NULL, -1);
     xmlSecAssert2(hereNode != NULL, -1);
+
+    /* check uri */
+    if(xmlSecTransformUriTypeCheck(ctx->allowedUris, uri) != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
+		    "uri=\"%s\"", xmlSecErrorsSafeString(uri));
+	return(-1);
+    }
+
+    /* is it an empty uri? */    
+    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
+	return(0);
+    }
 
     /* do we have barename or full xpointer? */
     xptr = (const xmlChar *)strchr((const char*)uri, '#');
@@ -1130,7 +1197,6 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 	return(NULL);		
     }
     
-    /* TODO: check with allowed transforms list */
     id = xmlSecTransformIdListFindByHref(xmlSecTransformIdsGet(), href, usage);    
     if(id == xmlSecTransformIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1142,7 +1208,20 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 	xmlFree(href);
 	return(NULL);		
     }
-    
+
+    /* check with allowed transforms list */
+    if((xmlSecPtrListGetSize(&(transformCtx->allowedTransforms)) > 0) &&
+       (xmlSecTransformIdListFind(&(transformCtx->allowedTransforms), id) != 1)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),
+		    XMLSEC_ERRORS_R_TRANSFORM_DISABLED,
+		    "href=%s",
+		    xmlSecErrorsSafeString(href));
+	xmlFree(href);
+	return(NULL);
+    }
+        
     transform = xmlSecTransformCreate(id);
     if(!xmlSecTransformIsValid(transform)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1960,8 +2039,8 @@ int
 xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) {
     size_t i, size;
     
-    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecTransformIdListId), 0);
-    xmlSecAssert2(transformId != NULL, 0);
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecTransformIdListId), -1);
+    xmlSecAssert2(transformId != NULL, -1);
     
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {

@@ -122,7 +122,6 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
 	return(-1);   
     }
 
-    encCtx->allowedCipherReferenceUris = xmlSecUriTypeAny;	    
     return(0);
 }
 
@@ -173,7 +172,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
     xmlSecAssert2(data != NULL, -1);
 
     /* initialize context and add ID atributes to the list of known ids */    
-    encCtx->encrypt = 1;
+    encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* read the template and set encryption method, key, etc. */
@@ -226,7 +225,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     xmlSecAssert2(node->doc != NULL, -1);
 
     /* initialize context and add ID atributes to the list of known ids */    
-    encCtx->encrypt = 1;
+    encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* read the template and set encryption method, key, etc. */
@@ -348,7 +347,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     xmlSecAssert2(uri != NULL, -1);
 
     /* initialize context and add ID atributes to the list of known ids */    
-    encCtx->encrypt = 1;
+    encCtx->operation = xmlSecTransformOperationEncrypt;
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* we need to add input uri transform first */
@@ -459,7 +458,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(node != NULL, NULL);
 
     /* initialize context and add ID atributes to the list of known ids */    
-    encCtx->encrypt = 0;
+    encCtx->operation = xmlSecTransformOperationDecrypt;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     ret = xmlSecEncCtxEncDataNodeRead(encCtx, node);
@@ -528,6 +527,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     int ret;
     
     xmlSecAssert2(encCtx != NULL, -1);
+    xmlSecAssert2((encCtx->operation == xmlSecTransformOperationEncrypt) || (encCtx->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(node != NULL, -1);
 
     switch(encCtx->mode) {
@@ -681,7 +681,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 		    "encryption method not specified");
 	return(-1);
     }
-    encCtx->encMethod->encode = encCtx->encrypt;
+    encCtx->encMethod->operation = encCtx->operation;
     
     /* we have encryption method, find key */
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
@@ -726,7 +726,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     }
 
     /* if we need to write result to xml node then we need base64 encode it */
-    if((encCtx->encrypt) && (encCtx->cipherValueNode != NULL)) {	
+    if((encCtx->operation == xmlSecTransformOperationEncrypt) && (encCtx->cipherValueNode != NULL)) {	
 	xmlSecTransformPtr base64Encode;
 	
 	/* we need to add base64 encode transform */
@@ -739,8 +739,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
-	base64Encode->encode = 1;
-	encCtx->resultBase64Encoded = 1;
+	base64Encode->operation 	= xmlSecTransformOperationEncode;
+	encCtx->resultBase64Encoded 	= 1;
     }
     
     return(0);
@@ -794,7 +794,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     xmlSecAssert2(encCtx->cipherValueNode == NULL, -1);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherValue, xmlSecEncNs))) {
         /* don't need data from CipherData node when we are encrypting */
-	if(encCtx->encrypt == 0) {
+	if(encCtx->operation == xmlSecTransformOperationDecrypt) {
 	    xmlSecTransformPtr base64Decode;
 	
 	    /* we need to add base64 decode transform */
@@ -811,8 +811,8 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	encCtx->cipherValueNode = cur;
         cur = xmlSecGetNextElementNode(cur->next);
     } else if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCipherReference, xmlSecEncNs))) {
-        /* don't need data from CipherData node when we are encrypting */
-	if(encCtx->encrypt == 0) {
+        /* don't need data from CipherReference node when we are encrypting */
+	if(encCtx->operation == xmlSecTransformOperationDecrypt) {
     	    ret = xmlSecEncCtxCipherReferenceNodeRead(encCtx, cur);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -849,30 +849,19 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     
     /* first read the optional uri attr and check that we can process it */
     uri = xmlGetProp(node, xmlSecAttrURI);
-    if(xmlSecUriTypeCheck(encCtx->allowedCipherReferenceUris, uri) != 1) {
+    ret = xmlSecTransformCtxSetUri(&(encCtx->encTransformCtx), uri, node);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
-		    "uri=\"%s\"", xmlSecErrorsSafeString(uri));
+		    "xmlSecTransformCtxSetUri",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "uri=%s",
+		    xmlSecErrorsSafeString(uri));
 	xmlFree(uri);
 	return(-1);	    
-    }
-    
-    if(uri != NULL) {
-	ret = xmlSecTransformCtxSetUri(&(encCtx->encTransformCtx), uri, node);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    	NULL,
-			"xmlSecTransformCtxSetUri",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"uri=%s",
-			xmlSecErrorsSafeString(uri));
-	    xmlFree(uri);
-	    return(-1);	    
-	}		
-	xmlFree(uri);
-    }    
+    }		
+    xmlFree(uri);
+
     cur = xmlSecGetNextElementNode(node->children);
     
     /* the only one node is optional Transforms node */
@@ -909,14 +898,14 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 
     switch(encCtx->mode) {
 	case xmlEncCtxModeEncryptedData:
-	    if(encCtx->encrypt) {    
+	    if(encCtx->operation == xmlSecTransformOperationEncrypt) {    
 		fprintf(output, "= DATA ENCRYPTION CONTEXT\n");
 	    } else {
 		fprintf(output, "= DATA DECRYPTION CONTEXT\n");
 	    }
 	    break;
 	case xmlEncCtxModeEncryptedKey:
-	    if(encCtx->encrypt) {    
+	    if(encCtx->operation == xmlSecTransformOperationEncrypt) {    
 		fprintf(output, "= KEY ENCRYPTION CONTEXT\n");
 	    } else {
 		fprintf(output, "= KEY DECRYPTION CONTEXT\n");
@@ -974,14 +963,14 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 
     switch(encCtx->mode) {
 	case xmlEncCtxModeEncryptedData:
-	    if(encCtx->encrypt) {    
+	    if(encCtx->operation == xmlSecTransformOperationEncrypt) {    
 		fprintf(output, "<DataEncryptionContext ");
 	    } else {
 		fprintf(output, "<DataDecryptionContext ");
 	    }
 	    break;
 	case xmlEncCtxModeEncryptedKey:
-	    if(encCtx->encrypt) {    
+	    if(encCtx->operation == xmlSecTransformOperationEncrypt) {    
 		fprintf(output, "<KeyEncryptionContext ");
 	    } else {
 		fprintf(output, "<KeyDecryptionContext ");
@@ -1036,14 +1025,14 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 
     switch(encCtx->mode) {
 	case xmlEncCtxModeEncryptedData:
-	    if(encCtx->encrypt) {    
+	    if(encCtx->operation == xmlSecTransformOperationEncrypt) {    
 		fprintf(output, "</DataEncryptionContext>\n");
 	    } else {
 		fprintf(output, "</DataDecryptionContext>\n");
 	    }
 	    break;
 	case xmlEncCtxModeEncryptedKey:
-	    if(encCtx->encrypt) {    
+	    if(encCtx->operation == xmlSecTransformOperationEncrypt) {    
 		fprintf(output, "</KeyEncryptionContext>\n");
 	    } else {
 		fprintf(output, "</KeyDecryptionContext>\n");

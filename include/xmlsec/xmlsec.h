@@ -22,7 +22,6 @@ extern "C" {
 XMLSEC_EXPORT int	xmlSecInit			(void);
 XMLSEC_EXPORT int	xmlSecShutdown			(void);
 
-
 /**
  * Forward declarations
  */

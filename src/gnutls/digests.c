@@ -133,8 +133,8 @@ xmlSecGnuTLSDigestVerify(xmlSecTransformPtr transform,
     xmlSecGnuTLSDigestCtxPtr ctx;
     
     xmlSecAssert2(xmlSecGnuTLSDigestCheckId(transform), -1);
+    xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize), -1);
-    xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -175,6 +175,7 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     int ret;
     
     xmlSecAssert2(xmlSecGnuTLSDigestCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize), -1);
 
@@ -229,7 +230,7 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	    memcpy(ctx->dgst, buf, ctx->dgstSize);
 
 	    /* and to the output if needed */
-	    if(transform->encode) {
+	    if(transform->operation == xmlSecTransformOperationSign) {
 		ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 

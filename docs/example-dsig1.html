@@ -1,25 +1,35 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>XML Security Library: Example - Signing document from template</title></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="index.html">Home</a></li>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>XML Security Library: Example - Signing document from template</title>
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
 <li><a href="download.html">Download</a></li>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
 <li><a href="faq.html">FAQ</a></li>
 <li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
 <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul><li><a href="c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
 <li><a href="bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
 <div align="Center">                     
-      <h2>XML Digital Signature <br/>
+      <h2>XML Digital Signature <br>
         Example 1. Signing document from template</h2>
          </div>
 <p>
@@ -27,266 +37,277 @@
   add  some data and sign the document. The template contains all information 
   required  to create the signature (except keys). If you need to sign many
 similar   documents  using the same algorithms, transforms, etc. then probably
-it's   the way to  go.<br/>
+it's   the way to  go.<br>
        The source code for this example is included into the package: <a href="examples/dsig1/dsig1.c">
       source code</a>
       , <a href="examples/dsig1/test.tmpl">the original template</a>
        and <a href="examples/dsig1/test.xml">the signed document</a>
-      . <br/></p>
+      . <br>
+</p>
 <h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
 <p>
         Before using the libraries we need to initialize them. This should
- be  done  once in the beginning of your program<br/>
-           <br/>
-         <code>   int rnd_seed = 0;    <br/><br/>
-            /** <br/>
-             * Init OpenSSL:<br/>
-      * this is a BAD way to init random numbers <br/>
-      * generator<br/>
-             */    <br/>
-            while (RAND_status() != 1) {<br/>
-            RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));<br/>
-            }<br/>
-            <br/>
-            /**<br/>
-             * Init libxml<br/>
-             */     <br/>
-            xmlInitParser();<br/>
-            LIBXML_TEST_VERSION<br/>
- </code><br/>
-    <code> /**<br/>
-     * Init xmlsec<br/>
-     */<br/>
-    xmlSecInit();    <br/></code><br/></p>
+ be  done  once in the beginning of your program<br>
+           <br>
+         <code>   int rnd_seed = 0;    <br><br>
+            /** <br>
+             * Init OpenSSL:<br>
+      * this is a BAD way to init random numbers <br>
+      * generator<br>
+             */    <br>
+            while (RAND_status() != 1) {<br>
+            RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));<br>
+            }<br>
+            <br>
+            /**<br>
+             * Init libxml<br>
+             */     <br>
+            xmlInitParser();<br>
+            LIBXML_TEST_VERSION<br>
+ </code><br>
+    <code> /**<br>
+     * Init xmlsec<br>
+     */<br>
+    xmlSecInit();    <br></code><br>
+</p>
 <h4>Step 1. Loading key and creating the DSig context.</h4>
 <p>
         Before signing or verifying the document you should create DSig context 
    object.  In most case you will need only one DSig context object
-per application<br/><br/><code>
-    xmlSecKeysMngrPtr keysMngr = NULL; <br/>
-    xmlSecDSigCtxPtr dsigCtx = NULL;</code><code><br/>
-            <br/>
-    /** <br/>
-     * Create Keys managers<br/>
-     */<br/>
+per application<br><br><code>
+    xmlSecKeysMngrPtr keysMngr = NULL; <br>
+    xmlSecDSigCtxPtr dsigCtx = NULL;</code><code><br>
+            <br>
+    /** <br>
+     * Create Keys managers<br>
+     */<br>
     keysMngr = xmlSecSimpleKeysMngrCreate();   
-      <br/>
-    if(keysMngr == NULL) {<br/>
-      fprintf(stderr, &quot;Error: failed to create keys manager\n&quot;);<br/>
-      goto done;    <br/>
-    }<br/><br/>
-    /** <br/>
-     * load key<br/>
-     */<br/>
-    if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br/>
+      <br>
+    if(keysMngr == NULL) {<br>
+      fprintf(stderr, &quot;Error: failed to create keys manager\n&quot;);<br>
+      goto done;    <br>
+    }<br><br>
+    /** <br>
+     * load key<br>
+     */<br>
+    if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br>
       fprintf(stderr, &quot;Error: failed to load key from
-\&quot;%s\&quot;\n&quot;, argv[1]);<br/>
-      goto done;<br/>
-    }<br/>
-  <br/>
-    dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br/>
-    if(dsigCtx == NULL) {<br/>
-      fprintf(stderr,&quot;Error: failed to create dsig context\n&quot;);<br/>
-      goto done; <br/>
-    }</code><br/></p>
+\&quot;%s\&quot;\n&quot;, argv[1]);<br>
+      goto done;<br>
+    }<br>
+  <br>
+    dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
+    if(dsigCtx == NULL) {<br>
+      fprintf(stderr,&quot;Error: failed to create dsig context\n&quot;);<br>
+      goto done; <br>
+    }</code><br>
+</p>
 <h4>Step 2. Loading the template.</h4>
 <p>
         XMLDSig requires the XML document to be loaded with all default attributes
     propagated to the nodes, all entities replaced, etc. (this is required
  for   correct document <a href="http://www.w3.org/TR/xml-c14n">Canonicalization</a>
       ). In the LibXML this means that you need to take special actions when
-  loading   document from an URI:<br/><br/>
+  loading   document from an URI:<br><br>
               <code>xmlDocPtr doc = NULL;   
-       <br/><br/>
-            /** <br/>
+       <br><br>
+            /** <br>
              * build an XML tree from a the file; we
-need   to  add default<br/>
+need   to  add default<br>
              * attributes and resolve all character and 
- entities   references<br/>
-             */<br/>
-            xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;<br/>
-            xmlSubstituteEntitiesDefault(1);<br/><br/>
-            /** <br/>
-             * Load doc <br/>
-             */<br/>
-            doc = xmlParseFile(argv[2]);<br/>
-            if (doc == NULL) {<br/>
+ entities   references<br>
+             */<br>
+            xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;<br>
+            xmlSubstituteEntitiesDefault(1);<br><br>
+            /** <br>
+             * Load doc <br>
+             */<br>
+            doc = xmlParseFile(argv[2]);<br>
+            if (doc == NULL) {<br>
                fprintf(stderr, &quot;Error   
-    : unable to parse file \&quot;%s\&quot;\n&quot;, argv[2]);<br/>
-               goto done;<br/>
-            }<br/>
-            <br/>
-            /**<br/>
-             * Check the document is of the right kind<br/>
-             */    <br/>
-            if(xmlDocGetRootElement(doc) == NULL) {<br/>
+    : unable to parse file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+               goto done;<br>
+            }<br>
+            <br>
+            /**<br>
+             * Check the document is of the right kind<br>
+             */    <br>
+            if(xmlDocGetRootElement(doc) == NULL) {<br>
                 fprintf(stderr,&quot;Error: 
-empty    document for file \&quot;%s\&quot;\n&quot;, argv[2]);<br/>
-                goto done;<br/>
-            }</code><br/><br/>
+empty    document for file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+                goto done;<br>
+            }</code><br><br>
         In this example we set global flags to control how the document is
  loaded.    In the real life you would probably want to control the loading
  on &quot;per-document&quot;    basis. Check the libxml/c14n.h header file from LibXML
- distribution for  details.<br/></p>
+ distribution for  details.<br>
+</p>
 <h4>Step 3. Adding or changing data in the template.</h4>
 <p>
         Now it's time to change the data in the template. We will simply
-add   one   more node with some text:<br/><br/>
-         <code>   /**<br/>
-             * Add Data to the document<br/>
-             */<br/>
+add   one   more node with some text:<br><br>
+         <code>   /**<br>
+             * Add Data to the document<br>
+             */<br>
             if(xmlNewChild(xmlDocGetRootElement(doc), NULL,
- &quot;Something&quot;,          <br/>
+ &quot;Something&quot;,          <br>
                         
-     &quot;Some important data&quot;) == NULL)  {<br/>
+     &quot;Some important data&quot;) == NULL)  {<br>
                 fprintf(stderr,&quot;Error: 
-failed    to add data\n&quot;);<br/>
-                goto done;<br/>
-            }</code><br/></p>
+failed    to add data\n&quot;);<br>
+                goto done;<br>
+            }</code><br>
+</p>
 <h4>Step 4. Sign It!</h4>
 <p>
-        We are ready to sign the document!<br/><br/><code>
-	     xmlSecDSigResultPtr result = NULL;<br/>
-             /**<br/>
-	      * Sign It!<br/>
-	      */ <br/>
-	     ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br/>
-	     if(ret &lt; 0) {<br/>
-	        fprintf(stderr,&quot;Error: signature failed\n&quot;);<br/>
-	        goto done; <br/>
-	     }     <br/>
-	    </code>  <br/></p>
+        We are ready to sign the document!<br><br><code>
+	     xmlSecDSigResultPtr result = NULL;<br>
+             /**<br>
+	      * Sign It!<br>
+	      */ <br>
+	     ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br>
+	     if(ret &lt; 0) {<br>
+	        fprintf(stderr,&quot;Error: signature failed\n&quot;);<br>
+	        goto done; <br>
+	     }     <br>
+	    </code>  <br>
+</p>
 <h4>Step 5. Now we can print the result.</h4>
 <p>
-Print the document to stdout:<br/><br/><code>
-	    xmlChar* string;<br/>
-            /**<br/>
-             * Print out result document<br/>
-             */<br/>
+Print the document to stdout:<br><br><code>
+	    xmlChar* string;<br>
+            /**<br>
+             * Print out result document<br>
+             */<br>
             xmlDocDumpMemoryEnc(doc, &amp;string, &amp;len,
- NULL);<br/>
-            if(string == NULL) {<br/>
+ NULL);<br>
+            if(string == NULL) {<br>
               fprintf(stderr,&quot;Error: failed to dump document
-    to memory\n&quot;);<br/>
-              goto done;<br/>
-            }<br/>
-            fwrite(string, len, 1, stdout);<br/>
-            xmlFree(string);</code><br/></p>
+    to memory\n&quot;);<br>
+              goto done;<br>
+            }<br>
+            fwrite(string, len, 1, stdout);<br>
+            xmlFree(string);</code><br>
+</p>
 <h4>Step 6. Cleanup.</h4>
 <p>
         At the end we need to destroy DSig context, the doc and KeysManager;
-  shutdown XML Security Library, libxml and OpenSSL:<br/><br/><code>
-           /*<br/>
-	     * Cleanup<br/>
-	    */<br/>
-	    if(result != NULL) {<br/>
-	       xmlSecDSigResultDestroy(result);<br/>
-	    }<br/>
-            if(doc != NULL) {<br/>
-	       xmlFreeDoc(doc);<br/>
-	    }    <br/>
-    if(dsigCtx != NULL) { <br/>
-       xmlSecDSigCtxDestroy(dsigCtx);<br/>
-    }<br/>
-    if(keysMngr != NULL) {<br/>
-       xmlSecSimpleKeysMngrDestroy(keysMngr);<br/>
-    }<br/>
-    <br/>
-    /** <br/>
-     * Shutdown XML Sec<br/>
-     */<br/>
-    xmlSecShutdown();<br/>
-    <br/>
-    /* <br/>
-     * Shutdown libxml<br/>
-     */<br/>
-    xmlCleanupParser();<br/>
-    <br/>
-    /* <br/>
-     * Shutdown OpenSSL<br/>
-     */<br/>
-    RAND_cleanup();<br/>
-    ERR_clear_error();</code><code/><code/>  
+  shutdown XML Security Library, libxml and OpenSSL:<br><br><code>
+           /*<br>
+	     * Cleanup<br>
+	    */<br>
+	    if(result != NULL) {<br>
+	       xmlSecDSigResultDestroy(result);<br>
+	    }<br>
+            if(doc != NULL) {<br>
+	       xmlFreeDoc(doc);<br>
+	    }    <br>
+    if(dsigCtx != NULL) { <br>
+       xmlSecDSigCtxDestroy(dsigCtx);<br>
+    }<br>
+    if(keysMngr != NULL) {<br>
+       xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
+    }<br>
+    <br>
+    /** <br>
+     * Shutdown XML Sec<br>
+     */<br>
+    xmlSecShutdown();<br>
+    <br>
+    /* <br>
+     * Shutdown libxml<br>
+     */<br>
+    xmlCleanupParser();<br>
+    <br>
+    /* <br>
+     * Shutdown OpenSSL<br>
+     */<br>
+    RAND_cleanup();<br>
+    ERR_clear_error();</code><code></code><code></code>  
                   
       </p>
 <h4>Appendix A. The template document.</h4>
 <blockquote>
-<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br/>
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;<br/>
-  &lt;Data&gt;<br/>
-    Hello, World!<br/>
-  &lt;/Data&gt;<br/>
-  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br/>
-    &lt;SignedInfo&gt;<br/>
+<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;<br>
+  &lt;Data&gt;<br>
+    Hello, World!<br>
+  &lt;/Data&gt;<br>
+  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+    &lt;SignedInfo&gt;<br>
       &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;
-/&gt;<br/>
+/&gt;<br>
       &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;
-/&gt;<br/>
-      &lt;Reference URI=&quot;&quot;&gt;<br/>
-        &lt;Transforms&gt;<br/>
+/&gt;<br>
+      &lt;Reference URI=&quot;&quot;&gt;<br>
+        &lt;Transforms&gt;<br>
           &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;
-/&gt;<br/>
-        &lt;/Transforms&gt;<br/>
+/&gt;<br>
+        &lt;/Transforms&gt;<br>
         &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;
-/&gt;<br/>
-        &lt;DigestValue&gt;&lt;/DigestValue&gt;<br/>
-      &lt;/Reference&gt;<br/>
-    &lt;/SignedInfo&gt;<br/>
-    &lt;SignatureValue/&gt;<br/>
-    &lt;KeyInfo&gt;<br/>
-    &lt;KeyValue/&gt;<br/>
-    &lt;/KeyInfo&gt;<br/>
-  &lt;/Signature&gt;<br/><br/>
-&lt;/Envelope&gt;<br/><br/></code><br/></blockquote>
+/&gt;<br>
+        &lt;DigestValue&gt;&lt;/DigestValue&gt;<br>
+      &lt;/Reference&gt;<br>
+    &lt;/SignedInfo&gt;<br>
+    &lt;SignatureValue/&gt;<br>
+    &lt;KeyInfo&gt;<br>
+    &lt;KeyValue/&gt;<br>
+    &lt;/KeyInfo&gt;<br>
+  &lt;/Signature&gt;<br><br>
+&lt;/Envelope&gt;<br><br></code><br>
+</blockquote>
 <h4>Appendix B. The signed document.</h4>
 <blockquote>
-<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br/>
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;<br/>
-  &lt;Data&gt;<br/>
-    Hello, World!<br/>
-  &lt;/Data&gt;<br/>
-  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br/>
-    &lt;SignedInfo&gt;<br/>
-      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br/>
-      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br/>
-      &lt;Reference URI=&quot;&quot;&gt;<br/>
-        &lt;Transforms&gt;<br/>
-          &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;<br/>
-        &lt;/Transforms&gt;<br/>
-        &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br/>
-        &lt;DigestValue&gt;lUsn3fJYExos8S49s/cc6e1TMrM=&lt;/DigestValue&gt;<br/>
-      &lt;/Reference&gt;<br/>
-    &lt;/SignedInfo&gt;<br/>
-    &lt;SignatureValue&gt;AerkaAbF5Tneg5FlS1uSg571Af0toAbeRsfC/HRQyfLvQAbOYmd7RQ==&lt;/SignatureValue&gt;<br/>
-    &lt;KeyInfo&gt;<br/>
-    &lt;KeyValue&gt;<br/>
-&lt;DSAKeyValue&gt;<br/>
-&lt;P&gt;<br/>
-imW6KYBPYXAf6itSAuYs1aLPfs8/vBEiusv/pl1XMiuMvB7vyiJgSj8/NTkRci/U<br/>
-X/rVXv8rbCRjvYFX3x5/53f4hc6HKz7JQI4qqB7Fl5N86zp+BsQxNQ4tzous9S2H<br/>
-Td2/zdTwVsvO+H9l3FahmVp/m2IHE4W27JYoF49qP10=<br/>
-&lt;/P&gt;<br/>
-&lt;Q&gt;<br/>
-v/xzWqjRviekk2rMW3wpYspT9Us=<br/>
-&lt;/Q&gt;<br/>
-&lt;G&gt;<br/>
-UIyzUDlLe6uCCgF4Rh98fiKZvg64UJ4FM5L+WbCSMmVsFN06fTwxy3naPPOCzzou<br/>
-fsHv/Bve2gvrDvd078oXWJJf9A44pIZnJkdjEhm2RsDFpXNq0tPKZFcjVsdmqg4M<br/>
-X6YNuwpvZuTwSoDG5u1QMN0mmH9gmbIT3j9x4MO+7EY=<br/>
-&lt;/G&gt;<br/>
-&lt;Y&gt;<br/>
-On+KBJE3q1TRhG9RspNX01VI5C0VzSy4N/QyC4YzEENoq3GJkKHIYq+grq9ZqV9x<br/>
-g2Geo/3mqhdcENOtYRmWEfOZJj18oukD6TNceYRZ4HjHjK3WY3wK2OV6QOly+k3f<br/>
-xgEQpP/7IlCka5YICLuHXrbqjn5b0XcK9L2GDtWOyjs=<br/>
-&lt;/Y&gt;<br/>
-&lt;/DSAKeyValue&gt;<br/>
-&lt;/KeyValue&gt;<br/>
-    &lt;/KeyInfo&gt;<br/>
-  &lt;/Signature&gt;<br/><br/>
+<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;<br>
+  &lt;Data&gt;<br>
+    Hello, World!<br>
+  &lt;/Data&gt;<br>
+  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+    &lt;SignedInfo&gt;<br>
+      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br>
+      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br>
+      &lt;Reference URI=&quot;&quot;&gt;<br>
+        &lt;Transforms&gt;<br>
+          &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;<br>
+        &lt;/Transforms&gt;<br>
+        &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br>
+        &lt;DigestValue&gt;lUsn3fJYExos8S49s/cc6e1TMrM=&lt;/DigestValue&gt;<br>
+      &lt;/Reference&gt;<br>
+    &lt;/SignedInfo&gt;<br>
+    &lt;SignatureValue&gt;AerkaAbF5Tneg5FlS1uSg571Af0toAbeRsfC/HRQyfLvQAbOYmd7RQ==&lt;/SignatureValue&gt;<br>
+    &lt;KeyInfo&gt;<br>
+    &lt;KeyValue&gt;<br>
+&lt;DSAKeyValue&gt;<br>
+&lt;P&gt;<br>
+imW6KYBPYXAf6itSAuYs1aLPfs8/vBEiusv/pl1XMiuMvB7vyiJgSj8/NTkRci/U<br>
+X/rVXv8rbCRjvYFX3x5/53f4hc6HKz7JQI4qqB7Fl5N86zp+BsQxNQ4tzous9S2H<br>
+Td2/zdTwVsvO+H9l3FahmVp/m2IHE4W27JYoF49qP10=<br>
+&lt;/P&gt;<br>
+&lt;Q&gt;<br>
+v/xzWqjRviekk2rMW3wpYspT9Us=<br>
+&lt;/Q&gt;<br>
+&lt;G&gt;<br>
+UIyzUDlLe6uCCgF4Rh98fiKZvg64UJ4FM5L+WbCSMmVsFN06fTwxy3naPPOCzzou<br>
+fsHv/Bve2gvrDvd078oXWJJf9A44pIZnJkdjEhm2RsDFpXNq0tPKZFcjVsdmqg4M<br>
+X6YNuwpvZuTwSoDG5u1QMN0mmH9gmbIT3j9x4MO+7EY=<br>
+&lt;/G&gt;<br>
+&lt;Y&gt;<br>
+On+KBJE3q1TRhG9RspNX01VI5C0VzSy4N/QyC4YzEENoq3GJkKHIYq+grq9ZqV9x<br>
+g2Geo/3mqhdcENOtYRmWEfOZJj18oukD6TNceYRZ4HjHjK3WY3wK2OV6QOly+k3f<br>
+xgEQpP/7IlCka5YICLuHXrbqjn5b0XcK9L2GDtWOyjs=<br>
+&lt;/Y&gt;<br>
+&lt;/DSAKeyValue&gt;<br>
+&lt;/KeyValue&gt;<br>
+    &lt;/KeyInfo&gt;<br>
+  &lt;/Signature&gt;<br><br>
 &lt;Something&gt;Some important data&lt;/Something&gt;&lt;/Envelope&gt;</code><code>
-          <br/></code>
+          <br></code>
 </blockquote>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

@@ -1,282 +1,33 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>keyinfo.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="debug.h" href="xmlsec-debug.html"/><link rel="NEXT" title="keys.h" href="xmlsec-keys.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-debug.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
-<h1>
-<a name="XMLSEC-KEYINFO"/>keyinfo.h</h1>
-<div class="REFNAMEDIV">
-<a name="AEN2169"/><h2>Name</h2>keyinfo.h -- The &lt;dsig:KeyInfo&gt; element manipulation functions.</div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN2172"/><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
-
-<strong>xmlSecKeyPtr</strong> <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODEREAD">xmlSecKeyInfoNodeRead</a>          (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             <strong>xmlSecKeysMngrPtr</strong> keysMngr,
-                                             void *context,
-                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> keyId,
-                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> keyType,
-                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> keyUsage,
-                                             <strong>time_t</strong> certsVerificationTime);
-int         <a href="xmlsec-keyinfo.html#XMLSECKEYINFONODEWRITE">xmlSecKeyInfoNodeWrite</a>          (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             <strong>xmlSecKeysMngrPtr</strong> keysMngr,
-                                             void *context,
-                                             <strong>xmlSecKeyPtr</strong> key,
-                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type);
-<strong>xmlNodePtr</strong>  <a href="xmlsec-keyinfo.html#XMLSECKEYINFOADDKEYNAME">xmlSecKeyInfoAddKeyName</a>         (<strong>xmlNodePtr</strong> keyInfoNode);
-<strong>xmlNodePtr</strong>  <a href="xmlsec-keyinfo.html#XMLSECKEYINFOADDKEYVALUE">xmlSecKeyInfoAddKeyValue</a>        (<strong>xmlNodePtr</strong> keyInfoNode);
-<strong>xmlNodePtr</strong>  <a href="xmlsec-keyinfo.html#XMLSECKEYINFOADDX509DATA">xmlSecKeyInfoAddX509Data</a>        (<strong>xmlNodePtr</strong> keyInfoNode);
-<strong>xmlNodePtr</strong>  <a href="xmlsec-keyinfo.html#XMLSECKEYINFOADDRETRIEVALMETHOD">xmlSecKeyInfoAddRetrievalMethod</a> (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             const <strong>xmlChar</strong> *uri,
-                                             const <strong>xmlChar</strong> *type);
-<strong>xmlNodePtr</strong>  <a href="xmlsec-keyinfo.html#XMLSECRETRIEVALMETHODADDTRANSFORM">xmlSecRetrievalMethodAddTransform</a>
-                                            (<strong>xmlNodePtr</strong> retrMethod,
-                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> transform);
-<strong>xmlNodePtr</strong>  <a href="xmlsec-keyinfo.html#XMLSECKEYINFOADDENCRYPTEDKEY">xmlSecKeyInfoAddEncryptedKey</a>    (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             const <strong>xmlChar</strong> *id,
-                                             const <strong>xmlChar</strong> *type,
-                                             const <strong>xmlChar</strong> *recipient);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN2212"/><h2>Description</h2>
-<p/>
-</div>
-<div class="REFSECT1">
-<a name="AEN2215"/><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN2217"/><h3>
-<a name="XMLSECKEYINFONODEREAD"/>xmlSecKeyInfoNodeRead ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecKeyInfoNodeRead          (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             <strong>xmlSecKeysMngrPtr</strong> keysMngr,
-                                             void *context,
-                                             <a href="xmlsec-keys.html#XMLSECKEYID">xmlSecKeyId</a> keyId,
-                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> keyType,
-                                             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> keyUsage,
-                                             <strong>time_t</strong> certsVerificationTime);</pre></td></tr></table><p>Parses the &lt;dsig:KeyInfo&gt; element and extracts the key (with required 
-id, type and usage).</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2230"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-keys.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a> struvture.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>context</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
-    passed to all callback functions.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the required key id or NULL.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyType</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the required key type (may be &quot;any&quot;).</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyUsage</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the desired key usage. </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>certsVerificationTime</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to extracted key or NULL if an error occurs or
-required key is not found.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2268"/><h3>
-<a name="XMLSECKEYINFONODEWRITE"/>xmlSecKeyInfoNodeWrite ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyInfoNodeWrite          (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             <strong>xmlSecKeysMngrPtr</strong> keysMngr,
-                                             void *context,
-                                             <strong>xmlSecKeyPtr</strong> key,
-                                             <a href="xmlsec-keys.html#XMLSECKEYTYPE">xmlSecKeyType</a> type);</pre></td></tr></table><p>Writes the key into the &lt;dsig:KeyInfo&gt; template <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2279"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-keys.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a> struvture.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>context</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to application specific data that will be 
-    passed to all callback functions.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the key type (public/private).</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or -1 if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2310"/><h3>
-<a name="XMLSECKEYINFOADDKEYNAME"/>xmlSecKeyInfoAddKeyName ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecKeyInfoAddKeyName         (<strong>xmlNodePtr</strong> keyInfoNode);</pre></td></tr></table><p>Adds &lt;dsig:KeyName&gt; node to the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2319"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:KeyName&gt; node or
-NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2332"/><h3>
-<a name="XMLSECKEYINFOADDKEYVALUE"/>xmlSecKeyInfoAddKeyValue ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecKeyInfoAddKeyValue        (<strong>xmlNodePtr</strong> keyInfoNode);</pre></td></tr></table><p>Adds &lt;dsig:KeyValue&gt; node to the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2341"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:KeyValue&gt; node or
-NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2354"/><h3>
-<a name="XMLSECKEYINFOADDX509DATA"/>xmlSecKeyInfoAddX509Data ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecKeyInfoAddX509Data        (<strong>xmlNodePtr</strong> keyInfoNode);</pre></td></tr></table><p>Adds &lt;dsig:X509Data&gt; node to the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2363"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:X509Data&gt; node or
-NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2376"/><h3>
-<a name="XMLSECKEYINFOADDRETRIEVALMETHOD"/>xmlSecKeyInfoAddRetrievalMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecKeyInfoAddRetrievalMethod (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             const <strong>xmlChar</strong> *uri,
-                                             const <strong>xmlChar</strong> *type);</pre></td></tr></table><p>Adds &lt;dsig:RetrievalMethod&gt; node to the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2387"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>uri</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the URI attribute (optional).</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the Type attribute(optional).</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:RetrievalMethod&gt; node or
-NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2408"/><h3>
-<a name="XMLSECRETRIEVALMETHODADDTRANSFORM"/>xmlSecRetrievalMethodAddTransform ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecRetrievalMethodAddTransform
-                                            (<strong>xmlNodePtr</strong> retrMethod,
-                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> transform);</pre></td></tr></table><p>Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node
-if required) to the &lt;dsig:RetrievalMethod&gt; node <tt class="PARAMETER"><i>retrMethod</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2418"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>retrMethod</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:RetrievalMethod&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the transform id.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;dsig:dsig:Transforms&gt; node or
-NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN2435"/><h3>
-<a name="XMLSECKEYINFOADDENCRYPTEDKEY"/>xmlSecKeyInfoAddEncryptedKey ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecKeyInfoAddEncryptedKey    (<strong>xmlNodePtr</strong> keyInfoNode,
-                                             const <strong>xmlChar</strong> *id,
-                                             const <strong>xmlChar</strong> *type,
-                                             const <strong>xmlChar</strong> *recipient);</pre></td></tr></table><p>Adds &lt;enc:EncryptedKey&gt; node with given attributes to 
-the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN2447"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>id</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the Id attribute (optional).</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the Type attribute (optional). </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>recipient</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the Recipient attribute (optional). </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to the newly created &lt;enc:EncryptedKey&gt; node or
-NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-debug.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>debug.h</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keys.h</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent"></td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

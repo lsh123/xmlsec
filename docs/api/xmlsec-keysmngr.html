@@ -1,34 +1,54 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>keysmngr.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="keys.h" href="xmlsec-keys.html"/><link rel="NEXT" title="templates" href="xmlsec-templates.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>keysmngr.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="keys.h" href="xmlsec-keys.html">
+<link rel="NEXT" title="templates" href="xmlsec-templates.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
+</tr>
+</table></div>
 <h1>
-<a name="XMLSEC-KEYSMNGR"/>keysmngr.h</h1>
+<a name="XMLSEC-KEYSMNGR"></a>keysmngr.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN3192"/><h2>Name</h2>keysmngr.h -- The simple keys manager implementation.</div>
+<a name="AEN3192"></a><h2>Name</h2>keysmngr.h -- The simple keys manager implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN3195"/><h2>Synopsis</h2>
+<a name="AEN3195"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
@@ -70,357 +90,526 @@ int         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTDATASTORE">xmlSecKe
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
 struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 <font>xmlSecKeyPtr</font> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEY">xmlSecKeysMngrGetKey</a>           (<font>xmlNodePtr</font> keyInfoNode,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN3253"/><h2>Description</h2>
-<p/>
+                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN3256"/><h2>Details</h2>
+<a name="AEN3253"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN3256"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN3258"/><h3>
-<a name="XMLSECSIMPLEKEYSSTOREID"/>xmlSecSimpleKeysStoreId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()</pre></td></tr></table><p/>
+<a name="AEN3258"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREID"></a>xmlSecSimpleKeysStoreId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()</pre></td></tr></table>
+<p></p>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3263"/><h3>
-<a name="XMLSECSIMPLEKEYSSTOREGETKLASS"/>xmlSecSimpleKeysStoreGetKlass ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3263"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREGETKLASS"></a>xmlSecSimpleKeysStoreGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStoreId</font> xmlSecSimpleKeysStoreGetKlass
-                                            (void);</pre></td></tr></table><p/>
+                                            (void);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3269"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3269"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3278"/><h3>
-<a name="XMLSECSIMPLEKEYSSTOREADOPTKEY"/>xmlSecSimpleKeysStoreAdoptKey ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3278"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREADOPTKEY"></a>xmlSecSimpleKeysStoreAdoptKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreAdoptKey   (<font>xmlSecKeyDataStorePtr</font> store,
-                                             <font>xmlSecKeyPtr</font> key);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3285"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3285"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3302"/><h3>
-<a name="XMLSECSIMPLEKEYSSTOREFINDKEY"/>xmlSecSimpleKeysStoreFindKey ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3302"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTOREFINDKEY"></a>xmlSecSimpleKeysStoreFindKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecSimpleKeysStoreFindKey   (<font>xmlSecKeyDataStorePtr</font> store,
                                              const <font>xmlChar</font> *name,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3311"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3311"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>name</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3332"/><h3>
-<a name="XMLSECSIMPLEKEYSSTORELOAD"/>xmlSecSimpleKeysStoreLoad ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3332"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTORELOAD"></a>xmlSecSimpleKeysStoreLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreLoad       (<font>xmlSecKeyDataStorePtr</font> store,
                                              const char *uri,
-                                             <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3339"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3339"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>uri</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3360"/><h3>
-<a name="XMLSECSIMPLEKEYSSTORESAVE"/>xmlSecSimpleKeysStoreSave ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3360"></a><h3>
+<a name="XMLSECSIMPLEKEYSSTORESAVE"></a>xmlSecSimpleKeysStoreSave ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreSave       (<font>xmlSecKeyDataStorePtr</font> store,
                                              const char *filename,
-                                             <font>xmlSecKeyDataType</font> type);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyDataType</font> type);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3367"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3367"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>filename</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>type</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3388"/><h3>
-<a name="XMLSECKEYSMNGRCREATE"/>xmlSecKeysMngrCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeysMngrPtr</font> xmlSecKeysMngrCreate      (void);</pre></td></tr></table><p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3388"></a><h3>
+<a name="XMLSECKEYSMNGRCREATE"></a>xmlSecKeysMngrCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeysMngrPtr</font> xmlSecKeysMngrCreate      (void);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3394"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3394"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3403"/><h3>
-<a name="XMLSECKEYSMNGRDESTROY"/>xmlSecKeysMngrDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeysMngrDestroy           (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table><p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3403"></a><h3>
+<a name="XMLSECKEYSMNGRDESTROY"></a>xmlSecKeysMngrDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeysMngrDestroy           (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3409"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3409"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3418"/><h3>
-<a name="XMLSECKEYSMNGRFINDKEY"/>xmlSecKeysMngrFindKey ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3418"></a><h3>
+<a name="XMLSECKEYSMNGRFINDKEY"></a>xmlSecKeysMngrFindKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrFindKey           (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyPtr</font> key,
                                              const <font>xmlChar</font> *name,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3427"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3427"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>name</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3452"/><h3>
-<a name="XMLSECKEYSMNGRFINDKEYDATA"/>xmlSecKeysMngrFindKeyData ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3452"></a><h3>
+<a name="XMLSECKEYSMNGRFINDKEYDATA"></a>xmlSecKeysMngrFindKeyData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrFindKeyData       (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyDataStoreId</font> storeId,
                                              <font>xmlSecKeyPtr</font> key,
                                              const <font>xmlChar</font> **params,
                                              <font>size_t</font> paramsSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3463"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3463"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>storeId</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>key</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>params</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>paramsSize</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3496"/><h3>
-<a name="XMLSECKEYSMNGRADOPTKEYSSTORE"/>xmlSecKeysMngrAdoptKeysStore ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3496"></a><h3>
+<a name="XMLSECKEYSMNGRADOPTKEYSSTORE"></a>xmlSecKeysMngrAdoptKeysStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrAdoptKeysStore    (<font>xmlSecKeysMngrPtr</font> mngr,
-                                             <font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3503"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3503"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3520"/><h3>
-<a name="XMLSECKEYSMNGRGETKEYSSTORE"/>xmlSecKeysMngrGetKeysStore ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3520"></a><h3>
+<a name="XMLSECKEYSMNGRGETKEYSSTORE"></a>xmlSecKeysMngrGetKeysStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStorePtr</font> xmlSecKeysMngrGetKeysStore
-                                            (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table><p/>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3527"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3527"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3540"/><h3>
-<a name="XMLSECKEYSMNGRADOPTDATASTORE"/>xmlSecKeysMngrAdoptDataStore ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3540"></a><h3>
+<a name="XMLSECKEYSMNGRADOPTDATASTORE"></a>xmlSecKeysMngrAdoptDataStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrAdoptDataStore    (<font>xmlSecKeysMngrPtr</font> mngr,
-                                             <font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3547"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3547"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3564"/><h3>
-<a name="XMLSECKEYSMNGRGETDATASTORE"/>xmlSecKeysMngrGetDataStore ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3564"></a><h3>
+<a name="XMLSECKEYSMNGRGETDATASTORE"></a>xmlSecKeysMngrGetDataStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStorePtr</font> xmlSecKeysMngrGetDataStore
                                             (<font>xmlSecKeysMngrPtr</font> mngr,
-                                             <font>xmlSecKeyDataStoreId</font> id);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeyDataStoreId</font> id);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3572"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3572"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>id</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3589"/><h3>
-<a name="XMLSECGETKEYCALLBACK"/>xmlSecGetKeyCallback ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3589"></a><h3>
+<a name="XMLSECGETKEYCALLBACK"></a>xmlSecGetKeyCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> (*xmlSecGetKeyCallback)        (<font>xmlNodePtr</font> keyInfoNode,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table><p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
-<p/>
+                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+<p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3599"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3599"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
 an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3616"/><h3>
-<a name="XMLSECKEYSMNGR"/>struct xmlSecKeysMngr</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3616"></a><h3>
+<a name="XMLSECKEYSMNGR"></a>struct xmlSecKeysMngr</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeysMngr {	
     xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
     xmlSecPtrListPtr		storesList;	/* list of other key data storages */
     xmlSecGetKeyCallback	getKey;		/* the callback used to read &lt;dsig:KeyInfo&gt; node. */
-};</pre></td></tr></table><p>The keys manager structure.</p>
-<p/>
+};</pre></td></tr></table>
+<p>The keys manager structure.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3622"/><p/>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">
+<a name="AEN3622"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecKeyDataStorePtr</font> <tt class="STRUCTFIELD"><i>keysStore</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecPtrListPtr</font> <tt class="STRUCTFIELD"><i>storesList</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">xmlSecGetKeyCallback</a> <tt class="STRUCTFIELD"><i>getKey</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the callback used to read &lt;dsig:KeyInfo&gt; node.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN3642"/><h3>
-<a name="XMLSECKEYSMNGRGETKEY"/>xmlSecKeysMngrGetKey ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN3642"></a><h3>
+<a name="XMLSECKEYSMNGRGETKEY"></a>xmlSecKeysMngrGetKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeysMngrGetKey           (<font>xmlNodePtr</font> keyInfoNode,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table><p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
-<p/>
+                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+<p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3652"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN3652"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoNode</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to &lt;dsig:KeyInfo&gt; node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keyInfoCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to key or NULL if the key is not found or 
 an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keys.h</b></font></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keys.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>templates</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

@@ -1,34 +1,54 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>x509.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="version.h" href="xmlsec-version.html"/><link rel="NEXT" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>x509.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="version.h" href="xmlsec-version.html">
+<link rel="NEXT" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
+</tr>
+</table></div>
 <h1>
-<a name="XMLSEC-X509"/>x509.h</h1>
+<a name="XMLSEC-X509"></a>x509.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN4396"/><h2>Name</h2>x509.h -- The X509 certificates functions.</div>
+<a name="AEN4396"></a><h2>Name</h2>x509.h -- The X509 certificates functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN4399"/><h2>Synopsis</h2>
+<a name="AEN4399"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 <strong>xmlSecX509DataPtr</strong> <a href="xmlsec-x509.html#XMLSECX509DATACREATE">xmlSecX509DataCreate</a>      (void);
@@ -69,403 +89,586 @@ int         <a href="xmlsec-x509.html#XMLSECX509STORELOADPEMCERT">xmlSecX509Stor
 int         <a href="xmlsec-x509.html#XMLSECX509STOREADDCERTSDIR">xmlSecX509StoreAddCertsDir</a>      (<strong>xmlSecX509StorePtr</strong> store,
                                              const char *path);
 <strong>xmlSecKeyPtr</strong> <a href="xmlsec-x509.html#XMLSECPKCS12READKEY">xmlSecPKCS12ReadKey</a>            (const char *filename,
-                                             const char *pwd);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN4458"/><h2>Description</h2>
-<p/>
+                                             const char *pwd);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN4461"/><h2>Details</h2>
+<a name="AEN4458"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN4461"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN4463"/><h3>
-<a name="XMLSECX509DATACREATE"/>xmlSecX509DataCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509DataCreate      (void);</pre></td></tr></table><p>Creates new x509 data.</p>
-<p/>
+<a name="AEN4463"></a><h3>
+<a name="XMLSECX509DATACREATE"></a>xmlSecX509DataCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509DataCreate      (void);</pre></td></tr></table>
+<p>Creates new x509 data.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4470"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4470"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to newly created <strong>xmlSecX509Data</strong> structure
 or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4480"/><h3>
-<a name="XMLSECX509DATADESTROY"/>xmlSecX509DataDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509DataDestroy           (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Destroys x509 data.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4480"></a><h3>
+<a name="XMLSECX509DATADESTROY"></a>xmlSecX509DataDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509DataDestroy           (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Destroys x509 data.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4487"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4487"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4497"/><h3>
-<a name="XMLSECX509DATAGETCERTSNUMBER"/>xmlSecX509DataGetCertsNumber ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>size_t</strong>      xmlSecX509DataGetCertsNumber    (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Gets the number of certs in <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4497"></a><h3>
+<a name="XMLSECX509DATAGETCERTSNUMBER"></a>xmlSecX509DataGetCertsNumber ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>size_t</strong>      xmlSecX509DataGetCertsNumber    (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Gets the number of certs in <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4506"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4506"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the number of certs in <tt class="PARAMETER"><i>x509Data</i></tt>.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4521"/><h3>
-<a name="XMLSECX509DATAGETCRLSNUMBER"/>xmlSecX509DataGetCrlsNumber ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>size_t</strong>      xmlSecX509DataGetCrlsNumber     (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Gets the number of crls in <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4521"></a><h3>
+<a name="XMLSECX509DATAGETCRLSNUMBER"></a>xmlSecX509DataGetCrlsNumber ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>size_t</strong>      xmlSecX509DataGetCrlsNumber     (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Gets the number of crls in <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4530"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4530"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the number of crls in <tt class="PARAMETER"><i>x509Data</i></tt>.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4545"/><h3>
-<a name="XMLSECX509DATAREADDERCERT"/>xmlSecX509DataReadDerCert ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4545"></a><h3>
+<a name="XMLSECX509DATAREADDERCERT"></a>xmlSecX509DataReadDerCert ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509DataReadDerCert       (<strong>xmlSecX509DataPtr</strong> x509Data,
                                              <strong>xmlChar</strong> *buf,
                                              <strong>size_t</strong> size,
-                                             int base64);</pre></td></tr></table><p>Reads certificates the from a DER binary data in <tt class="PARAMETER"><i>buf</i></tt>.</p>
-<p/>
+                                             int base64);</pre></td></tr></table>
+<p>Reads certificates the from a DER binary data in <tt class="PARAMETER"><i>buf</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4555"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4555"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to binary data.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the size of binary data.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>base64</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the flag that indicate whether the <tt class="PARAMETER"><i>buf</i></tt> is base64 encoded or not.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4582"/><h3>
-<a name="XMLSECX509DATAWRITEDERCERT"/>xmlSecX509DataWriteDerCert ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4582"></a><h3>
+<a name="XMLSECX509DATAWRITEDERCERT"></a>xmlSecX509DataWriteDerCert ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlChar</strong>*    xmlSecX509DataWriteDerCert      (<strong>xmlSecX509DataPtr</strong> x509Data,
-                                             int pos);</pre></td></tr></table><p>Writes <tt class="PARAMETER"><i>pos</i></tt> certificate from <tt class="PARAMETER"><i>x509Data</i></tt> into allocated buffer
+                                             int pos);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>pos</i></tt> certificate from <tt class="PARAMETER"><i>x509Data</i></tt> into allocated buffer
 in DER + base64 encode format. The caller is responsible for freeing
 the returned buffer using <strong>xmlFree</strong>() function.</p>
-<p/>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4593"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4593"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>pos</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the cert number.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to allocated result buffer or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4611"/><h3>
-<a name="XMLSECX509DATAREADDERCRL"/>xmlSecX509DataReadDerCrl ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4611"></a><h3>
+<a name="XMLSECX509DATAREADDERCRL"></a>xmlSecX509DataReadDerCrl ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509DataReadDerCrl        (<strong>xmlSecX509DataPtr</strong> x509Data,
                                              <strong>xmlChar</strong> *buf,
                                              <strong>size_t</strong> size,
-                                             int base64);</pre></td></tr></table><p>Reads crls the from a DER binary data in <tt class="PARAMETER"><i>buf</i></tt>.</p>
-<p/>
+                                             int base64);</pre></td></tr></table>
+<p>Reads crls the from a DER binary data in <tt class="PARAMETER"><i>buf</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4621"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4621"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>buf</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to binary data.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>size</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the size of binary data.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>base64</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the flag that indicate whether the <tt class="PARAMETER"><i>buf</i></tt> is base64 encoded or not.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4648"/><h3>
-<a name="XMLSECX509DATAWRITEDERCRL"/>xmlSecX509DataWriteDerCrl ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4648"></a><h3>
+<a name="XMLSECX509DATAWRITEDERCRL"></a>xmlSecX509DataWriteDerCrl ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlChar</strong>*    xmlSecX509DataWriteDerCrl       (<strong>xmlSecX509DataPtr</strong> x509Data,
-                                             int pos);</pre></td></tr></table><p>Writes <tt class="PARAMETER"><i>pos</i></tt> crl from <tt class="PARAMETER"><i>x509Data</i></tt> into allocated buffer
+                                             int pos);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>pos</i></tt> crl from <tt class="PARAMETER"><i>x509Data</i></tt> into allocated buffer
 in DER + base64 encode format. The caller is responsible for freeing
 the returned buffer using <strong>xmlFree</strong>() function.</p>
-<p/>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4659"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4659"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>pos</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the cert number.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to allocated result buffer or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4677"/><h3>
-<a name="XMLSECX509DATAREADPEMCERT"/>xmlSecX509DataReadPemCert ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4677"></a><h3>
+<a name="XMLSECX509DATAREADPEMCERT"></a>xmlSecX509DataReadPemCert ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509DataReadPemCert       (<strong>xmlSecX509DataPtr</strong> x509Data,
-                                             const char *filename);</pre></td></tr></table><p>Reads cert from PEM file <tt class="PARAMETER"><i>filename</i></tt> into <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
-<p/>
+                                             const char *filename);</pre></td></tr></table>
+<p>Reads cert from PEM file <tt class="PARAMETER"><i>filename</i></tt> into <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4686"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4686"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>filename</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the PEM file name.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4704"/><h3>
-<a name="XMLSECX509DATADUP"/>xmlSecX509DataDup ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509DataDup         (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Duplicates the <tt class="PARAMETER"><i>x509Data</i></tt> structure.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4704"></a><h3>
+<a name="XMLSECX509DATADUP"></a>xmlSecX509DataDup ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509DataDup         (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Duplicates the <tt class="PARAMETER"><i>x509Data</i></tt> structure.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4713"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4713"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to newly created <strong>xmlSecX509Data</strong> structure
 or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4728"/><h3>
-<a name="XMLSECX509DATACREATEKEY"/>xmlSecX509DataCreateKey ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecX509DataCreateKey        (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Creates the key from  <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4728"></a><h3>
+<a name="XMLSECX509DATACREATEKEY"></a>xmlSecX509DataCreateKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecX509DataCreateKey        (<strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Creates the key from  <tt class="PARAMETER"><i>x509Data</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4737"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4737"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated key or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4751"/><h3>
-<a name="XMLSECX509DATADEBUGDUMP"/>xmlSecX509DataDebugDump ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4751"></a><h3>
+<a name="XMLSECX509DATADEBUGDUMP"></a>xmlSecX509DataDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509DataDebugDump         (<strong>xmlSecX509DataPtr</strong> x509Data,
-                                             <strong>FILE</strong> *output);</pre></td></tr></table><p>Prints the information about <tt class="PARAMETER"><i>x509Data</i></tt> to <tt class="PARAMETER"><i>output</i></tt>.</p>
-<p/>
+                                             <strong>FILE</strong> *output);</pre></td></tr></table>
+<p>Prints the information about <tt class="PARAMETER"><i>x509Data</i></tt> to <tt class="PARAMETER"><i>output</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4761"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4761"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>output</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>FILE</strong> structure.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4776"/><h3>
-<a name="XMLSECX509STORECREATE"/>xmlSecX509StoreCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509StorePtr</strong> xmlSecX509StoreCreate    (void);</pre></td></tr></table><p>Creates new x509 store.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4776"></a><h3>
+<a name="XMLSECX509STORECREATE"></a>xmlSecX509StoreCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509StorePtr</strong> xmlSecX509StoreCreate    (void);</pre></td></tr></table>
+<p>Creates new x509 store.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4783"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4783"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated <strong>xmlSecX509Store</strong> structure.</td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4793"/><h3>
-<a name="XMLSECX509STOREDESTROY"/>xmlSecX509StoreDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509StoreDestroy          (<strong>xmlSecX509StorePtr</strong> store);</pre></td></tr></table><p>Destroys the <strong>xmlSecX509Store</strong> structure.</p>
-<p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4793"></a><h3>
+<a name="XMLSECX509STOREDESTROY"></a>xmlSecX509StoreDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecX509StoreDestroy          (<strong>xmlSecX509StorePtr</strong> store);</pre></td></tr></table>
+<p>Destroys the <strong>xmlSecX509Store</strong> structure.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4801"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4801"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4811"/><h3>
-<a name="XMLSECX509STOREFIND"/>xmlSecX509StoreFind ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4811"></a><h3>
+<a name="XMLSECX509STOREFIND"></a>xmlSecX509StoreFind ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecX509DataPtr</strong> xmlSecX509StoreFind       (<strong>xmlSecX509StorePtr</strong> store,
                                              <strong>xmlChar</strong> *subjectName,
                                              <strong>xmlChar</strong> *issuerName,
                                              <strong>xmlChar</strong> *issuerSerial,
                                              <strong>xmlChar</strong> *ski,
-                                             <strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Searches for matching certificate in the keys manager.</p>
-<p/>
+                                             <strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Searches for matching certificate in the keys manager.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4824"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4824"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>subjectName</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the subject name string.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>issuerName</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the issuer name string.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>issuerSerial</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the issuer serial.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>ski</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the SKI string.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the current X509 certs data (may be NULL). </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to certificate that matches given criteria or NULL 
 if an error occurs or certificate not found.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4858"/><h3>
-<a name="XMLSECX509STOREVERIFY"/>xmlSecX509StoreVerify ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4858"></a><h3>
+<a name="XMLSECX509STOREVERIFY"></a>xmlSecX509StoreVerify ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509StoreVerify           (<strong>xmlSecX509StorePtr</strong> store,
-                                             <strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table><p>Verifies the cert(s) from <tt class="PARAMETER"><i>x509Data</i></tt> against <tt class="PARAMETER"><i>store</i></tt>.</p>
-<p/>
+                                             <strong>xmlSecX509DataPtr</strong> x509Data);</pre></td></tr></table>
+<p>Verifies the cert(s) from <tt class="PARAMETER"><i>x509Data</i></tt> against <tt class="PARAMETER"><i>store</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4868"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4868"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>x509Data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Data</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">1 if verification succeeded, 0 if not and a negative
 value if a processing error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4887"/><h3>
-<a name="XMLSECX509STORELOADPEMCERT"/>xmlSecX509StoreLoadPemCert ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4887"></a><h3>
+<a name="XMLSECX509STORELOADPEMCERT"></a>xmlSecX509StoreLoadPemCert ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509StoreLoadPemCert      (<strong>xmlSecX509StorePtr</strong> store,
                                              const char *filename,
-                                             int trusted);</pre></td></tr></table><p>Reads cert from PEM <tt class="PARAMETER"><i>filename</i></tt> and adds to the list of trusted or known
+                                             int trusted);</pre></td></tr></table>
+<p>Reads cert from PEM <tt class="PARAMETER"><i>filename</i></tt> and adds to the list of trusted or known
 untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
-<p/>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4896"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4896"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>filename</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the PEM file.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>trusted</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the flag that indicates is the certificate in <tt class="PARAMETER"><i>filename</i></tt>
    trusted or not.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4919"/><h3>
-<a name="XMLSECX509STOREADDCERTSDIR"/>xmlSecX509StoreAddCertsDir ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4919"></a><h3>
+<a name="XMLSECX509STOREADDCERTSDIR"></a>xmlSecX509StoreAddCertsDir ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecX509StoreAddCertsDir      (<strong>xmlSecX509StorePtr</strong> store,
-                                             const char *path);</pre></td></tr></table><p>Adds all certs in the <tt class="PARAMETER"><i>path</i></tt> to the list of trusted certs
+                                             const char *path);</pre></td></tr></table>
+<p>Adds all certs in the <tt class="PARAMETER"><i>path</i></tt> to the list of trusted certs
 in <tt class="PARAMETER"><i>store</i></tt>.</p>
-<p/>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4928"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4928"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to <strong>xmlSecX509Store</strong> structure.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>path</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the path to the certs dir.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN4946"/><h3>
-<a name="XMLSECPKCS12READKEY"/>xmlSecPKCS12ReadKey ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN4946"></a><h3>
+<a name="XMLSECPKCS12READKEY"></a>xmlSecPKCS12ReadKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecKeyPtr</strong> xmlSecPKCS12ReadKey            (const char *filename,
-                                             const char *pwd);</pre></td></tr></table><p>Reads the key from pkcs12 file <tt class="PARAMETER"><i>filename</i></tt>.</p>
-<p/>
+                                             const char *pwd);</pre></td></tr></table>
+<p>Reads the key from pkcs12 file <tt class="PARAMETER"><i>filename</i></tt>.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4954"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN4954"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>filename</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pkcs12 file name.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>pwd</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the password for the pkcs12 file.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated key or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-version.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>version.h</b></font></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>version.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Internal Functions Reference</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

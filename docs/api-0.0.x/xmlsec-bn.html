@@ -1,156 +1,33 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>bn.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html"/><link rel="PREVIOUS" title="base64.h" href="xmlsec-base64.html"/><link rel="NEXT" title="buffered.h" href="xmlsec-buffered.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-buffered.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
-<h1>
-<a name="XMLSEC-BN"/>bn.h</h1>
-<div class="REFNAMEDIV">
-<a name="AEN5182"/><h2>Name</h2>bn.h -- The big numbers helper functions.</div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN5185"/><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
-
-<strong>BIGNUM</strong>*     <a href="xmlsec-bn.html#XMLSECCRYPTOBINARY2BN">xmlSecCryptoBinary2BN</a>           (const <strong>xmlChar</strong> *str,
-                                             <strong>BIGNUM</strong> **a);
-<strong>xmlChar</strong>*    <a href="xmlsec-bn.html#XMLSECBN2CRYPTOBINARY">xmlSecBN2CryptoBinary</a>           (const <strong>BIGNUM</strong> *a);
-<strong>BIGNUM</strong>*     <a href="xmlsec-bn.html#XMLSECNODEGETBNVALUE">xmlSecNodeGetBNValue</a>            (const <strong>xmlNodePtr</strong> cur,
-                                             <strong>BIGNUM</strong> **a);
-int         <a href="xmlsec-bn.html#XMLSECNODESETBNVALUE">xmlSecNodeSetBNValue</a>            (<strong>xmlNodePtr</strong> cur,
-                                             const <strong>BIGNUM</strong> *a,
-                                             int addLineBreaks);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN5202"/><h2>Description</h2>
-<p/>
-</div>
-<div class="REFSECT1">
-<a name="AEN5205"/><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN5207"/><h3>
-<a name="XMLSECCRYPTOBINARY2BN"/>xmlSecCryptoBinary2BN ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>BIGNUM</strong>*     xmlSecCryptoBinary2BN           (const <strong>xmlChar</strong> *str,
-                                             <strong>BIGNUM</strong> **a);</pre></td></tr></table><p>Converts string from CryptoBinary format 
-(http://www.w3.org/TR/xmldsig-core/<strong>sec-CryptoBinary</strong>) 
-to a BIGNUM. If no BIGNUM buffer provided then a new
-BIGNUM is created (caller is responsible for freeing it).</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5217"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>str</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the CryptoBinary string.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>a</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the buffer to store the result.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">a pointer to BIGNUM produced from CryptoBinary string
-or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5234"/><h3>
-<a name="XMLSECBN2CRYPTOBINARY"/>xmlSecBN2CryptoBinary ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlChar</strong>*    xmlSecBN2CryptoBinary           (const <strong>BIGNUM</strong> *a);</pre></td></tr></table><p>Converts BIGNUM to CryptoBinary string
-(http://www.w3.org/TR/xmldsig-core/<strong>sec-CryptoBinary</strong>).</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5243"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>a</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to BIGNUM.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">newly allocated string (caller is responsible for
-freeing it using <strong>xmlFree</strong>() function) or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5257"/><h3>
-<a name="XMLSECNODEGETBNVALUE"/>xmlSecNodeGetBNValue ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>BIGNUM</strong>*     xmlSecNodeGetBNValue            (const <strong>xmlNodePtr</strong> cur,
-                                             <strong>BIGNUM</strong> **a);</pre></td></tr></table><p>Converts the node content from CryptoBinary format 
-(http://www.w3.org/TR/xmldsig-core/<strong>sec-CryptoBinary</strong>) 
-to a BIGNUM. If no BIGNUM buffer provided then a new
-BIGNUM is created (caller is responsible for freeing it).</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5267"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>cur</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the poitner to an XML node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>a</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the BIGNUM buffer.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">a pointer to BIGNUM produced from CryptoBinary string
-or NULL if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5284"/><h3>
-<a name="XMLSECNODESETBNVALUE"/>xmlSecNodeSetBNValue ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetBNValue            (<strong>xmlNodePtr</strong> cur,
-                                             const <strong>BIGNUM</strong> *a,
-                                             int addLineBreaks);</pre></td></tr></table><p>Converts BIGNUM to CryptoBinary string
-(http://www.w3.org/TR/xmldsig-core/<strong>sec-CryptoBinary</strong>) 
-and sets it as the content of the given node. If the 
-addLineBreaks is set then line breaks are added 
-before and after the CryptoBinary string.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5293"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>cur</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>a</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the BIGNUM.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>addLineBreaks</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> if the flag is equal to 1 then 
-	linebreaks will be added before and after
-	new buffer content.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or -1 otherwise.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-buffered.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>base64.h</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>buffered.h</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent"></td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

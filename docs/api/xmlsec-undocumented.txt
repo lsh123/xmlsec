@@ -1,6 +1,6 @@
 41% function docs coverage.
-216 functions documented.
-316 not documented.
+217 functions documented.
+315 not documented.
 
 
 XMLSEC_CRYPTO_EXPORT
@@ -221,7 +221,6 @@ xmlSecStaticObjectListGetKlass
 xmlSecStaticObjectListId
 xmlSecStringListGetKlass
 xmlSecStringListId
-xmlSecTmplManifestAddReference
 xmlSecTransformAes128CbcId
 xmlSecTransformAes192CbcId
 xmlSecTransformAes256CbcId

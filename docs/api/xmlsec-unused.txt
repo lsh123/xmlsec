@@ -1,0 +1,3 @@
+xmlSecTmplSignatureGetC14NMethodNode
+xmlSecTmplEncDataGetEncMethodNode
+xmlSecTmplSignatureGetSignMethodNode

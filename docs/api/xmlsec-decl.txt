@@ -1664,14 +1664,24 @@ xmlNodePtr signNode,const xmlChar *id
 xmlNodePtr signNode,xmlSecTransformId digestMethodId,const xmlChar *id,const xmlChar *uri,const xmlChar *type
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecTmplReferenceAddTransform</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr referenceNode,xmlSecTransformId transformId
-</FUNCTION>
-<FUNCTION>
 <NAME>xmlSecTmplSignatureAddObject</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr signNode,const xmlChar *id,const xmlChar *mimeType,const xmlChar *encoding
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplSignatureGetSignMethodNode</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr signNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplSignatureGetC14NMethodNode</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr signNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplReferenceAddTransform</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr referenceNode,xmlSecTransformId transformId
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecTmplObjectAddSignProperties</NAME>
@@ -1717,6 +1727,11 @@ xmlNodePtr encNode
 <NAME>xmlSecTmplEncDataEnsureCipherReference</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr encNode,const xmlChar *uri
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplEncDataGetEncMethodNode</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr encNode
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecTmplCipherReferenceAddTransform</NAME>

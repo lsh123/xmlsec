@@ -114,7 +114,46 @@ int         <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAd
 
 <refsect1>
 <title>Description</title>
-<para>
+<para>    
+    <figure>
+    <title>XML Digital Signature Structure</title>
+	<programlisting>
+	    &lt;Signature ID?&gt; 
+    		&lt;SignedInfo&gt;
+    		    &lt;CanonicalizationMethod/&gt;
+    		    &lt;SignatureMethod/&gt;
+    		    (&lt;Reference URI? &gt;
+        		(&lt;Transforms&gt;)?
+        		&lt;DigestMethod&gt;
+        		&lt;DigestValue&gt;
+    		    &lt;/Reference&gt;)+
+    		&lt;/SignedInfo&gt;
+    		&lt;SignatureValue&gt; 
+		(&lt;KeyInfo&gt;)?
+		(&lt;Object ID?&gt;)*
+	    &lt;/Signature&gt;
+	</programlisting>
+    </figure>
+    <figure>
+    <title>XML Encryption Structure</title>
+	<programlisting>
+	    &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
+		&lt;EncryptionMethod/&gt;?
+		&lt;ds:KeyInfo&gt;
+    		    &lt;EncryptedKey&gt;?
+    		    &lt;AgreementMethod&gt;?
+    		    &lt;ds:KeyName&gt;?
+    		    &lt;ds:RetrievalMethod&gt;?
+    		    &lt;ds:*&gt;?
+		&lt;/ds:KeyInfo&gt;?
+		&lt;CipherData&gt;
+		    &lt;CipherValue&gt;?
+    		    &lt;CipherReference URI?&gt;?
+		&lt;/CipherData&gt;
+		&lt;EncryptionProperties&gt;?
+	    &lt;/EncryptedData&gt;	
+    	</programlisting>
+    </figure>
 
 </para>
 </refsect1>
@@ -334,6 +373,10 @@ if an error occurs.
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
                                              const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
 <para>
+Adds &lt;dsig:Reference/&gt; node with specified URI (<parameter>uri</parameter>), Id (<parameter>id</parameter>) and 
+Type (<parameter>type</parameter>) attributes and the required children &lt;dsig:DigestMethod/&gt; and
+&lt;dsig:DigestValue/&gt; to the &lt;dsig:Manifest/&gt; node <parameter>manifestNode</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -341,23 +384,22 @@ if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>manifestNode</parameter>&nbsp;:</entry>
-<entry>
+<entry> 	the pointer to &lt;dsig:Manifest/&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>digestMethodId</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the reference digest method.
 </entry></row>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the node id (may be NULL).
 </entry></row>
 <row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the reference node uri (may be NULL).
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the reference node type (may be NULL).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Reference/&gt; node or NULL 
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -716,7 +758,7 @@ node <parameter>node</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry>
+<entry> 	the pointer to &lt;dsig:Transform/&gt; node
 </entry></row>
 <row><entry align="right"><parameter>bitsLen</parameter>&nbsp;:</entry>
 <entry> 		the required length in bits

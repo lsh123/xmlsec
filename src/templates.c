@@ -561,7 +561,7 @@ xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
 }
 
 /**
- * xmlSecManifestAddReference:
+ * xmlSecTmplManifestAddReference:
  * @manifestNode: 	the pointer to <dsig:Manifest/> node.
  * @digestMethodId:	the reference digest method.
  * @id: 		the node id (may be NULL).
@@ -1276,7 +1276,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  */
 /**
  * xmlSecTmplTransformAddHmacOutputLength:
- * @node: 		the pointer to <dsig:Transform/> node
+ * @transformNode: 	the pointer to <dsig:Transform/> node
  * @bitsLen: 		the required length in bits
  *
  * Creates <dsig:HMACOutputLength>child for the HMAC transform 

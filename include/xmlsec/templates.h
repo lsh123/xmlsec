@@ -22,6 +22,7 @@ extern "C" {
 /**
  * <dsig:Signature> node
  */
+
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate		(xmlDocPtr doc,
 								 xmlSecTransformId c14nMethodId,
 								 xmlSecTransformId signMethodId,
@@ -56,6 +57,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplManifestAddReference		(xmlNodePtr manifestNod
 /** 
  * <enc:EncryptedData> node
  */
+ 
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataCreate		(xmlDocPtr doc,
 								 xmlSecTransformId encMethodId,
 								 const xmlChar *id,
@@ -80,6 +82,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform	(xmlNodePtr ciphe
 /**
  * <dsig:KeyInfo> node
  */
+ 
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyName		(xmlNodePtr keyInfoNode,
 								 const xmlChar* name);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyValue		(xmlNodePtr keyInfoNode);
@@ -101,6 +104,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNod
 /**
  * <dsig:Transform> node
  */
+ 
 XMLSEC_EXPORT int	xmlSecTmplTransformAddHmacOutputLength	(xmlNodePtr transformNode,
 								 size_t bitsLen);
 XMLSEC_EXPORT int  	xmlSecTmplTransformAddRsaOaepParam	(xmlNodePtr transformNode,

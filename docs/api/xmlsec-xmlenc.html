@@ -1,35 +1,55 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>xmlenc.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html"/><link rel="PREVIOUS" title="xmldsig.h" href="xmlsec-xmldsig.html"/><link rel="NEXT" title="errors.h" href="xmlsec-errors.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>xmlenc.h</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="xmldsig.h" href="xmlsec-xmldsig.html">
+<link rel="NEXT" title="errors.h" href="xmlsec-errors.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmldsig.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmldsig.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-errors.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
+</tr>
+</table></div>
 <h1>
-<a name="XMLSEC-XMLENC"/>xmlenc.h</h1>
+<a name="XMLSEC-XMLENC"></a>xmlenc.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN725"/><h2>Name</h2>xmlenc.h -- The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
+<a name="AEN725"></a><h2>Name</h2>xmlenc.h -- The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
 standard implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN729"/><h2>Synopsis</h2>
+<a name="AEN729"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a>;
@@ -59,24 +79,27 @@ int         <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPT">xmlSecEncCtxDecrypt
 void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGDUMP">xmlSecEncCtxDebugDump</a>           (<font>xmlSecEncCtxPtr</font> encCtx,
                                              <font>FILE</font> *output);
 void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDebugXmlDump</a>        (<font>xmlSecEncCtxPtr</font> encCtx,
-                                             <font>FILE</font> *output);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN774"/><h2>Description</h2>
-<p/>
+                                             <font>FILE</font> *output);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN777"/><h2>Details</h2>
+<a name="AEN774"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN777"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN779"/><h3>
-<a name="XMLENCCTXMODE"/>enum xmlEncCtxMode</h3>
+<a name="AEN779"></a><h3>
+<a name="XMLENCCTXMODE"></a>enum xmlEncCtxMode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlEncCtxModeEncryptedData = 0,
     xmlEncCtxModeEncryptedKey
-} xmlEncCtxMode;</pre></td></tr></table><p/>
+} xmlEncCtxMode;</pre></td></tr></table>
+<p></p>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN784"/><h3>
-<a name="XMLSECENCCTX"/>struct xmlSecEncCtx</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN784"></a><h3>
+<a name="XMLSECENCCTX"></a>struct xmlSecEncCtx</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecEncCtx {
     /* these data user can set before performing the operation */
     void*			userData;
@@ -113,352 +136,530 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
     /* reserved for future */
     void*			reserved0;
     void*			reserved1;
-};</pre></td></tr></table><p>XML Encrypiton context.</p>
-<p/>
+};</pre></td></tr></table>
+<p>XML Encrypiton context.</p>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN790"/><p/>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>userData</i></tt>
+<a name="AEN790"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>userData</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags</i></tt>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags2</i></tt>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags2</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a> <tt class="STRUCTFIELD"><i>mode</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecTransformId</font> <tt class="STRUCTFIELD"><i>defEncMethodId</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> <tt class="STRUCTFIELD"><i>keyInfoReadCtx</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> <tt class="STRUCTFIELD"><i>keyInfoWriteCtx</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a> <tt class="STRUCTFIELD"><i>encTransformCtx</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMOPERATION">xmlSecTransformOperation</a> <tt class="STRUCTFIELD"><i>operation</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecBufferPtr</font> <tt class="STRUCTFIELD"><i>result</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultBase64Encoded</i></tt>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultBase64Encoded</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultReplaced</i></tt>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultReplaced</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>encMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlSecKeyPtr</font> <tt class="STRUCTFIELD"><i>encKey</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>id</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the Id attribute of the  &lt;enc:EncryptedData&gt; node.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>type</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the Type attribute of the  &lt;enc:EncryptedData&gt; node.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>mimeType</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>encoding</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>recipient</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>carriedKeyName</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>encDataNode</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>encMethodNode</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>keyInfoNode</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>cipherValueNode</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN918"/><h3>
-<a name="XMLSECENCCTXCREATE"/>xmlSecEncCtxCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecEncCtxPtr</font> xmlSecEncCtxCreate          (<font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table><p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN918"></a><h3>
+<a name="XMLSECENCCTXCREATE"></a>xmlSecEncCtxCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecEncCtxPtr</font> xmlSecEncCtxCreate          (<font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN925"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN925"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN938"/><h3>
-<a name="XMLSECENCCTXDESTROY"/>xmlSecEncCtxDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDestroy             (<font>xmlSecEncCtxPtr</font> encCtx);</pre></td></tr></table><p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN938"></a><h3>
+<a name="XMLSECENCCTXDESTROY"></a>xmlSecEncCtxDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDestroy             (<font>xmlSecEncCtxPtr</font> encCtx);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN944"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN944"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN953"/><h3>
-<a name="XMLSECENCCTXINITIALIZE"/>xmlSecEncCtxInitialize ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN953"></a><h3>
+<a name="XMLSECENCCTXINITIALIZE"></a>xmlSecEncCtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxInitialize          (<font>xmlSecEncCtxPtr</font> encCtx,
-                                             <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table><p/>
+                                             <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN960"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN960"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN977"/><h3>
-<a name="XMLSECENCCTXFINALIZE"/>xmlSecEncCtxFinalize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxFinalize            (<font>xmlSecEncCtxPtr</font> encCtx);</pre></td></tr></table><p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN977"></a><h3>
+<a name="XMLSECENCCTXFINALIZE"></a>xmlSecEncCtxFinalize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxFinalize            (<font>xmlSecEncCtxPtr</font> encCtx);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN983"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN983"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN992"/><h3>
-<a name="XMLSECENCCTXCOPYUSERPREF"/>xmlSecEncCtxCopyUserPref ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN992"></a><h3>
+<a name="XMLSECENCCTXCOPYUSERPREF"></a>xmlSecEncCtxCopyUserPref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxCopyUserPref        (<font>xmlSecEncCtxPtr</font> dst,
-                                             <font>xmlSecEncCtxPtr</font> src);</pre></td></tr></table><p/>
+                                             <font>xmlSecEncCtxPtr</font> src);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN999"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN999"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>dst</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>src</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1016"/><h3>
-<a name="XMLSECENCCTXRESET"/>xmlSecEncCtxReset ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxReset               (<font>xmlSecEncCtxPtr</font> encCtx);</pre></td></tr></table><p/>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1016"></a><h3>
+<a name="XMLSECENCCTXRESET"></a>xmlSecEncCtxReset ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxReset               (<font>xmlSecEncCtxPtr</font> encCtx);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1022"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1022"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr></tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1031"/><h3>
-<a name="XMLSECENCCTXBINARYENCRYPT"/>xmlSecEncCtxBinaryEncrypt ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1031"></a><h3>
+<a name="XMLSECENCCTXBINARYENCRYPT"></a>xmlSecEncCtxBinaryEncrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxBinaryEncrypt       (<font>xmlSecEncCtxPtr</font> encCtx,
                                              <font>xmlNodePtr</font> tmpl,
                                              unsigned char *data,
-                                             <font>size_t</font> dataSize);</pre></td></tr></table><p/>
+                                             <font>size_t</font> dataSize);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1039"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1039"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>tmpl</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>dataSize</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1064"/><h3>
-<a name="XMLSECENCCTXXMLENCRYPT"/>xmlSecEncCtxXmlEncrypt ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1064"></a><h3>
+<a name="XMLSECENCCTXXMLENCRYPT"></a>xmlSecEncCtxXmlEncrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxXmlEncrypt          (<font>xmlSecEncCtxPtr</font> encCtx,
                                              <font>xmlNodePtr</font> tmpl,
-                                             <font>xmlNodePtr</font> node);</pre></td></tr></table><p/>
+                                             <font>xmlNodePtr</font> node);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1072"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1072"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>tmpl</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1093"/><h3>
-<a name="XMLSECENCCTXURIENCRYPT"/>xmlSecEncCtxUriEncrypt ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1093"></a><h3>
+<a name="XMLSECENCCTXURIENCRYPT"></a>xmlSecEncCtxUriEncrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxUriEncrypt          (<font>xmlSecEncCtxPtr</font> encCtx,
                                              <font>xmlNodePtr</font> tmpl,
-                                             const <font>xmlChar</font> *uri);</pre></td></tr></table><p/>
+                                             const <font>xmlChar</font> *uri);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1101"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1101"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>tmpl</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>uri</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1122"/><h3>
-<a name="XMLSECENCCTXDECRYPT"/>xmlSecEncCtxDecrypt ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1122"></a><h3>
+<a name="XMLSECENCCTXDECRYPT"></a>xmlSecEncCtxDecrypt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxDecrypt             (<font>xmlSecEncCtxPtr</font> encCtx,
-                                             <font>xmlNodePtr</font> node);</pre></td></tr></table><p/>
+                                             <font>xmlNodePtr</font> node);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1129"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1129"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1146"/><h3>
-<a name="XMLSECENCCTXDECRYPTTOBUFFER"/>xmlSecEncCtxDecryptToBuffer ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1146"></a><h3>
+<a name="XMLSECENCCTXDECRYPTTOBUFFER"></a>xmlSecEncCtxDecryptToBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecEncCtxDecryptToBuffer (<font>xmlSecEncCtxPtr</font> encCtx,
-                                             <font>xmlNodePtr</font> node);</pre></td></tr></table><p/>
+                                             <font>xmlNodePtr</font> node);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1154"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1154"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1171"/><h3>
-<a name="XMLSECENCCTXDEBUGDUMP"/>xmlSecEncCtxDebugDump ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1171"></a><h3>
+<a name="XMLSECENCCTXDEBUGDUMP"></a>xmlSecEncCtxDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDebugDump           (<font>xmlSecEncCtxPtr</font> encCtx,
-                                             <font>FILE</font> *output);</pre></td></tr></table><p/>
+                                             <font>FILE</font> *output);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1178"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1178"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>output</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
-<hr/><div class="REFSECT2">
-<a name="AEN1191"/><h3>
-<a name="XMLSECENCCTXDEBUGXMLDUMP"/>xmlSecEncCtxDebugXmlDump ()</h3>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1191"></a><h3>
+<a name="XMLSECENCCTXDEBUGXMLDUMP"></a>xmlSecEncCtxDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDebugXmlDump        (<font>xmlSecEncCtxPtr</font> encCtx,
-                                             <font>FILE</font> *output);</pre></td></tr></table><p/>
+                                             <font>FILE</font> *output);</pre></td></tr></table>
+<p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1198"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
+<a name="AEN1198"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>output</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table><p/>
+</tr>
+</tbody></table>
+<p></p>
 </div>
 </div>
 </div>
 <div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmldsig.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmldsig.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-errors.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>xmldsig.h</b></font></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>xmldsig.h</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>errors.h</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

@@ -1,25 +1,36 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>Manpage of xmlsec utility</title></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="index.html">Home</a></li>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Manpage of xmlsec utility</title>
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
 <li><a href="download.html">Download</a></li>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
 <li><a href="faq.html">FAQ</a></li>
 <li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
 <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul><li><a href="c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
 <li><a href="bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
 <h1>xmlsec</h1>
-<a href="#index">Index</a><hr/><a name="lbAB"> </a><h2>NAME</h2>
+<a href="#index">Index</a><hr>
+<a name="lbAB"> </a><h2>NAME</h2>
 <p>
 
 xmlsec - command line tool to sign and encrypt XML documents
@@ -54,7 +65,8 @@ The xmlsec program is included in XML Security Library.
 <h2>COMMANDS</h2>
 <p>
 </p>
-<dl compact=""><dt><b>version</b></dt>
+<dl compact>
+<dt><b>version</b></dt>
 <dd>
 Prints version information for the xmlsec program.
 <p>
@@ -102,10 +114,12 @@ Decrypts encrypted XML documents <i>FILE1</i>, <i>FILE2</i>, <i>...</i>
 <p>
 </p>
 </dd>
-</dl><a name="lbAF"> </a><h2>KEYS COMMAND OPTIONS</h2>
+</dl>
+<a name="lbAF"> </a><h2>KEYS COMMAND OPTIONS</h2>
 <p>
 </p>
-<dl compact=""><dt>
+<dl compact>
+<dt>
 <b>--gen-hmac</b> <i>name</i>
 </dt>
 <dd>
@@ -208,10 +222,12 @@ Loads HMAC key from binary file and sets the key name to <i>name</i>.
 <p>
 </p>
 </dd>
-</dl><a name="lbAG"> </a><h2>SIGN COMMAND OPTIONS</h2>
+</dl>
+<a name="lbAG"> </a><h2>SIGN COMMAND OPTIONS</h2>
 <p>
 </p>
-<dl compact=""><dt><b>--ignore-manifests</b></dt>
+<dl compact>
+<dt><b>--ignore-manifests</b></dt>
 <dd>
 Instructs the xmlsec program to ignore &lt;dsig:Manifest&gt; elements.
 <p>
@@ -312,10 +328,12 @@ Disables actual signature calculation for performance testing.
 <p>
 </p>
 </dd>
-</dl><a name="lbAH"> </a><h2>VERIFY COMMAND OPTIONS</h2>
+</dl>
+<a name="lbAH"> </a><h2>VERIFY COMMAND OPTIONS</h2>
 <p>
 </p>
-<dl compact=""><dt>
+<dl compact>
+<dt>
 <b>--output</b> <i>file</i>
 </dt>
 <dd>
@@ -452,10 +470,12 @@ Disables actual signature calculation for performance testing.
 <p>
 </p>
 </dd>
-</dl><a name="lbAI"> </a><h2>ENCRYPT COMMAND OPTIONS</h2>
+</dl>
+<a name="lbAI"> </a><h2>ENCRYPT COMMAND OPTIONS</h2>
 <p>
 </p>
-<dl compact=""><dt>
+<dl compact>
+<dt>
 <b>--output</b> <i>file</i>
 </dt>
 <dd>
@@ -588,10 +608,12 @@ Repeats the operation <i>number</i> times.
 <p>
 </p>
 </dd>
-</dl><a name="lbAJ"> </a><h2>DECRYPT COMMAND OPTIONS</h2>
+</dl>
+<a name="lbAJ"> </a><h2>DECRYPT COMMAND OPTIONS</h2>
 <p>
 </p>
-<dl compact=""><dt>
+<dl compact>
+<dt>
 <b>--output</b> <i>file</i>
 </dt>
 <dd>
@@ -686,7 +708,8 @@ Repeats the operation <i>number</i> times.
 <p>
 </p>
 </dd>
-</dl><a name="lbAK"> </a><h2>REPORTING BUGS</h2>
+</dl>
+<a name="lbAK"> </a><h2>REPORTING BUGS</h2>
 <p>
 </p>
 <p>
@@ -735,8 +758,10 @@ Copyright 2002 Aleksey Sanin  &lt;<a href="mailto:aleksey@aleksey.com">aleksey@a
 <p>
 
 </p>
-<hr/><a name="index"> </a><h2>Index</h2>
-<dl><dt><a href="#lbAB">NAME</a></dt>
+<hr>
+<a name="index"> </a><h2>Index</h2>
+<dl>
+<dt><a href="#lbAB">NAME</a></dt>
 <dd>
 </dd>
 <dt><a href="#lbAC">SYNOPSIS</a></dt>
@@ -775,11 +800,16 @@ Copyright 2002 Aleksey Sanin  &lt;<a href="mailto:aleksey@aleksey.com">aleksey@a
 <dt><a href="#lbAN">COPYRIGHT</a></dt>
 <dd>
 </dd>
-</dl><hr/><p>
-This document was created by man2html, using the manual pages.<br/>
+</dl>
+<hr>
+<p>
+This document was created by man2html, using the manual pages.<br>
 Time: 02:31:41 GMT, August 15, 2002
 </p>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

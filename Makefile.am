@@ -45,11 +45,7 @@ docs-format:
 	    top_folder=`echo $$i | sed 's#/[^/]*$$#/#' | \
 			sed 's#/[^/]*/#/../#g' | sed 's#docs/##'`; \
 	    xsltproc --html --stringparam topfolder "$$top_folder" \
-		     scripts/xmlsec.xsl $$i | \
-	    xmllint --html --encode "ISO-8859-1" - | \
-	    sed 's/<meta [^>]*>//' | \
-	    sed 's/<?xml .*>//' > \
-	    $$i.tmp; \
+		     --output $$i.tmp scripts/xmlsec.xsl $$i; \
 	    if [ $$? != 0 ]; \
 	    then \
 		echo "ERROR: processing file $$i"; \

@@ -1,23 +1,33 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>XML Security Library</title></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="index.html">Home</a></li>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>XML Security Library</title>
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="index.html">Home</a></li>
 <li><a href="download.html">Download</a></li>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
 <li><a href="faq.html">FAQ</a></li>
 <li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="xmldsig-interop.html">Interop report</a></li>
 <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul><li><a href="c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="c14n.html">XML Canonicalization</a></li>
 <li><a href="bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
 <div align="Center">                                          
       <h1>XML Security Library</h1>
             </div>
@@ -26,7 +36,8 @@
 	     <a href="http://xmlsoft.org/">LibXML2</a>.
       The library  supports major XML security standards:                                        	    
       </p>
-<ul><li>
+<ul>
+<li>
 <a href="http://www.w3.org/TR/xmldsig-core">XML Signature</a>
  	     </li>
 	     <li>
@@ -39,23 +50,26 @@
 <a href="http://www.w3.org/TR/xml-exc-c14n">Exclusive Canonical XML</a>
  	     (was included in <a href="http://xmlsoft.org">LibXML2</a>)</li>
                                             	    
-      </ul><p>
+      </ul>
+<p>
              XML Security Library is released under the  	    
 	     <a href="http://www.opensource.org/licenses/mit-license.html">MIT  Licence</a>
-     	    see the Copyright file in the distribution  for details.<br/><br/><b>News</b> (<a href="news.html">all news</a>)<br/></p>
-<ul><li>March 19 2003<br/><a href="download.html">XML Security Library 0.0.14</a> release
+     	    see the Copyright file in the distribution  for details.<br><br><b>News</b> (<a href="news.html">all news</a>)<br>
+</p>
+<ul>
+<li>March 19 2003<br><a href="download.html">XML Security Library 0.0.14</a> release
 	includes several minor bugfixes in references URI
 	processing, binary transforms processing and xmlsec 
 	command line utility.
 	</li>
-<br/><li>March 5 2003<br/>
+<br><li>March 5 2003<br>
 	The <a href="download.html">XML Security Library 0.1.0</a> release
 	creates a framework for integrating XML Security Library
 	with almost any crypto engine and even combining multiple crypto
 	engines in one application. As an example, basic support for GnuTLS and NSS 
 	libraries is provided (digests, hmac and block ciphers). 
 	The information about new library structure is available in an 
-	<a href="architecture/design-overview.html">architecture design overview</a>.<br/>
+	<a href="architecture/design-overview.html">architecture design overview</a>.<br>
 	This is a pre-alpha release <b>not recommended</b> for production
 	(please use the <a href="download.html">stable 0.0.X</a> releases 
 	instead). The new 0.1.X API and ABI will defenetly change.
@@ -64,41 +78,46 @@
 	The &quot;backend&quot; API is pretty stable and I do not expect major
 	<a href="architecture/status.html">changes</a>. 
 	</li>
-	<br/><li>February 21 2003<br/><a href="download.html">XML Security Library 0.0.13</a> release
+	<br><li>February 21 2003<br><a href="download.html">XML Security Library 0.0.13</a> release
 	fixes incorrect processing of signatures with more than 3 binary 
 	transforms in a row, improved pkcs12 files support and minor
 	documentation update.
 	</li>
-<br/><li>January 26 2003<br/>
+<br><li>January 26 2003<br>
 	Two major fixes in <a href="http://www.aleksey.com/pipermail/xmlsec/2003/000507.html">HMAC</a> and 
 	<a href="http://www.aleksey.com/pipermail/xmlsec/2003/000516.html">DES/AES</a> 
 	algorithms are the reason for the new <a href="download.html">XML Security Library 0.0.12</a> release.
 	Also there are few other minor features and bug fixes (see Changelog in the 
 	distribution for more details).
 	</li>
-<br/><li>December 3 2002<br/>
+<br><li>December 3 2002<br>
 	New <a href="download.html">XML Security Library 0.0.11</a> release
 	fixes a <a href="http://www.aleksey.com/pipermail/xmlsec/2002/000368.html">major 
 	problem</a> in Reference URI attribute processing. This release
 	also includes several Win32 build process fixes from Igor.	
 	</li>
-<br/><li>October 20 2002<br/>
+<br><li>October 20 2002<br>
 	Almost two months from previous release and a lot of minor 
 	enchancements are good reasons for the new
-	<a href="download.html">XML Security Library 0.0.10</a> release:<br/>
+	<a href="download.html">XML Security Library 0.0.10</a> release:<br>
 	- added a way to specify &quot;current time&quot; to verify certificates
-	expiration against it;<br/>
+	expiration against it;<br>
 	- implemented XML results output format for the xmlsec command
-	line utility;<br/>
+	line utility;<br>
 	- fixed XMLDSig examples and added a new one (thanks to Devin 
-	Heitmueller);<br/>
+	Heitmueller);<br>
 	- resolved static link issue and a bunch of other improvements 
-	for Win32 platform builds (Igor Zlatkovic);<br/>
+	for Win32 platform builds (Igor Zlatkovic);<br>
 	- added dynamic linking option for xmlsec command line utility
-	to help Debian port (John Belmonte);<br/>
+	to help Debian port (John Belmonte);<br>
 	- minor bug fixes.
 	</li>
-<br/></ul></td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+<br>
+</ul>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

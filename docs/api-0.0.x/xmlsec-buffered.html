@@ -1,249 +1,33 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>buffered.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html"/><link rel="PREVIOUS" title="bn.h" href="xmlsec-bn.html"/><link rel="NEXT" title="ciphers.h" href="xmlsec-ciphers.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-bn.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
-<h1>
-<a name="XMLSEC-BUFFERED"/>buffered.h</h1>
-<div class="REFNAMEDIV">
-<a name="AEN5319"/><h2>Name</h2>buffered.h -- The buffered transform.</div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN5322"/><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
-
-struct      <a href="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORM">xmlSecBufferedTransform</a>;
-typedef     <a href="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMID">xmlSecBufferedTransformId</a>;
-int         (<a href="xmlsec-buffered.html#XMLSECBUFFEREDPROCESSMETHOD">*xmlSecBufferedProcessMethod</a>)  (<strong>xmlSecBufferedTransformPtr</strong> transform,
-                                             <strong>xmlBufferPtr</strong> buffer);
-int         <a href="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMREAD">xmlSecBufferedTransformRead</a>     (<strong>xmlSecBinTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);
-int         <a href="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMWRITE">xmlSecBufferedTransformWrite</a>    (<strong>xmlSecBinTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);
-int         <a href="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMFLUSH">xmlSecBufferedTransformFlush</a>    (<strong>xmlSecBinTransformPtr</strong> transform);
-void        <a href="xmlsec-buffered.html#XMLSECBUFFEREDDESTROY">xmlSecBufferedDestroy</a>           (<strong>xmlSecBufferedTransformPtr</strong> buffered);
-int         <a href="xmlsec-buffered.html#XMLSECBUFFEREDPROCESS">xmlSecBufferedProcess</a>           (<strong>xmlSecBinTransformPtr</strong> transform,
-                                             <strong>xmlBufferPtr</strong> buffer);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN5343"/><h2>Description</h2>
-<p/>
-</div>
-<div class="REFSECT1">
-<a name="AEN5346"/><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN5348"/><h3>
-<a name="XMLSECBUFFEREDTRANSFORM"/>struct xmlSecBufferedTransform</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecBufferedTransform {	
-    /* same as for xmlSecTransform but id type changed */
-    xmlSecBufferedTransformId		id;    
-    xmlSecTransformStatus		status;
-    int					dontDestroy;
-    void				*data;
-    
-    /* xmlSecBinTransform specific */
-    int					encode;
-    xmlSecBinTransformPtr		next;
-    xmlSecBinTransformPtr		prev;   
-    void				*binData;
-    
-    /* xmlSecBufferedTransform specific */
-    xmlBufferPtr			buffer;
-};</pre></td></tr></table><p>The buffered transform.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5354"/><p/>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMID">xmlSecBufferedTransformId</a> <tt class="STRUCTFIELD"><i>id</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the transform id (pointer to <a href="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID">xmlSecBinTransformId</a>).</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <tt class="STRUCTFIELD"><i>status</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the transform status (ok/fail/unknown).</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroy</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the don't automatically destroy flag.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>data</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to transform specific data.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>encode</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> encode/decode (encrypt/decrypt) flag.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecBinTransformPtr</strong> <tt class="STRUCTFIELD"><i>next</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> next binary transform in the chain.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecBinTransformPtr</strong> <tt class="STRUCTFIELD"><i>prev</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> previous binary transform in the chain.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>binData</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to binary transform speific data.</td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
-<strong>xmlBufferPtr</strong> <tt class="STRUCTFIELD"><i>buffer</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the internal buffer.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5401"/><h3>
-<a name="XMLSECBUFFEREDTRANSFORMID"/>xmlSecBufferedTransformId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecBufferedTransformIdStruct	*xmlSecBufferedTransformId;</pre></td></tr></table><p>The buffered transform id.</p>
-<p/>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5407"/><h3>
-<a name="XMLSECBUFFEREDPROCESSMETHOD"/>xmlSecBufferedProcessMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecBufferedProcessMethod)  (<strong>xmlSecBufferedTransformPtr</strong> transform,
-                                             <strong>xmlBufferPtr</strong> buffer);</pre></td></tr></table><p>Processes the data in the buffer.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5415"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to buffered transform.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to input/output buffer.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 in success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5432"/><h3>
-<a name="XMLSECBUFFEREDTRANSFORMREAD"/>xmlSecBufferedTransformRead ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferedTransformRead     (<strong>xmlSecBinTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Reads the all data from previous transform and returns 
-to the caller.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5440"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to a buffered transform.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the output buffer.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the output buffer size.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the number of bytes in the buffer or negative value
-if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5461"/><h3>
-<a name="XMLSECBUFFEREDTRANSFORMWRITE"/>xmlSecBufferedTransformWrite ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferedTransformWrite    (<strong>xmlSecBinTransformPtr</strong> transform,
-                                             unsigned char *buf,
-                                             <strong>size_t</strong> size);</pre></td></tr></table><p>Adds the data to the internal buffer.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5469"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the poiter to a buffered transform.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the input data buffer.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the input data size.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 if success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5490"/><h3>
-<a name="XMLSECBUFFEREDTRANSFORMFLUSH"/>xmlSecBufferedTransformFlush ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferedTransformFlush    (<strong>xmlSecBinTransformPtr</strong> transform);</pre></td></tr></table><p>Writes internal data to previous transform.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5497"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to a buffered transform.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 if success or negative value otherwise.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5510"/><h3>
-<a name="XMLSECBUFFEREDDESTROY"/>xmlSecBufferedDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBufferedDestroy           (<strong>xmlSecBufferedTransformPtr</strong> buffered);</pre></td></tr></table><p>Destroys the buffered transform.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5517"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffered</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to a buffered transform.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN5526"/><h3>
-<a name="XMLSECBUFFEREDPROCESS"/>xmlSecBufferedProcess ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferedProcess           (<strong>xmlSecBinTransformPtr</strong> transform,
-                                             <strong>xmlBufferPtr</strong> buffer);</pre></td></tr></table><p>Executes buffered transform.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN5534"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to a buffered transform.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buffer</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the buffered transform result,</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">number of bytes processed or a negative value
-if an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-bn.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ciphers.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>bn.h</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>ciphers.h</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent"></td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

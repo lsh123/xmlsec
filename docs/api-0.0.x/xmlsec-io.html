@@ -1,147 +1,33 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><head><title>io.h</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+&#10;"/><link rel="HOME" title="XML Security Library Reference Manual" href="index.html"/><link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html"/><link rel="PREVIOUS" title="digests.h" href="xmlsec-digests.html"/><link rel="NEXT" title="keysInternal.h" href="xmlsec-keysinternal.html"/></head><body><table witdh="100%"><tr><td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"/><p/>
-<ul><li><a href="../index.html">Home</a></li>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-interop.html">Interop report</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
 <li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul><li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul><li><a href="../c14n.html">XML Canonicalization</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
-</ul><a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"/></a><br/><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"/></a><br/><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"/></a>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%"><tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-digests.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysinternal.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr></table></div>
-<h1>
-<a name="XMLSEC-IO"/>io.h</h1>
-<div class="REFNAMEDIV">
-<a name="AEN6365"/><h2>Name</h2>io.h -- The IO transforms.</div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN6368"/><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
-
-void        <a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                    (void);
-void        <a href="xmlsec-io.html#XMLSECIOSHUTDOWN">xmlSecIOShutdown</a>                (void);
-extern      xmlSecTransformId <a href="xmlsec-io.html#XMLSECINPUTURI">xmlSecInputUri</a>;
-int         <a href="xmlsec-io.html#XMLSECINPUTURITRANSFORMOPEN">xmlSecInputUriTransformOpen</a>     (<strong>xmlSecTransformPtr</strong> transform,
-                                             const char *uri);
-void        <a href="xmlsec-io.html#XMLSECCLEANUPINPUTCALLBACKS">xmlSecCleanupInputCallbacks</a>     (void);
-void        <a href="xmlsec-io.html#XMLSECREGISTERDEFAULTINPUTCALLBACKS">xmlSecRegisterDefaultInputCallbacks</a>
-                                            (void);
-int         <a href="xmlsec-io.html#XMLSECREGISTERINPUTCALLBACKS">xmlSecRegisterInputCallbacks</a>    (<strong>xmlInputMatchCallback</strong> matchFunc,
-                                             <strong>xmlInputOpenCallback</strong> openFunc,
-                                             <strong>xmlInputReadCallback</strong> readFunc,
-                                             <strong>xmlInputCloseCallback</strong> closeFunc);</pre></td></tr></table></div>
-<div class="REFSECT1">
-<a name="AEN6383"/><h2>Description</h2>
-<p/>
-</div>
-<div class="REFSECT1">
-<a name="AEN6386"/><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN6388"/><h3>
-<a name="XMLSECIOINIT"/>xmlSecIOInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOInit                    (void);</pre></td></tr></table><p>The IO initialization (called from <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>() function).
-Applications should not call this function directly.</p>
-<p/>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN6395"/><h3>
-<a name="XMLSECIOSHUTDOWN"/>xmlSecIOShutdown ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOShutdown                (void);</pre></td></tr></table><p>The IO clenaup (called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>() function).
-Applications should not call this function directly.</p>
-<p/>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN6402"/><h3>
-<a name="XMLSECINPUTURI"/>xmlSecInputUri</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">extern xmlSecTransformId xmlSecInputUri;</pre></td></tr></table><p>The input URI transform id.</p>
-<p/>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN6408"/><h3>
-<a name="XMLSECINPUTURITRANSFORMOPEN"/>xmlSecInputUriTransformOpen ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecInputUriTransformOpen     (<strong>xmlSecTransformPtr</strong> transform,
-                                             const char *uri);</pre></td></tr></table><p>Opens the given <tt class="PARAMETER"><i>uri</i></tt> for reading.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN6416"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transform</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to IO transform.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>uri</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the URL to open.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN6433"/><h3>
-<a name="XMLSECCLEANUPINPUTCALLBACKS"/>xmlSecCleanupInputCallbacks ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecCleanupInputCallbacks     (void);</pre></td></tr></table><p>Clears the entire input callback table. this includes the
-compiled-in I/O.</p>
-<p/>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN6439"/><h3>
-<a name="XMLSECREGISTERDEFAULTINPUTCALLBACKS"/>xmlSecRegisterDefaultInputCallbacks ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecRegisterDefaultInputCallbacks
-                                            (void);</pre></td></tr></table><p>Registers the default compiled-in I/O handlers.</p>
-<p/>
-</div>
-<hr/><div class="REFSECT2">
-<a name="AEN6445"/><h3>
-<a name="XMLSECREGISTERINPUTCALLBACKS"/>xmlSecRegisterInputCallbacks ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecRegisterInputCallbacks    (<strong>xmlInputMatchCallback</strong> matchFunc,
-                                             <strong>xmlInputOpenCallback</strong> openFunc,
-                                             <strong>xmlInputReadCallback</strong> readFunc,
-                                             <strong>xmlInputCloseCallback</strong> closeFunc);</pre></td></tr></table><p>Register a new set of I/O callback for handling parser input.</p>
-<p/>
-<div class="INFORMALTABLE">
-<a name="AEN6455"/><p/>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>matchFunc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">  the xmlInputMatchCallback.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>openFunc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">  the xmlInputOpenCallback.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>readFunc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">  the xmlInputReadCallback.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>closeFunc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">  the xmlInputCloseCallback.</td>
-</tr><tr><td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the registered handler number or a negative value if 
-an error occurs.</td>
-</tr></tbody></table><p/>
-</div>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"/><br/><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0"><tr><td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-digests.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysinternal.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr><tr><td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>digests.h</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keysInternal.h</b></font></td>
-</tr></table></div>
-</td></tr><tr><td>
-<br/><br/><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr></table></td>
-</tr></table></body></html>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent"></td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

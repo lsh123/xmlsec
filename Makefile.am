@@ -6,14 +6,14 @@ TEST_APP 	= apps/xmlsec1
 DEFAULT_CRYPTO	= @XMLSEC_CRYPTO@
 
 bin_SCRIPTS 	= xmlsec1-config
-pkgconfig_DATA 	= xmlsec1.pc
+pkgconfig_DATA 	= xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@
 pkgconfigdir 	= $(libdir)/pkgconfig
 confexecdir	= $(libdir)
 confexec_DATA 	= xmlsec1Conf.sh
 
 DISTCLEANFILES = \
 	xmlsec1Conf.sh \
-	xmlsec1.pc \
+	xmlsec1.pc xmlsec1-openssl.pc xmlsec1-gnutls.pc xmlsec1-nss.pc \
 	xmlsec1-config \
 	xmlsec1.spec \
 	stamp-h2 \
@@ -29,12 +29,12 @@ EXTRA_DIST = \
 	NEWS \
 	ChangeLog \
 	Copyright \
-	xmlsec.pc.in \
+	xmlsec.pc.in xmlsec-openssl.pc.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in\
 	xmlsec-config.in \
 	xmlsecConf.sh.in \
 	xmlsec.spec.in \
 	xmlsec1Conf.sh \
-	xmlsec1.pc \
+	xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@ \
 	xmlsec1-config \
 	xmlsec1.spec \
 	$(NULL)

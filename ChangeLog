@@ -1,3 +1,9 @@
+Wed Jul 30 11:49:20 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am configure.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in 
+	xmlsec-openssl.pc.in: created separate *.pc files for xmlsec-crypto 
+	libraries (bug #118685 reported by John)
+
 Tue Jul 29 20:20:33 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/nss/README: created xmlsec bugs for remian xmlsec-nss problems

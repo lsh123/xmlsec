@@ -4,7 +4,7 @@
  * Signs a template file using a key from PEM file
  * 
  * Usage: 
- *	dsig1 <pem-key> <xml-tmpl> 
+ *	dsig1 <xml-tmpl> <pem-key> 
  * Example:
  *	./dsig1 ./dsig1-tmpl.xml rsakey.pem > dsig1-res.xml
  *

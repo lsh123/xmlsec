@@ -1,0 +1,61 @@
+    <sect1 id="xmlsec-notes-templates">
+	<title>Creating dynamic templates.</title>
+	<para>TODO</para>    
+    <figure>
+    <title>XML Digital Signature Structure</title>
+    <programlisting>
+        &lt;Signature ID?&gt; 
+	    &lt;SignedInfo&gt;
+	        &lt;CanonicalizationMethod/&gt;
+	        &lt;SignatureMethod/&gt;
+	        (&lt;Reference URI? &gt;
+    	    (&lt;Transforms&gt;)?
+    	    &lt;DigestMethod&gt;
+    	    &lt;DigestValue&gt;
+	        &lt;/Reference&gt;)+
+	    &lt;/SignedInfo&gt;
+	    &lt;SignatureValue&gt; 
+	(&lt;KeyInfo&gt;)?
+	(&lt;Object ID?&gt;)*
+        &lt;/Signature&gt;
+    </programlisting>
+    </figure>
+	<para>
+	     <example>
+		<title>Creating dynamic signature template.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
+
+	<para>TODO</para>
+    <figure>
+    <title>XML Encryption Structure</title>
+    <programlisting>
+        &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
+	&lt;EncryptionMethod/&gt;?
+	&lt;ds:KeyInfo&gt;
+	        &lt;EncryptedKey&gt;?
+	        &lt;AgreementMethod&gt;?
+	        &lt;ds:KeyName&gt;?
+	        &lt;ds:RetrievalMethod&gt;?
+	        &lt;ds:*&gt;?
+	&lt;/ds:KeyInfo&gt;?
+	&lt;CipherData&gt;
+	    &lt;CipherValue&gt;?
+	        &lt;CipherReference URI?&gt;?
+	&lt;/CipherData&gt;
+	&lt;EncryptionProperties&gt;?
+        &lt;/EncryptedData&gt;	
+	</programlisting>
+    </figure>
+	<para>
+	     <example>
+		<title>Creating dynamic encrytion template.</title>
+		<programlisting><![CDATA[
+TODO
+		]]></programlisting>
+	    </example>
+	</para>
+    </sect1>

@@ -1,95 +1,353 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>nodeset</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library API Reference." href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="membuf" href="xmlsec-membuf.html">
-<link rel="NEXT" title="parser" href="xmlsec-parser.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
-</td>
-<td><table width="100%">
-<tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-membuf.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-parser.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
-<h1>
-<a name="XMLSEC-NODESET"></a>nodeset</h1>
-<div class="REFNAMEDIV">
-<a name="AEN6688"></a><h2>Name</h2>nodeset -- </div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN6691"></a><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+<HTML
+><HEAD
+><TITLE
+>nodeset</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library API Reference."
+HREF="xmlsec-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="membuf"
+HREF="xmlsec-membuf.html"><LINK
+REL="NEXT"
+TITLE="parser"
+HREF="xmlsec-parser.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-membuf.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-NODESET"
+></A
+>nodeset</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN6694"
+></A
+><H2
+>Name</H2
+>nodeset&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN6697"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
 
-enum        <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a>;
-enum        <a href="xmlsec-nodeset.html#XMLSECNODESETOP">xmlSecNodeSetOp</a>;
-struct      <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a>;
-int         (<a href="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK">*xmlSecNodeSetWalkCallback</a>)    (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlNodePtr</font> cur,
-                                             <font>xmlNodePtr</font> parent,
+enum        <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
+>xmlSecNodeSetType</A
+>;
+enum        <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+>;
+struct      <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+>;
+int         (<A
+HREF="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK"
+>*xmlSecNodeSetWalkCallback</A
+>)    (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> parent,
                                              void *data);
-<font>xmlSecNodeSetPtr</font> <a href="xmlsec-nodeset.html#XMLSECNODESETCREATE">xmlSecNodeSetCreate</a>        (<font>xmlDocPtr</font> doc,
-                                             <font>xmlNodeSetPtr</font> nodes,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a> type);
-void        <a href="xmlsec-nodeset.html#XMLSECNODESETDESTROY">xmlSecNodeSetDestroy</a>            (<font>xmlSecNodeSetPtr</font> nset);
-void        <a href="xmlsec-nodeset.html#XMLSECNODESETDOCDESTROY">xmlSecNodeSetDocDestroy</a>         (<font>xmlSecNodeSetPtr</font> nset);
-int         <a href="xmlsec-nodeset.html#XMLSECNODESETCONTAINS">xmlSecNodeSetContains</a>           (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlNodePtr</font> node,
-                                             <font>xmlNodePtr</font> parent);
-<font>xmlSecNodeSetPtr</font> <a href="xmlsec-nodeset.html#XMLSECNODESETADD">xmlSecNodeSetAdd</a>           (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlSecNodeSetPtr</font> newNSet,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETOP">xmlSecNodeSetOp</a> op);
-<font>xmlSecNodeSetPtr</font> <a href="xmlsec-nodeset.html#XMLSECNODESETADDLIST">xmlSecNodeSetAddList</a>       (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlSecNodeSetPtr</font> newNSet,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETOP">xmlSecNodeSetOp</a> op);
-<font>xmlSecNodeSetPtr</font> <a href="xmlsec-nodeset.html#XMLSECNODESETGETCHILDREN">xmlSecNodeSetGetChildren</a>   (<font>xmlDocPtr</font> doc,
-                                             const <font>xmlNodePtr</font> parent,
+<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETCREATE"
+>xmlSecNodeSetCreate</A
+>        (<GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             <GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> nodes,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
+>xmlSecNodeSetType</A
+> type);
+void        <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETDESTROY"
+>xmlSecNodeSetDestroy</A
+>            (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset);
+void        <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETDOCDESTROY"
+>xmlSecNodeSetDocDestroy</A
+>         (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset);
+int         <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETCONTAINS"
+>xmlSecNodeSetContains</A
+>           (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> node,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> parent);
+<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETADD"
+>xmlSecNodeSetAdd</A
+>           (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> newNSet,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+> op);
+<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETADDLIST"
+>xmlSecNodeSetAddList</A
+>       (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> newNSet,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+> op);
+<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETGETCHILDREN"
+>xmlSecNodeSetGetChildren</A
+>   (<GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             const <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> parent,
                                              int withComments,
                                              int invert);
-int         <a href="xmlsec-nodeset.html#XMLSECNODESETWALK">xmlSecNodeSetWalk</a>               (<font>xmlSecNodeSetPtr</font> nset,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK">xmlSecNodeSetWalkCallback</a> walkFunc,
+int         <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETWALK"
+>xmlSecNodeSetWalk</A
+>               (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK"
+>xmlSecNodeSetWalkCallback</A
+> walkFunc,
                                              void *data);
-int         <a href="xmlsec-nodeset.html#XMLSECNODESETDUMPTEXTNODES">xmlSecNodeSetDumpTextNodes</a>      (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlOutputBufferPtr</font> out);
-void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDebugDump</a>          (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>FILE</font> *output);</pre></td></tr></table>
-</div>
-<div class="REFSECT1">
-<a name="AEN6737"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN6740"></a><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN6742"></a><h3>
-<a name="XMLSECNODESETTYPE"></a>enum xmlSecNodeSetType</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
+int         <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETDUMPTEXTNODES"
+>xmlSecNodeSetDumpTextNodes</A
+>      (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</GTKDOCLINK
+> out);
+void        <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP"
+>xmlSecNodeSetDebugDump</A
+>          (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6743"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6746"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6748"
+></A
+><H3
+><A
+NAME="XMLSECNODESETTYPE"
+></A
+>enum xmlSecNodeSetType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
     xmlSecNodeSetNormal = 0,
     xmlSecNodeSetInvert,
     xmlSecNodeSetTree,
@@ -97,83 +355,261 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
     xmlSecNodeSetTreeInvert,
     xmlSecNodeSetTreeWithoutCommentsInvert,
     xmlSecNodeSetList
-} xmlSecNodeSetType;</pre></td></tr></table>
-<p>The basic nodes sets types.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6748"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetNormal</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	nodes set = nodes in the list.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetInvert</tt></td>
-<td width="80%" align="LEFT" valign="TOP">  	nodes set = all document nodes minus nodes in the list.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetTree</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 		nodes set = nodes in the list and all their subtress.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetTreeWithoutComments</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 		nodes set = nodes in the list and 
-			all their subtress but no comment nodes.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetTreeInvert</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	nodes set = all document nodes minus nodes in the 
-				list and all their subtress.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetTreeWithoutCommentsInvert</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	nodes set = all document nodes 
+} xmlSecNodeSetType;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The basic nodes sets types.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6754"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetNormal</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	nodes set = nodes in the list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetInvert</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  	nodes set = all document nodes minus nodes in the list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTree</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		nodes set = nodes in the list and all their subtress.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTreeWithoutComments</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		nodes set = nodes in the list and 
+			all their subtress but no comment nodes.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTreeInvert</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	nodes set = all document nodes minus nodes in the 
+				list and all their subtress.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTreeWithoutCommentsInvert</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	nodes set = all document nodes 
 				minus (nodes in the list and all their subtress 
-			plus all comment nodes).</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetList</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 		nodes set = all nodes in the chidren list of nodes sets.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6781"></a><h3>
-<a name="XMLSECNODESETOP"></a>enum xmlSecNodeSetOp</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
+			plus all comment nodes).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetList</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 		nodes set = all nodes in the chidren list of nodes sets.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6787"
+></A
+><H3
+><A
+NAME="XMLSECNODESETOP"
+></A
+>enum xmlSecNodeSetOp</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
     xmlSecNodeSetIntersection = 0,
     xmlSecNodeSetSubtraction,
     xmlSecNodeSetUnion
-} xmlSecNodeSetOp;</pre></td></tr></table>
-<p>The simple nodes sets operations.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6787"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetIntersection</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	intersection.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetSubtraction</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	subtraction.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetUnion</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	union.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6804"></a><h3>
-<a name="XMLSECNODESET"></a>struct xmlSecNodeSet</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecNodeSet {
+} xmlSecNodeSetOp;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The simple nodes sets operations.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6793"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetIntersection</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	intersection.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetSubtraction</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	subtraction.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetUnion</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 	union.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6810"
+></A
+><H3
+><A
+NAME="XMLSECNODESET"
+></A
+>struct xmlSecNodeSet</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecNodeSet {
     xmlNodeSetPtr	nodes;
     xmlDocPtr		doc;
     int			destroyDoc;
@@ -182,452 +618,1765 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
     xmlSecNodeSetPtr	next;
     xmlSecNodeSetPtr	prev;
     xmlSecNodeSetPtr	children;
-};</pre></td></tr></table>
-<p>The enchanced nodes set.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6810"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlNodeSetPtr</font> <tt class="STRUCTFIELD"><i>nodes</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the nodes list.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlDocPtr</font> <tt class="STRUCTFIELD"><i>doc</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the parent XML document.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>destroyDoc</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">			the flag: if set to 1 then <tt class="PARAMETER"><i>doc</i></tt> will
-			be destroyed when node set is destroyed.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a> <tt class="STRUCTFIELD"><i>type</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the nodes set type.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-nodeset.html#XMLSECNODESETOP">xmlSecNodeSetOp</a> <tt class="STRUCTFIELD"><i>op</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the operation type.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecNodeSetPtr</font> <tt class="STRUCTFIELD"><i>next</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the next nodes set.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecNodeSetPtr</font> <tt class="STRUCTFIELD"><i>prev</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the previous nodes set.</td>
-</tr>
-<tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecNodeSetPtr</font> <tt class="STRUCTFIELD"><i>children</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the children list (valid only if type 
-			equal to <font>xmlSecNodeSetList</font>).</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6856"></a><h3>
-<a name="XMLSECNODESETWALKCALLBACK"></a>xmlSecNodeSetWalkCallback ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecNodeSetWalkCallback)    (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlNodePtr</font> cur,
-                                             <font>xmlNodePtr</font> parent,
-                                             void *data);</pre></td></tr></table>
-<p>The callback function called once per each node in the nodes set.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6865"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>cur</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the pointer current XML node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>parent</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the pointer to the <tt class="PARAMETER"><i>cur</i></tt> parent node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 			the pointer to application specific data.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs
-an walk procedure should be interrupted.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6892"></a><h3>
-<a name="XMLSECNODESETCREATE"></a>xmlSecNodeSetCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetCreate        (<font>xmlDocPtr</font> doc,
-                                             <font>xmlNodeSetPtr</font> nodes,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a> type);</pre></td></tr></table>
-<p>Creates new nodes set.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6902"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>doc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to parent XML document.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nodes</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the list of nodes.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the nodes set type.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly allocated <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure 
-or NULL if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6924"></a><h3>
-<a name="XMLSECNODESETDESTROY"></a>xmlSecNodeSetDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNodeSetDestroy            (<font>xmlSecNodeSetPtr</font> nset);</pre></td></tr></table>
-<p>Destroys the nodes set.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6931"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
-</tr></tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6941"></a><h3>
-<a name="XMLSECNODESETDOCDESTROY"></a>xmlSecNodeSetDocDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNodeSetDocDestroy         (<font>xmlSecNodeSetPtr</font> nset);</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6947"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr></tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6956"></a><h3>
-<a name="XMLSECNODESETCONTAINS"></a>xmlSecNodeSetContains ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetContains           (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlNodePtr</font> node,
-                                             <font>xmlNodePtr</font> parent);</pre></td></tr></table>
-<p>Checks whether the <tt class="PARAMETER"><i>node</i></tt> is in the nodes set or not.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6966"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to XML node to check.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>parent</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <tt class="PARAMETER"><i>node</i></tt> parent node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">1 if the <tt class="PARAMETER"><i>node</i></tt> is in the nodes set <tt class="PARAMETER"><i>nset</i></tt>, 0 if it is not
-and a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6991"></a><h3>
-<a name="XMLSECNODESETADD"></a>xmlSecNodeSetAdd ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetAdd           (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlSecNodeSetPtr</font> newNSet,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETOP">xmlSecNodeSetOp</a> op);</pre></td></tr></table>
-<p>Adds <tt class="PARAMETER"><i>newNSet</i></tt> to the <tt class="PARAMETER"><i>nset</i></tt> using operation <tt class="PARAMETER"><i>op</i></tt>.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN7004"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to currrent nodes set (or NULL).</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>newNSet</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to new nodes set.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>op</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the operation type.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to combined nodes set or NULL if an error 
-occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN7025"></a><h3>
-<a name="XMLSECNODESETADDLIST"></a>xmlSecNodeSetAddList ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetAddList       (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlSecNodeSetPtr</font> newNSet,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETOP">xmlSecNodeSetOp</a> op);</pre></td></tr></table>
-<p>Adds <tt class="PARAMETER"><i>newNSet</i></tt> to the <tt class="PARAMETER"><i>nset</i></tt> as child using operation <tt class="PARAMETER"><i>op</i></tt>.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN7038"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to currrent nodes set (or NULL).</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>newNSet</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to new nodes set.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>op</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the operation type.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to combined nodes set or NULL if an error 
-occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN7059"></a><h3>
-<a name="XMLSECNODESETGETCHILDREN"></a>xmlSecNodeSetGetChildren ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetGetChildren   (<font>xmlDocPtr</font> doc,
-                                             const <font>xmlNodePtr</font> parent,
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The enchanced nodes set.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6816"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>nodes</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the nodes list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>doc</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the parent XML document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>destroyDoc</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>			the flag: if set to 1 then <TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+> will
+			be destroyed when node set is destroyed.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
+>xmlSecNodeSetType</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the nodes set type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>op</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the operation type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the next nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the previous nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>children</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the children list (valid only if type 
+			equal to <GTKDOCLINK
+HREF="XMLSECNODESETLIST"
+>xmlSecNodeSetList</GTKDOCLINK
+>).</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6862"
+></A
+><H3
+><A
+NAME="XMLSECNODESETWALKCALLBACK"
+></A
+>xmlSecNodeSetWalkCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecNodeSetWalkCallback)    (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> parent,
+                                             void *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The callback function called once per each node in the nodes set.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6871"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the pointer current XML node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the pointer to the <TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+> parent node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> 			the pointer to application specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value if an error occurs
+an walk procedure should be interrupted.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6898"
+></A
+><H3
+><A
+NAME="XMLSECNODESETCREATE"
+></A
+>xmlSecNodeSetCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> xmlSecNodeSetCreate        (<GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             <GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> nodes,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
+>xmlSecNodeSetType</A
+> type);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creates new nodes set.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6908"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to parent XML document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the list of nodes.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the nodes set type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>pointer to newly allocated <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure 
+or NULL if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6930"
+></A
+><H3
+><A
+NAME="XMLSECNODESETDESTROY"
+></A
+>xmlSecNodeSetDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecNodeSetDestroy            (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Destroys the nodes set.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6937"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6947"
+></A
+><H3
+><A
+NAME="XMLSECNODESETDOCDESTROY"
+></A
+>xmlSecNodeSetDocDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecNodeSetDocDestroy         (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6953"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6962"
+></A
+><H3
+><A
+NAME="XMLSECNODESETCONTAINS"
+></A
+>xmlSecNodeSetContains ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecNodeSetContains           (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> node,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> parent);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Checks whether the <TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+> is in the nodes set or not.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6972"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to XML node to check.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+> parent node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>1 if the <TT
+CLASS="PARAMETER"
+><I
+>node</I
+></TT
+> is in the nodes set <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>, 0 if it is not
+and a negative value if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6997"
+></A
+><H3
+><A
+NAME="XMLSECNODESETADD"
+></A
+>xmlSecNodeSetAdd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> xmlSecNodeSetAdd           (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> newNSet,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+> op);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds <TT
+CLASS="PARAMETER"
+><I
+>newNSet</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+> using operation <TT
+CLASS="PARAMETER"
+><I
+>op</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7010"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to currrent nodes set (or NULL).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>newNSet</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to new nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>op</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the operation type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to combined nodes set or NULL if an error 
+occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7031"
+></A
+><H3
+><A
+NAME="XMLSECNODESETADDLIST"
+></A
+>xmlSecNodeSetAddList ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> xmlSecNodeSetAddList       (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> newNSet,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+> op);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds <TT
+CLASS="PARAMETER"
+><I
+>newNSet</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+> as child using operation <TT
+CLASS="PARAMETER"
+><I
+>op</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7044"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to currrent nodes set (or NULL).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>newNSet</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to new nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>op</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the operation type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pointer to combined nodes set or NULL if an error 
+occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7065"
+></A
+><H3
+><A
+NAME="XMLSECNODESETGETCHILDREN"
+></A
+>xmlSecNodeSetGetChildren ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> xmlSecNodeSetGetChildren   (<GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             const <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> parent,
                                              int withComments,
-                                             int invert);</pre></td></tr></table>
-<p>Creates a new nodes set that contains:
- - if <tt class="PARAMETER"><i>withComments</i></tt> is not 0 and <tt class="PARAMETER"><i>invert</i></tt> is 0:
-   all nodes in the <tt class="PARAMETER"><i>parent</i></tt> subtree;
- - if <tt class="PARAMETER"><i>withComments</i></tt> is 0 and <tt class="PARAMETER"><i>invert</i></tt> is 0:
-   all nodes in the <tt class="PARAMETER"><i>parent</i></tt> subtree except comment nodes;
- - if <tt class="PARAMETER"><i>withComments</i></tt> is not 0 and <tt class="PARAMETER"><i>invert</i></tt> not is 0:
-   all nodes in the <tt class="PARAMETER"><i>doc</i></tt> except nodes in the <tt class="PARAMETER"><i>parent</i></tt> subtree;
- - if <tt class="PARAMETER"><i>withComments</i></tt> is 0 and <tt class="PARAMETER"><i>invert</i></tt> is 0:
-   all nodes in the <tt class="PARAMETER"><i>doc</i></tt> except nodes in the <tt class="PARAMETER"><i>parent</i></tt> subtree 
-   and comment nodes.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN7082"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>doc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML document.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>parent</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to parent XML node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>withComments</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the flag include  comments or not.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>invert</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the &quot;invert&quot; flag.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to the newly created <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure
-or NULL if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN7108"></a><h3>
-<a name="XMLSECNODESETWALK"></a>xmlSecNodeSetWalk ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetWalk               (<font>xmlSecNodeSetPtr</font> nset,
-                                             <a href="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK">xmlSecNodeSetWalkCallback</a> walkFunc,
-                                             void *data);</pre></td></tr></table>
-<p>Calls the function <tt class="PARAMETER"><i>walkFunc</i></tt> once per each node in the nodes set <tt class="PARAMETER"><i>nset</i></tt>.
-If the <tt class="PARAMETER"><i>walkFunc</i></tt> returns a negative value, then the walk procedure 
-is interrupted.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN7119"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>walkFunc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the callback functions.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the application specific data passed to the <tt class="PARAMETER"><i>walkFunc</i></tt>.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN7142"></a><h3>
-<a name="XMLSECNODESETDUMPTEXTNODES"></a>xmlSecNodeSetDumpTextNodes ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetDumpTextNodes      (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>xmlOutputBufferPtr</font> out);</pre></td></tr></table>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN7149"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>out</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN7166"></a><h3>
-<a name="XMLSECNODESETDEBUGDUMP"></a>xmlSecNodeSetDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNodeSetDebugDump          (<font>xmlSecNodeSetPtr</font> nset,
-                                             <font>FILE</font> *output);</pre></td></tr></table>
-<p>Prints information about <tt class="PARAMETER"><i>nset</i></tt> to the <tt class="PARAMETER"><i>output</i></tt>.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN7176"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>output</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to FILE.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-membuf.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-parser.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>membuf</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>parser</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr>
-<tr><td>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr>
-</table></td>
-</tr></table></body>
-</html>
+                                             int invert);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creates a new nodes set that contains:
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is not 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree;
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree except comment nodes;
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is not 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> not is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+> except nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree;
+ - if <TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+> is 0 and <TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+> is 0:
+   all nodes in the <TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+> except nodes in the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> subtree 
+   and comment nodes.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7088"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to an XML document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to parent XML node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>withComments</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the flag include  comments or not.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>invert</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the "invert" flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>pointer to the newly created <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure
+or NULL if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7114"
+></A
+><H3
+><A
+NAME="XMLSECNODESETWALK"
+></A
+>xmlSecNodeSetWalk ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecNodeSetWalk               (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <A
+HREF="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK"
+>xmlSecNodeSetWalkCallback</A
+> walkFunc,
+                                             void *data);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Calls the function <TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+> once per each node in the nodes set <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>.
+If the <TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+> returns a negative value, then the walk procedure 
+is interrupted.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7125"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the callback functions.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the application specific data passed to the <TT
+CLASS="PARAMETER"
+><I
+>walkFunc</I
+></TT
+>.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7148"
+></A
+><H3
+><A
+NAME="XMLSECNODESETDUMPTEXTNODES"
+></A
+>xmlSecNodeSetDumpTextNodes ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecNodeSetDumpTextNodes      (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</GTKDOCLINK
+> out);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7155"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>out</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7172"
+></A
+><H3
+><A
+NAME="XMLSECNODESETDEBUGDUMP"
+></A
+>xmlSecNodeSetDebugDump ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecNodeSetDebugDump          (<GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nset,
+                                             <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> *output);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Prints information about <TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7182"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nset</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-nodeset.html#XMLSECNODESET"
+>xmlSecNodeSet</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to FILE.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-membuf.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-parser.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>membuf</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>parser</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,309 +1,1210 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>crypto</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library for GnuTLS API Reference." href="xmlsec-gnutls-ref.html">
-<link rel="PREVIOUS" title="app" href="xmlsec-gnutls-app.html">
-<link rel="NEXT" title="XML Security Library for NSS API Reference." href="xmlsec-nss-ref.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
-</td>
-<td><table width="100%">
-<tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-gnutls-app.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
-<h1>
-<a name="XMLSEC-GNUTLS-CRYPTO"></a>crypto</h1>
-<div class="REFNAMEDIV">
-<a name="AEN14102"></a><h2>Name</h2>crypto -- </div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN14105"></a><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+<HTML
+><HEAD
+><TITLE
+>crypto</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library for GnuTLS API Reference."
+HREF="xmlsec-gnutls-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="app"
+HREF="xmlsec-gnutls-app.html"><LINK
+REL="NEXT"
+TITLE="XML Security Library for NSS API Reference."
+HREF="xmlsec-nss-ref.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-gnutls-app.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-gnutls-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-nss-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-GNUTLS-CRYPTO"
+></A
+>crypto</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN14108"
+></A
+><H2
+>Name</H2
+>crypto&nbsp;--&nbsp;</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN14111"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
 
-int         <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSINIT">xmlSecGnuTLSInit</a>                (void);
-int         <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSSHUTDOWN">xmlSecGnuTLSShutdown</a>            (void);
-int         <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSGENERATERANDOM">xmlSecGnuTLSGenerateRandom</a>      (<font>xmlSecBufferPtr</font> buffer,
-                                             <font>size_t</font> sizeBytes);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESID">xmlSecGnuTLSKeyDataAesId</a>
-<font>xmlSecKeyDataId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESGETKLASS">xmlSecGnuTLSKeyDataAesGetKlass</a>
+int         <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSINIT"
+>xmlSecGnuTLSInit</A
+>                (void);
+int         <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSSHUTDOWN"
+>xmlSecGnuTLSShutdown</A
+>            (void);
+int         <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSGENERATERANDOM"
+>xmlSecGnuTLSGenerateRandom</A
+>      (<GTKDOCLINK
+HREF="XMLSECBUFFERPTR"
+>xmlSecBufferPtr</GTKDOCLINK
+> buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> sizeBytes);
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESID"
+>xmlSecGnuTLSKeyDataAesId</A
+>
+<GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESGETKLASS"
+>xmlSecGnuTLSKeyDataAesGetKlass</A
+>
                                             (void);
-int         <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESSET">xmlSecGnuTLSKeyDataAesSet</a>       (<font>xmlSecKeyDataPtr</font> data,
+int         <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAAESSET"
+>xmlSecGnuTLSKeyDataAesSet</A
+>       (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              unsigned char *buf,
-                                             <font>size_t</font> bufSize);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCID">xmlSecGnuTLSTransformAes128CbcId</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS">xmlSecGnuTLSTransformAes128CbcGetKlass</a>
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bufSize);
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCID"
+>xmlSecGnuTLSTransformAes128CbcId</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS"
+>xmlSecGnuTLSTransformAes128CbcGetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCID">xmlSecGnuTLSTransformAes192CbcId</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS">xmlSecGnuTLSTransformAes192CbcGetKlass</a>
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCID"
+>xmlSecGnuTLSTransformAes192CbcId</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS"
+>xmlSecGnuTLSTransformAes192CbcGetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCID">xmlSecGnuTLSTransformAes256CbcId</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS">xmlSecGnuTLSTransformAes256CbcGetKlass</a>
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCID"
+>xmlSecGnuTLSTransformAes256CbcId</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS"
+>xmlSecGnuTLSTransformAes256CbcGetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESID">xmlSecGnuTLSKeyDataDesId</a>
-<font>xmlSecKeyDataId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESGETKLASS">xmlSecGnuTLSKeyDataDesGetKlass</a>
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESID"
+>xmlSecGnuTLSKeyDataDesId</A
+>
+<GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESGETKLASS"
+>xmlSecGnuTLSKeyDataDesGetKlass</A
+>
                                             (void);
-int         <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESSET">xmlSecGnuTLSKeyDataDesSet</a>       (<font>xmlSecKeyDataPtr</font> data,
+int         <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATADESSET"
+>xmlSecGnuTLSKeyDataDesSet</A
+>       (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              unsigned char *buf,
-                                             <font>size_t</font> bufSize);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCID">xmlSecGnuTLSTransformDes3CbcId</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS">xmlSecGnuTLSTransformDes3CbcGetKlass</a>
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bufSize);
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCID"
+>xmlSecGnuTLSTransformDes3CbcId</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS"
+>xmlSecGnuTLSTransformDes3CbcGetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACID">xmlSecGnuTLSKeyDataHmacId</a>
-<font>xmlSecKeyDataId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACGETKLASS">xmlSecGnuTLSKeyDataHmacGetKlass</a>
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACID"
+>xmlSecGnuTLSKeyDataHmacId</A
+>
+<GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACGETKLASS"
+>xmlSecGnuTLSKeyDataHmacGetKlass</A
+>
                                             (void);
-int         <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACSET">xmlSecGnuTLSKeyDataHmacSet</a>      (<font>xmlSecKeyDataPtr</font> data,
+int         <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSKEYDATAHMACSET"
+>xmlSecGnuTLSKeyDataHmacSet</A
+>      (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              unsigned char *buf,
-                                             <font>size_t</font> bufSize);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1ID">xmlSecGnuTLSTransformHmacSha1Id</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS">xmlSecGnuTLSTransformHmacSha1GetKlass</a>
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bufSize);
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1ID"
+>xmlSecGnuTLSTransformHmacSha1Id</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS"
+>xmlSecGnuTLSTransformHmacSha1GetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID">xmlSecGnuTLSTransformHmacRipemd160Id</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS">xmlSecGnuTLSTransformHmacRipemd160GetKlass</a>
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID"
+>xmlSecGnuTLSTransformHmacRipemd160Id</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS"
+>xmlSecGnuTLSTransformHmacRipemd160GetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5ID">xmlSecGnuTLSTransformHmacMd5Id</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS">xmlSecGnuTLSTransformHmacMd5GetKlass</a>
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5ID"
+>xmlSecGnuTLSTransformHmacMd5Id</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS"
+>xmlSecGnuTLSTransformHmacMd5GetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1ID">xmlSecGnuTLSTransformSha1Id</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1GETKLASS">xmlSecGnuTLSTransformSha1GetKlass</a>
-                                            (void);</pre></td></tr></table>
-</div>
-<div class="REFSECT1">
-<a name="AEN14155"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN14158"></a><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN14160"></a><h3>
-<a name="XMLSECGNUTLSINIT"></a>xmlSecGnuTLSInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSInit                (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14164"></a><h3>
-<a name="XMLSECGNUTLSSHUTDOWN"></a>xmlSecGnuTLSShutdown ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSShutdown            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14168"></a><h3>
-<a name="XMLSECGNUTLSGENERATERANDOM"></a>xmlSecGnuTLSGenerateRandom ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSGenerateRandom      (<font>xmlSecBufferPtr</font> buffer,
-                                             <font>size_t</font> sizeBytes);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14174"></a><h3>
-<a name="XMLSECGNUTLSKEYDATAAESID"></a>xmlSecGnuTLSKeyDataAesId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSKeyDataAesId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14178"></a><h3>
-<a name="XMLSECGNUTLSKEYDATAAESGETKLASS"></a>xmlSecGnuTLSKeyDataAesGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecGnuTLSKeyDataAesGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14183"></a><h3>
-<a name="XMLSECGNUTLSKEYDATAAESSET"></a>xmlSecGnuTLSKeyDataAesSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSKeyDataAesSet       (<font>xmlSecKeyDataPtr</font> data,
+#define     <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1ID"
+>xmlSecGnuTLSTransformSha1Id</A
+>
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> <A
+HREF="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1GETKLASS"
+>xmlSecGnuTLSTransformSha1GetKlass</A
+>
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN14161"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN14164"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14166"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSINIT"
+></A
+>xmlSecGnuTLSInit ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecGnuTLSInit                (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14170"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSSHUTDOWN"
+></A
+>xmlSecGnuTLSShutdown ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecGnuTLSShutdown            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14174"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSGENERATERANDOM"
+></A
+>xmlSecGnuTLSGenerateRandom ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecGnuTLSGenerateRandom      (<GTKDOCLINK
+HREF="XMLSECBUFFERPTR"
+>xmlSecBufferPtr</GTKDOCLINK
+> buffer,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> sizeBytes);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14180"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATAAESID"
+></A
+>xmlSecGnuTLSKeyDataAesId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSKeyDataAesId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14184"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATAAESGETKLASS"
+></A
+>xmlSecGnuTLSKeyDataAesGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecGnuTLSKeyDataAesGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14189"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATAAESSET"
+></A
+>xmlSecGnuTLSKeyDataAesSet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecGnuTLSKeyDataAesSet       (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              unsigned char *buf,
-                                             <font>size_t</font> bufSize);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14189"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMAES128CBCID"></a>xmlSecGnuTLSTransformAes128CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformAes128CbcId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14193"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS"></a>xmlSecGnuTLSTransformAes128CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformAes128CbcGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14198"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMAES192CBCID"></a>xmlSecGnuTLSTransformAes192CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformAes192CbcId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14202"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS"></a>xmlSecGnuTLSTransformAes192CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformAes192CbcGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14207"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMAES256CBCID"></a>xmlSecGnuTLSTransformAes256CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformAes256CbcId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14211"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS"></a>xmlSecGnuTLSTransformAes256CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformAes256CbcGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14216"></a><h3>
-<a name="XMLSECGNUTLSKEYDATADESID"></a>xmlSecGnuTLSKeyDataDesId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSKeyDataDesId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14220"></a><h3>
-<a name="XMLSECGNUTLSKEYDATADESGETKLASS"></a>xmlSecGnuTLSKeyDataDesGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecGnuTLSKeyDataDesGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14225"></a><h3>
-<a name="XMLSECGNUTLSKEYDATADESSET"></a>xmlSecGnuTLSKeyDataDesSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSKeyDataDesSet       (<font>xmlSecKeyDataPtr</font> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bufSize);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14195"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMAES128CBCID"
+></A
+>xmlSecGnuTLSTransformAes128CbcId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformAes128CbcId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14199"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMAES128CBCGETKLASS"
+></A
+>xmlSecGnuTLSTransformAes128CbcGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformAes128CbcGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14204"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMAES192CBCID"
+></A
+>xmlSecGnuTLSTransformAes192CbcId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformAes192CbcId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14208"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMAES192CBCGETKLASS"
+></A
+>xmlSecGnuTLSTransformAes192CbcGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformAes192CbcGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14213"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMAES256CBCID"
+></A
+>xmlSecGnuTLSTransformAes256CbcId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformAes256CbcId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14217"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMAES256CBCGETKLASS"
+></A
+>xmlSecGnuTLSTransformAes256CbcGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformAes256CbcGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14222"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATADESID"
+></A
+>xmlSecGnuTLSKeyDataDesId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSKeyDataDesId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14226"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATADESGETKLASS"
+></A
+>xmlSecGnuTLSKeyDataDesGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecGnuTLSKeyDataDesGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14231"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATADESSET"
+></A
+>xmlSecGnuTLSKeyDataDesSet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecGnuTLSKeyDataDesSet       (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              unsigned char *buf,
-                                             <font>size_t</font> bufSize);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14231"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMDES3CBCID"></a>xmlSecGnuTLSTransformDes3CbcId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformDes3CbcId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14235"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS"></a>xmlSecGnuTLSTransformDes3CbcGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformDes3CbcGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14240"></a><h3>
-<a name="XMLSECGNUTLSKEYDATAHMACID"></a>xmlSecGnuTLSKeyDataHmacId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSKeyDataHmacId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14244"></a><h3>
-<a name="XMLSECGNUTLSKEYDATAHMACGETKLASS"></a>xmlSecGnuTLSKeyDataHmacGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecGnuTLSKeyDataHmacGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14249"></a><h3>
-<a name="XMLSECGNUTLSKEYDATAHMACSET"></a>xmlSecGnuTLSKeyDataHmacSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSKeyDataHmacSet      (<font>xmlSecKeyDataPtr</font> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bufSize);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14237"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMDES3CBCID"
+></A
+>xmlSecGnuTLSTransformDes3CbcId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformDes3CbcId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14241"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMDES3CBCGETKLASS"
+></A
+>xmlSecGnuTLSTransformDes3CbcGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformDes3CbcGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14246"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATAHMACID"
+></A
+>xmlSecGnuTLSKeyDataHmacId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSKeyDataHmacId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14250"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATAHMACGETKLASS"
+></A
+>xmlSecGnuTLSKeyDataHmacGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecGnuTLSKeyDataHmacGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14255"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSKEYDATAHMACSET"
+></A
+>xmlSecGnuTLSKeyDataHmacSet ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecGnuTLSKeyDataHmacSet      (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              unsigned char *buf,
-                                             <font>size_t</font> bufSize);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14255"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMHMACSHA1ID"></a>xmlSecGnuTLSTransformHmacSha1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformHmacSha1Id</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14259"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS"></a>xmlSecGnuTLSTransformHmacSha1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformHmacSha1GetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14264"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID"></a>xmlSecGnuTLSTransformHmacRipemd160Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformHmacRipemd160Id</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14268"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS"></a>xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformHmacRipemd160GetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14273"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMHMACMD5ID"></a>xmlSecGnuTLSTransformHmacMd5Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformHmacMd5Id</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14277"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS"></a>xmlSecGnuTLSTransformHmacMd5GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformHmacMd5GetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14282"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMSHA1ID"></a>xmlSecGnuTLSTransformSha1Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGnuTLSTransformSha1Id</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN14286"></a><h3>
-<a name="XMLSECGNUTLSTRANSFORMSHA1GETKLASS"></a>xmlSecGnuTLSTransformSha1GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecGnuTLSTransformSha1GetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-gnutls-app.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>app</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library for NSS API Reference.</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr>
-<tr><td>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr>
-</table></td>
-</tr></table></body>
-</html>
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bufSize);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14261"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMHMACSHA1ID"
+></A
+>xmlSecGnuTLSTransformHmacSha1Id</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformHmacSha1Id</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14265"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS"
+></A
+>xmlSecGnuTLSTransformHmacSha1GetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformHmacSha1GetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14270"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMHMACRIPEMD160ID"
+></A
+>xmlSecGnuTLSTransformHmacRipemd160Id</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformHmacRipemd160Id</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14274"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMHMACRIPEMD160GETKLASS"
+></A
+>xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformHmacRipemd160GetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14279"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMHMACMD5ID"
+></A
+>xmlSecGnuTLSTransformHmacMd5Id</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformHmacMd5Id</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14283"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMHMACMD5GETKLASS"
+></A
+>xmlSecGnuTLSTransformHmacMd5GetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformHmacMd5GetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14288"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMSHA1ID"
+></A
+>xmlSecGnuTLSTransformSha1Id</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGnuTLSTransformSha1Id</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14292"
+></A
+><H3
+><A
+NAME="XMLSECGNUTLSTRANSFORMSHA1GETKLASS"
+></A
+>xmlSecGnuTLSTransformSha1GetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMID"
+>xmlSecTransformId</GTKDOCLINK
+> xmlSecGnuTLSTransformSha1GetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-gnutls-app.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-gnutls-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-nss-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>app</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>XML Security Library for NSS API Reference.</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -9,11 +9,14 @@ SGML_CATALOG_FILES=/usr/share/sgml/docbook/sgml-dtd-3.0-1.0-8/catalog:/usr/share
 # because gtkdoc does not understand some C features
 #
 DOC_SOURCE_DIR=./code
-DOC_SOURCE_FILES=$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
-		 $(shell find $(INCLUDE_DIR) -name '*.h' -print )
+DOC_SOURCE_FILES=\
+	$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
+	 $(shell find $(INCLUDE_DIR) -name '*.h' -print )
 
 EXAMPLES_SOURCE_DIR=../../examples
-EXAMPLES_SOURCE_FILES=$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print)
+EXAMPLES_SOURCE_FILES=\
+	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
+	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print) 
 
 all: sgml html clean-sources
 
@@ -83,11 +86,12 @@ example_sources:
 	@mkdir -p examples
 	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
 	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
-	    echo Converting $$i to $$file_name.sgml ...; \
+	    file_ext=`echo $$i | sed 's#.*/##' | sed 's#.*\.##'`; \
+	    echo Converting $$file_name.$$file_ext to $$file_name.sgml ...; \
 	    file_title=`cat $$i | grep 'XML Security Library example: ' | sed 's#^.*: *##'`; \
 	    echo "<refentry id=\"xmlsec-example-$$file_name\">" > \
 		examples/$$file_name.sgml; \
-	    echo "<refnamediv><refname>$$file_name.c</refname><refpurpose>$$file_title</refpurpose></refnamediv>" >> \
+	    echo "<refnamediv><refname>$$file_name.$$file_ext</refname><refpurpose>$$file_title</refpurpose></refnamediv>" >> \
 		examples/$$file_name.sgml; \
 	    echo "<refsect1><title>Example: $$file_title</title><para><informalexample><programlisting>" >> \
 		examples/$$file_name.sgml; \

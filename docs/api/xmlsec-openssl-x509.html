@@ -1,249 +1,1024 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>x509.h</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
-">
-<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
-<link rel="PREVIOUS" title="crypto" href="xmlsec-openssl-crypto.html">
-<link rel="NEXT" title="XML Security Library for GnuTLS API Reference." href="xmlsec-gnutls-ref.html">
-</head>
-<body><table witdh="100%"><tr>
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-</ul>
-<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
-</td>
-<td><table width="100%">
-<tr><td valign="top" align="left" id="xmlsecContent">
-<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-openssl-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-</table></div>
-<h1>
-<a name="XMLSEC-OPENSSL-X509"></a>x509.h</h1>
-<div class="REFNAMEDIV">
-<a name="AEN13834"></a><h2>Name</h2>x509.h -- The X509 certificates functions.</div>
-<div class="REFSYNOPSISDIV">
-<a name="AEN13837"></a><h2>Synopsis</h2>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+<HTML
+><HEAD
+><TITLE
+>x509.h</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library for OpenSLL API Reference."
+HREF="xmlsec-openssl-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="crypto"
+HREF="xmlsec-openssl-crypto.html"><LINK
+REL="NEXT"
+TITLE="XML Security Library for GnuTLS API Reference."
+HREF="xmlsec-gnutls-ref.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-openssl-crypto.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-openssl-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-gnutls-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-OPENSSL-X509"
+></A
+>x509.h</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN13840"
+></A
+><H2
+>Name</H2
+>x509.h&nbsp;--&nbsp;The X509 certificates functions.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN13843"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
 
-#define     <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ID">xmlSecOpenSSLKeyDataX509Id</a>
-<font>xmlSecKeyDataId</font> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKLASS">xmlSecOpenSSLKeyDataX509GetKlass</a>
+#define     <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ID"
+>xmlSecOpenSSLKeyDataX509Id</A
+>
+<GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKLASS"
+>xmlSecOpenSSLKeyDataX509GetKlass</A
+>
                                             (void);
-<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKEYCERT">xmlSecOpenSSLKeyDataX509GetKeyCert</a>
-                                            (<font>xmlSecKeyDataPtr</font> data);
-int         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT">xmlSecOpenSSLKeyDataX509AdoptKeyCert</a>
-                                            (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>X509</font> *cert);
-int         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCERT">xmlSecOpenSSLKeyDataX509AdoptCert</a>
-                                            (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>X509</font> *cert);
-<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERT">xmlSecOpenSSLKeyDataX509GetCert</a> (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>size_t</font> pos);
-<font>size_t</font>      <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERTSSIZE">xmlSecOpenSSLKeyDataX509GetCertsSize</a>
-                                            (<font>xmlSecKeyDataPtr</font> data);
-int         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCRL">xmlSecOpenSSLKeyDataX509AdoptCrl</a>
-                                            (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>X509_CRL</font> *crl);
-<font>X509_CRL</font>*   <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRL">xmlSecOpenSSLKeyDataX509GetCrl</a>  (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>size_t</font> pos);
-<font>size_t</font>      <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRLSSIZE">xmlSecOpenSSLKeyDataX509GetCrlsSize</a>
-                                            (<font>xmlSecKeyDataPtr</font> data);
-#define     <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTID">xmlSecOpenSSLKeyDataRawX509CertId</a>
-<font>xmlSecKeyDataId</font> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS">xmlSecOpenSSLKeyDataRawX509CertGetKlass</a>
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETKEYCERT"
+>xmlSecOpenSSLKeyDataX509GetKeyCert</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);
+int         <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"
+>xmlSecOpenSSLKeyDataX509AdoptKeyCert</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);
+int         <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCERT"
+>xmlSecOpenSSLKeyDataX509AdoptCert</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERT"
+>xmlSecOpenSSLKeyDataX509GetCert</A
+> (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);
+<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>      <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"
+>xmlSecOpenSSLKeyDataX509GetCertsSize</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);
+int         <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCRL"
+>xmlSecOpenSSLKeyDataX509AdoptCrl</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+> *crl);
+<GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+>*   <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRL"
+>xmlSecOpenSSLKeyDataX509GetCrl</A
+>  (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);
+<GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>      <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"
+>xmlSecOpenSSLKeyDataX509GetCrlsSize</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);
+#define     <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTID"
+>xmlSecOpenSSLKeyDataRawX509CertId</A
+>
+<GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"
+>xmlSecOpenSSLKeyDataRawX509CertGetKlass</A
+>
                                             (void);
-#define     <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREID">xmlSecOpenSSLX509StoreId</a>
-<font>xmlSecKeyDataStoreId</font> <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREGETKLASS">xmlSecOpenSSLX509StoreGetKlass</a>
+#define     <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREID"
+>xmlSecOpenSSLX509StoreId</A
+>
+<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREGETKLASS"
+>xmlSecOpenSSLX509StoreGetKlass</A
+>
                                             (void);
-<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREFINDCERT">xmlSecOpenSSLX509StoreFindCert</a>  (<font>xmlSecKeyDataStorePtr</font> store,
-                                             <font>xmlChar</font> *subjectName,
-                                             <font>xmlChar</font> *issuerName,
-                                             <font>xmlChar</font> *issuerSerial,
-                                             <font>xmlChar</font> *ski,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);
-<font>X509</font>*       <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREVERIFY">xmlSecOpenSSLX509StoreVerify</a>    (<font>xmlSecKeyDataStorePtr</font> store);
-int         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADOPTCERT">xmlSecOpenSSLX509StoreAdoptCert</a> (<font>xmlSecKeyDataStorePtr</font> store,
-                                             <font>X509</font> *cert,
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREFINDCERT"
+>xmlSecOpenSSLX509StoreFindCert</A
+>  (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *subjectName,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *issuerName,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *issuerSerial,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *ski,
+                                             <A
+HREF="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"
+>xmlSecKeyInfoCtx</A
+> *keyInfoCtx);
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREVERIFY"
+>xmlSecOpenSSLX509StoreVerify</A
+>    (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);
+int         <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADOPTCERT"
+>xmlSecOpenSSLX509StoreAdoptCert</A
+> (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert,
                                              int trusted);
-int         <a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADDCERTSPATH">xmlSecOpenSSLX509StoreAddCertsPath</a>
-                                            (<font>xmlSecKeyDataStorePtr</font> store,
-                                             const char *path);</pre></td></tr></table>
-</div>
-<div class="REFSECT1">
-<a name="AEN13891"></a><h2>Description</h2>
-<p></p>
-</div>
-<div class="REFSECT1">
-<a name="AEN13894"></a><h2>Details</h2>
-<div class="REFSECT2">
-<a name="AEN13896"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509ID"></a>xmlSecOpenSSLKeyDataX509Id</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataX509Id</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13900"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509GETKLASS"></a>xmlSecOpenSSLKeyDataX509GetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataX509GetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13905"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509GETKEYCERT"></a>xmlSecOpenSSLKeyDataX509GetKeyCert ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLKeyDataX509GetKeyCert
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13911"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"></a>xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataX509AdoptKeyCert
-                                            (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>X509</font> *cert);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13917"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509ADOPTCERT"></a>xmlSecOpenSSLKeyDataX509AdoptCert ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataX509AdoptCert
-                                            (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>X509</font> *cert);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13923"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509GETCERT"></a>xmlSecOpenSSLKeyDataX509GetCert ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLKeyDataX509GetCert (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>size_t</font> pos);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13930"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"></a>xmlSecOpenSSLKeyDataX509GetCertsSize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecOpenSSLKeyDataX509GetCertsSize
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13936"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509ADOPTCRL"></a>xmlSecOpenSSLKeyDataX509AdoptCrl ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataX509AdoptCrl
-                                            (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>X509_CRL</font> *crl);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13942"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509GETCRL"></a>xmlSecOpenSSLKeyDataX509GetCrl ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>X509_CRL</font>*   xmlSecOpenSSLKeyDataX509GetCrl  (<font>xmlSecKeyDataPtr</font> data,
-                                             <font>size_t</font> pos);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13949"></a><h3>
-<a name="XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"></a>xmlSecOpenSSLKeyDataX509GetCrlsSize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecOpenSSLKeyDataX509GetCrlsSize
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13955"></a><h3>
-<a name="XMLSECOPENSSLKEYDATARAWX509CERTID"></a>xmlSecOpenSSLKeyDataRawX509CertId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataRawX509CertId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13959"></a><h3>
-<a name="XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"></a>xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataRawX509CertGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13964"></a><h3>
-<a name="XMLSECOPENSSLX509STOREID"></a>xmlSecOpenSSLX509StoreId</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLX509StoreId</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13968"></a><h3>
-<a name="XMLSECOPENSSLX509STOREGETKLASS"></a>xmlSecOpenSSLX509StoreGetKlass ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStoreId</font> xmlSecOpenSSLX509StoreGetKlass
-                                            (void);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13973"></a><h3>
-<a name="XMLSECOPENSSLX509STOREFINDCERT"></a>xmlSecOpenSSLX509StoreFindCert ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLX509StoreFindCert  (<font>xmlSecKeyDataStorePtr</font> store,
-                                             <font>xmlChar</font> *subjectName,
-                                             <font>xmlChar</font> *issuerName,
-                                             <font>xmlChar</font> *issuerSerial,
-                                             <font>xmlChar</font> *ski,
-                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> *keyInfoCtx);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13984"></a><h3>
-<a name="XMLSECOPENSSLX509STOREVERIFY"></a>xmlSecOpenSSLX509StoreVerify ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>X509</font>*       xmlSecOpenSSLX509StoreVerify    (<font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13990"></a><h3>
-<a name="XMLSECOPENSSLX509STOREADOPTCERT"></a>xmlSecOpenSSLX509StoreAdoptCert ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLX509StoreAdoptCert (<font>xmlSecKeyDataStorePtr</font> store,
-                                             <font>X509</font> *cert,
-                                             int trusted);</pre></td></tr></table>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN13996"></a><h3>
-<a name="XMLSECOPENSSLX509STOREADDCERTSPATH"></a>xmlSecOpenSSLX509StoreAddCertsPath ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLX509StoreAddCertsPath
-                                            (<font>xmlSecKeyDataStorePtr</font> store,
-                                             const char *path);</pre></td></tr></table>
-</div>
-</div>
-<div class="NAVFOOTER">
-<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
-<tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-openssl-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
-<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
-</tr>
-<tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>crypto</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library for GnuTLS API Reference.</b></font></td>
-</tr>
-</table>
-</div>
-</td></tr>
-<tr><td>
-<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
-</td></tr>
-</table></td>
-</tr></table></body>
-</html>
+int         <A
+HREF="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREADDCERTSPATH"
+>xmlSecOpenSSLX509StoreAddCertsPath</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const char *path);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN13897"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN13900"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13902"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509ID"
+></A
+>xmlSecOpenSSLKeyDataX509Id</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecOpenSSLKeyDataX509Id</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13906"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETKLASS"
+></A
+>xmlSecOpenSSLKeyDataX509GetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecOpenSSLKeyDataX509GetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13911"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETKEYCERT"
+></A
+>xmlSecOpenSSLKeyDataX509GetKeyCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLKeyDataX509GetKeyCert
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13917"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"
+></A
+>xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecOpenSSLKeyDataX509AdoptKeyCert
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13923"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509ADOPTCERT"
+></A
+>xmlSecOpenSSLKeyDataX509AdoptCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecOpenSSLKeyDataX509AdoptCert
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13929"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETCERT"
+></A
+>xmlSecOpenSSLKeyDataX509GetCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLKeyDataX509GetCert (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13936"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"
+></A
+>xmlSecOpenSSLKeyDataX509GetCertsSize ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>      xmlSecOpenSSLKeyDataX509GetCertsSize
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13942"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509ADOPTCRL"
+></A
+>xmlSecOpenSSLKeyDataX509AdoptCrl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecOpenSSLKeyDataX509AdoptCrl
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+> *crl);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13948"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETCRL"
+></A
+>xmlSecOpenSSLKeyDataX509GetCrl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+>*   xmlSecOpenSSLKeyDataX509GetCrl  (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13955"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"
+></A
+>xmlSecOpenSSLKeyDataX509GetCrlsSize ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>      xmlSecOpenSSLKeyDataX509GetCrlsSize
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13961"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATARAWX509CERTID"
+></A
+>xmlSecOpenSSLKeyDataRawX509CertId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecOpenSSLKeyDataRawX509CertId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13965"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"
+></A
+>xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecOpenSSLKeyDataRawX509CertGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13970"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREID"
+></A
+>xmlSecOpenSSLX509StoreId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecOpenSSLX509StoreId</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13974"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREGETKLASS"
+></A
+>xmlSecOpenSSLX509StoreGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> xmlSecOpenSSLX509StoreGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13979"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREFINDCERT"
+></A
+>xmlSecOpenSSLX509StoreFindCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLX509StoreFindCert  (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *subjectName,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *issuerName,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *issuerSerial,
+                                             <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *ski,
+                                             <A
+HREF="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"
+>xmlSecKeyInfoCtx</A
+> *keyInfoCtx);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13990"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREVERIFY"
+></A
+>xmlSecOpenSSLX509StoreVerify ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLX509StoreVerify    (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN13996"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREADOPTCERT"
+></A
+>xmlSecOpenSSLX509StoreAdoptCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecOpenSSLX509StoreAdoptCert (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert,
+                                             int trusted);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN14002"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREADDCERTSPATH"
+></A
+>xmlSecOpenSSLX509StoreAddCertsPath ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecOpenSSLX509StoreAddCertsPath
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const char *path);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-openssl-crypto.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-openssl-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-gnutls-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>crypto</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>XML Security Library for GnuTLS API Reference.</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

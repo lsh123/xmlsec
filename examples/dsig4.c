@@ -1,5 +1,12 @@
 /** 
  * XML Security Library example: Verifying a file.
+ *
+ * Verifies a file using a key from PEM file.
+ * 
+ * Usage: 
+ *	dsig4 <signed-file> <pem-key> 
+ * Example:
+ *	./dsig4 ./dsig1-res.xml rsapub.pem
  * 
  * See Copyright for the status of this software.
  * 
@@ -20,130 +27,165 @@
 #include <xmlsec/xmltree.h>
 
 
-int main(int argc, char **argv) {
-    xmlSecKeysMngrPtr keysMngr = NULL; 
-    xmlSecDSigCtxPtr dsigCtx = NULL;
-    xmlDocPtr doc = NULL;
-    xmlSecDSigResultPtr result = NULL;
-    int ret = -1;
-    int rnd_seed = 0;
-    xmlNodePtr signNode;
-            
-    if(argc < 2) {
-	fprintf(stderr, "Error: missed required parameter. Usage: %s <xml-file>\n", argv[0]);
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+
+#ifndef XMLSEC_NO_XSLT
+#include <libxslt/xslt.h>
+#endif /* XMLSEC_NO_XSLT */
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keysmngr.h>
+#include <xmlsec/xmldsig.h>
+
+#ifdef XMLSEC_CRYPTO_OPENSSL
+#include <xmlsec/openssl/app.h>
+#include <xmlsec/openssl/symbols.h>
+#else /* XMLSEC_CRYPTO_OPENSSL */
+#ifdef XMLSEC_CRYPTO_GNUTLS
+#include <xmlsec/gnutls/app.h>
+#include <xmlsec/gnutls/symbols.h>
+#else /* XMLSEC_CRYPTO_GNUTLS */
+#ifdef XMLSEC_CRYPTO_NSS
+#include <xmlsec/nss/app.h>
+#include <xmlsec/nss/symbols.h>
+#else /* XMLSEC_CRYPTO_NSS */
+#error No Crypto library defined
+#endif /* XMLSEC_CRYPTO_GNUTLS */
+#endif /* XMLSEC_CRYPTO_NSS */
+#endif /* XMLSEC_CRYPTO_OPENSSL */
+
+static int verify_file(const char* xml_file, const char* key_file);
+
+int 
+main(int argc, char **argv) {
+    assert(argv);
+
+    if(argc != 3) {
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
 	return(1);
     }
-    
-    /** 
-     * Init OpenSSL
-     */    
-    while (RAND_status() != 1) {
-	RAND_seed(&rnd_seed, sizeof(rnd_seed));
-    }
-    
-    /*
-     * Init libxml
-     */     
+
+    /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
+    }
 
-    /*
-     * Init xmlsec
-     */
-    xmlSecInit();    
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) < 0) {
+	fprintf(stderr, "Error: crypto initialization failed.\n");
+	return(-1);
+    }
 
-    /** 
-     * Create Keys managers
-     */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager\n");
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() < 0) {
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	return(-1);
+    }
+
+    if(verify_file(argv[1], argv[2]) < 0) {
+	return(-1);
+    }    
+    
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+static int 
+verify_file(const char* xml_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(xml_file);
+    assert(key_file);
+
+    /* load file */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
 	goto done;	
     }
 
-    dsigCtx = xmlSecDSigCtxCreate(keysMngr);
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-    	fprintf(stderr,"Error: failed to create dsig context\n");
-	goto done; 
-    }
-                
-
-    /* 
-     * build an XML tree from a the file; we need to add default
-     * attributes and resolve all character and entities references
-     */
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-
-    /** 
-     * Load doc 
-     */
-    doc = xmlParseFile(argv[1]);
-    if (doc == NULL) {
-	fprintf(stderr, "Error	: unable to parse file \"%s\"\n", argv[1]);
-	goto done;
-    }
-    
-    /*
-     * Check the document is of the right kind
-     */    
-    if(xmlDocGetRootElement(doc) == NULL) {
-        fprintf(stderr,"Error: empty document for file \"%s\"\n", argv[1]);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
 
-    /**
-     * Verify It!
-     */ 
-    signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecDSigNs);
-    if(signNode == NULL) {
-        fprintf(stderr,"Error: failed to find Signature node\n");
+    /* load public key */
+    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
+    if(dsigCtx->signKey == NULL) {
+        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
 	goto done;
+    }
+
+    /* Verify signature */
+    if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
+        fprintf(stderr,"Error: signature verify\n");
+	goto done;
+    }
+        
+    /* print verification result to stdout */
+    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
+	fprintf(stdout, "Signature is OK\n");
+    } else {
+	fprintf(stdout, "Signature is INVALID\n");
     }    
-     
-    ret = xmlSecDSigValidate(dsigCtx, NULL, NULL, signNode, &result);
-    if(ret < 0) {
-    	fprintf(stderr,"Error: verification failed\n");
-	goto done; 
-    }     
-    
-    /*
-     * Print out result     
-     */
-    xmlSecDSigResultDebugDump(result, stdout); 
 
-done:
-    /*
-     * Cleanup
-     */
-    if(result != NULL) {
-	xmlSecDSigResultDestroy(result);
-    }
-    if(dsigCtx != NULL) { 
+    /* success */
+    res = 0;
+
+done:    
+    if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
+    
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
-    
-    if(keysMngr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keysMngr);
-    }
-    
-    xmlSecShutdown();
-    
-    /* 
-     * Shutdown libxml
-     */
-    xmlCleanupParser();
-    
-    /* 
-     * Shutdown OpenSSL
-     */
-    RAND_cleanup();
-    ERR_clear_error();
-
-    return((ret >= 0) ? 0 : 1);
+    return(res);
 }
+
 

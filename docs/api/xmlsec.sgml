@@ -1,45 +1,53 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-<!ENTITY xmlsec-base64 SYSTEM "sgml/base64.sgml">
-<!ENTITY xmlsec-buffer SYSTEM "sgml/buffer.sgml">
-<!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">
-<!ENTITY xmlsec-io SYSTEM "sgml/io.sgml">
-<!ENTITY xmlsec-keyinfo SYSTEM "sgml/keyinfo.sgml">
-<!ENTITY xmlsec-keysdata SYSTEM "sgml/keysdata.sgml">
-<!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
-<!ENTITY xmlsec-keysmngr SYSTEM "sgml/keysmngr.sgml">
-<!ENTITY xmlsec-list SYSTEM "sgml/list.sgml">
-<!ENTITY xmlsec-membuf SYSTEM "sgml/membuf.sgml">
-<!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
-<!ENTITY xmlsec-parser SYSTEM "sgml/parser.sgml">
-<!ENTITY xmlsec-templates SYSTEM "sgml/templates.sgml">
-<!ENTITY xmlsec-transforms SYSTEM "sgml/transforms.sgml">
-<!ENTITY xmlsec-version SYSTEM "sgml/version.sgml">
-<!ENTITY xmlsec-xmldsig SYSTEM "sgml/xmldsig.sgml">
-<!ENTITY xmlsec-xmlenc SYSTEM "sgml/xmlenc.sgml">
-<!ENTITY xmlsec-xmlsec SYSTEM "sgml/xmlsec.sgml">
-<!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
+<!ENTITY chapter-init-and-shutdown 	SYSTEM "chapters/init-and-shutdown.sgml">
+<!ENTITY chapter-sign-and-encrypt 	SYSTEM "chapters/sign-and-encrypt.sgml">
+<!ENTITY chapter-verify-and-decrypt 	SYSTEM "chapters/verify-and-decrypt.sgml">
+<!ENTITY chapter-creating-templates 	SYSTEM "chapters/creating-templates.sgml">
+<!ENTITY chapter-using-keysmngr 	SYSTEM "chapters/using-keysmngr.sgml">
 
-<!ENTITY xmlsec-openssl-app SYSTEM "sgml/openssl/app.sgml">
-<!ENTITY xmlsec-openssl-bn SYSTEM "sgml/openssl/bn.sgml">
-<!ENTITY xmlsec-openssl-crypto SYSTEM "sgml/openssl/crypto.sgml">
-<!ENTITY xmlsec-openssl-x509 SYSTEM "sgml/openssl/x509.sgml">
-<!ENTITY xmlsec-openssl-symbols SYSTEM "sgml/openssl/symbols.sgml">
+<!ENTITY xmlsec-base64 			SYSTEM "sgml/base64.sgml">
+<!ENTITY xmlsec-buffer 			SYSTEM "sgml/buffer.sgml">
+<!ENTITY xmlsec-errors 			SYSTEM "sgml/errors.sgml">
+<!ENTITY xmlsec-io 			SYSTEM "sgml/io.sgml">
+<!ENTITY xmlsec-keyinfo 		SYSTEM "sgml/keyinfo.sgml">
+<!ENTITY xmlsec-keysdata 		SYSTEM "sgml/keysdata.sgml">
+<!ENTITY xmlsec-keys 			SYSTEM "sgml/keys.sgml">
+<!ENTITY xmlsec-keysmngr 		SYSTEM "sgml/keysmngr.sgml">
+<!ENTITY xmlsec-list 			SYSTEM "sgml/list.sgml">
+<!ENTITY xmlsec-membuf 			SYSTEM "sgml/membuf.sgml">
+<!ENTITY xmlsec-nodeset 		SYSTEM "sgml/nodeset.sgml">
+<!ENTITY xmlsec-parser 			SYSTEM "sgml/parser.sgml">
+<!ENTITY xmlsec-templates 		SYSTEM "sgml/templates.sgml">
+<!ENTITY xmlsec-transforms 		SYSTEM "sgml/transforms.sgml">
+<!ENTITY xmlsec-version 		SYSTEM "sgml/version.sgml">
+<!ENTITY xmlsec-xmldsig 		SYSTEM "sgml/xmldsig.sgml">
+<!ENTITY xmlsec-xmlenc 			SYSTEM "sgml/xmlenc.sgml">
+<!ENTITY xmlsec-xmlsec 			SYSTEM "sgml/xmlsec.sgml">
+<!ENTITY xmlsec-xmltree 		SYSTEM "sgml/xmltree.sgml">
 
-<!ENTITY xmlsec-gnutls-app SYSTEM "sgml/gnutls/app.sgml">
-<!ENTITY xmlsec-gnutls-crypto SYSTEM "sgml/gnutls/crypto.sgml">
-<!ENTITY xmlsec-gnutls-symbols SYSTEM "sgml/gnutls/symbols.sgml">
+<!ENTITY xmlsec-openssl-app 		SYSTEM "sgml/openssl/app.sgml">
+<!ENTITY xmlsec-openssl-bn 		SYSTEM "sgml/openssl/bn.sgml">
+<!ENTITY xmlsec-openssl-crypto 		SYSTEM "sgml/openssl/crypto.sgml">
+<!ENTITY xmlsec-openssl-x509 		SYSTEM "sgml/openssl/x509.sgml">
+<!ENTITY xmlsec-openssl-symbols 	SYSTEM "sgml/openssl/symbols.sgml">
 
-<!ENTITY xmlsec-nss-app SYSTEM "sgml/nss/app.sgml">
-<!ENTITY xmlsec-nss-crypto SYSTEM "sgml/nss/crypto.sgml">
-<!ENTITY xmlsec-nss-symbols SYSTEM "sgml/nss/symbols.sgml">
+<!ENTITY xmlsec-gnutls-app 		SYSTEM "sgml/gnutls/app.sgml">
+<!ENTITY xmlsec-gnutls-crypto 		SYSTEM "sgml/gnutls/crypto.sgml">
+<!ENTITY xmlsec-gnutls-symbols 		SYSTEM "sgml/gnutls/symbols.sgml">
+
+<!ENTITY xmlsec-nss-app 		SYSTEM "sgml/nss/app.sgml">
+<!ENTITY xmlsec-nss-crypto 		SYSTEM "sgml/nss/crypto.sgml">
+<!ENTITY xmlsec-nss-symbols		SYSTEM "sgml/nss/symbols.sgml">
 
 
-<!ENTITY xmlsec-example-dsig1 SYSTEM "examples/dsig1.sgml">
-<!ENTITY xmlsec-example-dsig2 SYSTEM "examples/dsig2.sgml">
-<!ENTITY xmlsec-example-dsig3 SYSTEM "examples/dsig3.sgml">
-<!ENTITY xmlsec-example-dsig4 SYSTEM "examples/dsig4.sgml">
-<!ENTITY xmlsec-example-enc1 SYSTEM "examples/enc1.sgml">
-<!ENTITY xmlsec-example-enc2 SYSTEM "examples/enc2.sgml">
+<!ENTITY xmlsec-example-dsig1 		SYSTEM "examples/dsig1.sgml">
+<!ENTITY xmlsec-example-dsig2 		SYSTEM "examples/dsig2.sgml">
+<!ENTITY xmlsec-example-dsig3 		SYSTEM "examples/dsig3.sgml">
+<!ENTITY xmlsec-example-dsig4 		SYSTEM "examples/dsig4.sgml">
+<!ENTITY xmlsec-example-enc1 		SYSTEM "examples/enc1.sgml">
+<!ENTITY xmlsec-example-enc2 		SYSTEM "examples/enc2.sgml">
+<!ENTITY xmlsec-example-dsig1-tmpl	SYSTEM "examples/dsig1-tmpl.sgml">
+<!ENTITY xmlsec-example-dsig1-res	SYSTEM "examples/dsig1-res.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -115,401 +123,11 @@
 	<title>Compiling and linking</title>
 	<para>TODO</para>
     </sect1>
-    <sect1 id="xmlsec-notes-init-shutdown">
-        <title>Initialization and shutdown.</title>
-        <para>TODO</para>
-	<para>
-	     <example>
-		<title>Initializing application.</title>
-		<programlisting><![CDATA[
-    /* Init libxml and libxslt libraries */
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-#ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
-#endif /* XMLSEC_NO_XSLT */
-        	
-    /* Init xmlsec library */
-    if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
-	return(-1);
-    }
-
-    /* Init crypto library */
-    if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
-	return(-1);
-    }
-
-    /* Init xmlsec-crypto library */
-    if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-	return(-1);
-    }
-		]]></programlisting>
-	    </example>
-	</para>
-	<para>
-	     <example>
-		<title>Shutdown application.</title>
-		<programlisting><![CDATA[
-    /* Shutdown xmlsec-crypto library */
-    xmlSecCryptoShutdown();
-    
-    /* Shutdown crypto library */
-    xmlSecCryptoAppShutdown();
-    
-    /* Shutdown xmlsec library */
-    xmlSecShutdown();
-
-    /* Shutdown libxslt/libxml */
-#ifndef XMLSEC_NO_XSLT
-    xsltCleanupGlobals();            
-#endif /* XMLSEC_NO_XSLT */
-    xmlCleanupParser();		
-		]]></programlisting>
-	    </example>
-	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-sign-encrypt">
-      <title>Signing and encrypting documents.</title>
-	<para>XML Security Library performs signature or encryption by processing 
-	input xml or binary data and a template that specifies a signature or 
-	encryption skeleton: the transforms, algorithms, the key selection 
-	process. A template has the same structure as the desired result but 
-	some of the nodes are empty. XML Security Library gets the key for 
-	signature/encryption from keys managers using the information from 
-	the template, does necessary computations and puts the results in 
-	the template. Signature or encryption context controls the whole 
-	process and stores the required temporary data.
-	  <figure>
-	    <title>The signature or encryption processing model.</title>
-	    <graphic fileref="images/sign-enc-model.png" align="center" />
-	  </figure>
-	</para>
-	<sect2>
-	<title>Signing a document.</title>
-	<para>The typical siganture process includes following steps:
-	  <itemizedlist>
-	    <listitem><para>
-		Prepare data for signature.
-	    </para></listitem>
-	    <listitem><para>
-		Create or load signature template and select start
-		&lt;dsig:Signature/&gt; node.
-	    </para></listitem>
-	    <listitem><para>
-		Create signature context <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>
-		using <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link> or
-		<link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>
-		functions.
-	    </para></listitem>
-	    <listitem><para>
-		Load signature key in <link linkend="xmlSecKeysMngr">keys manager</link> 
-		or generate a sesison key and set it in the signature context 
-		(<structfield>signKey</structfield> member of 
-		<link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure).
-	    </para></listitem>
-	    <listitem><para>
-		Sign data by calling <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link> 
-		function.
-	    </para></listitem>
-	    <listitem><para>
-		Check returned value and consume signed data.
-	    </para></listitem>
-	    <listitem><para>
-		Destroy signature context <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>
-		using <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link> or
-		<link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>
-		functions.
-	    </para></listitem>
-	  </itemizedlist>
-	</para>
-	<para>
-	     <example>
-		<title>Signing a template</title>
-		<programlisting><![CDATA[
-int 
-sign_file(const char* tmpl_file, const char* key_file) {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
-    int res = -1;
-    
-    assert(tmpl_file);
-    assert(key_file);
-
-    /* load template */
-    doc = xmlParseFile(tmpl_file);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;	
-    }
-    
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
-    if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;	
-    }
-
-    /* create signature context, we don't need keys manager in this example */
-    dsigCtx = xmlSecDSigCtxCreate(NULL);
-    if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
-	goto done;
-    }
-
-    /* load private key, assuming that there is not password */
-    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
-    if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
-	goto done;
-    }
-
-    /* sign the template */
-    if(xmlSecDSigCtxSign(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
-	goto done;
-    }
-        
-    /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
-    
-    /* success */
-    res = 0;
-
-done:    
-    if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
-    }
-    
-    if(doc != NULL) {
-	xmlFreeDoc(doc); 
-    }
-    return(res);
-}
-		]]></programlisting>
-	    </example>
-	</para>
-	</sect2>
-	
-	<sect2>
-	<title>Encrypting a document</title>
-	<para>The typical encryption process includes following steps:
-	  <itemizedlist>
-	    <listitem><para>
-		Prepare data for encryption.
-	    </para></listitem>
-	    <listitem><para>
-		Create or load encryption template and select start
-		&lt;enc:EncryptedData/&gt; node.
-	    </para></listitem>
-	    <listitem><para>
-		Create encryption context <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>
-		using <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link> or
-		<link linkend="xmlSecEncCtxInitialize">xmlSecEncCtxInitialize</link>
-		functions.
-	    </para></listitem>
-	    <listitem><para>
-		Load encryption key in <link linkend="xmlSecKeysMngr">keys manager</link> 
-		or generate a sesison key and set it in the encryption context
-		(<structfield>encKey</structfield> member of 
-		<link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure).
-	    </para></listitem>
-	    <listitem><para>
-		Encrypt data by calling one of the following functions:
-		<itemizedlist>
-		    <listitem><para>
-			<link linkend="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt</link>
-		    </para></listitem>
-		    <listitem><para>
-			<link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link>
-		    </para></listitem>
-		    <listitem><para>
-			<link linkend="xmlSecEncCtxUriEncrypt">xmlSecEncCtxUriEncrypt</link>
-		    </para></listitem>
-		</itemizedlist>
-	    </para></listitem>
-	    <listitem><para>
-		Check returned value and if necessary consume encrypted data.
-	    </para></listitem>
-	    <listitem><para>
-		Destroy encryption context <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>
-		using <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link> or
-		<link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link>
-		functions.
-	    </para></listitem>
-	  </itemizedlist>
-	</para>
-	<para>
-	     <example>
-		<title>Encrypting a document.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-	</sect2>
-    </sect1>
-    <sect1 id="xmlsec-notes-verify-decrypt">
-      <title>Verifing and decrypting documents.</title>
-	<para>Since the template is just an XML file, it might be created in advance 
-	and saved in a file. It's also possible for application to create 
-	templates without using XML Security Library functions. Also in some 
-	cases template should be inserted in the signed or encrypted data 
-	(for example, if you want to create an enveloped or enveloping 
-	signature).</para>
-	<para>Signature verification and data decryption do not require template 
-	because all the necessary information is provided in the signed or 
-	encrypted document.
-    	  <figure>
-	    <title>The verification or decryption processing model.</title>
-	    <graphic fileref="images/verif-dec-model.png" align="center" />
-	  </figure>	 
-	</para>
-	<para>The typical siganture verification process includes following steps:
-	  <itemizedlist>
-	    <listitem><para>
-		Load keys, X509 certificates, etc. in the <link linkend="xmlSecKeysMngr">keys manager</link> .
-	    </para></listitem>
-	    <listitem><para>
-		Create signature context <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>
-		using <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link> or
-		<link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>
-		functions.
-	    </para></listitem>
-	    <listitem><para>
-		Select start verification &lt;dsig:Signature/&gt; node in 
-		the signed XML document.
-	    </para></listitem>
-	    <listitem><para>
-		Verify signature by calling <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link> 
-		function.
-	    </para></listitem>
-	    <listitem><para>
-		Check returned value and verification status (<structfield>status</structfield>
-		member of <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure).
-		If necessary, consume returned data from the <link linkend="xmlSecDSigCtx">context</link>.
-	    </para></listitem>
-	    <listitem><para>
-		Destroy signature context <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>
-		using <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link> or
-		<link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>
-		functions.
-	    </para></listitem>
-	  </itemizedlist>
-	</para>
-	<para>
-	     <example>
-		<title>Verifying a document.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-	<para>The typical decryption process includes following steps:
-	  <itemizedlist>
-	    <listitem><para>
-		Load keys, X509 certificates, etc. in the <link linkend="xmlSecKeysMngr">keys manager</link> .
-	    </para></listitem>
-	    <listitem><para>
-		Create encryption context <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>
-		using <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link> or
-		<link linkend="xmlSecEncCtxInitialize">xmlSecEncCtxInitialize</link>
-		functions.
-	    </para></listitem>
-	    <listitem><para>
-		Select start decryption &lt;enc:EncryptedData&gt; node.
-	    </para></listitem>
-	    <listitem><para>
-		Decrypt by calling <link linkend="xmlSecEncCtxDecrypt">xmlSecencCtxDecrypt</link> 
-		function.
-	    </para></listitem>
-	    <listitem><para>
-		Check returned value and if necessary consume encrypted data.
-	    </para></listitem>
-	    <listitem><para>
-		Destroy encryption context <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>
-		using <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link> or
-		<link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link>
-		functions.
-	    </para></listitem>
-	  </itemizedlist>
-	</para>
-	<para>
-	     <example>
-		<title>Decrypting a document.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-keysmngr">
-        <title>Keys and keys manager.</title>
-	<para>A key in XML Security Library is a representation of the 
-	&lt;dsig:KeyInfo/&gt; element and consist of several key data objects. 
-	The "value" key data usually contains raw key material (or handlers to 
-	key material) required to execute particular crypto transform. Other 
-	key data objects may contain any additional information about the key. 
-	All the key data objects in the key are associated with the same key 
-	material. For example, if a DSA key material has both an X509 
-	certificate and a PGP data associated with it then such a key can 
-	have a DSA key "value" and two key data objects for X509 certificate 
-	and PGP key data.
-	</para>
-	<figure>
-	    <title>The key structure.</title>
-	    <graphic fileref="images/key.png" align="center" />
-	</figure>	 
-	<para>XML Security Library has several "invisible" key data classes. 
-	These classes never show up in the keys data list of a key but are used 
-	for &lt;dsig:KeyInfo/&gt; children processing (&lt;dsig:KeyName/&gt;, 
-	&lt;dsig:EncryptedKey/&gt;, ...). As with transforms, application might 
-	add any new key data objects or replace the default ones.
-	</para>
-	<para>Processing some of the key data objects require additional 
-	information which is global across the application (or in the 
-	particular area of the application). For example, X509 certificates 
-	processing require a common list of trusted certificates to be 
-	available. XML Security Library keeps all the common information 
-	for key data processing in a a collection of key data stores called 
-	"keys manager".
-	</para>
-	<figure>
-	    <title>The keys manager structure.</title>
-	    <graphic fileref="images/keysmngr.png" align="center" />
-	</figure>	 
-	<para>Keys manager has a special "keys store" which lists the keys 
-	known to the application. This "keys store" is used by XML Security 
-	Library to lookup keys by name, type and crypto algorithm (for example,
-	during &lt;dsig:KeyName/&gt; processing). The XML Security Library 
-	provides default "flat list" based implementation of a simple keys 
-	store. The application can replace it with any other keys store 
-	(for example, based on an SQL database).
-	</para>
-	<para>Keys manager is the only object in XML Security Library which 
-	is supposed to be shared by many different operations. Usually keys 
-	manager is initialized once at the application startup and later is 
-	used by XML Security library routines in "read-only" mode. If 
-	application or crypto function need to modify any of the key data 
-	stores inside keys manager then proper synchronization must be 
-	implemented. In the same time, application can create a new keys 
-	manager each time it needs to perform XML signature, verification, 
-	encryption or decryption.
-	</para>
-	<para>
-	     <example>
-		<title>Initializing keys manager and loading keys.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-    </sect1>
+    &chapter-init-and-shutdown;
+    &chapter-sign-and-encrypt;
+    &chapter-verify-and-decrypt;
+    &chapter-creating-templates;
+    &chapter-using-keysmngr;
     <sect1 id="xmlsec-notes-transforms">
 	<title>Transforms and transforms chain.</title>
 	<para>XML Digital Signature and XML Encryption standards are 
@@ -569,67 +187,6 @@ TODO
 	<para>
 	     <example>
 		<title>Walking through transforms chain.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-templates">
-	<title>Creating dynamic templates.</title>
-	<para>TODO</para>    
-    <figure>
-    <title>XML Digital Signature Structure</title>
-    <programlisting>
-        &lt;Signature ID?&gt; 
-	    &lt;SignedInfo&gt;
-	        &lt;CanonicalizationMethod/&gt;
-	        &lt;SignatureMethod/&gt;
-	        (&lt;Reference URI? &gt;
-    	    (&lt;Transforms&gt;)?
-    	    &lt;DigestMethod&gt;
-    	    &lt;DigestValue&gt;
-	        &lt;/Reference&gt;)+
-	    &lt;/SignedInfo&gt;
-	    &lt;SignatureValue&gt; 
-	(&lt;KeyInfo&gt;)?
-	(&lt;Object ID?&gt;)*
-        &lt;/Signature&gt;
-    </programlisting>
-    </figure>
-	<para>
-	     <example>
-		<title>Creating dynamic signature template.</title>
-		<programlisting><![CDATA[
-TODO
-		]]></programlisting>
-	    </example>
-	</para>
-
-	<para>TODO</para>
-    <figure>
-    <title>XML Encryption Structure</title>
-    <programlisting>
-        &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
-	&lt;EncryptionMethod/&gt;?
-	&lt;ds:KeyInfo&gt;
-	        &lt;EncryptedKey&gt;?
-	        &lt;AgreementMethod&gt;?
-	        &lt;ds:KeyName&gt;?
-	        &lt;ds:RetrievalMethod&gt;?
-	        &lt;ds:*&gt;?
-	&lt;/ds:KeyInfo&gt;?
-	&lt;CipherData&gt;
-	    &lt;CipherValue&gt;?
-	        &lt;CipherReference URI?&gt;?
-	&lt;/CipherData&gt;
-	&lt;EncryptionProperties&gt;?
-        &lt;/EncryptedData&gt;	
-	</programlisting>
-    </figure>
-	<para>
-	     <example>
-		<title>Creating dynamic encrytion template.</title>
 		<programlisting><![CDATA[
 TODO
 		]]></programlisting>
@@ -723,6 +280,7 @@ TODO
 	to sign, veiryf, encrypt or decrypt XML documents.</para>
     
     &xmlsec-example-dsig1;
+    &xmlsec-example-dsig1-tmpl;
     &xmlsec-example-dsig2;
     &xmlsec-example-dsig3;
     &xmlsec-example-dsig4;

@@ -1,0 +1,58 @@
+    <sect1 id="xmlsec-notes-init-shutdown">
+        <title>Initialization and shutdown.</title>
+        <para>TODO</para>
+	<para>
+	     <example>
+		<title>Initializing application.</title>
+		<programlisting><![CDATA[
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) < 0) {
+	fprintf(stderr, "Error: crypto initialization failed.\n");
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() < 0) {
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	return(-1);
+    }
+		]]></programlisting>
+	    </example>
+	</para>
+	<para>
+	     <example>
+		<title>Shutdown application.</title>
+		<programlisting><![CDATA[
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();		
+		]]></programlisting>
+	    </example>
+	</para>
+    </sect1>

@@ -1,4 +1,4 @@
-2002-10-20  set REAL_NAME environment variable  <set EMAIL_ADDRESS environment variable>
+2002-10-20  Aleksey Sanin <aleksey@aleksey.com>
 
 	* config.h.in configure.in include/xmlsec/version.h 
 	xmlsec.pc xmlsec.spec docs/download.html 

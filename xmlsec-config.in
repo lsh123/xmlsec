@@ -83,8 +83,15 @@ do
     shift
 done
 
-the_libs="$the_libs -L${exec_prefix}/lib -lxmlsec `@LIBXML_CONFIG@ --libs` `@LIBXSLT_CONFIG@ --libs` @OPENSSL_LIBS@"
-the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include -I${prefix}/include/libxmlsec `@LIBXML_CONFIG@ --cflags` `@LIBXSLT_CONFIG@ --cflags` @OPENSSL_CFLAGS@"
+the_xslt_flags=""
+the_xslt_libs=""
+if test "@LIBXSLT_WITHOUT@" = "no"; then 
+    the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
+    the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
+fi    
+
+the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include -I${prefix}/include/xmlsec `@LIBXML_CONFIG@ --cflags` $the_xslt_flags @OPENSSL_CFLAGS@"
+the_libs="$the_libs -L${exec_prefix}/lib -lxmlsec `@LIBXML_CONFIG@ --libs` $the_xslt_libs @OPENSSL_LIBS@"
 
 if $cflags; then
     all_flags="$the_flags"

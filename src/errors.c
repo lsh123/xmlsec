@@ -8,9 +8,9 @@
  */
 #include "globals.h"
 
-#include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include <time.h>
 
 #include <libxml/tree.h>
@@ -60,6 +60,8 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,		"cert is not valid yet" },
   { XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,		"cert has expired" },
   { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,	"invalid reference" },
+  { XMLSEC_ERRORS_R_INVALID_STATUS,		"invalid status" },
+  { XMLSEC_ERRORS_R_DATA_NOT_MATCH,		"data not match" },
   { XMLSEC_ERRORS_R_ASSERTION,			"assertion" },
   { XMLSEC_ERRORS_R_DISABLED,			"disabled" },
   { 0,						NULL}

@@ -1,3 +1,7 @@
+Wed Mar  5 19:43:43 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/index.html docs/news.html: new 0.1.0 release
+
 Mon Feb 24 10:04:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/xmltree.c src/xslt.c: fixed bug in xmlSecTransformXsltAdd

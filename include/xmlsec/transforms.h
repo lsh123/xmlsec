@@ -23,10 +23,7 @@ extern "C" {
 #include <xmlsec/nodeset.h>
 
 
-#define XMLSEC_TRANSFORM_BINARY_CHUNK			8
-
-
-#define XMLSEC_TRANSFORM_MIN_BLOCK_SIZE			32	/* should be less than XMLSEC_TRANSFORM_BUFFER_SIZE */
+#define XMLSEC_TRANSFORM_BINARY_CHUNK			64
 #define XMLSEC_TRANSFORM_BUFFER_SIZE			64	/* should be greater than XMLSEC_TRANSFORM_MIN_BLOCK_SIZE */
 
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;

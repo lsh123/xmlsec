@@ -55,7 +55,9 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
+/* 
 #define XMLSEC_BUFFER_DEBUG 1
+*/
 
 /**************************************************************************
  *
@@ -482,9 +484,11 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
 
-    while(xmlSecBufferGetSize(&(transform->outBuf)) == 0) {
+    while((xmlSecBufferGetSize(&(transform->outBuf)) == 0) &&
+	  (!xmlSecTransformStatusIsDone(transform->status))) {
+
 	/* read chunk from previous transform (if exist) */
-	if((transform->prev != NULL) && !xmlSecTransformStatusIsDone(transform->prev->status)) {
+	if(transform->prev != NULL) {
 	    ret = xmlSecTransformReadBin(transform->prev, chunk, sizeof(chunk));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -532,6 +536,9 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
 	memcpy(buf, xmlSecBufferGetData(&(transform->outBuf)), res);
 	xmlSecBufferRemoveHead(&(transform->outBuf), res);
     }
+    
+    /* cleanup the buffer, it might be sensitive */
+    memset(chunk, 0, sizeof(chunk));
     return(res);
 }
 

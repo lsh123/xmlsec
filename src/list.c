@@ -442,7 +442,11 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
 	newSize = gInitialSize;
     }
     
-    newData = (xmlSecPtr*)xmlRealloc(list->data, sizeof(xmlSecPtr) * newSize);
+    if(list->data != NULL) {
+    	newData = (xmlSecPtr*)xmlRealloc(list->data, sizeof(xmlSecPtr) * newSize);
+    } else {
+    	newData = (xmlSecPtr*)xmlMalloc(sizeof(xmlSecPtr) * newSize);
+    }
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),

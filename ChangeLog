@@ -1,3 +1,7 @@
+Thu 22 Jan 2004 10:56:33 AM PST <aleksey@aleksey.com>
+	
+	* src/buffer.c src/list.c: don' pass NULL to xmlRealloc()
+
 Mon Jan 12 13:05:18 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* examples/encrypt3.c include/xmlsec/crypto.h include/xmlsec/nss: make

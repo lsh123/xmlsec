@@ -302,7 +302,12 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
 	newSize = gInitialSize;
     }
     
-    newData = (xmlSecByte*)xmlRealloc(buf->data, newSize);
+
+    if(buf->data != NULL) {
+    	newData = (xmlSecByte*)xmlRealloc(buf->data, newSize);
+    } else {
+    	newData = (xmlSecByte*)xmlMalloc(newSize);
+    }
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

@@ -84,6 +84,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
     xmlSecAssert2(keyInfoNode != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     for(cur = xmlSecGetNextElementNode(keyInfoNode->children); 
 	(cur != NULL) && 
@@ -155,6 +156,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
     xmlSecAssert2(keyInfoNode != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     for(cur = xmlSecGetNextElementNode(keyInfoNode->children); 
 	cur != NULL;
@@ -164,10 +166,16 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
 	nodeName = cur->name;
 	nodeNs = xmlSecGetNodeNsHref(cur);
 
-	/* always use global list for writing */
-    	dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+	/* use global list only if we don't have a local one */
+	if(keyInfoCtx->allowedKeyDataIds != NULL) {
+        	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->allowedKeyDataIds,
 			    nodeName, nodeNs, 
 			    xmlSecKeyDataUsageKeyInfoNodeWrite);
+	} else {
+        	dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+			    nodeName, nodeNs, 
+			    xmlSecKeyDataUsageKeyInfoNodeWrite);
+	}
 	if(dataId != xmlSecKeyDataIdUnknown) {
 	    ret = xmlSecKeyDataXmlWrite(dataId, key, cur, keyInfoCtx);
 	    if(ret < 0) {
@@ -290,16 +298,32 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    
+    keyInfoCtx->encCtx->mode = xmlEncCtxModeEncryptedKey;
+        
     /* copy user preferences from our current ctx */
-    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoCtx), keyInfoCtx);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyInfoCtxCopyUserPref",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+    switch(keyInfoCtx->mode) {
+	case xmlSecKeyInfoModeRead:
+	    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoReadCtx), keyInfoCtx);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecKeyInfoCtxCopyUserPref",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }    
+	    break;
+	case xmlSecKeyInfoModeWrite:
+	    ret = xmlSecKeyInfoCtxCopyUserPref(&(keyInfoCtx->encCtx->keyInfoWriteCtx), keyInfoCtx);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecKeyInfoCtxCopyUserPref",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	    break;
     }    
     
     return(0);
@@ -477,6 +501,7 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     oldName = xmlSecKeyGetName(key);
     newName = xmlNodeGetContent(node);
@@ -531,6 +556,7 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     name = xmlSecKeyGetName(key);
     if(name != NULL) {
@@ -629,6 +655,7 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     cur = xmlSecGetNextElementNode(node->children);
     if(cur == NULL) {
@@ -698,9 +725,18 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
-    if(!xmlSecKeyDataIsValid(key->value) || !xmlSecKeyDataCheckUsage(key->value, xmlSecKeyDataUsageKeyValueNodeWrite)){
+    if(!xmlSecKeyDataIsValid(key->value) || 
+       !xmlSecKeyDataCheckUsage(key->value, xmlSecKeyDataUsageKeyValueNodeWrite)){
+
 	/* nothing to write */
+	return(0);
+    }
+    if((keyInfoCtx->allowedKeyDataIds != NULL) && 
+        !xmlSecKeyDataIdListFind(keyInfoCtx->allowedKeyDataIds, id)) {
+
+	/* we are not allowed to write out key data with this id */
 	return(0);
     }
 
@@ -809,6 +845,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     /* check retrieval level */
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
@@ -959,6 +996,7 @@ xmlSecKeyDataRetrievalMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     /* just do nothing */
     return(0);
@@ -979,6 +1017,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(bufferSize > 0, -1); 
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     doc = xmlRecoverMemory((const char*)buffer, bufferSize);
     if(doc == NULL) {
@@ -1120,6 +1159,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     /* check the enc level */    
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
@@ -1196,6 +1236,7 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
     
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

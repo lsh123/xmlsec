@@ -26,7 +26,6 @@ transformsInternal.h \
 version.h \
 xmldsig.h \
 xmlenc.h \
-xmlenc-old.h \
 xmlsec.h \
 xmltree.h
 

@@ -396,6 +396,8 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataListGetKlass	(void);
  **********************************************************************/
 #define xmlSecKeyDataIdListId	xmlSecKeyDataIdListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyDataIdListGetKlass	(void);
+XMLSEC_EXPORT int		xmlSecKeyDataIdListFind		(xmlSecPtrListPtr list,
+								 xmlSecKeyDataId dataId);
 XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataIdListFindByNode	(xmlSecPtrListPtr list,
 								 const xmlChar* nodeName,
 								 const xmlChar* nodeNs,

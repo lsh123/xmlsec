@@ -40,12 +40,17 @@ typedef unsigned int		xmlSecUriType;
 #define xmlSecUriTypeRemote		0x0004
 #define xmlSecUriTypeAny		0xFFFF
 
+typedef enum {
+    xmlSecKeyInfoModeRead = 0,
+    xmlSecKeyInfoModeWrite
+} xmlSecKeyInfoMode;
+
 /**		
  * xmlSecKeyInfoCtx:
- *
  */
 struct _xmlSecKeyInfoCtx {
     void*				userData;
+    xmlSecKeyInfoMode			mode;
     xmlSecKeysMngrPtr			keysMngr;
     int					base64LineSize;
     xmlSecPtrListPtr			allowedKeyDataIds;

@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-#include <stdio.h>
+#include <stdio.h>		
 
 #include <libxml/tree.h>
 #include <libxml/parser.h> 
@@ -25,6 +25,11 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/transforms.h>
+
+typedef enum {
+    xmlEncCtxModeEncryptedData = 0,
+    xmlEncCtxModeEncryptedKey
+} xmlEncCtxMode;
 
 /** 
  * xmlSecEncCtx:
@@ -46,17 +51,21 @@ extern "C" {
  */
 struct _xmlSecEncCtx {
     /* these data user can set before performing the operation */
-    void*			userCtx;
-    xmlSecKeyInfoCtx		keyInfoCtx;
+    void*			userData;
+    xmlEncCtxMode		mode;
+    xmlSecKeyInfoCtx		keyInfoReadCtx;
+    xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		transformCtx;
     xmlSecTransformPtr		defEncMethod;
     xmlSecKeyPtr		encKey;
 
     /* these data are returned */
-    xmlChar			*id;
-    xmlChar			*type;
-    xmlChar			*mimeType;
-    xmlChar			*encoding;
+    xmlChar*			id;
+    xmlChar*			type;
+    xmlChar*			mimeType;
+    xmlChar*			encoding;
+    xmlChar*			recipient;
+    xmlChar*			carriedKeyName;
     int				encrypt;
     xmlSecTransformPtr		encMethod;
     xmlSecBufferPtr		encResult;
@@ -92,9 +101,6 @@ XMLSEC_EXPORT void		xmlSecEncCtxDebugDump		(xmlSecEncCtxPtr ctx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecEncCtxDebugXmlDump	(xmlSecEncCtxPtr ctx,
 								 FILE* output);
-
-
-#include <xmlsec/xmlenc-old.h>
 
 #ifdef __cplusplus
 }

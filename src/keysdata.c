@@ -899,6 +899,22 @@ xmlSecKeyDataIdListGetKlass(void) {
     return(&xmlSecKeyDataIdListKlass);
 }
 
+int 
+xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId), 0);
+    xmlSecAssert2(dataId != NULL, 0);
+    
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	if((xmlSecKeyDataId)xmlSecPtrListGetItem(list, i) == dataId) {
+	    return(1);
+	}
+    }
+    return(0);
+}
+
 xmlSecKeyDataId	
 xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
 			    const xmlChar* nodeNs, xmlSecKeyDataUsage usage) {

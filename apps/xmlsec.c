@@ -638,7 +638,7 @@ static void 			xmlSecAppPrintHelp		(xmlSecAppCommand command,
 static int			xmlSecAppInit			(void);
 static void			xmlSecAppShutdown		(void);
 static int			xmlSecAppLoadKeys		(void);
-static int			xmlSecAppPrepareKeyInfoCtx	(xmlSecKeyInfoCtxPtr ctx);
+static int			xmlSecAppPrepareKeyInfoReadCtx	(xmlSecKeyInfoCtxPtr ctx);
 
 #ifndef XMLSEC_NO_XMLDSIG
 static int			xmlSecAppSignFile		(const char* filename);
@@ -910,7 +910,7 @@ xmlSecAppCreateDSigCtx(void) {
     }
 
     /* set key info params */
-    if(xmlSecAppPrepareKeyInfoCtx(&(dsigCtx->keyInfoCtx)) < 0) {
+    if(xmlSecAppPrepareKeyInfoReadCtx(&(dsigCtx->keyInfoCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
 	xmlSecDSigCtxDestroy(dsigCtx);
 	return(NULL);
@@ -1122,7 +1122,7 @@ xmlSecAppCreateEncCtx(void) {
     }
 
     /* set key info params */
-    if(xmlSecAppPrepareKeyInfoCtx(&(encCtx->keyInfoCtx)) < 0) {
+    if(xmlSecAppPrepareKeyInfoReadCtx(&(encCtx->keyInfoReadCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
 	xmlSecEncCtxDestroy(encCtx);
 	return(NULL);
@@ -1174,7 +1174,7 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 #endif /* XMLSEC_NO_XMLENC */
 
 static int 
-xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAppCmdLineValuePtr value;
     int ret;
     

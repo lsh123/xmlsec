@@ -372,6 +372,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	    return(-1);
 	}
 	
+	keyInfoCtx.mode 		= xmlSecKeyInfoModeRead;
 	keyInfoCtx.stopWhenKeyFound	= 0;
         keyInfoCtx.keyReq.keyId		= xmlSecKeyDataIdUnknown;
 	keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;
@@ -549,6 +550,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 		return(-1);
 	    }
 
+	    keyInfoCtx.mode 		= xmlSecKeyInfoModeWrite;
 	    keyInfoCtx.stopWhenKeyFound	= 0;
     	    keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
 	    keyInfoCtx.keyReq.keyType	= type;

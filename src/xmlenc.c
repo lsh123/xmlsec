@@ -87,7 +87,7 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
     memset(ctx, 0, sizeof(xmlSecEncCtx));
 
     /* initialize key info */
-    ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoCtx), keysMngr);
+    ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoReadCtx), keysMngr);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -96,6 +96,20 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);   
     }
+    ctx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
+    
+    ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoWriteCtx), keysMngr);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyInfoCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);   
+    }
+    ctx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
+    /* it's not wise to write private key :) */
+    ctx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 
     /* initializes transforms ctx */
     ret = xmlSecTransformCtxInitialize(&(ctx->transformCtx));
@@ -116,7 +130,8 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecTransformCtxFinalize(&(ctx->transformCtx));
-    xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoCtx));
+    xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoReadCtx));
+    xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoWriteCtx));
 
     if(ctx->defEncMethod != NULL) {
 	xmlSecTransformDestroy(ctx->defEncMethod, 1);
@@ -135,6 +150,12 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr ctx) {
     }
     if(ctx->encoding != NULL) {
 	xmlFree(ctx->encoding);
+    }	
+    if(ctx->recipient != NULL) {
+	xmlFree(ctx->recipient);
+    }
+    if(ctx->carriedKeyName != NULL) {
+	xmlFree(ctx->carriedKeyName);
     }
     
     memset(ctx, 0, sizeof(xmlSecEncCtx));
@@ -241,10 +262,10 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
     }
 
     /* push data thru */
-    if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecEncTypeElement)) {
+    if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecTypeEncElement)) {
 	/* get the content of the node */
 	xmlNodeDumpOutput(output, node->doc, node, 0, 0, NULL);
-    } else if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecEncTypeContent)) {
+    } else if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecTypeEncContent)) {
 	xmlNodePtr cur;
 
 	/* get the content of the nodes childs */
@@ -279,7 +300,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
     }
     
     /* now we need to update our original document */
-    if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecEncTypeElement)) {
+    if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecTypeEncElement)) {
 	ret = xmlSecReplaceNode(node, tmpl);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -291,7 +312,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
 	    return(-1);
 	}
 	ctx->replaced = 1;			       
-    } else if(xmlStrEqual(ctx->type, xmlSecEncTypeContent)) {
+    } else if(xmlStrEqual(ctx->type, xmlSecTypeEncContent)) {
 	ret = xmlSecReplaceContent(node, tmpl);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -513,10 +534,17 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     xmlSecAssert2(ctx->type == NULL, -1);
     xmlSecAssert2(ctx->mimeType == NULL, -1);
     xmlSecAssert2(ctx->encoding == NULL, -1);
+    xmlSecAssert2(ctx->recipient == NULL, -1);
+    xmlSecAssert2(ctx->carriedKeyName == NULL, -1);
+    
     ctx->id = xmlGetProp(node, xmlSecAttrId);
     ctx->type = xmlGetProp(node, xmlSecAttrType);
     ctx->mimeType = xmlGetProp(node, xmlSecAttrMimeType);
     ctx->encoding = xmlGetProp(node, xmlSecAttrEncoding);    
+    if(ctx->mode == xmlEncCtxModeEncryptedKey) {
+	ctx->recipient = xmlGetProp(node, xmlSecAttrRecipient);    
+	/* todo: check recipient? */
+    }
     cur = xmlSecGetNextElementNode(node->children);
     
     /* first node is optional EncryptionMethod, we'll read it later */
@@ -555,22 +583,33 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* TODO: add a flag to distinguish between EncryptedData and EncryptedKey */
-    
     /* next is optional EncryptionProperties node (we simply ignore it) */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeEncryptionProperties, xmlSecEncNs))) {
 	cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* next is optional ReferenceList node (we simply ignore it) */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReferenceList, xmlSecEncNs))) {
-	cur = xmlSecGetNextElementNode(cur->next);
-    }
+    /* there are more possible nodes for the <EncryptedKey> node */
+    if(ctx->mode == xmlEncCtxModeEncryptedKey) {
+	/* next is optional ReferenceList node (we simply ignore it) */
+        if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReferenceList, xmlSecEncNs))) {
+	    cur = xmlSecGetNextElementNode(cur->next);
+	}
 
-    /* TODO: load carried key name */
-    /* next is optional CarriedKeyName node (we simply ignore it) */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCarriedKeyName, xmlSecEncNs))) {
-	cur = xmlSecGetNextElementNode(cur->next);
+        /* next is optional CarriedKeyName node (we simply ignore it) */
+	if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCarriedKeyName, xmlSecEncNs))) {
+	    ctx->carriedKeyName = xmlNodeGetContent(cur);
+	    if(ctx->carriedKeyName == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+			    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+			    "node=%s",
+			    xmlSecErrorsSafeString(xmlSecNodeCipherData));
+		return(-1);
+	    }
+	    /* TODO: decode the name? */
+	    cur = xmlSecGetNextElementNode(cur->next);
+	}
     }
 
     /* if there is something left than it's an error */
@@ -620,8 +659,11 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     ctx->encMethod->encode = ctx->encrypt;
     
     /* we have encryption method, find key */
-    if((ctx->encKey == NULL) && (ctx->keyInfoNode != NULL) && (ctx->keyInfoCtx.keysMngr->getKey != NULL)) {
-	ret = xmlSecTransformSetKeyReq(ctx->encMethod, &(ctx->keyInfoCtx.keyReq));
+    if((ctx->encKey == NULL) && 
+       (ctx->keyInfoNode != NULL) && 
+       (ctx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
+	
+	ret = xmlSecTransformSetKeyReq(ctx->encMethod, &(ctx->keyInfoReadCtx.keyReq));
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -631,7 +673,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
 			xmlSecErrorsSafeString(xmlSecTransformGetName(ctx->encMethod)));
 	    return(-1);
 	}		
-	ctx->encKey = (ctx->keyInfoCtx.keysMngr->getKey)(ctx->keyInfoNode, &(ctx->keyInfoCtx));
+	ctx->encKey = (ctx->keyInfoReadCtx.keysMngr->getKey)(ctx->keyInfoNode, 
+							     &(ctx->keyInfoReadCtx));
     }
     if(ctx->encKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -694,11 +737,7 @@ xmlSecEncCtxCipherDataNodeWrite(xmlSecEncCtxPtr ctx) {
 
     /* update <dsig:KeyInfo/> node */
     if(ctx->keyInfoNode != NULL) {
-	/* todo: do we want to write anything else??? */
-	ctx->keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
-	ret = xmlSecKeyInfoNodeWrite(ctx->keyInfoNode, 
-		    		     ctx->encKey, 
-				     &(ctx->keyInfoCtx));
+	ret = xmlSecKeyInfoNodeWrite(ctx->keyInfoNode, ctx->encKey, &(ctx->keyInfoWriteCtx));
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -829,12 +868,24 @@ void
 xmlSecEncCtxDebugDump(xmlSecEncCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->encrypt) {    
-        fprintf(output, "= ENCRYPTION CONTEXT\n");
-    } else {
-        fprintf(output, "= DECRYPTION CONTEXT (%s)\n",
-	    (ctx->replaced) ? "replaced" : "not-replaced" );
+    switch(ctx->mode) {
+	case xmlEncCtxModeEncryptedData:
+	    if(ctx->encrypt) {    
+		fprintf(output, "= DATA ENCRYPTION CONTEXT\n");
+	    } else {
+		fprintf(output, "= DATA DECRYPTION CONTEXT\n");
+	    }
+	    break;
+	case xmlEncCtxModeEncryptedKey:
+	    if(ctx->encrypt) {    
+		fprintf(output, "= KEY ENCRYPTION CONTEXT\n");
+	    } else {
+		fprintf(output, "= KEY DECRYPTION CONTEXT\n");
+	    }
+	    break;
     }
+    fprintf(output, "== Status: %s\n",
+	    (ctx->replaced) ? "replaced" : "not-replaced" );
     if(ctx->id != NULL) {
 	fprintf(output, "== Id: \"%s\"\n", ctx->id);
     }
@@ -847,9 +898,18 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr ctx, FILE* output) {
     if(ctx->encoding != NULL) {
 	fprintf(output, "== Encoding: \"%s\"\n", ctx->encoding);
     }
+    if(ctx->recipient != NULL) {
+	fprintf(output, "== Recipient: \"%s\"\n", ctx->recipient);
+    }
+    if(ctx->carriedKeyName != NULL) {
+	fprintf(output, "== CarriedKeyName: \"%s\"\n", ctx->carriedKeyName);
+    }
     
 #ifdef TODO    
-    xmlSecKeyInfoCtxDebugDump(&(ctx->keyInfoCtx), output);
+    fprintf(output, "== Key Info Read Ctx: \"%s\"\n");
+    xmlSecKeyInfoCtxDebugDump(&(ctx->keyInfoReadCtx), output);
+    fprintf(output, "== Key Info Write Ctx: \"%s\"\n");
+    xmlSecKeyInfoCtxDebugDump(&(ctx->keyInfoWriteCtx), output);
 #endif
     xmlSecTransformCtxDebugDump(&(ctx->transformCtx), output);
     
@@ -872,6 +932,25 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
         fprintf(output, "<DecryptionContext type=\"%s\">\n",
 	    (ctx->replaced) ? "replaced" : "not-replaced" );
     }
+
+    switch(ctx->mode) {
+	case xmlEncCtxModeEncryptedData:
+	    if(ctx->encrypt) {    
+		fprintf(output, "<DataEncryptionContext ");
+	    } else {
+		fprintf(output, "<DataDecryptionContext ");
+	    }
+	    break;
+	case xmlEncCtxModeEncryptedKey:
+	    if(ctx->encrypt) {    
+		fprintf(output, "<KeyEncryptionContext ");
+	    } else {
+		fprintf(output, "<KeyDecryptionContext ");
+	    }
+	    break;
+    }
+    fprintf(output, "status=\"%s\" >\n", (ctx->replaced) ? "replaced" : "not-replaced" );
+
     if(ctx->id != NULL) {
 	fprintf(output, "<Id>%s</Id>\n", ctx->id);
     }
@@ -884,8 +963,19 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
     if(ctx->encoding != NULL) {
 	fprintf(output, "<Encoding>%s</Encoding>\n", ctx->encoding);
     }
+    if(ctx->recipient != NULL) {
+	fprintf(output, "<Recipient>%s</Recipient>\n", ctx->recipient);
+    }
+    if(ctx->carriedKeyName != NULL) {
+	fprintf(output, "<CarriedKeyName>%s</CarriedKeyName>\n", ctx->carriedKeyName);
+    }
 #ifdef TODO    
-    xmlSecKeyInfoCtxDebugXmlDump(&(ctx->keyInfoCtx), output);
+    fprintf(output, "<KeyInfoReadCtx>\n");
+    xmlSecKeyInfoCtxDebugXmlDump(&(ctx->keyInfoReadCtx), output);
+    fprintf(output, "</KeyInfoReadCtx>\n");
+    fprintf(output, "<KeyInfoWriteCtx>\n");
+    xmlSecKeyInfoCtxDebugXmlDump(&(ctx->keyInfoWriteCtx), output);
+    fprintf(output, "</KeyInfoWriteCtx>\n");
 #endif
     xmlSecTransformCtxDebugXmlDump(&(ctx->transformCtx), output);
 
@@ -897,13 +987,23 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
 	fprintf(output, "</Result>\n");
     }	    
 
-    if(ctx->encrypt) {    
-        fprintf(output, "</EncryptionContext>\n");
-    } else {
-        fprintf(output, "</DecryptionContext>\n");
+    switch(ctx->mode) {
+	case xmlEncCtxModeEncryptedData:
+	    if(ctx->encrypt) {    
+		fprintf(output, "</DataEncryptionContext>");
+	    } else {
+		fprintf(output, "</DataDecryptionContext>");
+	    }
+	    break;
+	case xmlEncCtxModeEncryptedKey:
+	    if(ctx->encrypt) {    
+		fprintf(output, "</KeyEncryptionContext>");
+	    } else {
+		fprintf(output, "</KeyDecryptionContext>");
+	    }
+	    break;
     }
 }
 
-
-#include "xmlenc-old.c"
 #endif /* XMLSEC_NO_XMLENC */
+

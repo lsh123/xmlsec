@@ -1,3 +1,7 @@
+Mon Feb 23 17:44:29 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* examples/xkms-server.c: finished xkms-server example
+
 Thu Feb 19 16:01:38 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* examples/.cvsignore examples/Makefile examples/Makefile.w32 

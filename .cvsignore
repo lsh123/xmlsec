@@ -40,4 +40,6 @@ stamp-h4
 stamp-h5
 tmp
 xmlsec*.tar.gz
-
+.project
+.cdtproject
+.externalToolBuilders

@@ -1,6 +1,8 @@
 Wed Jul 10 21:41:21 2002  Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 	* win32/Makefile.msvc: Fixed minor typos, static link flags 
 	and bindist target
+	* apps/xmlsec.c: Added snprintf -> _snprintf mapping for MS
+	C-runtime
 	
 Wed Jul 10 8:45:23 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* configure.in docs/* : 0.0.7 release

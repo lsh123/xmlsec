@@ -79,7 +79,8 @@ struct _xmlSecXsltCtx {
 static int		xmlSecXsltInitialize			(xmlSecTransformPtr transform);
 static void		xmlSecXsltFinalize			(xmlSecTransformPtr transform);
 static int 		xmlSecXsltReadNode			(xmlSecTransformPtr transform,
-								 xmlNodePtr transformNode);
+								 xmlNodePtr transformNode,
+								 xmlSecTransformCtxPtr transformCtx);
 static int  		xmlSecXsltExecute			(xmlSecTransformPtr transform, 
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -98,7 +99,7 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
 
     xmlSecXsltInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecXsltFinalize,				/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecXsltReadNode,				/* xmlSecTransformReadMethod read; */
+    xmlSecXsltReadNode,				/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -153,7 +154,7 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
  * xmlSecXsltReadNode:
  */
 static int
-xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
+xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;
     xmlBufferPtr buffer;
     xmlDocPtr doc;
@@ -162,6 +163,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
     xmlSecAssert2(node != NULL, -1);    
+    xmlSecAssert2(transformCtx != NULL, -1);    
 
     ctx = xmlSecXsltGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

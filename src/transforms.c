@@ -248,8 +248,219 @@ xmlSecTransformsFind(const xmlChar* href, xmlSecTransformUsage usage) {
     return(xmlSecTransformIdUnknown);
 }
 
+/**************************************************************************
+ *
+ * xmlSecTransformCtx
+ *
+ *************************************************************************/
+int 
+xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    memset(ctx, 0, sizeof(xmlSecTransformCtx));
+    return(0);
+}
 
+void 
+xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
+    xmlSecTransformPtr transform, tmp;    
+    
+    xmlSecAssert(ctx != NULL);
+    
+    /* destroy transforms chain */
+    for(transform = ctx->first; transform != NULL; transform = tmp) {
+	tmp = transform->next;
+	xmlSecTransformDestroy(transform, 1);
+    }
+    memset(ctx, 0, sizeof(xmlSecTransformCtx));
+}
 
+xmlSecTransformCtxPtr 
+xmlSecTransformCtxCreate(void) {
+    xmlSecTransformCtxPtr ctx;
+    int ret;
+    
+    /* Allocate a new xmlSecTransform and fill the fields. */
+    ctx = (xmlSecTransformCtxPtr)xmlMalloc(sizeof(xmlSecTransformCtx));
+    if(ctx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "size=%d", sizeof(xmlSecTransformCtx)); 
+	return(NULL);
+    }
+    
+    ret = xmlSecTransformCtxInitialize(ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecTransformCtxDestroy(ctx);
+	return(NULL);
+    }
+    
+    return(ctx);
+}
+
+void
+xmlSecTransformCtxDestroy(xmlSecTransformCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+    
+    xmlSecTransformCtxFinalize(ctx);
+    xmlFree(ctx);
+}
+
+int 
+xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+
+    if(ctx->last != NULL) {
+	ret = xmlSecTransformConnect(ctx->last, transform, ctx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformConnect",	    
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"name=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	    return(-1);
+	}
+    } else {
+	xmlSecAssert2(ctx->first == NULL, -1);
+	ctx->first = transform;
+    }
+    ctx->last = transform;
+
+    return(0);
+}
+
+int 
+xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+
+    if(ctx->first != NULL) {
+	ret = xmlSecTransformConnect(transform, ctx->first, ctx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformConnect",	    
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"name=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	    return(-1);
+	}
+    } else {
+	xmlSecAssert2(ctx->last == NULL, -1);
+	ctx->last = transform;
+    }
+    ctx->first = transform;
+
+    return(0);
+}
+
+xmlSecTransformPtr
+xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, 
+			   xmlSecTransformUsage usage) {
+    xmlSecTransformPtr transform;
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    
+    transform = xmlSecTransformNodeRead(node, usage, ctx);
+    if(transform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node))); 
+	return(NULL);
+    }
+    
+    ret = xmlSecTransformCtxAppend(ctx, transform);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformConnect",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    
+    return(transform);
+}
+
+int 
+xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlSecTransformUsage usage) {
+    xmlSecTransformPtr transform;
+    xmlNodePtr cur;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    
+    cur = xmlSecGetNextElementNode(node->children);
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeTransform, xmlSecDSigNs)) {
+	transform = xmlSecTransformNodeRead(cur, usage, ctx);
+	if(transform == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformNodeReadOld",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+	    return(-1);
+	}
+    }
+
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }    
+    return(0);
+}
+
+void 
+xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
+    xmlSecTransformPtr transform;    
+    
+    xmlSecAssert(ctx != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "== TRANSFORMS CTX\n");    
+    for(transform = ctx->first; transform != NULL; transform = transform->next) {
+	xmlSecTransformDebugDump(transform, output);
+    }
+}
+
+void 
+xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
+    xmlSecTransformPtr transform;    
+    
+    xmlSecAssert(ctx != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<TransformCtx>\n");    
+    for(transform = ctx->first; transform != NULL; transform = transform->next) {
+	xmlSecTransformDebugXmlDump(transform, output);
+    }
+    fprintf(output, "</TransformCtx>\n");    
+}
 
 /**************************************************************************
  *
@@ -378,24 +589,82 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
 }
 
 /** 
- * xmlSecTransformRead:
+ * xmlSecTransformNodeRead:
  * @transform: the pointer to #xmlSecTransform structure.
  * @node: the pointer to the <dsig:Transform> node.
  *
- * Reads transform information from the @transformNode using 
- * transform specific function.
+ * Reads transform from the @node as follows:
+ *    1) reads "Algorithm" attribute;
+ *    2) checks the list of known algorithms;
+ *    3) calls transform create method;
+ *    4) calls transform read transform node method.
  *
  * Returns 0 on success or a negative value otherwise.
  */
-int
-xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr node) {
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(node != NULL, -1);
+xmlSecTransformPtr
+xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformPtr transform;
+    xmlSecTransformId id;
+    xmlChar *href;
+    int ret;
+
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
+
+    href = xmlGetProp(node, xmlSecAttrAlgorithm);
+    if(href == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlGetProp",
+		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+	return(NULL);		
+    }
+    
+    id = xmlSecTransformsFind(href, usage);    
+    if(id == xmlSecTransformIdUnknown) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformsFind",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "href=\"%s\"", 
+		    xmlSecErrorsSafeString(href));
+	xmlFree(href);
+	return(NULL);		
+    }
+    
+    transform = xmlSecTransformCreate(id, 0);
+    if(!xmlSecTransformIsValid(transform)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCreate",		    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)));
+	xmlFree(href);
+	return(NULL);		
+    }
 
     if(transform->id->readNode != NULL) {
-	return(transform->id->readNode(transform, node));
+	ret = transform->id->readNode(transform, node, transformCtx);
+        if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"id->readNode",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	    xmlSecTransformDestroy(transform, 1);
+	    xmlFree(href);
+	    return(NULL);		
+	}
     }
-    return(0);
+
+    /* finally remember the transform node */    
+    transform->hereNode = node;
+    xmlFree(href);   
+    return(transform);
 }
 
 /**
@@ -514,6 +783,25 @@ xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     return((transform->id->execute)(transform, last, transformCtx));
 }
 
+void 
+xmlSecTransformDebugDump(xmlSecTransformPtr transform, FILE* output) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+    xmlSecAssert(output != NULL);
+    
+    fprintf(output, "=== Transform: %s (href=%s)\n",
+		xmlSecErrorsSafeString(transform->id->name),
+		xmlSecErrorsSafeString(transform->id->href));
+}
+
+void 
+xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<Transform name=\"%s\" href=\"%s\" />\n",
+		xmlSecErrorsSafeString(transform->id->name),
+		xmlSecErrorsSafeString(transform->id->href));
+}
 
 /************************************************************************
  *
@@ -601,6 +889,7 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
 		    "xmlSecTransformCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "transform=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(middleId)));
 	return(-1);
     }	

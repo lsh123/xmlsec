@@ -41,7 +41,6 @@ XMLSEC_EXPORT int	xmlSecTransformsRegister	(xmlSecTransformId keyId);
 xmlSecTransformId	xmlSecTransformsFind		(const xmlChar *href,
 							 xmlSecTransformUsage usage);
 
-
 /**************************************************************************
  *
  * xmlSecTransformStatus
@@ -96,7 +95,28 @@ typedef unsigned char			xmlSecTransformDataType;
  */
 struct _xmlSecTransformCtx {
     xmlDocPtr		ctxDoc;
+    xmlSecTransformPtr	first;
+    xmlSecTransformPtr	last;
 };
+
+XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT void			xmlSecTransformCtxFinalize  (xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT xmlSecTransformCtxPtr	xmlSecTransformCtxCreate    (void);
+XMLSEC_EXPORT void			xmlSecTransformCtxDestroy   (xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT int 			xmlSecTransformCtxAppend    (xmlSecTransformCtxPtr ctx,
+								     xmlSecTransformPtr transform);
+XMLSEC_EXPORT int 			xmlSecTransformCtxPrepend   (xmlSecTransformCtxPtr ctx,
+								     xmlSecTransformPtr transform);
+XMLSEC_EXPORT xmlSecTransformPtr 	xmlSecTransformCtxNodeRead  (xmlSecTransformCtxPtr ctx,
+								     xmlNodePtr node,
+								     xmlSecTransformUsage usage);
+XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx,
+								     xmlNodePtr node,
+								     xmlSecTransformUsage usage);
+XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump (xmlSecTransformCtxPtr ctx,
+								     FILE* output);
+XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx,
+								     FILE* output);
 
 /**************************************************************************
  *
@@ -143,8 +163,9 @@ XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCreate	(xmlSecTransformId id,
 								 int dontDestroy);
 XMLSEC_EXPORT void			xmlSecTransformDestroy	(xmlSecTransformPtr transform,
 								 int forceDestroy);
-XMLSEC_EXPORT int 			xmlSecTransformRead	(xmlSecTransformPtr transform,
-								 xmlNodePtr node);
+xmlSecTransformPtr			xmlSecTransformNodeRead	(xmlNodePtr node, 
+								 xmlSecTransformUsage usage,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
@@ -175,11 +196,14 @@ XMLSEC_EXPORT int			xmlSecTransformPopXml	(xmlSecTransformPtr transform,
 XMLSEC_EXPORT int 			xmlSecTransformExecute	(xmlSecTransformPtr transform, 
 								 int last, 
 								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT void			xmlSecTransformDebugDump(xmlSecTransformPtr transform,
+								 FILE* output);
+XMLSEC_EXPORT void			xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform,
+								 FILE* output);
 
 #define xmlSecTransformGetName(transform) \
 	((xmlSecTransformIsValid((transform))) ? \
 	  xmlSecTransformKlassGetName((transform)->id) : NULL)
-
 
 /**
  * xmlSecTransformIsValid:
@@ -324,7 +348,8 @@ typedef xmlSecTransformDataType	(*xmlSecTransformGetDataTypeMethod)(xmlSecTransf
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int 		(*xmlSecTransformNodeReadMethod)	(xmlSecTransformPtr transform,
-								 xmlNodePtr node);
+								 xmlNodePtr node,
+								 xmlSecTransformCtxPtr transformCtx);
 
 /**
  * xmlSecTransformSetKeyRequirements:

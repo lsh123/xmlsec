@@ -276,9 +276,9 @@ static xmlSecTransformKlass xmlSecGnuTLSSha1Klass = {
     xmlSecHrefSha1, 				/* xmlChar *href; */
     
     /* methods */
-    xmlSecGnuTLSDigestInitialize,			/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSDigestFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGnuTLSDigestVerify,			/* xmlSecTransformVerifyMethod verify; */

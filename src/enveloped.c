@@ -45,7 +45,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     
     NULL,				/* xmlSecTransformInitializeMethod initialize; */
     NULL,				/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadNodeMethod read; */
+    NULL,				/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */

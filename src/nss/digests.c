@@ -297,7 +297,7 @@ static xmlSecTransformKlass xmlSecNssSha1Klass = {
     /* methods */
     xmlSecNssDigestInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssDigestFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssDigestVerify,			/* xmlSecTransformVerifyMethod verify; */

@@ -442,8 +442,9 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
  * XPath transform
  * 
  *****************************************************************************/
-static int 		xmlSecTransformXPathReadNode	(xmlSecTransformPtr transform,
-							 xmlNodePtr transformNode);
+static int 		xmlSecTransformXPathNodeRead	(xmlSecTransformPtr transform,
+							 xmlNodePtr transformNode,
+							 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     /* klass/object sizes */
@@ -457,7 +458,7 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
 
     xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPathReadNode,		/* xmlSecTransformReadNodeMethod read; */
+    xmlSecTransformXPathNodeRead,		/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -488,7 +489,7 @@ xmlSecTransformXPathGetKlass(void) {
 
 static const char xpathPattern[] = "(//. | //@* | //namespace::*)[%s]";
 static int 
-xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
+xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr transformNode, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
@@ -497,6 +498,7 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPathId), -1);
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     dataList = xmlSecXPathTransformGetDataList(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
@@ -576,8 +578,9 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
  * XPath2 transform
  * 
  *****************************************************************************/
-static int 		xmlSecTransformXPath2ReadNode	(xmlSecTransformPtr transform,
-							 xmlNodePtr transformNode);
+static int 		xmlSecTransformXPath2NodeRead	(xmlSecTransformPtr transform,
+							 xmlNodePtr transformNode,
+							 xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
@@ -590,7 +593,7 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
 
     xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPath2ReadNode,		/* xmlSecTransformReadNodeMethod read; */
+    xmlSecTransformXPath2NodeRead,		/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -614,7 +617,7 @@ xmlSecTransformXPath2GetKlass(void) {
 }
 
 static int 
-xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
+xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr transformNode, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
@@ -623,6 +626,7 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPath2Id), -1);
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     dataList = xmlSecXPathTransformGetDataList(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
@@ -704,8 +708,9 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
  * XPointer transform
  * 
  *****************************************************************************/
-static int 		xmlSecTransformXPointerReadNode	(xmlSecTransformPtr transform,
-							 xmlNodePtr transformNode);
+static int 		xmlSecTransformXPointerNodeRead	(xmlSecTransformPtr transform,
+							 xmlNodePtr transformNode,
+							 xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
@@ -718,7 +723,7 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
 
     xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPointerReadNode,		/* xmlSecTransformReadNodeMethod read; */
+    xmlSecTransformXPointerNodeRead,		/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -742,7 +747,7 @@ xmlSecTransformXPointerGetKlass(void) {
 }
 
 static int 
-xmlSecTransformXPointerReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
+xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr transformNode, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
@@ -750,6 +755,7 @@ xmlSecTransformXPointerReadNode(xmlSecTransformPtr transform, xmlNodePtr transfo
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId), -1);
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     dataList = xmlSecXPathTransformGetDataList(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);

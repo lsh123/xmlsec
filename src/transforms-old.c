@@ -27,6 +27,7 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
 			 xmlNodePtr transformsNode) {
     xmlNodePtr cur;
     xmlSecTransformPtr transform;
+    xmlSecTransformCtx transformCtx;
     int ret;    
 
     xmlSecAssert2(state != NULL, -1);        
@@ -34,11 +35,11 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
     
     cur = xmlSecGetNextElementNode(transformsNode->children);
     while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transform", xmlSecDSigNs)) {
-	transform = xmlSecTransformNodeRead(cur, xmlSecTransformUsageDSigTransform, 0);
+	transform = xmlSecTransformNodeRead(cur, xmlSecTransformUsageDSigTransform, &transformCtx);
 	if(transform == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecTransformNodeRead",
+			"xmlSecTransformNodeReadOld",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"node=%s",
 			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
@@ -67,85 +68,6 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
 	return(-1);
     }    
     return(0);
-}
-
-/** 
- * xmlSecTransformNodeRead:
- * @transformNode: the pointer to <dsig:Transform> node.
- * @usage: the usage of the transfomr (signature, encryption, etc.).
- * @dontDestroy: the flag whether we need to destroy the transform.
- *
- * Reads transform from the @transformNode as follows:
- *    1) reads "Algorithm" attribute;
- *    2) checks the list of known algorithms;
- *    3) calls transform create method;
- *    4) calls transform read transform node method.
- *
- * Returns the pointer to newly allocated #xmlSecTransform structure
- * or NULL if an error occurs.
- */
-xmlSecTransformPtr	
-xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
-			int dontDestroy) {
-    xmlChar *href;
-    xmlSecTransformId id;
-    xmlSecTransformPtr transform;
-    int ret;
-    
-    xmlSecAssert2(transformNode != NULL, NULL);
-    
-    href = xmlGetProp(transformNode, xmlSecAttrAlgorithm);
-    if(href == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlGetProp",
-		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
-	return(NULL);		
-    }
-    
-    id = xmlSecTransformsFind(href, usage);    
-    if(id == xmlSecTransformIdUnknown) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformsFind",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "href=\"%s\"", 
-		    xmlSecErrorsSafeString(href));
-	xmlFree(href);
-	return(NULL);		
-    }
-    
-    transform = xmlSecTransformCreate(id, dontDestroy);
-    if(!xmlSecTransformIsValid(transform)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformCreate",		    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)));
-	xmlFree(href);
-	return(NULL);		
-    }
-    
-    ret = xmlSecTransformRead(transform, transformNode);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRead",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
-	xmlSecTransformDestroy(transform, 1);
-	xmlFree(href);
-	return(NULL);		
-    }
-    
-    /* finally remember the transform node */    
-    transform->hereNode = transformNode;
-    xmlFree(href);   
-    return(transform);
 }
 
 /**

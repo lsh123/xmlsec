@@ -58,8 +58,9 @@ struct _xmlSecNssHmacCtx {
 
 static int 	xmlSecNssHmacInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecNssHmacFinalize			(xmlSecTransformPtr transform);
-static int 	xmlSecNssHmacReadNode			(xmlSecTransformPtr transform,
-							 xmlNodePtr transformNode);
+static int 	xmlSecNssHmacNodeRead			(xmlSecTransformPtr transform,
+							 xmlNodePtr transformNode,
+							 xmlSecTransformCtxPtr transformCtx);
 static int  	xmlSecNssHmacSetKeyReq			(xmlSecTransformPtr transform, 
 							 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecNssHmacSetKey			(xmlSecTransformPtr transform, 
@@ -117,7 +118,7 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecNssHmacReadNode:
+ * xmlSecNssHmacNodeRead:
  *
  * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
  *
@@ -139,13 +140,14 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
  * <!ELEMENT HMACOutputLength (#PCDATA)>
  */
 static int
-xmlSecNssHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
+xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr transformNode, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssHmacCtxPtr ctx;
     xmlNodePtr cur;
 
     xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
     xmlSecAssert2(transformNode!= NULL, -1);
+    xmlSecAssert2(transformCtx!= NULL, -1);
 
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
@@ -472,7 +474,7 @@ static xmlSecTransformKlass xmlSecNssHmacSha1Klass = {
     
     xmlSecNssHmacInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecNssHmacReadNode,			/* xmlSecTransformReadNodeMethod read; */
+    xmlSecNssHmacNodeRead,			/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecNssHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssHmacVerify,			/* xmlSecTransformValidateMethod validate; */
@@ -507,7 +509,7 @@ static xmlSecTransformKlass xmlSecNssHmacRipemd160Klass = {
     
     xmlSecNssHmacInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecNssHmacReadNode,			/* xmlSecTransformReadNodeMethod read; */
+    xmlSecNssHmacNodeRead,			/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecNssHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssHmacVerify,			/* xmlSecTransformValidateMethod validate; */
@@ -542,7 +544,7 @@ static xmlSecTransformKlass xmlSecNssHmacMd5Klass = {
     
     xmlSecNssHmacInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecNssHmacReadNode,			/* xmlSecTransformReadNodeMethod read; */
+    xmlSecNssHmacNodeRead,			/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecNssHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssHmacVerify,			/* xmlSecTransformValidateMethod validate; */

@@ -429,7 +429,7 @@ static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     
     xmlSecOpenSSLEvpSignatureInitialize,	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpSignatureFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLEvpSignatureSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLEvpSignatureSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpSignatureVerify,		/* xmlSecTransformVerifyMethod verify; */
@@ -621,7 +621,7 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     
     xmlSecOpenSSLEvpSignatureInitialize,	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpSignatureFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLEvpSignatureSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLEvpSignatureSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpSignatureVerify,		/* xmlSecTransformVerifyMethod verify; */

@@ -668,7 +668,7 @@ static xmlSecTransformKlass xmlSecNssAes128CbcKlass = {
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -700,7 +700,7 @@ static xmlSecTransformKlass xmlSecNssAes192CbcKlass = {
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -732,7 +732,7 @@ static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -767,7 +767,7 @@ static xmlSecTransformKlass xmlSecNssDes3CbcKlass = {
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

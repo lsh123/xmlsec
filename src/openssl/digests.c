@@ -305,7 +305,7 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     
     xmlSecOpenSSLEvpDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpDigestVerify,		/* xmlSecTransformVerifyMethod verify; */
@@ -345,7 +345,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     
     xmlSecOpenSSLEvpDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpDigestVerify,		/* xmlSecTransformVerifyMethod verify; */

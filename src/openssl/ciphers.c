@@ -681,7 +681,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
 
     xmlSecOpenSSLEvpBlockCipherInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpBlockCipherFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -713,7 +713,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
 
     xmlSecOpenSSLEvpBlockCipherInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpBlockCipherFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -745,7 +745,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
 
     xmlSecOpenSSLEvpBlockCipherInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpBlockCipherFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -781,7 +781,7 @@ static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
 
     xmlSecOpenSSLEvpBlockCipherInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpBlockCipherFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

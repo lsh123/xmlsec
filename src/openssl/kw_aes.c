@@ -82,7 +82,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
 
     xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -109,7 +109,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
 
     xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -136,7 +136,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
 
     xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

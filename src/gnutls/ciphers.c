@@ -677,7 +677,7 @@ static xmlSecTransformKlass xmlSecGnuTLSAes128CbcKlass = {
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -709,7 +709,7 @@ static xmlSecTransformKlass xmlSecGnuTLSAes192CbcKlass = {
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -741,7 +741,7 @@ static xmlSecTransformKlass xmlSecGnuTLSAes256CbcKlass = {
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -776,7 +776,7 @@ static xmlSecTransformKlass xmlSecGnuTLSDes3CbcKlass = {
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

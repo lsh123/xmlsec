@@ -1057,6 +1057,7 @@ xmlSecEncResultDebugXmlDump(xmlSecEncResultPtr result, FILE *output) {
  */
 static int
 xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecEncResultPtr result) {
+    xmlSecTransformCtx transformCtx; /* todo */
     xmlNodePtr cur;
     xmlNodePtr keyInfoNode = NULL;
     xmlSecTransformPtr encryptionMethod = NULL;
@@ -1074,7 +1075,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
         
     /* first node is optional EncryptionMethod */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "EncryptionMethod", xmlSecEncNs))) {
-	encryptionMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageEncryptionMethod, 0);
+	encryptionMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageEncryptionMethod, &transformCtx);
 	cur = xmlSecGetNextElementNode(cur->next);
     } else if((state->ctx != NULL) && (state->ctx->encryptionMethod != xmlSecTransformIdUnknown)){
 	/* get encryption method from the context */

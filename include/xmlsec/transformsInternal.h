@@ -104,9 +104,6 @@ int			xmlSecTransformStateFinalVerifyNode(xmlSecTransformStatePtr state,
 
 int			xmlSecTransformsNodeRead	(xmlSecTransformStatePtr state, 
 							 xmlNodePtr transformsNode);
-xmlSecTransformPtr	xmlSecTransformNodeRead		(xmlNodePtr transformNode, 
-							 xmlSecTransformUsage usage,
-							 int dontDestroy);
 int			xmlSecTransformNodeWrite	(xmlNodePtr transformNode,
 							 xmlSecTransformId id);
 

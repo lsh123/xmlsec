@@ -53,8 +53,9 @@
 
 static int		xmlSecTransformC14NInitialize	(xmlSecTransformPtr transform);
 static void		xmlSecTransformC14NFinalize	(xmlSecTransformPtr transform);
-static int 		xmlSecTransformC14NReadNode	(xmlSecTransformPtr transform,
-							 xmlNodePtr node);
+static int 		xmlSecTransformC14NNodeRead	(xmlSecTransformPtr transform,
+							 xmlNodePtr node,
+							 xmlSecTransformCtxPtr transformCtx);
 static int		xmlSecTransformC14NPushXml	(xmlSecTransformPtr transform, 
 							 xmlSecNodeSetPtr nodes,
 							 xmlSecTransformCtxPtr transformCtx);
@@ -107,7 +108,7 @@ xmlSecTransformC14NFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecTransformC14NReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
+xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr nsList;
     xmlNodePtr cur;
     xmlChar *list;
@@ -117,6 +118,7 @@ xmlSecTransformC14NReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     /* we have something to read only for exclusive c14n transforms */
     xmlSecAssert2(xmlSecTransformExclC14NCheckId(transform), -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
         
     nsList = xmlSecTransformC14NGetNsList(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
@@ -455,7 +457,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
 
     xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
@@ -488,7 +490,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
 
     xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
@@ -520,7 +522,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
 
     xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformC14NReadNode,	/* xmlSecTransformReadMethod read; */
+    xmlSecTransformC14NNodeRead,	/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
@@ -552,7 +554,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
 
     xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformC14NReadNode,	/* xmlSecTransformReadMethod read; */
+    xmlSecTransformC14NNodeRead,	/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
@@ -584,7 +586,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
 
     xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */

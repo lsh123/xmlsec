@@ -827,6 +827,7 @@ static int
 xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	   	      xmlNodePtr signatureValueNode, xmlNodePtr keyInfoNode,
 		      xmlSecDSigResultPtr result) {
+    xmlSecTransformCtx transformCtx;
     xmlSecTransformPtr c14nMethod = NULL;
     xmlSecTransformPtr signMethod = NULL;
     xmlNodePtr cur;
@@ -851,7 +852,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 		    xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
 	goto done;
     }
-    c14nMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageC14NMethod, 1);
+    c14nMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageC14NMethod, &transformCtx);
     if(c14nMethod == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -861,6 +862,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	goto done;
     }
+    c14nMethod->dontDestroy = 1;
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required SignatureMethod */
@@ -873,7 +875,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 		    xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
 	goto done;
     }
-    signMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageSignatureMethod, 1);
+    signMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageSignatureMethod, &transformCtx);
     if(signMethod == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -883,6 +885,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	goto done;
     }
+    signMethod->dontDestroy = 1;
     result->signMethod = signMethod->id;
     cur = xmlSecGetNextElementNode(cur->next);
 
@@ -1151,7 +1154,7 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 		    xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
 	goto done;
     }
-    digestMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageDigestMethod, 1);
+    digestMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageDigestMethod, &transformCtx);
     if(digestMethod == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1160,6 +1163,7 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
+    digestMethod->dontDestroy = 1;
     digestMethod->encode = sign;
     
     ret = xmlSecTransformStateUpdate(state, digestMethod);

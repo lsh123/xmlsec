@@ -83,7 +83,7 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
 
     xmlSecOpenSSLRsaPkcs1Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLRsaPkcs1Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLRsaPkcs1SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaPkcs1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -372,8 +372,9 @@ struct _xmlSecOpenSSLRsaOaepCtx {
 
 static int 	xmlSecOpenSSLRsaOaepInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaOaepFinalize			(xmlSecTransformPtr transform);
-static int 	xmlSecOpenSSLRsaOaepReadNode			(xmlSecTransformPtr transform, 
-								 xmlNodePtr node);
+static int 	xmlSecOpenSSLRsaOaepNodeRead			(xmlSecTransformPtr transform, 
+								 xmlNodePtr node,
+								 xmlSecTransformCtxPtr transformCtx);
 static int  	xmlSecOpenSSLRsaOaepSetKeyReq			(xmlSecTransformPtr transform, 
 								 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecOpenSSLRsaOaepSetKey			(xmlSecTransformPtr transform, 
@@ -396,7 +397,7 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
 
     xmlSecOpenSSLRsaOaepInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLRsaOaepFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLRsaOaepReadNode,		/* xmlSecTransformReadMethod read; */
+    xmlSecOpenSSLRsaOaepNodeRead,		/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLRsaOaepSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaOaepSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -460,7 +461,7 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
 }
 
 static int 	
-xmlSecOpenSSLRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
+xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlNodePtr cur;
     int ret;
@@ -468,6 +469,7 @@ xmlSecOpenSSLRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);

@@ -214,7 +214,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
 
     xmlSecTransformInputURIInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformInputURIFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformNodeReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */

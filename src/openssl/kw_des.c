@@ -88,7 +88,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
 
     xmlSecOpenSSLKWDes3Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWDes3Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
     xmlSecOpenSSLKWDes3SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWDes3SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

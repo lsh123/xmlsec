@@ -19,6 +19,8 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+#include <wincrypt.h>
+
 /**
  * xmlSecMSCryptoKeyDataX509Id:
  * 

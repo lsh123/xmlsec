@@ -1048,6 +1048,16 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "== TRANSFORMS CTX (status=%d)\n", ctx->status);    
+
+    fprintf(output, "== flags: 0x%08x\n", ctx->flags);
+    fprintf(output, "== flags2: 0x%08x\n", ctx->flags2);
+    if(xmlSecPtrListGetSize(&(ctx->enabledTransforms)) > 0) {
+	fprintf(output, "== enabled transforms: ");
+	xmlSecTransformIdListDebugDump(&(ctx->enabledTransforms), output);
+    } else {
+	fprintf(output, "== enabled transforms: all\n");
+    }
+    
     fprintf(output, "=== uri: %s\n", 
 	    (ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL");    
     fprintf(output, "=== uri xpointer expr: %s\n", 
@@ -1064,10 +1074,24 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
  
-    fprintf(output, "<TransformCtx status=\"%d\" uri=\"%s\" uriXPointer=\"%s\" >\n", 
-			ctx->status, 
-			(ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL",    
-			(ctx->xptrExpr != NULL) ? ctx->xptrExpr : BAD_CAST "NULL");    
+    fprintf(output, "<TransformCtx status=\"%d\">\n", ctx->status);
+
+    fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
+    fprintf(output, "<Flags2>%08x</Flags2>\n", ctx->flags2);
+    if(xmlSecPtrListGetSize(&(ctx->enabledTransforms)) > 0) {
+	fprintf(output, "<EnabledTransforms>\n");
+	xmlSecTransformIdListDebugXmlDump(&(ctx->enabledTransforms), output);
+	fprintf(output, "</EnabledTransforms>\n");
+    } else {
+	fprintf(output, "<EnabledTransforms>all</EnabledTransforms>\n");
+    }
+
+
+    fprintf(output, "<Uri>%s</Uri>\n", 
+		(ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL");
+    fprintf(output, "<UriXPointer>%s</UriXPointer>\n", 
+		(ctx->xptrExpr != NULL) ? ctx->xptrExpr : BAD_CAST "NULL");    
+
     for(transform = ctx->first; transform != NULL; transform = transform->next) {
 	xmlSecTransformDebugXmlDump(transform, output);
     }
@@ -2111,6 +2135,49 @@ xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
 	}
     }
     return(xmlSecTransformIdUnknown);
+}
+
+void 
+xmlSecTransformIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
+    xmlSecTransformId transformId;
+    size_t i, size;
+    
+    xmlSecAssert(xmlSecPtrListCheckId(list, xmlSecTransformIdListId));
+    xmlSecAssert(output != NULL);
+
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	transformId = (xmlSecTransformId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert(transformId != NULL);
+	xmlSecAssert(transformId->name != NULL);
+	    
+	if(i > 0) {
+	    fprintf(output, ",\"%s\"", transformId->name);
+	} else {
+	    fprintf(output, "\"%s\"", transformId->name);
+	}	    
+    }
+    fprintf(output, "\n");
+}
+
+void 
+xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
+    xmlSecTransformId transformId;
+    size_t i, size;
+
+    xmlSecAssert(xmlSecPtrListCheckId(list, xmlSecTransformIdListId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<TransformIdsList>\n");
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	transformId = (xmlSecTransformId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert(transformId != NULL);
+	xmlSecAssert(transformId->name != NULL);
+	    
+	fprintf(output, "<TransformId name=\"%s\" />", transformId->name);
+    }
+    fprintf(output, "</TransformIdsList>\n");
 }
 
 /************************************************************************

@@ -484,25 +484,10 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     fprintf(output, "== flags: 0x%08x\n", keyInfoCtx->flags);
     fprintf(output, "== flags2: 0x%08x\n", keyInfoCtx->flags2);
     if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
-	xmlSecKeyDataId dataId;
-	size_t i, size;
-
-	fprintf(output, "== enabled Key Data Ids:");
-	size = xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData));
-	for(i = 0; i < size; ++i) {
-	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(&(keyInfoCtx->enabledKeyData), i);
-	    xmlSecAssert(dataId != NULL);
-	    xmlSecAssert(dataId->name != NULL);
-	    
-	    if(i > 0) {
-		fprintf(output, ",%s", dataId->name);
-	    } else {
-		fprintf(output, " %s", dataId->name);
-	    }	    
-	}
-	fprintf(output, "\n");
+	fprintf(output, "== enabled key data: ");
+	xmlSecKeyDataIdListDebugDump(&(keyInfoCtx->enabledKeyData), output);
     } else {
-	fprintf(output, "== enabled Key Data Ids: all\n");
+	fprintf(output, "== enabled key data: all\n");
     }
     fprintf(output, "== RetrievalMethod level (cur/max): %d/%d\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
@@ -536,22 +521,13 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     fprintf(output, "<Flags>%08x</Flags>\n", keyInfoCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", keyInfoCtx->flags2);
     if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
-	xmlSecKeyDataId dataId;
-	size_t i, size;
-
-	fprintf(output, "<EnabledKeyDataIds>\n");
-	size = xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData));
-	for(i = 0; i < size; ++i) {
-	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(&(keyInfoCtx->enabledKeyData), i);
-	    xmlSecAssert(dataId != NULL);
-	    xmlSecAssert(dataId->name != NULL);
-	    
-	    fprintf(output, "<DataId name=\"%s\" />", dataId->name);
-	}
-	fprintf(output, "</EnabledKeyDataIds>\n");
+	fprintf(output, "<EnabledKeyData>\n");
+	xmlSecKeyDataIdListDebugXmlDump(&(keyInfoCtx->enabledKeyData), output);
+	fprintf(output, "</EnabledKeyData>\n");
     } else {
-	fprintf(output, "<EnabledKeyDataIds type=\"all\" />\n");
+	fprintf(output, "<EnabledKeyData>all</EnabledKeyData>\n");
     }
+
     fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
 	    keyInfoCtx->maxRetrievalMethodLevel);

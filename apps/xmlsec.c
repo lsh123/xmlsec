@@ -103,6 +103,14 @@ static const char helpDecrypt[] =
     "Usage: xmlsec decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
 
+static const char helpListKeyData[] =     
+    "Usage: xmlsec list-key-data\n"
+    "Prints the list of known key data klasses\n";
+
+static const char helpListTransforms[] =     
+    "Usage: xmlsec list-transforms\n"
+    "Prints the list of known transform klasses\n";
+
 #define xmlSecAppCmdLineTopicGeneral		0x0001
 #define xmlSecAppCmdLineTopicDSigCommon		0x0002
 #define xmlSecAppCmdLineTopicDSigSign		0x0004
@@ -284,10 +292,9 @@ static xmlSecAppCmdLineParam enabledKeyDataParam = {
     "--enabled-key-data",
     NULL,
     "--enabled-key-data <list>"
-    "\n\tcomma separated list of enabled key data (possible"
-    "\n\tvalues are: \"key-name\",\"key-value\",\"rsa\",\"dsa\",\"aes\","
-    "\n\t\"x509\",\"pgp\",...); by default, all registered key"
-    "\n\tdata are enabled",
+    "\n\tcomma separated list of enabled key data (list of "
+    "\n\tregistered key data klasses is available with \"--list-key-data\""
+    "\n\tcommand); by default, all registered key data are enabled",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -616,6 +623,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 typedef enum {
     xmlSecAppCommandUnknown = 0,
     xmlSecAppCommandHelp,
+    xmlSecAppCommandListKeyData,
+    xmlSecAppCommandListTransforms,    
     xmlSecAppCommandVersion,
     xmlSecAppCommandKeys,
     xmlSecAppCommandSign,
@@ -666,6 +675,9 @@ static int			xmlSecAppEncryptTmpl		(void);
 static int			xmlSecAppPrepareEncCtx		(xmlSecEncCtxPtr encCtx);
 static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
+
+static void			xmlSecAppListKeyData		(void);
+static void			xmlSecAppListTransforms		(void);
 
 static xmlSecTransformUriType	xmlSecAppGetUriType		(const char* string);
 static FILE* 			xmlSecAppOpenFile		(const char* filename);
@@ -763,6 +775,12 @@ int main(int argc, const char **argv) {
     /* execute requested number of times */
     for(; repeats > 0; --repeats) {
 	switch(command) {
+	case xmlSecAppCommandListKeyData:
+	    xmlSecAppListKeyData();
+	    break;
+	case xmlSecAppCommandListTransforms:
+	    xmlSecAppListTransforms();
+	    break;	    
 	case xmlSecAppCommandKeys:
 	    for(i = pos; i < argc; ++i) {
     	    	if(xmlSecAppCryptoSimpleKeysMngrSave(gKeysMngr, argv[i], xmlSecKeyDataTypeAny) < 0) {
@@ -1489,6 +1507,18 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 
 #endif /* XMLSEC_NO_XMLENC */
 
+static void 
+xmlSecAppListKeyData(void) {
+    fprintf(stdout, "Registered key data klasses:\n");
+    xmlSecKeyDataIdListDebugDump(xmlSecKeyDataIdsGet(), stdout);
+}
+
+static void 
+xmlSecAppListTransforms(void) {
+    fprintf(stdout, "Registered transform klasses:\n");
+    xmlSecTransformIdListDebugDump(xmlSecTransformIdsGet(), stdout);
+}
+
 static int 
 xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAppCmdLineValuePtr value;
@@ -1957,6 +1987,16 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     if((strcmp(cmd, "version") == 0) || (strcmp(cmd, "--version") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicVersion;
 	return(xmlSecAppCommandVersion);
+    } else 
+
+    if((strcmp(cmd, "list-key-data") == 0) || (strcmp(cmd, "--list-key-data") == 0)) {
+	(*cmdLineTopics) = 0;
+	return(xmlSecAppCommandListKeyData);
+    } else 
+
+    if((strcmp(cmd, "list-transforms") == 0) || (strcmp(cmd, "--list-transforms") == 0)) {
+	(*cmdLineTopics) = 0;
+	return(xmlSecAppCommandListTransforms);
     } else 
     
     if((strcmp(cmd, "keys") == 0) || (strcmp(cmd, "--keys") == 0)) {

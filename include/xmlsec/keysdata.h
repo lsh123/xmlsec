@@ -584,7 +584,10 @@ XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataIdListFindByHref	(xmlSecPtrListPtr li
 XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataIdListFindByName	(xmlSecPtrListPtr list,
 								 const xmlChar* name,
 								 xmlSecKeyDataUsage usage);
-
+XMLSEC_EXPORT void		xmlSecKeyDataIdListDebugDump	(xmlSecPtrListPtr list,
+								 FILE* output);
+XMLSEC_EXPORT void		xmlSecKeyDataIdListDebugXmlDump	(xmlSecPtrListPtr list,
+								 FILE* output);
 
 /**************************************************************************
  *

@@ -978,6 +978,49 @@ xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
     return(xmlSecKeyDataIdUnknown);
 }
 
+void 
+xmlSecKeyDataIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
+    xmlSecKeyDataId dataId;
+    size_t i, size;
+    
+    xmlSecAssert(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId));
+    xmlSecAssert(output != NULL);
+
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert(dataId != NULL);
+	xmlSecAssert(dataId->name != NULL);
+	    
+	if(i > 0) {
+	    fprintf(output, ",\"%s\"", dataId->name);
+	} else {
+	    fprintf(output, "\"%s\"", dataId->name);
+	}	    
+    }
+    fprintf(output, "\n");
+}
+
+void 
+xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
+    xmlSecKeyDataId dataId;
+    size_t i, size;
+
+    xmlSecAssert(xmlSecPtrListCheckId(list, xmlSecKeyDataIdListId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<KeyDataIdsList>\n");
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert(dataId != NULL);
+	xmlSecAssert(dataId->name != NULL);
+	    
+	fprintf(output, "<DataId name=\"%s\" />", dataId->name);
+    }
+    fprintf(output, "</KeyDataIdsList>\n");
+}
+
 /**************************************************************************
  *
  * xmlSecKeyDataStore functions

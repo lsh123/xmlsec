@@ -591,6 +591,10 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformIdListFindByHref	(xmlSecPtrListPt
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformIdListFindByName	(xmlSecPtrListPtr list,
 								 const xmlChar* name,
 								 xmlSecTransformUsage usage);
+XMLSEC_EXPORT void		xmlSecTransformIdListDebugDump	(xmlSecPtrListPtr list,
+								 FILE* output);
+XMLSEC_EXPORT void		xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list,
+								 FILE* output);
 
 
 /******************************************************************** 

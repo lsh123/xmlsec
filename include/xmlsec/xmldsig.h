@@ -90,8 +90,6 @@ struct _xmlSecDSigCtx {
     xmlSecTransformCtx		signTransformCtx;
     xmlSecTransformUriType	enabledReferenceUris;
     xmlSecPtrListPtr		enabledReferenceTransforms;
-    
-    /* TODO */
     xmlSecTransformId		defSignMethodId;
     xmlSecTransformId		defC14NMethodId;
         

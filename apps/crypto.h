@@ -16,6 +16,7 @@ extern "C" {
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 
 XMLSEC_EXPORT int	xmlSecAppCryptoInit			(void);

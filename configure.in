@@ -8,6 +8,8 @@ XMLSEC_VERSION=$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMI
 VERSION=$XMLSEC_VERSION
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 
+XMLSEC_CRYPTO=""
+
 AC_SUBST(XMLSEC_VERSION)
 AC_SUBST(XMLSEC_VERSION_MAJOR)
 AC_SUBST(XMLSEC_VERSION_MINOR)
@@ -153,7 +155,8 @@ OPENSSL_LDADDS=""
 AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
 AC_ARG_WITH(openssl, [  --with-openssl=[PFX]    openssl location])
 if test "$with_openssl" = "no" ; then
-    AC_MSG_ERROR(openssl is required for $PACKAGE)
+    OPENSSL_WITHOUT="yes"
+    AC_MSG_RESULT(no)
 else
     if test "$with_openssl" != "" ; then
 	OPENSSL_PREFIX=$with_openssl
@@ -221,6 +224,10 @@ else
 	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL096=1"
     ])    
     CPPFLAGS=$OLD_CPPFLAGS
+    if test "z$XMLSEC_CRYPTO" = "z"
+    then
+	XMLSEC_CRYPTO="openssl"
+    fi
     AC_MSG_RESULT(yes ('$OPENSSL_VERSION' ))
 fi
 AC_SUBST(OPENSSL_WITHOUT)
@@ -340,25 +347,15 @@ AC_SUBST(XMLSEC_NO_DES)
 dnl ==========================================================================
 dnl See do we need AES suport
 dnl ==========================================================================
-AC_MSG_CHECKING(for AES support (OpenSSL >= 0.9.7 is required)) 
+AC_MSG_CHECKING(for AES support) 
 AC_ARG_ENABLE(aes,   [  --enable-aes            enable AES support (OpenSSL >= 0.9.7 is required)])
 if test "$enable_aes" = "no" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
     XMLSEC_NO_AES="1"
     AC_MSG_RESULT(no)
 else
-    if test "$OPENSSL_VERSION" = "0.9.7" ; then
-	XMLSEC_NO_AES="0"
-	AC_MSG_RESULT(yes)
-    else 
-	if test "$enable_aes" = "yes" ; then 
-	    AC_MSG_ERROR(OpenSSL >= 0.9.7 is required for AES support)
-	else
-	    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
-	    XMLSEC_NO_AES="1"
-	    AC_MSG_RESULT(no)
-	fi
-    fi
+    XMLSEC_NO_AES="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_AES)
 
@@ -369,7 +366,6 @@ AC_MSG_CHECKING(for XMLDSig support)
 AC_ARG_ENABLE(xmldsig,   [  --enable-xmldsig        enable XMLDSig support (yes)])
 if test "$enable_xmldsig" = "no" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLDSIG=1"
-    AM_CONDITIONAL(XMLSEC_WITH_XMLDSIG_TEST, test "1" = "0" )
     XMLSEC_NO_XMLDSIG="1"
     AC_MSG_RESULT(no)
 else
@@ -457,6 +453,9 @@ AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_DEFINES)
+
+AM_CONDITIONAL(XMLSEC_CRYPTO_OPENSSL, test "$XMLSEC_CRYPTO" = "openssl" )
+AC_SUBST(XMLSEC_CRYPTO)
 
 dnl ==========================================================================
 dnl Which files to process

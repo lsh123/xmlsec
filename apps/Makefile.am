@@ -2,35 +2,51 @@ NULL =
 
 bin_PROGRAMS = xmlsec
 
-DEPS = \
-$(top_builddir)/src/openssl/libxmlsec-openssl.la \
-$(top_builddir)/src/libxmlsec.la \
-$(NULL)
+if XMLSEC_CRYPTO_OPENSSL
+XMLSEC_CRYPTO_INCLUDES = \
+    -DXMLSEC_CRYPTO_OPENSSL=1 \
+    $(OPENSSL_CFLAGS) \
+    $(NULL) 
+
+XMLSEC_CRYPTO_LIB=\
+    $(top_builddir)/src/openssl/libxmlsec-openssl.la \
+    $(NULL)
+
+XMLSEC_CRYPTO_LIBS = \
+    $(OPENSSL_LDADDS) \
+    $(NULL)
+else 
+    "Error: no crypto library defined"
+endif 
 
 INCLUDES = \
--I$(top_srcdir)/include \
-$(OPENSSL_CFLAGS) \
-$(LIBXSLT_CFLAGS) \
-$(LIBXML_CFLAGS) \
-$(NULL) 
+    -I$(top_srcdir)/include \
+    $(XMLSEC_CRYPTO_INCLUDES) \
+    $(LIBXSLT_CFLAGS) \
+    $(LIBXML_CFLAGS) \
+    $(NULL)
 
+DEPS = \
+    $(XMLSEC_CRYPTO_LIB) \
+    $(top_builddir)/src/libxmlsec.la \
+    $(NULL)
 
+# xmlsec command line utility
 xmlsec_SOURCES = \
-xmlsec.c \
-crypto.c crypto.h \
-$(NULL)
+    xmlsec.c \
+    crypto.c crypto.h \
+    $(NULL)
 
 if XMLSEC_DYNAMIC_LINKING
-xmlsec_LDFLAGS =
-else
-xmlsec_LDFLAGS = -static -L$(top_builddir)/src -lxmlsec
+xmlsec_LDFLAGS = 
+else 
+xmlsec_LDFLAGS = -static
 endif
+
 xmlsec_LDADD = \
-$(top_builddir)/src/openssl/libxmlsec-openssl.la \
-$(top_builddir)/src/libxmlsec.la \
-$(OPENSSL_LDADDS) \
-$(LIBXSLT_LIBS) \
-$(LIBXML_LIBS) \
-$(NULL)
-
-
+    $(XMLSEC_CRYPTO_LIB) \
+    $(top_builddir)/src/libxmlsec.la \
+    $(XMSLEC_CRYPTO_LIBS) \
+    $(LIBXSLT_LIBS) \
+    $(LIBXML_LIBS) \
+    $(NULL)

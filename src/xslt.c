@@ -361,7 +361,7 @@ xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
     xmlSecAssert2(transformNode != NULL, -1);    
     xmlSecAssert2(xslt != NULL, -1);    
     
-    xslt_doc = xmlParseMemory(xslt, xmlStrlen(xslt));
+    xslt_doc = xmlParseMemory((const char*)xslt, xmlStrlen(xslt));
     if(xslt_doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XML_FAILED,

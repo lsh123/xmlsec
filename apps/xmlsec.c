@@ -28,6 +28,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmldsig.h>
@@ -207,7 +208,9 @@ static const char helpMisc[] =
     "Misc. options:\n"
     "  --repeat <number>     repeat the operation <number> times\n"
     "  --disable-error-msgs  do not print xmlsec error messages\n"
+#ifdef XMLSEC_CRYPTO_OPENSSL
     "  --print-openssl-errors print openssl errors stack at the end\n"
+#endif /* XMLSEC_CRYPTO_OPENSSL */    
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -446,7 +449,9 @@ int main(int argc, char **argv) {
     
 done:    
     if(print_openssl_errors) {
+#ifdef XMLSEC_CRYPTO_OPENSSL
 	ERR_print_errors_fp(stderr);
+#endif /* XMLSEC_CRYPTO_OPENSSL */    
     }
     if(doc != NULL) {
 	xmlFreeDoc(doc); 

@@ -1,4 +1,4 @@
-<sect1 id="xmlsec-notes-transforms">
+<chapter id="xmlsec-notes-transforms">
     <title>Transforms and transforms chain.</title>
     <para>XML Digital Signature and XML Encryption standards are 
 	very flexible and provide an XML developer many different ways to 
@@ -36,7 +36,7 @@
     </para>
     <figure>
 	<title>The XML Security Library transform.</title>
-	<graphic fileref="images/transform.png" align="center" />
+	<graphic fileref="images/transform.png" align="center"></graphic>
     </figure>	 
     <para>XML Security Library constructs transforms chain according to the 
 	signature/encryption template or signed/encrypted document. 
@@ -52,7 +52,7 @@
     </para>	
     <figure>
 	<title>Transforms chain created for &lt;dsig:Reference/&gt; element processing.</title>
-	<graphic fileref="images/transforms-chain.png" align="center" />
+	<graphic fileref="images/transforms-chain.png" align="center"></graphic>
     </figure>	 
 	
     <para>
@@ -63,5 +63,5 @@ TODO
 	    ]]></programlisting>
 	</example>
     </para>
-</sect1>
+</chapter>
 

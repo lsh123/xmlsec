@@ -1,4 +1,4 @@
-<sect1 id="xmlsec-notes-keysmngr">
+<chapter id="xmlsec-notes-keysmngr">
     <title>Keys manager.</title>
     <para>Processing some of the key data objects require additional 
 	information which is global across the application (or in the 
@@ -10,7 +10,7 @@
     </para>
     <figure>
 	<title>The keys manager structure.</title>
-	<graphic fileref="images/keysmngr.png" align="center" />
+	<graphic fileref="images/keysmngr.png" align="center"></graphic>
     </figure>	 
     <para>Keys manager has a special "keys store" which lists the keys 
 	known to the application. This "keys store" is used by XML Security 
@@ -33,7 +33,7 @@
 	encryption or decryption.
     </para>
 	
-    <sect2>
+    <sect1 id="xmlsec-notes-simple-keys-store">
 	<title>Simple keys store.</title>
 	<para>XML Security Library has a built-in simple keys store 
 	implemented using a keys list. You can use it in your application
@@ -118,9 +118,9 @@ load_keys(char** files, int files_size) {
 		<simpara><link linkend="xmlsec-example-verify2">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect2>
+    </sect1>
 
-    <sect2>
+    <sect1 id="xmlsec-notes-keys-manager-sign-enc">
 	<title>Using keys manager for signatures/encryption.</title>
 	<para>Instead of specifiying signature or encryption key in the 
 	corresponding context object (<structfield>signKey</structfield> 
@@ -335,9 +335,9 @@ done:
 		<simpara><link linkend="xmlsec-example-encrypt3">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect2>
+    </sect1>
     
-    <sect2>
+    <sect1 id="xmlsec-notes-keys-mngr-verify-decrypt">
 	<title>Using keys manager for verification/decryption.</title>
 	<para>If more than one key could be used for signature or encryption,
 	then using <structfield>signKey</structfield> member of 
@@ -424,9 +424,9 @@ load_des_keys(char** files, int files_size) {
 		<simpara><link linkend="xmlsec-example-decrypt2">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect2>
+    </sect1>
 
-    <sect2>
+    <sect1 id="xmlsec-notes-custom-keys-store">
 	<title>Implementing a custom keys store.</title>
 	<para>In many cases, a simple built-in list based keys store
 	is not good enough. For example, XML Security Library (and 
@@ -584,5 +584,5 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 		<simpara><link linkend="xmlsec-example-decrypt3">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect2>    
-</sect1>
+    </sect1>    
+</chapter>

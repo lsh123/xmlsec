@@ -1,4 +1,4 @@
-<sect1 id="xmlsec-notes-x509">
+<chapter id="xmlsec-notes-x509">
     <title>Using X509 Certificates.</title>
     <para>
     X509 certificate is one of many possible keys data object that can be
@@ -10,7 +10,7 @@
     information about your crypto engine.
     </para>
     
-    <sect2>
+    <sect1 id="xmlsec-notes-sign-x509" >
 	<title>Signing data with X509 certificate.</title>
 	<para>To sign a file using X509 certificate, 
 	an application need to associate the certificate (or certificates) 
@@ -98,9 +98,9 @@
 	    <simpara><link linkend="xmlsec-example-sign3">Full program listing</link></simpara>
 	</example>
 	</para>
-    </sect2>
+    </sect1>
 
-    <sect2>
+    <sect1 id="xmlsec-notes-verify-x509" >
 	<title>Verifing document signed with X509 certificates.</title>
 	<para>
 	If the document is signed with an X509 certificate then the signature
@@ -190,6 +190,6 @@ load_trusted_certs(char** files, int files_size) {
 	    <simpara><link linkend="xmlsec-example-verify3">Full program listing</link></simpara>
 	</example>
 	</para>
-    </sect2>
-</sect1>
+    </sect1>
+</chapter>
 

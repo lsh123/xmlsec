@@ -1,7 +1,7 @@
-<sect1 id="xmlsec-notes-new-crypto">
+<chapter id="xmlsec-notes-new-crypto">
     <title>Adding support for new cryptographic library.</title>
     <para>This section contains information for developers who wish to use
     	XML Security Library with a new crypto engine.
     </para>
     <para>TODO: example</para>
-</sect1>
+</chapter>

@@ -1,6 +1,6 @@
-    <sect1 id="xmlsec-notes-init-shutdown">
-        <title>Initialization and shutdown.</title>
-        <para>XML Security Library initialization/shutdown 
+<chapter id="xmlsec-notes-init-shutdown">
+    <title>Initialization and shutdown.</title>
+    <para>XML Security Library initialization/shutdown 
 	process includes initialization and shutdown of the
 	dependent libraries:
 	<itemizedlist>
@@ -78,5 +78,5 @@
     xmlCleanupParser();		
 		]]></programlisting>
 	    </example>
-	</para>
-    </sect1>
+    </para>
+</chapter>

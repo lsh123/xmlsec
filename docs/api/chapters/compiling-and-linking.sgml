@@ -1,10 +1,10 @@
-<sect1 id="xmlsec-compiling">
+<chapter id="xmlsec-notes-compiling">
     <title>Building the application with XML Security Library.</title>
     <para>As usual, compiling and linking application with XML Security
     Library requires specifing correct compilation flags, library files 
     and paths to include and library files.
     </para>
-    <sect2>
+    <sect1 id="xmlsec-notes-include-files" >
 	<title>Include files</title>
 	<para>In order to use XML Security Library an application should include 
 	one or more of the following files:
@@ -64,23 +64,36 @@
 	    ]]></programlisting>
 	</example>
 	</para>
-    </sect2>
-    <sect2>
+    </sect1>
+    <sect1 id="xmlsec-notes-compiling-unix" >
 	<title>Compiling and linking on Unix.</title>
-	<para>On Unix-like systems the <filename>xmlsec1-config</filename> 
-	script is the simplest way to get all necessary information.
-	<example>
-	    <title>Using xmlsec1-config script in a Makefile.</title>
-	    <programlisting><![CDATA[
-PROGRAM	 	 = test
-PROGRAM_FILES	 = test.c
-cc	 	 = gcc
-CC	 	 = gcc
-LD	 	 = gcc
+	<para>There are several ways to get necessary compilation
+	and linking information on Unix:
+	<itemizedlist>
+	    <listitem><para>PKG_CHECK_MODULES() macro
+		<example>
+		    <title>Using PKG_CHECK_MODULES() macro in a configure.in file.</title>
+		    <programlisting><![CDATA[
+dnl 
+dnl Check for xmlsec and friends
+dnl
+PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.0.0 xml2 libxslt,,exit)
+CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
+CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
+LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
+		    ]]></programlisting>
+		</example>
+	    </para></listitem>
+	    <listitem><para>pkg-config script
+		<example>
+		    <title>Using pkg-config script in a Makefile.</title>
+		    <programlisting><![CDATA[
+PROGRAM = test
+PROGRAM_FILES = test.c
 
-CFLAGS		+= -g $(shell xmlsec1-config --cflags)
-LDFLAGS		+= -g
-LIBS 		+= $(shell xmlsec1-config --libs) 
+CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1)
+LDFLAGS	+= -g
+LIBS 	+= $(shell pkg-config --libs xmlsec1) 
 
 all: $(PROGRAM)
 
@@ -89,11 +102,34 @@ all: $(PROGRAM)
 
 clean:
 	@rm -rf $(PROGRAM)
-	    ]]></programlisting>
-	</example>
+		    ]]></programlisting>
+		</example>
+	    </para></listitem>
+	    <listitem><para>xmlsec1-config script
+		<example>
+		    <title>Using xmlsec1-config script in a Makefile.</title>
+		    <programlisting><![CDATA[
+PROGRAM = test
+PROGRAM_FILES = test.c
+
+CFLAGS	+= -g $(shell xmlsec1-config --cflags)
+LDFLAGS	+= -g
+LIBS 	+= $(shell xmlsec1-config --libs) 
+
+all: $(PROGRAM)
+
+%: %.c 
+	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
+
+clean:
+	@rm -rf $(PROGRAM)
+		    ]]></programlisting>
+		</example>
+		</para></listitem>
+	</itemizedlist>
 	</para>
-    </sect2>
-    <sect2>
+    </sect1>
+    <sect1 id="xmlsec-notes-compiling-windows" >
 	<title>Compiling and linking on Windows.</title>
 	<para>On Windows there is no such simple and elegant solution.
 	Please check <filename>README</filename> file in <filename>win32</filename>
@@ -115,8 +151,8 @@ clean:
 	    </para></listitem>
 	</itemizedlist>
 	</para>
-    </sect2>
-    <sect2>
+    </sect1>
+    <sect1 id="xmlsec-notes-compiling-others">
 	<title>Compiling and linking on other systems.</title>
 	<para>Well, nothing is impossible, it's only software (you managed to 
 	compile the library itself, do you?). 
@@ -124,5 +160,5 @@ clean:
 	compiling and linking applications with XML Security Library
 	on other platforms (if you would like to share it).
 	</para>
-    </sect2>
-</sect1>
+    </sect1>
+</chapter>

@@ -1,6 +1,6 @@
-    <sect1 id="xmlsec-notes-verify-decrypt">
-      <title>Verifing and decrypting documents.</title>
-	<para>Since the template is just an XML file, it might be created in advance 
+<chapter id="xmlsec-notes-verify-decrypt">
+    <title>Verifing and decrypting documents.</title>
+    <para>Since the template is just an XML file, it might be created in advance 
 	and saved in a file. It's also possible for application to create 
 	templates without using XML Security Library functions. Also in some 
 	cases template should be inserted in the signed or encrypted data 
@@ -11,10 +11,10 @@
 	encrypted document.
     	  <figure>
 	    <title>The verification or decryption processing model.</title>
-	    <graphic fileref="images/verif-dec-model.png" align="center" />
+	    <graphic fileref="images/verif-dec-model.png" align="center"></graphic>
 	  </figure>	 
 	</para>
-	<sect2>
+	<sect1 id="xmlsec-notes-verify" >
 	<title>Verifying a signed document</title>
 	<para>The typical siganture verification process includes following steps:
 	  <itemizedlist>
@@ -137,9 +137,9 @@ done:
 	    <simpara><link linkend="xmlsec-example-verify1">Full Program Listing</link></simpara>
 	    </example>
 	</para>
-	</sect2>
+	</sect1>
 
-	<sect2>
+	<sect1 id="xmlsec-notes-decrypt" >
 	<title>Decrypting an encrypted document</title>
 	<para>The typical decryption process includes following steps:
 	  <itemizedlist>
@@ -257,5 +257,5 @@ done:
 	    <simpara><link linkend="xmlsec-example-decrypt1">Full Program Listing</link></simpara>
 	    </example>
 	</para>
-	</sect2>
     </sect1>
+</chapter>

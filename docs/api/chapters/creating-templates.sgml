@@ -1,4 +1,4 @@
-<sect1 id="xmlsec-notes-templates">
+<chapter id="xmlsec-notes-templates">
     <title>Creating dynamic templates.</title>
     <para>The XML Security Library uses templates to describe
     how and what data should be signed or encrypted. The template
@@ -8,7 +8,7 @@
     also create templates dynamicaly. The XML Security Library
     provides helper functions to quickly create dynamic templates
     inside your application.</para>
-    <sect2>
+    <sect1 id="xmlsec-notes-dynamic-signature-templates">
 	<title>Creating dynamic signature templates.</title>
 	<para>The signature template has structure similar 
 	to the XML Digital Signature structure as it is described in 
@@ -167,9 +167,9 @@ done:
 		<simpara><link linkend="xmlsec-example-sign2">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect2>
+    </sect1>
         
-    <sect2>
+    <sect1 id="xmlsec-notes-dynamic-encryption-templates">
 	<title>Creating dynamic encryption templates.</title>
 	<para>The encryption template has structure similar 
 	to the XML Encryption structure as it is described in 
@@ -318,5 +318,5 @@ done:
 		<simpara><link linkend="xmlsec-example-encrypt2">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect2>
-</sect1>
+    </sect1>
+</chapter>

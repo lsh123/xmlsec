@@ -1,4 +1,4 @@
-<sect1 id="xmlsec-notes-contexts">
+<chapter id="xmlsec-notes-contexts">
     <title>Using context objects.</title>
     <para>The great flexibility of XML Digital Signature and XML Encryption
     specification is one of the most interesting and in the same time,
@@ -134,5 +134,5 @@ done:
 	    ]]></programlisting>
 	</example>
     </para>
-</sect1>
+</chapter>
 

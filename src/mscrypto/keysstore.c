@@ -503,12 +503,12 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			       xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyStorePtr* ss;
     xmlSecKeyPtr key = NULL;
-    xmlSecKeyPtr retval = NULL;
     xmlSecKeyReqPtr keyReq = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
     PCCERT_CONTEXT pCertContext2 = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
+    xmlSecKeyPtr res = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
@@ -660,31 +660,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         /* now that we have a key, make sure it is valid and let the simple
 	* store adopt it */
     	if (xmlSecKeyIsValid(key)) {
-	    retval = xmlSecKeyDuplicate(key);
-	    if (retval == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-			    "xmlSecKeyDuplicate",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		goto done;
-	    }
-
-	    /* aleksey todo: do we need to adopt this key ???
-	     * if this would be removed then instead of duplicating 
-	     * key few lines above just do 
-	     *	retval = key;
-	     *  key = NULL;
-	     */
-	    ret = xmlSecSimpleKeysStoreAdoptKey(*ss, key);
-	    if (ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-			    "xmlSecSimpleKeysStoreAdoptKey",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		goto done;
-	    }
+	    res = key;
 	    key = NULL;
 	}
     }
@@ -706,5 +682,5 @@ done:
 	xmlSecKeyDestroy(key);
     }
 
-    return (retval);
+    return (res);
 }

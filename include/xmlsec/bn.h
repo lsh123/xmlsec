@@ -22,6 +22,12 @@ extern "C" {
 typedef xmlSecBuffer						xmlSecBn,
 								*xmlSecBnPtr;
 
+typedef enum {
+    xmlSecBnBase64,
+    xmlSecBnHex,
+    xmlSecBnDec
+} xmlSecBnFormat;
+
 XMLSEC_EXPORT xmlSecBnPtr	xmlSecBnCreate			(xmlSecSize size);
 XMLSEC_EXPORT void		xmlSecBnDestroy			(xmlSecBnPtr bn);
 XMLSEC_EXPORT int		xmlSecBnInitialize		(xmlSecBnPtr bn,
@@ -61,6 +67,21 @@ XMLSEC_EXPORT int		xmlSecBnCompare			(xmlSecBnPtr bn,
 XMLSEC_EXPORT int		xmlSecBnCompareReverse		(xmlSecBnPtr bn,
 								 const xmlSecByte* data,
 								 xmlSecSize dataSize);
+XMLSEC_EXPORT int		xmlSecBnGetNodeValue		(xmlSecBnPtr bn, 
+								 xmlNodePtr cur,
+								 xmlSecBnFormat format,
+								 int reverse);
+XMLSEC_EXPORT int 		xmlSecBnSetNodeValue		(xmlSecBnPtr bn, 
+								 xmlNodePtr cur, 
+								 xmlSecBnFormat format,
+								 int reverse,
+								 int addLineBreaks);
+XMLSEC_EXPORT int 		xmlSecBnBlobSetNodeValue	(const xmlSecByte* data,
+								 xmlSecSize dataSize,
+								 xmlNodePtr cur, 
+								 xmlSecBnFormat format,
+								 int reverse,
+								 int addLineBreaks);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

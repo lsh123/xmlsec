@@ -39,7 +39,6 @@
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
-#include <xmlsec/mscrypto/bignum.h>
 
 
 /*************************************************************************
@@ -98,7 +97,8 @@ static PCCRL_CONTEXT xmlSecMSCryptoX509CrlBase64DerRead		(xmlChar* buf,
 static xmlChar*		xmlSecMSCryptoX509CrlBase64DerWrite	(PCCRL_CONTEXT crl, 
 								 int base64LineWrap);
 static xmlChar*		xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm);
-static xmlChar*		xmlSecMSCryptoASN1IntegerWrite		(PCRYPT_INTEGER_BLOB num);
+static int		xmlSecMSCryptoASN1IntegerWrite		(xmlNodePtr node,
+								 PCRYPT_INTEGER_BLOB num);
 static xmlChar*		xmlSecMSCryptoX509SKIWrite		(PCCERT_CONTEXT cert);
 static void		xmlSecMSCryptoX509CertDebugDump		(PCCERT_CONTEXT cert, 
 								 FILE* output);
@@ -1304,7 +1304,8 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
     xmlNodePtr issuerNameNode;
     xmlNodePtr issuerNumberNode;
     xmlChar* buf;
-    
+    int ret;
+
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
@@ -1355,8 +1356,8 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
     xmlNodeSetContent(issuerNameNode, buf);
     xmlFree(buf);
 
-    buf = xmlSecMSCryptoASN1IntegerWrite(&(cert->pCertInfo->SerialNumber));
-    if(buf == NULL) {
+    ret = xmlSecMSCryptoASN1IntegerWrite(issuerNumberNode, &(cert->pCertInfo->SerialNumber));
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecMSCryptoASN1IntegerWrite(&(cert->serialNumber))",
@@ -1364,9 +1365,6 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlNodeSetContent(issuerNumberNode, buf);
-    xmlFree(buf);
-
     return(0);
 }
 
@@ -1952,13 +1950,14 @@ IsHexDigit(char c) {
     }
 }
 
-static xmlChar*
-xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
+static int
+xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
     xmlSecBn bn;
     xmlChar* res;
     int ret;
     
-    xmlSecAssert2(num != NULL, NULL);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(num != NULL, -1);
 
     ret = xmlSecBnInitialize(&bn, num->cbData + 1);
     if(ret < 0) {
@@ -1967,7 +1966,7 @@ xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 		    "xmlSecBnInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", num->cbData + 1);
-	return(NULL);
+	return(-1);
     }
 
     ret = xmlSecBnSetData(&bn, num->pbData, num->cbData);
@@ -1978,37 +1977,26 @@ xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecBnFinalize(&bn);
-	return(NULL);
+	return(-1);
     }
 
     /* I have no clue why at a sudden a swap is needed to 
      * convert from lsb... This code is purely based upon 
      * trial and error :( WK
      */
-    ret = xmlSecBnReverse(&bn);
+    ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 1, 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecBnReverse",
+		    "xmlSecBnSetNodeValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecBnFinalize(&bn);
-	return(NULL);
-    }
-
-    res = xmlSecBnToDecString(&bn);
-    if(res == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBnToDecString",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecBnFinalize(&bn);
-	return(NULL);
+	return(-1);
     }
     
     xmlSecBnFinalize(&bn);
-    return(res);
+    return(0);
 }
 
 static xmlChar*

@@ -30,7 +30,6 @@
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 
-#include <xmlsec/mscrypto/bignum.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 

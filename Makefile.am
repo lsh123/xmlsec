@@ -45,7 +45,7 @@ EXTRA_CLEAN = \
 	$(NULL)
 
 xmlsec1.pc: xmlsec1-@XMLSEC_CRYPTO@.pc
-	@(ln -s xmlsec1-@XMLSEC_CRYPTO@.pc xmlsec1.pc)
+	@(rm -f xmlsec1.pc && ln -s xmlsec1-@XMLSEC_CRYPTO@.pc xmlsec1.pc)
 
 docs: docs-man
 	@(cd docs; $(MAKE) docs)

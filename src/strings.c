@@ -30,6 +30,15 @@ const xmlChar xmlSecNameAESKeyValue[]	= "aes";
 const xmlChar xmlSecNodeAESKeyValue[]	= "AESKeyValue";
 const xmlChar xmlSecHrefAESKeyValue[]	= "http://www.aleksey.com/xmlsec/2002#AESKeyValue";
 
+const xmlChar xmlSecNameAes128Cbc[]	= "aes128-cbc";
+const xmlChar xmlSecHrefAes128Cbc[]	= "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
+
+const xmlChar xmlSecNameAes192Cbc[]	= "aes192-cbc";
+const xmlChar xmlSecHrefAes192Cbc[]	= "http://www.w3.org/2001/04/xmlenc#aes192-cbc";
+
+const xmlChar xmlSecNameAes256Cbc[]	= "aes256-cbc";
+const xmlChar xmlSecHrefAes256Cbc[]	= "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
+
 /*************************************************************************
  *
  * DES strings
@@ -38,6 +47,9 @@ const xmlChar xmlSecHrefAESKeyValue[]	= "http://www.aleksey.com/xmlsec/2002#AESK
 const xmlChar xmlSecNameDESKeyValue[]	= "des";
 const xmlChar xmlSecNodeDESKeyValue[]	= "DESKeyValue";
 const xmlChar xmlSecHrefDESKeyValue[]	= "http://www.aleksey.com/xmlsec/2002#DESKeyValue";
+
+const xmlChar xmlSecNameDes3Cbc[]	= "tripledes-cbc";
+const xmlChar xmlSecHrefDes3Cbc[]	= "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
 
 /*************************************************************************
  *

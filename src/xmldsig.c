@@ -26,7 +26,6 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/digests.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/errors.h>

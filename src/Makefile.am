@@ -17,7 +17,6 @@ base64.c \
 buffered.c \
 c14n.c \
 debug.c \
-digests.c \
 enveloped.c \
 errors.c \
 io.c \

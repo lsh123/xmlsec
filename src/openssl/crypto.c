@@ -90,7 +90,7 @@ static int
 xmlSecOpenSSLKeysInit(void) {
 
 #ifndef XMLSEC_NO_AES    
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataAesValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesValueId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes key");
@@ -99,7 +99,7 @@ xmlSecOpenSSLKeysInit(void) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_DES    
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataDesValueId) < 0) {
+    if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDesValueId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register des key");
@@ -218,28 +218,28 @@ xmlSecOpenSSLTransformsInit(void) {
 
     /* encryption */
 #ifndef XMLSEC_NO_DES    
-    if(xmlSecTransformRegister(xmlSecEncDes3Cbc) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformDes3CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register des encryption transform");
+		    "failed to register des3-cbc encryption transform");
 	return(-1);
     }
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES    
-    if(xmlSecTransformRegister(xmlSecEncAes128Cbc) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes128CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes128 encryption transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecEncAes192Cbc) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes192CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes192 encryption transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecEncAes256Cbc) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes256CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes256 encryption transform");

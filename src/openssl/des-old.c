@@ -1,150 +1,4 @@
 
-/*********************************************************************
- *
- * Triple DES CBC
- *
- ********************************************************************/
-static xmlSecTransformPtr xmlSecDesCreate	(xmlSecTransformId id);
-static void 	xmlSecDesDestroy		(xmlSecTransformPtr transform);
-static int  	xmlSecDesSetKeyReq		(xmlSecTransformPtr transform, 
-						 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int  	xmlSecDesSetKey			(xmlSecTransformPtr transform, 
-						 xmlSecKeyPtr key);
-/**
- * DES transforms
- */
-static xmlSecTransformKlass xmlSecEncDes3CbcId = {
-    /* same as xmlSecTransformId */    
-    BAD_CAST "enc-des3",
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", /* const xmlChar href; */
-
-    xmlSecDesCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecDesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
-    NULL,				/* xmlSecTransformReadMethod read; */
-    xmlSecDesSetKeyReq,			/* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecDesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecOpenSSLEvpBlockCipherExecute,	/* xmlSecTransformExecuteMethod execute; */
-    
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
-};
-xmlSecTransformId xmlSecEncDes3Cbc = (xmlSecTransformId)&xmlSecEncDes3CbcId;
-
-/**
- * xmlSecDesCreate:
- */ 
-static xmlSecTransformPtr 
-xmlSecDesCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecEncDes3Cbc, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLEvpBlockCipherInitialize(transform, EVP_des_ede3_cbc());	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpBlockCipherInitialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-/**
- * xmlSecDesDestroy:
- */ 
-static void 	
-xmlSecDesDestroy(xmlSecTransformPtr transform) {
-
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc));
-
-    xmlSecOpenSSLEvpBlockCipherFinalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
-static int  
-xmlSecDesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    keyInfoCtx->keyId 	 = xmlSecKeyDataDesValueId;
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
-    } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
-    }
-    
-    return(0);
-}
-
-/** 
- * xmlSecDesSetKey:
- */ 
-static int  	
-xmlSecDesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecBufferPtr buffer;
-    int ret;
-    
-    xmlSecAssert2(transform != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataDesValueId), -1);
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc), -1);
-    
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
-    xmlSecAssert2(buffer != NULL, -1);
-    
-    ret = xmlSecOpenSSLEvpBlockCipherSetKey(transform, xmlSecBufferGetData(buffer), 
-					    xmlSecBufferGetSize(buffer)); 
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpBlockCipherSetKey"); 
-	return(-1);    
-    }
-
-    return(0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*********************************************************************
@@ -268,7 +122,7 @@ xmlSecDes3KWSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfo
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecKWDes3Cbc), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecKeyDataDesValueId;
+    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataDesValueId;
     keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
 	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
@@ -287,7 +141,7 @@ xmlSecDes3KWSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecKWDes3Cbc), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataDesValueId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataDesValueId), -1);
     
     buffered = (xmlSecBufferedTransformPtr)transform;
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);

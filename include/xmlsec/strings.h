@@ -53,6 +53,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeAESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAESKeyValue[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes128Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes128Cbc[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes192Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes192Cbc[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAes256Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAes256Cbc[];
+
 /*************************************************************************
  *
  * DES strings
@@ -61,6 +70,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDESKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDESKeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDes3Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDes3Cbc[];
 
 /*************************************************************************
  *

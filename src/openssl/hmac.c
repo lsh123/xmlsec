@@ -23,8 +23,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/buffered.h> 
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>

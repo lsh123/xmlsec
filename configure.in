@@ -910,8 +910,12 @@ XMLSEC_CORE_LIBS="-lxmlsec1 "
 AC_SUBST(XMLSEC_CORE_CFLAGS)
 AC_SUBST(XMLSEC_CORE_LIBS)
 
+dnl used in xmlsecConf.sh*
+XMLSEC_LIBDIR="${libdir}"
+AC_SUBST(XMLSEC_LIBDIR)
+
 XMLSEC_OPENSSL_CFLAGS="$XMLSEC_CORE_CFLAGS $OPENSSL_CFLAGS"
-XMLSEC_OPENSSL_LIBS="-L${libdir} -l$OPENSSL_CRYPTO_LIB $XMLSEC_CORE_LIBS  $OPENSSL_LIBS"
+XMLSEC_OPENSSL_LIBS="-L${libdir} -l$OPENSSL_CRYPTO_LIB $XMLSEC_CORE_LIBS $OPENSSL_LIBS"
 AC_SUBST(XMLSEC_OPENSSL_CFLAGS)
 AC_SUBST(XMLSEC_OPENSSL_LIBS)
 
@@ -952,8 +956,9 @@ AC_SUBST(XMLSEC_CRYPTO_PC_FILES_LIST)
 dnl ==========================================================================
 dnl Which files to process
 dnl ==========================================================================
-rm -f rm COPYING.LIB COPYING
-ln -s $srcdir/Copyright COPYING
+
+dnl COPYING should be in "srcdir" not in "builddir"
+(cd $srcdir && rm -f rm COPYING.LIB COPYING && $LN_S Copyright COPYING)
 
 if test "$OPENSSL_WITHOUT" = "no"
 then

@@ -1,3 +1,8 @@
+Wed Aug  6 08:57:20 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am configure.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in xmlsec-openssl.pc.in xmlsecConf.sh.in:
+	config bug fixing and improvements from Roumen
+
 Mon Aug  4 19:39:52 2003  Aleksey Sanin  <aleksey@aleksey.com>i
 
 	* include/xmlsec/Makefile.am include/xmlsec/x509.h src/Makefile.am 

@@ -14,7 +14,9 @@ XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec-config
 XMLSEC_HTML=$(top_builddir)/docs/xmlsec-man.html
 
-all: clean $(man_MANS) $(XMLSEC_HTML)
+all: 
+
+man: clean $(man_MANS) $(XMLSEC_HTML)
 
 $(XMLSEC_HTML): xmlsec.1
 	man2html xmlsec.1 | \

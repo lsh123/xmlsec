@@ -342,10 +342,10 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 	} 
 
 
-/* __FUNCTION_ may not be defined */
-#if !defined(__GNUC__) || (_MSC_VER >= 1300) 
-#define __FUNCTION__   ""
-#endif /* __GNUC__ */
+/* __FUNCTION__ may not be defined */
+#if defined(_MSC_VER) && (_MSC_VER < 1300) 
+#define __FUNCTION__  ""
+#endif /* _MSC_VER */
 
 
 #ifdef __cplusplus

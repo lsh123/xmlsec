@@ -13,16 +13,16 @@ $(NULL)
 lib_LTLIBRARIES = libxmlsec-openssl.la
 
 libxmlsec_openssl_la_SOURCES =\
-aes.c \
 app.c \
 bn.c \
 ciphers.c \
 crypto.c \
 digests.c \
-des.c \
 dsa.c \
 evp.c \
 hmac.c \
+kwaes.c \
+kwdes.c \
 rsa.c \
 symkeys.c \
 x509.c \

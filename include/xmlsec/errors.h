@@ -310,6 +310,8 @@ XMLSEC_EXPORT_VAR int xmlSecPrintErrorMessages;
 #define XMLSEC_ERRORS_PRINTF_ATTRIBUTE 		
 #endif /* __GNUC__ */
 
+#define xmlSecErrorSafeString(str) \
+	(((str) != NULL) ? ((char*)(str)) : (char*)"NULL")
 #define XMLSEC_ERRORS_NO_MESSAGE 		xmlSecErrorGetEmptyMessage()
 XMLSEC_EXPORT const char* xmlSecErrorGetEmptyMessage	(void);
 XMLSEC_EXPORT void xmlSecError				(const char* file, 

@@ -52,6 +52,8 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
     nset = (xmlSecNodeSetPtr)xmlMalloc(sizeof(xmlSecNodeSet));
     if(nset == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecNodeSet)=%d",
 		    sizeof(xmlSecNodeSet));
@@ -161,8 +163,10 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
 	return(1);
     default:
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "nodes set type %d", nset->type);
+		    "type=%d", nset->type);
     }
     
     return(0);
@@ -212,8 +216,10 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
 	    break;
 	default:
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			"xmlSecNodeSet",
+			NULL,
 			XMLSEC_ERRORS_R_INVALID_TYPE,
-			"operation type %d", cur->op);
+			"operation-type=%d", cur->op);
 	    return(-1);
 	}
 	cur = cur->next;
@@ -271,8 +277,10 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
     tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetList);
     if(tmp1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    "xmlSecNodeSetCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
     tmp1->children = newNSet;
@@ -280,8 +288,10 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
     tmp2 = xmlSecNodeSetAdd(nset, tmp1, op);
     if(tmp2 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    "xmlSecNodeSetAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetAdd");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecNodeSetDestroy(tmp1);
 	return(NULL);
     }
@@ -335,8 +345,10 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
     /* other cases */	
     if(nset->doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "nset->doc is null");
+		    "nset->doc=null");
 	return(-1);
     }
     
@@ -443,8 +455,10 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     nodes = xmlXPathNodeSetCreate(parent);
     if(nodes == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    "xmlXPathNodeSetCreate",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlXPathNodeSetCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }	
 
@@ -505,8 +519,10 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     default:
 	fprintf(output, "(unknown=%d)\n", nset->type);
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecNodeSet",
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "nodes set type %d", nset->type);
+		    "type=%d", nset->type);
     }
         
     l = xmlXPathNodeSetGetLength(nset->nodes);

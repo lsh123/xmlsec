@@ -147,8 +147,10 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
 				 NULL, &extCtx, XML_CHAR_ENCODING_NONE);
     if (ctxt == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlCreateIOParserCtxt",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlCreateIOParserCtxt");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
 
@@ -184,8 +186,10 @@ xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
     ctxt = xmlCreateMemoryParserCtxt((char*)buffer, size);
     if (ctxt == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlCreateMemoryParserCtxt",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlCreateMemoryParserCtxt");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
 
@@ -358,8 +362,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 	text = xmlNewText(BAD_CAST "\n"); 
         if(text == NULL) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlNewText",
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlNewText");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(NULL);
 	}
 	xmlAddChild(parent, text);
@@ -368,8 +374,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     cur = xmlNewChild(parent, NULL, name, NULL);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewChild",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewChild");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
 
@@ -388,8 +396,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(BAD_CAST "\n"); 
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewText",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewText");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
     xmlAddChild(parent, text);
@@ -418,8 +428,10 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewNode");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
     xmlAddNextSibling(node, cur);
@@ -438,8 +450,10 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(BAD_CAST "\n");
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewText",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewText");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
     xmlAddNextSibling(node, text);
@@ -468,8 +482,10 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewNode");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
     xmlAddPrevSibling(node, cur);
@@ -488,8 +504,10 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     text = xmlNewText(BAD_CAST "\n");
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewText",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewText");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
     xmlAddPrevSibling(node, text);
@@ -535,8 +553,10 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
     dummy = xmlNewDocNode(newNode->doc, NULL, BAD_CAST "dummy", NULL);
     if(dummy == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewDocNode",		    
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewDocNode");
+		    "node=dummy");
 	return(-1);
     }
 	    
@@ -547,8 +567,10 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
     }
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlDocSetRootElement or xmlReplaceNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlDocSetRootElement or xmlReplaceNode");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlFreeNode(dummy);
 	return(-1);
     }
@@ -560,8 +582,10 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
     }
     if(old == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+                    "xmlDocSetRootElement or xmlReplaceNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-                    "xmlDocSetRootElement or xmlReplaceNode");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlFreeNode(ptr);
 	return(-1);
     }
@@ -589,8 +613,10 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
     dummy = xmlNewDocNode(newNode->doc, NULL, BAD_CAST "dummy", NULL);
     if(dummy == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewDocNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewDocNode");
+		    "node=dummy");
 	return(-1);
     }
 	    
@@ -601,8 +627,10 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
     }
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlDocSetRootElement or xmlReplaceNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlDocSetRootElement or xmlReplaceNode");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlFreeNode(dummy);
 	return(-1);
     }
@@ -640,14 +668,18 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
 			       (unsigned char*)dummyPostfix, strlen(dummyPostfix));
     if(doc == NULL){
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecParseMemoryExt",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlSecParseMemoryExt");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	    	
     }
 	    
     ptr1 = xmlDocGetRootElement(doc);
     if(ptr1 == NULL){
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlDocGetRootElement",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "root is null");
 	xmlFreeDoc(doc);
@@ -700,6 +732,8 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 			    xmlAddID(NULL, doc, name, attr);
 			} else if(tmp != attr) {
 			    xmlSecError(XMLSEC_ERRORS_HERE,
+					NULL,
+					"xmlGetID",
 					XMLSEC_ERRORS_R_INVALID_DATA,
 					"id=%s already defined", name);
 			}

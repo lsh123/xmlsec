@@ -35,7 +35,7 @@ XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix,
 /**
  * xmlSecTransformXmlParserId:
  * 
- * The XML Parser transform id.
+ * The XML Parser transform klass.
  */
 #define xmlSecTransformXmlParserId \
 	xmlSecTransformXmlParserGetKlass()

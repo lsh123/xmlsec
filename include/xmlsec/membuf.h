@@ -28,7 +28,7 @@ extern "C" {
 /**
  * xmlSecTransformMemBufId:
  * 
- * The Memory Buffer transform id.
+ * The Memory Buffer transform klass.
  */
 #define xmlSecTransformMemBufId \
 	xmlSecTransformMemBufGetKlass()

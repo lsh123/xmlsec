@@ -764,6 +764,15 @@ transformsInternal
 @a: 
 @Returns: 
 
+<!-- ##### FUNCTION xmlSecDSigCtxAdoptSignatureKey ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@key: 
+@Returns: 
+
 <!-- ##### FUNCTION xmlSecDSigGenerate ##### -->
 <para>
 
@@ -1708,6 +1717,30 @@ transformsInternal
 </para>
 
 
+<!-- ##### FUNCTION xmlSecKeyDataStoreFind ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@params: 
+@paramsSize: 
+@keyInfoCtx: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecKeyDataStoreFindMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@params: 
+@paramsSize: 
+@keyInfoCtx: 
+@Returns: 
+
 <!-- ##### TYPEDEF xmlSecKeyDataStoreId ##### -->
 <para>
 
@@ -1998,6 +2031,19 @@ transformsInternal
 
 </para>
 
+
+<!-- ##### FUNCTION xmlSecKeysMngrFindKeyData ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@storeId: 
+@key: 
+@params: 
+@paramsSize: 
+@keyInfoCtx: 
+@Returns: 
 
 <!-- ##### VARIABLE xmlSecMacHmacMd5 ##### -->
 <para>
@@ -2530,6 +2576,18 @@ transformsInternal
 @filename: 
 @pwd: 
 @Returns: 
+
+<!-- ##### VARIABLE xmlSecPrintErrorMessages ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF xmlSecPtrListId ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
 <para>

@@ -26,12 +26,16 @@
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *uri,
                                              const <link linkend="xmlChar">xmlChar</link> *type);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> referenceNode,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
                                              const <link linkend="xmlChar">xmlChar</link> *mimeType,
                                              const <link linkend="xmlChar">xmlChar</link> *encoding);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureGetSignMethodNode">xmlSecTmplSignatureGetSignMethodNode</link>
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplSignatureGetC14NMethodNode">xmlSecTmplSignatureGetC14NMethodNode</link>
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> referenceNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplObjectAddSignProperties">xmlSecTmplObjectAddSignProperties</link>
                                             (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
@@ -62,6 +66,8 @@
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataEnsureCipherReference">xmlSecTmplEncDataEnsureCipherReference</link>
                                             (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplEncDataGetEncMethodNode">xmlSecTmplEncDataGetEncMethodNode</link>
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
 <link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform</link>
                                             (<link linkend="xmlNodePtr">xmlNodePtr</link> cipherReferenceNode,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
@@ -261,29 +267,6 @@ if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplReferenceAddTransform (<link linkend="xmlNodePtr">xmlNodePtr</link> referenceNode,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
-<para>
-Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <parameter>referenceNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>referenceNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to &lt;dsig:Reference/&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
-<entry> 		the transform method id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an 
-error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddObject    (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
                                              const <link linkend="xmlChar">xmlChar</link> *id,
@@ -312,6 +295,67 @@ Adds &lt;dsig:Object/&gt; node to the &lt;dsig:Signature/&gt; node <parameter>si
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Object/&gt; node or NULL 
 if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureGetSignMethodNode">xmlSecTmplSignatureGetSignMethodNode ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureGetSignMethodNode
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);</programlisting>
+<para>
+Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry>		the pointer to &lt;dsig:Signature /&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplSignatureGetC14NMethodNode">xmlSecTmplSignatureGetC14NMethodNode ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureGetC14NMethodNode
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);</programlisting>
+<para>
+Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry>		the pointer to &lt;dsig:Signature /&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplReferenceAddTransform (<link linkend="xmlNodePtr">xmlNodePtr</link> referenceNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
+<para>
+Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <parameter>referenceNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>referenceNode</parameter>&nbsp;:</entry>
+<entry> 		the pointer to &lt;dsig:Reference/&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
+<entry> 		the transform method id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an 
+error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -563,6 +607,25 @@ to the &lt;enc:EncryptedData/&gt; node <parameter>encNode</parameter>.</para>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:CipherReference/&gt; node or 
 NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTmplEncDataGetEncMethodNode">xmlSecTmplEncDataGetEncMethodNode ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataGetEncMethodNode
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+Gets pointer to &lt;enc:EncrytpionMethod/&gt; node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry>		the pointer to &lt;enc:EcnryptedData /&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

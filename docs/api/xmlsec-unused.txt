@@ -1,3 +1,1 @@
-xmlSecTmplSignatureGetC14NMethodNode
-xmlSecTmplEncDataGetEncMethodNode
-xmlSecTmplSignatureGetSignMethodNode
+xmlSecPrintErrorMessages

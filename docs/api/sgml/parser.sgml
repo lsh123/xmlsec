@@ -131,7 +131,7 @@ Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter
 <title><anchor id="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</title>
 <programlisting>#define     xmlSecTransformXmlParserId</programlisting>
 <para>
-The XML Parser transform id.</para>
+The XML Parser transform klass.</para>
 <para>
 
 </para></refsect2>

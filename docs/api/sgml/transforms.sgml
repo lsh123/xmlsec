@@ -237,6 +237,11 @@ int         <link linkend="xmlSecTransformIdListFind">xmlSecTransformIdListFind<
                                             (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);
+void        <link linkend="xmlSecTransformIdListDebugDump">xmlSecTransformIdListDebugDump</link>  (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdListDebugXmlDump</link>
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</link>
 #define     <link linkend="xmlSecTransformBase64Id">xmlSecTransformBase64Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformBase64GetKlass">xmlSecTransformBase64GetKlass</link>
@@ -2669,6 +2674,47 @@ The transform id structure.</para>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformIdListDebugDump">xmlSecTransformIdListDebugDump ()</title>
+<programlisting>void        xmlSecTransformIdListDebugDump  (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdListDebugXmlDump ()</title>
+<programlisting>void        xmlSecTransformIdListDebugXmlDump
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
 
 
 </entry></row>

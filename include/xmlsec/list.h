@@ -118,11 +118,45 @@ XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,
  */
 #define xmlSecPtrListIdUnknown 			NULL
 
+/**
+ * xmlSecPtrDuplicateItemMethod:
+ * @ptr:		the poinetr to list item.
+ *
+ * Duplicates item @ptr.
+ *
+ * Returns pointer to new item copy or NULL if an error occurs.
+ */
 typedef xmlSecPtr		(*xmlSecPtrDuplicateItemMethod)	(xmlSecPtr ptr);
+
+/**
+ * xmlSecPtrDestroyItemMethod:
+ * @ptr:		the poinetr to list item.
+ *
+ * Destroys list item @ptr.
+ */
 typedef void			(*xmlSecPtrDestroyItemMethod)	(xmlSecPtr ptr);
+
+/**
+ * xmlSecPtrDebugDumpItemMethod:
+ * @ptr:		the poinetr to list item.
+ * @output:		the output FILE.
+ *
+ * Prints debug information about @item to @output.
+ */
 typedef void			(*xmlSecPtrDebugDumpItemMethod)	(xmlSecPtr ptr,
 								 FILE* output);
 
+/**
+ * xmlSecPtrListKlass: 
+ * 
+ * @name:		the list klass name.
+ * @duplicateItem:	the duplciate item method.
+ * @destroyItem:	the destroy item method.
+ * @debugDumpItem:	the debug dump item method.
+ * @debugXmlDumpItem:	the debug dump item in xml format method.
+ *
+ * List klass.
+ */
 struct _xmlSecPtrListKlass {
     const xmlChar*			name;
     xmlSecPtrDuplicateItemMethod	duplicateItem;
@@ -130,6 +164,12 @@ struct _xmlSecPtrListKlass {
     xmlSecPtrDebugDumpItemMethod	debugDumpItem;
     xmlSecPtrDebugDumpItemMethod	debugXmlDumpItem;
 };
+
+/**
+ * xmlSecPtrListKlassGetName: 
+ *
+ * Macro. Returns the list klass name.
+ */
 #define xmlSecPtrListKlassGetName(klass) \
 	(((klass) != NULL) ? ((klass)->name) : NULL)
 
@@ -139,6 +179,11 @@ struct _xmlSecPtrListKlass {
  * xmlSecStaticObjectListKlass:
  *
  *************************************************************************/
+/**
+ *  xmlSecStaticObjectListId:
+ *
+ * Static objects klass (no destroy or duplicate methods).
+ */
 #define xmlSecStaticObjectListId \
 	xmlSecStaticObjectListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId	xmlSecStaticObjectListGetKlass	(void);
@@ -148,6 +193,11 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecStaticObjectListGetKlass	(void);
  * xmlSecStringListKlass
  *
  *************************************************************************/
+/**
+ * xmlSecStringListId:
+ *
+ * Strings list klass.
+ */
 #define xmlSecStringListId \
 	xmlSecStringListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId	xmlSecStringListGetKlass	(void);

@@ -75,7 +75,7 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 } xmlSecNodeSetType;
 </programlisting>
 <para>
-The simple nodes sets types.</para>
+The basic nodes sets types.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="enum">
@@ -85,40 +85,41 @@ The simple nodes sets types.</para>
 <tbody>
 <row>
 <entry><literal>xmlSecNodeSetNormal</literal></entry>
-<entry> nodes set = nodes in the list.
+<entry> 	nodes set = nodes in the list.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetInvert</literal></entry>
-<entry>  nodes set = all document nodes minus nodes in the list.
+<entry>  	nodes set = all document nodes minus nodes in the list.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetTree</literal></entry>
-<entry> nodes set = nodes in the list and all their subtress.
+<entry> 		nodes set = nodes in the list and all their subtress.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetTreeWithoutComments</literal></entry>
-<entry> nodes set = nodes in the list and 
-all their subtress but no comment nodes.
+<entry> 		nodes set = nodes in the list and 
+			all their subtress but no comment nodes.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetTreeInvert</literal></entry>
-<entry> nodes set = all document nodes minus nodes in the 
-	list and all their subtress.
+<entry> 	nodes set = all document nodes minus nodes in the 
+				list and all their subtress.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetTreeWithoutCommentsInvert</literal></entry>
-<entry> nodes set = all document nodes 
-	minus (nodes in the list and all their subtress plus all comment nodes).
+<entry> 	nodes set = all document nodes 
+				minus (nodes in the list and all their subtress 
+			plus all comment nodes).
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetList</literal></entry>
-<entry> nodes set = all nodes in the chidren list of nodes sets.
+<entry> 		nodes set = all nodes in the chidren list of nodes sets.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -141,17 +142,17 @@ The simple nodes sets operations.</para>
 <tbody>
 <row>
 <entry><literal>xmlSecNodeSetIntersection</literal></entry>
-<entry> intersection.
+<entry> 	intersection.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetSubtraction</literal></entry>
-<entry> subtraction.
+<entry> 	subtraction.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecNodeSetUnion</literal></entry>
-<entry> union.
+<entry> 	union.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -179,42 +180,44 @@ The enchanced nodes set.</para>
 <tbody>
 <row>
 <entry><link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> <structfield>nodes</structfield></entry>
-<entry> the nodes list.
+<entry> 			the nodes list.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlDocPtr">xmlDocPtr</link> <structfield>doc</structfield></entry>
-<entry> the parent XML document.
+<entry> 			the parent XML document.
 </entry>
 </row>
 <row>
 <entry>int <structfield>destroyDoc</structfield></entry>
-<entry>
+<entry>			the flag: if set to 1 then <parameter>doc</parameter> will
+			be destroyed when node set is destroyed.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> <structfield>type</structfield></entry>
-<entry> the nodes set type.
+<entry> 			the nodes set type.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> <structfield>op</structfield></entry>
-<entry> the operation type.
+<entry> 			the operation type.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>next</structfield></entry>
-<entry> the next nodes set.
+<entry> 			the next nodes set.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>prev</structfield></entry>
-<entry> the previous nodes set.
+<entry> 			the previous nodes set.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>children</structfield></entry>
-<entry> the children list (valid only if type equal to <link linkend="xmlSecNodeSetList">xmlSecNodeSetList</link>).
+<entry> 			the children list (valid only if type 
+			equal to <link linkend="xmlSecNodeSetList">xmlSecNodeSetList</link>).
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -234,16 +237,16 @@ The callback function called once per each node in the nodes set.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
+<entry> 			the pointer to <link linkend="xmlSecNodeSet">xmlSecNodeSet</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> the pointer current XML node.
+<entry> 			the pointer current XML node.
 </entry></row>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> the pointer to the <parameter>cur</parameter> parent node.
+<entry> 			the pointer to the <parameter>cur</parameter> parent node.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data.
+<entry> 			the pointer to application specific data.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs
 an walk procedure should be interrupted.

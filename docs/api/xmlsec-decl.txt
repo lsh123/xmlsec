@@ -1117,6 +1117,16 @@ xmlSecPtrListPtr list,const xmlChar* href,xmlSecKeyDataUsage usage
 <RETURNS>xmlSecKeyDataId 	</RETURNS>
 xmlSecPtrListPtr list,const xmlChar* name,xmlSecKeyDataUsage usage
 </FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyDataIdListDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecPtrListPtr list,FILE* output
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyDataIdListDebugXmlDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecPtrListPtr list,FILE* output
+</FUNCTION>
 <MACRO>
 <NAME>xmlSecKeyDataBinarySize</NAME>
 #define xmlSecKeyDataBinarySize	\
@@ -1202,11 +1212,6 @@ xmlSecKeyDataStoreId id
 <RETURNS>void 	</RETURNS>
 xmlSecKeyDataStorePtr store
 </FUNCTION>
-<FUNCTION>
-<NAME>xmlSecKeyDataStoreFind</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecKeyDataStorePtr store,xmlSecKeyPtr key,const xmlChar** params,size_t paramsSize,xmlSecKeyInfoCtxPtr keyInfoCtx
-</FUNCTION>
 <MACRO>
 <NAME>xmlSecKeyDataStoreGetName</NAME>
 #define xmlSecKeyDataStoreGetName(store) \
@@ -1244,15 +1249,6 @@ xmlSecKeyDataStorePtr store
 <RETURNS>void </RETURNS>
 xmlSecKeyDataStorePtr store
 </USER_FUNCTION>
-<USER_FUNCTION>
-<NAME>xmlSecKeyDataStoreFindMethod</NAME>
-<RETURNS>int </RETURNS>
-xmlSecKeyDataStorePtr store,
-								 xmlSecKeyPtr key,
-								 const xmlChar** params,
-								 size_t paramsSize,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx
-</USER_FUNCTION>
 <STRUCT>
 <NAME>xmlSecKeyDataStoreKlass</NAME>
 struct xmlSecKeyDataStoreKlass {
@@ -1265,7 +1261,6 @@ struct xmlSecKeyDataStoreKlass {
     /* constructors/destructor */
     xmlSecKeyDataStoreInitializeMethod	initialize;
     xmlSecKeyDataStoreFinalizeMethod	finalize;
-    xmlSecKeyDataStoreFindMethod	find;
 
     /* for the future */
     void*				reserved0;
@@ -1286,35 +1281,6 @@ struct xmlSecKeyDataStoreKlass {
 <RETURNS>xmlSecPtrListId 	</RETURNS>
 void
 </FUNCTION>
-<MACRO>
-<NAME>xmlSecSimpleKeysStoreId</NAME>
-#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
-</MACRO>
-<FUNCTION>
-<NAME>xmlSecSimpleKeysStoreGetKlass</NAME>
-<RETURNS>xmlSecKeyDataStoreId 	</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSimpleKeysStoreAdoptKey</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecKeyDataStorePtr store,xmlSecKeyPtr key
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSimpleKeysStoreFindKey</NAME>
-<RETURNS>xmlSecKeyPtr 	</RETURNS>
-xmlSecKeyDataStorePtr store,const xmlChar* name,xmlSecKeyInfoCtxPtr keyInfoCtx
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSimpleKeysStoreLoad</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecKeyDataStorePtr store,const char *uri,xmlSecKeysMngrPtr keysMngr
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSimpleKeysStoreSave</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecKeyDataStorePtr store,const char *filename,xmlSecKeyDataType type
-</FUNCTION>
 <FUNCTION>
 <NAME>xmlSecKeysMngrCreate</NAME>
 <RETURNS>xmlSecKeysMngrPtr  </RETURNS>
@@ -1331,18 +1297,13 @@ xmlSecKeysMngrPtr mngr
 xmlSecKeysMngrPtr mngr,xmlSecKeyPtr key,const xmlChar* name,xmlSecKeyInfoCtxPtr keyInfoCtx
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecKeysMngrFindKeyData</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecKeysMngrPtr mngr,xmlSecKeyDataStoreId storeId,xmlSecKeyPtr key,const xmlChar** params,size_t paramsSize,xmlSecKeyInfoCtxPtr keyInfoCtx
-</FUNCTION>
-<FUNCTION>
 <NAME>xmlSecKeysMngrAdoptKeysStore</NAME>
 <RETURNS>int 	</RETURNS>
-xmlSecKeysMngrPtr mngr,xmlSecKeyDataStorePtr store
+xmlSecKeysMngrPtr mngr,xmlSecKeyStorePtr store
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecKeysMngrGetKeysStore</NAME>
-<RETURNS>xmlSecKeyDataStorePtr 	</RETURNS>
+<RETURNS>xmlSecKeyStorePtr 	</RETURNS>
 xmlSecKeysMngrPtr mngr
 </FUNCTION>
 <FUNCTION>
@@ -1364,9 +1325,9 @@ xmlNodePtr keyInfoNode,
 <STRUCT>
 <NAME>xmlSecKeysMngr</NAME>
 struct xmlSecKeysMngr {	
-    xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
-    xmlSecPtrListPtr		storesList;	/* list of other key data storages */
-    xmlSecGetKeyCallback	getKey;		/* the callback used to read <dsig:KeyInfo> node. */
+    xmlSecKeyStorePtr		keysStore;	
+    xmlSecPtrListPtr		storesList;	
+    xmlSecGetKeyCallback	getKey;		
 };
 </STRUCT>
 <FUNCTION>
@@ -1374,13 +1335,132 @@ struct xmlSecKeysMngr {
 <RETURNS>xmlSecKeyPtr  </RETURNS>
 xmlNodePtr keyInfoNode,xmlSecKeyInfoCtxPtr keyInfoCtx
 </FUNCTION>
+<STRUCT>
+<NAME>xmlSecKeyStore</NAME>
+struct xmlSecKeyStore {
+    xmlSecKeyStoreId			id;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>xmlSecKeyStoreCreate</NAME>
+<RETURNS>xmlSecKeyStorePtr  </RETURNS>
+xmlSecKeyStoreId id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyStoreDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecKeyStorePtr store
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecKeyStoreFind</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyStorePtr store,xmlSecKeyPtr key,const xmlChar* name,xmlSecKeyInfoCtxPtr keyInfoCtx
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecKeyStoreGetName</NAME>
+#define xmlSecKeyStoreGetName(store) \
+    ((xmlSecKeyStoreIsValid((store))) ? \
+      xmlSecKeyStoreKlassGetName((store)->id) : NULL)
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyStoreIsValid</NAME>
+#define xmlSecKeyStoreIsValid(store) \
+	((( store ) != NULL) && ((( store )->id) != NULL))
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyStoreCheckId</NAME>
+#define xmlSecKeyStoreCheckId(store, storeId) \
+ 	(xmlSecKeyStoreIsValid(( store )) && \
+	((( store )->id) == ( storeId )))
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyStoreCheckSize</NAME>
+#define xmlSecKeyStoreCheckSize(store, size) \
+ 	(xmlSecKeyStoreIsValid(( store )) && \
+	 (( store )->id->objSize >= size))
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyStoreIdUnknown</NAME>
+#define xmlSecKeyStoreIdUnknown 			NULL
+</MACRO>
+<USER_FUNCTION>
+<NAME>xmlSecKeyStoreInitializeMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeyStorePtr store
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyStoreFinalizeMethod</NAME>
+<RETURNS>void </RETURNS>
+xmlSecKeyStorePtr store
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>xmlSecKeyStoreFindMethod</NAME>
+<RETURNS>int </RETURNS>
+xmlSecKeyStorePtr store,
+								 xmlSecKeyPtr key,
+								 const xmlChar* name,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx
+</USER_FUNCTION>
+<STRUCT>
+<NAME>xmlSecKeyStoreKlass</NAME>
+struct xmlSecKeyStoreKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
+    /* data */
+    const xmlChar*			name;    
+        
+    /* constructors/destructor */
+    xmlSecKeyStoreInitializeMethod	initialize;
+    xmlSecKeyStoreFinalizeMethod	finalize;
+    xmlSecKeyStoreFindMethod		find;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};
+</STRUCT>
+<MACRO>
+<NAME>xmlSecKeyStoreKlassGetName</NAME>
+#define xmlSecKeyStoreKlassGetName(klass) \
+	(((klass)) ? ((klass)->name) : NULL)
+</MACRO>
+<MACRO>
+<NAME>xmlSecSimpleKeysStoreId</NAME>
+#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysStoreGetKlass</NAME>
+<RETURNS>xmlSecKeyStoreId 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysStoreAdoptKey</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyStorePtr store,xmlSecKeyPtr key
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysStoreFindKey</NAME>
+<RETURNS>xmlSecKeyPtr 	</RETURNS>
+xmlSecKeyStorePtr store,const xmlChar* name,xmlSecKeyInfoCtxPtr keyInfoCtx
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysStoreLoad</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyStorePtr store,const char *uri,xmlSecKeysMngrPtr keysMngr
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysStoreSave</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecKeyStorePtr store,const char *filename,xmlSecKeyDataType type
+</FUNCTION>
 <TYPEDEF>
 <NAME>xmlSecPtr</NAME>
 typedef void*	xmlSecPtr;
-</TYPEDEF>
-<TYPEDEF>
-<NAME>xmlSecPtrListId</NAME>
-typedef const struct _xmlSecPtrListKlass	xmlSecPtrListKlass, *xmlSecPtrListId;
 </TYPEDEF>
 <STRUCT>
 <NAME>xmlSecPtrList</NAME>
@@ -2411,6 +2491,16 @@ xmlSecPtrListPtr list,const xmlChar* href,xmlSecTransformUsage usage
 <RETURNS>xmlSecTransformId 	</RETURNS>
 xmlSecPtrListPtr list,const xmlChar* name,xmlSecTransformUsage usage
 </FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformIdListDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecPtrListPtr list,FILE* output
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTransformIdListDebugXmlDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecPtrListPtr list,FILE* output
+</FUNCTION>
 <MACRO>
 <NAME>xmlSecTransformIdUnknown</NAME>
 #define xmlSecTransformIdUnknown			NULL
@@ -2702,22 +2792,37 @@ typedef enum {
     xmlSecDSigStatusInvalid
 } xmlSecDSigStatus;
 </ENUM>
+<MACRO>
+<NAME>XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</NAME>
+#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS			0x00000001
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</NAME>
+#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES		0x00000002
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</NAME>
+#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES		0x00000004
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</NAME>
+#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE			0x00000008
+</MACRO>
 <STRUCT>
 <NAME>xmlSecDSigCtx</NAME>
 struct xmlSecDSigCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		signTransformCtx;
-    int				processManifests;
-    int				storeSignatures;
-    int				storeReferences;
-    int				storeManifests;	
-
     xmlSecTransformUriType	enabledReferenceUris;
     xmlSecPtrListPtr		enabledReferenceTransforms;
-    
+    xmlSecTransformId		defSignMethodId;
+    xmlSecTransformId		defC14NMethodId;
+        
     /* these data are returned */
     xmlSecTransformOperation	operation;
     xmlSecKeyPtr		signKey;
@@ -2726,14 +2831,10 @@ struct xmlSecDSigCtx {
     xmlSecTransformPtr		signMethod;
     xmlSecTransformPtr		c14nMethod;
     xmlSecTransformPtr		preSignMemBufMethod;
+    xmlNodePtr			signValueNode;
     xmlChar*			id;    
     xmlSecPtrList    		references;
     xmlSecPtrList		manifests;
-        
-    /* these are internal data, nobody should change that except us */
-    xmlNodePtr			signValueNode;
-    int				dontDestroySignMethod;
-    int				dontDestroyC14NMethod;
 
     /* reserved for future */
     void*			reserved0;
@@ -2759,11 +2860,6 @@ xmlSecDSigCtxPtr dsigCtx,xmlSecKeysMngrPtr keysMngr
 <NAME>xmlSecDSigCtxFinalize</NAME>
 <RETURNS>void 	</RETURNS>
 xmlSecDSigCtxPtr dsigCtx
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecDSigCtxAdoptSignatureKey</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecDSigCtxPtr dsigCtx,xmlSecKeyPtr key
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecDSigCtxSign</NAME>

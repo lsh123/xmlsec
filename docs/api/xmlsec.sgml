@@ -10,6 +10,7 @@
 <!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
 <!ENTITY xmlsec-templates SYSTEM "sgml/templates.sgml">
 <!ENTITY xmlsec-transforms SYSTEM "sgml/transforms.sgml">
+<!ENTITY xmlsec-strings SYSTEM "sgml/strings.sgml">
 <!ENTITY xmlsec-version SYSTEM "sgml/version.sgml">
 <!ENTITY xmlsec-x509 SYSTEM "sgml/x509.sgml">
 <!ENTITY xmlsec-xmldsig SYSTEM "sgml/xmldsig.sgml">
@@ -88,6 +89,7 @@
     &xmlsec-keysmngr;
     &xmlsec-templates;
     &xmlsec-transforms;
+    &xmlsec-strings;
     &xmlsec-version;
     &xmlsec-x509;
   </chapter>

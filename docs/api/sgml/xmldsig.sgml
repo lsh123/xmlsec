@@ -16,14 +16,16 @@ standard implementation.</refpurpose>
 
 
 enum        <link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>;
+#define     <link linkend="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS-CAPS">XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</link>
+#define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</link>
+#define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</link>
+#define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link>
 struct      <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
 <link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
 void        <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);
 int         <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>         (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
 void        <link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>           (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);
-int         <link linkend="xmlSecDSigCtxAdoptSignatureKey">xmlSecDSigCtxAdoptSignatureKey</link>  (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
 int         <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>               (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> tmpl);
 int         <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>             (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
@@ -84,21 +86,48 @@ void        <link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferen
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS-CAPS">XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</title>
+<programlisting>#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS			0x00000001
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</title>
+<programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES		0x00000002
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</title>
+<programlisting>#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES		0x00000004
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</title>
+<programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE			0x00000008
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecDSigCtx">struct xmlSecDSigCtx</title>
 <programlisting>struct xmlSecDSigCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		signTransformCtx;
-    int				processManifests;
-    int				storeSignatures;
-    int				storeReferences;
-    int				storeManifests;	
-
     xmlSecTransformUriType	enabledReferenceUris;
     xmlSecPtrListPtr		enabledReferenceTransforms;
-    
+    xmlSecTransformId		defSignMethodId;
+    xmlSecTransformId		defC14NMethodId;
+        
     /* these data are returned */
     xmlSecTransformOperation	operation;
     xmlSecKeyPtr		signKey;
@@ -107,14 +136,10 @@ void        <link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferen
     xmlSecTransformPtr		signMethod;
     xmlSecTransformPtr		c14nMethod;
     xmlSecTransformPtr		preSignMemBufMethod;
+    xmlNodePtr			signValueNode;
     xmlChar*			id;    
     xmlSecPtrList    		references;
     xmlSecPtrList		manifests;
-        
-    /* these are internal data, nobody should change that except us */
-    xmlNodePtr			signValueNode;
-    int				dontDestroySignMethod;
-    int				dontDestroyC14NMethod;
 
     /* reserved for future */
     void*			reserved0;
@@ -125,141 +150,7 @@ void        <link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferen
 XML DSig context.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry>void *<structfield>userData</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoReadCtx</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoWriteCtx</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>signTransformCtx</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>int <structfield>processManifests</structfield></entry>
-<entry> if 0 then &lt;dsig:Manifests&gt; nodes are not processed.
-</entry>
-</row>
-<row>
-<entry>int <structfield>storeSignatures</structfield></entry>
-<entry> store the signed content just (&lt;dsig:SignedInfo&gt; element)
-before applying signature.
-</entry>
-</row>
-<row>
-<entry>int <structfield>storeReferences</structfield></entry>
-<entry> store the result of processing &lt;dsig:Reference&gt; nodes in 
-     &lt;dsig:SignedInfo&gt; nodes just before digesting.
-</entry>
-</row>
-<row>
-<entry>int <structfield>storeManifests</structfield></entry>
-<entry> store the result of processing &lt;dsig:Reference&gt; nodes in 
-&lt;dsig:Manifest&gt; nodes just before digesting (ignored if <parameter>processManifest</parameter> is 0).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> <structfield>enabledReferenceUris</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>enabledReferenceTransforms</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>signKey</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link> <structfield>status</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>signMethod</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>c14nMethod</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>preSignMemBufMethod</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>references</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>manifests</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>signValueNode</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>int <structfield>dontDestroySignMethod</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>int <structfield>dontDestroyC14NMethod</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved0</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate ()</title>
 <programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
@@ -326,28 +217,6 @@ before applying signature.
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
 <entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecDSigCtxAdoptSignatureKey">xmlSecDSigCtxAdoptSignatureKey ()</title>
-<programlisting>int         xmlSecDSigCtxAdoptSignatureKey  (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
 
 
 </entry></row>

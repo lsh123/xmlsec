@@ -1,9 +1,13 @@
-44% function docs coverage.
-234 functions documented.
-298 not documented.
+47% function docs coverage.
+260 functions documented.
+289 not documented.
 
 
 XMLSEC_CRYPTO_EXPORT
+XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS
+XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES
+XMLSEC_DSIG_FLAGS_STORE_SIGNATURE
+XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES
 XMLSEC_ERRORS_MAX_NUMBER
 XMLSEC_ERRORS_NO_MESSAGE
 XMLSEC_ERRORS_R_KEYDATA_DISABLED
@@ -45,7 +49,6 @@ xmlSecCryptoAppSimpleKeysMngrLoad
 xmlSecCryptoAppSimpleKeysMngrSave
 xmlSecCryptoInit
 xmlSecCryptoShutdown
-xmlSecDSigCtxAdoptSignatureKey
 xmlSecDSigCtxCreate
 xmlSecDSigCtxDebugDump
 xmlSecDSigCtxDebugXmlDump
@@ -110,6 +113,8 @@ xmlSecKeyDataGetIdentifier
 xmlSecKeyDataGetSize
 xmlSecKeyDataGetType
 xmlSecKeyDataHmacId
+xmlSecKeyDataIdListDebugDump
+xmlSecKeyDataIdListDebugXmlDump
 xmlSecKeyDataIdListFind
 xmlSecKeyDataIdListFindByHref
 xmlSecKeyDataIdListFindByName
@@ -125,18 +130,7 @@ xmlSecKeyDataNameGetKlass
 xmlSecKeyDataRawX509CertId
 xmlSecKeyDataRetrievalMethodGetKlass
 xmlSecKeyDataRsaId
-xmlSecKeyDataStoreFind
 xmlSecKeyDataStorePtrListGetKlass
-xmlSecKeyDataUsageAny
-xmlSecKeyDataUsageKeyInfoNode
-xmlSecKeyDataUsageKeyInfoNodeRead
-xmlSecKeyDataUsageKeyInfoNodeWrite
-xmlSecKeyDataUsageKeyValueNode
-xmlSecKeyDataUsageKeyValueNodeRead
-xmlSecKeyDataUsageKeyValueNodeWrite
-xmlSecKeyDataUsageRetrievalMethodNode
-xmlSecKeyDataUsageRetrievalMethodNodeBin
-xmlSecKeyDataUsageRetrievalMethodNodeXml
 xmlSecKeyDataValueGetKlass
 xmlSecKeyDataX509Id
 xmlSecKeyEmpty
@@ -164,12 +158,12 @@ xmlSecKeyReqMatchKeyValue
 xmlSecKeyReqReset
 xmlSecKeySetName
 xmlSecKeySetValue
+xmlSecKeyStoreFind
 xmlSecKeysMngrAdoptDataStore
 xmlSecKeysMngrAdoptKeysStore
 xmlSecKeysMngrCreate
 xmlSecKeysMngrDestroy
 xmlSecKeysMngrFindKey
-xmlSecKeysMngrFindKeyData
 xmlSecKeysMngrGetDataStore
 xmlSecKeysMngrGetKeysStore
 xmlSecNodeGetName
@@ -187,23 +181,18 @@ xmlSecPtrListDestroy
 xmlSecPtrListDuplicate
 xmlSecPtrListFinalize
 xmlSecPtrListGetItem
-xmlSecPtrListGetName
 xmlSecPtrListGetSize
 xmlSecPtrListInitialize
-xmlSecPtrListKlassGetName
 xmlSecPtrListRemove
 xmlSecPtrListSet
 xmlSecPtrListSetDefaultAllocMode
 xmlSecSimpleKeysStoreAdoptKey
 xmlSecSimpleKeysStoreFindKey
 xmlSecSimpleKeysStoreGetKlass
-xmlSecSimpleKeysStoreId
 xmlSecSimpleKeysStoreLoad
 xmlSecSimpleKeysStoreSave
 xmlSecStaticObjectListGetKlass
-xmlSecStaticObjectListId
 xmlSecStringListGetKlass
-xmlSecStringListId
 xmlSecTransformAes128CbcId
 xmlSecTransformAes192CbcId
 xmlSecTransformAes256CbcId
@@ -251,6 +240,8 @@ xmlSecTransformGetName
 xmlSecTransformHmacMd5Id
 xmlSecTransformHmacRipemd160Id
 xmlSecTransformHmacSha1Id
+xmlSecTransformIdListDebugDump
+xmlSecTransformIdListDebugXmlDump
 xmlSecTransformIdListFind
 xmlSecTransformIdListFindByHref
 xmlSecTransformIdListFindByName

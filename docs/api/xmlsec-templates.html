@@ -46,9 +46,9 @@
 <h1>
 <a name="XMLSEC-TEMPLATES"></a>templates</h1>
 <div class="REFNAMEDIV">
-<a name="AEN5811"></a><h2>Name</h2>templates -- </div>
+<a name="AEN5892"></a><h2>Name</h2>templates -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN5814"></a><h2>Synopsis</h2>
+<a name="AEN5895"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 <font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLSIGNATURECREATE">xmlSecTmplSignatureCreate</a>       (<font>xmlDocPtr</font> doc,
@@ -63,12 +63,16 @@
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *uri,
                                              const <font>xmlChar</font> *type);
-<font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLREFERENCEADDTRANSFORM">xmlSecTmplReferenceAddTransform</a> (<font>xmlNodePtr</font> referenceNode,
-                                             <font>xmlSecTransformId</font> transformId);
 <font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLSIGNATUREADDOBJECT">xmlSecTmplSignatureAddObject</a>    (<font>xmlNodePtr</font> signNode,
                                              const <font>xmlChar</font> *id,
                                              const <font>xmlChar</font> *mimeType,
                                              const <font>xmlChar</font> *encoding);
+<font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLSIGNATUREGETSIGNMETHODNODE">xmlSecTmplSignatureGetSignMethodNode</a>
+                                            (<font>xmlNodePtr</font> signNode);
+<font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLSIGNATUREGETC14NMETHODNODE">xmlSecTmplSignatureGetC14NMethodNode</a>
+                                            (<font>xmlNodePtr</font> signNode);
+<font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLREFERENCEADDTRANSFORM">xmlSecTmplReferenceAddTransform</a> (<font>xmlNodePtr</font> referenceNode,
+                                             <font>xmlSecTransformId</font> transformId);
 <font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLOBJECTADDSIGNPROPERTIES">xmlSecTmplObjectAddSignProperties</a>
                                             (<font>xmlNodePtr</font> objectNode,
                                              const <font>xmlChar</font> *id,
@@ -99,6 +103,8 @@
 <font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLENCDATAENSURECIPHERREFERENCE">xmlSecTmplEncDataEnsureCipherReference</a>
                                             (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *uri);
+<font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLENCDATAGETENCMETHODNODE">xmlSecTmplEncDataGetEncMethodNode</a>
+                                            (<font>xmlNodePtr</font> encNode);
 <font>xmlNodePtr</font>  <a href="xmlsec-templates.html#XMLSECTMPLCIPHERREFERENCEADDTRANSFORM">xmlSecTmplCipherReferenceAddTransform</a>
                                             (<font>xmlNodePtr</font> cipherReferenceNode,
                                              <font>xmlSecTransformId</font> transformId);
@@ -144,11 +150,11 @@ int         <a href="xmlsec-templates.html#XMLSECTMPLTRANSFORMADDXPOINTER">xmlSe
                                              const <font>xmlChar</font> **nsList);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN5943"></a><h2>Description</h2>
+<a name="AEN6033"></a><h2>Description</h2>
 <p>    
     </p>
 <div class="FIGURE">
-<a name="AEN5946"></a><p><b>Figure 1. XML Digital Signature Structure</b></p>
+<a name="AEN6036"></a><p><b>Figure 1. XML Digital Signature Structure</b></p>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">	    &lt;Signature ID?&gt; 
     		&lt;SignedInfo&gt;
     		    &lt;CanonicalizationMethod/&gt;
@@ -166,7 +172,7 @@ int         <a href="xmlsec-templates.html#XMLSECTMPLTRANSFORMADDXPOINTER">xmlSe
 	</pre></td></tr></table>
 </div>
     <div class="FIGURE">
-<a name="AEN5949"></a><p><b>Figure 2. XML Encryption Structure</b></p>
+<a name="AEN6039"></a><p><b>Figure 2. XML Encryption Structure</b></p>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">	    &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
 		&lt;EncryptionMethod/&gt;?
 		&lt;ds:KeyInfo&gt;
@@ -185,9 +191,9 @@ int         <a href="xmlsec-templates.html#XMLSECTMPLTRANSFORMADDXPOINTER">xmlSe
     	</pre></td></tr></table>
 </div></div>
 <div class="REFSECT1">
-<a name="AEN5952"></a><h2>Details</h2>
+<a name="AEN6042"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN5954"></a><h3>
+<a name="AEN6044"></a><h3>
 <a name="XMLSECTMPLSIGNATURECREATE"></a>xmlSecTmplSignatureCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureCreate       (<font>xmlDocPtr</font> doc,
                                              <font>xmlSecTransformId</font> c14nMethodId,
@@ -200,7 +206,7 @@ The application is responsible for inserting the returned node
 in the XML document.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN5965"></a><p></p>
+<a name="AEN6055"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -237,7 +243,7 @@ error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5991"></a><h3>
+<a name="AEN6081"></a><h3>
 <a name="XMLSECTMPLSIGNATUREENSUREKEYINFO"></a>xmlSecTmplSignatureEnsureKeyInfo ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureEnsureKeyInfo
                                             (<font>xmlNodePtr</font> signNode,
@@ -246,7 +252,7 @@ error occurs.</td>
 node <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6001"></a><p></p>
+<a name="AEN6091"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -270,7 +276,7 @@ error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6018"></a><h3>
+<a name="AEN6108"></a><h3>
 <a name="XMLSECTMPLSIGNATUREADDREFERENCE"></a>xmlSecTmplSignatureAddReference ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureAddReference (<font>xmlNodePtr</font> signNode,
                                              <font>xmlSecTransformId</font> digestMethodId,
@@ -282,7 +288,7 @@ Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required childr
 &lt;dsig:DigestValue/&gt; to the &lt;dsig:SignedInfo/&gt; child of <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6034"></a><p></p>
+<a name="AEN6124"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -321,38 +327,7 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6063"></a><h3>
-<a name="XMLSECTMPLREFERENCEADDTRANSFORM"></a>xmlSecTmplReferenceAddTransform ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplReferenceAddTransform (<font>xmlNodePtr</font> referenceNode,
-                                             <font>xmlSecTransformId</font> transformId);</pre></td></tr></table>
-<p>Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <tt class="PARAMETER"><i>referenceNode</i></tt>.</p>
-<p></p>
-<div class="INFORMALTABLE">
-<a name="AEN6073"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>referenceNode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;dsig:Reference/&gt; node.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>transformId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the transform method id.</td>
-</tr>
-<tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an 
-error occurs.</td>
-</tr>
-</tbody></table>
-<p></p>
-</div>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="AEN6090"></a><h3>
+<a name="AEN6153"></a><h3>
 <a name="XMLSECTMPLSIGNATUREADDOBJECT"></a>xmlSecTmplSignatureAddObject ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureAddObject    (<font>xmlNodePtr</font> signNode,
                                              const <font>xmlChar</font> *id,
@@ -361,7 +336,7 @@ error occurs.</td>
 <p>Adds &lt;dsig:Object/&gt; node to the &lt;dsig:Signature/&gt; node <tt class="PARAMETER"><i>signNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6102"></a><p></p>
+<a name="AEN6165"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -395,7 +370,88 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6127"></a><h3>
+<a name="AEN6190"></a><h3>
+<a name="XMLSECTMPLSIGNATUREGETSIGNMETHODNODE"></a>xmlSecTmplSignatureGetSignMethodNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureGetSignMethodNode
+                                            (<font>xmlNodePtr</font> signNode);</pre></td></tr></table>
+<p>Gets pointer to &lt;dsig:SignatureMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6198"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>signNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;dsig:Signature /&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to &lt;dsig:SignatureMethod /&gt; node or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6211"></a><h3>
+<a name="XMLSECTMPLSIGNATUREGETC14NMETHODNODE"></a>xmlSecTmplSignatureGetC14NMethodNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplSignatureGetC14NMethodNode
+                                            (<font>xmlNodePtr</font> signNode);</pre></td></tr></table>
+<p>Gets pointer to &lt;dsig:CanonicalizationMethod/&gt; child of &lt;dsig:KeyInfo/&gt; node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6219"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>signNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;dsig:Signature /&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to &lt;dsig:CanonicalizationMethod /&gt; node or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6232"></a><h3>
+<a name="XMLSECTMPLREFERENCEADDTRANSFORM"></a>xmlSecTmplReferenceAddTransform ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplReferenceAddTransform (<font>xmlNodePtr</font> referenceNode,
+                                             <font>xmlSecTransformId</font> transformId);</pre></td></tr></table>
+<p>Adds &lt;dsig:Transform/&gt; node to the &lt;dsig:Reference/&gt; node <tt class="PARAMETER"><i>referenceNode</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6242"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>referenceNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to &lt;dsig:Reference/&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>transformId</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the transform method id.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">the pointer to newly created &lt;dsig:Transform/&gt; node or NULL if an 
+error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6259"></a><h3>
 <a name="XMLSECTMPLOBJECTADDSIGNPROPERTIES"></a>xmlSecTmplObjectAddSignProperties ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplObjectAddSignProperties
                                             (<font>xmlNodePtr</font> objectNode,
@@ -404,7 +460,7 @@ if an error occurs.</td>
 <p>Adds &lt;dsig:SignatureProperties/&gt; node to the &lt;dsig:Object/&gt; node <tt class="PARAMETER"><i>objectNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6138"></a><p></p>
+<a name="AEN6270"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -433,14 +489,14 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6159"></a><h3>
+<a name="AEN6291"></a><h3>
 <a name="XMLSECTMPLOBJECTADDMANIFEST"></a>xmlSecTmplObjectAddManifest ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplObjectAddManifest     (<font>xmlNodePtr</font> objectNode,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
 <p>Adds &lt;dsig:Manifest/&gt; node to the &lt;dsig:Object/&gt; node <tt class="PARAMETER"><i>objectNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6169"></a><p></p>
+<a name="AEN6301"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -464,7 +520,7 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6186"></a><h3>
+<a name="AEN6318"></a><h3>
 <a name="XMLSECTMPLMANIFESTADDREFERENCE"></a>xmlSecTmplManifestAddReference ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplManifestAddReference  (<font>xmlNodePtr</font> manifestNode,
                                              <font>xmlSecTransformId</font> digestMethodId,
@@ -476,7 +532,7 @@ Type (<tt class="PARAMETER"><i>type</i></tt>) attributes and the required childr
 &lt;dsig:DigestValue/&gt; to the &lt;dsig:Manifest/&gt; node <tt class="PARAMETER"><i>manifestNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6202"></a><p></p>
+<a name="AEN6334"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -515,7 +571,7 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6231"></a><h3>
+<a name="AEN6363"></a><h3>
 <a name="XMLSECTMPLENCDATACREATE"></a>xmlSecTmplEncDataCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataCreate         (<font>xmlDocPtr</font> doc,
                                              <font>xmlSecTransformId</font> encMethodId,
@@ -526,7 +582,7 @@ if an error occurs.</td>
 <p>Creates new &lt;enc:EncryptedData /&gt; node for encryption template.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6244"></a><p></p>
+<a name="AEN6376"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -572,14 +628,14 @@ if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6278"></a><h3>
+<a name="AEN6410"></a><h3>
 <a name="XMLSECTMPLENCDATAENSUREKEYINFO"></a>xmlSecTmplEncDataEnsureKeyInfo ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureKeyInfo  (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *id);</pre></td></tr></table>
 <p>Adds &lt;dsig:KeyInfo/&gt; to the  &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6288"></a><p></p>
+<a name="AEN6420"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -603,7 +659,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6305"></a><h3>
+<a name="AEN6437"></a><h3>
 <a name="XMLSECTMPLENCDATAENSUREENCPROPERTIES"></a>xmlSecTmplEncDataEnsureEncProperties ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureEncProperties
                                             (<font>xmlNodePtr</font> encNode,
@@ -612,7 +668,7 @@ NULL if an error occurs.</td>
 node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6315"></a><p></p>
+<a name="AEN6447"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -636,7 +692,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6332"></a><h3>
+<a name="AEN6464"></a><h3>
 <a name="XMLSECTMPLENCDATAADDENCPROPERTY"></a>xmlSecTmplEncDataAddEncProperty ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataAddEncProperty (<font>xmlNodePtr</font> encNode,
                                              const <font>xmlChar</font> *id,
@@ -646,7 +702,7 @@ NULL if an error occurs.</td>
 &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6343"></a><p></p>
+<a name="AEN6475"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -675,14 +731,14 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6364"></a><h3>
+<a name="AEN6496"></a><h3>
 <a name="XMLSECTMPLENCDATAENSURECIPHERVALUE"></a>xmlSecTmplEncDataEnsureCipherValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureCipherValue
                                             (<font>xmlNodePtr</font> encNode);</pre></td></tr></table>
 <p>Adds &lt;enc:CipherValue/&gt; to the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6373"></a><p></p>
+<a name="AEN6505"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -701,7 +757,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6386"></a><h3>
+<a name="AEN6518"></a><h3>
 <a name="XMLSECTMPLENCDATAENSURECIPHERREFERENCE"></a>xmlSecTmplEncDataEnsureCipherReference ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataEnsureCipherReference
                                             (<font>xmlNodePtr</font> encNode,
@@ -710,7 +766,7 @@ NULL if an error occurs.</td>
 to the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6397"></a><p></p>
+<a name="AEN6529"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -734,7 +790,32 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6414"></a><h3>
+<a name="AEN6546"></a><h3>
+<a name="XMLSECTMPLENCDATAGETENCMETHODNODE"></a>xmlSecTmplEncDataGetEncMethodNode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplEncDataGetEncMethodNode
+                                            (<font>xmlNodePtr</font> encNode);</pre></td></tr></table>
+<p>Gets pointer to &lt;enc:EncrytpionMethod/&gt; node.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6554"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>encNode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to &lt;enc:EcnryptedData /&gt; node.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to &lt;enc:EncryptionMethod /&gt; node or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6567"></a><h3>
 <a name="XMLSECTMPLCIPHERREFERENCEADDTRANSFORM"></a>xmlSecTmplCipherReferenceAddTransform ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplCipherReferenceAddTransform
                                             (<font>xmlNodePtr</font> cipherReferenceNode,
@@ -744,7 +825,7 @@ with specified transform methods <tt class="PARAMETER"><i>transform</i></tt> to 
 child node of the &lt;enc:EncryptedData/&gt; node <tt class="PARAMETER"><i>encNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6425"></a><p></p>
+<a name="AEN6578"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -768,14 +849,14 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6442"></a><h3>
+<a name="AEN6595"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDKEYNAME"></a>xmlSecTmplKeyInfoAddKeyName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddKeyName     (<font>xmlNodePtr</font> keyInfoNode,
                                              const <font>xmlChar</font> *name);</pre></td></tr></table>
 <p>Adds &lt;dsig:KeyName/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6452"></a><p></p>
+<a name="AEN6605"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -799,13 +880,13 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6469"></a><h3>
+<a name="AEN6622"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDKEYVALUE"></a>xmlSecTmplKeyInfoAddKeyValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddKeyValue    (<font>xmlNodePtr</font> keyInfoNode);</pre></td></tr></table>
 <p>Adds &lt;dsig:KeyValue/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6478"></a><p></p>
+<a name="AEN6631"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -824,13 +905,13 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6491"></a><h3>
+<a name="AEN6644"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDX509DATA"></a>xmlSecTmplKeyInfoAddX509Data ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddX509Data    (<font>xmlNodePtr</font> keyInfoNode);</pre></td></tr></table>
 <p>Adds &lt;dsig:X509Data/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6500"></a><p></p>
+<a name="AEN6653"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -849,7 +930,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6513"></a><h3>
+<a name="AEN6666"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDRETRIEVALMETHOD"></a>xmlSecTmplKeyInfoAddRetrievalMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddRetrievalMethod
                                             (<font>xmlNodePtr</font> keyInfoNode,
@@ -858,7 +939,7 @@ NULL if an error occurs.</td>
 <p>Adds &lt;dsig:RetrievalMethod/&gt; node to the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6524"></a><p></p>
+<a name="AEN6677"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -887,7 +968,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6545"></a><h3>
+<a name="AEN6698"></a><h3>
 <a name="XMLSECTMPLRETRIEVALMETHODADDTRANSFORM"></a>xmlSecTmplRetrievalMethodAddTransform ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplRetrievalMethodAddTransform
                                             (<font>xmlNodePtr</font> retrMethodNode,
@@ -896,7 +977,7 @@ NULL if an error occurs.</td>
 if required) to the &lt;dsig:RetrievalMethod/&gt; node <tt class="PARAMETER"><i>retrMethod</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6555"></a><p></p>
+<a name="AEN6708"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -920,7 +1001,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6572"></a><h3>
+<a name="AEN6725"></a><h3>
 <a name="XMLSECTMPLKEYINFOADDENCRYPTEDKEY"></a>xmlSecTmplKeyInfoAddEncryptedKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecTmplKeyInfoAddEncryptedKey
                                             (<font>xmlNodePtr</font> keyInfoNode,
@@ -932,7 +1013,7 @@ NULL if an error occurs.</td>
 the &lt;dsig:KeyInfo/&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6585"></a><p></p>
+<a name="AEN6738"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -971,7 +1052,7 @@ NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6614"></a><h3>
+<a name="AEN6767"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDHMACOUTPUTLENGTH"></a>xmlSecTmplTransformAddHmacOutputLength ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddHmacOutputLength
                                             (<font>xmlNodePtr</font> transformNode,
@@ -980,7 +1061,7 @@ NULL if an error occurs.</td>
 node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6623"></a><p></p>
+<a name="AEN6776"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1003,7 +1084,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6640"></a><h3>
+<a name="AEN6793"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDRSAOAEPPARAM"></a>xmlSecTmplTransformAddRsaOaepParam ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddRsaOaepParam
                                             (<font>xmlNodePtr</font> transformNode,
@@ -1012,7 +1093,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p>Creates &lt;enc:OAEPParam/&gt; child node in the <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6649"></a><p></p>
+<a name="AEN6802"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1040,7 +1121,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6670"></a><h3>
+<a name="AEN6823"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXSLTSTYLESHEET"></a>xmlSecTmplTransformAddXsltStylesheet ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXsltStylesheet
                                             (<font>xmlNodePtr</font> transformNode,
@@ -1048,7 +1129,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p>Writes the XSLT transform expression to the <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6679"></a><p></p>
+<a name="AEN6832"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1071,7 +1152,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6696"></a><h3>
+<a name="AEN6849"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDC14NINCLNAMESPACES"></a>xmlSecTmplTransformAddC14NInclNamespaces ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddC14NInclNamespaces
                                             (<font>xmlNodePtr</font> transformNode,
@@ -1079,7 +1160,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p>Adds &quot;inclusive&quot; namespaces to the ExcC14N transform node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6705"></a><p></p>
+<a name="AEN6858"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1104,7 +1185,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6723"></a><h3>
+<a name="AEN6876"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXPATH"></a>xmlSecTmplTransformAddXPath ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXPath     (<font>xmlNodePtr</font> transformNode,
                                              const <font>xmlChar</font> *expression,
@@ -1113,7 +1194,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6733"></a><p></p>
+<a name="AEN6886"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1142,7 +1223,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6754"></a><h3>
+<a name="AEN6907"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXPATH2"></a>xmlSecTmplTransformAddXPath2 ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXPath2    (<font>xmlNodePtr</font> transformNode,
                                              const <font>xmlChar</font> *type,
@@ -1152,7 +1233,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6765"></a><p></p>
+<a name="AEN6918"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1186,7 +1267,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6790"></a><h3>
+<a name="AEN6943"></a><h3>
 <a name="XMLSECTMPLTRANSFORMADDXPOINTER"></a>xmlSecTmplTransformAddXPointer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTmplTransformAddXPointer  (<font>xmlNodePtr</font> transformNode,
                                              const <font>xmlChar</font> *expression,
@@ -1195,7 +1276,7 @@ node <tt class="PARAMETER"><i>node</i></tt>.</p>
 <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6800"></a><p></p>
+<a name="AEN6953"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

@@ -23,18 +23,19 @@ typedef struct _xmlSecNodeSet 	xmlSecNodeSet, *xmlSecNodeSetPtr;
 
 /** 
  * xmlSecNodeSetType:
- * @xmlSecNodeSetNormal: nodes set = nodes in the list.
- * @xmlSecNodeSetInvert:  nodes set = all document nodes minus nodes in the list.
- * @xmlSecNodeSetTree: nodes set = nodes in the list and all their subtress.
- * @xmlSecNodeSetTreeWithoutComments: nodes set = nodes in the list and 
- *	all their subtress but no comment nodes.
- * @xmlSecNodeSetTreeInvert: nodes set = all document nodes minus nodes in the 
- * 	list and all their subtress.
- * @xmlSecNodeSetTreeWithoutCommentsInvert: nodes set = all document nodes 
- * 	minus (nodes in the list and all their subtress plus all comment nodes).
- * @xmlSecNodeSetList: nodes set = all nodes in the chidren list of nodes sets.
+ * @xmlSecNodeSetNormal: 	nodes set = nodes in the list.
+ * @xmlSecNodeSetInvert:  	nodes set = all document nodes minus nodes in the list.
+ * @xmlSecNodeSetTree: 		nodes set = nodes in the list and all their subtress.
+ * @xmlSecNodeSetTreeWithoutComments: 		nodes set = nodes in the list and 
+ *				all their subtress but no comment nodes.
+ * @xmlSecNodeSetTreeInvert: 	nodes set = all document nodes minus nodes in the 
+ * 				list and all their subtress.
+ * @xmlSecNodeSetTreeWithoutCommentsInvert: 	nodes set = all document nodes 
+ * 				minus (nodes in the list and all their subtress 
+ *				plus all comment nodes).
+ * @xmlSecNodeSetList: 		nodes set = all nodes in the chidren list of nodes sets.
  * 
- * The simple nodes sets types.
+ * The basic nodes sets types.
  */
 typedef enum {
     xmlSecNodeSetNormal = 0,
@@ -48,9 +49,9 @@ typedef enum {
 
 /**
  * xmlSecNodeSetOp:
- * @xmlSecNodeSetIntersection: intersection.
- * @xmlSecNodeSetSubtraction: subtraction.
- * @xmlSecNodeSetUnion: union.
+ * @xmlSecNodeSetIntersection: 	intersection.
+ * @xmlSecNodeSetSubtraction: 	subtraction.
+ * @xmlSecNodeSetUnion: 	union.
  * 
  * The simple nodes sets operations.
  */
@@ -62,13 +63,16 @@ typedef enum {
 
 /**
  * xmlSecNodeSet:
- * @nodes: the nodes list.
- * @doc: the parent XML document.
- * @type: the nodes set type.
- * @op: the operation type.
- * @next: the next nodes set.
- * @prev: the previous nodes set.
- * @children: the children list (valid only if type equal to #xmlSecNodeSetList).
+ * @nodes: 			the nodes list.
+ * @doc: 			the parent XML document.
+ * @destroyDoc:			the flag: if set to 1 then @doc will
+ *				be destroyed when node set is destroyed.
+ * @type: 			the nodes set type.
+ * @op: 			the operation type.
+ * @next: 			the next nodes set.
+ * @prev: 			the previous nodes set.
+ * @children: 			the children list (valid only if type 
+ *				equal to #xmlSecNodeSetList).
  *
  * The enchanced nodes set.
  */
@@ -85,10 +89,10 @@ struct _xmlSecNodeSet {
 
 /**
  * xmlSecNodeSetWalkCallback:
- * @nset: the pointer to #xmlSecNodeSet structure.
- * @cur: the pointer current XML node.
- * @parent: the pointer to the @cur parent node.
- * @data: the pointer to application specific data.
+ * @nset: 			the pointer to #xmlSecNodeSet structure.
+ * @cur: 			the pointer current XML node.
+ * @parent: 			the pointer to the @cur parent node.
+ * @data: 			the pointer to application specific data.
  *
  * The callback function called once per each node in the nodes set.
  *
@@ -99,6 +103,7 @@ typedef int (*xmlSecNodeSetWalkCallback)		(xmlSecNodeSetPtr nset,
 							 xmlNodePtr cur,
 							 xmlNodePtr parent,
 							 void* data);
+
 XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetCreate	(xmlDocPtr doc,
 							 xmlNodeSetPtr nodes,
 							 xmlSecNodeSetType type);

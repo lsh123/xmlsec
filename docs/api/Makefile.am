@@ -18,7 +18,7 @@ html: sgml xmlsec.sgml
 	gtkdoc-mkhtml $(MODULE) xmlsec.sgml
 	
 sgml: templates
-	@gtkdoc-mkdb --module=$(MODULE)  --source-dir=$(DOC_SOURCE_DIR) 
+	@gtkdoc-mkdb --module=$(MODULE) --main-sgml-file xmlsec.sgml --source-dir=$(DOC_SOURCE_DIR) 
 
 templates: scan
 	@gtkdoc-mktmpl --module=$(MODULE)

@@ -22,46 +22,11 @@ extern "C" {
  * Global Namespaces
  *
  ************************************************************************/
-/**
- * xmlSecNs:
- * 
- * The  XML Security library namespace 
- */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
-
-/**
- * xmlSecDSigNs:
- *
- * The XML DSig namespace 
- */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
-
-/**
- * xmlSecEncNs:
- *
- * The XML Encription namespace 
- */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
-
-/**
- * xmlSecXPathNs:
- * 
- * The XPath transform namespace 
- */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
-
-/**
- * xmlSecXPath2Ns:
- * 
- * The XPath2 transform namespace 
- */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
-
-/**
- * xmlSecXPointerNs
- *
- * XPointer transform namespace 
- */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 
 

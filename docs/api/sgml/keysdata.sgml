@@ -131,6 +131,10 @@ int         <link linkend="xmlSecKeyDataIdListFind">xmlSecKeyDataIdListFind</lin
                                             (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
+void        <link linkend="xmlSecKeyDataIdListDebugDump">xmlSecKeyDataIdListDebugDump</link>    (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecKeyDataIdListDebugXmlDump">xmlSecKeyDataIdListDebugXmlDump</link> (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</link>
 int         <link linkend="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize</link>
                                             (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
@@ -176,11 +180,6 @@ struct      <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link>;
 <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate</link>
                                             (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);
 void        <link linkend="xmlSecKeyDataStoreDestroy">xmlSecKeyDataStoreDestroy</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
-int         <link linkend="xmlSecKeyDataStoreFind">xmlSecKeyDataStoreFind</link>          (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             const <link linkend="xmlChar">xmlChar</link> **params,
-                                             <link linkend="size-t">size_t</link> paramsSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 #define     <link linkend="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName</link>       (store)
 #define     <link linkend="xmlSecKeyDataStoreIsValid">xmlSecKeyDataStoreIsValid</link>       (store)
 #define     <link linkend="xmlSecKeyDataStoreCheckId">xmlSecKeyDataStoreCheckId</link>       (store, storeId)
@@ -190,11 +189,6 @@ int         (<link linkend="xmlSecKeyDataStoreInitializeMethod">*xmlSecKeyDataSt
                                             (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
 void        (<link linkend="xmlSecKeyDataStoreFinalizeMethod">*xmlSecKeyDataStoreFinalizeMethod</link>)
                                             (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
-int         (<link linkend="xmlSecKeyDataStoreFindMethod">*xmlSecKeyDataStoreFindMethod</link>) (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             const <link linkend="xmlChar">xmlChar</link> **params,
-                                             <link linkend="size-t">size_t</link> paramsSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</link>;
 #define     <link linkend="xmlSecKeyDataStoreKlassGetName">xmlSecKeyDataStoreKlassGetName</link>  (klass)
 #define     <link linkend="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</link>
@@ -239,12 +233,16 @@ The key data usage is unknown.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyInfoNodeRead		0x00001
 </programlisting>
 <para>
+The key data could be read from a &lt;dsig:KeyInfo/&gt; child.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataUsageKeyInfoNodeWrite">xmlSecKeyDataUsageKeyInfoNodeWrite</title>
 <programlisting>#define xmlSecKeyDataUsageKeyInfoNodeWrite		0x00002
 </programlisting>
+<para>
+The key data could be written to a &lt;dsig:KeyInfo /&gt; child.</para>
 <para>
 
 </para></refsect2>
@@ -253,12 +251,16 @@ The key data usage is unknown.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyValueNodeRead		0x00004
 </programlisting>
 <para>
+The key data could be read from a &lt;dsig:KeyValue /&gt; child.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataUsageKeyValueNodeWrite">xmlSecKeyDataUsageKeyValueNodeWrite</title>
 <programlisting>#define xmlSecKeyDataUsageKeyValueNodeWrite		0x00008
 </programlisting>
+<para>
+The key data could be written to a &lt;dsig:KeyValue /&gt; child.</para>
 <para>
 
 </para></refsect2>
@@ -267,12 +269,18 @@ The key data usage is unknown.</para>
 <programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeXml	0x00010
 </programlisting>
 <para>
+The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
+in XML format.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataUsageRetrievalMethodNodeBin">xmlSecKeyDataUsageRetrievalMethodNodeBin</title>
 <programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeBin	0x00020
 </programlisting>
+<para>
+The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
+in binary format.</para>
 <para>
 
 </para></refsect2>
@@ -281,11 +289,15 @@ The key data usage is unknown.</para>
 <programlisting>#define xmlSecKeyDataUsageAny				0xFFFFF
 </programlisting>
 <para>
+Any key data usage.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataUsageKeyInfoNode">xmlSecKeyDataUsageKeyInfoNode</title>
 <programlisting>#define     xmlSecKeyDataUsageKeyInfoNode</programlisting>
+<para>
+The key data could be read and written from/to a &lt;dsig:KeyInfo /&gt; child.</para>
 <para>
 
 </para></refsect2>
@@ -293,11 +305,16 @@ The key data usage is unknown.</para>
 <title><anchor id="xmlSecKeyDataUsageKeyValueNode">xmlSecKeyDataUsageKeyValueNode</title>
 <programlisting>#define     xmlSecKeyDataUsageKeyValueNode</programlisting>
 <para>
+The key data could be read and written from/to a &lt;dsig:KeyValue /&gt; child.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataUsageRetrievalMethodNode">xmlSecKeyDataUsageRetrievalMethodNode</title>
 <programlisting>#define     xmlSecKeyDataUsageRetrievalMethodNode</programlisting>
+<para>
+The key data could be retrieved using &lt;dsig:RetrievalMethod /&gt; node
+in any format.</para>
 <para>
 
 </para></refsect2>
@@ -1505,6 +1522,46 @@ The key data list klass id.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyDataIdListDebugDump">xmlSecKeyDataIdListDebugDump ()</title>
+<programlisting>void        xmlSecKeyDataIdListDebugDump    (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListDebugXmlDump">xmlSecKeyDataIdListDebugXmlDump ()</title>
+<programlisting>void        xmlSecKeyDataIdListDebugXmlDump (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</title>
 <programlisting>#define     xmlSecKeyDataBinarySize</programlisting>
 <para>
@@ -1881,40 +1938,6 @@ Destroys the store and frees all allocated memory.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataStoreFind">xmlSecKeyDataStoreFind ()</title>
-<programlisting>int         xmlSecKeyDataStoreFind          (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             const <link linkend="xmlChar">xmlChar</link> **params,
-                                             <link linkend="size-t">size_t</link> paramsSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName()</title>
 <programlisting>#define     xmlSecKeyDataStoreGetName(store)</programlisting>
 <para>
@@ -2008,7 +2031,7 @@ Key data store specific initialization method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the data store.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -2018,7 +2041,7 @@ Key data store specific initialization method.</para>
 <programlisting>void        (*xmlSecKeyDataStoreFinalizeMethod)
                                             (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
-Key	data dtore specific finalization (destroy) method.</para>
+Key data store specific finalization (destroy) method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2027,43 +2050,7 @@ Key	data dtore specific finalization (destroy) method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataStoreFindMethod">xmlSecKeyDataStoreFindMethod ()</title>
-<programlisting>int         (*xmlSecKeyDataStoreFindMethod) (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             const <link linkend="xmlChar">xmlChar</link> **params,
-                                             <link linkend="size-t">size_t</link> paramsSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-Key data store specific find method.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> 		the destination key.
-</entry></row>
-<row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
-<entry> 		the params strings array.
-</entry></row>
-<row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
-<entry> 	the params strings array <parameter>params</parameter>.
-</entry></row>
-<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to key info context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+<entry> 		the data store.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2078,7 +2065,6 @@ Key data store specific find method.</para>
     /* constructors/destructor */
     xmlSecKeyDataStoreInitializeMethod	initialize;
     xmlSecKeyDataStoreFinalizeMethod	finalize;
-    xmlSecKeyDataStoreFindMethod	find;
 
     /* for the future */
     void*				reserved0;

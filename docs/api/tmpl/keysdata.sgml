@@ -624,6 +624,24 @@ keysdata
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecKeyDataIdListDebugDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
 <!-- ##### MACRO xmlSecKeyDataBinarySize ##### -->
 <para>
 
@@ -781,19 +799,6 @@ keysdata
 @store: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataStoreFind ##### -->
-<para>
-
-</para>
-
-@store: 
-@key: 
-@params: 
-@paramsSize: 
-@keyInfoCtx: 
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecKeyDataStoreGetName ##### -->
 <para>
 
@@ -852,19 +857,6 @@ keysdata
 @store: 
 
 
-<!-- ##### USER_FUNCTION xmlSecKeyDataStoreFindMethod ##### -->
-<para>
-
-</para>
-
-@store: 
-@key: 
-@params: 
-@paramsSize: 
-@keyInfoCtx: 
-@Returns: 
-
-
 <!-- ##### STRUCT xmlSecKeyDataStoreKlass ##### -->
 <para>
 
@@ -875,7 +867,6 @@ keysdata
 @name: 
 @initialize: 
 @finalize: 
-@find: 
 @reserved0: 
 @reserved1: 
 

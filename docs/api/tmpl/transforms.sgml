@@ -1032,6 +1032,24 @@ The transforms functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecTransformIdListDebugDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecTransformIdListDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@list: 
+@output: 
+
+
 <!-- ##### MACRO xmlSecTransformIdUnknown ##### -->
 <para>
 

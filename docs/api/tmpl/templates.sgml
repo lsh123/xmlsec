@@ -88,16 +88,6 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecTmplReferenceAddTransform ##### -->
-<para>
-
-</para>
-
-@referenceNode: 
-@transformId: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecTmplSignatureAddObject ##### -->
 <para>
 
@@ -107,6 +97,34 @@ templates
 @id: 
 @mimeType: 
 @encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplSignatureGetSignMethodNode ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplSignatureGetC14NMethodNode ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@referenceNode: 
+@transformId: 
 @Returns: 
 
 
@@ -205,6 +223,15 @@ templates
 
 @encNode: 
 @uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataGetEncMethodNode ##### -->
+<para>
+
+</para>
+
+@encNode: 
 @Returns: 
 
 

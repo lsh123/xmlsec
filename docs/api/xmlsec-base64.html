@@ -46,9 +46,9 @@
 <h1>
 <a name="XMLSEC-BASE64"></a>base64.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN9842"></a><h2>Name</h2>base64.h -- The BASE64 encode/decode functions.</div>
+<a name="AEN10041"></a><h2>Name</h2>base64.h -- The BASE64 encode/decode functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN9845"></a><h2>Synopsis</h2>
+<a name="AEN10044"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-base64.html#XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</a>
@@ -75,13 +75,13 @@ int         <a href="xmlsec-base64.html#XMLSECBASE64DECODE">xmlSecBase64Decode</
                                              <font>size_t</font> len);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN9870"></a><h2>Description</h2>
+<a name="AEN10069"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN9873"></a><h2>Details</h2>
+<a name="AEN10072"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN9875"></a><h3>
+<a name="AEN10074"></a><h3>
 <a name="XMLSEC-BASE64-LINESIZE-CAPS"></a>XMLSEC_BASE64_LINESIZE</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_BASE64_LINESIZE				64</pre></td></tr></table>
 <p>The default max line size for base64 encoding</p>
@@ -89,14 +89,14 @@ int         <a href="xmlsec-base64.html#XMLSECBASE64DECODE">xmlSecBase64Decode</
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9881"></a><h3>
+<a name="AEN10080"></a><h3>
 <a name="XMLSECBASE64CTXCREATE"></a>xmlSecBase64CtxCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBase64CtxPtr</font> xmlSecBase64CtxCreate    (int encode,
                                              int columns);</pre></td></tr></table>
 <p>Creates new base64 context.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN9888"></a><p></p>
+<a name="AEN10087"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -120,13 +120,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9906"></a><h3>
+<a name="AEN10105"></a><h3>
 <a name="XMLSECBASE64CTXDESTROY"></a>xmlSecBase64CtxDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBase64CtxDestroy          (<font>xmlSecBase64CtxPtr</font> ctx);</pre></td></tr></table>
 <p>Destroys base64 context.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN9913"></a><p></p>
+<a name="AEN10112"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>ctx</i></tt> :</td>
@@ -137,14 +137,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9923"></a><h3>
+<a name="AEN10122"></a><h3>
 <a name="XMLSECBASE64CTXINITIALIZE"></a>xmlSecBase64CtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64CtxInitialize       (<font>xmlSecBase64CtxPtr</font> ctx,
                                              int encode,
                                              int columns);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN9929"></a><p></p>
+<a name="AEN10128"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -172,12 +172,12 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9950"></a><h3>
+<a name="AEN10149"></a><h3>
 <a name="XMLSECBASE64CTXFINALIZE"></a>xmlSecBase64CtxFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBase64CtxFinalize         (<font>xmlSecBase64CtxPtr</font> ctx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN9956"></a><p></p>
+<a name="AEN10155"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>ctx</i></tt> :</td>
@@ -188,7 +188,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9965"></a><h3>
+<a name="AEN10164"></a><h3>
 <a name="XMLSECBASE64CTXUPDATE"></a>xmlSecBase64CtxUpdate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64CtxUpdate           (<font>xmlSecBase64CtxPtr</font> ctx,
                                              unsigned char *in,
@@ -198,7 +198,7 @@ or NULL if an error occurs.</td>
 <p>Encodes/decodes the next piece of data from input buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN9974"></a><p></p>
+<a name="AEN10173"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -237,7 +237,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10004"></a><h3>
+<a name="AEN10203"></a><h3>
 <a name="XMLSECBASE64CTXFINAL"></a>xmlSecBase64CtxFinal ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64CtxFinal            (<font>xmlSecBase64CtxPtr</font> ctx,
                                              unsigned char *out,
@@ -246,7 +246,7 @@ or NULL if an error occurs.</td>
 and finalizes the result.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN10012"></a><p></p>
+<a name="AEN10211"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -275,7 +275,7 @@ and finalizes the result.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10034"></a><h3>
+<a name="AEN10233"></a><h3>
 <a name="XMLSECBASE64ENCODE"></a>xmlSecBase64Encode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecBase64Encode              (unsigned char *buf,
                                              <font>size_t</font> len,
@@ -285,7 +285,7 @@ The caller is responsible for freeing returned buffer using
 <font>xmlFree</font>() function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN10043"></a><p></p>
+<a name="AEN10242"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -315,7 +315,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10064"></a><h3>
+<a name="AEN10263"></a><h3>
 <a name="XMLSECBASE64DECODE"></a>xmlSecBase64Decode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBase64Decode              (const <font>xmlChar</font> *str,
                                              unsigned char *buf,
@@ -324,7 +324,7 @@ or NULL if an error occurs.</td>
 the output buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN10072"></a><p></p>
+<a name="AEN10271"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

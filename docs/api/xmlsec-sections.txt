@@ -73,7 +73,6 @@ xmlSecErrorsSetCallback
 xmlSecErrorsDefaultCallback
 xmlSecErrorsGetCode
 xmlSecErrorsGetMsg
-xmlSecPrintErrorMessages
 XMLSEC_ERRORS_HERE
 xmlSecErrorsSafeString
 XMLSEC_ERRORS_NO_MESSAGE
@@ -172,8 +171,6 @@ xmlSecKeyPtrListGetKlass
 
 <SECTION>
 <FILE>keysdata</FILE>
-xmlSecKeyDataId
-xmlSecKeyDataStoreId
 xmlSecKeyDataUsage
 xmlSecKeyDataUsageUnknown
 xmlSecKeyDataUsageKeyInfoNodeRead
@@ -242,6 +239,8 @@ xmlSecKeyDataIdListFind
 xmlSecKeyDataIdListFindByNode
 xmlSecKeyDataIdListFindByHref
 xmlSecKeyDataIdListFindByName
+xmlSecKeyDataIdListDebugDump
+xmlSecKeyDataIdListDebugXmlDump
 xmlSecKeyDataBinarySize
 xmlSecKeyDataBinaryValueInitialize
 xmlSecKeyDataBinaryValueDuplicate
@@ -258,7 +257,6 @@ xmlSecKeyDataBinaryValueSetBuffer
 xmlSecKeyDataStore
 xmlSecKeyDataStoreCreate
 xmlSecKeyDataStoreDestroy
-xmlSecKeyDataStoreFind
 xmlSecKeyDataStoreGetName
 xmlSecKeyDataStoreIsValid
 xmlSecKeyDataStoreCheckId
@@ -266,7 +264,6 @@ xmlSecKeyDataStoreCheckSize
 xmlSecKeyDataStoreIdUnknown
 xmlSecKeyDataStoreInitializeMethod
 xmlSecKeyDataStoreFinalizeMethod
-xmlSecKeyDataStoreFindMethod
 xmlSecKeyDataStoreKlass
 xmlSecKeyDataStoreKlassGetName
 xmlSecKeyDataStorePtrListId
@@ -275,16 +272,9 @@ xmlSecKeyDataStorePtrListGetKlass
 
 <SECTION>
 <FILE>keysmngr</FILE>
-xmlSecSimpleKeysStoreId
-xmlSecSimpleKeysStoreGetKlass
-xmlSecSimpleKeysStoreAdoptKey
-xmlSecSimpleKeysStoreFindKey
-xmlSecSimpleKeysStoreLoad
-xmlSecSimpleKeysStoreSave
 xmlSecKeysMngrCreate
 xmlSecKeysMngrDestroy
 xmlSecKeysMngrFindKey
-xmlSecKeysMngrFindKeyData
 xmlSecKeysMngrAdoptKeysStore
 xmlSecKeysMngrGetKeysStore
 xmlSecKeysMngrAdoptDataStore
@@ -292,12 +282,31 @@ xmlSecKeysMngrGetDataStore
 xmlSecGetKeyCallback
 xmlSecKeysMngr
 xmlSecKeysMngrGetKey
+xmlSecKeyStore
+xmlSecKeyStoreCreate
+xmlSecKeyStoreDestroy
+xmlSecKeyStoreFind
+xmlSecKeyStoreGetName
+xmlSecKeyStoreIsValid
+xmlSecKeyStoreCheckId
+xmlSecKeyStoreCheckSize
+xmlSecKeyStoreIdUnknown
+xmlSecKeyStoreInitializeMethod
+xmlSecKeyStoreFinalizeMethod
+xmlSecKeyStoreFindMethod
+xmlSecKeyStoreKlass
+xmlSecKeyStoreKlassGetName
+xmlSecSimpleKeysStoreId
+xmlSecSimpleKeysStoreGetKlass
+xmlSecSimpleKeysStoreAdoptKey
+xmlSecSimpleKeysStoreFindKey
+xmlSecSimpleKeysStoreLoad
+xmlSecSimpleKeysStoreSave
 </SECTION>
 
 <SECTION>
 <FILE>list</FILE>
 xmlSecPtr
-xmlSecPtrListId
 xmlSecPtrList
 xmlSecPtrListSetDefaultAllocMode
 xmlSecPtrListInitialize
@@ -362,8 +371,10 @@ xmlSecNodeSetDebugDump
 xmlSecTmplSignatureCreate
 xmlSecTmplSignatureEnsureKeyInfo
 xmlSecTmplSignatureAddReference
-xmlSecTmplReferenceAddTransform
 xmlSecTmplSignatureAddObject
+xmlSecTmplSignatureGetSignMethodNode
+xmlSecTmplSignatureGetC14NMethodNode
+xmlSecTmplReferenceAddTransform
 xmlSecTmplObjectAddSignProperties
 xmlSecTmplObjectAddManifest
 xmlSecTmplManifestAddReference
@@ -373,6 +384,7 @@ xmlSecTmplEncDataEnsureEncProperties
 xmlSecTmplEncDataAddEncProperty
 xmlSecTmplEncDataEnsureCipherValue
 xmlSecTmplEncDataEnsureCipherReference
+xmlSecTmplEncDataGetEncMethodNode
 xmlSecTmplCipherReferenceAddTransform
 xmlSecTmplKeyInfoAddKeyName
 xmlSecTmplKeyInfoAddKeyValue
@@ -495,6 +507,8 @@ xmlSecTransformIdListGetKlass
 xmlSecTransformIdListFind
 xmlSecTransformIdListFindByHref
 xmlSecTransformIdListFindByName
+xmlSecTransformIdListDebugDump
+xmlSecTransformIdListDebugXmlDump
 xmlSecTransformIdUnknown
 xmlSecTransformBase64Id
 xmlSecTransformBase64GetKlass
@@ -556,12 +570,15 @@ xmlSecBufferCreateOutputBuffer
 <SECTION>
 <FILE>xmldsig</FILE>
 xmlSecDSigStatus
+XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS
+XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES
+XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES
+XMLSEC_DSIG_FLAGS_STORE_SIGNATURE
 xmlSecDSigCtx
 xmlSecDSigCtxCreate
 xmlSecDSigCtxDestroy
 xmlSecDSigCtxInitialize
 xmlSecDSigCtxFinalize
-xmlSecDSigCtxAdoptSignatureKey
 xmlSecDSigCtxSign
 xmlSecDSigCtxVerify
 xmlSecDSigCtxPreSignBuffer

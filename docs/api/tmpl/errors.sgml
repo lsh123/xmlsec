@@ -393,12 +393,6 @@ function.
 @Returns: 
 
 
-<!-- ##### VARIABLE xmlSecPrintErrorMessages ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO XMLSEC_ERRORS_HERE ##### -->
 <para>
 

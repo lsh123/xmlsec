@@ -14,35 +14,15 @@
 
 
 
-#define     <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
-<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> <link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link>
-                                            (void);
-int         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey</link>   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-int         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const char *uri,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
-int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const char *filename,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link>      (void);
 void        <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-int         <link linkend="xmlSecKeysMngrFindKeyData">xmlSecKeysMngrFindKeyData</link>       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> storeId,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             const <link linkend="xmlChar">xmlChar</link> **params,
-                                             <link linkend="size-t">size_t</link> paramsSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
-<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore</link>
+                                             <link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);
+<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore</link>
                                             (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore</link>    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
@@ -54,6 +34,41 @@ int         <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptData
 struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
+<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link>      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);
+void        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>           (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);
+int         <link linkend="xmlSecKeyStoreFind">xmlSecKeyStoreFind</link>              (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+#define     <link linkend="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName</link>           (store)
+#define     <link linkend="xmlSecKeyStoreIsValid">xmlSecKeyStoreIsValid</link>           (store)
+#define     <link linkend="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId</link>           (store, storeId)
+#define     <link linkend="xmlSecKeyStoreCheckSize">xmlSecKeyStoreCheckSize</link>         (store, size)
+#define     <link linkend="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</link>
+int         (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)
+                                            (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);
+void        (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>) (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);
+int         (<link linkend="xmlSecKeyStoreFindMethod">*xmlSecKeyStoreFindMethod</link>)     (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
+#define     <link linkend="xmlSecKeyStoreKlassGetName">xmlSecKeyStoreKlassGetName</link>      (klass)
+#define     <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>   (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey</link>   (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const char *uri,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
+int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 </synopsis>
 </refsynopsisdiv>
 
@@ -70,129 +85,6 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 
 <refsect1>
 <title>Details</title>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</title>
-<programlisting>#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecSimpleKeysStoreGetKlass
-                                            (void);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysStoreFindKey   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const char *uri,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
-                                             const char *filename,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate ()</title>
 <programlisting><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> xmlSecKeysMngrCreate      (void);</programlisting>
@@ -255,47 +147,9 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeysMngrFindKeyData">xmlSecKeysMngrFindKeyData ()</title>
-<programlisting>int         xmlSecKeysMngrFindKeyData       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> storeId,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             const <link linkend="xmlChar">xmlChar</link> **params,
-                                             <link linkend="size-t">size_t</link> paramsSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>storeId</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore ()</title>
 <programlisting>int         xmlSecKeysMngrAdoptKeysStore    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+                                             <link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -316,7 +170,7 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore ()</title>
-<programlisting><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> xmlSecKeysMngrGetKeysStore
+<programlisting><link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> xmlSecKeysMngrGetKeysStore
                                             (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 
@@ -383,7 +237,7 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+Reads the &lt;dsig:KeyInfo/&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -392,7 +246,7 @@ Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extra
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+<entry> 		the pointer to &lt;dsig:KeyInfo/&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
 <entry>
@@ -404,9 +258,9 @@ an error occurs.
 <refsect2>
 <title><anchor id="xmlSecKeysMngr">struct xmlSecKeysMngr</title>
 <programlisting>struct xmlSecKeysMngr {	
-    xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
-    xmlSecPtrListPtr		storesList;	/* list of other key data storages */
-    xmlSecGetKeyCallback	getKey;		/* the callback used to read &lt;dsig:KeyInfo&gt; node. */
+    xmlSecKeyStorePtr		keysStore;	
+    xmlSecPtrListPtr		storesList;	
+    xmlSecGetKeyCallback	getKey;		
 };
 </programlisting>
 <para>
@@ -419,18 +273,18 @@ The keys manager structure.</para>
 <colspec colwidth="8*">
 <tbody>
 <row>
-<entry><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <structfield>keysStore</structfield></entry>
-<entry>
+<entry><link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> <structfield>keysStore</structfield></entry>
+<entry>			the key store (list of keys known to keys manager).
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>storesList</structfield></entry>
-<entry>
+<entry>			the list of key data stores known to keys manager.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link> <structfield>getKey</structfield></entry>
-<entry> the callback used to read &lt;dsig:KeyInfo&gt; node.
+<entry> 			the callback used to read &lt;dsig:KeyInfo/&gt; node.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -455,6 +309,414 @@ Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extra
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
 an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStore">struct xmlSecKeyStore</title>
+<programlisting>struct xmlSecKeyStore {
+    xmlSecKeyStoreId			id;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};
+</programlisting>
+<para>
+The keys store.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <structfield>id</structfield></entry>
+<entry> 		the store id (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link>).
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate ()</title>
+<programlisting><link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> xmlSecKeyStoreCreate      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);</programlisting>
+<para>
+Creates new store of the specified type <parameter>id</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the store id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKeyStore">xmlSecKeyStore</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy ()</title>
+<programlisting>void        xmlSecKeyStoreDestroy           (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);</programlisting>
+<para>
+Destroys the store and frees all allocated memory.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> the pointer to the <link linkend="xmlSecKeyStore">xmlSecKeyStore</link> structure.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFind">xmlSecKeyStoreFind ()</title>
+<programlisting>int         xmlSecKeyStoreFind              (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName()</title>
+<programlisting>#define     xmlSecKeyStoreGetName(store)</programlisting>
+<para>
+Macro. Returns key store name.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the pointer to store.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreIsValid">xmlSecKeyStoreIsValid()</title>
+<programlisting>#define     xmlSecKeyStoreIsValid(store)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>store</parameter> is not NULL and <parameter>store</parameter>-&gt;id is not NULL
+or 0 otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the pointer to store.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId()</title>
+<programlisting>#define     xmlSecKeyStoreCheckId(store, storeId)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</parameter>'s id is equal to <parameter>storeId</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the pointer to store.
+</entry></row>
+<row><entry align="right"><parameter>storeId</parameter>&nbsp;:</entry>
+<entry> 		the store Id.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreCheckSize">xmlSecKeyStoreCheckSize()</title>
+<programlisting>#define     xmlSecKeyStoreCheckSize(store, size)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>stores</parameter>'s object has at least <parameter>size</parameter> bytes.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the pointer to store.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> 		the expected size.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</title>
+<programlisting>#define xmlSecKeyStoreIdUnknown 			NULL
+</programlisting>
+<para>
+The "unknown" id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreInitializeMethod">xmlSecKeyStoreInitializeMethod ()</title>
+<programlisting>int         (*xmlSecKeyStoreInitializeMethod)
+                                            (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);</programlisting>
+<para>
+Keys store specific initialization method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the store.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFinalizeMethod">xmlSecKeyStoreFinalizeMethod ()</title>
+<programlisting>void        (*xmlSecKeyStoreFinalizeMethod) (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);</programlisting>
+<para>
+Keys store specific finalization (destroy) method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the store.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFindMethod">xmlSecKeyStoreFindMethod ()</title>
+<programlisting>int         (*xmlSecKeyStoreFindMethod)     (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Keys store specific find method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the store.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> 		the destination key.
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>		the desired key name.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> 	the pointer to key info context.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreKlass">struct xmlSecKeyStoreKlass</title>
+<programlisting>struct xmlSecKeyStoreKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
+    /* data */
+    const xmlChar*			name;    
+        
+    /* constructors/destructor */
+    xmlSecKeyStoreInitializeMethod	initialize;
+    xmlSecKeyStoreFinalizeMethod	finalize;
+    xmlSecKeyStoreFindMethod		find;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreKlassGetName">xmlSecKeyStoreKlassGetName()</title>
+<programlisting>#define     xmlSecKeyStoreKlassGetName(klass)</programlisting>
+<para>
+Macro. Returns store klass name.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
+<entry>		the pointer to store klass.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</title>
+<programlisting>#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
+</programlisting>
+<para>
+A simple keys store klass id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecSimpleKeysStoreGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysStoreFindKey   (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const char *uri,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

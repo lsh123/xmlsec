@@ -39,7 +39,7 @@
 <title><anchor id="xmlSecTransformMemBufId">xmlSecTransformMemBufId</title>
 <programlisting>#define     xmlSecTransformMemBufId</programlisting>
 <para>
-The Memory Buffer transform id.</para>
+The Memory Buffer transform klass.</para>
 <para>
 
 </para></refsect2>

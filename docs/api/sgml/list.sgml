@@ -15,7 +15,6 @@
 
 
 typedef     <link linkend="xmlSecPtr">xmlSecPtr</link>;
-typedef     <link linkend="xmlSecPtrListId">xmlSecPtrListId</link>;
 struct      <link linkend="xmlSecPtrList">xmlSecPtrList</link>;
 void        <link linkend="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode</link>
                                             (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
@@ -78,12 +77,7 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <programlisting>typedef void*	xmlSecPtr;
 </programlisting>
 <para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListId">xmlSecPtrListId</title>
-<programlisting>typedef const struct _xmlSecPtrListKlass	xmlSecPtrListKlass, *xmlSecPtrListId;
-</programlisting>
+Void pointer.</para>
 <para>
 
 </para></refsect2>
@@ -99,8 +93,40 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 };
 </programlisting>
 <para>
+The pointers list.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <structfield>id</structfield></entry>
+<entry>				the list items description.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtr">xmlSecPtr</link> *<structfield>data</structfield></entry>
+<entry>			the list data.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>use</structfield></entry>
+<entry>			the current list size.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>max</structfield></entry>
+<entry>			the max (allocated) list size.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecAllocMode">xmlSecAllocMode</link> <structfield>allocMode</structfield></entry>
+<entry>			the memory allocation mode.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode ()</title>
 <programlisting>void        xmlSecPtrListSetDefaultAllocMode
@@ -388,6 +414,8 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <title><anchor id="xmlSecPtrListGetName">xmlSecPtrListGetName()</title>
 <programlisting>#define     xmlSecPtrListGetName(list)</programlisting>
 <para>
+Macro. Returns lists's name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -395,9 +423,7 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> 		the ponter to list.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -414,7 +440,7 @@ or 0 otherwise.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry> the pointer to list.
+<entry> 		the pointer to list.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -430,10 +456,10 @@ Macro. Returns 1 if <parameter>list</parameter> is valid and <parameter>list</pa
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry> the pointer to list.
+<entry> 		the pointer to list.
 </entry></row>
 <row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
-<entry> the list Id.
+<entry> 		the list Id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -449,23 +475,7 @@ The "unknown" id.</para>
 <title><anchor id="xmlSecPtrDuplicateItemMethod">xmlSecPtrDuplicateItemMethod ()</title>
 <programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   (*xmlSecPtrDuplicateItemMethod) (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ptr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod ()</title>
-<programlisting>void        (*xmlSecPtrDestroyItemMethod)   (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);</programlisting>
+Duplicates item <parameter>ptr</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -474,9 +484,25 @@ The "unknown" id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>ptr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the poinetr to list item.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to new item copy or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod ()</title>
+<programlisting>void        (*xmlSecPtrDestroyItemMethod)   (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);</programlisting>
+<para>
+Destroys list item <parameter>ptr</parameter>.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ptr</parameter>&nbsp;:</entry>
+<entry>		the poinetr to list item.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -484,6 +510,8 @@ The "unknown" id.</para>
 <programlisting>void        (*xmlSecPtrDebugDumpItemMethod) (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
+Prints debug information about <parameter>item</parameter> to <parameter>output</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -491,12 +519,10 @@ The "unknown" id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>ptr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the poinetr to list item.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -510,11 +536,22 @@ The "unknown" id.</para>
 };
 </programlisting>
 <para>
+<parameter>name</parameter>:		the list klass name.
+<parameter>duplicateItem</parameter>:	the duplciate item method.
+<parameter>destroyItem</parameter>:	the destroy item method.
+<parameter>debugDumpItem</parameter>:	the debug dump item method.
+<parameter>debugXmlDumpItem</parameter>:	the debug dump item in xml format method.
+</para>
+<para>
+List klass.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName()</title>
 <programlisting>#define     xmlSecPtrListKlassGetName(klass)</programlisting>
+<para>
+Macro. Returns the list klass name.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -531,6 +568,8 @@ The "unknown" id.</para>
 <refsect2>
 <title><anchor id="xmlSecStaticObjectListId">xmlSecStaticObjectListId</title>
 <programlisting>#define     xmlSecStaticObjectListId</programlisting>
+<para>
+Static objects klass (no destroy or duplicate methods).</para>
 <para>
 
 </para></refsect2>
@@ -553,6 +592,8 @@ The "unknown" id.</para>
 <refsect2>
 <title><anchor id="xmlSecStringListId">xmlSecStringListId</title>
 <programlisting>#define     xmlSecStringListId</programlisting>
+<para>
+Strings list klass.</para>
 <para>
 
 </para></refsect2>

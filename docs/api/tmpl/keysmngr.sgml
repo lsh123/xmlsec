@@ -14,64 +14,6 @@ The simple keys manager implementation.
 
 </para>
 
-<!-- ##### MACRO xmlSecSimpleKeysStoreId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreAdoptKey ##### -->
-<para>
-
-</para>
-
-@store: 
-@key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreFindKey ##### -->
-<para>
-
-</para>
-
-@store: 
-@name: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreLoad ##### -->
-<para>
-
-</para>
-
-@store: 
-@uri: 
-@keysMngr: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreSave ##### -->
-<para>
-
-</para>
-
-@store: 
-@filename: 
-@type: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecKeysMngrCreate ##### -->
 <para>
 
@@ -96,20 +38,6 @@ The simple keys manager implementation.
 @mngr: 
 @key: 
 @name: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeysMngrFindKeyData ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@storeId: 
-@key: 
-@params: 
-@paramsSize: 
 @keyInfoCtx: 
 @Returns: 
 
@@ -192,5 +120,193 @@ The simple keys manager implementation.
 @keyId: 
 @keyType: 
 @keyUsage: 
+
+
+<!-- ##### STRUCT xmlSecKeyStore ##### -->
+<para>
+
+</para>
+
+@id: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### FUNCTION xmlSecKeyStoreCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyStoreDestroy ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### FUNCTION xmlSecKeyStoreFind ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyStoreGetName ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### MACRO xmlSecKeyStoreIsValid ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### MACRO xmlSecKeyStoreCheckId ##### -->
+<para>
+
+</para>
+
+@store: 
+@storeId: 
+
+
+<!-- ##### MACRO xmlSecKeyStoreCheckSize ##### -->
+<para>
+
+</para>
+
+@store: 
+@size: 
+
+
+<!-- ##### MACRO xmlSecKeyStoreIdUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyStoreInitializeMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyStoreFinalizeMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyStoreFindMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecKeyStoreKlass ##### -->
+<para>
+
+</para>
+
+@klassSize: 
+@objSize: 
+@name: 
+@initialize: 
+@finalize: 
+@find: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### MACRO xmlSecKeyStoreKlassGetName ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO xmlSecSimpleKeysStoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreAdoptKey ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreFindKey ##### -->
+<para>
+
+</para>
+
+@store: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreLoad ##### -->
+<para>
+
+</para>
+
+@store: 
+@uri: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreSave ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@type: 
+@Returns: 
 
 

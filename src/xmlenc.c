@@ -228,15 +228,15 @@ xmlSecEncDataDestroy(xmlNodePtr encNode) {
  */
 xmlNodePtr
 xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethod) {
-    xmlNodePtr encMethod;
+    xmlNodePtr encMethodNode;
     xmlNodePtr tmp;
     int ret;
 
     xmlSecAssert2(encNode != NULL, NULL);
-    xmlSecAssert2(encMethodId != NULL, NULL);
+    xmlSecAssert2(encMethod != NULL, NULL);
     
-    encMethod = xmlSecFindChild(encNode, BAD_CAST "EncryptionMethod", xmlSecEncNs);
-    if(encMethod != NULL) {
+    encMethodNode = xmlSecFindChild(encNode, BAD_CAST "EncryptionMethod", xmlSecEncNs);
+    if(encMethodNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
 		    "EncryptionMethod");
@@ -245,27 +245,27 @@ xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethod) {
     
     tmp = xmlSecGetNextElementNode(encNode->children);
     if(tmp == NULL) {
-	encMethod = xmlSecAddChild(encNode,  BAD_CAST "EncryptionMethod", xmlSecEncNs);
+	encMethodNode = xmlSecAddChild(encNode,  BAD_CAST "EncryptionMethod", xmlSecEncNs);
     } else {
-	encMethod = xmlSecAddPrevSibling(tmp,  BAD_CAST "EncryptionMethod", xmlSecEncNs);
+	encMethodNode = xmlSecAddPrevSibling(tmp,  BAD_CAST "EncryptionMethod", xmlSecEncNs);
     }    
-    if(encMethod == NULL) {
+    if(encMethodNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecAddChild(EncryptionMethod)");
 	return(NULL);	
     }
     
-    ret = xmlSecTransformNodeWrite(encMethod, encMethodId);
+    ret = xmlSecTransformNodeWrite(encMethodNode, encMethod);
     if(ret < 0){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformNodeWrite(encMethod) - %d", ret);
-	xmlUnlinkNode(encMethod);
-	xmlFreeNode(encMethod);
+		    "xmlSecTransformNodeWrite(encMethodNode) - %d", ret);
+	xmlUnlinkNode(encMethodNode);
+	xmlFreeNode(encMethodNode);
 	return(NULL);	
     }
-    return(encMethod);
+    return(encMethodNode);
 }
 
 /** 

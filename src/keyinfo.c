@@ -266,6 +266,14 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(keyInfoCtx->allowedKeyDataIds != NULL) {
 	xmlSecPtrListDestroy(keyInfoCtx->allowedKeyDataIds);
     }
+    if(keyInfoCtx->transformCtx != NULL) {
+	xmlSecTransformCtxDestroy(keyInfoCtx->transformCtx);
+    }
+#ifndef XMLSEC_NO_XMLENC
+    if(keyInfoCtx->encCtx != NULL) {
+	xmlSecEncCtxDestroy(keyInfoCtx->encCtx);
+    }
+#endif /* XMLSEC_NO_XMLENC */
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
 }
 
@@ -292,8 +300,11 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     }
     
     dst->retrievalsLevel= src->retrievalsLevel;
+    /* TODO: copy transormCtx */
+    
     dst->encKeysLevel	= src->encKeysLevel;
-
+    /* TODO: copy encCtx */
+    
     dst->failIfCertNotFound 	= src->failIfCertNotFound;
     dst->certsVerificationTime	= src->certsVerificationTime;
     dst->certsVerificationDepth	= src->certsVerificationDepth;

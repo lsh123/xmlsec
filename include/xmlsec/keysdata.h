@@ -16,25 +16,14 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/list.h>
 
 /**
  * Forward declarations
  */
 typedef const struct _xmlSecKeyDataKlass 	xmlSecKeyDataKlass, *xmlSecKeyDataId; 
-typedef struct _xmlSecKeyData 			xmlSecKeyData, *xmlSecKeyDataPtr; 
-
 typedef const struct _xmlSecKeyDataStoreKlass 	xmlSecKeyDataStoreKlass, *xmlSecKeyDataStoreId; 
-typedef struct _xmlSecKeyDataStore		xmlSecKeyDataStore, *xmlSecKeyDataStorePtr; 
-
-typedef struct _xmlSecKeyInfoCtx  		xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr; 
-
-
-/**
- * TODO: do we need these?
- */
 typedef struct _xmlSecKeyDataList 		xmlSecKeyDataList, *xmlSecKeyDataListPtr; 
-typedef struct _xmlSecKey 			xmlSecKey, *xmlSecKeyPtr; 
-typedef struct _xmlSecKeysMngr  		xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
 
 
 /**************************************************************************

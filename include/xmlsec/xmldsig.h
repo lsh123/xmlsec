@@ -23,8 +23,6 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/keyinfo.h>
 
-
-typedef struct _xmlSecDSigCtx xmlSecDSigCtx, *xmlSecDSigCtxPtr; 
 typedef struct _xmlSecDSigResult xmlSecDSigResult, *xmlSecDSigResultPtr;
 typedef struct _xmlSecReferenceResult xmlSecReferenceResult, *xmlSecReferenceResultPtr;
 

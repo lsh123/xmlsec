@@ -49,13 +49,15 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
-#include <xmlsec/membuf.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/keysdata.h>
+#include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/io.h>
-#include <xmlsec/parser.h>
 #include <xmlsec/base64.h>
+#include <xmlsec/io.h>
+#include <xmlsec/membuf.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
 /*

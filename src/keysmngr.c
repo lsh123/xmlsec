@@ -346,12 +346,6 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	return(-1);
     }
     
-    memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
-    keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
-    keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;
-    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
-    keyInfoCtx.retrievalsLevel 	= 0;
-    keyInfoCtx.encKeysLevel 	= 1;
     
     cur = xmlSecGetNextElementNode(root->children);
     while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs)) {  
@@ -366,6 +360,24 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	    return(-1);
 	}
 
+	ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			"xmlSecKeyInfoCtxInitialize",
+			XMLSEC_ERRORS_R_INVALID_NODE,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecKeyDestroy(key);
+	    xmlFreeDoc(doc);
+	    return(-1);
+	}
+
+        keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
+	keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;
+	keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
+	keyInfoCtx.retrievalsLevel 	= 0;
+	keyInfoCtx.encKeysLevel 	= 1;
+
 	ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -373,10 +385,12 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 			"xmlSecKeyInfoNodeRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
 	    xmlSecKeyDestroy(key);
 	    xmlFreeDoc(doc);
 	    return(-1);
 	}
+	xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
 	
 	if(xmlSecKeyIsValid(key)) {
     	    ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
@@ -461,13 +475,6 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     }
     
     
-    memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
-    keyInfoCtx.keyReq.keyId 	= xmlSecKeyDataIdUnknown;
-    keyInfoCtx.keyReq.keyType	= type;
-    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
-    keyInfoCtx.retrievalsLevel 	= 0;
-    keyInfoCtx.encKeysLevel 	= 1;
-
     list = xmlSecSimpleKeysStoreGetList(store);
     if(list != NULL) {
 	xmlSecPtrListPtr idsList;
@@ -532,6 +539,23 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 		}
 	    }
 
+    	    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    	    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			    "xmlSecKeyInfoCtxInitialize",
+			    XMLSEC_ERRORS_R_INVALID_NODE,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlFreeDoc(doc);
+		return(-1);
+	    }
+
+    	    keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
+	    keyInfoCtx.keyReq.keyType	= type;
+	    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
+	    keyInfoCtx.retrievalsLevel 	= 0;
+	    keyInfoCtx.encKeysLevel 	= 1;
+
 	    /* finally write key in the node */
 	    ret = xmlSecKeyInfoNodeWrite(cur, key, &keyInfoCtx);
 	    if(ret < 0) {
@@ -540,9 +564,11 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 			    "xmlSecKeyInfoNodeWrite",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
 		xmlFreeDoc(doc); 
 		return(-1);
 	    }		
+	    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
 	}    
     }
     

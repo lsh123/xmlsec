@@ -19,15 +19,14 @@ extern "C" {
 #include <libxml/xpath.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/nodeset.h>
+#include <xmlsec/keyinfo.h>
 
 
 #define XMLSEC_TRANSFORM_BINARY_CHUNK			64
 
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
-typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
-typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
 typedef unsigned int					xmlSecTransformUsage;
 
 #include <xmlsec/transforms-old.h>

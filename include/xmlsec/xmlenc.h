@@ -12,7 +12,7 @@
 #define __XMLSEC_XMLENC_H__    
 
 #ifndef XMLSEC_NO_XMLENC
-
+	
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
@@ -25,9 +25,6 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/transforms.h>
-
-typedef struct _xmlSecEncCtx 	xmlSecEncCtx, *xmlSecEncCtxPtr; 
-
 
 /** 
  * xmlSecEncCtx:

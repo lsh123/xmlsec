@@ -25,23 +25,24 @@ Library users is very difficult. There are many political and technical
 reasons why particular crypto engine could not be used in particular
 organization. The "OpenSSL and only OpenSSL" restriction was a serious
 limitation for the library and the major goal of the new XML Security
-Library 0.1.X series is to provide an easy way to use any crypto
-engine. Of course, performance is still a P0 requirement.<br>
+Library 0.1.X series is to provide an easy way to use integration with
+crypto engine. Of course, performance is still a P0 requirement.<br>
 <h2>1. Processing model.</h2>
 XML Security Library performs signature or encryption by processing
 input xml or binary data and a template that specifies a signature or
 encryption skeleton: the transforms, algorithms, the key selection
 process. A template has the same structure as the desired result but
 some of the nodes are empty. XML Security Library gets the key for
-signature/encryption  from keys managers using the information from the
-template,  does necessary computations and puts the results in the
-template. Signature or encryption context controls the whole process
-and stores the required temporary data.<br>
+signature/encryption from keys managers using the information from the
+template, does necessary computations and puts the results in the
+template. Signature or encryption context controls the whole process and
+stores the required temporary data.<br>
 <br>
 <br>
 <div style="text-align: center;"><img src="sign-enc-model.png"
  title="Signature/encryption processing model"
  alt="Signature/encryption processing model"> </div>
+<br>
 Since the template is just an XML file, it might be created in advance
 and saved in a file. It's also possible for application to create
 templates without using XML Security Library functions. Also in some
@@ -55,7 +56,7 @@ encrypted document:<br>
  title="Verification/decryption processing model"
  alt="Verification/decryption processing model"> </div>
 <br>
-<h2>2. Library structure.</h2>
+<h2>2. Library structure and dependencies.</h2>
 In order to provide the an ability to use different crypto engines, the
 XML Security Library was splitted in two parts: core library (xmlsec)
 and crypto library (xmlsec-openssl, xmlsec-gnutls, xmlsec-nss, ...):<br>
@@ -63,11 +64,10 @@ and crypto library (xmlsec-openssl, xmlsec-gnutls, xmlsec-nss, ...):<br>
 <br>
 <div style="text-align: center;"><img src="structure.png"
  title="XML Security Library Structure"
- alt="XML Security Library Structure">
-</div>
+ alt="XML Security Library Structure"> </div>
 <br>
 <br>
-The core library has no dependency on any crypto engine and provides
+The core library has no dependency on any crypto library and provides
 implementation of all the engines as well as support for all the
 non-crypto transforms (xml parser, c14n transforms, xpath and xslt
 transforms,...). The XML Security Crypto library provides
@@ -81,14 +81,13 @@ XML Digital Signature and XML Encryption standards are very flexible
 and provide an XML developer many different ways to sign or encrypt any
 part (or even parts) of an XML document. The key for such great
 flexibility is the transforms model defined by these specifications.
-They define transform as a method of pre-processing binary or XML data
-before digest or signature calculation/verification. XML Security
-Library extends this definition and names "transform" any operation
-performed on the data: reading data from an URI, xml parsing, xml
-transformation, calculation digest, encrypting or decrypting, and so
-on. ach transform provides at least one of the following callbacks:
-"push binary data", "push xml data", "pop binary data" or "pop xml
-data":<br>
+Specifications define transform as a method of pre-processing binary or
+XML data before digest or signature calculation/verification. XML
+Security Library extends this definition and names "transform" any
+operation performed on the data: reading data from an URI, xml parsing,
+xml transformation, calculation digest, encrypting or decrypting. Each
+transform provides at least one of the following callbacks: "push
+binary data", "push xml data", "pop binary data" or "pop xml data":<br>
 <br>
 <br>
 <div style="text-align: center;"> <img src="transform.png"
@@ -97,10 +96,10 @@ data":<br>
 <br>
 In order to simplify transforms development, additional "execute"
 callback was added. This callback updates internal transform buffers and
-is used by the "default" xml/binary push and pop callbacks. For
-example, most of the crypto transforms could be implemented by just
-implementing one "execute" callback. However, in some cases using
-push/pop callbacks is more efficient.<br>
+is used by the "default" xml/binary push and pop callbacks. For example,
+most of the crypto transforms could be implemented by just implementing
+one "execute" callback. However, in some cases using push/pop callbacks
+is more efficient.<br>
 When necessary, XML Security Library constructs a transforms chain as
 specified in the template or document and processes data by "pushing" or
 "popping" through the chain. For example, then binary data chunk is
@@ -120,27 +119,26 @@ necessary. Custom transforms could be added by the crypto plugin or
 application at any time.
 <h2>3. Keys and keys data. </h2>
 A key in XML Security Library is a representation of the
-&lt;dsig:KeyInfo/&gt; element and consist of several keys data objects: <br>
+&lt;dsig:KeyInfo/&gt; element and consist of several key data objects.
+The "value" key data usually contains raw key material (or handlers to
+key material) required to execute particular crypto transform. Other key
+data objects may contain any additional information about the key. All
+the key data objects in the key are associated with the same key
+material. For example, if a DSA key material has both an X509
+certificate and a PGP data associated with it then such a key can have a
+DSA key "value" and two key data objects for X509 certificate and PGP
+key data.<br>
 <br>
 <br>
 <div style="text-align: center;"> <img src="key.png" title="Key"
  alt="Key"> </div>
 <br>
-<br>
-The "value" key data usually contains raw key material (or handlers to
-key material) required to execute particular crypto transform. Other key
-data objects may contain any additional information about the key. All
-the key data objects in the key are associated with the same key
-material. For example, if a DSA key material might have both X509
-certificate and a PGP data associated with it then such a key can have a
-DSA key "value" and two key data objects for X509 certificate and PGP
-key data. <br>
+  <br>
 XML Security Library has several "invisible" key data classes. These
 classes never show up in the keys data list of a key but are used for
-&lt;dsig:KeyInfo/&gt; chioldren elements processing
-(&lt;dsig:KeyName/&gt;, &lt;dsig:EncryptedKey/&gt;, ...). As with
-transforms, application might add any new key data processing handlers
-or replace the default ones.
+&lt;dsig:KeyInfo/&gt; children processing (&lt;dsig:KeyName/&gt;,
+&lt;dsig:EncryptedKey/&gt;, ...). As with transforms, application might
+add any new key data objects or replace the default ones.
 <h2>4. Keys manager and keys data stores.</h2>
 Processing some of the key data objects require additional information
 which is global accross the application (or in the particular area of
@@ -158,16 +156,18 @@ Keys manager has a special "keys store" which lists the keys known to
 the application. This "keys store" is used by XML Security Library to
 lookup keys by name, type and crypto algorithm (for example, during
 &lt;dsig:KeyName/&gt; processing). The XML Security Library provides
-default list based implementation of a simple keys store. The
-application can replace it with any other keys store (for example,
-based on a keys SQL database).<br>
-Usually keys manager is initialized once at the application startup and
-later is used by XML Security library routines in "read-only" mode. If
+default "flat list" based implementation of a simple keys store. The
+application can replace it with any other keys store (for example, based
+on an SQL database).<br>
+Keys manager is the only object in XML Security Library which is
+supposed to be shared by many different operations. Usually keys
+manager is initialized once at the application startup and later is
+used by XML Security library routines in "read-only" mode. If
 application or crypto functions need to modify any of the key data
-stores then proper synchronization must be implemented. In the same
-time, application can create a new keys manager each time it needs to
-perform XML signature, verification, encryption or decryption.<br>
-<br>
+stores inside keys manager then proper synchronization must be
+implemented. In the same time, application can create a new keys
+manager each time it needs to perform XML signature, verification,
+encryption or decryption.<br>
 <h2>5. Data processing contexts.</h2>
 Application may control XML Security Library engines behaiviour using
 several context objects. New context objects are created for each

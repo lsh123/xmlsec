@@ -1,3 +1,8 @@
+Mon Oct 13 19:43:52 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html docs/news.html
+	include/xmlsec/version.h: new 1.2.1 release
+
 Mon Oct 13 19:29:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/Makefile.am: added support for XMLSEC_DOCDIR

@@ -40,8 +40,14 @@ struct _xmlSecAppCmdLineParam {
     const char*			help;
     xmlSecAppCmdLineParamType	type;
     int				flags;
-    xmlSecAppCmdLineValuePtr	values;
+    xmlSecAppCmdLineValuePtr	value;
 };
+
+int		xmlSecAppCmdLineParamIsSet		(xmlSecAppCmdLineParamPtr param);
+int		xmlSecAppCmdLineParamGetInt		(xmlSecAppCmdLineParamPtr param,
+							 int def);
+const char*	xmlSecAppCmdLineParamGetString		(xmlSecAppCmdLineParamPtr param,
+							 const char* def);
 
 int		xmlSecAppCmdLineParamsListParse		(xmlSecAppCmdLineParamPtr* params,
 							 xmlSecAppCmdLineParamTopic topcis,

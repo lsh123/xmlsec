@@ -32,6 +32,29 @@ static int			xmlSecAppCmdLineParamRead	(xmlSecAppCmdLineParamPtr param,
 static int  			xmlSecAppCmdLineTimeParamRead	(const char* str, 
 								 time_t* t);
 
+int
+xmlSecAppCmdLineParamIsSet(xmlSecAppCmdLineParamPtr param) {
+    return(((param != NULL) && (param->value != NULL)) ? 1 : 0);
+}
+
+int 
+xmlSecAppCmdLineParamGetInt(xmlSecAppCmdLineParamPtr param, int def) {
+    if(param->type != xmlSecAppCmdLineParamTypeNumber) {
+	fprintf(stderr, "Error: parameter \"%s\" is not integer.\n", param->fullName);
+	return(def);
+    }
+    return((param->value != NULL) ? param->value->intValue : def);
+}
+
+const char* 
+xmlSecAppCmdLineParamGetString(xmlSecAppCmdLineParamPtr param, const char* def) {
+    if(param->type != xmlSecAppCmdLineParamTypeString) {
+	fprintf(stderr, "Error: parameter \"%s\" is not string.\n", param->fullName);
+	return(def);
+    }
+    return((param->value != NULL) ? param->value->strValue : def);
+}
+
 int 
 xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
 				xmlSecAppCmdLineParamTopic topics,
@@ -68,9 +91,9 @@ xmlSecAppCmdLineParamsListClean(xmlSecAppCmdLineParamPtr* params) {
     assert(params != NULL);
     
     for(i = 0; params[i] != NULL; ++i) {
-	while(params[i]->values != NULL) {
-	    tmp = params[i]->values;
-	    params[i]->values = params[i]->values->next;
+	while(params[i]->value != NULL) {
+	    tmp = params[i]->value;
+	    params[i]->value = params[i]->value->next;
 	    xmlSecAppCmdLineValueDestroy(tmp);
 	}
     }
@@ -178,11 +201,11 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     
     /* first find the previous value in the list */
     if((param->flags & xmlSecAppCmdLineParamFlagMultipleValues) != 0) {
-	prev = param->values; 
+	prev = param->value; 
 	while((prev != NULL) && (prev->next != NULL)) {
 	    prev = prev->next; 
 	}
-    } else if(param->values != NULL) {
+    } else if(param->value != NULL) {
 	fprintf(stderr, "Error: only one parameter \"%s\" is allowed.\n", argv[pos]);
 	return(-1);
     }
@@ -197,7 +220,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 	assert(prev->next == NULL);
 	prev->next = value;
     } else {
-	param->values = value;
+	param->value = value;
     }
         
     /* if we can have a string value after the name, parse it */

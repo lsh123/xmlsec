@@ -107,7 +107,7 @@ static const char helpDecrypt[] =
  *
  ***************************************************************/
 static xmlSecAppCmdLineParam helpParam = { 
-    xmlSecAppCmdLineTopicGeneral | xmlSecAppCmdLineTopicVersion,
+    xmlSecAppCmdLineTopicGeneral,
     "--help",
     "-h",
     "--help"
@@ -568,6 +568,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 
 typedef enum {
     xmlSecAppCommandUnknown = 0,
+    xmlSecAppCommandHelp,
     xmlSecAppCommandVersion,
     xmlSecAppCommandKeys,
     xmlSecAppCommandSign,
@@ -576,65 +577,131 @@ typedef enum {
     xmlSecAppCommandDecrypt
 } xmlSecAppCommand;
 
-static xmlSecAppCommand xmlSecAppParseCommand	(const char* cmd, xmlSecAppCmdLineParamTopic* topics);
-static void 		xmlSecAppPrintHelp	(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics);
+static xmlSecAppCommand xmlSecAppParseCommand	(const char* cmd, 
+						 xmlSecAppCmdLineParamTopic* topics,
+						 xmlSecAppCommand* subCommand);
+/* help */
+static void 		xmlSecAppPrintHelp	(xmlSecAppCommand command, 
+						 xmlSecAppCmdLineParamTopic topics);
 #define			xmlSecAppPrintUsage()	xmlSecAppPrintHelp(xmlSecAppCommandUnknown, 0)
 
+/* Init/Shutdown */
+static int		xmlSecAppInit			(void);
+static void		xmlSecAppShutdown		(void);
+static int		xmlSecAppExecute		(const char* filename);
+
+int repeats = 1;
 int main(int argc, const char **argv) {
     xmlSecAppCmdLineParamTopic cmdLineTopics;
-    xmlSecAppCommand command;
-    const char* cmd;
-    int pos;
-    int ret;
+    xmlSecAppCommand command, subCommand;
+    int pos, i;
+    int res = 1;
             
-    /* Read the command (first argument) */
-    if((argc < 2) || (strcmp(argv[1], "help") == 0) || (strcmp(argv[1], "--help") == 0)) {
+    /* read the command (first argument) */
+    if(argc < 2) {
 	xmlSecAppPrintUsage();
-	goto done;
-    } else if(strncmp(argv[1], "help-", 5) == 0) { 
-	cmd = argv[1] + 5;
-        command = xmlSecAppParseCommand(cmd, &cmdLineTopics);
-	if(command == xmlSecAppCommandUnknown) {
-	    fprintf(stdout, "Error: unknown command \"%s\"\n", cmd);
-	    xmlSecAppPrintUsage();
-	    return(-1);
-	}
-	xmlSecAppPrintHelp(command, cmdLineTopics);
-	goto done;
-    } else {
-	cmd = argv[1];
-	command = xmlSecAppParseCommand(cmd, &cmdLineTopics);
-	if(command == xmlSecAppCommandUnknown) {
-	    fprintf(stdout, "Error: unknown command \"%s\"\n", cmd);
-	    xmlSecAppPrintUsage();
-	    goto done;
-	}
+	goto fail;
     }
-
-    ret = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, argv, argc, 2);
-    if(ret < 0) {
+    command = xmlSecAppParseCommand(argv[1], &cmdLineTopics, &subCommand);
+    if(command == xmlSecAppCommandUnknown) {
+	fprintf(stdout, "Error: unknown command \"%s\"\n", argv[1]);
+	xmlSecAppPrintUsage();
+	goto fail;
+    }
+    
+    /* do as much as we can w/o initialization */
+    if(command == xmlSecAppCommandHelp) {
+	xmlSecAppPrintHelp(subCommand, cmdLineTopics);
+	goto success;
+    } else if(command == xmlSecAppCommandHelp) {
+	fprintf(stdout, "xmlsec %s-%s\n", XMLSEC_VERSION, XMLSEC_CRYPTO);
+	fprintf(stderr, "\n");
+	fprintf(stderr, "%s\n", bugs);
+	fprintf(stderr, "%s\n", copyright);    
+	goto success;
+    }
+    
+    /* parse command line */
+    pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, argv, argc, 2);
+    if(pos < 0) {
 	fprintf(stdout, "Error: invalid parameters\n");
 	xmlSecAppPrintUsage();
-	goto done;
+	goto fail;
     }
-    pos = ret;
     
-    if(helpParam.values != NULL) {
+    /* is it a help request? */    
+    if(xmlSecAppCmdLineParamIsSet(&helpParam)) {
 	xmlSecAppPrintHelp(command, cmdLineTopics);
-	goto done;
+	goto success;
+    }
+    
+    /* we need to have some files at the end */
+    if(pos >= argc) {
+	fprintf(stdout, "Error: <file> parameter is requried for this command\n");
+	xmlSecAppPrintUsage();
+	goto fail;
+    }
+    
+    /* now init the xmlsec and all other libs */
+    if(xmlSecAppInit() < 0) {
+	fprintf(stdout, "Error: initialization failed\n");
+	xmlSecAppPrintUsage();
+	goto fail;
+    }    
+    
+    /* get the "repeats" number */
+    if(xmlSecAppCmdLineParamIsSet(&repeatParam) && 
+       (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
+       
+	repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
     }
 
-done:
+    /* execute requested number of times */
+    for(; repeats > 0; --repeats) {
+	for(i = pos; i < argc; ++i) {
+	    /* process file */
+	    if(xmlSecAppExecute(argv[i]) < 0) {
+		fprintf(stdout, "Error: failed to process file \"%s\"\n", argv[i]);
+		xmlSecAppPrintUsage();
+		goto fail;
+	    }
+	}
+    }
+
+    goto success;
+success:
+    res = 0;
+fail:
+    xmlSecAppShutdown();
     xmlSecAppCmdLineParamsListClean(parameters);
-    return(0);
+    return(res);
 }
 
 static xmlSecAppCommand 
-xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics) {
+xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics, xmlSecAppCommand* subCommand) {
+    if(subCommand != NULL) {
+	(*subCommand) = xmlSecAppCommandUnknown;
+    }
+
     if((cmd == NULL) || (cmdLineTopics == NULL)) {
 	return(xmlSecAppCommandUnknown);
     } else 
+
+    if((strcmp(cmd, "help") == 0) || (strcmp(cmd, "--help") == 0)) {
+	(*cmdLineTopics) = 0;
+	return(xmlSecAppCommandHelp);
+    } else 
     
+    if((strncmp(cmd, "help-", 5) == 0) || (strncmp(cmd, "--help-", 7) == 0)) {	 
+	cmd = (cmd[0] == '-') ? cmd + 7 : cmd + 5;
+	if(subCommand) {
+	    (*subCommand) = xmlSecAppParseCommand(cmd, cmdLineTopics, NULL);
+	} else {
+	    (*cmdLineTopics) = 0;
+	}
+	return(xmlSecAppCommandHelp);
+    } else 
+
     if((strcmp(cmd, "version") == 0) || (strcmp(cmd, "--version") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicVersion;
 	return(xmlSecAppCommandVersion);
@@ -676,7 +743,7 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 			xmlSecAppCmdLineTopicX509Certs;
 	return(xmlSecAppCommandEncrypt);
     } else 
-    
+
     if((strcmp(cmd, "decrypt") == 0) || (strcmp(cmd, "--decrypt") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
 			xmlSecAppCmdLineTopicEncCommon |
@@ -697,6 +764,7 @@ static void
 xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) {
     switch(command) {
     case xmlSecAppCommandUnknown:
+    case xmlSecAppCommandHelp:
 	fprintf(stdout, "%s\n", helpCommands);
         break;
     case xmlSecAppCommandVersion:
@@ -726,6 +794,85 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     fprintf(stdout, "%s\n", bugs);
     fprintf(stdout, "%s\n", copyright);
 }
+
+static int intialized = 0;
+static int
+xmlSecAppInit(void) {
+    if(intialized != 0) {
+	return(0);
+    }
+    intialized = 1;
+    
+    /* Init libxml */     
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlTreeIndentString = "\t";
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec intialization failed.\n");
+	return(-1);
+    }
+
+    /* Init Crypto */
+    if(xmlSecAppCryptoInit(xmlSecAppCmdLineParamGetString(&cryptoConfigParam, NULL)) < 0) {
+	fprintf(stderr, "Error: xmlsec crypto intialization failed.\n");
+	return(-1);
+    }
+    return(0);
+}
+
+static void
+xmlSecAppShutdown(void) {
+    if(intialized == 0) {
+	return;
+    }
+
+    /* Shutdown Crypto */
+    if(xmlSecAppCryptoShutdown() < 0) {
+	fprintf(stderr, "Error: xmlsec crypto shutdown failed.\n");
+    }
+    
+    /* Shutdown xmlsec */
+    if(xmlSecShutdown() < 0) {
+	fprintf(stderr, "Error: xmlsec shutdown failed.\n");
+    }
+    
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+}
+
+static int 
+xmlSecAppExecute(const char* filename) {
+    if(filename == NULL) {
+	return(-1);
+    }
+    
+    /* TODO */
+    fprintf(stdout, ">> %s\n", filename);
+    return(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 static const char usage[] = 
     "Usage: xmlsec %s [<options>] <file> [<file> [ ... ]]\n";
@@ -784,11 +931,6 @@ struct _xmlSecAppCtx {
 
 static xmlSecAppCtx	gXmlSecAppCtx;
 
-/**
- * Init/Shutdown
- */
-static int		xmlSecAppInit			(xmlSecAppCtxPtr ctx);
-static int		xmlSecAppShutdown		(xmlSecAppCtxPtr ctx);
 
 /** 
  * Parsing command line
@@ -844,7 +986,6 @@ char *nodeId = NULL;
 char *nodeName = NULL;
 char *nodeNs = NULL;
 char* nodeXPath = NULL;
-int repeats = 1;
 int printResult = 0;
 int printXml = 0;
 FILE* printFile = NULL;
@@ -868,7 +1009,7 @@ int main(int argc, char **argv) {
     /**
      * Read the command
      */
-    if((argc < 2) || (strcmp(argv[1], "help") == 0) || (strcmp(argv[1], "--help") == 0)) {
+    if((argc < 2) || (strcmp(cmd, "help") == 0) || (strcmp(argv[1], "--help") == 0)) {
 	printUsage(NULL);
 	return(0);
     } else if(strncmp(argv[1], "help-", 5) == 0) { 
@@ -1105,12 +1246,6 @@ void printUsage(const char *command) {
     fprintf(stderr, "%s\n", copyright);
 }
 
-void printVersion(void) {
-    fprintf(stdout, "xmlsec %s-%s\n", XMLSEC_VERSION, XMLSEC_CRYPTO);
-    fprintf(stderr, "\n");
-    fprintf(stderr, "%s\n", bugs);
-    fprintf(stderr, "%s\n", copyright);    
-}
 
 
 
@@ -1559,7 +1694,7 @@ int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc) {
     return 0;
 }
 
-
+#if 0
 /**************************************************************************
  *
  *
@@ -1724,7 +1859,7 @@ xmlSecAppShutdown(xmlSecAppCtxPtr ctx) {
     return(0);
 }
 
-
+#endif 
 
 /**************************************************************************
  *

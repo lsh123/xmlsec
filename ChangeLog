@@ -1,3 +1,8 @@
+Sun 24 Aug 2003 05:20:14 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* docs/faq.html: upgraded licenses FAQ section to include
+	information about xmlsec-nss and xmlsec-gnutls
+
 Fri Aug 22 11:06:28 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* win32/Makefile.msvc: fixed linkinig problem on Windows (bug #120498)

@@ -26,6 +26,8 @@
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -51,14 +53,10 @@ The Memory Buffer transform klass.</para>
 The memory buffer transorm (used to store the data that go through it).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>memory buffer transform klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>memory buffer transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer ()</title>
 <programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecTransformMemBufGetBuffer
@@ -67,17 +65,13 @@ The memory buffer transorm (used to store the data that go through it).</para>
 Gets the pointer to memory buffer transform buffer.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to memory buffer transform.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the transform's <link linkend="xmlSecBuffer">xmlSecBuffer</link>. 
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to memory buffer transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the transform's <link linkend="xmlSecBuffer">xmlSecBuffer</link>. 
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

@@ -35,6 +35,8 @@ int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIO
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -90,27 +92,23 @@ Registers the default compiled-in I/O handlers.</para>
 Register a new set of I/O callback for handling parser input.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>matchFunc</parameter>&nbsp;:</entry>
-<entry>  	the protocol match callback.
-</entry></row>
-<row><entry align="right"><parameter>openFunc</parameter>&nbsp;:</entry>
-<entry>  		the open stream callback.
-</entry></row>
-<row><entry align="right"><parameter>readFunc</parameter>&nbsp;:</entry>
-<entry>  		the read from stream callback.
-</entry></row>
-<row><entry align="right"><parameter>closeFunc</parameter>&nbsp;:</entry>
-<entry>  	the close stream callback.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the registered handler number or a negative value if 
+</para><variablelist role="params">
+<varlistentry><term><parameter>matchFunc</parameter>&nbsp;:</term>
+<listitem><simpara>  	the protocol match callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>openFunc</parameter>&nbsp;:</term>
+<listitem><simpara>  		the open stream callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>readFunc</parameter>&nbsp;:</term>
+<listitem><simpara>  		the read from stream callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>closeFunc</parameter>&nbsp;:</term>
+<listitem><simpara>  	the close stream callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the registered handler number or a negative value if 
 an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInputURIId">xmlSecTransformInputURIId</title>
 <programlisting>#define     xmlSecTransformInputURIId</programlisting>
@@ -127,14 +125,10 @@ The Input URI transform id.</para>
 The input uri transform klass. Reads binary data from an uri.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>input URI transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>input URI transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen ()</title>
 <programlisting>int         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -143,20 +137,16 @@ The input uri transform klass. Reads binary data from an uri.</para>
 Opens the given <parameter>uri</parameter> for reading.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to IO transform.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> 		the URL to open.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to IO transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara> 		the URL to open.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

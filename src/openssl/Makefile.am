@@ -15,11 +15,11 @@ INCLUDES = \
 	-Wall -ansi \
 	$(NULL)
 
-pkglib_LTLIBRARIES = \
-	libxmlsec-openssl.la \
+lib_LTLIBRARIES = \
+	libxmlsec1-openssl.la \
 	$(NULL)
 
-libxmlsec_openssl_la_SOURCES =\
+libxmlsec1_openssl_la_SOURCES =\
 	app.c \
 	bn.c \
 	ciphers.c \
@@ -36,15 +36,13 @@ libxmlsec_openssl_la_SOURCES =\
 	x509vfy.c \
 	$(NULL)
 
-libxmlsec_openssl_la_LIBADD = \
+libxmlsec1_openssl_la_LIBADD = \
 	$(OPENSSL_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	$(NULL)
         
-libxmlsec_openssl_la_LDFLAGS = \
+libxmlsec1_openssl_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
-	-release @XMLSEC_RELEASE@ \
 	-rpath $(pkglibdir) \
-	-R $(pkglibdir) \
 	$(NULL)

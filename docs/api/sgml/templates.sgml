@@ -118,6 +118,8 @@ int         <link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAd
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -141,30 +143,26 @@ The application is responsible for inserting the returned node
 in the XML document.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry> 		the pointer to signature document or NULL; in the 
+</para><variablelist role="params">
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to signature document or NULL; in the 
 		second case, application must later call <parameter>xmlSetTreeDoc</parameter>
 		to ensure that all the children nodes have correct 
 		pointer to XML document.
-</entry></row>
-<row><entry align="right"><parameter>c14nMethodId</parameter>&nbsp;:</entry>
-<entry> 	the signature canonicalization method.
-</entry></row>
-<row><entry align="right"><parameter>signMethodId</parameter>&nbsp;:</entry>
-<entry> 	the signature  method.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node or NULL if an 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>c14nMethodId</parameter>&nbsp;:</term>
+<listitem><simpara> 	the signature canonicalization method.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>signMethodId</parameter>&nbsp;:</term>
+<listitem><simpara> 	the signature  method.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node or NULL if an 
 error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureEnsureKeyInfo">xmlSecTmplSignatureEnsureKeyInfo ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureEnsureKeyInfo
@@ -175,21 +173,17 @@ Adds (if necessary) <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">
 node <parameter>signNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
-<entry> 		the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or NULL if an 
+</para><variablelist role="params">
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or NULL if an 
 error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureAddReference">xmlSecTmplSignatureAddReference ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddReference (<link linkend="xmlNode">xmlNodePtr</link> signNode,
@@ -203,30 +197,26 @@ Type (<parameter>type</parameter>) attributes and the required children <ulink U
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue">&lt;dsig:DigestValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> child of <parameter>signNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>digestMethodId</parameter>&nbsp;:</entry>
-<entry>	the reference digest method.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> 		the reference node uri (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> 		the reference node type (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL 
+</para><variablelist role="params">
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>digestMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>	the reference digest method.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara> 		the reference node uri (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the reference node type (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL 
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureAddObject">xmlSecTmplSignatureAddObject ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplSignatureAddObject    (<link linkend="xmlNode">xmlNodePtr</link> signNode,
@@ -237,27 +227,23 @@ if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node <parameter>signNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
-<entry> 		the object mime type (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
-<entry> 		the object encoding (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node or NULL 
+</para><variablelist role="params">
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mimeType</parameter>&nbsp;:</term>
+<listitem><simpara> 		the object mime type (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>encoding</parameter>&nbsp;:</term>
+<listitem><simpara> 		the object encoding (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node or NULL 
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureGetSignMethodNode">xmlSecTmplSignatureGetSignMethodNode ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetSignMethodNode
@@ -266,17 +252,13 @@ if an error occurs.
 Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod">&lt;dsig:SignatureMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod ">&lt;dsig:SignatureMethod /&gt;</ulink> node or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMethod ">&lt;dsig:SignatureMethod /&gt;</ulink> node or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplSignatureGetC14NMethodNode">xmlSecTmplSignatureGetC14NMethodNode ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplSignatureGetC14NMethodNode
@@ -285,17 +267,13 @@ Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureMeth
 Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod">&lt;dsig:CanonicalizationMethod/&gt;</ulink> child of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod ">&lt;dsig:CanonicalizationMethod /&gt;</ulink> node or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>signNode</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature ">&lt;dsig:Signature /&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-CanonicalizationMethod ">&lt;dsig:CanonicalizationMethod /&gt;</ulink> node or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplReferenceAddTransform">xmlSecTmplReferenceAddTransform ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplReferenceAddTransform (<link linkend="xmlNode">xmlNodePtr</link> referenceNode,
@@ -304,21 +282,17 @@ Gets pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Canonicalizat
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node <parameter>referenceNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>referenceNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
-<entry> 		the transform method id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or NULL if an 
+</para><variablelist role="params">
+<varlistentry><term><parameter>referenceNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara> 		the transform method id.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or NULL if an 
 error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplObjectAddSignProperties">xmlSecTmplObjectAddSignProperties ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplObjectAddSignProperties
@@ -329,24 +303,20 @@ error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>objectNode</parameter>&nbsp;:</entry>
-<entry> 	the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
-<entry> 		the Target  (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node or NULL 
+</para><variablelist role="params">
+<varlistentry><term><parameter>objectNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>target</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Target  (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureProperties">&lt;dsig:SignatureProperties/&gt;</ulink> node or NULL 
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplObjectAddManifest">xmlSecTmplObjectAddManifest ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplObjectAddManifest     (<link linkend="xmlNode">xmlNodePtr</link> objectNode,
@@ -355,21 +325,17 @@ if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node <parameter>objectNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>objectNode</parameter>&nbsp;:</entry>
-<entry> 	the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node or NULL 
+</para><variablelist role="params">
+<varlistentry><term><parameter>objectNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the  pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Object">&lt;dsig:Object/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node or NULL 
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplManifestAddReference">xmlSecTmplManifestAddReference ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplManifestAddReference  (<link linkend="xmlNode">xmlNodePtr</link> manifestNode,
@@ -383,30 +349,26 @@ Type (<parameter>type</parameter>) attributes and the required children <ulink U
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-DigestValue">&lt;dsig:DigestValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node <parameter>manifestNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>manifestNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>digestMethodId</parameter>&nbsp;:</entry>
-<entry>	the reference digest method.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the node id (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> 		the reference node uri (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> 		the reference node type (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL 
+</para><variablelist role="params">
+<varlistentry><term><parameter>manifestNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>digestMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>	the reference digest method.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the node id (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara> 		the reference node uri (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the reference node type (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node or NULL 
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataCreate">xmlSecTmplEncDataCreate ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataCreate         (<link linkend="xmlDoc">xmlDocPtr</link> doc,
@@ -419,35 +381,31 @@ if an error occurs.
 Creates new <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData ">&lt;enc:EncryptedData /&gt;</ulink> node for encryption template.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry> 		the pointer to signature document or NULL; in the later
+</para><variablelist role="params">
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to signature document or NULL; in the later
 		case, application must later call <parameter>xmlSetTreeDoc</parameter> to ensure 
 		that all the children nodes have correct pointer to XML document.
-</entry></row>
-<row><entry align="right"><parameter>encMethodId</parameter>&nbsp;:</entry>
-<entry>	the encryption method (may be NULL).
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> 		the Type attribute (optional)
-</entry></row>
-<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
-<entry> 		the MimeType attribute (optional)
-</entry></row>
-<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
-<entry> 		the Encoding attribute (optional)
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer newly created  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node or NULL 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>encMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>	the encryption method (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Id attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Type attribute (optional)
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mimeType</parameter>&nbsp;:</term>
+<listitem><simpara> 		the MimeType attribute (optional)
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>encoding</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Encoding attribute (optional)
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer newly created  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node or NULL 
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureKeyInfo">xmlSecTmplEncDataEnsureKeyInfo ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataEnsureKeyInfo  (<link linkend="xmlNode">xmlNodePtr</link> encNode,
@@ -456,21 +414,17 @@ if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> to the  <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>			the Id attrbibute (optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>			the Id attrbibute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node or 
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureEncProperties">xmlSecTmplEncDataEnsureEncProperties ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureEncProperties
@@ -481,21 +435,17 @@ Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt
 node <parameter>encNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt;enc:EncryptionProperties/&gt;</ulink> node or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Id attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperties">&lt;enc:EncryptionProperties/&gt;</ulink> node or 
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataAddEncProperty">xmlSecTmplEncDataAddEncProperty ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplEncDataAddEncProperty (<link linkend="xmlNode">xmlNodePtr</link> encNode,
@@ -507,24 +457,20 @@ Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperty">&lt;e
 <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
-<entry> 		the Target attribute (optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperty">&lt;enc:EncryptionProperty/&gt;</ulink> node or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Id attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>target</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Target attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionProperty">&lt;enc:EncryptionProperty/&gt;</ulink> node or 
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureCipherValue">xmlSecTmplEncDataEnsureCipherValue ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherValue
@@ -533,18 +479,14 @@ NULL if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node or 
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataEnsureCipherReference">xmlSecTmplEncDataEnsureCipherReference ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataEnsureCipherReference
@@ -555,21 +497,17 @@ Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:
 to the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> 		the URI attribute (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara> 		the URI attribute (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node or 
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplEncDataGetEncMethodNode">xmlSecTmplEncDataGetEncMethodNode ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplEncDataGetEncMethodNode
@@ -578,17 +516,13 @@ NULL if an error occurs.
 Gets pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncrytpionMethod">&lt;enc:EncrytpionMethod/&gt;</ulink> node.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EcnryptedData ">&lt;enc:EcnryptedData /&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod ">&lt;enc:EncryptionMethod /&gt;</ulink> node or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encNode</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EcnryptedData ">&lt;enc:EcnryptedData /&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod ">&lt;enc:EncryptionMethod /&gt;</ulink> node or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplCipherReferenceAddTransform">xmlSecTmplCipherReferenceAddTransform ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplCipherReferenceAddTransform
@@ -600,21 +534,17 @@ with specified transform methods <parameter>transform</parameter> to the <ulink 
 child node of the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node <parameter>encNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>cipherReferenceNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
-<entry> 		the transform id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>cipherReferenceNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherReference">&lt;enc:CipherReference/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara> 		the transform id.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node or 
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddKeyName">xmlSecTmplKeyInfoAddKeyName ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyName     (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
@@ -623,21 +553,17 @@ NULL if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>		the key name (optional).	
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node or
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>		the key name (optional).	
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> node or
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddKeyValue">xmlSecTmplKeyInfoAddKeyValue ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddKeyValue    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
@@ -645,18 +571,14 @@ NULL if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node or
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> node or
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddX509Data">xmlSecTmplKeyInfoAddX509Data ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecTmplKeyInfoAddX509Data    (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode);</programlisting>
@@ -664,18 +586,14 @@ NULL if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node or
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node or
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddRetrievalMethod">xmlSecTmplKeyInfoAddRetrievalMethod ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddRetrievalMethod
@@ -686,24 +604,20 @@ NULL if an error occurs.
 Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> 		the URI attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> 		the Type attribute(optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node or
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara> 		the URI attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Type attribute(optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node or
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplRetrievalMethodAddTransform">xmlSecTmplRetrievalMethodAddTransform ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplRetrievalMethodAddTransform
@@ -714,21 +628,17 @@ Adds <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Tran
 if required) to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node <parameter>retrMethod</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>retrMethodNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
-<entry> 	the transform id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-dsig:Transforms">&lt;dsig:dsig:Transforms/&gt;</ulink> node or
+</para><variablelist role="params">
+<varlistentry><term><parameter>retrMethodNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara> 	the transform id.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-dsig:Transforms">&lt;dsig:dsig:Transforms/&gt;</ulink> node or
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplKeyInfoAddEncryptedKey">xmlSecTmplKeyInfoAddEncryptedKey ()</title>
 <programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecTmplKeyInfoAddEncryptedKey
@@ -742,30 +652,26 @@ Adds <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:Enc
 the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>encMethodId</parameter>&nbsp;:</entry>
-<entry>	the encryption method (optional).
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> 		the Type attribute (optional). 
-</entry></row>
-<row><entry align="right"><parameter>recipient</parameter>&nbsp;:</entry>
-<entry> 		the Recipient attribute (optional). 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node or
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>encMethodId</parameter>&nbsp;:</term>
+<listitem><simpara>	the encryption method (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Id attribute (optional).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Type attribute (optional). 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>recipient</parameter>&nbsp;:</term>
+<listitem><simpara> 		the Recipient attribute (optional). 
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the newly created <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node or
 NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddHmacOutputLength">xmlSecTmplTransformAddHmacOutputLength ()</title>
 <programlisting>int         xmlSecTmplTransformAddHmacOutputLength
@@ -776,20 +682,16 @@ Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-HMACOutputLength">&lt
 node <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
-</entry></row>
-<row><entry align="right"><parameter>bitsLen</parameter>&nbsp;:</entry>
-<entry> 		the required length in bits
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negatie value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bitsLen</parameter>&nbsp;:</term>
+<listitem><simpara> 		the required length in bits
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success and a negatie value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddRsaOaepParam">xmlSecTmplTransformAddRsaOaepParam ()</title>
 <programlisting>int         xmlSecTmplTransformAddRsaOaepParam
@@ -800,23 +702,19 @@ node <parameter>node</parameter>.</para>
 Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-OAEPParam">&lt;enc:OAEPParam/&gt;</ulink> child node in the <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry> 		the OAEP param buffer.
-</entry></row>
-<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> 		the OAEP param buffer size.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara> 		the OAEP param buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara> 		the OAEP param buffer size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet ()</title>
 <programlisting>int         xmlSecTmplTransformAddXsltStylesheet
@@ -826,20 +724,16 @@ Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-OAEPParam">&lt;enc:OAE
 Writes the XSLT transform expression to the <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>xslt</parameter>&nbsp;:</entry>
-<entry> 		the XSLT transform exspression.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>xslt</parameter>&nbsp;:</term>
+<listitem><simpara> 		the XSLT transform exspression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddC14NInclNamespaces">xmlSecTmplTransformAddC14NInclNamespaces ()</title>
 <programlisting>int         xmlSecTmplTransformAddC14NInclNamespaces
@@ -849,22 +743,18 @@ Writes the XSLT transform expression to the <parameter>node</parameter>.</para>
 Adds "inclusive" namespaces to the ExcC14N transform node <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>prefixList</parameter>&nbsp;:</entry>
-<entry> 	the white space delimited  list of namespace prefixes, 
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>prefixList</parameter>&nbsp;:</term>
+<listitem><simpara> 	the white space delimited  list of namespace prefixes, 
 		where "<link linkend="default">default</link>" indicates the default namespace
 		(optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 if success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXPath">xmlSecTmplTransformAddXPath ()</title>
 <programlisting>int         xmlSecTmplTransformAddXPath     (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
@@ -875,24 +765,20 @@ Writes XPath transform infromation to the <ulink URL="http://www.w3.org/TR/xmlds
 <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>expression</parameter>&nbsp;:</entry>
-<entry> 	the XPath expression.
-</entry></row>
-<row><entry align="right"><parameter>nsList</parameter>&nbsp;:</entry>
-<entry> 		the NULL terminated list of namespace prefix/href pairs
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>expression</parameter>&nbsp;:</term>
+<listitem><simpara> 	the XPath expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nsList</parameter>&nbsp;:</term>
+<listitem><simpara> 		the NULL terminated list of namespace prefix/href pairs
 		(optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 for success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXPath2">xmlSecTmplTransformAddXPath2 ()</title>
 <programlisting>int         xmlSecTmplTransformAddXPath2    (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
@@ -904,27 +790,23 @@ Writes XPath2 transform infromation to the <ulink URL="http://www.w3.org/TR/xmld
 <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> 		the XPath2 transform type ("union", "intersect" or "subtract").
-</entry></row>
-<row><entry align="right"><parameter>expression</parameter>&nbsp;:</entry>
-<entry> 	the XPath expression.
-</entry></row>
-<row><entry align="right"><parameter>nsList</parameter>&nbsp;:</entry>
-<entry> 		the NULL terminated list of namespace prefix/href pairs.
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the XPath2 transform type ("union", "intersect" or "subtract").
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>expression</parameter>&nbsp;:</term>
+<listitem><simpara> 	the XPath expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nsList</parameter>&nbsp;:</term>
+<listitem><simpara> 		the NULL terminated list of namespace prefix/href pairs.
 		(optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 for success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer ()</title>
 <programlisting>int         xmlSecTmplTransformAddXPointer  (<link linkend="xmlNode">xmlNodePtr</link> transformNode,
@@ -935,24 +817,20 @@ Writes XPoniter transform infromation to the <ulink URL="http://www.w3.org/TR/xm
 <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>expression</parameter>&nbsp;:</entry>
-<entry> 	the XPath expression.
-</entry></row>
-<row><entry align="right"><parameter>nsList</parameter>&nbsp;:</entry>
-<entry> 		the NULL terminated list of namespace prefix/href pairs.
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformNode</parameter>&nbsp;:</term>
+<listitem><simpara> 	the pointer to the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>expression</parameter>&nbsp;:</term>
+<listitem><simpara> 	the XPath expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nsList</parameter>&nbsp;:</term>
+<listitem><simpara> 		the NULL terminated list of namespace prefix/href pairs.
 		(optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 for success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

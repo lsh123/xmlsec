@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-KEYS"></a>keys</h1>
 <div class="REFNAMEDIV">
-<a name="AEN4904"></a><h2>Name</h2>keys -- </div>
+<a name="AEN4771"></a><h2>Name</h2>keys -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN4907"></a><h2>Synopsis</h2>
+<a name="AEN4774"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 typedef     <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a>;
@@ -104,13 +104,13 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 <font>xmlSecPtrListId</font> <a href="xmlsec-keys.html#XMLSECKEYPTRLISTGETKLASS">xmlSecKeyPtrListGetKlass</a>    (void);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN4999"></a><h2>Description</h2>
+<a name="AEN4866"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN5002"></a><h2>Details</h2>
+<a name="AEN4869"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN5004"></a><h3>
+<a name="AEN4871"></a><h3>
 <a name="XMLSECKEYUSAGE"></a>xmlSecKeyUsage</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned int 			xmlSecKeyUsage;</pre></td></tr></table>
 <p>The key usage.</p>
@@ -118,7 +118,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5010"></a><h3>
+<a name="AEN4877"></a><h3>
 <a name="XMLSECKEYUSAGESIGN"></a>xmlSecKeyUsageSign</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define	xmlSecKeyUsageSign		0x0001</pre></td></tr></table>
 <p>Key can be used in any way.</p>
@@ -126,7 +126,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5016"></a><h3>
+<a name="AEN4883"></a><h3>
 <a name="XMLSECKEYUSAGEVERIFY"></a>xmlSecKeyUsageVerify</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define	xmlSecKeyUsageVerify		0x0002</pre></td></tr></table>
 <p>Key for signing.</p>
@@ -134,7 +134,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5022"></a><h3>
+<a name="AEN4889"></a><h3>
 <a name="XMLSECKEYUSAGEENCRYPT"></a>xmlSecKeyUsageEncrypt</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define	xmlSecKeyUsageEncrypt		0x0004</pre></td></tr></table>
 <p>Key for signature verification.</p>
@@ -142,7 +142,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5028"></a><h3>
+<a name="AEN4895"></a><h3>
 <a name="XMLSECKEYUSAGEDECRYPT"></a>xmlSecKeyUsageDecrypt</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define	xmlSecKeyUsageDecrypt		0x0008</pre></td></tr></table>
 <p>An encryption key.</p>
@@ -150,7 +150,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5034"></a><h3>
+<a name="AEN4901"></a><h3>
 <a name="XMLSECKEYUSAGEANY"></a>xmlSecKeyUsageAny</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define	xmlSecKeyUsageAny		0xFFFF</pre></td></tr></table>
 <p>A decryption key.</p>
@@ -158,7 +158,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5040"></a><h3>
+<a name="AEN4907"></a><h3>
 <a name="XMLSECKEYREQ"></a>struct xmlSecKeyReq</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeyReq {
     xmlSecKeyDataId			keyId;
@@ -168,192 +168,150 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 };</pre></td></tr></table>
 <p>The key requirements information.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5046"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFF0D0"><tbody>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecKeyDataId</font> <tt class="STRUCTFIELD"><i>keyId</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		the desired key value klass.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4914"><span style="white-space: nowrap"><font>xmlSecKeyDataId</font> <tt class="STRUCTFIELD"><i>keyId</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the desired key value klass.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <tt class="STRUCTFIELD"><i>keyType</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		the desired key type.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4920"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <tt class="STRUCTFIELD"><i>keyType</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the desired key type.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <tt class="STRUCTFIELD"><i>keyUsage</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		the desired key usage.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4926"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <tt class="STRUCTFIELD"><i>keyUsage</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the desired key usage.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>size_t</font> <tt class="STRUCTFIELD"><i>keyBitsSize</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">	the desired key size (in bits!).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4932"><span style="white-space: nowrap"><font>size_t</font> <tt class="STRUCTFIELD"><i>keyBitsSize</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the desired key size (in bits!).</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5071"></a><h3>
+<a name="AEN4938"></a><h3>
 <a name="XMLSECKEYREQINITIALIZE"></a>xmlSecKeyReqInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyReqInitialize          (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre></td></tr></table>
 <p>Initialize key requirements object. Caller is responsible for
 cleaning it with <a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE">xmlSecKeyReqFinalize</a> function.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5079"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key requirements object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4947"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyReq</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key requirements object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4952"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5092"></a><h3>
+<a name="AEN4957"></a><h3>
 <a name="XMLSECKEYREQFINALIZE"></a>xmlSecKeyReqFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyReqFinalize            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre></td></tr></table>
 <p>Cleans the key requirements object initialized with <a href="xmlsec-keys.html#XMLSECKEYREQINITIALIZE">xmlSecKeyReqInitialize</a>
 function.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5100"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key requirements object.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4966"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyReq</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key requirements object.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5109"></a><h3>
+<a name="AEN4971"></a><h3>
 <a name="XMLSECKEYREQRESET"></a>xmlSecKeyReqReset ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyReqReset               (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre></td></tr></table>
 <p>Resets key requirements object for new key search.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5116"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key requirements object.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4979"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyReq</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key requirements object.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5125"></a><h3>
+<a name="AEN4984"></a><h3>
 <a name="XMLSECKEYREQCOPY"></a>xmlSecKeyReqCopy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyReqCopy                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> dst,
                                              <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> src);</pre></td></tr></table>
 <p>Copies key requirements from <tt class="PARAMETER"><i>src</i></tt> object to <tt class="PARAMETER"><i>dst</i></tt> object.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5135"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dst</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to destination object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN4995"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dst</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to destination object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>src</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to source object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5000"><span style="white-space: nowrap"><tt class="PARAMETER"><i>src</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to source object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success and a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5005"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success and a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5152"></a><h3>
+<a name="AEN5010"></a><h3>
 <a name="XMLSECKEYREQMATCHKEY"></a>xmlSecKeyReqMatchKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyReqMatchKey            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Checks whether <tt class="PARAMETER"><i>key</i></tt> matches key requirements <tt class="PARAMETER"><i>keyReq</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5162"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key requirements object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5021"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyReq</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key requirements object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5026"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">1 if key matches requirements, 0 if not and a negative value
-if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5031"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>1 if key matches requirements, 0 if not and a negative value
+if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5179"></a><h3>
+<a name="AEN5036"></a><h3>
 <a name="XMLSECKEYREQMATCHKEYVALUE"></a>xmlSecKeyReqMatchKeyValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyReqMatchKeyValue       (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);</pre></td></tr></table>
 <p>Checks whether <tt class="PARAMETER"><i>keyValue</i></tt> matches key requirements <tt class="PARAMETER"><i>keyReq</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5189"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key requirements.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5047"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyReq</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key requirements.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>value</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key value.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5052"><span style="white-space: nowrap"><tt class="PARAMETER"><i>value</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key value.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">1 if key value matches requirements, 0 if not and a negative value
-if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5057"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>1 if key value matches requirements, 0 if not and a negative value
+if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5206"></a><h3>
+<a name="AEN5062"></a><h3>
 <a name="XMLSECKEY"></a>struct xmlSecKey</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKey {
     xmlChar*				name;
@@ -367,612 +325,485 @@ if an error occurs.</td>
 };</pre></td></tr></table>
 <p>The key.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5212"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFF0D0"><tbody>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>xmlChar</font> *<tt class="STRUCTFIELD"><i>name</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the key name.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5069"><span style="white-space: nowrap"><font>xmlChar</font> *<tt class="STRUCTFIELD"><i>name</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the key name.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <tt class="STRUCTFIELD"><i>value</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		the key value.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5075"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <tt class="STRUCTFIELD"><i>value</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key value.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <tt class="STRUCTFIELD"><i>dataList</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		the key data list.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5081"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <tt class="STRUCTFIELD"><i>dataList</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key data list.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <tt class="STRUCTFIELD"><i>usage</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		the key usage.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5087"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <tt class="STRUCTFIELD"><i>usage</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key usage.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		reserved for future.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5093"><span style="white-space: nowrap">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		reserved for future.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP">		reserved for future.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5098"><span style="white-space: nowrap">void *<tt class="STRUCTFIELD"><i>reserved1</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		reserved for future.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5245"></a><h3>
+<a name="AEN5103"></a><h3>
 <a name="XMLSECKEYCREATE"></a>xmlSecKeyCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyCreate                (void);</pre></td></tr></table>
 <p>Allocates and initializes new key. Caller is responsible for 
 freeing returned object with <a href="xmlsec-keys.html#XMLSECKEYDESTROY">xmlSecKeyDestroy</a> function.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5253"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated <tt class="PARAMETER"><i>xmlSecKey</i></tt> structure
-or NULL if an error occurs.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5112"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the pointer to newly allocated <tt class="PARAMETER"><i>xmlSecKey</i></tt> structure
+or NULL if an error occurs.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5263"></a><h3>
+<a name="AEN5118"></a><h3>
 <a name="XMLSECKEYDESTROY"></a>xmlSecKeyDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDestroy                (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Destroys the key created using <a href="xmlsec-keys.html#XMLSECKEYCREATE">xmlSecKeyCreate</a> function.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5271"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to key.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5127"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to key.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5280"></a><h3>
+<a name="AEN5132"></a><h3>
 <a name="XMLSECKEYEMPTY"></a>xmlSecKeyEmpty ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyEmpty                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Clears the <tt class="PARAMETER"><i>key</i></tt> data.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5288"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5141"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5297"></a><h3>
+<a name="AEN5146"></a><h3>
 <a name="XMLSECKEYDUPLICATE"></a>xmlSecKeyDuplicate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeyDuplicate             (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Creates a duplicate of the given <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5306"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5156"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to the <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the pointer to newly allocated <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure
-or NULL if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5162"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the pointer to newly allocated <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a> structure
+or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5321"></a><h3>
+<a name="AEN5168"></a><h3>
 <a name="XMLSECKEYCOPY"></a>xmlSecKeyCopy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyCopy                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keyDst,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keySrc);</pre></td></tr></table>
 <p>Copies key data from <tt class="PARAMETER"><i>keySrc</i></tt> to <tt class="PARAMETER"><i>keyDst</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5331"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyDst</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the destination key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5179"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyDst</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the destination key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keySrc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the source key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5184"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keySrc</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the source key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5189"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5348"></a><h3>
+<a name="AEN5194"></a><h3>
 <a name="XMLSECKEYGETNAME"></a>xmlSecKeyGetName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecKeyGetName             (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Gets key name (see also <a href="xmlsec-keys.html#XMLSECKEYSETNAME">xmlSecKeySetName</a> function).</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5357"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5204"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">key name.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5209"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>key name.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5370"></a><h3>
+<a name="AEN5214"></a><h3>
 <a name="XMLSECKEYSETNAME"></a>xmlSecKeySetName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeySetName                (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const <font>xmlChar</font> *name);</pre></td></tr></table>
 <p>Sets key name (see also <a href="xmlsec-keys.html#XMLSECKEYGETNAME">xmlSecKeyGetName</a> function).</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5379"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5224"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>name</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new key name.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5229"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new key name.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5234"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5396"></a><h3>
+<a name="AEN5239"></a><h3>
 <a name="XMLSECKEYGETTYPE"></a>xmlSecKeyGetType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> xmlSecKeyGetType          (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Gets <tt class="PARAMETER"><i>key</i></tt> type.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5405"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5249"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">key type.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5254"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>key type.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5418"></a><h3>
+<a name="AEN5259"></a><h3>
 <a name="XMLSECKEYGETVALUE"></a>xmlSecKeyGetValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyGetValue          (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Gets key value (see also <a href="xmlsec-keys.html#XMLSECKEYSETVALUE">xmlSecKeySetValue</a> function).</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5427"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5269"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">key value (crypto material).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5274"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>key value (crypto material).</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5440"></a><h3>
+<a name="AEN5279"></a><h3>
 <a name="XMLSECKEYSETVALUE"></a>xmlSecKeySetValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeySetValue               (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);</pre></td></tr></table>
 <p>Sets key value (see also <a href="xmlsec-keys.html#XMLSECKEYGETVALUE">xmlSecKeyGetValue</a> function).</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5449"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5289"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>value</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new value.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5294"><span style="white-space: nowrap"><tt class="PARAMETER"><i>value</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new value.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5299"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5466"></a><h3>
+<a name="AEN5304"></a><h3>
 <a name="XMLSECKEYGETDATA"></a>xmlSecKeyGetData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyGetData           (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlSecKeyDataId</font> dataId);</pre></td></tr></table>
 <p>Gets key's data.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5475"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5314"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the requested data klass.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5319"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataId</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the requested data klass.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">additional data associated with the <tt class="PARAMETER"><i>key</i></tt> (see also 
-<a href="xmlsec-keys.html#XMLSECKEYADOPTDATA">xmlSecKeyAdoptData</a> function).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5324"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>additional data associated with the <tt class="PARAMETER"><i>key</i></tt> (see also 
+<a href="xmlsec-keys.html#XMLSECKEYADOPTDATA">xmlSecKeyAdoptData</a> function).</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5494"></a><h3>
+<a name="AEN5331"></a><h3>
 <a name="XMLSECKEYENSUREDATA"></a>xmlSecKeyEnsureData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyEnsureData        (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlSecKeyDataId</font> dataId);</pre></td></tr></table>
 <p>If necessary, creates key data of <tt class="PARAMETER"><i>dataId</i></tt> klass and adds to <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5505"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5343"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the requested data klass.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5348"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataId</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the requested data klass.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to key data or NULL if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5353"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to key data or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5522"></a><h3>
+<a name="AEN5358"></a><h3>
 <a name="XMLSECKEYADOPTDATA"></a>xmlSecKeyAdoptData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyAdoptData              (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Adds <tt class="PARAMETER"><i>data</i></tt> to the <tt class="PARAMETER"><i>key</i></tt>. The <tt class="PARAMETER"><i>data</i></tt> object will be destroyed
 by <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5534"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5371"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5376"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key data.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5381"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5551"></a><h3>
+<a name="AEN5386"></a><h3>
 <a name="XMLSECKEYDEBUGDUMP"></a>xmlSecKeyDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDebugDump              (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints the information about the <tt class="PARAMETER"><i>key</i></tt> to the <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5561"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5397"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>output</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to output FILE.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5402"><span style="white-space: nowrap"><tt class="PARAMETER"><i>output</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5574"></a><h3>
+<a name="AEN5407"></a><h3>
 <a name="XMLSECKEYDEBUGXMLDUMP"></a>xmlSecKeyDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDebugXmlDump           (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints the information about the <tt class="PARAMETER"><i>key</i></tt> to the <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5584"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5418"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>output</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to output FILE.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5423"><span style="white-space: nowrap"><tt class="PARAMETER"><i>output</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5597"></a><h3>
+<a name="AEN5428"></a><h3>
 <a name="XMLSECKEYGENERATE"></a>xmlSecKeyGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyGenerate              (<font>xmlSecKeyDataId</font> dataId,
                                              <font>size_t</font> sizeBits,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 <p>Generates new key of requested klass <tt class="PARAMETER"><i>dataId</i></tt> and <tt class="PARAMETER"><i>type</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5609"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the requested key klass (rsa, dsa, aes, ...).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5441"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataId</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the requested key klass (rsa, dsa, aes, ...).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>sizeBits</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new key size (in bits!).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5446"><span style="white-space: nowrap"><tt class="PARAMETER"><i>sizeBits</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new key size (in bits!).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new key type (session, permanent, ...).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5451"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new key type (session, permanent, ...).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly created key or NULL if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5456"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5630"></a><h3>
+<a name="AEN5461"></a><h3>
 <a name="XMLSECKEYGENERATEBYNAME"></a>xmlSecKeyGenerateByName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyGenerateByName        (const <font>xmlChar</font> *name,
                                              <font>size_t</font> sizeBits,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 <p>Generates new key of requested <tt class="PARAMETER"><i>klass</i></tt> and <tt class="PARAMETER"><i>type</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5642"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>name</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the requested key klass name (rsa, dsa, aes, ...).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5474"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the requested key klass name (rsa, dsa, aes, ...).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>sizeBits</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new key size (in bits!).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5479"><span style="white-space: nowrap"><tt class="PARAMETER"><i>sizeBits</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new key size (in bits!).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new key type (session, permanent, ...).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5484"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new key type (session, permanent, ...).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly created key or NULL if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5489"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5663"></a><h3>
+<a name="AEN5494"></a><h3>
 <a name="XMLSECKEYMATCH"></a>xmlSecKeyMatch ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyMatch                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const <font>xmlChar</font> *name,
                                              <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre></td></tr></table>
 <p>Checks whether the <tt class="PARAMETER"><i>key</i></tt> matches the given criteria.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5673"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5505"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>name</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the pointer to key name (may be NULL).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5510"><span style="white-space: nowrap"><tt class="PARAMETER"><i>name</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to key name (may be NULL).</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyReq</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to key requirements.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5515"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyReq</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key requirements.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">1 if the key satisfies the given criteria or 0 otherwise.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5520"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>1 if the key satisfies the given criteria or 0 otherwise.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5694"></a><h3>
+<a name="AEN5525"></a><h3>
 <a name="XMLSECKEYREADBINARYFILE"></a>xmlSecKeyReadBinaryFile ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyReadBinaryFile        (<font>xmlSecKeyDataId</font> dataId,
                                              const char *filename);</pre></td></tr></table>
 <p>Reads the key value of klass <tt class="PARAMETER"><i>dataId</i></tt> from a binary file <tt class="PARAMETER"><i>filename</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5704"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>dataId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the key value data klass.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5536"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataId</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key value data klass.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>filename</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the key binary filename.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5541"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key binary filename.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly created key or NULL if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5546"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5721"></a><h3>
+<a name="AEN5551"></a><h3>
 <a name="XMLSECKEYISVALID"></a>xmlSecKeyIsValid()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyIsValid(key)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>key</i></tt> is not NULL and <tt class="PARAMETER"><i>key</i></tt>-&gt;id is not NULL
 or 0 otherwise.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5729"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to key.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5560"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the pointer to key.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5738"></a><h3>
+<a name="AEN5565"></a><h3>
 <a name="XMLSECKEYCHECKID"></a>xmlSecKeyCheckId()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyCheckId(key, keyId)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>key</i></tt> is valid and <tt class="PARAMETER"><i>key</i></tt>'s id is equal to <tt class="PARAMETER"><i>keyId</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5747"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>key</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to key.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5575"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the pointer to key.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>keyId</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the key Id.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5580"><span style="white-space: nowrap"><tt class="PARAMETER"><i>keyId</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the key Id.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5760"></a><h3>
+<a name="AEN5585"></a><h3>
 <a name="XMLSECKEYPTRLISTID"></a>xmlSecKeyPtrListId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()</pre></td></tr></table>
 <p>The keys list klass.</p>
@@ -980,20 +811,16 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN5766"></a><h3>
+<a name="AEN5591"></a><h3>
 <a name="XMLSECKEYPTRLISTGETKLASS"></a>xmlSecKeyPtrListGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecKeyPtrListGetKlass    (void);</pre></td></tr></table>
 <p>The keys list klass.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN5773"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">keys list id.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN5599"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>keys list id.</p></td>
+</tr></tbody></table>
 </div>
 </div>
 <div class="NAVFOOTER">

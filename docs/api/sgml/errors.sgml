@@ -97,6 +97,8 @@ void        <link linkend="xmlSecError">xmlSecError</link>                     (
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -513,33 +515,29 @@ The maximum xmlsec errors number.</para>
 The errors reporting callback function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
-<entry>		the error location file name (__FILE__ macro).
-</entry></row>
-<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
-<entry>		the error location line number (__LINE__ macro).
-</entry></row>
-<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry>		the error location function name (__FUNCTION__ macro).
-</entry></row>
-<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
-<entry>	the error specific error object 
-</entry></row>
-<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
-<entry>	the error specific error subject.
-</entry></row>
-<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
-<entry>		the error code.
-</entry></row>
-<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
-<entry>		the additional error message.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location file name (__FILE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location line number (__LINE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location function name (__FUNCTION__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error object 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error subject.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&nbsp;:</term>
+<listitem><simpara>		the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
+<listitem><simpara>		the additional error message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsInit">xmlSecErrorsInit ()</title>
 <programlisting>void        xmlSecErrorsInit                (void);</programlisting>
@@ -566,15 +564,11 @@ Sets the errors callback function to <parameter>callback</parameter> that will b
 every time an error occurs.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>callback</parameter>&nbsp;:</entry>
-<entry> 		the new errors callback function.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new errors callback function.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback ()</title>
 <programlisting>void        xmlSecErrorsDefaultCallback     (const char *file,
@@ -589,33 +583,29 @@ The default error reporting callback that utilizes LibXML
 error reporting <link linkend="xmlGenericError">xmlGenericError</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
-<entry>		the error location file name (__FILE__ macro).
-</entry></row>
-<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
-<entry>		the error location line number (__LINE__ macro).
-</entry></row>
-<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry>		the error location function name (__FUNCTION__ macro).
-</entry></row>
-<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
-<entry>	the error specific error object 
-</entry></row>
-<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
-<entry>	the error specific error subject.
-</entry></row>
-<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
-<entry>		the error code.
-</entry></row>
-<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
-<entry>		the additional error message.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location file name (__FILE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location line number (__LINE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location function name (__FUNCTION__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error object 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error subject.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&nbsp;:</term>
+<listitem><simpara>		the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
+<listitem><simpara>		the additional error message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsGetCode">xmlSecErrorsGetCode ()</title>
 <programlisting>int         xmlSecErrorsGetCode             (<link linkend="size-t">size_t</link> pos);</programlisting>
@@ -623,18 +613,14 @@ error reporting <link linkend="xmlGenericError">xmlGenericError</link> function.
 Gets the known error code at position <parameter>pos</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>		the error position.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error code or 0 if <parameter>pos</parameter> is greater than 
+</para><variablelist role="params">
+<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<listitem><simpara>		the error position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the known error code or 0 if <parameter>pos</parameter> is greater than 
 total number of known error codes.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg ()</title>
 <programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="size-t">size_t</link> pos);</programlisting>
@@ -642,18 +628,14 @@ total number of known error codes.
 Gets the known error message at position <parameter>pos</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>		the error position.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error message or NULL if <parameter>pos</parameter> is greater than 
+</para><variablelist role="params">
+<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<listitem><simpara>		the error position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the known error message or NULL if <parameter>pos</parameter> is greater than 
 total number of known error codes.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</title>
 <programlisting>#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
@@ -671,15 +653,11 @@ for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
 Macro. Returns <parameter>str</parameter> if it is not NULL or pointer to "NULL" otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>str</parameter>&nbsp;:</entry>
-<entry>		the string.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
+<listitem><simpara>		the string.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</title>
 <programlisting>#define XMLSEC_ERRORS_NO_MESSAGE 		" "
@@ -705,36 +683,32 @@ application specific callback installed using <link linkend="xmlSecErrorsSetCall
 function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
-<entry> 		the error location filename (__FILE__).
-</entry></row>
-<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
-<entry> 		the error location line number (__LINE__).
-</entry></row>
-<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
-<entry> 		the error location function (__FUNCTIION__).
-</entry></row>
-<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
-<entry>	the error specific error object 
-</entry></row>
-<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
-<entry>	the error specific error subject. 
-</entry></row>
-<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
-<entry> 		the error code.
-</entry></row>
-<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
-<entry> 		the error message in printf format.
-</entry></row>
-<row><entry align="right"><parameter>...</parameter>&nbsp;:</entry>
-<entry> 		the parameters for the <parameter>msg</parameter>.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara> 		the error location filename (__FILE__).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&nbsp;:</term>
+<listitem><simpara> 		the error location line number (__LINE__).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<listitem><simpara> 		the error location function (__FUNCTIION__).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error object 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error subject. 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&nbsp;:</term>
+<listitem><simpara> 		the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
+<listitem><simpara> 		the error message in printf format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&nbsp;:</term>
+<listitem><simpara> 		the parameters for the <parameter>msg</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAssert">xmlSecAssert()</title>
 <programlisting>#define     xmlSecAssert( p )</programlisting>
@@ -742,15 +716,11 @@ function.</para>
 Macro. Verifies that <parameter>p</parameter> is true and calls <link linkend="return">return</link>() otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
-<entry> the expression.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&nbsp;:</term>
+<listitem><simpara> the expression.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAssert2">xmlSecAssert2()</title>
 <programlisting>#define     xmlSecAssert2( p, ret )</programlisting>
@@ -758,18 +728,14 @@ Macro. Verifies that <parameter>p</parameter> is true and calls <link linkend="r
 Macro. Verifies that <parameter>p</parameter> is true and calls return(<parameter>ret</parameter>) otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
-<entry> the expression.
-</entry></row>
-<row><entry align="right"><parameter>ret</parameter>&nbsp;:</entry>
-<entry> the return value.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&nbsp;:</term>
+<listitem><simpara> the expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ret</parameter>&nbsp;:</term>
+<listitem><simpara> the return value.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

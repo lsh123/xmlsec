@@ -98,8 +98,7 @@ if test "@LIBXSLT_WITHOUT@" = "no"; then
 fi    
 
 the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include/${package} `@LIBXML_CONFIG@ --cflags` $the_xslt_flags @XMLSEC_CRYPTO_CFLAGS@ -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
-#the_libs="$the_libs -L${exec_prefix}/lib/${package} -Wl,-rpath,${exec_prefix}/lib/${package} -l@XMLSEC_CRYPTO_LIB@ -lxmlsec `@LIBXML_CONFIG@ --libs` $the_xslt_libs @XMLSEC_CRYPTO_LIBS@"
-the_libs="$the_libs -L${exec_prefix}/lib/${package} -l@XMLSEC_CRYPTO_LIB@ -lxmlsec `@LIBXML_CONFIG@ --libs` $the_xslt_libs @XMLSEC_CRYPTO_LIBS@"
+the_libs="$the_libs -L${exec_prefix}/lib -l@XMLSEC_CRYPTO_LIB@ -lxmlsec `@LIBXML_CONFIG@ --libs` $the_xslt_libs @XMLSEC_CRYPTO_LIBS@"
 
 if $cflags; then
     all_flags="$the_flags"

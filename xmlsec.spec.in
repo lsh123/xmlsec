@@ -1,5 +1,5 @@
 Summary: Library providing support for "XML Signature" and "XML Encryption" standards
-Name: xmlsec
+Name: @PACKAGE@
 Version: @VERSION@
 Release: 1
 License: MIT
@@ -7,8 +7,8 @@ Group: Development/Libraries
 Vendor: Aleksey Sanin <aleksey@aleksey.com>
 Distribution:  Aleksey Sanin <aleksey@aleksey.com>
 Packager: Aleksey Sanin <aleksey@aleksey.com>
-Source: ftp://ftp.aleksey.com/pub/xmlsec/releases/xmlsec-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-root
+Source: ftp://ftp.aleksey.com/pub/xmlsec/releases/@PACKAGE@-%{version}.tar.gz
+BuildRoot: %{_tmppath}/@PACKAGE@-%{version}-root
 URL: http://www.aleksey.com/xmlsec
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
@@ -92,8 +92,8 @@ fi
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/bin
-mkdir -p $RPM_BUILD_ROOT/usr/include/xmlsec-$(XMLSEC_RELEASE)
-mkdir -p $RPM_BUILD_ROOT/usr/lib/xmlsec-$(XMLSEC_RELEASE)
+mkdir -p $RPM_BUILD_ROOT/usr/include/@PACKAGE@
+mkdir -p $RPM_BUILD_ROOT/usr/lib
 mkdir -p $RPM_BUILD_ROOT/usr/man/man1
 make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
 
@@ -110,10 +110,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec.1*  
 
-%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-*.so.*
-%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec.so
-%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-openssl-*.so.*
-%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-openssl.so
+%{prefix}/lib/libxmlsec-@RELEASE@.so.*
+%{prefix}/lib/libxmlsec-@RELEASE@.so
+%{prefix}/lib/libxmlsec-@RELEASE@-openssl-*.so.*
+%{prefix}/lib/libxmlsec-@RELEASE@-openssl.so
 %{prefix}/bin/xmlsec
 
 %files devel
@@ -123,22 +123,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man1/xmlsec-config.1*  
 %doc docs/* 
 %{prefix}/bin/xmlsec-config
-%{prefix}/include/xmlsec-$(XMLSEC_RELEASE)/xmlsec/*.h
-%{prefix}/include/xmlsec-$(XMLSEC_RELEASE)/xmlsec/openssl/*.h
-%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec.*a
-%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-openssl.*a
+%{prefix}/include/@PACKAGE@/xmlsec/*.h
+%{prefix}/include/@PACKAGE@/xmlsec/openssl/*.h
+%{prefix}/lib/libxmlsec-@RELEASE@.*a
+%{prefix}/lib/libxmlsec-openssl-@RELEASE@.*a
 %{prefix}/lib/pkgconfig/xmlsec.pc
 
 #%files nss
 #%defattr(-, root, root)  
 
-#%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-nss-*.so.*
-#%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-nss.so
+#%{prefix}/lib/libxmlsec-nss-@RELEASE@.so.*
+#%{prefix}/lib/libxmlsec-nss-@RELEASE@.so
 
 #%files nss-devel
 #%defattr(-, root, root)  
 
-#%{prefix}/include/xmlsec-$(XMLSEC_RELEASE)/xmlsec/nss/*.h
-#%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-nss.*a
+#%{prefix}/include/@PACKAGE@/xmlsec/nss/*.h
+#%{prefix}/lib/libxmlsec-nss-@RELEASE@.*a
 
 %changelog

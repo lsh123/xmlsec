@@ -1,17 +1,14 @@
 AC_INIT(src/xmlsec.c)
 
-XMLSEC_VERSION_MAJOR=0
-XMLSEC_VERSION_MINOR=1
-XMLSEC_VERSION_SUBMINOR=1
-
-XMLSEC_RELEASE=$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR
+XMLSEC_VERSION_MAJOR=1
+XMLSEC_VERSION_MINOR=0
+XMLSEC_VERSION_SUBMINOR=0-pre1
 XMLSEC_VERSION=$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 
-PACKAGE=xmlsec-$XMLSEC_RELEASE
+PACKAGE=xmlsec1
 VERSION=$XMLSEC_VERSION
 
-AC_SUBST(XMLSEC_RELEASE)
 AC_SUBST(XMLSEC_VERSION)
 AC_SUBST(XMLSEC_VERSION_MAJOR)
 AC_SUBST(XMLSEC_VERSION_MINOR)
@@ -245,7 +242,7 @@ else
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="openssl"
-    	    XMLSEC_CRYPTO_LIB="xmlsec-openssl"
+    	    XMLSEC_CRYPTO_LIB="xmlsec1-openssl"
 	    XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
 	    XMLSEC_CRYPTO_LIBS="$OPENSSL_LIBS"
 	    XMLSEC_CRYPTO_LDADDS="$OPENSSL_LDADDS"
@@ -316,7 +313,7 @@ else
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="gnutls"
-    	    XMLSEC_CRYPTO_LIB="xmlsec-gnutls"
+    	    XMLSEC_CRYPTO_LIB="xmlsec1-gnutls"
 	    XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
 	    XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
 	    XMLSEC_CRYPTO_LDADDS="$GNUTLS_LDADDS"
@@ -341,7 +338,7 @@ AC_SUBST(XMLSEC_GNUTLS_DEFINES)
 dnl ==========================================================================
 dnl See if we can find NSS
 dnl ==========================================================================
-ac_mozilla_name=mozilla-1.3
+ac_mozilla_name=mozilla-1.2.1
 ac_nss_lib_dir="/usr/lib /usr/local/lib /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
 ac_nss_inc_dir="/usr/include /usr/local/include /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
     
@@ -411,7 +408,7 @@ else
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="nss"
-    	    XMLSEC_CRYPTO_LIB="xmlsec-nss"
+    	    XMLSEC_CRYPTO_LIB="xmlsec1-nss"
 	    XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS -DXMLSEC_CRYPTO_NSS=1"
 	    XMLSEC_CRYPTO_LIBS="$NSS_LIBS"
 	    XMLSEC_CRYPTO_LDADDS="$NSS_LDADDS"
@@ -643,7 +640,7 @@ dnl ==========================================================================
 dnl Final steps: xmlsec config
 dnl ==========================================================================
 XMLSEC_CFLAGS="$XMLSEC_DEFINES -I${includedir}/${PACKAGE} $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
-XMLSEC_LIBS="-L${libdir}/${PACKAGE} -l$XMLSEC_CRYPTO_LIB -lxmlsec $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
+XMLSEC_LIBS="-L${libdir} -l$XMLSEC_CRYPTO_LIB -lxmlsec $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
 
 AC_SUBST(XMLSEC_CFLAGS)
 AC_SUBST(XMLSEC_LIBS)
@@ -668,26 +665,26 @@ dnl ==========================================================================
 rm -f rm COPYING.LIB COPYING
 ln -s $srcdir/Copyright COPYING
 
-
 AC_OUTPUT([
+include/xmlsec/version.h
 Makefile
-xmlsecConf.sh
-xmlsec-config
-xmlsec.spec
-xmlsec.pc
 include/Makefile
 include/xmlsec/Makefile
 include/xmlsec/openssl/Makefile
 include/xmlsec/gnutls/Makefile
 include/xmlsec/nss/Makefile
-include/xmlsec/version.h
 src/Makefile
 src/openssl/Makefile
 src/gnutls/Makefile
 src/nss/Makefile
 apps/Makefile
+docs/Makefile
 docs/api/Makefile
 man/Makefile
-tests/Makefile
-])
+]
+[xmlsec1Conf.sh:xmlsecConf.sh.in]
+[xmlsec1-config:xmlsec-config.in]
+[xmlsec1.spec:xmlsec.spec.in]
+[xmlsec1.pc:xmlsec.pc.in]
+)
 

@@ -15,11 +15,11 @@ INCLUDES = \
 	-Wall -ansi \
 	$(NULL)
 
-pkglib_LTLIBRARIES = \
-	libxmlsec-nss.la \
+lib_LTLIBRARIES = \
+	libxmlsec1-nss.la \
 	$(NULL)
 
-libxmlsec_nss_la_SOURCES =\
+libxmlsec1_nss_la_SOURCES =\
 	app.c \
 	ciphers.c \
 	crypto.c \
@@ -28,16 +28,14 @@ libxmlsec_nss_la_SOURCES =\
 	symkeys.c \
 	$(NULL)
 
-libxmlsec_nss_la_LIBADD = \
+libxmlsec1_nss_la_LIBADD = \
 	$(NSS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	$(NULL)
         
-libxmlsec_nss_la_LDFLAGS = \
+libxmlsec1_nss_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
-	-release @XMLSEC_RELEASE@ \
 	-rpath $(pkglibdir) \
-	-R $(pkglibdir) \
 	$(NULL)
 

@@ -57,6 +57,8 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -73,15 +75,11 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
 Macro. Returns node's name.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to node.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to node.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref ()</title>
 <programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecGetNodeNsHref          (const <link linkend="xmlNode">xmlNodePtr</link> cur);</programlisting>
@@ -89,17 +87,13 @@ Macro. Returns node's name.</para>
 Get's node's namespace href.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>		the pointer to node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>node's namespace href.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>node's namespace href.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCheckNodeName">xmlSecCheckNodeName ()</title>
 <programlisting>int         xmlSecCheckNodeName             (const <link linkend="xmlNode">xmlNodePtr</link> cur,
@@ -109,23 +103,19 @@ Get's node's namespace href.</para>
 Checks that the node has a given name and a given namespace href.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the name,
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the namespace href.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the node matches or 0 otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the name,
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the namespace href.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>1 if the node matches or 0 otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetNextElementNode">xmlSecGetNextElementNode ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecGetNextElementNode        (<link linkend="xmlNode">xmlNodePtr</link> cur);</programlisting>
@@ -133,17 +123,13 @@ Checks that the node has a given name and a given namespace href.</para>
 Seraches for the next element node.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to next element node or NULL if it is not found.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to next element node or NULL if it is not found.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecFindChild">xmlSecFindChild ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindChild                 (const <link linkend="xmlNode">xmlNodePtr</link> parent,
@@ -154,24 +140,20 @@ Searches a direct child of the <parameter>parent</parameter> node having given n
 namespace href.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> 		the pointer to XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the name.
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the namespace href (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the namespace href (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the found node or NULL if an error occurs or 
 node is not found.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecFindParent">xmlSecFindParent ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindParent                (const <link linkend="xmlNode">xmlNodePtr</link> cur,
@@ -182,24 +164,20 @@ Searches the ancestors axis of the <parameter>cur</parameter> node for a node ha
 and namespace href.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the name.
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the namespace href (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the namespace href (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the found node or NULL if an error occurs or 
 node is not found.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecFindNode">xmlSecFindNode ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNode                  (const <link linkend="xmlNode">xmlNodePtr</link> parent,
@@ -210,24 +188,20 @@ Searches all children of the <parameter>parent</parameter> node having given nam
 namespace href.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> 		the pointer to XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the name.
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the namespace href (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
+</para><variablelist role="params">
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the namespace href (may be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to the found node or NULL if an error occurs or 
 node is not found.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddChild">xmlSecAddChild ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChild                  (<link linkend="xmlNode">xmlNodePtr</link> parent,
@@ -237,23 +211,19 @@ node is not found.
 Adds a child to the node <parameter>parent</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the new node name.
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the new node namespace.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>parent</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node namespace.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the new node or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddNextSibling">xmlSecAddNextSibling ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddNextSibling            (<link linkend="xmlNode">xmlNodePtr</link> node,
@@ -263,23 +233,19 @@ Adds a child to the node <parameter>parent</parameter> with given <parameter>nam
 Adds next sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the new node name.
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the new node namespace.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node namespace.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the new node or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddPrevSibling">xmlSecAddPrevSibling ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddPrevSibling            (<link linkend="xmlNode">xmlNodePtr</link> node,
@@ -289,23 +255,19 @@ Adds next sibling to the node <parameter>node</parameter> with given <parameter>
 Adds prev sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the new node name.
-</entry></row>
-<row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> 		the new node namespace.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ns</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node namespace.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the new node or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecReplaceNode">xmlSecReplaceNode ()</title>
 <programlisting>int         xmlSecReplaceNode               (<link linkend="xmlNode">xmlNodePtr</link> node,
@@ -314,20 +276,16 @@ Adds prev sibling to the node <parameter>node</parameter> with given <parameter>
 Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> 		the current node.
-</entry></row>
-<row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
-<entry> 		the new node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara> 		the current node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>newNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecReplaceContent">xmlSecReplaceContent ()</title>
 <programlisting>int         xmlSecReplaceContent            (<link linkend="xmlNode">xmlNodePtr</link> node,
@@ -336,20 +294,16 @@ Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the 
 Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> 		the current node.
-</entry></row>
-<row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
-<entry> 		the new node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara> 		the current node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>newNode</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer ()</title>
 <programlisting>int         xmlSecReplaceNodeBuffer         (<link linkend="xmlNode">xmlNodePtr</link> node,
@@ -359,23 +313,19 @@ Swaps the content of <parameter>node</parameter> and <parameter>newNode</paramet
 Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> 		the current node.
-</entry></row>
-<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> 		the XML data.
-</entry></row>
-<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> 		the XML data size.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara> 		the current node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara> 		the XML data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara> 		the XML data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddIDs">xmlSecAddIDs ()</title>
 <programlisting>void        xmlSecAddIDs                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
@@ -386,21 +336,17 @@ Walks thru all children of the <parameter>cur</parameter> node and adds all attr
 from the <parameter>ids</parameter> list to the <parameter>doc</parameter> document IDs attributes hash.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML document.
-</entry></row>
-<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> 		the pointer to an XML node.
-</entry></row>
-<row><entry align="right"><parameter>ids</parameter>&nbsp;:</entry>
-<entry> 		the pointer to a NULL terminated list of ID attributes.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML document.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cur</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to an XML node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ids</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to a NULL terminated list of ID attributes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecIsHex">xmlSecIsHex()</title>
 <programlisting>#define     xmlSecIsHex(c)</programlisting>
@@ -408,15 +354,11 @@ from the <parameter>ids</parameter> list to the <parameter>doc</parameter> docum
 Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry> 			the character.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>c</parameter>&nbsp;:</term>
+<listitem><simpara> 			the character.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetHex">xmlSecGetHex()</title>
 <programlisting>#define     xmlSecGetHex(c)</programlisting>
@@ -424,15 +366,11 @@ Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.</pa
 Macro. Returns the hex value of the <parameter>c</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry> 			the character,
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>c</parameter>&nbsp;:</term>
+<listitem><simpara> 			the character,
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

@@ -34,6 +34,8 @@
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -51,17 +53,13 @@ Loads XML Doc from file <parameter>filename</parameter>. We need a special versi
 c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData">xmlSAXParseFileWithData</link>() function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry> 		the filename.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara> 		the filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the loaded XML document or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecParseMemory">xmlSecParseMemory ()</title>
 <programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemory               (unsigned char *buffer,
@@ -72,23 +70,19 @@ Loads XML Doc from memory. We need a special version because of
 c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXParseMemory</link>() function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> 		the input buffer.
-</entry></row>
-<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> 		the input buffer size.
-</entry></row>
-<row><entry align="right"><parameter>recovery</parameter>&nbsp;:</entry>
-<entry> 		the flag.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara> 		the input buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara> 		the input buffer size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>recovery</parameter>&nbsp;:</term>
+<listitem><simpara> 		the flag.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the loaded XML document or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecParseMemoryExt">xmlSecParseMemoryExt ()</title>
 <programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemoryExt            (unsigned char *prefix,
@@ -101,32 +95,28 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXPars
 Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter>buffer</parameter> and <parameter>postfix</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>prefix</parameter>&nbsp;:</entry>
-<entry> 		the first part of the input.
-</entry></row>
-<row><entry align="right"><parameter>prefixSize</parameter>&nbsp;:</entry>
-<entry> 	the size of the first part of the input.
-</entry></row>
-<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> 		the second part of the input.
-</entry></row>
-<row><entry align="right"><parameter>bufferSize</parameter>&nbsp;:</entry>
-<entry> 	the size of the second part of the input.
-</entry></row>
-<row><entry align="right"><parameter>postfix</parameter>&nbsp;:</entry>
-<entry> 		the third part of the input.
-</entry></row>
-<row><entry align="right"><parameter>postfixSize</parameter>&nbsp;:</entry>
-<entry> 	the size of the third part of the input.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>prefix</parameter>&nbsp;:</term>
+<listitem><simpara> 		the first part of the input.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>prefixSize</parameter>&nbsp;:</term>
+<listitem><simpara> 	the size of the first part of the input.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<listitem><simpara> 		the second part of the input.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bufferSize</parameter>&nbsp;:</term>
+<listitem><simpara> 	the size of the second part of the input.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>postfix</parameter>&nbsp;:</term>
+<listitem><simpara> 		the third part of the input.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>postfixSize</parameter>&nbsp;:</term>
+<listitem><simpara> 	the size of the third part of the input.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the loaded XML document or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</title>
 <programlisting>#define     xmlSecTransformXmlParserId</programlisting>
@@ -143,14 +133,10 @@ The XML Parser transform klass.</para>
 The XML parser transform.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XML parser transform klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>XML parser transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

@@ -3,7 +3,7 @@ NULL =
 SUBDIRS = $(XMLSEC_CRYPTO_LIST)
 EXTRA_DIST = $(XMLSEC_CRYPTO_DISABLED_LIST)
 
-xmlsecincdir = $(pkgincludedir)/xmlsec
+xmlsecincdir = $(includedir)/xmlsec1/xmlsec
 
 xmlsecinc_HEADERS = \
 	base64.h \

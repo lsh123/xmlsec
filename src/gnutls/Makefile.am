@@ -8,18 +8,18 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_NSS_DEFINES) \
-	$(NSS_CFLAGS) \
+	$(XMLSEC_GNUTLS_DEFINES) \
+	$(GNUTLS_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	-Wall -ansi \
 	$(NULL)
 
-pkglib_LTLIBRARIES = \
-	libxmlsec-gnutls.la \
+lib_LTLIBRARIES = \
+	libxmlsec1-gnutls.la \
 	$(NULL)
 
-libxmlsec_gnutls_la_SOURCES =\
+libxmlsec1_gnutls_la_SOURCES =\
 	app.c \
 	ciphers.c \
 	crypto.c \
@@ -28,15 +28,13 @@ libxmlsec_gnutls_la_SOURCES =\
 	symkeys.c \
 	$(NULL)
 
-libxmlsec_gnutls_la_LIBADD = \
-	$(NSS_LIBS) \
+libxmlsec1_gnutls_la_LIBADD = \
+	$(GNUTLS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	$(NULL)
         
-libxmlsec_gnutls_la_LDFLAGS = \
+libxmlsec1_gnutls_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
-	-release @XMLSEC_RELEASE@ \
 	-rpath $(pkglibdir) \
-	-R $(pkglibdir) \
 	$(NULL)

@@ -286,6 +286,8 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -312,14 +314,10 @@ at a time. Changing this impacts xmlsec memory usage and performance.</para>
 Gets global registered transform klasses list.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to list of all registered transform klasses.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to list of all registered transform klasses.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsInit">xmlSecTransformIdsInit ()</title>
 <programlisting>int         xmlSecTransformIdsInit          (void);</programlisting>
@@ -328,14 +326,10 @@ Initializes the transform klasses. This function is called from the
 <link linkend="xmlSecInit">xmlSecInit</link> function and the application should not call it directly.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsShutdown">xmlSecTransformIdsShutdown ()</title>
 <programlisting>void        xmlSecTransformIdsShutdown      (void);</programlisting>
@@ -354,14 +348,10 @@ Registers default (implemented by XML Security Library)
 transform klasses: XPath transform, Base64 transform, ...</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdsRegister">xmlSecTransformIdsRegister ()</title>
 <programlisting>int         xmlSecTransformIdsRegister      (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
@@ -369,17 +359,13 @@ transform klasses: XPath transform, Base64 transform, ...</para>
 Registers <parameter>id</parameter> in the global list of transform klasses.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>			the transform klass.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>			the transform klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformStatus">enum xmlSecTransformStatus</title>
 <programlisting>typedef enum  {
@@ -490,21 +476,17 @@ Any URI type.</para>
 Checks if <parameter>uri</parameter> matches expected type <parameter>type</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>		the expected URI type.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>		the uri for checking.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if <parameter>uri</parameter> matches <parameter>type</parameter>, 0 if not or a negative value
+</para><variablelist role="params">
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>		the expected URI type.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>		the uri for checking.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>1 if <parameter>uri</parameter> matches <parameter>type</parameter>, 0 if not or a negative value
 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataType">xmlSecTransformDataType</title>
 <programlisting>typedef unsigned char				xmlSecTransformDataType;
@@ -624,18 +606,14 @@ do additional transforms chain verification or modification and
 aborting transforms execution (if necessary).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform's context. 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negative value otherwise (in this case,
+</para><variablelist role="params">
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform's context. 
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success and a negative value otherwise (in this case,
 transforms chain will not be executed and xmlsec processing stops).
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtx">struct xmlSecTransformCtx</title>
 <programlisting>struct xmlSecTransformCtx {
@@ -664,91 +642,87 @@ transforms chain will not be executed and xmlsec processing stops).
 The transform execution context.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry>void *<structfield>userData</structfield></entry>
-<entry> 		the pointer to user data (xmlsec and xmlsec-crypto never 
+</para><variablelist role="struct">
+<varlistentry>
+<term>void *<structfield>userData</structfield></term>
+<listitem><simpara> 		the pointer to user data (xmlsec and xmlsec-crypto never 
 		touch this).
-</entry>
-</row>
-<row>
-<entry>unsigned int <structfield>flags</structfield></entry>
-<entry> 		the bit mask flags to control transforms execution 
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>unsigned int <structfield>flags</structfield></term>
+<listitem><simpara> 		the bit mask flags to control transforms execution 
 		(reserved for the future).
-</entry>
-</row>
-<row>
-<entry>unsigned int <structfield>flags2</structfield></entry>
-<entry> 		the bit mask flags to control transforms execution 
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>unsigned int <structfield>flags2</structfield></term>
+<listitem><simpara> 		the bit mask flags to control transforms execution 
 			(reserved for the future).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> <structfield>enabledUris</structfield></entry>
-<entry> 	the allowed transform data source uri types.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledTransforms</structfield></entry>
-<entry> 	the list of enabled transforms; if list is empty (default)
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> <structfield>enabledUris</structfield></term>
+<listitem><simpara> 	the allowed transform data source uri types.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledTransforms</structfield></term>
+<listitem><simpara> 	the list of enabled transforms; if list is empty (default)
 		then all registered transforms are enabled.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link> <structfield>preExecCallback</structfield></entry>
-<entry>	the callback called after preparing transform chain
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link> <structfield>preExecCallback</structfield></term>
+<listitem><simpara>	the callback called after preparing transform chain
 		and right before actual data processing; application
 		can use this callback to change transforms parameters,
 		insert additional transforms in the chain or do
 		additional validation (and abort transform execution 
 		if needed).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
-<entry>		the pointer to transforms result buffer.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></entry>
-<entry>		the transforms chain processng status.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>uri</structfield></entry>
-<entry>		the data source URI without xpointer expression.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>xptrExpr</structfield></entry>
-<entry>		the xpointer expression from data source URI (if any).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>first</structfield></entry>
-<entry>		the first transform in the chain.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>last</structfield></entry>
-<entry>		the last transform in the chain.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved0</structfield></entry>
-<entry>		reserved for the future.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved1</structfield></entry>
-<entry>		reserved for the future.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <structfield>result</structfield></term>
+<listitem><simpara>		the pointer to transforms result buffer.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></term>
+<listitem><simpara>		the transforms chain processng status.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>uri</structfield></term>
+<listitem><simpara>		the data source URI without xpointer expression.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>xptrExpr</structfield></term>
+<listitem><simpara>		the xpointer expression from data source URI (if any).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>first</structfield></term>
+<listitem><simpara>		the first transform in the chain.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>last</structfield></term>
+<listitem><simpara>		the last transform in the chain.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved0</structfield></term>
+<listitem><simpara>		reserved for the future.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>		reserved for the future.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCreate">xmlSecTransformCtxCreate ()</title>
 <programlisting><link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> xmlSecTransformCtxCreate
@@ -759,15 +733,11 @@ The caller is responsible for destroying returend object by calling
 <link linkend="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated context object or NULL if an error
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly allocated context object or NULL if an error
 occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxDestroy">xmlSecTransformCtxDestroy ()</title>
 <programlisting>void        xmlSecTransformCtxDestroy       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
@@ -775,15 +745,11 @@ occurs.
 Destroy context object created with <link linkend="xmlSecTransformCtxCreate">xmlSecTransformCtxCreate</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize ()</title>
 <programlisting>int         xmlSecTransformCtxInitialize    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
@@ -793,17 +759,13 @@ The caller is responsible for cleaing up returend object by calling
 <link linkend="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxFinalize">xmlSecTransformCtxFinalize ()</title>
 <programlisting>void        xmlSecTransformCtxFinalize      (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
@@ -811,15 +773,11 @@ The caller is responsible for cleaing up returend object by calling
 Cleans up <parameter>ctx</parameter> object initialized with <link linkend="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxReset">xmlSecTransformCtxReset ()</title>
 <programlisting>void        xmlSecTransformCtxReset         (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
@@ -827,15 +785,11 @@ Cleans up <parameter>ctx</parameter> object initialized with <link linkend="xmlS
 Resets transfroms context for new processing.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCopyUserPref">xmlSecTransformCtxCopyUserPref ()</title>
 <programlisting>int         xmlSecTransformCtxCopyUserPref  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> dst,
@@ -844,20 +798,16 @@ Resets transfroms context for new processing.</para>
 Copies user settings from <parameter>src</parameter> context to <parameter>dst</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
-<entry>		the pointer to destination transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
-<entry>		the pointer to source transforms chain processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to destination transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to source transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxSetUri">xmlSecTransformCtxSetUri ()</title>
 <programlisting>int         xmlSecTransformCtxSetUri        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -899,24 +849,20 @@ identifies a node-set containing the element with ID attribute value
 all descendents including namespaces and attributes -- but not comments.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>		the URI.
-</entry></row>
-<row><entry align="right"><parameter>hereNode</parameter>&nbsp;:</entry>
-<entry>		the pointer to "here" node required by some 
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>		the URI.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hereNode</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to "here" node required by some 
 		XML transforms (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxAppend">xmlSecTransformCtxAppend ()</title>
 <programlisting>int         xmlSecTransformCtxAppend        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -926,20 +872,16 @@ Connects the <parameter>transform</parameter> to the end of the chain of transfo
 (see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to new transform.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to new transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxPrepend">xmlSecTransformCtxPrepend ()</title>
 <programlisting>int         xmlSecTransformCtxPrepend       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -949,20 +891,16 @@ Connects the <parameter>transform</parameter> to the beggining of the chain of t
 (see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to new transform.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to new transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCreateAndAppend">xmlSecTransformCtxCreateAndAppend ()</title>
 <programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxCreateAndAppend
@@ -973,20 +911,16 @@ Creaeates new transform and connects it to the end of the chain of
 transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>			the new transform klass.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created transform or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>			the new transform klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created transform or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxCreateAndPrepend">xmlSecTransformCtxCreateAndPrepend ()</title>
 <programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxCreateAndPrepend
@@ -997,20 +931,16 @@ Creaeates new transform and connects it to the end of the chain of
 transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link> function for details).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>			the new transform klass.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created transform or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>			the new transform klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created transform or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxNodeRead">xmlSecTransformCtxNodeRead ()</title>
 <programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCtxNodeRead
@@ -1022,23 +952,19 @@ Reads the transform from the <parameter>node</parameter> and appends it to the c
 of transforms in <parameter>ctx</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform's node.
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>		the transform's usage (signature, encryption, etc.).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created transform or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform's node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>usage</parameter>&nbsp;:</term>
+<listitem><simpara>		the transform's usage (signature, encryption, etc.).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created transform or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxNodesListRead">xmlSecTransformCtxNodesListRead ()</title>
 <programlisting>int         xmlSecTransformCtxNodesListRead (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1049,23 +975,19 @@ Reads transforms from the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Tra
 appends them to the current transforms chain in <parameter>ctx</parameter> object.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> nodes parent node.
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>		the transform's usage (signature, encryption, etc.).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> nodes parent node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>usage</parameter>&nbsp;:</term>
+<listitem><simpara>		the transform's usage (signature, encryption, etc.).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxPrepare">xmlSecTransformCtxPrepare ()</title>
 <programlisting>int         xmlSecTransformCtxPrepare       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1074,20 +996,16 @@ appends them to the current transforms chain in <parameter>ctx</parameter> objec
 Prepares the transform context for processing data of <parameter>inputDataType</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>inputDataType</parameter>&nbsp;:</entry>
-<entry>	the expected input type.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>inputDataType</parameter>&nbsp;:</term>
+<listitem><simpara>	the expected input type.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxBinaryExecute">xmlSecTransformCtxBinaryExecute ()</title>
 <programlisting>int         xmlSecTransformCtxBinaryExecute (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1097,23 +1015,19 @@ Prepares the transform context for processing data of <parameter>inputDataType</
 Processes binary data using transforms chain in the <parameter>ctx</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the input binary data buffer.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the input data size.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the input binary data buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the input data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxUriExecute">xmlSecTransformCtxUriExecute ()</title>
 <programlisting>int         xmlSecTransformCtxUriExecute    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1122,20 +1036,16 @@ Processes binary data using transforms chain in the <parameter>ctx</parameter>.<
 Process binary data from the URI using transforms chain in <parameter>ctx</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>		the URI.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>		the URI.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxXmlExecute">xmlSecTransformCtxXmlExecute ()</title>
 <programlisting>int         xmlSecTransformCtxXmlExecute    (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1144,20 +1054,16 @@ Process binary data from the URI using transforms chain in <parameter>ctx</param
 Process <parameter>nodes</parameter> using transforms in the transforms chain in <parameter>ctx</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>		the input node set.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>		the input node set.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxExecute">xmlSecTransformCtxExecute ()</title>
 <programlisting>int         xmlSecTransformCtxExecute       (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1166,20 +1072,16 @@ Process <parameter>nodes</parameter> using transforms in the transforms chain in
 Executes transforms chain in <parameter>ctx</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry>		the pointer to input document.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to input document.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxDebugDump">xmlSecTransformCtxDebugDump ()</title>
 <programlisting>void        xmlSecTransformCtxDebugDump     (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1188,18 +1090,14 @@ Executes transforms chain in <parameter>ctx</parameter>.</para>
 Prints transforms context debug information to <parameter>output</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCtxDebugXmlDump">xmlSecTransformCtxDebugXmlDump ()</title>
 <programlisting>void        xmlSecTransformCtxDebugXmlDump  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
@@ -1208,18 +1106,14 @@ Prints transforms context debug information to <parameter>output</parameter>.</p
 Prints transforms context debug information to <parameter>output</parameter> in XML format.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transforms chain processing context.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transforms chain processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransform">struct xmlSecTransform</title>
 <programlisting>struct xmlSecTransform {
@@ -1249,72 +1143,68 @@ Prints transforms context debug information to <parameter>output</parameter> in 
 The transform structure.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>id</structfield></entry>
-<entry> 		the transform id (pointer to <link linkend="xmlSecTransformId">xmlSecTransformId</link>).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
-<entry>		the transform's opertaion.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></entry>
-<entry> 		the current status.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNode">xmlNodePtr</link> <structfield>hereNode</structfield></entry>
-<entry>		the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform ">&lt;dsig:Transform /&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>next</structfield></entry>
-<entry>		the pointer to next transform in the chain.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>prev</structfield></entry>
-<entry>		the pointer to previous transform in the chain.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecBuffer">xmlSecBuffer</link> <structfield>inBuf</structfield></entry>
-<entry>		the input binary data buffer.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecBuffer">xmlSecBuffer</link> <structfield>outBuf</structfield></entry>
-<entry>		the output binary data buffer.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <structfield>inNodes</structfield></entry>
-<entry>		the input XML nodes.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <structfield>outNodes</structfield></entry>
-<entry> 		the output XML nodes.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved0</structfield></entry>
-<entry>		reserved for the future.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved1</structfield></entry>
-<entry>		reserved for the future.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>id</structfield></term>
+<listitem><simpara> 		the transform id (pointer to <link linkend="xmlSecTransformId">xmlSecTransformId</link>).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></term>
+<listitem><simpara>		the transform's opertaion.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></term>
+<listitem><simpara> 		the current status.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>hereNode</structfield></term>
+<listitem><simpara>		the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform ">&lt;dsig:Transform /&gt;</ulink> node.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>next</structfield></term>
+<listitem><simpara>		the pointer to next transform in the chain.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>prev</structfield></term>
+<listitem><simpara>		the pointer to previous transform in the chain.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecBuffer">xmlSecBuffer</link> <structfield>inBuf</structfield></term>
+<listitem><simpara>		the input binary data buffer.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecBuffer">xmlSecBuffer</link> <structfield>outBuf</structfield></term>
+<listitem><simpara>		the output binary data buffer.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <structfield>inNodes</structfield></term>
+<listitem><simpara>		the input XML nodes.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> <structfield>outNodes</structfield></term>
+<listitem><simpara> 		the output XML nodes.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved0</structfield></term>
+<listitem><simpara>		reserved for the future.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>		reserved for the future.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCreate">xmlSecTransformCreate ()</title>
 <programlisting><link linkend="xmlSecTransform">xmlSecTransformPtr</link> xmlSecTransformCreate    (<link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
@@ -1323,17 +1213,13 @@ Creates new transform of the <parameter>id</parameter> klass. The caller is resp
 destroying returned tansform using <link linkend="xmlSecTransformDestroy">xmlSecTransformDestroy</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> 		the transform id to create.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created transform or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara> 		the transform id to create.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created transform or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDestroy">xmlSecTransformDestroy ()</title>
 <programlisting>void        xmlSecTransformDestroy          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
@@ -1341,15 +1227,11 @@ destroying returned tansform using <link linkend="xmlSecTransformDestroy">xmlSec
 Destroys transform created with <link linkend="xmlSecTransformCreate">xmlSecTransformCreate</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to transform.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeRead">xmlSecTransformNodeRead ()</title>
 <programlisting><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> xmlSecTransformNodeRead  (<link linkend="xmlNode">xmlNodePtr</link> node,
@@ -1371,23 +1253,19 @@ Reads transform from the <parameter>node</parameter> as follows:
    4) calls transform's read transform node method.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> 		the pointer to the transform's node.
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>		the transform usage (signature, encryption, ...).
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created transform or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to the transform's node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>usage</parameter>&nbsp;:</term>
+<listitem><simpara>		the transform usage (signature, encryption, ...).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created transform or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPump">xmlSecTransformPump ()</title>
 <programlisting>int         xmlSecTransformPump             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
@@ -1398,23 +1276,19 @@ Pops data from <parameter>left</parameter> transform and pushes to <parameter>ri
 no more data is available.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>left</parameter>&nbsp;:</entry>
-<entry>		the source pumping transform.
-</entry></row>
-<row><entry align="right"><parameter>right</parameter>&nbsp;:</entry>
-<entry>		the destination pumping transform.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>left</parameter>&nbsp;:</term>
+<listitem><simpara>		the source pumping transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>right</parameter>&nbsp;:</term>
+<listitem><simpara>		the destination pumping transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKey">xmlSecTransformSetKey ()</title>
 <programlisting>int         xmlSecTransformSetKey           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1423,20 +1297,16 @@ no more data is available.</para>
 Sets the transform's key.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> 		the pointer to key. 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to key. 
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKeyReq">xmlSecTransformSetKeyReq ()</title>
 <programlisting>int         xmlSecTransformSetKeyReq        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1445,20 +1315,16 @@ Sets the transform's key.</para>
 Sets the key requirements for <parameter>transform</parameter> in the <parameter>keyReq</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry> 		the pointer to keys requirements object. 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyReq</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys requirements object. 
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVerify">xmlSecTransformVerify ()</title>
 <programlisting>int         xmlSecTransformVerify           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1471,26 +1337,22 @@ Verifies the data with transform's processing results
 result is stored in the <link linkend="status">status</link> member of <link linkend="xmlSecTransform">xmlSecTransform</link> object.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the binary data for verification.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the data size.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the binary data for verification.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVerifyNodeContent">xmlSecTransformVerifyNodeContent ()</title>
 <programlisting>int         xmlSecTransformVerifyNodeContent
@@ -1502,23 +1364,19 @@ Gets the <parameter>node</parameter> content, base64 decodes it and calls <link 
 function to verify binary results.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to node.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformGetDataType">xmlSecTransformGetDataType ()</title>
 <programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> xmlSecTransformGetDataType
@@ -1530,23 +1388,19 @@ Gets transform input (<parameter>mode</parameter> is "push") or output (<paramet
 type (binary or XML).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>mode</parameter>&nbsp;:</entry>
-<entry>		the data mode (push or pop).
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the transform's data type for the <parameter>mode</parameter> operation.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara>		the data mode (push or pop).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the transform's data type for the <parameter>mode</parameter> operation.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushBin">xmlSecTransformPushBin ()</title>
 <programlisting>int         xmlSecTransformPushBin          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1558,30 +1412,26 @@ type (binary or XML).</para>
 Process binary <parameter>data</parameter> and pushes results to next transform.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the input binary data,
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the input data size.
-</entry></row>
-<row><entry align="right"><parameter>final</parameter>&nbsp;:</entry>
-<entry>		the flag: if set to 1 then it's the last
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the input binary data,
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the input data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>final</parameter>&nbsp;:</term>
+<listitem><simpara>		the flag: if set to 1 then it's the last
 		data chunk.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopBin">xmlSecTransformPopBin ()</title>
 <programlisting>int         xmlSecTransformPopBin           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1595,29 +1445,25 @@ returns result in the <parameter>data</parameter> buffer. The size of returned d
 placed in the <parameter>dataSize</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the buffer to store result data.
-</entry></row>
-<row><entry align="right"><parameter>maxDataSize</parameter>&nbsp;:</entry>
-<entry>	the size of the buffer <link linkend="data">data</link>.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the pointer to returned data size.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the buffer to store result data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>maxDataSize</parameter>&nbsp;:</term>
+<listitem><simpara>	the size of the buffer <link linkend="data">data</link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to returned data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushXml">xmlSecTransformPushXml ()</title>
 <programlisting>int         xmlSecTransformPushXml          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1627,23 +1473,19 @@ placed in the <parameter>dataSize</parameter>.</para>
 Processes <parameter>nodes</parameter> and pushes result to the next transform in the chain.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>		the input nodes.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>		the input nodes.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopXml">xmlSecTransformPopXml ()</title>
 <programlisting>int         xmlSecTransformPopXml           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1654,23 +1496,19 @@ Pops data from previous transform in the chain, processes the data and
 returns result in <parameter>nodes</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>		the pointer to store popinter to result nodes.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to store popinter to result nodes.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExecute">xmlSecTransformExecute ()</title>
 <programlisting>int         xmlSecTransformExecute          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1680,23 +1518,19 @@ returns result in <parameter>nodes</parameter>.</para>
 Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>last</parameter>&nbsp;:</entry>
-<entry>		the flag: if set to 1 then it's the last data chunk.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>last</parameter>&nbsp;:</term>
+<listitem><simpara>		the flag: if set to 1 then it's the last data chunk.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDebugDump">xmlSecTransformDebugDump ()</title>
 <programlisting>void        xmlSecTransformDebugDump        (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1705,18 +1539,14 @@ Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</par
 Prints transform's debug information to <parameter>output</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDebugXmlDump">xmlSecTransformDebugXmlDump ()</title>
 <programlisting>void        xmlSecTransformDebugXmlDump     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1725,18 +1555,14 @@ Prints transform's debug information to <parameter>output</parameter>.</para>
 Prints transform's debug information to <parameter>output</parameter> in XML format.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformGetName">xmlSecTransformGetName()</title>
 <programlisting>#define     xmlSecTransformGetName(transform)</programlisting>
@@ -1744,15 +1570,11 @@ Prints transform's debug information to <parameter>output</parameter> in XML for
 Macro. Returns transform name.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIsValid">xmlSecTransformIsValid()</title>
 <programlisting>#define     xmlSecTransformIsValid(transform)</programlisting>
@@ -1760,15 +1582,11 @@ Macro. Returns transform name.</para>
 Macro. Returns 1 if the <parameter>transform</parameter> is valid or 0 otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to transform.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCheckType">xmlSecTransformCheckType()</title>
 <programlisting>#define     xmlSecTransformCheckType(transform, t)</programlisting>
@@ -1777,18 +1595,14 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specif
 or 0 otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>t</parameter>&nbsp;:</entry>
-<entry> 			the transform type.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>t</parameter>&nbsp;:</term>
+<listitem><simpara> 			the transform type.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCheckId">xmlSecTransformCheckId()</title>
 <programlisting>#define     xmlSecTransformCheckId(transform, i)</programlisting>
@@ -1797,18 +1611,14 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specif
 or 0 otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>i</parameter>&nbsp;:</entry>
-<entry>			the transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&nbsp;:</term>
+<listitem><simpara>			the transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCheckSize">xmlSecTransformCheckSize()</title>
 <programlisting>#define     xmlSecTransformCheckSize(transform, size)</programlisting>
@@ -1817,18 +1627,14 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid and has at lea
 bytes or 0 otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> 		the transform object size.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara> 		the transform object size.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformConnect">xmlSecTransformConnect ()</title>
 <programlisting>int         xmlSecTransformConnect          (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> left,
@@ -1856,23 +1662,19 @@ and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>left</parameter>&nbsp;:</entry>
-<entry>		the pointer to left (prev) transform.
-</entry></row>
-<row><entry align="right"><parameter>right</parameter>&nbsp;:</entry>
-<entry>		the pointer to right (next) transform.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs. 
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>left</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to left (prev) transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>right</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to right (next) transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs. 
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRemove">xmlSecTransformRemove ()</title>
 <programlisting>void        xmlSecTransformRemove           (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
@@ -1880,15 +1682,11 @@ processing instructions. The output of this transform is an octet stream.</para>
 Removes <parameter>transform</parameter> from the chain.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecTransform">xmlSecTransform</link> structure.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> the pointer to <link linkend="xmlSecTransform">xmlSecTransform</link> structure.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultGetDataType">xmlSecTransformDefaultGetDataType ()</title>
 <programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> xmlSecTransformDefaultGetDataType
@@ -1901,23 +1699,19 @@ type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
 methods.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>mode</parameter>&nbsp;:</entry>
-<entry>		the data mode (push or pop).
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the transform's chaing processing context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the transform's data type for the <parameter>mode</parameter> operation.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara>		the data mode (push or pop).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform's chaing processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the transform's data type for the <parameter>mode</parameter> operation.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPushBin">xmlSecTransformDefaultPushBin ()</title>
 <programlisting>int         xmlSecTransformDefaultPushBin   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1930,30 +1724,26 @@ Process binary <parameter>data</parameter> by calling transform's execute method
 results to next transform.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the input binary data,
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the input data size.
-</entry></row>
-<row><entry align="right"><parameter>final</parameter>&nbsp;:</entry>
-<entry>		the flag: if set to 1 then it's the last
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the input binary data,
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the input data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>final</parameter>&nbsp;:</term>
+<listitem><simpara>		the flag: if set to 1 then it's the last
 		data chunk.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPopBin">xmlSecTransformDefaultPopBin ()</title>
 <programlisting>int         xmlSecTransformDefaultPopBin    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -1967,29 +1757,25 @@ transform's execute method and returns result in the <parameter>data</parameter>
 size of returned data is placed in the <parameter>dataSize</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the buffer to store result data.
-</entry></row>
-<row><entry align="right"><parameter>maxDataSize</parameter>&nbsp;:</entry>
-<entry>	the size of the buffer <link linkend="data">data</link>.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the pointer to returned data size.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the buffer to store result data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>maxDataSize</parameter>&nbsp;:</term>
+<listitem><simpara>	the size of the buffer <link linkend="data">data</link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to returned data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPushXml">xmlSecTransformDefaultPushXml ()</title>
 <programlisting>int         xmlSecTransformDefaultPushXml   (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2000,23 +1786,19 @@ Processes <parameter>nodes</parameter> by calling transform's execute method and
 result to the next transform in the chain.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>		the input nodes.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>		the input nodes.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDefaultPopXml">xmlSecTransformDefaultPopXml ()</title>
 <programlisting>int         xmlSecTransformDefaultPopXml    (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2027,23 +1809,19 @@ Pops data from previous transform in the chain, processes the data
 by calling transform's execute method and returns result in <parameter>nodes</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>		the pointer to store popinter to result nodes.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to store popinter to result nodes.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCreateOutputBuffer">xmlSecTransformCreateOutputBuffer ()</title>
 <programlisting><link linkend="xmlOutputBuffer">xmlOutputBufferPtr</link> xmlSecTransformCreateOutputBuffer
@@ -2053,20 +1831,16 @@ by calling transform's execute method and returns result in <parameter>nodes</pa
 Creates output buffer to write data to <parameter>transform</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to new output buffer or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to new output buffer or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformCreateInputBuffer">xmlSecTransformCreateInputBuffer ()</title>
 <programlisting><link linkend="xmlParserInputBuffer">xmlParserInputBufferPtr</link> xmlSecTransformCreateInputBuffer
@@ -2076,20 +1850,16 @@ Creates output buffer to write data to <parameter>transform</parameter>.</para>
 Creates input buffer to read data from <parameter>transform</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>	the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to new input buffer or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to new input buffer or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInitializeMethod">xmlSecTransformInitializeMethod ()</title>
 <programlisting>int         (*xmlSecTransformInitializeMethod)
@@ -2098,17 +1868,13 @@ Creates input buffer to read data from <parameter>transform</parameter>.</para>
 The transform specific initialization method.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformFinalizeMethod">xmlSecTransformFinalizeMethod ()</title>
 <programlisting>void        (*xmlSecTransformFinalizeMethod)
@@ -2117,15 +1883,11 @@ The transform specific initialization method.</para>
 The transform specific destroy method.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformGetDataTypeMethod">xmlSecTransformGetDataTypeMethod ()</title>
 <programlisting><link linkend="xmlSecTransformDataType">xmlSecTransformDataType</link> (*xmlSecTransformGetDataTypeMethod)
@@ -2137,23 +1899,19 @@ The transform specific method to query information about transform
 data type in specified mode <parameter>mode</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>mode</parameter>&nbsp;:</entry>
-<entry>			the mode.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>transform data type.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara>			the mode.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>transform data type.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeReadMethod">xmlSecTransformNodeReadMethod ()</title>
 <programlisting>int         (*xmlSecTransformNodeReadMethod)
@@ -2165,23 +1923,19 @@ The transform specific method to read the transform data from
 the <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformNodeWriteMethod">xmlSecTransformNodeWriteMethod ()</title>
 <programlisting>int         (*xmlSecTransformNodeWriteMethod)
@@ -2192,23 +1946,19 @@ the <parameter>node</parameter>.</para>
 The transform specific method to write transform information to an XML node <parameter>node</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements ()</title>
 <programlisting>int         (*xmlSecTransformSetKeyRequirements)
@@ -2218,20 +1968,16 @@ The transform specific method to write transform information to an XML node <par
 Transform specific method to set transform's key requirements.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>			the pointer to key requirements structure.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyReq</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to key requirements structure.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod ()</title>
 <programlisting>int         (*xmlSecTransformSetKeyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2240,20 +1986,16 @@ Transform specific method to set transform's key requirements.</para>
 The transform specific method to set the key for use.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> 			the pointer to key.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara> 			the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod ()</title>
 <programlisting>int         (*xmlSecTransformVerifyMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2267,26 +2009,22 @@ member of the <link linkend="xmlSecTransform">xmlSecTransform</link> structure t
 if verification succeeded or <link linkend="xmlSecTransformStatusFail">xmlSecTransformStatusFail</link> otherwise.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>			the input buffer.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>			the size of input buffer <parameter>data</parameter>.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>			the input buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>			the size of input buffer <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushBinMethod">xmlSecTransformPushBinMethod ()</title>
 <programlisting>int         (*xmlSecTransformPushBinMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2299,30 +2037,26 @@ The transform specific method to process data from <parameter>data</parameter> a
 result to the next transform in the chain.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>			the input binary data,
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>			the input data size.
-</entry></row>
-<row><entry align="right"><parameter>final</parameter>&nbsp;:</entry>
-<entry>			the flag: if set to 1 then it's the last
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>			the input binary data,
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>			the input data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>final</parameter>&nbsp;:</term>
+<listitem><simpara>			the flag: if set to 1 then it's the last
 			data chunk.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod ()</title>
 <programlisting>int         (*xmlSecTransformPopBinMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2336,29 +2070,25 @@ in the chain and return result in the <parameter>data</parameter> buffer. The si
 data is placed in the <parameter>dataSize</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>			the buffer to store result data.
-</entry></row>
-<row><entry align="right"><parameter>maxDataSize</parameter>&nbsp;:</entry>
-<entry>		the size of the buffer <parameter>data</parameter>.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>			the pointer to returned data size.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>			the buffer to store result data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>maxDataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the size of the buffer <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to returned data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPushXmlMethod">xmlSecTransformPushXmlMethod ()</title>
 <programlisting>int         (*xmlSecTransformPushXmlMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2369,23 +2099,19 @@ The transform specific method to process <parameter>nodes</parameter> and push r
 transform in the chain.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>			the input nodes.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>			the input nodes.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformPopXmlMethod">xmlSecTransformPopXmlMethod ()</title>
 <programlisting>int         (*xmlSecTransformPopXmlMethod)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2396,23 +2122,19 @@ The transform specific method to pop data from previous transform in the chain,
 process the data and return result in <parameter>nodes</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>			the pointer to store popinter to result nodes.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodes</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to store popinter to result nodes.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod ()</title>
 <programlisting>int         (*xmlSecTransformExecuteMethod) (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2422,23 +2144,19 @@ process the data and return result in <parameter>nodes</parameter>.</para>
 Transform specific method to process a chunk of data.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>			the pointer to transform object.
-</entry></row>
-<row><entry align="right"><parameter>last</parameter>&nbsp;:</entry>
-<entry>			the flag: if set to 1 then it's the last data chunk.
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform context object.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>			the pointer to transform object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>last</parameter>&nbsp;:</term>
+<listitem><simpara>			the flag: if set to 1 then it's the last data chunk.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform context object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKlass">struct xmlSecTransformKlass</title>
 <programlisting>struct xmlSecTransformKlass {
@@ -2478,113 +2196,109 @@ Transform specific method to process a chunk of data.</para>
 The transform klass desccription structure.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></entry>
-<entry>			the transform klass structure size.
-</entry>
-</row>
-<row>
-<entry><link linkend="size-t">size_t</link> <structfield>objSize</structfield></entry>
-<entry>			the transform object size.
-</entry>
-</row>
-<row>
-<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
-<entry>			the transform's name.
-</entry>
-</row>
-<row>
-<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>href</structfield></entry>
-<entry>			the transform's identification string (href).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> <structfield>usage</structfield></entry>
-<entry>			the allowed transforms usages.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformInitializeMethod">xmlSecTransformInitializeMethod</link> <structfield>initialize</structfield></entry>
-<entry>			the initialization method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformFinalizeMethod">xmlSecTransformFinalizeMethod</link> <structfield>finalize</structfield></entry>
-<entry>			the finmalization (destroy) function.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformNodeReadMethod">xmlSecTransformNodeReadMethod</link> <structfield>readNode</structfield></entry>
-<entry>			the XML node read method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformNodeWriteMethod">xmlSecTransformNodeWriteMethod</link> <structfield>writeNode</structfield></entry>
-<entry>			the XML node write method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements</link> <structfield>setKeyReq</structfield></entry>
-<entry>			the set key requirements method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod</link> <structfield>setKey</structfield></entry>
-<entry>			the set key method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod</link> <structfield>verify</structfield></entry>
-<entry>			the verify method (for digest and signature transforms).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformGetDataTypeMethod">xmlSecTransformGetDataTypeMethod</link> <structfield>getDataType</structfield></entry>
-<entry>		the input/output data type query method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPushBinMethod">xmlSecTransformPushBinMethod</link> <structfield>pushBin</structfield></entry>
-<entry>			the binary data "push thru chain" processing method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod</link> <structfield>popBin</structfield></entry>
-<entry>			the binary data "pop from chain" procesing method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPushXmlMethod">xmlSecTransformPushXmlMethod</link> <structfield>pushXml</structfield></entry>
-<entry>			the XML data "push thru chain" processing method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPopXmlMethod">xmlSecTransformPopXmlMethod</link> <structfield>popXml</structfield></entry>
-<entry>			the XML data "pop from chain" procesing method.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod</link> <structfield>execute</structfield></entry>
-<entry>			the low level data processing method used  by default
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></term>
+<listitem><simpara>			the transform klass structure size.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="size-t">size_t</link> <structfield>objSize</structfield></term>
+<listitem><simpara>			the transform object size.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></term>
+<listitem><simpara>			the transform's name.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>href</structfield></term>
+<listitem><simpara>			the transform's identification string (href).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> <structfield>usage</structfield></term>
+<listitem><simpara>			the allowed transforms usages.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformInitializeMethod">xmlSecTransformInitializeMethod</link> <structfield>initialize</structfield></term>
+<listitem><simpara>			the initialization method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformFinalizeMethod">xmlSecTransformFinalizeMethod</link> <structfield>finalize</structfield></term>
+<listitem><simpara>			the finmalization (destroy) function.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformNodeReadMethod">xmlSecTransformNodeReadMethod</link> <structfield>readNode</structfield></term>
+<listitem><simpara>			the XML node read method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformNodeWriteMethod">xmlSecTransformNodeWriteMethod</link> <structfield>writeNode</structfield></term>
+<listitem><simpara>			the XML node write method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements</link> <structfield>setKeyReq</structfield></term>
+<listitem><simpara>			the set key requirements method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod</link> <structfield>setKey</structfield></term>
+<listitem><simpara>			the set key method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod</link> <structfield>verify</structfield></term>
+<listitem><simpara>			the verify method (for digest and signature transforms).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformGetDataTypeMethod">xmlSecTransformGetDataTypeMethod</link> <structfield>getDataType</structfield></term>
+<listitem><simpara>		the input/output data type query method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformPushBinMethod">xmlSecTransformPushBinMethod</link> <structfield>pushBin</structfield></term>
+<listitem><simpara>			the binary data "push thru chain" processing method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod</link> <structfield>popBin</structfield></term>
+<listitem><simpara>			the binary data "pop from chain" procesing method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformPushXmlMethod">xmlSecTransformPushXmlMethod</link> <structfield>pushXml</structfield></term>
+<listitem><simpara>			the XML data "push thru chain" processing method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformPopXmlMethod">xmlSecTransformPopXmlMethod</link> <structfield>popXml</structfield></term>
+<listitem><simpara>			the XML data "pop from chain" procesing method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod</link> <structfield>execute</structfield></term>
+<listitem><simpara>			the low level data processing method used  by default
 			implementations of <parameter>pushBin</parameter>, <parameter>popBin</parameter>, <parameter>pushXml</parameter> and <parameter>popXml</parameter>.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved0</structfield></entry>
-<entry>			reserved for the future.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved1</structfield></entry>
-<entry>			reserved for the future.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved0</structfield></term>
+<listitem><simpara>			reserved for the future.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>			reserved for the future.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformKlassGetName">xmlSecTransformKlassGetName()</title>
 <programlisting>#define     xmlSecTransformKlassGetName(klass)</programlisting>
@@ -2592,15 +2306,11 @@ The transform klass desccription structure.</para>
 Macro. Returns transform klass name.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
-<entry> 		the transofrm's klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>klass</parameter>&nbsp;:</term>
+<listitem><simpara> 		the transofrm's klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListId">xmlSecTransformIdListId</title>
 <programlisting>#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()
@@ -2618,14 +2328,10 @@ Transform klasses list klass.</para>
 The transform id list klass.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the transform id list klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the transform id list klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListFind">xmlSecTransformIdListFind ()</title>
 <programlisting>int         xmlSecTransformIdListFind       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
@@ -2634,21 +2340,17 @@ The transform id list klass.</para>
 Lookups <parameter>dataId</parameter> in <parameter>list</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform ids list.
-</entry></row>
-<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
-<entry>	the transform klass.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if <parameter>dataId</parameter> is found in the <parameter>list</parameter>, 0 if not and a negative
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform ids list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
+<listitem><simpara>	the transform klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>1 if <parameter>dataId</parameter> is found in the <parameter>list</parameter>, 0 if not and a negative
 value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListFindByHref">xmlSecTransformIdListFindByHref ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformIdListFindByHref
@@ -2659,23 +2361,19 @@ value if an error occurs.
 Lookups data klass in the list with given <parameter>href</parameter> and <parameter>usage</parameter> in <parameter>list</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform ids list.
-</entry></row>
-<row><entry align="right"><parameter>href</parameter>&nbsp;:</entry>
-<entry>		the desired transform klass href.
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>		the desired transform usage.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>transform klass is found and NULL otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform ids list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>href</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired transform klass href.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>usage</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired transform usage.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>transform klass is found and NULL otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListFindByName">xmlSecTransformIdListFindByName ()</title>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformIdListFindByName
@@ -2686,23 +2384,19 @@ Lookups data klass in the list with given <parameter>href</parameter> and <param
 Lookups data klass in the list with given <parameter>name</parameter> and <parameter>usage</parameter> in <parameter>list</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform ids list.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>		the desired transform klass name.
-</entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>		the desired transform usage.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>transform klass is found and NULL otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform ids list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired transform klass name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>usage</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired transform usage.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>transform klass is found and NULL otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListDebugDump">xmlSecTransformIdListDebugDump ()</title>
 <programlisting>void        xmlSecTransformIdListDebugDump  (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
@@ -2711,18 +2405,14 @@ Lookups data klass in the list with given <parameter>name</parameter> and <param
 Prints binary transform debug information to <parameter>output</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform ids list.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform ids list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdListDebugXmlDump">xmlSecTransformIdListDebugXmlDump ()</title>
 <programlisting>void        xmlSecTransformIdListDebugXmlDump
@@ -2732,18 +2422,14 @@ Prints binary transform debug information to <parameter>output</parameter>.</par
 Prints binary transform debug information to <parameter>output</parameter> in XML format.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>		the pointer to transform ids list.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to transform ids list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</title>
 <programlisting>#define xmlSecTransformIdUnknown			NULL
@@ -2774,14 +2460,10 @@ useful if an application needs to sign the raw data associated with
 the encoded content of an element.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>base64 transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>base64 transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformBase64SetLineSize">xmlSecTransformBase64SetLineSize ()</title>
 <programlisting>void        xmlSecTransformBase64SetLineSize
@@ -2791,18 +2473,14 @@ the encoded content of an element.</para>
 Sets the max line size to <parameter>lineSize</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> 		the pointer to BASE64 encode transform.
-</entry></row>
-<row><entry align="right"><parameter>lineSize</parameter>&nbsp;:</entry>
-<entry> 		the new max line size.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to BASE64 encode transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>lineSize</parameter>&nbsp;:</term>
+<listitem><simpara> 		the new max line size.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInclC14NId">xmlSecTransformInclC14NId</title>
 <programlisting>#define     xmlSecTransformInclC14NId</programlisting>
@@ -2821,14 +2499,10 @@ Inclusive (regular) canonicalization that omits comments transform klass
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>c14n transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>c14n transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInclC14NWithCommentsId">xmlSecTransformInclC14NWithCommentsId</title>
 <programlisting>#define     xmlSecTransformInclC14NWithCommentsId</programlisting>
@@ -2847,14 +2521,10 @@ Inclusive (regular) canonicalization that includes comments transform klass
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>c14n with comments transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>c14n with comments transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExclC14NId">xmlSecTransformExclC14NId</title>
 <programlisting>#define     xmlSecTransformExclC14NId</programlisting>
@@ -2872,14 +2542,10 @@ Exclusive canoncicalization that ommits comments transform klass
 (http://www.w3.org/TR/xml-exc-c14n/).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>exclusive c14n transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>exclusive c14n transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformExclC14NWithCommentsId">xmlSecTransformExclC14NWithCommentsId</title>
 <programlisting>#define     xmlSecTransformExclC14NWithCommentsId</programlisting>
@@ -2897,14 +2563,10 @@ Exclusive canoncicalization that includes comments transform klass
 (http://www.w3.org/TR/xml-exc-c14n/).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>exclusive c14n with comments transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>exclusive c14n with comments transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformEnvelopedId">xmlSecTransformEnvelopedId</title>
 <programlisting>#define     xmlSecTransformEnvelopedId</programlisting>
@@ -2943,14 +2605,10 @@ MUST produce output in exactly the same manner as the XPath transform
 parameterized by the XPath expression above.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>enveloped transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>enveloped transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPathId">xmlSecTransformXPathId</title>
 <programlisting>#define     xmlSecTransformXPathId</programlisting>
@@ -2969,14 +2627,10 @@ intersects the result with the previous nodes set. See
 http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for more details.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XPath transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>XPath transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPath2Id">xmlSecTransformXPath2Id</title>
 <programlisting>#define     xmlSecTransformXPath2Id</programlisting>
@@ -2993,14 +2647,10 @@ The XPath2 transform klass.</para>
 The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XPath2 transform klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>XPath2 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPointerId">xmlSecTransformXPointerId</title>
 <programlisting>#define     xmlSecTransformXPointerId</programlisting>
@@ -3018,14 +2668,10 @@ The XPointer transform klass
 (http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XPointer transform klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>XPointer transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPointerSetExpr">xmlSecTransformXPointerSetExpr ()</title>
 <programlisting>int         xmlSecTransformXPointerSetExpr  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -3036,26 +2682,22 @@ The XPointer transform klass
 Sets the XPointer expression for an XPointer <parameter>transform</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>		the pointer to XPointer transform.
-</entry></row>
-<row><entry align="right"><parameter>expr</parameter>&nbsp;:</entry>
-<entry>		the XPointer expression.
-</entry></row>
-<row><entry align="right"><parameter>nodeSetType</parameter>&nbsp;:</entry>
-<entry>	the type of evaluated XPointer expression.
-</entry></row>
-<row><entry align="right"><parameter>hereNode</parameter>&nbsp;:</entry>
-<entry>		the pointer to "here" node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to XPointer transform.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>expr</parameter>&nbsp;:</term>
+<listitem><simpara>		the XPointer expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nodeSetType</parameter>&nbsp;:</term>
+<listitem><simpara>	the type of evaluated XPointer expression.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hereNode</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to "here" node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXsltId">xmlSecTransformXsltId</title>
 <programlisting>#define     xmlSecTransformXsltId</programlisting>
@@ -3100,14 +2742,10 @@ that support the XSLT transform. Note that if the output is actually HTML,
 then the result of these steps is logically equivalent [XHTML].</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to XSLT transform klass.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to XSLT transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformRemoveXmlTagsC14NId">xmlSecTransformRemoveXmlTagsC14NId</title>
 <programlisting>#define     xmlSecTransformRemoveXmlTagsC14NId</programlisting>
@@ -3134,14 +2772,10 @@ and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>"remove xml tags" transform id.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>"remove xml tags" transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

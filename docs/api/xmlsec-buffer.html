@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-BUFFER"></a>buffer</h1>
 <div class="REFNAMEDIV">
-<a name="AEN725"></a><h2>Name</h2>buffer -- </div>
+<a name="AEN720"></a><h2>Name</h2>buffer -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN728"></a><h2>Synopsis</h2>
+<a name="AEN723"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a>;
@@ -88,13 +88,13 @@ int         <a href="xmlsec-buffer.html#XMLSECBUFFERBASE64NODECONTENTWRITE">xmlS
                                             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN786"></a><h2>Description</h2>
+<a name="AEN781"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN789"></a><h2>Details</h2>
+<a name="AEN784"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN791"></a><h3>
+<a name="AEN786"></a><h3>
 <a name="XMLSECALLOCMODE"></a>enum xmlSecAllocMode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlSecAllocModeExact = 0,
@@ -102,26 +102,23 @@ int         <a href="xmlsec-buffer.html#XMLSECBUFFERBASE64NODECONTENTWRITE">xmlS
 } xmlSecAllocMode;</pre></td></tr></table>
 <p>The memory allocation mode (used by <tt class="PARAMETER"><i>xmlSecBuffer</i></tt> and <tt class="PARAMETER"><i>xmlSecList</i></tt>).</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN799"></a><p></p>
-<table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#F0F0D0"><tbody>
 <tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecAllocModeExact</tt></td>
-<td width="80%" align="LEFT" valign="TOP"> 	the memory allocation mode that minimizes total 
-			allocated memory size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN795"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecAllocModeExact</tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 	the memory allocation mode that minimizes total 
+			allocated memory size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecAllocModeDouble</tt></td>
-<td width="80%" align="LEFT" valign="TOP">	the memory allocation mode that tries to minimize
-			the number of malloc calls.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN800"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecAllocModeDouble</tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the memory allocation mode that tries to minimize
+			the number of malloc calls.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN812"></a><h3>
+<a name="AEN805"></a><h3>
 <a name="XMLSECBUFFER"></a>struct xmlSecBuffer</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecBuffer {
     unsigned char* 	data;
@@ -131,475 +128,377 @@ int         <a href="xmlsec-buffer.html#XMLSECBUFFERBASE64NODECONTENTWRITE">xmlS
 };</pre></td></tr></table>
 <p>Binary data buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN818"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFF0D0"><tbody>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">unsigned char *<tt class="STRUCTFIELD"><i>data</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to buffer data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN812"><span style="white-space: nowrap">unsigned char *<tt class="STRUCTFIELD"><i>data</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the pointer to buffer data.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>size_t</font> <tt class="STRUCTFIELD"><i>size</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the current data size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN817"><span style="white-space: nowrap"><font>size_t</font> <tt class="STRUCTFIELD"><i>size</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the current data size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<font>size_t</font> <tt class="STRUCTFIELD"><i>maxSize</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the max data size (allocated buffer size).</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN823"><span style="white-space: nowrap"><font>size_t</font> <tt class="STRUCTFIELD"><i>maxSize</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the max data size (allocated buffer size).</p></td>
 </tr>
 <tr>
-<td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> <tt class="STRUCTFIELD"><i>allocMode</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> the buffer memory allocation mode.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN829"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> <tt class="STRUCTFIELD"><i>allocMode</i></tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> the buffer memory allocation mode.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN842"></a><h3>
+<a name="AEN835"></a><h3>
 <a name="XMLSECBUFFERSETDEFAULTALLOCMODE"></a>xmlSecBufferSetDefaultAllocMode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBufferSetDefaultAllocMode (<a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> defAllocMode,
                                              <font>size_t</font> defInitialSize);</pre></td></tr></table>
 <p>Sets new global default allocation mode and minimal intial size.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN850"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>defAllocMode</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">	the new default buffer allocation mode.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN844"><span style="white-space: nowrap"><tt class="PARAMETER"><i>defAllocMode</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the new default buffer allocation mode.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>defInitialSize</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">	the new default buffer minimal intial size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN849"><span style="white-space: nowrap"><tt class="PARAMETER"><i>defInitialSize</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the new default buffer minimal intial size.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN863"></a><h3>
+<a name="AEN854"></a><h3>
 <a name="XMLSECBUFFERCREATE"></a>xmlSecBufferCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> xmlSecBufferCreate          (<font>size_t</font> size);</pre></td></tr></table>
 <p>Allocates and initalizes new memory buffer with given size.
 Caller is responsible for calling <a href="xmlsec-buffer.html#XMLSECBUFFERDESTROY">xmlSecBufferDestroy</a> function
 to free the buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN872"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> 		the intial size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN864"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the intial size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly allocated buffer or NULL if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN869"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to newly allocated buffer or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN885"></a><h3>
+<a name="AEN874"></a><h3>
 <a name="XMLSECBUFFERDESTROY"></a>xmlSecBufferDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBufferDestroy             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Desrtoys buffer object created with <a href="xmlsec-buffer.html#XMLSECBUFFERCREATE">xmlSecBufferCreate</a> function.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN893"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN883"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN902"></a><h3>
+<a name="AEN888"></a><h3>
 <a name="XMLSECBUFFERINITIALIZE"></a>xmlSecBufferInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferInitialize          (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Initializes buffer object <tt class="PARAMETER"><i>buf</i></tt>. Caller is responsible for calling
 <a href="xmlsec-buffer.html#XMLSECBUFFERFINALIZE">xmlSecBufferFinalize</a> function to free allocated resources.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN912"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN899"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the initial buffer size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN904"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the initial buffer size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN909"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN929"></a><h3>
+<a name="AEN914"></a><h3>
 <a name="XMLSECBUFFERFINALIZE"></a>xmlSecBufferFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBufferFinalize            (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Frees allocated resource for a buffer intialized with <a href="xmlsec-buffer.html#XMLSECBUFFERINITIALIZE">xmlSecBufferInitialize</a>
 function.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN937"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN923"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN946"></a><h3>
+<a name="AEN928"></a><h3>
 <a name="XMLSECBUFFERGETDATA"></a>xmlSecBufferGetData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">unsigned char* xmlSecBufferGetData          (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Gets pointer to buffer's data.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN953"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN936"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to buffer's data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN941"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to buffer's data.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN966"></a><h3>
+<a name="AEN946"></a><h3>
 <a name="XMLSECBUFFERSETDATA"></a>xmlSecBufferSetData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferSetData             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              unsigned char *data,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Sets the value of the buffer to <tt class="PARAMETER"><i>data</i></tt>.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN975"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN956"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN961"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the data.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the data size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN966"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the data size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN971"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN996"></a><h3>
+<a name="AEN976"></a><h3>
 <a name="XMLSECBUFFERGETSIZE"></a>xmlSecBufferGetSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecBufferGetSize             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Gets the current buffer data size.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1004"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN985"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the current data size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN990"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the current data size.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1017"></a><h3>
+<a name="AEN995"></a><h3>
 <a name="XMLSECBUFFERSETSIZE"></a>xmlSecBufferSetSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferSetSize             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Sets new buffer data size. If necessary, buffer grows to 
 have at least <tt class="PARAMETER"><i>size</i></tt> bytes.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1026"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1005"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new data size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1010"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new data size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1015"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1043"></a><h3>
+<a name="AEN1020"></a><h3>
 <a name="XMLSECBUFFERGETMAXSIZE"></a>xmlSecBufferGetMaxSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecBufferGetMaxSize          (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Gets the maximum (allocated) buffer size.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1051"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1029"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">the maximum (allocated) buffer size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1034"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the maximum (allocated) buffer size.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1064"></a><h3>
+<a name="AEN1039"></a><h3>
 <a name="XMLSECBUFFERSETMAXSIZE"></a>xmlSecBufferSetMaxSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferSetMaxSize          (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Sets new buffer maximum size. If necessary, buffer grows to 
 have at least <tt class="PARAMETER"><i>size</i></tt> bytes.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1073"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1049"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the new maximum size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1054"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the new maximum size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1059"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1090"></a><h3>
+<a name="AEN1064"></a><h3>
 <a name="XMLSECBUFFEREMPTY"></a>xmlSecBufferEmpty ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBufferEmpty               (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Empties the buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1097"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
-</tr></tbody></table>
 <p></p>
-</div>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1072"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
+</tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1106"></a><h3>
+<a name="AEN1077"></a><h3>
 <a name="XMLSECBUFFERAPPEND"></a>xmlSecBufferAppend ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferAppend              (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              unsigned char *data,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Appends the <tt class="PARAMETER"><i>data</i></tt> after the current data stored in the buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1115"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1087"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1092"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the data.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the data size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1097"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the data size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1102"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1136"></a><h3>
+<a name="AEN1107"></a><h3>
 <a name="XMLSECBUFFERPREPEND"></a>xmlSecBufferPrepend ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferPrepend             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              unsigned char *data,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Prepends the <tt class="PARAMETER"><i>data</i></tt> before the current data stored in the buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1145"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1117"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1122"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the data.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the data size.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1127"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the data size.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1132"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1166"></a><h3>
+<a name="AEN1137"></a><h3>
 <a name="XMLSECBUFFERREMOVEHEAD"></a>xmlSecBufferRemoveHead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferRemoveHead          (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Removes <tt class="PARAMETER"><i>size</i></tt> bytes from the beginning of the current buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1175"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1147"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the number of bytes to be removed.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1152"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the number of bytes to be removed.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1157"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1192"></a><h3>
+<a name="AEN1162"></a><h3>
 <a name="XMLSECBUFFERREMOVETAIL"></a>xmlSecBufferRemoveTail ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferRemoveTail          (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                              <font>size_t</font> size);</pre></td></tr></table>
 <p>Removes <tt class="PARAMETER"><i>size</i></tt> bytes from the end of current buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1201"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1172"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>size</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the number of bytes to be removed.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1177"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the number of bytes to be removed.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1182"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1218"></a><h3>
+<a name="AEN1187"></a><h3>
 <a name="XMLSECBUFFERBASE64NODECONTENTREAD"></a>xmlSecBufferBase64NodeContentRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferBase64NodeContentRead
                                             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
@@ -607,31 +506,25 @@ have at least <tt class="PARAMETER"><i>size</i></tt> bytes.</p>
 <p>Reads the content of the <tt class="PARAMETER"><i>node</i></tt>, base64 decodes it and stores the
 result in the buffer.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1227"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1197"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to node.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1202"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to node.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1207"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1244"></a><h3>
+<a name="AEN1212"></a><h3>
 <a name="XMLSECBUFFERBASE64NODECONTENTWRITE"></a>xmlSecBufferBase64NodeContentWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBufferBase64NodeContentWrite
                                             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
@@ -639,59 +532,47 @@ result in the buffer.</p>
                                              int columns);</pre></td></tr></table>
 <p>Sets the content of the <tt class="PARAMETER"><i>node</i></tt> to the base64 encoded buffer data.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1253"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer object.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1222"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer object.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to a node.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1227"><span style="white-space: nowrap"><tt class="PARAMETER"><i>node</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to a node.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>columns</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the max line size fro base64 encoded data.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1232"><span style="white-space: nowrap"><tt class="PARAMETER"><i>columns</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the max line size fro base64 encoded data.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value if an error occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1237"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1274"></a><h3>
+<a name="AEN1242"></a><h3>
 <a name="XMLSECBUFFERCREATEOUTPUTBUFFER"></a>xmlSecBufferCreateOutputBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlOutputBufferPtr</font> xmlSecBufferCreateOutputBuffer
                                             (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre></td></tr></table>
 <p>Creates new LibXML output buffer to store data in the <tt class="PARAMETER"><i>buf</i></tt>. Caller is 
 responsible for destroying <tt class="PARAMETER"><i>buf</i></tt> when processing is done.</p>
 <p></p>
-<div class="INFORMALTABLE">
-<a name="AEN1284"></a><p></p>
-<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<tt class="PARAMETER"><i>buf</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to buffer.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1253"><span style="white-space: nowrap"><tt class="PARAMETER"><i>buf</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to buffer.</p></td>
 </tr>
 <tr>
-<td width="20%" align="RIGHT" valign="TOP">
-<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly allocated output buffer or NULL if an error
-occurs.</td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1258"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to newly allocated output buffer or NULL if an error
+occurs.</p></td>
 </tr>
 </tbody></table>
-<p></p>
-</div>
 </div>
 </div>
 <div class="NAVFOOTER">

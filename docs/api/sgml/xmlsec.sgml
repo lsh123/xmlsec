@@ -24,6 +24,8 @@ int         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -41,14 +43,10 @@ Initializes XML Security Library. The depended libraries
 (LibXML and LibXSLT) must be initialized before.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecShutdown">xmlSecShutdown ()</title>
 <programlisting>int         xmlSecShutdown                  (void);</programlisting>
@@ -56,14 +54,10 @@ Initializes XML Security Library. The depended libraries
 Clean ups the XML Security Library.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</title>
 <programlisting>#define     ATTRIBUTE_UNUSED</programlisting>

@@ -49,6 +49,8 @@ void        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</l
 
 
 
+
+
 <refsect1>
 <title>Description</title>
 <para>
@@ -69,22 +71,18 @@ void        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</l
 The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="enum">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><literal>xmlEncCtxModeEncryptedData</literal></entry>
-<entry>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element procesing.
-</entry>
-</row>
-<row>
-<entry><literal>xmlEncCtxModeEncryptedKey</literal></entry>
-<entry>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="enum">
+<varlistentry>
+<term><literal>xmlEncCtxModeEncryptedData</literal></term>
+<listitem><simpara>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element procesing.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlEncCtxModeEncryptedKey</literal></term>
+<listitem><simpara>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
 <programlisting>struct xmlSecEncCtx {
@@ -129,151 +127,147 @@ The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
 XML Encrypiton context.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry>void *<structfield>userData</structfield></entry>
-<entry>			the pointer to user data (xmlsec and xmlsec-crypto libraries
+</para><variablelist role="struct">
+<varlistentry>
+<term>void *<structfield>userData</structfield></term>
+<listitem><simpara>			the pointer to user data (xmlsec and xmlsec-crypto libraries
 			never touches this).
-</entry>
-</row>
-<row>
-<entry>unsigned int <structfield>flags</structfield></entry>
-<entry>			the XML Encryption processing flags.
-</entry>
-</row>
-<row>
-<entry>unsigned int <structfield>flags2</structfield></entry>
-<entry>			the XML Encryption processing flags.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlEncCtxMode">xmlEncCtxMode</link> <structfield>mode</structfield></entry>
-<entry>			the mode.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoReadCtx</structfield></entry>
-<entry>		the reading key context.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoWriteCtx</structfield></entry>
-<entry>		the writing key context (not used for signature verification).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>transformCtx</structfield></entry>
-<entry>		the transforms processing context.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>defEncMethodId</structfield></entry>
-<entry>		the default encryption method (used if
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>unsigned int <structfield>flags</structfield></term>
+<listitem><simpara>			the XML Encryption processing flags.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>unsigned int <structfield>flags2</structfield></term>
+<listitem><simpara>			the XML Encryption processing flags.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlEncCtxMode">xmlEncCtxMode</link> <structfield>mode</structfield></term>
+<listitem><simpara>			the mode.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoReadCtx</structfield></term>
+<listitem><simpara>		the reading key context.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoWriteCtx</structfield></term>
+<listitem><simpara>		the writing key context (not used for signature verification).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>transformCtx</structfield></term>
+<listitem><simpara>		the transforms processing context.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>defEncMethodId</structfield></term>
+<listitem><simpara>		the default encryption method (used if
 			<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node is not present).
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKey">xmlSecKeyPtr</link> <structfield>encKey</structfield></entry>
-<entry>			the signature key; application may set <link linkend="encKey">encKey</link>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecKey">xmlSecKeyPtr</link> <structfield>encKey</structfield></term>
+<listitem><simpara>			the signature key; application may set <link linkend="encKey">encKey</link>
 			before calling encryption/decryption functions.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
-<entry>			the operation: encrypt or decrypt.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
-<entry>			the pointer to signature (not valid for signature verificaction).
-</entry>
-</row>
-<row>
-<entry>int <structfield>resultBase64Encoded</structfield></entry>
-<entry>	the flag: if set then result in <link linkend="result">result</link> is base64 encoded.
-</entry>
-</row>
-<row>
-<entry>int <structfield>resultReplaced</structfield></entry>
-<entry>		the flag: if set then resulted <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></term>
+<listitem><simpara>			the operation: encrypt or decrypt.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <structfield>result</structfield></term>
+<listitem><simpara>			the pointer to signature (not valid for signature verificaction).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>int <structfield>resultBase64Encoded</structfield></term>
+<listitem><simpara>	the flag: if set then result in <link linkend="result">result</link> is base64 encoded.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>int <structfield>resultReplaced</structfield></term>
+<listitem><simpara>		the flag: if set then resulted <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node is added to the document.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>encMethod</structfield></entry>
-<entry>			the pointer to encryption transform.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry>				the ID attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>encMethod</structfield></term>
+<listitem><simpara>			the pointer to encryption transform.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></term>
+<listitem><simpara>				the ID attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></entry>
-<entry>			the Type attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></term>
+<listitem><simpara>			the Type attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>mimeType</structfield></entry>
-<entry>			the MimeType attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>mimeType</structfield></term>
+<listitem><simpara>			the MimeType attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>encoding</structfield></entry>
-<entry>			the Encoding attributeof <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>encoding</structfield></term>
+<listitem><simpara>			the Encoding attributeof <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node. 
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>recipient</structfield></entry>
-<entry>			the Recipient attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node..
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>carriedKeyName</structfield></entry>
-<entry>		the CarriedKeyName attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNode">xmlNodePtr</link> <structfield>encDataNode</structfield></entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>recipient</structfield></term>
+<listitem><simpara>			the Recipient attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node..
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>carriedKeyName</structfield></term>
+<listitem><simpara>		the CarriedKeyName attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>encDataNode</structfield></term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
 			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNode">xmlNodePtr</link> <structfield>encMethodNode</structfield></entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNode">xmlNodePtr</link> <structfield>keyInfoNode</structfield></entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyInfo">&lt;enc:KeyInfo/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNode">xmlNodePtr</link> <structfield>cipherValueNode</structfield></entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved0</structfield></entry>
-<entry>			reserved for the future.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>reserved1</structfield></entry>
-<entry>			reserved for the future.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>encMethodNode</structfield></term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>keyInfoNode</structfield></term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyInfo">&lt;enc:KeyInfo/&gt;</ulink> node.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>cipherValueNode</structfield></term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved0</structfield></term>
+<listitem><simpara>			reserved for the future.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>			reserved for the future.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCreate">xmlSecEncCtxCreate ()</title>
 <programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
@@ -283,18 +277,14 @@ The caller is responsible for destroying returend object by calling
 <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry> 		the pointer to keys manager.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated context object or NULL if an error
+</para><variablelist role="params">
+<varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly allocated context object or NULL if an error
 occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy ()</title>
 <programlisting>void        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
@@ -302,15 +292,11 @@ occurs.
 Destroy context object created with <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxInitialize">xmlSecEncCtxInitialize ()</title>
 <programlisting>int         xmlSecEncCtxInitialize          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -321,20 +307,16 @@ The caller is responsible for cleaing up returend object by calling
 <link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link> function.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry> 		the pointer to keys manager.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize ()</title>
 <programlisting>void        xmlSecEncCtxFinalize            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
@@ -342,15 +324,11 @@ The caller is responsible for cleaing up returend object by calling
 Cleans up <parameter>encCtx</parameter> object.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCopyUserPref">xmlSecEncCtxCopyUserPref ()</title>
 <programlisting>int         xmlSecEncCtxCopyUserPref        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> dst,
@@ -359,20 +337,16 @@ Cleans up <parameter>encCtx</parameter> object.</para>
 Copies user preference from <parameter>src</parameter> context to <parameter>dst</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
-<entry>		the pointer to destination context.
-</entry></row>
-<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
-<entry>		the pointer to source context.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to destination context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to source context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxReset">xmlSecEncCtxReset ()</title>
 <programlisting>void        xmlSecEncCtxReset               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
@@ -380,15 +354,11 @@ Copies user preference from <parameter>src</parameter> context to <parameter>dst
 Resets <parameter>encCtx</parameter> object, user settings are not touched.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxBinaryEncrypt">xmlSecEncCtxBinaryEncrypt ()</title>
 <programlisting>int         xmlSecEncCtxBinaryEncrypt       (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -399,26 +369,22 @@ Resets <parameter>encCtx</parameter> object, user settings are not touched.</par
 Encrypts <parameter>data</parameter> according to template <parameter>tmpl</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
-</entry></row>
-<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>		the pointer for binary buffer.
-</entry></row>
-<row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>		the <parameter>data</parameter> buffer size.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tmpl</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer for binary buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the <parameter>data</parameter> buffer size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt ()</title>
 <programlisting>int         xmlSecEncCtxXmlEncrypt          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -429,23 +395,19 @@ Encrypts <parameter>node</parameter> according to template <parameter>tmpl</para
 with result <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to node for encryption.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tmpl</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to node for encryption.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxUriEncrypt">xmlSecEncCtxUriEncrypt ()</title>
 <programlisting>int         xmlSecEncCtxUriEncrypt          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -455,23 +417,19 @@ with result <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt
 Encrypts data from <parameter>uri</parameter> according to template <parameter>tmpl</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>		the URI.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tmpl</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>		the URI.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDecrypt">xmlSecEncCtxDecrypt ()</title>
 <programlisting>int         xmlSecEncCtxDecrypt             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -480,20 +438,16 @@ Encrypts data from <parameter>uri</parameter> according to template <parameter>t
 Decrypts <parameter>node</parameter> and if necessary replaces <parameter>node</parameter> with decrypted data.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDecryptToBuffer">xmlSecEncCtxDecryptToBuffer ()</title>
 <programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecEncCtxDecryptToBuffer (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -502,20 +456,16 @@ Decrypts <parameter>node</parameter> and if necessary replaces <parameter>node</
 Decrypts <parameter>node</parameter> data to the <parameter>encCtx</parameter> buffer.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDebugDump">xmlSecEncCtxDebugDump ()</title>
 <programlisting>void        xmlSecEncCtxDebugDump           (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -524,18 +474,14 @@ Decrypts <parameter>node</parameter> data to the <parameter>encCtx</parameter> b
 Prints the debug information about <parameter>encCtx</parameter> to <parameter>output</parameter>.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump ()</title>
 <programlisting>void        xmlSecEncCtxDebugXmlDump        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
@@ -544,18 +490,14 @@ Prints the debug information about <parameter>encCtx</parameter> to <parameter>o
 Prints the debug information about <parameter>encCtx</parameter> to <parameter>output</parameter> in XML format.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>		the pointer to output FILE.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para><variablelist role="params">
+<varlistentry><term><parameter>encCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 
 </refsect1>
 

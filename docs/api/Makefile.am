@@ -1,8 +1,14 @@
+NULL=
 TOP=../..
 MODULE=xmlsec
 SOURCE_DIR=$(TOP)/src
 INCLUDE_DIR=$(TOP)/include
 SGML_CATALOG_FILES=/usr/share/sgml/docbook/sgml-dtd-3.0-1.0-8/catalog:/usr/share/sgml/openjade-1.3.1/catalog:/usr/share/sgml/docbook/dsssl-stylesheets/catalog
+
+EXTRA_DIST = \
+	chapters \
+	images \
+	$(NULL)
 
 #
 # We need to pre-process original source files
@@ -18,7 +24,10 @@ EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print) 
 
-all: sgml html clean-sources
+# do nothing for all
+all:
+
+docs: sgml html clean-sources
 
 html: sgml xmlsec.sgml xmlsec-index
 	gtkdoc-mkhtml xmlsec xmlsec.sgml
@@ -54,10 +63,10 @@ sgml: templates
 		$$i.tmp; \
 		mv -f $$i.tmp $$i; \
 	done);
-	
+
 templates: scan
 	@gtkdoc-mktmpl --module=xmlsec 
-	
+
 scan: doc_sources example_sources
 	@gtkdoc-scan --module=xmlsec \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
@@ -135,6 +144,9 @@ example_sources:
 	    echo "</programlisting></informalexample></para></refsect1></refentry>" >> \
 		examples/$$file_name.sgml; \
 	done);
+
+dist-hook:
+	@cp -p $(srcdir)/*.html $(srcdir)/*.sgml $(distdir)
 
 clean: clean-sources
 	@rm -rf $(DOC_SOURCE_DIR)

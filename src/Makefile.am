@@ -14,7 +14,7 @@ INCLUDES = \
 EXTRA_DIST = \
 	globals.h \
 	ltdl.h ltdl.c \
-	xmlsec-ltdl.h xmlsec-ltdl.c.patch \
+	xmlsec-ltdl.h \
 	skeleton \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
@@ -77,8 +77,8 @@ LTDL_PARSE = \
 	sed s/ltdl_/xmlsec_ltdl_/g \
 	$(NULL)	
 
-xmlsec-ltdl.c: xmlsec-ltdl.c.patch xmlsec-ltdl.h ltdl.c 
-	@(cat ltdl.c | $(LTDL_PARSE) > xmlsec-ltdl.c && patch -p0 < xmlsec-ltdl.c.patch)
+xmlsec-ltdl.c: xmlsec-ltdl.h ltdl.c 
+	@(cat ltdl.c | $(LTDL_PARSE) > xmlsec-ltdl.c)
 
 xmlsec-ltdl.h: ltdl.h
 	@(cat ltdl.h | $(LTDL_PARSE) > xmlsec-ltdl.h)

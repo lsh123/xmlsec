@@ -5,26 +5,22 @@
 </head>
 <body><table witdh="100%"><tr>
 <td valign="top" align="left" width="210">
-<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
 <ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<ul>
-<li><a href="../xmldsig-interop.html">Interop report</a></li>
-<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
-</ul>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="index.html">Home</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="news.html">News</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="xmlenc.html">XML Encryption</a></li>
+<li><a href="c14n.html">XML Canonicalization</a></li>
+<li><a href="bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
+<li><a href="related.html">Related</a></li>
 </ul>
-<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+<a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
 <td><table width="100%">
 <tr><td valign="top" align="left" id="xmlsecContent">
@@ -53,7 +49,7 @@ keys managers using the information from the template, does necessary computatio
 and puts the results in the template. Signature or encryption context controls 
 the whole process and stores the required temporary data.<br><br><br>
 </p>
-<div style="text-align: center;"><img src="sign-enc-model.png" title="Signature/encryption processing model" alt="Signature/encryption processing model"></div>
+<div style="text-align: center;"><img src="api/images/sign-enc-model.png" title="Signature/encryption processing model" alt="Signature/encryption processing model"></div>
 <br><p>  Since the template is just an XML file, it might be created
 in advance and saved in a file. It's also possible for application to create
 templates without using XML Security Library functions. Also in some cases
@@ -62,12 +58,12 @@ if you want to create an enveloped or enveloping signature).<br>
   Signature verification and data decryption do not require template because 
 all the necessary information is provided in the signed or encrypted document:<br><br>
 </p>
-<div style="text-align: center;"><img src="verif-dec-model.png" title="Verification/decryption processing model" alt="Verification/decryption processing model"></div>
+<div style="text-align: center;"><img src="api/images/verif-dec-model.png" title="Verification/decryption processing model" alt="Verification/decryption processing model"></div>
 <br><h2>2. Library structure and dependencies.</h2>
 <p>  In order to provide the an ability to use different crypto
 engines, the XML Security Library was splitted in two parts: core library
 (xmlsec) and crypto library (xmlsec-openssl, xmlsec-gnutls, xmlsec-nss, ...).
-The library dependencies are shown on <a href="structure.png">Figure 1</a>.
+The library dependencies are shown on <a href="api/images/structure.png">Figure 1</a>.
 The core library has no dependency on any crypto library and provides implementation 
 of all the engines as well as support for all the non crypto transforms (xml 
 parser, c14n transforms, xpath and xslt transforms,...). The XML Security 
@@ -77,7 +73,8 @@ Crypto library (or even libraries). But the actual application code might
 be general enough so switching crypto engine would be a matter of changing
  several #include directives.<br>
 Internal XML Security Library structure and dependencies between objects
-are shown on  <a href="signature-structure.png">Figure 2</a> and <a href="encryption-structure.png">Figure 3</a>. <br>
+are shown on  <a href="api/images/signature-structure.png">Figure 2</a> 
+and <a href="api/images/encryption-structure.png">Figure 3</a>. <br>
 </p>
 <h2>2. Transforms.</h2>
 <p>  XML Digital Signature and XML Encryption standards are very
@@ -91,7 +88,7 @@ an URI, xml parsing, xml transformation, calculation digest, encrypting or
 decrypting. Each transform provides at least one of the following callbacks: 
 &quot;push binary data&quot;, &quot;push xml data&quot;, &quot;pop binary data&quot; or &quot;pop xml data&quot;:<br><br><br>
 </p>
-<div style="text-align: center;"> <img src="transform.png" title="Transform" alt="Transform">
+<div style="text-align: center;"> <img src="api/images/transform.png" title="Transform" alt="Transform">
 </div>
 <br><br><p>  In order to simplify transforms development, additional
 &quot;execute&quot; callback was added. This callback updates internal transform buffers
@@ -103,7 +100,7 @@ efficient.<br>
 in the template or document and processes data by &quot;pushing&quot; or &quot;popping&quot; through
 the chain. For example, then binary data chunk is pushed through a binary-to-binary
 transform, it processes this chunk and pushes the result to the next transform
-in the chain. The <a href="transforms-chain.png">Figure 4</a> shows an example
+in the chain. The <a href="api/images/transforms-chain.png">Figure 4</a> shows an example
 transforms chain constructed for &lt;dsig:Reference/&gt; element processing.
             <br>
 The XML Security library transforms engine makes sure that output data type 
@@ -121,7 +118,7 @@ key material has both an X509 certificate and a PGP data associated with
 it then such a key can have a DSA key &quot;value&quot; and two key data objects for
 X509 certificate and PGP key data.<br><br><br>
 </p>
-<div style="text-align: center;"> <img src="key.png" title="Key" alt="Key">
+<div style="text-align: center;"> <img src="api/images/key.png" title="Key" alt="Key">
 </div>
 <br><p>    <br>
   XML Security Library has several &quot;invisible&quot; key data classes. These classes 
@@ -137,7 +134,7 @@ a common list of trusted certificates to be available. XML Security Library
 keeps all the common information for key data processing in a a collection
 of key data stores called &quot;keys manager&quot;:<br><br><br>
 </p>
-<div style="text-align: center;"> <img src="keysmngr.png" title="Keys Manager" alt="Keys Manager">
+<div style="text-align: center;"> <img src="api/images/keysmngr.png" title="Keys Manager" alt="Keys Manager">
 </div>
 <br><br><p>  Keys manager has a special &quot;keys store&quot; which lists the
 keys known to the application. This &quot;keys store&quot; is used by XML Security

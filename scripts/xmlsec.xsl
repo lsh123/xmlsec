@@ -36,7 +36,7 @@
     <!-- top navigation menu start -->     
     <td valign="top" align="left" width="210">
 	<xsl:call-template name="myimg"> 
-	    <xsl:with-param name="src">logo.gif</xsl:with-param> 
+	    <xsl:with-param name="src">images/logo.gif</xsl:with-param> 
 	    <xsl:with-param name="alt">XML Security Library</xsl:with-param> 
 	</xsl:call-template>
         <p/>
@@ -81,12 +81,6 @@
 	    <ul>
 	    <li>
 		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">xmldsig-interop.html</xsl:with-param> 
-		    <xsl:with-param name="text">Interop report</xsl:with-param> 
-		</xsl:call-template>
-	    </li>	    
-	    <li>
-		<xsl:call-template name="linkto"> 
 		    <xsl:with-param name="href">xmldsig-verifier.html</xsl:with-param> 
 		    <xsl:with-param name="text">Online Verifier</xsl:with-param> 
 		</xsl:call-template>
@@ -98,14 +92,6 @@
 		    <xsl:with-param name="text">XML Encryption</xsl:with-param> 
 		</xsl:call-template>
 	    </li>
-	    <ul>
-	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">xmlenc-interop.html</xsl:with-param> 
-		    <xsl:with-param name="text">Interop report</xsl:with-param> 
-		</xsl:call-template>
-	    </li>	
-	    </ul>    
 	    <li>
 		<xsl:call-template name="linkto"> 
 		    <xsl:with-param name="href">c14n.html</xsl:with-param> 
@@ -128,21 +114,21 @@
 	</ul>
       	<a href="http://xmlsoft.org/">
 	    <xsl:call-template name="myimg"> 
-		<xsl:with-param name="src">libxml2-logo.png</xsl:with-param> 
+		<xsl:with-param name="src">images/libxml2-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">LibXML2</xsl:with-param> 
 	    </xsl:call-template>
 	</a>
       	<br/>
 	<a href="http://xmlsoft.org/XSLT">
 	    <xsl:call-template name="myimg"> 
-		<xsl:with-param name="src">libxslt-logo.png</xsl:with-param> 
+		<xsl:with-param name="src">images/libxslt-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">LibXSLT</xsl:with-param> 
 	    </xsl:call-template>
 	</a>
       	<br/>
 	<a href="http://www.openssl.org/">
 	    <xsl:call-template name="myimg"> 
-		<xsl:with-param name="src">openssl-logo.png</xsl:with-param> 
+		<xsl:with-param name="src">images/openssl-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">OpenSSL</xsl:with-param> 
 	    </xsl:call-template>
 	</a>

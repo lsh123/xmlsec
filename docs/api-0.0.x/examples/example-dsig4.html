@@ -1,0 +1,253 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>XML Security Library: Example - Verifying signatures in the document</title>
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../examples/images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../examples/index.html">Home</a></li>
+<li><a href="../examples/download.html">Download</a></li>
+<li><a href="../examples/news.html">News</a></li>
+<li><a href="../examples/documentation.html">Documentation</a></li>
+<li><a href="../examples/faq.html">FAQ</a></li>
+<li><a href="../examples/xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../examples/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../examples/xmlenc.html">XML Encryption</a></li>
+<li><a href="../examples/c14n.html">XML Canonicalization</a></li>
+<li><a href="../examples/bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../examples/related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../examples/images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../examples/images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../examples/images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div align="Center">              
+      <h2>XML Digital Signature <br>
+             Example 4. Verifying signatures in the document.</h2>
+        </div>
+<p>
+   In this example we will verify a signature created in the    <a href="example-dsig3.html">
+previous</a>
+ example.    The source code for this example is included into the package:
+      <a href="examples/dsig4/dsig4.c">           source code</a>
+   and <a href="examples/dsig4/test.xml"> the signed document.</a>
+      <br>
+</p>
+<h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.
+Creating DSig context.             </h4>
+<p>
+             Before using the libraries we need to initialize them. This
+should    be  done  once in the beginning of your program.<br><code>
+     int rnd_seed = 0;<br>
+     xmlSecKeysMngrPtr keysMngr = NULL; <br>
+     xmlSecDSigCtxPtr dsigCtx = NULL;<br><br>
+     /** <br>
+      * Init OpenSSL<br>
+      */    <br>
+     while (RAND_status() != 1) {<br>
+         RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));<br>
+     }<br>
+     <br>
+     /*<br>
+      * Init libxml<br>
+      */     <br>
+     xmlInitParser();<br>
+     LIBXML_TEST_VERSION<br><br>
+     /*<br>
+      * Init xmlsec<br>
+      */<br>
+     xmlSecInit();    <br><br>
+     /** <br>
+      * Create Keys managers<br>
+      */<br>
+     keysMngr = xmlSecSimpleKeysMngrCreate();    
+      <br>
+     if(keysMngr == NULL) {<br>
+         fprintf(stderr, &quot;Error: failed to create 
+keys manager\n&quot;);<br>
+         goto done;    <br>
+     }<br><br>
+     dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
+     if(dsigCtx == NULL) {<br>
+         fprintf(stderr,&quot;Error: failed to create 
+dsig context\n&quot;);<br>
+         goto done; <br>
+     }<br>
+        </code><br>
+</p>
+<h4>Step 1. Loading the document.</h4>
+<p>
+             XMLDSig requires the XML document to be loaded with all default
+  attributes     propagated to the nodes, all entities replaced, etc. (this
+  is required  for   correct document <a href="http://www.w3.org/TR/xml-c14n">
+    Canonicalization</a>
+          ). In the LibXML this means that you need to take special actions
+ when   loading   document from an URI:<br><br>
+                   <code>xmlDocPtr doc = NULL;    
+         <br><br>
+                 /** <br>
+                  * build an XML tree from a the file;
+ we  need   to  add default<br>
+                  * attributes and resolve all character
+  and   entities   references<br>
+                  */<br>
+                 xmlLoadExtDtdDefaultValue = XML_DETECT_IDS
+ |  XML_COMPLETE_ATTRS;<br>
+                 xmlSubstituteEntitiesDefault(1);<br><br>
+                 /** <br>
+                  * Load doc <br>
+                  */<br>
+                 doc = xmlParseFile(argv[2]);<br>
+                 if (doc == NULL) {<br>
+                    fprintf(stderr, &quot;Error    
+      : unable to parse file \&quot;%s\&quot;\n&quot;, argv[1]);<br>
+                    goto done;<br>
+                 }<br>
+                 <br>
+                 /**<br>
+                  * Check the document is of the right
+ kind<br>
+                  */    <br>
+                 if(xmlDocGetRootElement(doc) == NULL) {<br>
+                     fprintf(stderr,&quot;Error:
+   empty    document for file \&quot;%s\&quot;\n&quot;, argv[1]);<br>
+                     goto done;<br>
+                 }<br>
+                 </code><br>
+             In this example we set global flags to control how the document
+  is  loaded.    In the real life you would probably want to control the
+loading    on &quot;per-document&quot;    basis. Check the libxml/c14n.h header file
+from LibXML    distribution for  details.<br>
+</p>
+<h4>Step 2. Verify It!</h4>
+<p>
+             We are ready to sign the document but first we need to find
+&lt;Signature&gt; node:<br><code><br>
+     xmlNodePtr signNode;<br>
+    xmlSecDSigResultPtr result = NULL;</code><br><br><code>    signNode = xmlSecFindNode(xmlDocGetRootElement(doc),
+BAD_CAST &quot;Signature&quot;, xmlSecDSigNs);<br>
+    if(signNode == NULL) {<br>
+        fprintf(stderr,&quot;Error: failed
+to find Signature node\n&quot;);<br>
+        goto done;<br>
+    }  </code><br>
+      <code> <br>
+    /**<br>
+      * Verify It!<br>
+      */ <br>
+     ret = xmlSecDSigValidate(dsigCtx, NULL, NULL, signNode, &amp;result);<br>
+     if(ret &lt; 0) {<br>
+         fprintf(stderr,&quot;Error: verification
+failed\n&quot;);<br>
+         goto done; <br>
+     }   </code> <code></code>            
+ 
+      </p>
+<h4>Step 3. Print results.</h4>
+<p>
+ In our example we will use an XML Security Library function to print the
+verification results. Real application should process signature objects list
+(there could be more than one signature in the document!) by itself.<br>
+     <code>  /*<br>
+      * Print out result     <br>
+      */<br>
+     xmlSecDSigResultDebugDump(result, stdout); </code><br>
+</p>
+<h4>Step 4. Cleanup.</h4>
+<p>
+             At the end we need to destroy DSig context, the doc and KeysManager; 
+    shutdown   libxml and OpenSSL<br>
+         (please note that we do not delete creted Signature and Reference
+ nodes    separatelly because both nodes are included into the XML document
+ doc):<br>
+                <code> /**<br>
+      * Cleanup<br>
+      */<br>
+     if(result != NULL) {<br>
+        xmlSecDSigResultDestroy(result);<br>
+     }<br>
+     if(dsigCtx != NULL) { <br>
+        xmlSecDSigCtxDestroy(dsigCtx);<br>
+     }<br>
+     if(doc != NULL) {<br>
+       xmlFreeDoc(doc);<br>
+     }<br>
+     <br>
+     if(keysMngr != NULL) {<br>
+       xmlSecSimpleKeysMngrDestroy(keysMngr);<br>
+     }<br>
+     <br>
+     xmlSecShutdown();<br>
+     <br>
+     /* <br>
+      * Shutdown libxml<br>
+      */<br>
+     xmlCleanupParser();<br>
+     <br>
+     /* <br>
+      * Shutdown OpenSSL<br>
+      */<br>
+     RAND_cleanup();<br>
+     ERR_clear_error();</code><code></code>              
+      </p>
+<h4>Appendix A. The verification output.</h4>
+<blockquote>
+<code>= SIGNATURE (validate)</code><br><code>== result: OK</code><br><code>== sign method: http://www.w3.org/2000/09/xmldsig#dsa-sha1</code><br><code>== key name: (null)</code><br><code>== key origin: 0</code><br><code>== start buffer:</code><br><code>&lt;SignedInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;</code><br><code>&lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;&gt;&lt;/CanonicalizationMethod&gt;</code><br><code>&lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;&gt;&lt;/SignatureMethod&gt;</code><br><code>&lt;Reference Id=&quot;reference-1&quot; URI=&quot;#xpointer(id('SomeData'))&quot;&gt;</code><br><code>&lt;Transforms&gt;</code><br><code>&lt;Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#WithComments&quot;&gt;&lt;/Transform&gt;</code><br><code>&lt;/Transforms&gt;</code><br><code>&lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;&gt;&lt;/DigestMethod&gt;&lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;</code><br><code>&lt;/Reference&gt;</code><br><code>&lt;/SignedInfo&gt;</code><br><code>== end buffer</code><br><code>== SIGNED INFO REFERENCES</code><br><code>==== REFERENCE </code><br><code>===== ref type: SignedInfo Reference</code><br><code>===== result: OK</code><br><code>===== digest method: http://www.w3.org/2000/09/xmldsig#sha1</code><br><code>===== uri: #xpointer(id('SomeData'))</code><br><code>===== type: NULL</code><br><code>===== id: reference-1</code><br><code>===== start buffer:</code><br><code>&lt;Info Id=&quot;SomeData&quot;&gt;</code><br><code>    &lt;!-- Commentary --&gt;</code><br><code>    &lt;Data1&gt; Some data &lt;/Data1&gt;</code><br><code>    &lt;Data2&gt; More data &lt;/Data2&gt;</code><br><code>    &lt;/Info&gt;</code><br><code>===== end buffer</code><br>
+</blockquote>
+<h4>Appendix B. The signed document.</h4>
+<blockquote><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
+ &lt;Letter&gt;<br>
+     Hello, World!    <br>
+     &lt;Info Id=&quot;SomeData&quot;&gt;<br>
+     &lt;!-- Commentary --&gt;<br>
+     &lt;Data1&gt; Some data &lt;/Data1&gt;<br>
+     &lt;Data2&gt; More data &lt;/Data2&gt;<br>
+     &lt;/Info&gt;<br>
+ &lt;Something&gt;Some important data&lt;/Something&gt;&lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+ &lt;SignedInfo&gt;<br>
+ &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br>
+ &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br>
+ &lt;Reference Id=&quot;reference-1&quot; URI=&quot;#xpointer(id('SomeData'))&quot;&gt;<br>
+ &lt;Transforms&gt;<br>
+ &lt;Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#WithComments&quot;/&gt;<br>
+ &lt;/Transforms&gt;<br>
+ &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br>
+ &lt;DigestValue&gt;x/tL8hKZQyExW6ba0pi5h8eWRCc=&lt;/DigestValue&gt;<br>
+ &lt;/Reference&gt;<br>
+ &lt;/SignedInfo&gt;<br>
+ &lt;SignatureValue&gt;uwYbk29Juoe8B0eCW6aAjw4t+QBT7oQsjAmQnu8fFQPNy0RwP6pWNA==&lt;/SignatureValue&gt;<br>
+ &lt;KeyInfo Id=&quot;&quot;&gt;<br>
+ &lt;KeyValue&gt;<br>
+ &lt;DSAKeyValue&gt;<br>
+ &lt;P&gt;<br>
+ imW6KYBPYXAf6itSAuYs1aLPfs8/vBEiusv/pl1XMiuMvB7vyiJgSj8/NTkRci/U<br>
+ X/rVXv8rbCRjvYFX3x5/53f4hc6HKz7JQI4qqB7Fl5N86zp+BsQxNQ4tzous9S2H<br>
+ Td2/zdTwVsvO+H9l3FahmVp/m2IHE4W27JYoF49qP10=<br>
+ &lt;/P&gt;<br>
+ &lt;Q&gt;<br>
+ v/xzWqjRviekk2rMW3wpYspT9Us=<br>
+ &lt;/Q&gt;<br>
+ &lt;G&gt;<br>
+ UIyzUDlLe6uCCgF4Rh98fiKZvg64UJ4FM5L+WbCSMmVsFN06fTwxy3naPPOCzzou<br>
+ fsHv/Bve2gvrDvd078oXWJJf9A44pIZnJkdjEhm2RsDFpXNq0tPKZFcjVsdmqg4M<br>
+ X6YNuwpvZuTwSoDG5u1QMN0mmH9gmbIT3j9x4MO+7EY=<br>
+ &lt;/G&gt;<br>
+ &lt;Y&gt;<br>
+ On+KBJE3q1TRhG9RspNX01VI5C0VzSy4N/QyC4YzEENoq3GJkKHIYq+grq9ZqV9x<br>
+ g2Geo/3mqhdcENOtYRmWEfOZJj18oukD6TNceYRZ4HjHjK3WY3wK2OV6QOly+k3f<br>
+ xgEQpP/7IlCka5YICLuHXrbqjn5b0XcK9L2GDtWOyjs=<br>
+ &lt;/Y&gt;<br>
+ &lt;/DSAKeyValue&gt;<br>
+ &lt;/KeyValue&gt;<br>
+ &lt;/KeyInfo&gt;<br>
+ &lt;/Signature&gt;&lt;/Letter&gt;</code></blockquote>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

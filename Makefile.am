@@ -6,7 +6,10 @@ bin_SCRIPTS = xmlsec-config
 
 EXTRA_DIST = \
 	win32 \
-	docs \
+	docs/*.html \
+	docs/api \
+	docs/examples \
+	docs/images \
 	NEWS \
 	ChangeLog \
 	Copyright \

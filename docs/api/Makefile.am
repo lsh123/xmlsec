@@ -12,7 +12,7 @@ DOC_SOURCE_DIR=./code
 DOC_SOURCE_FILES=$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
 	$(shell find $(INCLUDE_DIR) -name '*.h' -print )
 
-all: sgml html
+all: sgml html clean-sources
 
 html: sgml xmlsec.sgml
 	gtkdoc-mkhtml xmlsec xmlsec.sgml
@@ -70,11 +70,14 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
 	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
 
-clean:
+clean: clean-sources
 	@rm -rf $(DOC_SOURCE_DIR)
 	@rm -f sgml/*~ sgml/*.bak  
 	@rm -f tmpl/*~ tmpl/*.bak  
 	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
+
+clean-sources:
+	@rm -rf $(DOC_SOURCE_DIR)
 
 clean-local:
 	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt

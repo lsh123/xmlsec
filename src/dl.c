@@ -182,7 +182,7 @@ static void
 xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
     xmlSecAssert(lib != NULL);
 
-    fprintf (stderr, "unloading \"library %s\"...\n", lib->name); 
+    /* fprintf (stderr, "unloading \"library %s\"...\n", lib->name); */
     if(lib->name != NULL) {
 	xmlFree(lib->name);
     }

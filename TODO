@@ -1,2 +1,15 @@
 - Unify password callback (one of parameters: filename)
-- Split RPMs
+- Windows, nmake check.
+    1) I would like to execute test suite for all available 
+    xmlsec-crypto libs on Windows (in the same way as we do it on Linux). 
+    2) Since the working directory is xmlsec/win32, instead of
+    xmlsec, some files with keys are not found. (Causes raw-cert
+    sig test to fail, for example.)
+    3) Thirdly the command diff is used, but this may result into
+    finding differences in files simply because of the original
+    file may have lf and the newly generated files have crlf as
+    linebreaks.
+    4) Since HMAC is not supported at all, the generate keys
+    fails. All key generations are done in 1 command.
+    5) Create platform independent test files format and generate
+    test*.sh, test*.bat, etc scripts "on the fly".

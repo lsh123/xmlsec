@@ -31,11 +31,7 @@
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
-#ifdef _MSC_VER
-#include <windows.h>
-#else /* _MSC_VER */
 #include "xmlsec-ltdl.h"
-#endif /* _MSC_VER */
 
 #if defined(_MSC_VER)
 #define snprintf _snprintf
@@ -54,11 +50,7 @@ struct _xmlSecCryptoDLLibrary {
     xmlChar* 	getFunctionsName;
     xmlSecCryptoDLFunctionsPtr functions;
 
-#ifdef _MSC_VER
-    HMODULE 	handle;
-#else /* _MSC_VER */
     xmlsec_lt_dlhandle handle;
-#endif /* _MSC_VER */
 };
 
 static xmlSecCryptoDLLibraryPtr	xmlSecCryptoDLLibraryCreate		(const xmlChar* name);
@@ -136,32 +128,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     }
 
 
-#ifdef _MSC_VER
-    lib->handle = LoadLibrary((char*)lib->filename);
-    if(lib->handle == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "LoadLibrary",
-		    NULL,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "filename=%s",
-		    xmlSecErrorsSafeString(lib->filename));
-	xmlSecCryptoDLLibraryDestroy(lib);
-	return(NULL);
-    }
-
-    
-    getFunctions = (xmlSecCryptoGetFunctionsCallback)GetProcAddress(lib->handle, (char*)lib->getFunctionsName);
-    if(getFunctions == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "GetProcAddress",
-		    NULL,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "function=%s",
-		    xmlSecErrorsSafeString(lib->getFunctionsName));
-	xmlSecCryptoDLLibraryDestroy(lib);
-	return(NULL);
-    }
-#else /* _MSC_VER */
     lib->handle = xmlsec_lt_dlopen((char*)lib->filename);
     if(lib->handle == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -186,8 +152,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 	xmlSecCryptoDLLibraryDestroy(lib);
 	return(NULL);
     }
-#endif /* _MSC_VER */
-
 
     if(getFunctions == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -232,15 +196,6 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
     }
 
     if(lib->handle != NULL) {	
-#ifdef _MSC_VER
-	if(!FreeLibrary(lib->handle)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        "FreeLibrary",
-			NULL,
-		        XMLSEC_ERRORS_R_IO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-	}
-#else /* _MSC_VER */
 	int ret;
 
 	ret = xmlsec_lt_dlclose(lib->handle);
@@ -251,7 +206,6 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 		        XMLSEC_ERRORS_R_IO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
 	}
-#endif /* _MSC_VER */
     }
 
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
@@ -268,12 +222,7 @@ xmlSecCryptoDLLibraryDuplicate(xmlSecCryptoDLLibraryPtr lib) {
 
 static xmlChar*	
 xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
-#ifdef _MSC_VER
-    static xmlChar tmpl[] = "lib%s-%s.dll";
-#else /* _MSC_VER */
     static xmlChar tmpl[] = "lib%s-%s" LTDL_SHLIB_EXT;
-#endif /* _MSC_VER */
-
     xmlChar* res;
     int len;
     
@@ -363,8 +312,6 @@ xmlSecCryptoDLInit(void) {
         return(-1);
     }
 
-#ifdef _MSC_VER
-#else /* _MSC_VER */
     ret = xmlsec_lt_dlinit ();
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -375,7 +322,6 @@ xmlSecCryptoDLInit(void) {
         return(-1);
     }
     /* TODO: LTDL_SET_PRELOADED_SYMBOLS(); */
-#endif /* _MSC_VER */
 
     return(0);
 }
@@ -386,8 +332,6 @@ xmlSecCryptoDLShutdown(void) {
     
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
 
-#ifdef _MSC_VER
-#else /* _MSC_VER */
     ret = xmlsec_lt_dlexit ();
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -396,7 +340,6 @@ xmlSecCryptoDLShutdown(void) {
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
     }
-#endif /* _MSC_VER */
     return(0);
 }
 

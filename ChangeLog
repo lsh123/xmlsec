@@ -1,3 +1,8 @@
+Thu Sep 11 17:08:15 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/Makefile.am src/dl.c src/xmlsec-ltdl.h src/xmlsec-ltdl.patch 
+	win32/Makefile.msvc: use ltdl on Windows too
+
 Thu Sep 11 16:39:18 2003 Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/ltdl.* src/Makefile.am: upgraded to ltdl from libtool 1.4

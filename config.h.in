@@ -3,6 +3,27 @@
 /* Define to 1 if you have the <ansidecl.h> header file. */
 #undef HAVE_ANSIDECL_H
 
+/* Define to 1 if you have the `argz_append' function. */
+#undef HAVE_ARGZ_APPEND
+
+/* Define to 1 if you have the `argz_create_sep' function. */
+#undef HAVE_ARGZ_CREATE_SEP
+
+/* Define to 1 if you have the <argz.h> header file. */
+#undef HAVE_ARGZ_H
+
+/* Define to 1 if you have the `argz_insert' function. */
+#undef HAVE_ARGZ_INSERT
+
+/* Define to 1 if you have the `argz_next' function. */
+#undef HAVE_ARGZ_NEXT
+
+/* Define to 1 if you have the `argz_stringify' function. */
+#undef HAVE_ARGZ_STRINGIFY
+
+/* Define to 1 if you have the <assert.h> header file. */
+#undef HAVE_ASSERT_H
+
 /* Define to 1 if you have the `bcopy' function. */
 #undef HAVE_BCOPY
 
@@ -31,6 +52,9 @@
 /* Define to 1 if you have the <errno.h> header file. */
 #undef HAVE_ERRNO_H
 
+/* Define to 1 if the system has the type `error_t'. */
+#undef HAVE_ERROR_T
+
 /* Define to 1 if you have the `fprintf' function. */
 #undef HAVE_FPRINTF
 
@@ -48,6 +72,9 @@
 
 /* Define to 1 if you have the `memcpy' function. */
 #undef HAVE_MEMCPY
+
+/* Define to 1 if you have the `memmove' function. */
+#undef HAVE_MEMMOVE
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
@@ -152,7 +179,7 @@
 /* Define to the system default library search path. */
 #undef LTDL_SYSSEARCHPATH
 
-/* Define if dlsym() requires a leading underscode in symbol names. */
+/* Define if dlsym() requires a leading underscore in symbol names. */
 #undef NEED_USCORE
 
 /* Define to the address where bug reports for this package should be sent. */
@@ -181,3 +208,6 @@
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
+
+/* Define to a type to use for \`error_t' if it is not otherwise available. */
+#undef error_t

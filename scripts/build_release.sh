@@ -27,5 +27,5 @@ rm -rf `find . -name "CVS"`
 rm config.cache
 make dist
 mv $module-$version.tar.gz $rpm_root/SOURCES
-rpm -ba $module.spec
+rpmbuild -ba $module.spec
 

@@ -1,3 +1,10 @@
+Tue Jun 17 19:22:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/download.html: fixing links to tarballs for local 
+	files (requested by John)
+	
+	* examples/myw32make.bat win32/mycfg-nss.bat: clearing exec bit
+
 Mon Jun 16 10:43:34 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html docs/news.html 

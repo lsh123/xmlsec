@@ -414,9 +414,17 @@ xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withCo
     	    attr = attr->next; 
 	}	
     
-	/* add namespaces */
-	for (ns = parent->nsDef; ns != NULL; ns = ns->next) {
-	    xmlXPathNodeSetAddNs(nodeSet, parent, ns);
+	/* add namespaces for the node and all parents */
+	for(cur = parent; cur != NULL; cur = cur->parent) {
+	    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
+		xmlNsPtr tmp;
+		
+		/* include only the last namespace */
+		tmp = xmlSearchNs(parent->doc, parent, ns->prefix);
+		if(tmp == ns) {
+		    xmlXPathNodeSetAddNs(nodeSet, parent, ns);
+		}
+	    }
 	}
 
         break;

@@ -1,3 +1,6 @@
+Thu May 30 21:29:21 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/xmltree.c: propagating XPath fix from LibXML2
+
 Wed May 29 21:28:13 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* apps/xmlsec.c include/xmlsec/keysmngr.h include/xmlsec/x509.h
 	src/keysmngr.c src/x509.c tests/keys.xml: pkcs12 support added

@@ -61,13 +61,16 @@ check-info:
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
 check-km: $(TEST_APP)
-	@$(SHELL) $(top_srcdir)/tests/testKeys.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der
+	@(cd $(top_srcdir);\
+	$(SHELL) ./tests/testKeys.sh ./tests $(top_builddir)/$(TEST_APP) der)
 
 check-dsig: $(TEST_APP)
-	@$(SHELL) $(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der pkcs8
+	@(cd $(top_srcdir);\
+	$(SHELL) ./tests/testDSig.sh ./tests $(top_builddir)/$(TEST_APP) der pkcs8)
 
 check-enc: $(TEST_APP)
-	@$(SHELL) $(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der pkcs8
+	@(cd $(top_srcdir);\
+	$(SHELL) ./tests/testEnc.sh ./tests $(top_builddir)/$(TEST_APP) der pkcs8)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

@@ -21,8 +21,8 @@ digests.c \
 dsa.c \
 evp.c \
 hmac.c \
-kwaes.c \
-kwdes.c \
+kw_aes.c \
+kw_des.c \
 rsa.c \
 symkeys.c \
 x509.c \

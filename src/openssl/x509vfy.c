@@ -37,18 +37,38 @@
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 
+/**************************************************************************
+ *
+ * Internal OpenSSL X509 store CTX
+ *
+ *************************************************************************/
+typedef struct _xmlSecOpenSSLX509StoreCtx		xmlSecOpenSSLX509StoreCtx, 
+							*xmlSecOpenSSLX509StoreCtxPtr;
+struct _xmlSecOpenSSLX509StoreCtx {
+    X509_STORE* 	xst;
+    STACK_OF(X509)* 	untrusted;
+    STACK_OF(X509_CRL)* crls;
+};	    
 
 /****************************************************************************
  *
  * xmlSecOpenSSLKeyDataStoreX509Id:
  *
+ * xmlSecOpenSSLX509StoreCtx is located after xmlSecTransform
+ *
  ***************************************************************************/
+#define xmlSecOpenSSLX509StoreGetCtx(store) \
+    ((xmlSecOpenSSLX509StoreCtxPtr)(((unsigned char*)(store)) + \
+				    sizeof(xmlSecKeyDataStoreKlass)))
+#define xmlSecOpenSSLX509StoreSize	\
+    (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecOpenSSLX509StoreCtx))
+ 
 static int		xmlSecOpenSSLX509StoreInitialize	(xmlSecKeyDataStorePtr store);
 static void		xmlSecOpenSSLX509StoreFinalize		(xmlSecKeyDataStorePtr store);
 
 static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     sizeof(xmlSecKeyDataStoreKlass),
-    sizeof(xmlSecKeyDataStore),
+    xmlSecOpenSSLX509StoreSize,
 
     /* data */
     xmlSecNameX509Store,		/* const xmlChar* name; */ 
@@ -59,17 +79,6 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     NULL,				/* xmlSecKeyDataStoreFindMethod find; */
 };
 
-/*
- * mapping: 
- * 	xmlSecOpenSSLX509Store::reserved0 --> X509_STORE* xst;
- * 	xmlSecOpenSSLX509Store::reserved1 --> STACK_OF(X509)* untrusted;
- * 	xmlSecOpenSSLX509Store::reserved2 --> STACK_OF(X509_CRL)* crls;
- */
-
-#define xmlSecOpenSSLX509StoreGet(store) 	((X509_STORE*)((store)->reserved0))
-#define xmlSecOpenSSLX509StoreUntrusted(store) 	((STACK_OF(X509)*)((store)->reserved1))
-#define xmlSecOpenSSLX509StoreCrls(store) 	((STACK_OF(X509_CRL)*)((store)->reserved2))
- 
 static int		xmlSecOpenSSLX509VerifyCRL			(X509_STORE* xst, 
 									 X509_CRL *crl );
 static X509*		xmlSecOpenSSLX509FindCert			(STACK_OF(X509) *certs,
@@ -105,12 +114,16 @@ X509*
 xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 				xmlChar *issuerName, xmlChar *issuerSerial,
 				xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
+    
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    if(xmlSecOpenSSLX509StoreUntrusted(store) != NULL) {
-        return(xmlSecOpenSSLX509FindCert(xmlSecOpenSSLX509StoreUntrusted(store), 
-			    subjectName, issuerName, issuerSerial, ski));
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    if(ctx->untrusted != NULL) {
+        return(xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName, issuerName, issuerSerial, ski));
     }
     return(NULL);
 }
@@ -118,8 +131,7 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
 X509* 	
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 			     STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
-    STACK_OF(X509)* store_certs = NULL;
-    STACK_OF(X509_CRL)* store_crls = NULL;
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
     STACK_OF(X509)* certs2 = NULL;
     STACK_OF(X509_CRLS)* crls2 = NULL;
     X509* res = NULL;
@@ -130,9 +142,12 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
-    xmlSecAssert2(xmlSecOpenSSLX509StoreGet(store) != NULL, NULL);
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->xst != NULL, NULL);
     
     /* dup certs */
     certs2 = sk_X509_dup(certs);
@@ -146,10 +161,9 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
     }
 
     /* add untrusted certs from the store */
-    store_certs = xmlSecOpenSSLX509StoreUntrusted(store);
-    if(store_certs != NULL) {
-	for(i = 0; i < sk_X509_num(store_certs); ++i) { 
-	    sk_X509_push(certs2, sk_X509_value(store_certs, i));
+    if(ctx->untrusted != NULL) {
+	for(i = 0; i < sk_X509_num(ctx->untrusted); ++i) { 
+	    sk_X509_push(certs2, sk_X509_value(ctx->untrusted, i));
 	}
     }
     
@@ -166,8 +180,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	}
 
 	for(i = 0; i < sk_X509_CRL_num(crls2); ) { 
-	    ret = xmlSecOpenSSLX509VerifyCRL(xmlSecOpenSSLX509StoreGet(store), 
-					    sk_X509_CRL_value(crls2, i));
+	    ret = xmlSecOpenSSLX509VerifyCRL(ctx->xst, sk_X509_CRL_value(crls2, i));
 	    if(ret == 1) {
 		++i;
 	    } else if(ret == 0) {
@@ -201,10 +214,9 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 		goto done;
 	    }
 	}	    	    
-	
-	store_crls = xmlSecOpenSSLX509StoreCrls(store);
-	if(store_crls != NULL) {
-	    ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(store_crls, cert);
+
+	if(ctx->crls != NULL) {
+	    ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(ctx->crls, cert);
 	    if(ret == 0) {
 		sk_X509_delete(certs2, i);
 		continue;
@@ -227,7 +239,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	if(xmlSecOpenSSLX509FindNextChainCert(certs2, cert) == NULL) {
 	    X509_STORE_CTX xsc; 
     
-	    X509_STORE_CTX_init (&xsc, xmlSecOpenSSLX509StoreGet(store), cert, certs2);
+	    X509_STORE_CTX_init (&xsc, ctx->xst, cert, certs2);
 	    if(keyInfoCtx->certsVerificationTime > 0) {	
 		X509_STORE_CTX_set_time(&xsc, 0, keyInfoCtx->certsVerificationTime);
 	    }
@@ -313,15 +325,19 @@ done:
 
 int 
 xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int trusted) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
     int ret;
     
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    if(trusted) {
-	xmlSecAssert2(xmlSecOpenSSLX509StoreGet(store) != NULL, -1);
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
 
-	ret = X509_STORE_add_cert(xmlSecOpenSSLX509StoreGet(store), cert);
+    if(trusted) {
+	xmlSecAssert2(ctx->xst != NULL, -1);
+
+	ret = X509_STORE_add_cert(ctx->xst, cert);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -333,9 +349,9 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int tru
 	/* add cert increments the reference */
 	X509_free(cert);
     } else {
-	xmlSecAssert2(xmlSecOpenSSLX509StoreUntrusted(store) != NULL, -1);
+	xmlSecAssert2(ctx->untrusted != NULL, -1);
 
-	ret = sk_X509_push(xmlSecOpenSSLX509StoreUntrusted(store), cert);
+	ret = sk_X509_push(ctx->untrusted, cert);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -360,13 +376,17 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int tru
  */
 int 
 xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
     X509_LOOKUP *lookup = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
-    xmlSecAssert2(xmlSecOpenSSLX509StoreGet(store) != NULL, -1);
     xmlSecAssert2(path != NULL, -1);
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xst != NULL, -1);
     
-    lookup = X509_STORE_add_lookup(xmlSecOpenSSLX509StoreGet(store), X509_LOOKUP_hash_dir());
+    lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -382,10 +402,16 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 
 static int
 xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
-    
-    store->reserved0 = X509_STORE_new();
-    if(store->reserved0 == NULL) {
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    memset(ctx, 0, sizeof(xmlSecOpenSSLX509StoreCtx));
+
+    ctx->xst = X509_STORE_new();
+    if(ctx->xst == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "X509_STORE_new",
@@ -393,7 +419,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    if(!X509_STORE_set_default_paths(xmlSecOpenSSLX509StoreGet(store))) {
+    if(!X509_STORE_set_default_paths(ctx->xst)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "X509_STORE_set_default_paths",
@@ -401,10 +427,10 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlSecOpenSSLX509StoreGet(store)->depth = 9; /* the default cert verification path in openssl */	
+    ctx->xst->depth = 9; /* the default cert verification path in openssl */	
 	
-    store->reserved1 = sk_X509_new_null();
-    if(store->reserved1 == NULL) {
+    ctx->untrusted = sk_X509_new_null();
+    if(ctx->untrusted == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "sk_X509_new_null",
@@ -413,8 +439,8 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 	return(-1);
     }    
 
-    store->reserved2 = sk_X509_CRL_new_null();
-    if(store->reserved2 == NULL) {
+    ctx->crls = sk_X509_CRL_new_null();
+    if(ctx->crls == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "sk_X509_CRL_new_null",
@@ -428,20 +454,22 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
 static void
 xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId));
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert(ctx != NULL);
     
-    if(xmlSecOpenSSLX509StoreGet(store) != NULL) {
-	X509_STORE_free(xmlSecOpenSSLX509StoreGet(store));
+    if(ctx->xst != NULL) {
+	X509_STORE_free(ctx->xst);
     }
-    if(xmlSecOpenSSLX509StoreUntrusted(store) != NULL) {
-	sk_X509_pop_free(xmlSecOpenSSLX509StoreUntrusted(store), X509_free);
+    if(ctx->untrusted != NULL) {
+	sk_X509_pop_free(ctx->untrusted, X509_free);
     }
-    if(xmlSecOpenSSLX509StoreCrls(store) != NULL) {
-	sk_X509_CRL_pop_free(xmlSecOpenSSLX509StoreCrls(store), X509_CRL_free);
+    if(ctx->crls != NULL) {
+	sk_X509_CRL_pop_free(ctx->crls, X509_CRL_free);
     }
-    store->reserved0 = NULL;
-    store->reserved1 = NULL;
-    store->reserved2 = NULL;
+    memset(ctx, 0, sizeof(xmlSecOpenSSLX509StoreCtx));
 }
 
 

@@ -33,10 +33,13 @@
 
 #include <xmlsec/keysmngr.h>
 
+#include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/keysstore.h>
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
+
+#define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME	"MY"
 
 /****************************************************************************
  *
@@ -295,6 +298,206 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecKeyStoreDestroy(*ss);
 }
 
+static PCCERT_CONTEXT
+xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, 
+			       xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    const char* storeName;
+    HCERTSTORE hStoreHandle = NULL;
+    PCCERT_CONTEXT pCertContext = NULL;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
+    xmlSecAssert2(name != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    storeName = xmlSecMSCryptoAppGetCertStoreName();
+    if(storeName == NULL) {
+	storeName = XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME;
+    }
+	    
+    hStoreHandle = CertOpenSystemStore(0, storeName);
+    if (NULL == hStoreHandle) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "CertOpenSystemStore",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "storeName=%s",
+		    xmlSecErrorsSafeString(storeName));
+	return(NULL);
+    }
+
+    /* first attempt: search by cert id == name */
+    if(pCertContext == NULL) {
+	size_t len = xmlStrlen(name) + 1;     
+	wchar_t * lpCertID;
+	
+	/* aleksey todo: shouldn't we call MultiByteToWideChar first to get the buffer size? */
+	lpCertID = (wchar_t *)xmlMalloc(sizeof(wchar_t) * len);
+	if(lpCertID == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    	XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+	MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, name, -1, lpCertID, len);
+	
+	pCertContext = CertFindCertificateInStore(
+	    hStoreHandle,
+	    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+	    0,
+	    CERT_FIND_SUBJECT_STR,
+	    lpCertID,
+	    NULL);
+	xmlFree(lpCertID);
+    }
+
+    /* We don't give up easily, now try to fetch the cert with a full blown 
+     * subject dn
+     */
+    if (NULL == pCertContext) {
+	DWORD len;
+	BYTE *bdata = NULL;
+	CERT_NAME_BLOB cnb;
+	    
+	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+			    name,
+			    CERT_OID_NAME_STR,
+			    NULL,
+			    NULL,
+			    &len,
+			    NULL)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CertStrToName",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+	    
+	bdata = (BYTE *)xmlMalloc(len + 1);
+	if(bdata == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"len=%d", len);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+	    
+	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+	    			name,
+				CERT_OID_NAME_STR,
+				NULL,
+				bdata,
+				&len,
+				NULL)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "CertStrToName",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlFree(bdata);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+
+	cnb.cbData = len;
+	cnb.pbData = bdata;
+	pCertContext = CertFindCertificateInStore(hStoreHandle,
+		X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+		0,
+		CERT_FIND_SUBJECT_NAME,
+		&cnb,
+		NULL);
+	xmlFree(bdata);
+    }
+	    
+    /* We don't give up easily, now try to fetch the cert with a full blown 
+     * subject dn, and try with a reversed dn
+     */
+    if (NULL == pCertContext) {
+	DWORD len;
+	BYTE *bdata = NULL;
+	CERT_NAME_BLOB cnb;
+
+	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+				name,
+				CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+				NULL,
+				NULL,
+				&len,
+				NULL)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CertStrToName",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+
+	bdata = (BYTE *)xmlMalloc(len + 1);
+	if(bdata == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"len=%d", len);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+	
+	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+	    			name,
+				CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+				NULL,
+				bdata,
+				&len,
+				NULL)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CertStrToName",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlFree(bdata);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+
+	cnb.cbData = len;
+	cnb.pbData = bdata;
+	pCertContext = CertFindCertificateInStore(hStoreHandle,
+		X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+		0,
+		CERT_FIND_SUBJECT_NAME,
+		&cnb,
+		NULL);
+	xmlFree(bdata);
+    }   
+
+    /* We could do the following here: 
+     * It would be nice if we could locate the cert with issuer name and
+     * serial number, the given keyname can be something like this:
+     * 'serial=1234567;issuer=CN=ikke, C=NL'
+     * to be implemented by the first person who reads this, and thinks it's
+     * a good idea :) WK
+     */
+     
+
+    /* OK, I give up, I'm gone :( */
+    
+    /* aleksey todo: is it a right idea to close store if we have a handle to 
+     * a cert in this store? */
+    CertCloseStore(hStoreHandle, 0);
+    return(pCertContext);
+}
+
+
 static xmlSecKeyPtr 
 xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, 
 			       xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -302,12 +505,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr retval = NULL;
     xmlSecKeyReqPtr keyReq = NULL;
-
-    HCERTSTORE hStoreHandle = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
-    PCCERT_CONTEXT pDupCert = NULL;
-    wchar_t * lpCertID = NULL;
-
+    PCCERT_CONTEXT pCertContext2 = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
     int ret;
@@ -331,80 +530,53 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	goto done;
     }
 
-    /* aleksey todo: shouldn't we call MultiByteToWideChar first to get the buffer size? */
-    lpCertID = (wchar_t *)xmlMalloc((sizeof(wchar_t)) * (strlen(name) + 1));
-    if(lpCertID == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
-    }
-    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, name, -1, lpCertID, strlen(name) + 1);
-
     /* what type of key are we looking for? 
     * WK: For now, we'll look only for public/private keys using the
-    * name as a cert nickname.
-    * We're only looking in the personal certificate store, however it
-    * should become optional what store to use...
+    * name as a cert nickname. Then the name is regarded as the subject 
+    * dn of the certificate to be searched for.
     */
     keyReq = &(keyInfoCtx->keyReq);
     if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
-	if (NULL == (hStoreHandle = CertOpenSystemStore(0, "MY"))) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertOpenSystemStore",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    goto done;
-	}
-	if(NULL == (pCertContext = CertFindCertificateInStore(
-	    hStoreHandle,
-	    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-	    0,
-	    CERT_FIND_SUBJECT_STR,
-	    lpCertID,
-	    NULL))) {
-
+	pCertContext = xmlSecMSCryptoKeysStoreFindCert(store, name, keyInfoCtx);
+	if(pCertContext == NULL) {
 	    goto done;
 	}
 
 	/* set cert in x509 data */
 	x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
 	if(x509Data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecKeyDataCreate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"transform=%s",
-			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoKeyDataX509Id)));
-	    goto done;
-	}
-
-	pDupCert = CertDuplicateCertificateContext(pCertContext);
-	if (pDupCert == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertDuplicateCertificateContext",
+ 	    xmlSecError(XMLSEC_ERRORS_HERE,
+ 			NULL,
+			"CertStrToName",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"error code=%d", GetLastError());
+ 	    goto done;
+ 	}
+
+	pCertContext2 = CertDuplicateCertificateContext(pCertContext);
+	if (NULL == pCertContext2) {
+ 	    xmlSecError(XMLSEC_ERRORS_HERE,
+ 			NULL,
+			"CertDuplicateCertificateContext",
+ 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			"data=%s",
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-	    goto done;
-	}
+ 	    goto done;
+ 	}
 
-	ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, pDupCert);
+	ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, pCertContext2);
 	if (ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
+ 	    xmlSecError(XMLSEC_ERRORS_HERE,
+ 			NULL,
 			"xmlSecMSCryptoKeyDataX509AdoptCert",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"data=%s",
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	    goto done;
 	}
-	pDupCert = NULL;
+	pCertContext2 = NULL;
 
+	/* set cert in key data */
 	data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -416,6 +588,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	}
 	pCertContext = NULL;
 
+	/* create key and add key data and x509 data to it */
 	key = xmlSecKeyCreate();
 	if (key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -450,20 +623,20 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	}
 	x509Data = NULL;
 
+    	/* Set the name of the key to the given name */
+	ret = xmlSecKeySetName(key, name);
+	if (ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			"xmlSecKeySetName",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
+	}
+
         /* now that we have a key, make sure it is valid and let the simple
 	* store adopt it */
     	if (xmlSecKeyIsValid(key)) {
-    	    /* Set the name of the key to the given name */
-	    ret = xmlSecKeySetName(key, name);
-	    if (ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-			    "xmlSecKeySetName",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		goto done;
-	    }
-
 	    retval = xmlSecKeyDuplicate(key);
 	    if (retval == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -494,14 +667,11 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
 done:
-    if (hStoreHandle != NULL) {
-	CertCloseStore(hStoreHandle, 0);
-    }
-    if (NULL != lpCertID) {
-	xmlFree(lpCertID);
-    }
     if (NULL != pCertContext) {
 	CertFreeCertificateContext(pCertContext);
+    }
+    if (NULL != pCertContext2) {
+	CertFreeCertificateContext(pCertContext2);
     }
     if (data != NULL) {
 	xmlSecKeyDataDestroy(data);

@@ -20,6 +20,7 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoKeyDataGetCert	(xmlSecKeyDataPtr data);
 HCRYPTKEY xmlSecMSCryptoKeyDataGetKey					(xmlSecKeyDataPtr data, 
 									 xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataDuplicate	(xmlSecKeyDataPtr dst, 

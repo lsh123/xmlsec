@@ -29,6 +29,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
+#include <xmlsec/mscrypto/bignum.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 
@@ -419,11 +420,13 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
     PCCERT_CONTEXT pCert = NULL;
     BYTE *data, *sndata;
     DWORD len, snlen;
-    int i;
+    int i, ret;
     CERT_NAME_BLOB cnb;
     CERT_INFO ci;
     char name[1024];
     char name2[1024];
+    xmlChar *hexIssuerSerial, *tserial, *thexserial;
+    xmlSecBufferPtr issuerSerialBuf;
     
     xmlSecAssert2(store != 0, NULL);
 
@@ -459,7 +462,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 	free(data);
 	return (pCert);
     }
-/*
+
     if (NULL != issuerName && NULL != issuerSerial) {
 	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
 	    issuerName,
@@ -481,47 +484,38 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 		free(data);
 		return (NULL);
 	}
-	ci.Issuer.cbData = len;
-	ci.Issuer.pbData = data;
+	cnb.cbData = len;
+	cnb.pbData = data;
 	
-	snlen = strlen(issuerSerial);
-	sndata = malloc(snlen);
-	for (i=0; i<snlen; i++) {
-	    sndata[i] = issuerSerial[snlen - i - 1];
-	}
-	ci.SerialNumber.cbData = snlen;
-	ci.SerialNumber.pbData = sndata;
-
-	pCert = CertFindCertificateInStore(store, 
+	while (pCert = CertFindCertificateInStore(store, 
 					   PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
 					   0,
-					   CERT_FIND_SUBJECT_CERT,
-					   &ci,
-					   NULL);
-	free(data);
-	free(snlen);
-	//return (pCert);
+						  CERT_FIND_ISSUER_NAME,
+						  &cnb,
+						  pCert)) {
+
+	    thexserial = xmlSecBinaryToHexString(pCert->pCertInfo->SerialNumber.pbData,
+						 pCert->pCertInfo->SerialNumber.cbData, 
+						 0);
+	    if (NULL == thexserial) continue;
+	    /* I have no clue why at a sudden a wordbased swap is needed to 
+	     * convert from lsb, instead of a byte based swap... 
+	     * This code is purely based upon trial and error :( WK
+	     */
+	    thexserial = xmlSecMSCryptoWordbaseSwap(thexserial);
+	    if (NULL == thexserial) continue;
+	    tserial = xmlSecMSCryptoHexToDec(thexserial);
+	    xmlFree(thexserial);
+	    if (NULL == tserial) continue;
+	    if (0 == xmlStrcmp(tserial, issuerSerial)) {
+		xmlFree(tserial);
+		break;
     }
-/*
-    if (NULL == pCert) {
-	while (pCert = CertEnumCertificatesInStore(store, pCert)) {
-	    //CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, &(pCert->pCertInfo->Subject), CERT_OID_NAME_STR, name, 1023);
-	    snlen = pCert->pCertInfo->SerialNumber.cbData;
-	    sndata = pCert->pCertInfo->SerialNumber.pbData;
-	    for (i=0; i<snlen; i++) {
-		data[i] = sndata[snlen - (i+1)];
+	    xmlFree(tserial);
 	    }
-	    len = 1023;
-	    CryptBinaryToString(data, snlen, CRYPT_STRING_HEX, name, &len);
-	    name[0] = 0;
-	    for (i=0; i<snlen; i++) {
-		sprintf(name2, "%.2x", sndata[snlen - (i-1)]);
-		strcat(name, name2);
-		//name[i] = sndata[i];
-	    }
+	
+	return (pCert);
 	}
-    }
-  */  
 
     if(ski != NULL) {
 	int len;

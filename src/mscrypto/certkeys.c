@@ -221,7 +221,6 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);
@@ -230,6 +229,19 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     xmlSecAssert2(ctx != NULL, 0);
  
     return(ctx->hKey);
+}
+
+PCCERT_CONTEXT
+xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+ 
+    return(ctx->pCert);
 }
 
 HCRYPTPROV

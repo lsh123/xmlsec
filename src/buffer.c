@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <errno.h>
  
 #include <libxml/tree.h>
 
@@ -896,12 +895,12 @@ xmlSecBinaryToHexString(const xmlSecByte *buf, xmlSecSize bufSize, int columns) 
 	}
 
         res[j++] = xmlSecBinaryHexChar2(ch);
-	if(j >= size) {
+	if(j > size) {
 	    break;
 	}
     }
 	
-    if(j >= size) {
+    if(j > size) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    NULL,

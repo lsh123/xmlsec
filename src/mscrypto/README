@@ -1,3 +1,18 @@
+9/21/2003
+	Issuer/serial of certificates lookup and writing is now
+	supported. The conversion from and to xml integer
+	representation of the serial number has something odd (I
+	think), the MS Cert serial must be word base swapped... Why??? 
+	
+	Certificate lookup is now extended:
+	When the xmlsec application is started, with the config
+	parameter the name of the (system) keystore can be given. That
+	keystore will be used for certificate (=key) lookup.
+	With the keyname now two types of values can be given:
+	simple name (called friendly name with MS)
+	full subject name (recommended) of the certificate that is
+	searched.
+
 9/14/2003
 	3 fixes: 
 	1) The keyname was not set when a certificate (key) was

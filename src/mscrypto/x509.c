@@ -38,6 +38,7 @@
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
+#include <xmlsec/mscrypto/bignum.h>
 
 
 /*************************************************************************
@@ -1972,12 +1973,13 @@ IsHexDigit(char c) {
 
 static xmlChar*
 xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
-    xmlChar *res;
-
+    xmlChar *res, *hexres;
+    int ret;
+    
     xmlSecAssert2(num != NULL, NULL);
 
-    res = xmlSecBinaryToHexString(num->pbData, num->cbData, 0);
-    if(res == NULL) {
+    hexres = xmlSecBinaryToHexString(num->pbData, num->cbData, 0);
+    if(hexres == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecBinaryToHexString",
@@ -1986,6 +1988,33 @@ xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
 	return(NULL);
     }
 
+    /* I have no clue why at a sudden a wordbased swap is needed to 
+     * convert from lsb, instead of a byte based swap... 
+     * This code is purely based upon trial and error :( WK
+     */
+    ret = xmlSecMSCryptoWordbaseSwap(hexres);
+    if(res < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecMSCryptoWordbaseSwap",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlFree(hexres);
+	return(NULL);
+    }
+
+    res = xmlSecMSCryptoHexToDec(hexres);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecMSCryptoHexToDec",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(hexres);
+	return(NULL);
+    }
+
+    xmlFree(hexres);
     return(res);
 }
 

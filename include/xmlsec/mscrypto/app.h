@@ -23,6 +23,7 @@ extern "C" {
  */
 XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppInit				(const char* config);
 XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppShutdown			(void);
+XMLSEC_CRYPTO_EXPORT const char*xmlSecMSCryptoAppGetCertStoreName		(void);
 
 /** 
  * Keys Manager
@@ -40,6 +41,16 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeysMngrCertLoad	(xmlSecKeysMngrPtr mn
 									 const char *filename, 
 									 xmlSecKeyDataFormat format, 
 									 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, 
+									 const xmlSecByte* data,
+									 xmlSecSize dataSize, 
+									 xmlSecKeyDataFormat format,
+									 xmlSecKeyDataType type);
+/* TODO
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeyCertLoadMemory	(xmlSecKeyPtr key,
+									 const xmlSecByte* data,
+									 xmlSecSize dataSize, 
+									 xmlSecKeyDataFormat format);*/
 #endif /* XMLSEC_NO_X509 */
 
 
@@ -51,13 +62,25 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoad		(const char *filenam
 									 const char *pwd,
 									 void *pwdCallback,
 									 void* pwdCallbackCtx);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory	(const xmlSecByte* bdata, 
+									 xmlSecSize dataSize, 
+									 xmlSecKeyDataFormat format);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12Load		(const char *filename, 
 									 const char *pwd,
 		    							 void* pwdCallback, 
 									 void* pwdCallbackCtx);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12LoadMemory	(const xmlSecByte* bdata,
+									 xmlSecSize dataSize, 
+									 const char* pwd,
+									 void* pwdCallback, 
+									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeyCertLoad		(xmlSecKeyPtr key,
 									 const char* filename,
+									 xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeyCertLoadMemory	(xmlSecKeyPtr key,
+									 const xmlSecByte* data,
+									 xmlSecSize dataSize, 
 									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 XMLSEC_CRYPTO_EXPORT void*	xmlSecMSCryptoAppGetDefaultPwdCallback	(void);

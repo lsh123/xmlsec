@@ -160,21 +160,39 @@ XMLSEC_OPENSSL_OBJS_A = \
 # xmlsec-nss object files.
 XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\app.obj\
+	$(XMLSEC_NSS_INTDIR)\bignum.obj\
 	$(XMLSEC_NSS_INTDIR)\ciphers.obj \
 	$(XMLSEC_NSS_INTDIR)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR)\digests.obj \
 	$(XMLSEC_NSS_INTDIR)\hmac.obj \
+	$(XMLSEC_NSS_INTDIR)\pkikeys.obj\
+	$(XMLSEC_NSS_INTDIR)\signatures.obj\
 	$(XMLSEC_NSS_INTDIR)\symkeys.obj \
+	$(XMLSEC_NSS_INTDIR)\x509.obj\
+	$(XMLSEC_NSS_INTDIR)\x509vfy.obj\
+	$(XMLSEC_NSS_INTDIR)\keysstore.obj\
+	$(XMLSEC_NSS_INTDIR)\kt_rsa.obj\
+	$(XMLSEC_NSS_INTDIR)\kw_des.obj\
+	$(XMLSEC_NSS_INTDIR)\kw_aes.obj\
 	$(XMLSEC_NSS_INTDIR)\strings.obj
 
 # static xmlsec-nss object files.
 XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\app.obj\
+	$(XMLSEC_NSS_INTDIR_A)\bignum.obj\
 	$(XMLSEC_NSS_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_NSS_INTDIR_A)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR_A)\digests.obj \
 	$(XMLSEC_NSS_INTDIR_A)\hmac.obj \
+	$(XMLSEC_NSS_INTDIR_A)\pkikeys.obj\
+	$(XMLSEC_NSS_INTDIR_A)\signatures.obj\
 	$(XMLSEC_NSS_INTDIR_A)\symkeys.obj \
+	$(XMLSEC_NSS_INTDIR_A)\x509.obj\
+	$(XMLSEC_NSS_INTDIR_A)\x509vfy.obj\
+	$(XMLSEC_NSS_INTDIR_A)\keysstore.obj\
+	$(XMLSEC_NSS_INTDIR_A)\kt_rsa.obj\
+	$(XMLSEC_NSS_INTDIR_A)\kw_des.obj\
+	$(XMLSEC_NSS_INTDIR_A)\kw_aes.obj\
 	$(XMLSEC_NSS_INTDIR_A)\strings.obj
 
 # configurable options

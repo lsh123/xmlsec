@@ -1,3 +1,13 @@
+Sat Sep 28 19:14:40 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
+
+	* include/xmlsec/errors.h: added MSVC to the list of compilers with
+	  the predefined __FUNCTION__ macro. 
+	* include/xmlsec/xmlsec.h: resolved XMLSEC_EXPORT mess.
+	* win32/Makefile.msvc: introduced a double-run compilation, resolved
+	  the static link problems.
+	* win32/configure.js: added the iconv=yes|no option, important when
+	  linking statically to libxml.
+
 Wed 25 Sep 2002 21:28:21 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/x509.h src/x509.c: opened xmlSecX509Data 

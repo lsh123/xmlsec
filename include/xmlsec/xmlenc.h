@@ -92,7 +92,7 @@ struct _xmlSecEncResult {
 /**
  * XML Encrypiton context methods
  */
-XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate	(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate	(xmlSecKeysMngrCtxPtr keysMngrCtx);
 XMLSEC_EXPORT void 		xmlSecEncCtxDestroy	(xmlSecEncCtxPtr ctx);
 
 

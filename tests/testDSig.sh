@@ -9,9 +9,11 @@ logfile=/tmp/testDSig.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 
+valgrind_suppressions="$topfolder/openssl.supp"
+valgrind_options="--error-limit=no --leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppressions"
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
-    export REPEAT=3
+    export VALGRIND="valgrind $valgrind_options"
+    export REPEAT=1
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 

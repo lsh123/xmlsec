@@ -296,7 +296,8 @@ int decrypt(xmlDocPtr doc);
 /**
  * Global data
  */
-xmlSecKeysMngrPtr keyMgr = NULL; 
+xmlSecKeysMngrPtr keysMngr = NULL; 
+xmlSecKeysMngrCtxPtr keysMngrCtx = NULL; 
 xmlSecKeyPtr sessionKey = NULL;
 
 char *output = NULL; 
@@ -455,22 +456,8 @@ int main(int argc, char **argv) {
 	    time_t t = 0;
 	     
 	    if(readTime(argv[++pos], &t) >= 0) {
-#ifndef XMLSEC_NO_XMLDSIG
-		if(dsigCtx != NULL) {
-		    dsigCtx->keysMngrCtx->certsVerificationTime = t;		        
-		}  
-#endif /* XMLSEC_NO_XMLDSIG */
-#ifndef XMLSEC_NO_XMLENC
-		if(encCtx != NULL) { 
-		    encCtx->keysMngrCtx->certsVerificationTime = t;		        
-		} 
-#endif /* XMLSEC_NO_XMLENC */
-		if(keyMgr != NULL) {
-#ifdef XMLSEC_CRYPTO_OPENSSL	
-		    /* todo: 
-    		    xmlSecSimpleKeysMngrSetCertsFlags(keyMgr, X509_V_FLAG_USE_CHECK_TIME);
-		    */
-#endif /* XMLSEC_CRYPTO_OPENSSL */		    
+		if(keysMngrCtx != NULL) {	    
+		    keysMngrCtx->certsVerificationTime = t;
 		}
     		ret = 0;
 	    } else {
@@ -507,7 +494,7 @@ int main(int argc, char **argv) {
 	    char* type = argv[pos] + 6;
 	    key = genKey(type, argv[++pos]);
 	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
+		ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
 	    } else {
 		/* we ignore this error because it might be cause 
 		by a missed algorithm */
@@ -618,7 +605,7 @@ int main(int argc, char **argv) {
 	for(i = 0; (i < repeats); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
-		ret = xmlSecSimpleKeysMngrSave(xmlSecSimpleKeysMngrCast(keyMgr), argv[pos]);
+		ret = xmlSecSimpleKeysMngrSave(xmlSecSimpleKeysMngrCast(keysMngr), argv[pos]);
 	    } else {
 		doc = xmlSecParseFile(argv[pos]);
 	        if(doc == NULL) {
@@ -788,9 +775,14 @@ int initXmlsec(xmlsecCommand command) {
     /** 
      * Create Keys and x509 managers
      */
-    keyMgr = xmlSecSimpleKeysMngrCreate();    
-    if(keyMgr == NULL) {
+    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
+	return(-1);
+    }
+    keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);    
+    if(keysMngrCtx == NULL) {
+	fprintf(stderr, "Error: failed to create keys manager context\n");
 	return(-1);
     }
 
@@ -802,7 +794,7 @@ int initXmlsec(xmlsecCommand command) {
 	/**
 	 * Init DSig context
          */    
-        dsigCtx = xmlSecDSigCtxCreate(keyMgr);
+        dsigCtx = xmlSecDSigCtxCreate(keysMngrCtx);
 	if(dsigCtx == NULL) {
     	    fprintf(stderr,"Error: failed to create DSig context\n");
 	    return(-1);
@@ -821,7 +813,7 @@ int initXmlsec(xmlsecCommand command) {
 #ifndef XMLSEC_NO_XMLENC
     case xmlsecCommandEncrypt:
     case xmlsecCommandDecrypt:
-        encCtx = xmlSecEncCtxCreate(keyMgr);
+        encCtx = xmlSecEncCtxCreate(keysMngrCtx);
 	if(encCtx == NULL) {
     	    fprintf(stderr,"Error: failed to create Enc context\n");
 	    return(-1);
@@ -853,8 +845,11 @@ void shutdownXmlsec(void) {
     }
 #endif /* XMLSEC_NO_XMLDSIG */
 
-    if(keyMgr != NULL) {
-	xmlSecObjDelete(xmlSecObjCast(keyMgr));
+    if(keysMngrCtx != NULL) {
+	xmlSecObjDelete(xmlSecObjCast(keysMngrCtx));
+    }
+    if(keysMngr != NULL) {
+	xmlSecObjDelete(xmlSecObjCast(keysMngr));
     }
     
     /**
@@ -920,7 +915,7 @@ int  readPEMCertificate(const char *file, int trusted) {
 #ifndef XMLSEC_NO_X509	    
     int ret;
 /* todo
-    ret = xmlSecSimpleKeysMngrLoadPemCert(xmlSecSimpleKeysMngrCast(keyMgr), 
+    ret = xmlSecSimpleKeysMngrLoadPemCert(xmlSecSimpleKeysMngrCast(keysMngr), 
 					file, trusted);
     if(ret < 0) {
 	fprintf(stderr, "Error: unable to load certificate file \"%s\".\n", file);
@@ -937,7 +932,7 @@ int  readPEMCertificate(const char *file, int trusted) {
 int  readKeys(char *file) {
     int ret;
     
-    ret = xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrCast(keyMgr), file, 0);
+    ret = xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrCast(keysMngr), file, 0);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to load keys from \"%s\".\n", file);
 	return(-1);
@@ -973,16 +968,9 @@ int  readKeyOrigins(char *keyOrigins) {
 	}
 	p = strtok(NULL, ",");
     }    
-#ifndef XMLSEC_NO_XMLDSIG
-    if(dsigCtx != NULL) {
-	dsigCtx->keysMngrCtx->allowedOrigins = res;
+    if(keysMngrCtx != NULL) {
+	keysMngrCtx->allowedOrigins = res;
     }  
-#endif /* XMLSEC_NO_XMLDSIG */
-#ifndef XMLSEC_NO_XMLENC
-    if(encCtx != NULL) { 
-	encCtx->keysMngrCtx->allowedOrigins = res;
-    } 
-#endif /* XMLSEC_NO_XMLENC */
     return(0);
 }
 
@@ -1020,7 +1008,7 @@ int readPemKey(int privateKey, char *param, char *name) {
     }
 #endif /* XMLSEC_NO_X509 */        
     
-    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
+    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to add key.\n");
 	xmlSecKeyDestroy(key);
@@ -1060,7 +1048,7 @@ int readPKCS12Key(char *filename, char *name) {
     	key->name = xmlStrdup(BAD_CAST name);
     }
     
-    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
+    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);
 	fprintf(stderr, "Error: failed to add hmac key\n"); 
@@ -1117,7 +1105,7 @@ int readHmacKey(char *filename, char *name) {
     }    
     xmlSecKeyValueDestroy(keyValue);
 
-    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
+    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);
 	fprintf(stderr, "Error: failed to add hmac key\n"); 

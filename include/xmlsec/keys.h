@@ -306,55 +306,6 @@ XMLSEC_EXPORT int			xmlSecKeyDataWriteBinary(xmlSecKeyDataId id,
  	(xmlSecKeyDataIsValid(( keyData )) && \
 	((( keyData )->id)->type == ( dataType )))
 
-/****************************************************************************
- *
- * Key Read/Write  context
- *
- ***************************************************************************/
-struct _xmlSecKeysMngrCtx {
-    xmlSecKeysMngrPtr	keysMngr;
-
-    /* restrictions */
-    xmlSecKeyOrigin 	allowedOrigins;
-    int 		maxRetrievalsLevel;
-    int			maxEncKeysLevel; 
-    time_t		certsVerificationTime;
-
-    /* desired key */
-    xmlSecKeyValueId	keyId;
-    xmlSecKeyValueType	keyType;
-    xmlSecKeyUsage	keyUsage;
-    xmlChar*		keyName;
-    
-    /* current state */
-    int 		curRetrievalsLevel;
-    int			curEncKeysLevel; 
-    xmlSecKeyDataPtr	curX509Data;
-    xmlSecKeyDataPtr	curPgpData;
-    
-    void*		appContext;	
-};
-
-XMLSEC_EXPORT xmlSecKeysMngrCtxPtr xmlSecKeysMngrCtxCreate	(xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void xmlSecKeysMngrCtxDestroy			(xmlSecKeysMngrCtxPtr ctx);
-XMLSEC_EXPORT void xmlSecKeysMngrCtxSwapState			(xmlSecKeysMngrCtxPtr ctx1,
-								 xmlSecKeysMngrCtxPtr ctx2);
-
-#define xmlSecKeysMngrCtxCheckOrigin(ctx, origin) \
-	((((ctx) != NULL) && ((ctx)->allowedOrigins & origin)) ? \
-	    1 :\
-	    0 )
-#define xmlSecKeysMngrCtxCheckRetrievalsLevel(ctx) \
-	((((ctx) != NULL) && ((ctx)->maxRetrievalsLevel >= 0)) ? \
-	    ((ctx)->maxRetrievalsLevel > (ctx)->curRetrievalsLevel) : \
-	    1 )
-#define xmlSecKeysMngrCtxCheckEncKeysLevel(ctx) \
-	((((ctx) != NULL) && ((ctx)->maxEncKeysLevel >= 0)) ? \
-	    ((ctx)->maxEncKeysLevel > (ctx)->curEncKeysLevel) : \
-	    1 )
-
-
-
 
 
 #ifdef __cplusplus

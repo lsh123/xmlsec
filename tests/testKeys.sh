@@ -9,6 +9,17 @@ logfile=/tmp/testKeys.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 
+#
+# It's just too slow
+#
+#valgrind_suppressions="$topfolder/openssl.supp"
+#valgrind_options="--error-limit=no --leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppressions"
+#if [ -n "$DEBUG_MEMORY" ] ; then 
+#    export VALGRIND="valgrind $valgrind_options"
+#    export REPEAT=1
+#    export EXTRA_PARAMS="--repeat $REPEAT"
+#fi
+
 printRes() {
     if [ $? = 0 ]; then
 	echo "   OK"
@@ -24,7 +35,7 @@ echo "--- testKeys started ($timestamp) ---"
 echo "--- testKeys started ($timestamp) ---" >> $logfile
 
 printf "    Creating new keys                                    "
-$xmlsec_app keys \
+$VALGRIND $xmlsec_app keys \
     --gen-hmac "test-hmac-sha1" \
     --gen-rsa "test-rsa" \
     --gen-dsa "test-dsa" \

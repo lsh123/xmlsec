@@ -26,26 +26,6 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/errors.h>
 
-static void		xmlSecKeysMngrKlassInit		(xmlSecObjKlassPtr klass);
-static xmlSecKeyPtr 	xmlSecKeysMngrGetKeyImp		(xmlSecKeysMngrPtr keysMngr, 
-							 xmlSecKeysMngrCtxPtr keysMngrCtx, 
-		    					 xmlNodePtr keyInfoNode);
-static void		xmlSecSimpleKeysMngrKlassInit	(xmlSecObjKlassPtr klass);
-static int		xmlSecSimpleKeysMngrConstructor	(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr obj);
-static int		xmlSecSimpleKeysMngrDuplicator	(xmlSecObjKlassPtr klass, 
-						         xmlSecObjPtr dst, 
-							 xmlSecObjPtr src);
-static void		xmlSecSimpleKeysMngrDestructor	(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr dst);
-static void		xmlSecSimpleKeysMngrDebugDump	(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static void		xmlSecSimpleKeysMngrDebugXmlDump(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static xmlSecKeyPtr 	xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr km, 
-							 xmlSecKeysMngrCtxPtr keysMngrCtx);
 
 
 /*********************************************************************
@@ -53,6 +33,11 @@ static xmlSecKeyPtr 	xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr km,
  * Keys Manager
  *
  *********************************************************************/
+static void		xmlSecKeysMngrKlassInit		(xmlSecObjKlassPtr klass);
+static xmlSecKeyPtr 	xmlSecKeysMngrGetKeyImp		(xmlSecKeysMngrPtr keysMngr, 
+							 xmlSecKeysMngrCtxPtr keysMngrCtx, 
+		    					 xmlNodePtr keyInfoNode);
+
 xmlSecObjKlassPtr
 xmlSecKeysMngrKlassGet(void) {
     static xmlSecObjKlassPtr klass = NULL;
@@ -73,7 +58,7 @@ xmlSecKeysMngrKlassGet(void) {
 	    NULL,			/* xmlSecObjKlassDestructorMethod */
 	};
 	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
-				       &kklassInfo, xmlSecObjKlassId); 
+    				       &kklassInfo, xmlSecObjKlassId); 
     } 
     return(klass);   
 }
@@ -150,13 +135,28 @@ xmlSecKeysMngrGetKeyImp(xmlSecKeysMngrPtr keysMngr, xmlSecKeysMngrCtxPtr keysMng
     return(key);
 }
 
-
-
 /*********************************************************************
  *
  * Simple Keys Manager
  *
- *********************************************************************/
+     *********************************************************************/
+static void		xmlSecSimpleKeysMngrKlassInit	(xmlSecObjKlassPtr klass);
+static int		xmlSecSimpleKeysMngrConstructor	(xmlSecObjKlassPtr klass, 
+							 xmlSecObjPtr obj);
+static int		xmlSecSimpleKeysMngrDuplicator	(xmlSecObjKlassPtr klass, 
+						         xmlSecObjPtr dst, 
+							 xmlSecObjPtr src);
+static void		xmlSecSimpleKeysMngrDestructor	(xmlSecObjKlassPtr klass, 
+							 xmlSecObjPtr dst);
+static void		xmlSecSimpleKeysMngrDebugDump	(xmlSecObjPtr obj,
+							 FILE* output,
+							 size_t level);
+static void		xmlSecSimpleKeysMngrDebugXmlDump(xmlSecObjPtr obj,
+							 FILE* output,
+							 size_t level);
+static xmlSecKeyPtr 	xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr km, 
+							 xmlSecKeysMngrCtxPtr keysMngrCtx);
+
 xmlSecObjKlassPtr
 xmlSecSimpleKeysMngrKlassGet(void) {
     static xmlSecObjKlassPtr klass = NULL;
@@ -230,11 +230,12 @@ xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrPtr keysMngr, xmlSecKeyPtr key) {
  */
 int
 xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int strict) {
-    xmlSecKeysMngrCtxPtr keysMngrCtx;
-    xmlDocPtr doc;
+    xmlSecKeysMngrCtxPtr keysMngrCtx = NULL;
+    xmlDocPtr doc = NULL;
     xmlNodePtr root;
     xmlNodePtr cur;
     xmlSecKeyPtr key;
+    int res = -1;
     int ret;
 
     xmlSecAssert2(keysMngr != NULL, -1);
@@ -245,7 +246,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "xmlParseFile");
-	return(-1);
+	goto done;
     }
     
     root = xmlDocGetRootElement(doc);
@@ -253,8 +254,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Keys");
-	xmlFreeDoc(doc);
-	return(-1);
+	goto done;
     }
     
     keysMngrCtx = xmlSecKeysMngrCtxCreate(xmlSecKeysMngrCast(keysMngr));
@@ -262,8 +262,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeysMngrCtxCreate");
-	xmlFreeDoc(doc);
-	return(-1);
+	goto done;
     }    
     keysMngrCtx->allowedOrigins = xmlSecKeyOriginAll;
 
@@ -275,9 +274,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyInfoNodeRead");
 	    if(strict) {
-		xmlSecKeysMngrCtxDestroy(keysMngrCtx);
-		xmlFreeDoc(doc);
-		return(-1);	
+		goto done;
 	    }
 	} else {
 	    ret = xmlSecSimpleKeysMngrAddKey(keysMngr, key);
@@ -285,10 +282,8 @@ xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int 
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "xmlSecSimpleKeysMngrAddKey - %d", ret);
-		xmlSecKeysMngrCtxDestroy(keysMngrCtx);
 		xmlSecKeyDestroy(key);
-		xmlFreeDoc(doc);
-		return(-1);	
+		goto done;
 	    }
 	}
         cur = xmlSecGetNextElementNode(cur->next);
@@ -298,14 +293,18 @@ xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrPtr keysMngr, const char *uri, int 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    (cur->name != NULL) ? (char*) cur->name : "NULL");
-	xmlSecKeysMngrCtxDestroy(keysMngrCtx);
-	xmlFreeDoc(doc);
-	return(-1);	    
+    	goto done;
     }
+    res = 0;
     
-    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
-    xmlFreeDoc(doc);
-    return(0);
+done:
+    if(keysMngrCtx != NULL) {    
+        xmlSecObjDelete(xmlSecObjCast(keysMngrCtx));
+    }
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
+    }
+    return(res);
 }
 
 /**
@@ -430,8 +429,12 @@ xmlSecSimpleKeysMngrSave(xmlSecSimpleKeysMngrPtr keysMngr, const char *filename)
     res = 0;
     
 done:    
-	    xmlSecKeysMngrCtxDestroy(keysMngrCtx);
-    xmlFreeDoc(doc);
+    if(keysMngrCtx != NULL) {
+        xmlSecObjDelete(xmlSecObjCast(keysMngrCtx));
+    }
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
+    }
     return(res);
 }
 
@@ -574,3 +577,214 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr km, xmlSecKeysMngrCtxPtr keysMngrC
     }
     return(NULL);
 }
+
+
+
+/*********************************************************************
+ *
+ * Keys Manager Context
+ *
+ *********************************************************************/
+static void		xmlSecKeysMngrCtxKlassInit	(xmlSecObjKlassPtr klass);
+static int		xmlSecKeysMngrCtxConstructor	(xmlSecObjKlassPtr klass, 
+							 xmlSecObjPtr obj);
+static int		xmlSecKeysMngrCtxDuplicator	(xmlSecObjKlassPtr klass, 
+						         xmlSecObjPtr dst, 
+							 xmlSecObjPtr src);
+static void		xmlSecKeysMngrCtxDestructor	(xmlSecObjKlassPtr klass, 
+							 xmlSecObjPtr dst);
+static void		xmlSecKeysMngrCtxDebugDump	(xmlSecObjPtr obj,
+							 FILE* output,
+							 size_t level);
+static void		xmlSecKeysMngrCtxDebugXmlDump(xmlSecObjPtr obj,
+							 FILE* output,
+							 size_t level);
+
+xmlSecObjKlassPtr
+xmlSecKeysMngrCtxKlassGet(void) {
+    static xmlSecObjKlassPtr klass = NULL;
+    static xmlSecKeysMngrCtxKlass kklass;
+    
+    if(klass == NULL) {
+	static xmlSecObjKlassInfo kklassInfo = {
+	    /* klass data */
+	    sizeof(xmlSecKeysMngrCtxKlass),
+	    "xmlSecKeysMngrCtx",
+	    xmlSecKeysMngrCtxKlassInit, 	/* xmlSecObjKlassInitMethod */
+	    NULL,				/* xmlSecObjKlassFinalizeMethod */
+	    
+    	    /* obj info */
+	    sizeof(xmlSecKeysMngrCtx),
+	    xmlSecKeysMngrCtxConstructor,	/* xmlSecObjKlassConstructorMethod */
+	    xmlSecKeysMngrCtxDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
+	    xmlSecKeysMngrCtxDestructor,	/* xmlSecObjKlassDestructorMethod */
+	};
+	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
+				       &kklassInfo, xmlSecObjKlassId); 
+    } 
+    return(klass);   
+}
+
+xmlSecKeysMngrCtxPtr 
+xmlSecKeysMngrCtxCreate(xmlSecKeysMngrPtr keysMngr) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx;
+    xmlSecObjPtr tmp;
+    
+    xmlSecAssert2(keysMngr != NULL, NULL);
+    tmp = xmlSecObjNew(xmlSecKeysMngrCtxKlassId);
+    if(tmp == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecObjNew(xmlSecKeysMngrCtxId)");
+	return(NULL);    
+    }
+    
+    keysMngrCtx = xmlSecKeysMngrCtxCast(tmp);
+    if(keysMngrCtx == NULL) {
+	xmlSecObjDelete(tmp);
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrCtxCast");
+	return(NULL);    
+    }
+    keysMngrCtx->keysMngr = keysMngr;
+    
+    return(keysMngrCtx);
+}
+
+int
+xmlSecKeysMngrCtxCheckOrigin(xmlSecKeysMngrCtxPtr keysMngrCtx, xmlSecKeyOrigin origin) {
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    
+    return((keysMngrCtx->allowedOrigins & origin) ? 1 : 0);
+}
+
+int
+xmlSecKeysMngrCtxCheckRetrievalsLevel(xmlSecKeysMngrCtxPtr keysMngrCtx) {
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    
+    return(keysMngrCtx->maxRetrievalsLevel > keysMngrCtx->curRetrievalsLevel);
+}
+
+int
+xmlSecKeysMngrCtxCheckEncKeysLevel(xmlSecKeysMngrCtxPtr keysMngrCtx) {
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+
+    return(keysMngrCtx->maxEncKeysLevel > keysMngrCtx->curEncKeysLevel);
+}
+
+static void
+xmlSecKeysMngrCtxKlassInit(xmlSecObjKlassPtr klass) {
+    xmlSecKeysMngrCtxKlassPtr keysMngrCtxKlass = (xmlSecKeysMngrCtxKlassPtr)klass;
+
+    xmlSecAssert(keysMngrCtxKlass != NULL);
+
+    klass->debugDump 		= xmlSecKeysMngrCtxDebugDump;
+    klass->debugXmlDump 	= xmlSecKeysMngrCtxDebugXmlDump;
+}
+
+
+static int
+xmlSecKeysMngrCtxConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
+			xmlSecObjPtr obj) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(obj);
+
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+
+    /* set "smart" defaults */
+    keysMngrCtx->allowedOrigins = xmlSecKeyOriginAll;
+    keysMngrCtx->maxRetrievalsLevel = 1;
+    keysMngrCtx->maxEncKeysLevel = 1;
+
+    return(0);
+}
+
+static int
+xmlSecKeysMngrCtxDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
+			xmlSecObjPtr dst, xmlSecObjPtr src) {
+    xmlSecKeysMngrCtxPtr keysMngrCtxDst = xmlSecKeysMngrCtxCast(dst);
+    xmlSecKeysMngrCtxPtr keysMngrCtxSrc = xmlSecKeysMngrCtxCast(src);
+    xmlSecObjPtr tmp;
+    
+    xmlSecAssert2(keysMngrCtxDst != NULL, -1);
+    xmlSecAssert2(keysMngrCtxSrc != NULL, -1);
+    
+    keysMngrCtxDst->keysMngr 		 = keysMngrCtxSrc->keysMngr;
+
+    /* restrictions */
+    keysMngrCtxDst->allowedOrigins 	 = keysMngrCtxSrc->allowedOrigins;
+    keysMngrCtxDst->maxRetrievalsLevel 	 = keysMngrCtxSrc->maxRetrievalsLevel;
+    keysMngrCtxDst->maxEncKeysLevel 	 = keysMngrCtxSrc->maxEncKeysLevel;
+    keysMngrCtxDst->certsVerificationTime= keysMngrCtxSrc->certsVerificationTime;
+
+    /* desired key */
+    keysMngrCtxDst->keyId 		= keysMngrCtxSrc->keyId;
+    keysMngrCtxDst->keyType		= keysMngrCtxSrc->keyType;
+    keysMngrCtxDst->keyUsage 		= keysMngrCtxSrc->keyUsage;
+    if(keysMngrCtxSrc->keyName != NULL) {
+	xmlSecAssert2(keysMngrCtxDst->keyName == NULL, -1);
+	
+	keysMngrCtxDst->keyName 	= xmlStrdup(keysMngrCtxSrc->keyName);
+    }
+
+    /* don't duplicate current state! */
+    return(0);
+}
+
+static void
+xmlSecKeysMngrCtxDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
+				    xmlSecObjPtr obj) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(obj);
+
+    xmlSecAssert(keysMngrCtx != NULL);
+
+    if(keysMngrCtx->keyName != NULL) {
+	xmlFree(keysMngrCtx->keyName);
+	keysMngrCtx->keyName = NULL;
+    }
+    if(keysMngrCtx->curX509Data != NULL) {
+/* todo
+	xmlSecObjDelete(xmlSecObjCast(keysMngrCtx->curX509Data));
+*/
+	keysMngrCtx->curX509Data = NULL;
+    }
+    if(keysMngrCtx->curPgpData != NULL) {
+/* todo
+	xmlSecObjDelete(xmlSecObjCast(keysMngrCtx->curPgpData));
+*/	
+	keysMngrCtx->curPgpData = NULL;
+    }
+}
+    
+static void
+xmlSecKeysMngrCtxDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(obj);
+
+    xmlSecAssert(output != NULL);
+    xmlSecAssert(keysMngrCtx != NULL);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "simple keys manager:\n");
+    /* todo 
+    xmlSecObjDebugDump(xmlSecObjCast(keysMngrCtx->), output, level + 1);
+    */
+}
+
+static void
+xmlSecKeysMngrCtxDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecKeysMngrCtxPtr keysMngrCtx = xmlSecKeysMngrCtxCast(obj);
+	    
+    xmlSecAssert(output != NULL);
+    xmlSecAssert(keysMngrCtx != NULL);
+
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "<KeysMngrCtx>\n");
+    
+    /* todo 
+    xmlSecObjDebugXmlDump(xmlSecObjCast(keysMngrCtx->), output, level + 1);
+    */
+    
+    xmlSecObjDebugIndent(output, level);
+    fprintf(output, "</KeysMngrCtx>\n");
+}
+

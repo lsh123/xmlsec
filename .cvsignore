@@ -32,3 +32,4 @@ xmlsec.spec
 conftest.o
 *.stamp
 *.cache
+stamp-*

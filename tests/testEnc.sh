@@ -3,14 +3,17 @@
 topfolder=$1
 xmlsec_app=$2
 
+
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testEnc.$timestamp-$$.tmp
 logfile=/tmp/testEnc.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 
+valgrind_suppressions="$topfolder/openssl.supp"
+valgrind_options="--error-limit=no --leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppressions"
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
+    export VALGRIND="valgrind $valgrind_options"
     export REPEAT=1
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi

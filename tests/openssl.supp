@@ -1,0 +1,50 @@
+##----------------------------------------------------------------------##
+
+# Errors to suppress by default with OpenSSL
+
+# Format of this file is:
+# {
+#     name_of_suppression
+#     kind: one of Param Value1 Value2 Value4 Value8
+#                   Free Addr1 Addr2 Addr4 Addr8
+#                   Cond (previously known as Value0)
+#     (if Param: name of system call param, if Free: name of free-ing fn)
+#     caller0 name, or /name/of/so/file.so
+#     caller1 name, or ditto
+#     (optionally: caller2 name)
+#     (optionally: caller3 name)
+#  }
+
+##----------------------------------------------------------------------##
+{
+   OpenSSL BN_*(Cond)
+   Cond
+   fun:BN_*
+}
+
+{
+   OpenSSL BN_*(Value4)
+   Value4
+   fun:BN_*
+}
+
+{
+   OpenSSL bn_*(Cond)
+   Cond
+   fun:bn_*
+}
+
+{
+   OpenSSL bn_*(Value4)
+   Value4
+   fun:bn_*
+}
+
+{
+   OpenSSL DES_encrypt*(Value4)
+   Value4
+   fun:DES_encrypt2
+   fun:DES_encrypt3
+}
+
+##----------------------------------------------------------------------##

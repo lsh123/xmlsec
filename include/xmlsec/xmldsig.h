@@ -134,7 +134,7 @@ struct _xmlSecReferenceResult {
 /**
  * DSig context methods
  */
-XMLSEC_EXPORT xmlSecDSigCtxPtr	xmlSecDSigCtxCreate		(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT xmlSecDSigCtxPtr	xmlSecDSigCtxCreate		(xmlSecKeysMngrCtxPtr keysMngrCtx);
 XMLSEC_EXPORT void 		xmlSecDSigCtxDestroy		(xmlSecDSigCtxPtr ctx);
 
 /**

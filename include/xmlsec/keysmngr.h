@@ -34,6 +34,13 @@ typedef struct _xmlSecSimpleKeysMngrKlass	xmlSecSimpleKeysMngrKlass,
 typedef struct _xmlSecSimpleKeysMngr		xmlSecSimpleKeysMngr,
 						*xmlSecSimpleKeysMngrPtr;
 
+typedef struct _xmlSecKeysMngrCtxKlass		xmlSecKeysMngrCtxKlass,
+						*xmlSecKeysMngrCtxKlassPtr;
+#if 0
+/* now defined in keys.h */
+typedef struct _xmlSecKeysMngrCtx		xmlSecKeysMngrCtx,
+						*xmlSecKeysMngrCtxPtr;
+#endif
 
 /*********************************************************************
  *
@@ -126,30 +133,55 @@ XMLSEC_EXPORT int		xmlSecSimpleKeysMngrLoad 	(xmlSecSimpleKeysMngrPtr keysMngr,
 XMLSEC_EXPORT int		xmlSecSimpleKeysMngrSave	(xmlSecSimpleKeysMngrPtr keysMngr, 
 								 const char *filename);
 
-#if 0
-/*********************************************************************
- *
- * Key data
- *
- *********************************************************************/
-#define xmlSecKeyDataKlassId 			xmlSecKeyDataKlassGet()
-#define xmlSecKeyDataKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecKeyDataKlassId, xmlSecKeyDataKlassPtr)
-#define xmlSecKeyDataKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecKeyDataKlassId)
-#define xmlSecKeyDataCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeyDataKlassId, xmlSecKeyDataPtr)
-#define xmlSecKeyDataCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecKeyDataKlassId)
 
-struct _xmlSecKeyDataKlass {
-    xmlSecSObjKlass			parent;
+
+
+
+/****************************************************************************
+ *
+ * Keys Read/Write context
+ *
+ ***************************************************************************/
+#define xmlSecKeysMngrCtxKlassId 			xmlSecKeysMngrCtxKlassGet()
+#define xmlSecKeysMngrCtxKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecKeysMngrCtxKlassId, xmlSecKeysMngrCtxKlassPtr)
+#define xmlSecKeysMngrCtxKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecKeysMngrCtxKlassId)
+#define xmlSecKeysMngrCtxCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeysMngrCtxKlassId, xmlSecKeysMngrCtxPtr)
+#define xmlSecKeysMngrCtxCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecKeysMngrCtxKlassId)
+
+struct _xmlSecKeysMngrCtxKlass {
+    xmlSecObjKlass			parent;
+};
+
+struct _xmlSecKeysMngrCtx {
+    xmlSecObj				parent;
     
-    const xmlChar*			typeHref;
-    const xmlChar*			nodeName;
-    const xmlChar*			nodeNs;
+    xmlSecKeysMngrPtr			keysMngr;
+
+    /* restrictions */
+    xmlSecKeyOrigin 			allowedOrigins;
+    int 				maxRetrievalsLevel;
+    int					maxEncKeysLevel; 
+    time_t				certsVerificationTime;
+
+    /* desired key */
+    xmlSecKeyValueId			keyId;
+    xmlSecKeyValueType			keyType;
+    xmlSecKeyUsage			keyUsage;
+    xmlChar*				keyName;
+    
+    /* current state */
+    int 				curRetrievalsLevel;
+    int					curEncKeysLevel; 
+    xmlSecKeyDataPtr			curX509Data;
+    xmlSecKeyDataPtr			curPgpData;
 };
 
-struct _xmlSecKeyData {
-    xmlSecSObj				parent;    
-};
-#endif /* 0 */
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecKeysMngrCtxKlassGet	(void);
+XMLSEC_EXPORT xmlSecKeysMngrCtxPtr xmlSecKeysMngrCtxCreate	(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT int 	xmlSecKeysMngrCtxCheckOrigin		(xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlSecKeyOrigin origin);
+XMLSEC_EXPORT int	xmlSecKeysMngrCtxCheckRetrievalsLevel	(xmlSecKeysMngrCtxPtr keysMngrCtx);
+XMLSEC_EXPORT int	xmlSecKeysMngrCtxCheckEncKeysLevel	(xmlSecKeysMngrCtxPtr keysMngrCtx);
 
 
 #ifdef __cplusplus

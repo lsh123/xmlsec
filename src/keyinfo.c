@@ -1398,6 +1398,7 @@ static xmlSecKeyPtr
 xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeysMngrCtxPtr keysMngrCtx) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyValuePtr keyValue = NULL;
+    xmlSecKeysMngrCtxPtr encKeysMngrCtx = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     xmlSecEncResultPtr encResult = NULL; 
     int ret;
@@ -1424,7 +1425,15 @@ xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeysMngrCtxPtr keysMngrC
     /**
      * Init Enc keysMngrCtx
      */    
-    encCtx = xmlSecEncCtxCreate(keysMngrCtx->keysMngr);
+    encKeysMngrCtx = (xmlSecKeysMngrCtxPtr)xmlSecObjDuplicate(xmlSecObjCast(keysMngrCtx));
+    if(encKeysMngrCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecObjDuplicate(keysMngrCtx)");
+	goto done;
+    }
+    
+    encCtx = xmlSecEncCtxCreate(encKeysMngrCtx);
     if(encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1433,12 +1442,7 @@ xmlSecEncryptedKeyNodeRead(xmlNodePtr encKeyNode, xmlSecKeysMngrCtxPtr keysMngrC
     }
     encCtx->ignoreType = 1; /* do not substitute the node! */
 
-    /* init the new keys rw ctx */
-    xmlSecKeysMngrCtxSwapState(keysMngrCtx, encCtx->keysMngrCtx);
     ret = xmlSecDecrypt(encCtx, NULL, encKeyNode, &encResult);
-    /* restore the keys rw ctx */
-    xmlSecKeysMngrCtxSwapState(keysMngrCtx, encCtx->keysMngrCtx);    
-
     if((ret < 0) || (encResult == NULL) || (encResult->buffer == NULL)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1472,6 +1476,9 @@ done:
     if(encResult != NULL) {
 	xmlSecEncResultDestroy(encResult);
     }
+    if(encKeysMngrCtx != NULL) {
+	xmlSecObjDelete(xmlSecObjCast(encKeysMngrCtx));
+    }    
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }    
@@ -1484,6 +1491,7 @@ done:
 static int
 xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode, xmlSecKeysMngrCtxPtr keysMngrCtx,	 
 			xmlSecKeyPtr key, xmlSecKeyValueType type) {
+    xmlSecKeysMngrCtxPtr encKeysMngrCtx = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
@@ -1505,15 +1513,22 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode, xmlSecKeysMngrCtxPtr keysMngr
     /**
      * Init Enc keysMngrCtx
      */    
-    encCtx = xmlSecEncCtxCreate(keysMngrCtx->keysMngr);
+    encKeysMngrCtx = (xmlSecKeysMngrCtxPtr)xmlSecObjDuplicate(xmlSecObjCast(keysMngrCtx));
+    if(encKeysMngrCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecObjDuplicate(keysMngrCtx)");
+	goto done;
+    }
+    
+    encCtx = xmlSecEncCtxCreate(encKeysMngrCtx);
     if(encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecEncCtxCreate");
 	goto done;
     }
     encCtx->ignoreType = 1; /* do not substitute the node! */
-
     
     ret = xmlSecKeyValueWriteBin(key->value, type, &keyBuf, &keySize);
     if(ret < 0) {
@@ -1523,11 +1538,7 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode, xmlSecKeysMngrCtxPtr keysMngr
 	goto done;
     }
 
-    /* init the new keys rw ctx */
-    xmlSecKeysMngrCtxSwapState(keysMngrCtx, encCtx->keysMngrCtx);
     ret = xmlSecEncryptMemory(encCtx, NULL, encKeyNode, keyBuf, keySize, NULL);
-    /* restore the keys rw ctx */
-    xmlSecKeysMngrCtxSwapState(keysMngrCtx, encCtx->keysMngrCtx);    
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1542,6 +1553,9 @@ done:
 	memset(keyBuf, 0, keySize);
 	xmlFree(keyBuf); keyBuf = NULL;
     }
+    if(encKeysMngrCtx != NULL) {
+	xmlSecObjDelete(xmlSecObjCast(encKeysMngrCtx));
+    }    
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }    

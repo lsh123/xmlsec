@@ -1008,7 +1008,7 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
  **************************************************************************/
 /**
  * xmlSecDSigCtxCreate:
- * @keysMngr: the pointer to #xmlSecKeysMngr structure
+ * @keysMngrCtx: the pointer to #xmlSecKeysMngrCtx structure
  *
  * Creates new #xmlSecDSigCtx structure.
  *
@@ -1016,7 +1016,7 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
  * if an error occurs.
  */
 xmlSecDSigCtxPtr		
-xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
+xmlSecDSigCtxCreate(xmlSecKeysMngrCtxPtr keysMngrCtx) {
     xmlSecDSigCtxPtr ctx;
     
     /*
@@ -1032,14 +1032,7 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     
-    ctx->keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);
-    if(ctx->keysMngrCtx == NULL) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrCtxCreate");
-	xmlSecDSigCtxDestroy(ctx);  
-	return(NULL);
-    }
+    ctx->keysMngrCtx = keysMngrCtx;
     
     /* by default we process Manifests and store everything */
     ctx->processManifests = 1;
@@ -1059,9 +1052,6 @@ void
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {    
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->keysMngrCtx != NULL) {
-	xmlSecKeysMngrCtxDestroy(ctx->keysMngrCtx);
-    }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     xmlFree(ctx);
 }

@@ -24,6 +24,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/errors.h>

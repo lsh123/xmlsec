@@ -96,14 +96,14 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
  ***************************************************************************/
 /**
  * xmlSecEncCtxCreate:
- * @keysMngr: the pointer to #xmlSecKeysMngr structure.
+ * @keysMngrCtx: the pointer to #xmlSecKeysMngrCtx structure.
  * 
  * Creates new encryption context.
  *
  * Returns newly allocated #xmlSecEncCtx structure or NULL if an error occurs.
  */
 xmlSecEncCtxPtr		
-xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
+xmlSecEncCtxCreate(xmlSecKeysMngrCtxPtr keysMngrCtx) {
     xmlSecEncCtxPtr ctx;
     
     /*
@@ -119,14 +119,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     }
     memset(ctx, 0, sizeof(xmlSecEncCtx));
 
-    ctx->keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);
-    if(ctx->keysMngrCtx == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrCtxCreate");
-	xmlSecEncCtxDestroy(ctx);
-	return(NULL);
-    }
+    ctx->keysMngrCtx = keysMngrCtx;
     return(ctx);
 }
 
@@ -140,10 +133,6 @@ void
 xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->keysMngrCtx != NULL) {
-	xmlSecKeysMngrCtxDestroy(ctx->keysMngrCtx);
-    }
-    
     memset(ctx, 0, sizeof(xmlSecEncCtx));
     xmlFree(ctx);
 }

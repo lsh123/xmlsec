@@ -178,6 +178,8 @@ keysdata
 @xmlSecKeyDataFormatPkcs8Pem: 
 @xmlSecKeyDataFormatPkcs8Der: 
 @xmlSecKeyDataFormatPkcs12: 
+@xmlSecKeyDataFormatCertPem: 
+@xmlSecKeyDataFormatCertDer: 
 
 <!-- ##### FUNCTION xmlSecKeyDataIdsGet ##### -->
 <para>

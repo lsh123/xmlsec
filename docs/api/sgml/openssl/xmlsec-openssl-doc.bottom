@@ -1,5 +1,5 @@
     &xmlsec-openssl-app;
-    &xmlsec-openssl-crypto;
     &xmlsec-openssl-bn;
+    &xmlsec-openssl-crypto;
     &xmlsec-openssl-evp;
     &xmlsec-openssl-x509;

@@ -40,24 +40,35 @@ html: sgml xmlsec.sgml xmlsec-index
 # targets to make more references
 #
 sgml: templates
-	@gtkdoc-mkdb --module=xmlsec --main-sgml-file=xmlsec.sgml \
+	-@gtkdoc-mkdb --module=xmlsec \
+		    --main-sgml-file=xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	@gtkdoc-mkdb --module=xmlsec-openssl --main-sgml-file=xmlsec-openssl.sgml \
-		    --tmpl-dir=tmpl/openssl --output-dir=sgml/openssl \
+	-@gtkdoc-mkdb --module=xmlsec-openssl \
+		    --main-sgml-file=xmlsec-openssl.sgml \
+		    --tmpl-dir=tmpl/openssl \
+		    --output-dir=sgml/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	@gtkdoc-mkdb --module=xmlsec-gnutls --main-sgml-file=xmlsec-gnutls.sgml \
-		    --tmpl-dir=tmpl/gnutls --output-dir=sgml/gnutls \
+	-@gtkdoc-mkdb --module=xmlsec-gnutls \
+		    --main-sgml-file=xmlsec-gnutls.sgml \
+		    --tmpl-dir=tmpl/gnutls \
+		    --output-dir=sgml/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	@gtkdoc-mkdb --module=xmlsec-nss \
+	-@gtkdoc-mkdb --module=xmlsec-nss \
 		    --main-sgml-file=xmlsec-nss.sgml \
 		    --tmpl-dir=tmpl/nss \
 		    --output-dir=sgml/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
-	@(for i in `find sgml -name "*.sgml" -print` ; do \
+	-@gtkdoc-mkdb --module=xmlsec-mscrypto \
+		    --main-sgml-file=xmlsec-mscrypto.sgml \
+		    --tmpl-dir=tmpl/mscrypto \
+		    --output-dir=sgml/mscrypto \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
+	-@(for i in `find sgml -name "*.sgml" -print` ; do \
 	    cat $$i | \
 		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
 		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
@@ -67,27 +78,32 @@ sgml: templates
 	done);
 
 templates: scan
-	@gtkdoc-mktmpl --module=xmlsec 
-	@gtkdoc-mktmpl --module=xmlsec-openssl \
+	-@gtkdoc-mktmpl --module=xmlsec
+	-@gtkdoc-mktmpl --module=xmlsec-openssl \
 		    --output-dir=tmpl/openssl
-	@gtkdoc-mktmpl --module=xmlsec-nss \
-		    --output-dir=tmpl/nss
-	@gtkdoc-mktmpl --module=xmlsec-gnutls \
+	-@gtkdoc-mktmpl --module=xmlsec-gnutls \
 		    --output-dir=tmpl/gnutls
+	-@gtkdoc-mktmpl --module=xmlsec-nss \
+		    --output-dir=tmpl/nss
+	-@gtkdoc-mktmpl --module=xmlsec-mscrypto \
+		    --output-dir=tmpl/mscrypto
 
 scan: doc_sources example_sources
-	@gtkdoc-scan --module=xmlsec \
+	-@gtkdoc-scan --module=xmlsec \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	@gtkdoc-scan --module=xmlsec-openssl \
+	-@gtkdoc-scan --module=xmlsec-openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
-	@gtkdoc-scan --module=xmlsec-gnutls \
+	-@gtkdoc-scan --module=xmlsec-gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
-	@gtkdoc-scan --module=xmlsec-nss \
+	-@gtkdoc-scan --module=xmlsec-nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
+	-@gtkdoc-scan --module=xmlsec-mscrypto \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
 
 #
 # Prepare source files by coping them to "code" folder and 
@@ -108,11 +124,11 @@ doc_sources: $(DOC_SOURCE_FILES)
 		sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
 		$(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
 	done);
-	@mkdir -p $(DOC_SOURCE_DIR)/src/base
-	@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
-	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
-	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
-	@rm -f $(DOC_SOURCE_DIR)/include/xmlsec/*/symbols.h
+	-@mkdir -p $(DOC_SOURCE_DIR)/src/base
+	-@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
+	-@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
+	-@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
+	-@rm -f $(DOC_SOURCE_DIR)/include/xmlsec/*/symbols.h
 
 #
 # Create index for all functions. For macros and defines need to add -CAPS suffix

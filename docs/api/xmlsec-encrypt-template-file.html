@@ -30,6 +30,7 @@
 <li><a href="../bugs.html">Reporting Bugs</a></li>
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
 </ul>
 <table width="100%">
 <tr>
@@ -128,6 +129,12 @@ main(int argc, char **argv) {
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
 	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
+    }
+
+    /* Check loaded library version */
+    if(xmlSecCheckVersion() != 1) {
+	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
 	return(-1);
     }
 
@@ -260,7 +267,7 @@ done:
 	xmlFreeDoc(doc); 
     }
     return(res);
-}</pre></td></tr></table>
+}</pre></td></tr></table>
 <p></p>
 </div>
 </div>

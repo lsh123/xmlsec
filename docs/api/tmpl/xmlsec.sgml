@@ -50,6 +50,40 @@ xmlsec
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecCheckVersionExact ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecCheckVersion ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM xmlSecCheckVersionMode ##### -->
+<para>
+
+</para>
+
+@xmlSecCheckVersionExact: 
+@xmlSecCheckVersionABICompatible: 
+
+<!-- ##### FUNCTION xmlSecCheckVersionExt ##### -->
+<para>
+
+</para>
+
+@major: 
+@minor: 
+@subminor: 
+@mode: 
+@Returns: 
+
+
 <!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
 <para>
 

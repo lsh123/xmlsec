@@ -92,12 +92,39 @@ private
 @Returns: 
 
 
+<!-- ##### USER_FUNCTION xmlSecCryptoAppKeysMngrCertLoadMemoryMethod ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION xmlSecCryptoAppKeyLoadMethod ##### -->
 <para>
 
 </para>
 
 @filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppKeyLoadMemoryMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
 @format: 
 @pwd: 
 @pwdCallback: 
@@ -117,6 +144,19 @@ private
 @Returns: 
 
 
+<!-- ##### USER_FUNCTION xmlSecCryptoAppPkcs12LoadMemoryMethod ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION xmlSecCryptoAppKeyCertLoadMethod ##### -->
 <para>
 
@@ -124,6 +164,18 @@ private
 
 @key: 
 @filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppKeyCertLoadMemoryMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
 @format: 
 @Returns: 
 
@@ -168,8 +220,12 @@ private
 @cryptoAppDefaultKeysMngrLoad: 
 @cryptoAppDefaultKeysMngrSave: 
 @cryptoAppKeysMngrCertLoad: 
+@cryptoAppKeysMngrCertLoadMemory: 
 @cryptoAppKeyLoad: 
+@cryptoAppKeyLoadMemory: 
 @cryptoAppPkcs12Load: 
+@cryptoAppPkcs12LoadMemory: 
 @cryptoAppKeyCertLoad: 
+@cryptoAppKeyCertLoadMemory: 
 @cryptoAppDefaultPwdCallback: 
 

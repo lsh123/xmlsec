@@ -36,6 +36,8 @@ int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDat
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);
 <link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecOpenSSLKeyDataX509GetCrlsSize">xmlSecOpenSSLKeyDataX509GetCrlsSize</link>
                                             (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecOpenSSLX509CertGetKey">xmlSecOpenSSLX509CertGetKey</link>
+                                            (<link linkend="X509-CAPS">X509</link> *cert);
 #define     <link linkend="xmlSecOpenSSLKeyDataRawX509CertId">xmlSecOpenSSLKeyDataRawX509CertId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataRawX509CertGetKlass">xmlSecOpenSSLKeyDataRawX509CertGetKlass</link>
                                             (void);
@@ -48,7 +50,10 @@ int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDat
                                              <link linkend="xmlChar">xmlChar</link> *issuerSerial,
                                              <link linkend="xmlChar">xmlChar</link> *ski,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
-<link linkend="X509-CAPS">X509</link>*       <link linkend="xmlSecOpenSSLX509StoreVerify">xmlSecOpenSSLX509StoreVerify</link>    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
+<link linkend="X509-CAPS">X509</link>*       <link linkend="xmlSecOpenSSLX509StoreVerify">xmlSecOpenSSLX509StoreVerify</link>    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</link> *certs,
+                                             <link linkend="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</link> *crls,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
 int         <link linkend="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert</link> (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
@@ -235,6 +240,21 @@ Gets the number of CRLs in <parameter>data</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecOpenSSLX509CertGetKey">xmlSecOpenSSLX509CertGetKey ()</title>
+<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecOpenSSLX509CertGetKey
+                                            (<link linkend="X509-CAPS">X509</link> *cert);</programlisting>
+<para>
+Extracts public key from the <parameter>cert</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>cert</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>public key value or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataRawX509CertId">xmlSecOpenSSLKeyDataRawX509CertId</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataRawX509CertId</programlisting>
 <para>
@@ -311,7 +331,10 @@ or an error occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreVerify">xmlSecOpenSSLX509StoreVerify ()</title>
-<programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreVerify    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<programlisting><link linkend="X509-CAPS">X509</link>*       xmlSecOpenSSLX509StoreVerify    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</link> *certs,
+                                             <link linkend="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</link> *crls,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
 <para>
 Verifies <parameter>certs</parameter> list.</para>
 <para>
@@ -319,6 +342,15 @@ Verifies <parameter>certs</parameter> list.</para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>certs</parameter>&nbsp;:</term>
+<listitem><simpara>		the untrusted certificates stack.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>crls</parameter>&nbsp;:</term>
+<listitem><simpara>		the crls stack.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the first verified certificate from <parameter>certs</parameter>.
 </simpara></listitem></varlistentry>

@@ -1,0 +1,743 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>bn</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="base64" href="xmlsec-base64.html">
+<link rel="NEXT" title="buffer" href="xmlsec-buffer.html">
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-buffer.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-BN"></a>bn</h1>
+<div class="REFNAMEDIV">
+<a name="AEN2019"></a><h2>Name</h2>bn -- </div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN2022"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+
+enum        <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a>;
+<font>xmlSecBnPtr</font> <a href="xmlsec-bn.html#XMLSECBNCREATE">xmlSecBnCreate</a>                  (<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);
+void        <a href="xmlsec-bn.html#XMLSECBNDESTROY">xmlSecBnDestroy</a>                 (<font>xmlSecBnPtr</font> bn);
+int         <a href="xmlsec-bn.html#XMLSECBNINITIALIZE">xmlSecBnInitialize</a>              (<font>xmlSecBnPtr</font> bn,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);
+void        <a href="xmlsec-bn.html#XMLSECBNFINALIZE">xmlSecBnFinalize</a>                (<font>xmlSecBnPtr</font> bn);
+<a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a>* <a href="xmlsec-bn.html#XMLSECBNGETDATA">xmlSecBnGetData</a>                 (<font>xmlSecBnPtr</font> bn);
+int         <a href="xmlsec-bn.html#XMLSECBNSETDATA">xmlSecBnSetData</a>                 (<font>xmlSecBnPtr</font> bn,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);
+<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>  <a href="xmlsec-bn.html#XMLSECBNGETSIZE">xmlSecBnGetSize</a>                 (<font>xmlSecBnPtr</font> bn);
+void        <a href="xmlsec-bn.html#XMLSECBNZERO">xmlSecBnZero</a>                    (<font>xmlSecBnPtr</font> bn);
+int         <a href="xmlsec-bn.html#XMLSECBNFROMSTRING">xmlSecBnFromString</a>              (<font>xmlSecBnPtr</font> bn,
+                                             const <font>xmlChar</font> *str,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> base);
+<font>xmlChar</font>*    <a href="xmlsec-bn.html#XMLSECBNTOSTRING">xmlSecBnToString</a>                (<font>xmlSecBnPtr</font> bn,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> base);
+int         <a href="xmlsec-bn.html#XMLSECBNFROMHEXSTRING">xmlSecBnFromHexString</a>           (<font>xmlSecBnPtr</font> bn,
+                                             const <font>xmlChar</font> *str);
+<font>xmlChar</font>*    <a href="xmlsec-bn.html#XMLSECBNTOHEXSTRING">xmlSecBnToHexString</a>             (<font>xmlSecBnPtr</font> bn);
+int         <a href="xmlsec-bn.html#XMLSECBNFROMDECSTRING">xmlSecBnFromDecString</a>           (<font>xmlSecBnPtr</font> bn,
+                                             const <font>xmlChar</font> *str);
+<font>xmlChar</font>*    <a href="xmlsec-bn.html#XMLSECBNTODECSTRING">xmlSecBnToDecString</a>             (<font>xmlSecBnPtr</font> bn);
+int         <a href="xmlsec-bn.html#XMLSECBNMUL">xmlSecBnMul</a>                     (<font>xmlSecBnPtr</font> bn,
+                                             int multiplier);
+int         <a href="xmlsec-bn.html#XMLSECBNDIV">xmlSecBnDiv</a>                     (<font>xmlSecBnPtr</font> bn,
+                                             int divider,
+                                             int *mod);
+int         <a href="xmlsec-bn.html#XMLSECBNADD">xmlSecBnAdd</a>                     (<font>xmlSecBnPtr</font> bn,
+                                             int delta);
+int         <a href="xmlsec-bn.html#XMLSECBNREVERSE">xmlSecBnReverse</a>                 (<font>xmlSecBnPtr</font> bn);
+int         <a href="xmlsec-bn.html#XMLSECBNCOMPARE">xmlSecBnCompare</a>                 (<font>xmlSecBnPtr</font> bn,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);
+int         <a href="xmlsec-bn.html#XMLSECBNCOMPAREREVERSE">xmlSecBnCompareReverse</a>          (<font>xmlSecBnPtr</font> bn,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);
+int         <a href="xmlsec-bn.html#XMLSECBNGETNODEVALUE">xmlSecBnGetNodeValue</a>            (<font>xmlSecBnPtr</font> bn,
+                                             <font>xmlNodePtr</font> cur,
+                                             <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a> format,
+                                             int reverse);
+int         <a href="xmlsec-bn.html#XMLSECBNSETNODEVALUE">xmlSecBnSetNodeValue</a>            (<font>xmlSecBnPtr</font> bn,
+                                             <font>xmlNodePtr</font> cur,
+                                             <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a> format,
+                                             int reverse,
+                                             int addLineBreaks);
+int         <a href="xmlsec-bn.html#XMLSECBNBLOBSETNODEVALUE">xmlSecBnBlobSetNodeValue</a>        (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
+                                             <font>xmlNodePtr</font> cur,
+                                             <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a> format,
+                                             int reverse,
+                                             int addLineBreaks);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN2097"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN2100"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN2102"></a><h3>
+<a name="XMLSECBNFORMAT"></a>enum xmlSecBnFormat</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
+    xmlSecBnBase64,
+    xmlSecBnHex,
+    xmlSecBnDec
+} xmlSecBnFormat;</pre></td></tr></table>
+<p>The big numbers formats.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#F0F0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2109"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecBnBase64</tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the base64 decoded binary blob.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2114"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecBnHex</tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the hex number.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2119"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecBnDec</tt></span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the decimal number.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2124"></a><h3>
+<a name="XMLSECBNCREATE"></a>xmlSecBnCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBnPtr</font> xmlSecBnCreate                  (<a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre></td></tr></table>
+<p>Creates a new BN object. Caller is responsible for destroying it
+by calling <tt class="PARAMETER"><i>xmlSecBnDestroy</i></tt> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2134"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the initial allocated BN size.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2139"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the newly BN or a NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2144"></a><h3>
+<a name="XMLSECBNDESTROY"></a>xmlSecBnDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBnDestroy                 (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Destroys <tt class="PARAMETER"><i>bn</i></tt> object created with <tt class="PARAMETER"><i>xmlSecBnCreate</i></tt> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2154"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2159"></a><h3>
+<a name="XMLSECBNINITIALIZE"></a>xmlSecBnInitialize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnInitialize              (<font>xmlSecBnPtr</font> bn,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre></td></tr></table>
+<p>Initializes a BN object. Caller is responsible for destroying it
+by calling <tt class="PARAMETER"><i>xmlSecBnFinalize</i></tt> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2169"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2174"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the initial allocated BN size.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2179"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2184"></a><h3>
+<a name="XMLSECBNFINALIZE"></a>xmlSecBnFinalize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBnFinalize                (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Destroys <tt class="PARAMETER"><i>bn</i></tt> object created with <tt class="PARAMETER"><i>xmlSecBnInitialize</i></tt> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2194"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2199"></a><h3>
+<a name="XMLSECBNGETDATA"></a>xmlSecBnGetData ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a>* xmlSecBnGetData                 (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Gets pointer to the binary <tt class="PARAMETER"><i>bn</i></tt> representation.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2209"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2214"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to binary BN data or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2219"></a><h3>
+<a name="XMLSECBNSETDATA"></a>xmlSecBnSetData ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnSetData                 (<font>xmlSecBnPtr</font> bn,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre></td></tr></table>
+<p>Sets the value of <tt class="PARAMETER"><i>bn</i></tt> to <tt class="PARAMETER"><i>data</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2231"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2236"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the pointer to new BN binary data.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2241"><span style="white-space: nowrap"><tt class="PARAMETER"><i>size</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the size of new BN data.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2246"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2251"></a><h3>
+<a name="XMLSECBNGETSIZE"></a>xmlSecBnGetSize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>  xmlSecBnGetSize                 (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Gets the size of binary data in <tt class="PARAMETER"><i>bn</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2261"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2266"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the size of binary data.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2271"></a><h3>
+<a name="XMLSECBNZERO"></a>xmlSecBnZero ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecBnZero                    (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Sets the value of <tt class="PARAMETER"><i>bn</i></tt> to zero.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2280"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2285"></a><h3>
+<a name="XMLSECBNFROMSTRING"></a>xmlSecBnFromString ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnFromString              (<font>xmlSecBnPtr</font> bn,
+                                             const <font>xmlChar</font> *str,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> base);</pre></td></tr></table>
+<p>Reads <tt class="PARAMETER"><i>bn</i></tt> from string <tt class="PARAMETER"><i>str</i></tt> assuming it has base <tt class="PARAMETER"><i>base</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2298"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2303"><span style="white-space: nowrap"><tt class="PARAMETER"><i>str</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the string with BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2308"><span style="white-space: nowrap"><tt class="PARAMETER"><i>base</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the base for <tt class="PARAMETER"><i>str</i></tt>.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2314"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2319"></a><h3>
+<a name="XMLSECBNTOSTRING"></a>xmlSecBnToString ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecBnToString                (<font>xmlSecBnPtr</font> bn,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> base);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>bn</i></tt> to string with base <tt class="PARAMETER"><i>base</i></tt>. Caller is responsible for 
+freeing returned string with <tt class="PARAMETER"><i>xmlFree</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2332"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2337"><span style="white-space: nowrap"><tt class="PARAMETER"><i>base</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the base for returned string.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the string represenataion if BN or a NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2347"></a><h3>
+<a name="XMLSECBNFROMHEXSTRING"></a>xmlSecBnFromHexString ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnFromHexString           (<font>xmlSecBnPtr</font> bn,
+                                             const <font>xmlChar</font> *str);</pre></td></tr></table>
+<p>Reads <tt class="PARAMETER"><i>bn</i></tt> from hex string <tt class="PARAMETER"><i>str</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2358"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2363"><span style="white-space: nowrap"><tt class="PARAMETER"><i>str</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the string with BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2368"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2373"></a><h3>
+<a name="XMLSECBNTOHEXSTRING"></a>xmlSecBnToHexString ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecBnToHexString             (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>bn</i></tt> to hex string. Caller is responsible for 
+freeing returned string with <tt class="PARAMETER"><i>xmlFree</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2384"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2389"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the string represenataion if BN or a NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2394"></a><h3>
+<a name="XMLSECBNFROMDECSTRING"></a>xmlSecBnFromDecString ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnFromDecString           (<font>xmlSecBnPtr</font> bn,
+                                             const <font>xmlChar</font> *str);</pre></td></tr></table>
+<p>Reads <tt class="PARAMETER"><i>bn</i></tt> from decimal string <tt class="PARAMETER"><i>str</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2405"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2410"><span style="white-space: nowrap"><tt class="PARAMETER"><i>str</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the string with BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2415"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2420"></a><h3>
+<a name="XMLSECBNTODECSTRING"></a>xmlSecBnToDecString ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlChar</font>*    xmlSecBnToDecString             (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Writes <tt class="PARAMETER"><i>bn</i></tt> to decimal string. Caller is responsible for 
+freeing returned string with <tt class="PARAMETER"><i>xmlFree</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2431"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2436"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the string represenataion if BN or a NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2441"></a><h3>
+<a name="XMLSECBNMUL"></a>xmlSecBnMul ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnMul                     (<font>xmlSecBnPtr</font> bn,
+                                             int multiplier);</pre></td></tr></table>
+<p>Multiplies <tt class="PARAMETER"><i>bn</i></tt> with <tt class="PARAMETER"><i>multiplier</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2451"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>			the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2456"><span style="white-space: nowrap"><tt class="PARAMETER"><i>multiplier</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the multiplier.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2461"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2466"></a><h3>
+<a name="XMLSECBNDIV"></a>xmlSecBnDiv ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnDiv                     (<font>xmlSecBnPtr</font> bn,
+                                             int divider,
+                                             int *mod);</pre></td></tr></table>
+<p>Divides <tt class="PARAMETER"><i>bn</i></tt> by <tt class="PARAMETER"><i>divider</i></tt> and places modulus into <tt class="PARAMETER"><i>mod</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2477"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2482"><span style="white-space: nowrap"><tt class="PARAMETER"><i>divider</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the divider</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2487"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mod</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the pointer for modulus result.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2492"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2497"></a><h3>
+<a name="XMLSECBNADD"></a>xmlSecBnAdd ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnAdd                     (<font>xmlSecBnPtr</font> bn,
+                                             int delta);</pre></td></tr></table>
+<p>Adds <tt class="PARAMETER"><i>delta</i></tt> to <tt class="PARAMETER"><i>bn</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2507"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2512"><span style="white-space: nowrap"><tt class="PARAMETER"><i>delta</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the delta.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2517"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2522"></a><h3>
+<a name="XMLSECBNREVERSE"></a>xmlSecBnReverse ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnReverse                 (<font>xmlSecBnPtr</font> bn);</pre></td></tr></table>
+<p>Reverses bytes order in <tt class="PARAMETER"><i>bn</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2531"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2536"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2541"></a><h3>
+<a name="XMLSECBNCOMPARE"></a>xmlSecBnCompare ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnCompare                 (<font>xmlSecBnPtr</font> bn,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);</pre></td></tr></table>
+<p>Compares the <tt class="PARAMETER"><i>bn</i></tt> with <tt class="PARAMETER"><i>data</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2553"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2558"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the data to compare BN to.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2563"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the <tt class="PARAMETER"><i>data</i></tt> size.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2569"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 if data is equal, negative value if <tt class="PARAMETER"><i>bn</i></tt> is less or positive value if <tt class="PARAMETER"><i>bn</i></tt>
+is greater than <tt class="PARAMETER"><i>data</i></tt>.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2577"></a><h3>
+<a name="XMLSECBNCOMPAREREVERSE"></a>xmlSecBnCompareReverse ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnCompareReverse          (<font>xmlSecBnPtr</font> bn,
+                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);</pre></td></tr></table>
+<p>Compares the <tt class="PARAMETER"><i>bn</i></tt> with reverse <tt class="PARAMETER"><i>data</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2589"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2594"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the data to compare BN to.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2599"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the <tt class="PARAMETER"><i>data</i></tt> size.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2605"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 if data is equal, negative value if <tt class="PARAMETER"><i>bn</i></tt> is less or positive value if <tt class="PARAMETER"><i>bn</i></tt>
+is greater than <tt class="PARAMETER"><i>data</i></tt>.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2613"></a><h3>
+<a name="XMLSECBNGETNODEVALUE"></a>xmlSecBnGetNodeValue ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnGetNodeValue            (<font>xmlSecBnPtr</font> bn,
+                                             <font>xmlNodePtr</font> cur,
+                                             <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a> format,
+                                             int reverse);</pre></td></tr></table>
+<p>Converts the node content from <tt class="PARAMETER"><i>format</i></tt> to <tt class="PARAMETER"><i>bn</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2625"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2630"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the poitner to an XML node.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2635"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the BN format.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2640"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reverse</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	if set then reverse read buffer after reading.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2645"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success and a negative values if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2650"></a><h3>
+<a name="XMLSECBNSETNODEVALUE"></a>xmlSecBnSetNodeValue ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnSetNodeValue            (<font>xmlSecBnPtr</font> bn,
+                                             <font>xmlNodePtr</font> cur,
+                                             <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a> format,
+                                             int reverse,
+                                             int addLineBreaks);</pre></td></tr></table>
+<p>Converts the <tt class="PARAMETER"><i>bn</i></tt> and sets it to node content.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2661"><span style="white-space: nowrap"><tt class="PARAMETER"><i>bn</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>			the pointer to BN.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2666"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the poitner to an XML node.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2671"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the BN format.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2676"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reverse</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the flag that indicates whether to reverse the buffer before writing.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2681"><span style="white-space: nowrap"><tt class="PARAMETER"><i>addLineBreaks</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>  	the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2686"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success and a negative values if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN2691"></a><h3>
+<a name="XMLSECBNBLOBSETNODEVALUE"></a>xmlSecBnBlobSetNodeValue ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecBnBlobSetNodeValue        (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
+                                             <font>xmlNodePtr</font> cur,
+                                             <a href="xmlsec-bn.html#XMLSECBNFORMAT">xmlSecBnFormat</a> format,
+                                             int reverse,
+                                             int addLineBreaks);</pre></td></tr></table>
+<p>Converts the <tt class="PARAMETER"><i>blob</i></tt> and sets it to node content.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2703"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the pointer to BN blob.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2708"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dataSize</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the size of BN blob.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2713"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the poitner to an XML node.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2718"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the BN format.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2723"><span style="white-space: nowrap"><tt class="PARAMETER"><i>reverse</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the flag that indicates whether to reverse the buffer before writing.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2728"><span style="white-space: nowrap"><tt class="PARAMETER"><i>addLineBreaks</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>  if the flag is equal to 1 then 
+	linebreaks will be added before and after
+	new buffer content.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN2733"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success and a negative values if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-buffer.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>base64</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>buffer</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

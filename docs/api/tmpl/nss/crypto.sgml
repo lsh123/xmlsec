@@ -57,6 +57,20 @@ crypto
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssErrorsDefaultCallback ##### -->
+<para>
+
+</para>
+
+@file: 
+@line: 
+@func: 
+@errorObject: 
+@errorSubject: 
+@reason: 
+@msg: 
+
+
 <!-- ##### MACRO xmlSecNssKeyDataAesId ##### -->
 <para>
 

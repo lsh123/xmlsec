@@ -184,6 +184,16 @@ buffer
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecBufferReadFile ##### -->
+<para>
+
+</para>
+
+@buf: 
+@filename: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecBufferBase64NodeContentRead ##### -->
 <para>
 

@@ -1,0 +1,64 @@
+<!-- ##### SECTION Title ##### -->
+certkeys
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetCert ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDuplicate ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoCertDup ##### -->
+<para>
+
+</para>
+
+@pCert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoCertAdopt ##### -->
+<para>
+
+</para>
+
+@pCert: 
+@type: 
+@Returns: 
+
+

@@ -62,22 +62,24 @@ Registers the key data and transforms klasses from <parameter>functions</paramet
 <title><anchor id="xmlSecCryptoDLInit">xmlSecCryptoDLInit ()</title>
 <programlisting>int         xmlSecCryptoDLInit              (void);</programlisting>
 <para>
+Initializes dynamic loading engine. This is an internal function
+and should not be called by application directly.</para>
+<para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoDLShutdown">xmlSecCryptoDLShutdown ()</title>
 <programlisting>int         xmlSecCryptoDLShutdown          (void);</programlisting>
 <para>
+Shutdowns dynamic loading engine. This is an internal function
+and should not be called by application directly.</para>
+<para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

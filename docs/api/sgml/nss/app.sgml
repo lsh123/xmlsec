@@ -29,7 +29,29 @@ int         <link linkend="xmlSecNssAppKeysMngrCertLoad">xmlSecNssAppKeysMngrCer
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+int         <link linkend="xmlSecNssAppKeysMngrCertLoadMemory">xmlSecNssAppKeysMngrCertLoadMemory</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+int         <link linkend="xmlSecNssAppKeysMngrCertLoadSECItem">xmlSecNssAppKeysMngrCertLoadSECItem</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="SECItem">SECItem</link> *secItem,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppKeyLoad">xmlSecNssAppKeyLoad</link>            (const char *filename,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppKeyLoadMemory">xmlSecNssAppKeyLoadMemory</link>      (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppKeyLoadSECItem">xmlSecNssAppKeyLoadSECItem</link>     (<link linkend="SECItem">SECItem</link> *secItem,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const char *pwd,
                                              void *pwdCallback,
@@ -38,8 +60,27 @@ int         <link linkend="xmlSecNssAppKeysMngrCertLoad">xmlSecNssAppKeysMngrCer
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppPkcs12LoadMemory">xmlSecNssAppPkcs12LoadMemory</link>   (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppPkcs12LoadSECItem">xmlSecNssAppPkcs12LoadSECItem</link>  (<link linkend="SECItem">SECItem</link> *secItem,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
 int         <link linkend="xmlSecNssAppKeyCertLoad">xmlSecNssAppKeyCertLoad</link>         (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+int         <link linkend="xmlSecNssAppKeyCertLoadMemory">xmlSecNssAppKeyCertLoadMemory</link>   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+int         <link linkend="xmlSecNssAppKeyCertLoadSECItem">xmlSecNssAppKeyCertLoadSECItem</link>  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="SECItem">SECItem</link> *secItem,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppKeyFromCertLoadSECItem">xmlSecNssAppKeyFromCertLoadSECItem</link>
+                                            (<link linkend="SECItem">SECItem</link> *secItem,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
 void*       <link linkend="xmlSecNssAppGetDefaultPwdCallback">xmlSecNssAppGetDefaultPwdCallback</link>
                                             (void);
@@ -194,6 +235,66 @@ untrusted certs in <parameter>store</parameter></para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecNssAppKeysMngrCertLoadMemory">xmlSecNssAppKeysMngrCertLoadMemory ()</title>
+<programlisting>int         xmlSecNssAppKeysMngrCertLoadMemory
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Reads cert from <parameter>data</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter></para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate format (PEM or DER).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the certificate type (trusted/untrusted).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeysMngrCertLoadSECItem">xmlSecNssAppKeysMngrCertLoadSECItem ()</title>
+<programlisting>int         xmlSecNssAppKeysMngrCertLoadSECItem
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="SECItem">SECItem</link> *secItem,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Reads cert from <parameter>secItem</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter></para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>secItem</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to SECItem.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate format (PEM or DER).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the certificate type (trusted/untrusted).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecNssAppKeyLoad">xmlSecNssAppKeyLoad ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppKeyLoad            (const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
@@ -213,6 +314,70 @@ Reads key from a file</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
 <listitem><simpara>		the key file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the key password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeyLoadMemory">xmlSecNssAppKeyLoadMemory ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppKeyLoadMemory      (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key from a binary <parameter>data</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data2 password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the key password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeyLoadSECItem">xmlSecNssAppKeyLoadSECItem ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppKeyLoadSECItem     (<link linkend="SECItem">SECItem</link> *secItem,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key from a file</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>secItem</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to sec item.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the key format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the key password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
 <listitem><simpara>	the key password callback.
@@ -252,6 +417,66 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecNssAppPkcs12LoadMemory">xmlSecNssAppPkcs12LoadMemory ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppPkcs12LoadMemory   (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key and all associated certificates from the PKCS12 binary data.
+For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppPkcs12LoadSECItem">xmlSecNssAppPkcs12LoadSECItem ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppPkcs12LoadSECItem  (<link linkend="SECItem">SECItem</link> *secItem,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key and all associated certificates from the PKCS12 SECItem.
+For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>secItem</parameter>&nbsp;:</term>
+<listitem><simpara>		the <parameter>SECItem</parameter> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecNssAppKeyCertLoad">xmlSecNssAppKeyCertLoad ()</title>
 <programlisting>int         xmlSecNssAppKeyCertLoad         (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
@@ -271,6 +496,73 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key</
 <listitem><simpara>		the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeyCertLoadMemory">xmlSecNssAppKeyCertLoadMemory ()</title>
+<programlisting>int         xmlSecNssAppKeyCertLoadMemory   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<para>
+Reads the certificate from <parameter>data</parameter> and adds it to key</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key binary data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeyCertLoadSECItem">xmlSecNssAppKeyCertLoadSECItem ()</title>
+<programlisting>int         xmlSecNssAppKeyCertLoadSECItem  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="SECItem">SECItem</link> *secItem,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<para>
+Reads the certificate from <parameter>secItem</parameter> and adds it to key</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>secItem</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to SECItem.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeyFromCertLoadSECItem">xmlSecNssAppKeyFromCertLoadSECItem ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppKeyFromCertLoadSECItem
+                                            (<link linkend="SECItem">SECItem</link> *secItem,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<para>
+Loads public key from cert.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>secItem</parameter>&nbsp;:</term>
+<listitem><simpara>		the <parameter>SECItem</parameter> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the cert format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

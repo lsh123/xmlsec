@@ -129,6 +129,8 @@ app
 @pwdCallback: 
 @pwdCallbackCtx: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@wdCallback: 
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoadMemory ##### -->
@@ -224,6 +226,16 @@ app
 </para>
 
 @key: 
+@bio: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeyFromCertLoadBIO ##### -->
+<para>
+
+</para>
+
 @bio: 
 @format: 
 @Returns: 

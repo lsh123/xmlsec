@@ -1,5 +1,6 @@
 <!ENTITY xmlsec-app SYSTEM "sgml/app.sgml">
 <!ENTITY xmlsec-base64 SYSTEM "sgml/base64.sgml">
+<!ENTITY xmlsec-bn SYSTEM "sgml/bn.sgml">
 <!ENTITY xmlsec-buffer SYSTEM "sgml/buffer.sgml">
 <!ENTITY xmlsec-dl SYSTEM "sgml/dl.sgml">
 <!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">

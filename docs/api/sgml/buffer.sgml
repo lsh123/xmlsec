@@ -44,6 +44,8 @@ int         <link linkend="xmlSecBufferRemoveHead">xmlSecBufferRemoveHead</link>
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
 int         <link linkend="xmlSecBufferRemoveTail">xmlSecBufferRemoveTail</link>          (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
+int         <link linkend="xmlSecBufferReadFile">xmlSecBufferReadFile</link>            (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
+                                             const char *filename);
 int         <link linkend="xmlSecBufferBase64NodeContentRead">xmlSecBufferBase64NodeContentRead</link>
                                             (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
@@ -397,6 +399,24 @@ Removes <parameter>size</parameter> bytes from the end of current buffer.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&nbsp;:</term>
 <listitem><simpara>		the number of bytes to be removed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferReadFile">xmlSecBufferReadFile ()</title>
+<programlisting>int         xmlSecBufferReadFile            (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
+                                             const char *filename);</programlisting>
+<para>
+Reads the content of the file <parameter>filename</parameter> in the buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to buffer object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>		the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

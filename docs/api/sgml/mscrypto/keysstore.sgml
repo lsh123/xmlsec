@@ -1,0 +1,135 @@
+<refentry id="xmlsec-mscrypto-keysstore">
+<refmeta>
+<refentrytitle>keysstore</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-MSCRYPTO Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>keysstore</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="xmlSecMSCryptoKeysStoreId">xmlSecMSCryptoKeysStoreId</link>
+<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> <link linkend="xmlSecMSCryptoKeysStoreGetKlass">xmlSecMSCryptoKeysStoreGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecMSCryptoKeysStoreAdoptKey">xmlSecMSCryptoKeysStoreAdoptKey</link> (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecMSCryptoKeysStoreLoad">xmlSecMSCryptoKeysStoreLoad</link>     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const char *uri,
+                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
+int         <link linkend="xmlSecMSCryptoKeysStoreSave">xmlSecMSCryptoKeysStoreSave</link>     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeysStoreId">xmlSecMSCryptoKeysStoreId</title>
+<programlisting>#define xmlSecMSCryptoKeysStoreId	xmlSecMSCryptoKeysStoreGetKlass()
+</programlisting>
+<para>
+A MSCrypto keys store klass id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeysStoreGetKlass">xmlSecMSCryptoKeysStoreGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecMSCryptoKeysStoreGetKlass
+                                            (void);</programlisting>
+<para>
+The MSCrypto list based keys store klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>MSCrypto list based keys store klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeysStoreAdoptKey">xmlSecMSCryptoKeysStoreAdoptKey ()</title>
+<programlisting>int         xmlSecMSCryptoKeysStoreAdoptKey (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to MSCrypto keys store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeysStoreLoad">xmlSecMSCryptoKeysStoreLoad ()</title>
+<programlisting>int         xmlSecMSCryptoKeysStoreLoad     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const char *uri,
+                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<para>
+Reads keys from an XML file.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to MSCrypto keys store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<listitem><simpara>		the filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to associated keys manager. 
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeysStoreSave">xmlSecMSCryptoKeysStoreSave ()</title>
+<programlisting>int         xmlSecMSCryptoKeysStoreSave     (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Writes keys from <parameter>store</parameter> to an XML file.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to MSCrypto keys store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<listitem><simpara>		the filename.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara>		the saved keys type (public, private, ...).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

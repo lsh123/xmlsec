@@ -34,6 +34,7 @@ int         <link linkend="xmlSecNssKeyDataX509AdoptCrl">xmlSecNssKeyDataX509Ado
 <link linkend="CERTSignedCrl">CERTSignedCrl</link>* <link linkend="xmlSecNssKeyDataX509GetCrl">xmlSecNssKeyDataX509GetCrl</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> pos);
 <link linkend="xmlSecSize">xmlSecSize</link>  <link linkend="xmlSecNssKeyDataX509GetCrlsSize">xmlSecNssKeyDataX509GetCrlsSize</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecNssX509CertGetKey">xmlSecNssX509CertGetKey</link>    (<link linkend="CERTCertificate">CERTCertificate</link> *cert);
 #define     <link linkend="xmlSecNssKeyDataRawX509CertId">xmlSecNssKeyDataRawX509CertId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataRawX509CertGetKlass">xmlSecNssKeyDataRawX509CertGetKlass</link>
                                             (void);
@@ -227,6 +228,20 @@ Gets the number of CRLs in <parameter>data</parameter>.</para>
 <listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>te number of CRLs in <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssX509CertGetKey">xmlSecNssX509CertGetKey ()</title>
+<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecNssX509CertGetKey    (<link linkend="CERTCertificate">CERTCertificate</link> *cert);</programlisting>
+<para>
+Extracts public key from the <parameter>cert</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>cert</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>public key value or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

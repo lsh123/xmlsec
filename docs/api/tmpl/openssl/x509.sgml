@@ -106,6 +106,15 @@ x509
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLX509CertGetKey ##### -->
+<para>
+
+</para>
+
+@cert: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecOpenSSLKeyDataRawX509CertId ##### -->
 <para>
 
@@ -156,6 +165,9 @@ x509
 </para>
 
 @store: 
+@certs: 
+@crls: 
+@keyInfoCtx: 
 @Returns: 
 
 

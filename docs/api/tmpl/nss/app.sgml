@@ -83,12 +83,64 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeysMngrCertLoadSECItem ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@secItem: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecNssAppKeyLoad ##### -->
 <para>
 
 </para>
 
 @filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyLoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyLoadSECItem ##### -->
+<para>
+
+</para>
+
+@secItem: 
 @format: 
 @pwd: 
 @pwdCallback: 
@@ -108,6 +160,31 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssAppPkcs12LoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppPkcs12LoadSECItem ##### -->
+<para>
+
+</para>
+
+@secItem: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecNssAppKeyCertLoad ##### -->
 <para>
 
@@ -115,6 +192,39 @@ app
 
 @key: 
 @filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyCertLoadSECItem ##### -->
+<para>
+
+</para>
+
+@key: 
+@secItem: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssAppKeyFromCertLoadSECItem ##### -->
+<para>
+
+</para>
+
+@secItem: 
 @format: 
 @Returns: 
 

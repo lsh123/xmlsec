@@ -1,5 +1,6 @@
     &xmlsec-app;
     &xmlsec-base64;
+    &xmlsec-bn;
     &xmlsec-buffer;
     &xmlsec-dl;
     &xmlsec-errors;

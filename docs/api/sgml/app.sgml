@@ -493,6 +493,8 @@ implemented).
 <programlisting>#define xmlSecTransformDes3CbcId		xmlSecTransformDes3CbcGetKlass()
 </programlisting>
 <para>
+The Triple DES encryption transform klass.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -536,6 +538,8 @@ implemented).
 <title><anchor id="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</title>
 <programlisting>#define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
 </programlisting>
+<para>
+The DSA-SHA1 signature transform klass.</para>
 <para>
 
 </para></refsect2>

@@ -421,7 +421,9 @@ Any key data.</para>
     xmlSecKeyDataFormatDer,
     xmlSecKeyDataFormatPkcs8Pem,
     xmlSecKeyDataFormatPkcs8Der,
-    xmlSecKeyDataFormatPkcs12
+    xmlSecKeyDataFormatPkcs12,
+    xmlSecKeyDataFormatCertPem,
+    xmlSecKeyDataFormatCertDer
 } xmlSecKeyDataFormat;
 </programlisting>
 <para>
@@ -462,6 +464,16 @@ The key data format (binary, der, pem, etc.).</para>
 <varlistentry>
 <term><literal>xmlSecKeyDataFormatPkcs12</literal></term>
 <listitem><simpara>		the PKCS12 format (bag of keys and certs)
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecKeyDataFormatCertPem</literal></term>
+<listitem><simpara>		the PEM cert.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecKeyDataFormatCertDer</literal></term>
+<listitem><simpara>		the DER cert.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>

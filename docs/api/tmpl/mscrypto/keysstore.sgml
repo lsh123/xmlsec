@@ -1,0 +1,63 @@
+<!-- ##### SECTION Title ##### -->
+keysstore
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO xmlSecMSCryptoKeysStoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeysStoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeysStoreAdoptKey ##### -->
+<para>
+
+</para>
+
+@store: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeysStoreLoad ##### -->
+<para>
+
+</para>
+
+@store: 
+@uri: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeysStoreSave ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@type: 
+@Returns: 
+
+

@@ -129,6 +129,12 @@
 		    <xsl:with-param name="text">Related</xsl:with-param> 
 		</xsl:call-template>
 	    </li>	    
+	    <li>
+		<xsl:call-template name="linkto"> 
+		    <xsl:with-param name="href">authors.html</xsl:with-param> 
+		    <xsl:with-param name="text">Authors</xsl:with-param> 
+		</xsl:call-template>
+	    </li>
 	</ul>
 	<table width="100%"><tr><td width="15"></td><td>
       	<a href="http://xmlsoft.org/">

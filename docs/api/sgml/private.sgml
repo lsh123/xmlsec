@@ -32,8 +32,21 @@ int         (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod">*xmlSecCrypto
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+int         (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</link>)
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> (<link linkend="xmlSecCryptoAppKeyLoadMethod">*xmlSecCryptoAppKeyLoadMethod</link>)
                                             (const char *filename,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> (<link linkend="xmlSecCryptoAppKeyLoadMemoryMethod">*xmlSecCryptoAppKeyLoadMemoryMethod</link>)
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const char *pwd,
                                              void *pwdCallback,
@@ -43,9 +56,20 @@ int         (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod">*xmlSecCrypto
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> (<link linkend="xmlSecCryptoAppPkcs12LoadMemoryMethod">*xmlSecCryptoAppPkcs12LoadMemoryMethod</link>)
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
 int         (<link linkend="xmlSecCryptoAppKeyCertLoadMethod">*xmlSecCryptoAppKeyCertLoadMethod</link>)
                                             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+int         (<link linkend="xmlSecCryptoAppKeyCertLoadMemoryMethod">*xmlSecCryptoAppKeyCertLoadMemoryMethod</link>)
+                                            (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
 struct      <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctions</link>;
 </synopsis>
@@ -70,22 +94,22 @@ struct      <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctions</lin
 <title><anchor id="xmlSecCryptoInitMethod">xmlSecCryptoInitMethod ()</title>
 <programlisting>int         (*xmlSecCryptoInitMethod)       (void);</programlisting>
 <para>
+xmlsec-crypto libraryinitialization method.</para>
+<para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCryptoShutdownMethod">xmlSecCryptoShutdownMethod ()</title>
 <programlisting>int         (*xmlSecCryptoShutdownMethod)   (void);</programlisting>
 <para>
+xmlsec-crypto library shutdown method.</para>
+<para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -205,6 +229,39 @@ untrusted certs in <parameter>store</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">xmlSecCryptoAppKeysMngrCertLoadMemoryMethod ()</title>
+<programlisting>int         (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Reads cert from <parameter>data</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<listitem><simpara> 		the flag that indicates is the certificate in <parameter>data</parameter>
+   			trusted or not.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecCryptoAppKeyLoadMethod">xmlSecCryptoAppKeyLoadMethod ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> (*xmlSecCryptoAppKeyLoadMethod)
                                             (const char *filename,
@@ -225,6 +282,41 @@ Reads key from the a file.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
 <listitem><simpara>		the key file password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the key password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppKeyLoadMemoryMethod">xmlSecCryptoAppKeyLoadMemoryMethod ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> (*xmlSecCryptoAppKeyLoadMemoryMethod)
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key from the binary data buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the key data password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
 <listitem><simpara>	the key password callback.
@@ -265,6 +357,39 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecCryptoAppPkcs12LoadMemoryMethod">xmlSecCryptoAppPkcs12LoadMemoryMethod ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> (*xmlSecCryptoAppPkcs12LoadMemoryMethod)
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
+<para>
+Reads key and all associated certificates from the PKCS12 binary data.
+For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the pkcs12 data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the pkcs12 data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
+<listitem><simpara>		the PKCS12 data password.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
+<listitem><simpara>	the password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
+<listitem><simpara>	the user context for password callback.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecCryptoAppKeyCertLoadMethod">xmlSecCryptoAppKeyCertLoadMethod ()</title>
 <programlisting>int         (*xmlSecCryptoAppKeyCertLoadMethod)
                                             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
@@ -283,6 +408,33 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&nbsp;:</term>
 <listitem><simpara>		the certificate file format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppKeyCertLoadMemoryMethod">xmlSecCryptoAppKeyCertLoadMemoryMethod ()</title>
+<programlisting>int         (*xmlSecCryptoAppKeyCertLoadMemoryMethod)
+                                            (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlSecByte">xmlSecByte</link> *data,
+                                             <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
+                                             <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<para>
+Reads the certificate from binary <parameter>data</parameter> buffer and adds it to key.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>key</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the cert data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
+<listitem><simpara>		the cert data size.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>		the certificate data format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -344,9 +496,13 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
     xmlSecCryptoAppDefaultKeysMngrLoadMethod	 cryptoAppDefaultKeysMngrLoad;
     xmlSecCryptoAppDefaultKeysMngrSaveMethod	 cryptoAppDefaultKeysMngrSave;
     xmlSecCryptoAppKeysMngrCertLoadMethod	 cryptoAppKeysMngrCertLoad;
+    xmlSecCryptoAppKeysMngrCertLoadMemoryMethod	 cryptoAppKeysMngrCertLoadMemory;
     xmlSecCryptoAppKeyLoadMethod		 cryptoAppKeyLoad;
+    xmlSecCryptoAppKeyLoadMemoryMethod		 cryptoAppKeyLoadMemory;
     xmlSecCryptoAppPkcs12LoadMethod		 cryptoAppPkcs12Load;
+    xmlSecCryptoAppPkcs12LoadMemoryMethod	 cryptoAppPkcs12LoadMemory;
     xmlSecCryptoAppKeyCertLoadMethod		 cryptoAppKeyCertLoad;
+    xmlSecCryptoAppKeyCertLoadMemoryMethod	 cryptoAppKeyCertLoadMemory;
     void*					 cryptoAppDefaultPwdCallback;
 };
 </programlisting>
@@ -527,7 +683,12 @@ The list of crypto engine functions, key data and transform classes.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod">xmlSecCryptoAppKeysMngrCertLoadMethod</link> <structfield>cryptoAppKeysMngrCertLoad</structfield></term>
-<listitem><simpara>		the default keys manager cert load method.
+<listitem><simpara>		the default keys manager file cert load method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</link> <structfield>cryptoAppKeysMngrCertLoadMemory</structfield></term>
+<listitem><simpara>	the default keys manager memory cert load method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -536,13 +697,28 @@ The list of crypto engine functions, key data and transform classes.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
+<term><link linkend="xmlSecCryptoAppKeyLoadMemoryMethod">xmlSecCryptoAppKeyLoadMemoryMethod</link> <structfield>cryptoAppKeyLoadMemory</structfield></term>
+<listitem><simpara>	the meory key load method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
 <term><link linkend="xmlSecCryptoAppPkcs12LoadMethod">xmlSecCryptoAppPkcs12LoadMethod</link> <structfield>cryptoAppPkcs12Load</structfield></term>
 <listitem><simpara>	the pkcs12 file load method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
+<term><link linkend="xmlSecCryptoAppPkcs12LoadMemoryMethod">xmlSecCryptoAppPkcs12LoadMemoryMethod</link> <structfield>cryptoAppPkcs12LoadMemory</structfield></term>
+<listitem><simpara>	the memory pkcs12 load method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
 <term><link linkend="xmlSecCryptoAppKeyCertLoadMethod">xmlSecCryptoAppKeyCertLoadMethod</link> <structfield>cryptoAppKeyCertLoad</structfield></term>
 <listitem><simpara>	the cert file load method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecCryptoAppKeyCertLoadMemoryMethod">xmlSecCryptoAppKeyCertLoadMemoryMethod</link> <structfield>cryptoAppKeyCertLoadMemory</structfield></term>
+<listitem><simpara>	the memory cert load method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>

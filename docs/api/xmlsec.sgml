@@ -16,6 +16,7 @@
 
 <!ENTITY xmlsec-app 			SYSTEM "sgml/app.sgml">
 <!ENTITY xmlsec-base64 			SYSTEM "sgml/base64.sgml">
+<!ENTITY xmlsec-bn 			SYSTEM "sgml/bn.sgml">
 <!ENTITY xmlsec-buffer 			SYSTEM "sgml/buffer.sgml">
 <!ENTITY xmlsec-dl 			SYSTEM "sgml/dl.sgml">
 <!ENTITY xmlsec-errors 			SYSTEM "sgml/errors.sgml">
@@ -39,14 +40,26 @@
 
 <!ENTITY xmlsec-openssl-app 		SYSTEM "sgml/openssl/app.sgml">
 <!ENTITY xmlsec-openssl-bn 		SYSTEM "sgml/openssl/bn.sgml">
-<!ENTITY xmlsec-openssl-crypto 		SYSTEM "sgml/openssl/crypto.sgml">
+<!ENTITY xmlsec-openssl-ciphers		SYSTEM "sgml/openssl/ciphers.sgml">
+<!ENTITY xmlsec-openssl-crypto		SYSTEM "sgml/openssl/crypto.sgml">
+<!ENTITY xmlsec-openssl-evp 		SYSTEM "sgml/openssl/evp.sgml">
 <!ENTITY xmlsec-openssl-x509 		SYSTEM "sgml/openssl/x509.sgml">
 
 <!ENTITY xmlsec-gnutls-app 		SYSTEM "sgml/gnutls/app.sgml">
 <!ENTITY xmlsec-gnutls-crypto 		SYSTEM "sgml/gnutls/crypto.sgml">
 
 <!ENTITY xmlsec-nss-app 		SYSTEM "sgml/nss/app.sgml">
+<!ENTITY xmlsec-nss-bignum		SYSTEM "sgml/nss/bignum.sgml">
 <!ENTITY xmlsec-nss-crypto 		SYSTEM "sgml/nss/crypto.sgml">
+<!ENTITY xmlsec-nss-keysstore		SYSTEM "sgml/nss/keysstore.sgml">
+<!ENTITY xmlsec-nss-pkikeys		SYSTEM "sgml/nss/pkikeys.sgml">
+<!ENTITY xmlsec-nss-x509		SYSTEM "sgml/nss/x509.sgml">
+
+<!ENTITY xmlsec-mscrypto-app 		SYSTEM "sgml/mscrypto/app.sgml">
+<!ENTITY xmlsec-mscrypto-certkeys	SYSTEM "sgml/mscrypto/certkeys.sgml">
+<!ENTITY xmlsec-mscrypto-crypto 	SYSTEM "sgml/mscrypto/crypto.sgml">
+<!ENTITY xmlsec-mscrypto-keysstore	SYSTEM "sgml/mscrypto/keysstore.sgml">
+<!ENTITY xmlsec-mscrypto-x509		SYSTEM "sgml/mscrypto/x509.sgml">
 
 <!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
 <!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
@@ -195,6 +208,7 @@
 
     &xmlsec-app;
     &xmlsec-base64;
+    &xmlsec-bn;
     &xmlsec-buffer;
     &xmlsec-dl;
     &xmlsec-errors;
@@ -222,10 +236,11 @@
     <para>This section contains the API reference for xmlsec-openssl. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
-    
+
     &xmlsec-openssl-app;
     &xmlsec-openssl-bn;
     &xmlsec-openssl-crypto;
+    &xmlsec-openssl-evp;
     &xmlsec-openssl-x509;
     </chapter>
 
@@ -234,6 +249,7 @@
     <para>This section contains the API reference for xmlsec-gnutls. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
+
     &xmlsec-gnutls-app;
     &xmlsec-gnutls-crypto;
     </chapter>
@@ -243,8 +259,26 @@
     <para>This section contains the API reference for xmlsec-nss. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
+
     &xmlsec-nss-app;
+    &xmlsec-nss-bignum;
     &xmlsec-nss-crypto;
+    &xmlsec-nss-keysstore;
+    &xmlsec-nss-pkikeys;
+    &xmlsec-nss-x509;
+    </chapter>
+
+    <chapter id="xmlsec-mscrypto-ref">
+    <title>XML Security Library for MSCrypto API Reference.</title>
+    <para>This section contains the API reference for xmlsec-mscrypto. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+
+    &xmlsec-mscrypto-app;
+    &xmlsec-mscrypto-certkeys;
+    &xmlsec-mscrypto-crypto;
+    &xmlsec-mscrypto-keysstore;
+    &xmlsec-mscrypto-x509;
     </chapter>
     
     <chapter id="xmlsec-index">

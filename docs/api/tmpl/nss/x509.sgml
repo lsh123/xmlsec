@@ -106,6 +106,15 @@ x509
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssX509CertGetKey ##### -->
+<para>
+
+</para>
+
+@cert: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecNssKeyDataRawX509CertId ##### -->
 <para>
 

@@ -21,6 +21,13 @@ int         <link linkend="xmlSecNssShutdown">xmlSecNssShutdown</link>          
 int         <link linkend="xmlSecNssKeysMngrInit">xmlSecNssKeysMngrInit</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
 int         <link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link>         (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
                                              <link linkend="xmlSecSize">xmlSecSize</link> size);
+void        <link linkend="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback</link>  (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);
 #define     <link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link> (void);
 int         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
@@ -109,11 +116,11 @@ int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</lin
 <programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_nss
                                             (void);</programlisting>
 <para>
+Gets the pointer to xmlsec-nss functions table.</para>
+<para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the xmlsec-nss functions table or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -168,6 +175,42 @@ Generates <parameter>size</parameter> random bytes and puts result in <parameter
 <listitem><simpara>		the numer of bytes to generate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback ()</title>
+<programlisting>void        xmlSecNssErrorsDefaultCallback  (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);</programlisting>
+<para>
+The default errors reporting callback function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location file name (__FILE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>line</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location line number (__LINE__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<listitem><simpara>		the error location function name (__FUNCTION__ macro).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorObject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error object 
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>errorSubject</parameter>&nbsp;:</term>
+<listitem><simpara>	the error specific error subject.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&nbsp;:</term>
+<listitem><simpara>		the error code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
+<listitem><simpara>		the additional error message.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

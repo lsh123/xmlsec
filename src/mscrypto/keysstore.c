@@ -576,6 +576,29 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	}
 	pCertContext2 = NULL;
 
+	pCertContext2 = CertDuplicateCertificateContext(pCertContext);
+	if (NULL == pCertContext2) {
+ 	    xmlSecError(XMLSEC_ERRORS_HERE,
+ 			NULL,
+			"CertDuplicateCertificateContext",
+ 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"data=%s",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+ 	    goto done;
+ 	}
+
+	ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, pCertContext2);
+	if (ret < 0) {
+ 	    xmlSecError(XMLSEC_ERRORS_HERE,
+ 			NULL,
+			"xmlSecMSCryptoKeyDataX509AdoptKeyCert",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"data=%s",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+	    goto done;
+	}
+	pCertContext2 = NULL;
+
 	/* set cert in key data */
 	data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
 	if(data == NULL) {

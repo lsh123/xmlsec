@@ -634,6 +634,30 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* bdata,
 		CertFreeCertificateContext(tmpcert);
 		goto done;
 	    }
+
+	    tmpcert = CertDuplicateCertificateContext(pCert);
+	    if(tmpcert == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "CertDuplicateCertificateContext",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "data=%s",
+			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+		goto done;
+	    }
+
+	    ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, tmpcert);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecMSCryptoKeyDataX509AdoptCert",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+		CertFreeCertificateContext(tmpcert);
+		goto done;
+	    }
+
 	}
 
 	tmpcert = CertDuplicateCertificateContext(pCert);

@@ -702,8 +702,9 @@ int main(int argc, char **argv) {
 		    goto done;	    
 		}
 	    }
-	    if((ret < 0) && (repeats <= 1)) {
+	    if((ret < 0) && (repeats <= 1)) {				
 		fprintf(stderr, "Error: operation failed\n");
+		ERR_print_errors_fp(stderr);
  		goto done;	    	    
 	    }
 	    xmlFreeDoc(doc); doc = NULL;

@@ -25,6 +25,7 @@ buffered.c \
 membuf.c \
 nodeset.c \
 base64.c \
+errors.c \
 io.c \
 digests.c \
 ciphers.c \

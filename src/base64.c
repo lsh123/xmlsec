@@ -21,7 +21,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/ciphers.h>
 #include <xmlsec/base64.h>
-
+#include <xmlsec/errors.h>
 
 /* 
  * the table to map numbers to base64 
@@ -156,16 +156,16 @@ xmlSecTransformId xmlSecEncBase64Decode = (xmlSecTransformId)&xmlSecBase64Decode
  */
 void
 xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64EncodeSetLineSize";
     xmlSecBase64CtxPtr ctx;  
-
+    
+    xmlSecAssert(transform != NULL);
+    
     if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) ||
        (transform->data == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+       
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return;
     }
     ctx = (xmlSecBase64CtxPtr)(transform->data);
@@ -185,28 +185,19 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
  */
 static xmlSecTransformPtr 
 xmlSecBase64Create(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Create";
     xmlSecCipherTransformPtr cipher;
     int encode;
     
-    if(id == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is null\n",
-	    func);
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(id != NULL, NULL);
+    
     if(id == xmlSecEncBase64Encode) {
 	encode = 1;
     } else if(id == xmlSecEncBase64Decode) {
 	encode = 0;
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(NULL);	
     }
     
@@ -214,11 +205,9 @@ xmlSecBase64Create(xmlSecTransformId id) {
 		 sizeof(unsigned char) * (XMLSEC_BASE64_OUTPUT_BUFFER_SIZE + 
 					  XMLSEC_BASE64_INPUT_BUFFER_SIZE));    
     if(cipher == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: malloc failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_MALLOC_FAILED,	
+		    NULL);
 	return(NULL);
     }
     memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
@@ -232,11 +221,9 @@ xmlSecBase64Create(xmlSecTransformId id) {
         
     cipher->data = xmlSecBase64CtxCreate(encode, XMLSEC_BASE64_LINESIZE);    
     if(cipher->data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecBase64CtxCreate failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxCreate");
 	xmlSecTransformDestroy((xmlSecTransformPtr)cipher, 1);	
 	return(NULL);
     }
@@ -253,16 +240,16 @@ xmlSecBase64Create(xmlSecTransformId id) {
  */
 static void
 xmlSecBase64Destroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Destroy";
     xmlSecCipherTransformPtr cipher;
+    
+    xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) &&
        !xmlSecTransformCheckId(transform, xmlSecEncBase64Decode)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return;
     }
     
@@ -284,17 +271,17 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 static int
 xmlSecBase64Update(xmlSecCipherTransformPtr cipher, 
 		 const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Update";
     xmlSecBase64CtxPtr ctx;
     int ret;
+    
+    xmlSecAssert2(cipher != NULL, -1);
         
     if(!xmlSecTransformCheckId(cipher, xmlSecEncBase64Encode) &&
        !xmlSecTransformCheckId(cipher, xmlSecEncBase64Decode)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: cipher is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(-1);
     }
     
@@ -305,21 +292,17 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
 
     ctx = (xmlSecBase64CtxPtr)cipher->data;
     if(size > cipher->id->bufInSize) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: input buffer size is greater than expected\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA,
+		    NULL);
 	return(-1);
     }
     
     ret = xmlSecBase64CtxUpdate(ctx, buf, size, cipher->bufOut, cipher->id->bufOutSize);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: update failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    NULL);
 	return(-1);
     }
     return(ret);
@@ -327,28 +310,26 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
 
 static int
 xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Final";
     xmlSecBase64CtxPtr ctx;
     int ret;
+
+    xmlSecAssert2(cipher != NULL, -1);
         
     if(!xmlSecTransformCheckId(cipher, xmlSecEncBase64Encode) &&
        !xmlSecTransformCheckId(cipher, xmlSecEncBase64Decode)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(-1);
     }    
     ctx = (xmlSecBase64CtxPtr)cipher->data;
     
     ret = xmlSecBase64CtxFinal(ctx, cipher->bufOut, cipher->id->bufOutSize);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: final failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    NULL);
 	return(-1);
     }
     return(ret);
@@ -370,17 +351,10 @@ xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
  */
 static int
 xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxEncode";
     int outPos = 0;
-    
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+
+    xmlSecAssert2(ctx != NULL, -1);    
+
     if(ctx->inPos == 0) {
 	return(0); /* nothing to encode */
     }
@@ -428,26 +402,18 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
  */
 static int
 xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxDecode";
     int outPos;
     
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n",
-	     func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(ctx != NULL, -1);
     
     outPos = 0;
     if(ctx->inPos == 0) {
 	return(0); /* nothing to decode */
     }
     if(ctx->inPos < 2) {
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: invalid format (only one or two equal signs are allowed at the end)\n",
-	    func);	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+		    "only one or two equal signs are allowed at the end");
 	return(-1);
     }
     ctx->out[outPos++] = xmlSecBase64Decode1(ctx->in[0], ctx->in[1]);
@@ -475,7 +441,6 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {
  */
 xmlSecBase64CtxPtr	
 xmlSecBase64CtxCreate(int encode, int columns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxCreate";
     xmlSecBase64CtxPtr ctx;
     
     /*
@@ -483,9 +448,9 @@ xmlSecBase64CtxCreate(int encode, int columns) {
      */
     ctx = (xmlSecBase64CtxPtr) xmlMalloc(sizeof(xmlSecBase64Ctx));
     if (ctx == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: malloc failed\n",
-	    func);
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecBase64Ctx));
@@ -504,19 +469,11 @@ xmlSecBase64CtxCreate(int encode, int columns) {
  */
 void
 xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxDestroy";
 
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context is null\n",
-	    func);	
-#endif
-	return;
-    }
+    xmlSecAssert(ctx != NULL);
     
-     memset(ctx, 0, sizeof(xmlSecBase64Ctx)); 
-     xmlFree(ctx);
+    memset(ctx, 0, sizeof(xmlSecBase64Ctx)); 
+    xmlFree(ctx);
 }
 
 /**
@@ -536,20 +493,14 @@ int
 xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 		     const unsigned char *in, size_t inLen, 
 		     unsigned char *out, size_t outLen) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxUpdate";		     
     unsigned char ch;
     size_t inPos, outPos;
     size_t size;
     int ret;
     
-    if((ctx == NULL) || (out == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or out is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outLen > 0, -1);
     
     if((in == NULL) || (inLen == 0)) {
 	return(0);
@@ -568,18 +519,17 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 		ret = xmlSecBase64CtxDecode(ctx);
 	    }
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: encode/decode failed\n",
-		    func); 
-#endif		    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    (ctx->encode) ? "xmlSecBase64CtxEncode" : "xmlSecBase64CtxDecode");
 		return(-1);
 	    }
 	    
 	    if(outPos + ret > outLen) {
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: buffer is too small (%d > %d)\n", 
-		    func, outPos + ret, outLen); 
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "buffer is too small (%d > %d)", 
+			    outPos + ret, outLen); 
 		return(-1);
 	    }	    
 	    memcpy(out + outPos, ctx->out, ret);
@@ -592,9 +542,9 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 	    ctx->in[ctx->inPos++] = ch;
 	} else if(xmlSecIsBase64Char(ch)) {
 	    if(ctx->equalSigns != 0) {
-		xmlGenericError(xmlGenericErrorContext, 
-		    "%s: only space characters are allowed after equal sign \'=\'\n",
-		    func);
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "only space characters are allowed after equal sign \'=\'");
 		return(-1);    
 	    }
 	    if((ch >= 'A') && (ch <= 'Z')) {
@@ -610,9 +560,9 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 	    }	    
 	} else if(ch == '='){
 	    if(ctx->equalSigns >= 2) {
-		xmlGenericError(xmlGenericErrorContext, 
-		    "%s: too many equal signs at the end (most of two accepted)\n",
-		    func);
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "too many equal signs at the end (most of two accepted)");
 		return(-1);    
 	    }
 	    ++ctx->equalSigns;
@@ -637,18 +587,12 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 int
 xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx, 
 		    unsigned char *out, size_t outLen) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64CtxFinal";
     int ret;
     size_t size;
-            
-    if((ctx == NULL) || (out == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or out is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+        
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);    
+    xmlSecAssert2(outLen > 0, -1);    
 
     /* zero uninitialized input bytes */
     size = (ctx->encode) ? 3 : 4;
@@ -661,19 +605,18 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
 	ret = xmlSecBase64CtxDecode(ctx);
     }
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: encode/decode failed\n",
-	    func); 
-#endif		    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    (ctx->encode) ? "xmlSecBase64CtxEncode" : "xmlSecBase64CtxDecode");
 	return(-1);
     }
 	    
     /* copy to out put buffer */
     if((size_t)ret > outLen) {
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer is too small (%d > %d)\n", 
-	    func, ret, outLen); 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+		    "buffer is too small (%d > %d)", 
+		    ret, outLen); 
 	return(-1);
     }	    
     if(ret > 0) {
@@ -706,28 +649,19 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
  */
 xmlChar*
 xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Encode";
     xmlSecBase64CtxPtr ctx;
     xmlChar *ptr;
     size_t size;    
     int size_update, size_final;
     int ret;
 
-    if(buf == NULL) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buf is NULL\n",
-	    func);
-#endif 	    
-	return(NULL);	
-    }    
+    xmlSecAssert2(buf != NULL, NULL);
+
     ctx = xmlSecBase64CtxCreate(1, columns);
     if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create context NULL\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxCreate");
 	return(NULL);
     }
     
@@ -738,22 +672,18 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
     }
     ptr = (xmlChar*) xmlMalloc(size);
     if(ptr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate memory for result\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "result buffer %d bytes", size);
 	xmlSecBase64CtxDestroy(ctx);
 	return(NULL);
     }
 
     ret = xmlSecBase64CtxUpdate(ctx, buf, len, (unsigned char*)ptr, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 update failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxUpdate");
 	xmlFree(ptr);
 	xmlSecBase64CtxDestroy(ctx);
 	return(NULL);
@@ -762,11 +692,9 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
 
     ret = xmlSecBase64CtxFinal(ctx, ((unsigned char*)ptr) + size_update, size - size_update);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 final failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxFinal");
 	xmlFree(ptr);
 	xmlSecBase64CtxDestroy(ctx);
 	return(NULL);
@@ -792,38 +720,27 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
  */
 int
 xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, size_t len) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBase64Decode";
     xmlSecBase64CtxPtr ctx;
     int size_update;
     int size_final;
     int ret;
 
-    if((str == NULL) || (buf == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: str or buf is NULL\n",
-	    func);
-#endif 	    
-	return(-1);	
-    }
+    xmlSecAssert2(str != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
     
     ctx = xmlSecBase64CtxCreate(0, 0);
     if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create context NULL\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxCreate");
 	return(-1);
     }
     
     ret = xmlSecBase64CtxUpdate(ctx, (const unsigned char*)str, xmlStrlen(str), buf, len);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 update failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxUpdate");
 	xmlSecBase64CtxDestroy(ctx);
 	return(-1);
     }
@@ -831,11 +748,9 @@ xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, size_t len) {
     size_update = ret;
     ret = xmlSecBase64CtxFinal(ctx, buf + size_update, len - size_update);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 final failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxFinal");
 	xmlSecBase64CtxDestroy(ctx);
 	return(-1);
     }

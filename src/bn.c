@@ -18,6 +18,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/bn.h>
+#include <xmlsec/errors.h>
 
 /**
  * xmlSecBN2CryptoBinary:
@@ -31,31 +32,21 @@
  */
 xmlChar*		
 xmlSecBN2CryptoBinary(const BIGNUM *a) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBN2CryptoBinary";
     unsigned char buf[512];
     unsigned char *buffer;
     size_t size;
     int ret;
     xmlChar *res;
 
-    if(a == NULL) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: BIGNUM is NULL\n",
-	    func);
-#endif 	    
-	return(NULL);	
-    }
+    xmlSecAssert2(a != NULL, NULL);
 
     size = BN_num_bytes(a) + 1;
     if(sizeof(buf) < size) {	
 	buffer = (unsigned char*)xmlMalloc(size);
 	if(buffer == NULL) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to allocate %d bytes\n", 
-		func, size);
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d bytes", size);
 	    return(NULL);	
 	}
     } else {
@@ -64,11 +55,9 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
         
     ret = BN_bn2bin(a, buffer);
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: BN_bn2bin() failed (%d)\n", 
-	    func, ret);
-#endif 	    	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BN_bn2bin - %d", ret);
 	if(buffer != buf) {
 	    xmlFree(buffer);
 	}
@@ -77,11 +66,9 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
     
     res = xmlSecBase64Encode(buffer, ret, XMLSEC_BASE64_LINESIZE);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 encode failed \n",
-	    func);
-#endif 	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	if(buffer != buf) {
 	    xmlFree(buffer);
 	}
@@ -109,31 +96,22 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
  */
 BIGNUM*
 xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCryptoBinary2BN";
     unsigned char buf[512];
     unsigned char *buffer;
     size_t size;
     int ret;
 
-    if((a == NULL) || (str == NULL)) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: str or BIGNUM is NULL\n",
-	    func);
-#endif 	    
-	return(NULL);	
-    }
+    xmlSecAssert2(a != NULL, NULL);
+    xmlSecAssert2(str != NULL, NULL);
     
     /* base64 decode could not be more than 3/4 of input */
     size = ((3 * xmlStrlen(str)) / 4) + 3;
     if(sizeof(buf) < size) {	
 	buffer = (unsigned char*)xmlMalloc(size);
 	if(buffer == NULL) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to allocate %d bytes\n", 
-		func, size);
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+	    	        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d bytes", size);
 	    return(NULL);	
 	}
     } else {
@@ -142,11 +120,9 @@ xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
 
     ret = xmlSecBase64Decode(str, buffer, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 decode failed \n",
-	    func);
-#endif 	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode");
 	if(buffer != buf) {
 	    xmlFree(buffer);
 	}
@@ -155,11 +131,9 @@ xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
     
     (*a) = BN_bin2bn(buffer, ret, (*a));    
     if( (*a) == NULL) {	
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create BIGNUM \n",
-	    func);
-#endif 	    	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BN_bin2bn");
 	if(buffer != buf) {
 	    xmlFree(buffer);
 	}
@@ -188,32 +162,22 @@ xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
 
 BIGNUM*
 xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeGetBNValue";
     xmlChar* tmp;
-    
-    if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: cur is null \n",
-	    func);
-#endif 	    	
-	return(NULL);
-    }
+
+    xmlSecAssert2(cur != NULL, NULL);
     
     tmp = xmlNodeGetContent(cur);
     if(tmp == NULL) {
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: no data in element\n",
-	    func);
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    NULL);
 	return(NULL);
     }    
     
     if(xmlSecCryptoBinary2BN(tmp, a) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCryptoBinary2BN");
 	xmlFree(tmp);
 	return(NULL);
     }
@@ -240,25 +204,16 @@ xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 
 int
 xmlSecNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetBNValue";
     xmlChar* tmp;
     
-    if((a == NULL) || (cur == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bignum value or node is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(a != NULL, -1);
+    xmlSecAssert2(cur != NULL, -1);
     
     tmp = xmlSecBN2CryptoBinary(a);
     if(tmp == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert bignum to string\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBN2CryptoBinary");
 	return(-1);
     }
     

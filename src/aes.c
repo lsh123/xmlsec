@@ -28,6 +28,7 @@
 #include <xmlsec/ciphers.h>
 #include <xmlsec/buffered.h> 
 #include <xmlsec/base64.h>
+#include <xmlsec/errors.h>
 
 #define XMLSEC_AES_BLOCK_SIZE			16
 #define XMLSEC_AES128_KEY_SIZE			16
@@ -289,11 +290,12 @@ xmlSecTransformId xmlSecKWAes256 = (xmlSecTransformId)&xmlSecKWAes256Id;
  */ 
 static xmlSecTransformPtr 
 xmlSecAesCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesCreate";
     xmlSecCipherTransformId cipherId;
     xmlSecCipherTransformPtr cipher;
     const EVP_CIPHER *type;
 
+    xmlSecAssert2(id != NULL, NULL);
+    
     if(id == xmlSecEncAes128Cbc) {
 	type = EVP_aes_128_cbc();	
     } else if(id == xmlSecEncAes192Cbc) {
@@ -301,11 +303,9 @@ xmlSecAesCreate(xmlSecTransformId id) {
     } else if(id == xmlSecEncAes256Cbc) {
 	type = EVP_aes_256_cbc();	
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(NULL);	
     }
     cipherId = (xmlSecCipherTransformId)id;
@@ -313,11 +313,9 @@ xmlSecAesCreate(xmlSecTransformId id) {
 			sizeof(unsigned char) * (cipherId->bufInSize + 
         		cipherId->bufOutSize + cipherId->ivSize));
     if(cipher == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: malloc failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
 
@@ -342,17 +340,17 @@ xmlSecAesCreate(xmlSecTransformId id) {
  */ 
 static void 	
 xmlSecAesDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesDestroy";
     xmlSecCipherTransformPtr cipher;
-    
+
+    xmlSecAssert(transform != NULL);
+        
     if(!xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) &&
        !xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) &&
        !xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return;
     }
     
@@ -375,20 +373,21 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
  */ 
 static int  	
 xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesAddKey";
     xmlSecCipherTransformPtr cipher;
     xmlSecAesKeyDataPtr aesKey;
     int ret;
     
+    xmlSecAssert2( transform != NULL, -1);
+    xmlSecAssert2( key != NULL, -1);
+
     if((!xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) && 
        !xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) &&
        !xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc)) ||
-	!xmlSecKeyCheckId(key, xmlSecAesKey) ) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+       !xmlSecKeyCheckId(key, xmlSecAesKey) ) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    NULL);
 	return(-1);
     }
     
@@ -396,11 +395,9 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     aesKey = (xmlSecAesKeyDataPtr)key->keyData;
 
     if(aesKey->keySize < cipher->id->keySize) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key (%d bytes) is invalid\n",
-	    func, aesKey->keySize);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    "%d bytes", aesKey->keySize);
 	return(-1);    
     }
     
@@ -415,11 +412,9 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     }
     
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encrypt/decrypt init failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (cipher->encode) ? "EVP_EncryptInit" : "EVP_DecryptInit");
 	return(-1);    
     }
     return(0);
@@ -444,15 +439,14 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */ 
 static xmlSecTransformPtr 
 xmlSecKWAesCreate(xmlSecTransformId id) {    
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKWAesCreate";
     xmlSecBufferedTransformPtr buffered;
-    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
     if((id != xmlSecKWAes128) && (id != xmlSecKWAes192) && (id != xmlSecKWAes256)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);    
 	return(NULL);
     }
 
@@ -461,11 +455,9 @@ xmlSecKWAesCreate(xmlSecTransformId id) {
      */
     buffered = (xmlSecBufferedTransformPtr)xmlMalloc(sizeof(xmlSecBufferedTransform));
     if(buffered == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecBufferedTransform malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);    
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -482,17 +474,17 @@ xmlSecKWAesCreate(xmlSecTransformId id) {
  */ 
 static void 	
 xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKWAesDestroy";
     xmlSecBufferedTransformPtr buffered;
+
+    xmlSecAssert(transform != NULL);    
     
     if(!xmlSecTransformCheckId(transform, xmlSecKWAes128) && 
 	!xmlSecTransformCheckId(transform, xmlSecKWAes192) && 
 	!xmlSecTransformCheckId(transform, xmlSecKWAes256)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return;
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -516,40 +508,37 @@ xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
  */ 
 static int
 xmlSecKWAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKWAesAddKey";
     xmlSecBufferedTransformPtr buffered;
     xmlSecAesKeyDataPtr aesKey;
-    
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+        
     if((!xmlSecTransformCheckId(transform, xmlSecKWAes128) && 
 	!xmlSecTransformCheckId(transform, xmlSecKWAes192) && 
 	!xmlSecTransformCheckId(transform, xmlSecKWAes256)) || 
 	!xmlSecKeyCheckId(key, xmlSecAesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+	
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    NULL);
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
     
     if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key aes data is null\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "data is NULL");
 	return(-1);
     } 
     
     aesKey = xmlSecAesKeyDataCreate(((xmlSecAesKeyDataPtr)key->keyData)->key,
 				    ((xmlSecAesKeyDataPtr)key->keyData)->keySize);
     if(aesKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: AES key duplication failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAesKeyDataCreate");
 	return(-1);    
     }
         
@@ -571,40 +560,37 @@ xmlSecKWAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static int
 xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKWAesProcess";
     size_t size;
     int ret;    
-    
+
+    xmlSecAssert2(buffered != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+        
     if((!xmlSecTransformCheckId(buffered, xmlSecKWAes128) && 
 	!xmlSecTransformCheckId(buffered, xmlSecKWAes192) && 
-	!xmlSecTransformCheckId(buffered, xmlSecKWAes256)) ||
-	xmlSecKWAesKeyData(buffered) == NULL || (buffer == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or buffer is invalid\n",
-	    func);	
-#endif 	    
+	!xmlSecTransformCheckId(buffered, xmlSecKWAes256)) || 
+	(xmlSecKWAesKeyData(buffered) == NULL)) {
+	
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    NULL);
 	return(-1);
-    }    
+    } 
 
     size = xmlBufferLength(buffer);
     if((size % 8) != 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer size is not 8 bytes aligned\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "buffer size is not 8 bytes aligned");    
 	return(-1);
     }
     if(buffered->encode) { 
 	/* the encoded key is 8 bytes longer */
 	ret = xmlBufferResize(buffer, size + 8 + 8);
 	if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: buffer re-size failed (%d)\n",
-	        func, size + 16);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XML_FAILED,
+			"xmlBufferResize(buffer, %d)", size + 16);	    
 	    return(-1);
 	}
 	
@@ -620,11 +606,9 @@ xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
 				size);
     }
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encryption/decryption failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    (buffered->encode) ? "xmlSecKWAesEncode" : "xmlSecKWAesDecode");
 	return(-1);	
     }
     buffer->use = ret;
@@ -650,29 +634,22 @@ static const unsigned char xmlSecKWAesMagicBlock[] = {
 static int  	
 xmlSecKWAesEncode(const unsigned char *key, size_t keySize,
 		unsigned char *buf, size_t bufSize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKWAesEncode";
     AES_KEY aesKey;
     unsigned char block[16];
     unsigned char *p;
     int N, i, j, t;
     int ret;
     
-    if((key == NULL) || (buf == NULL) || (bufSize == 0)) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad input parameters\n",
-	    func);	
-#endif 	    
-	return(-1);	
-    }
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
 
     ret = AES_set_encrypt_key(key, 8 * keySize, &aesKey);
     if(ret != 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to set AES key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "AES_set_encrypt_key");
 	return(-1);	
     }
     
@@ -715,29 +692,22 @@ xmlSecKWAesEncode(const unsigned char *key, size_t keySize,
 static int  	
 xmlSecKWAesDecode(const unsigned char *key, size_t keySize,
 		unsigned char *buf, size_t bufSize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKWAesDecode";
     AES_KEY aesKey;
     unsigned char block[16];
     unsigned char *p;
     int N, i, j, t;
     int ret;
-    
-    if((key == NULL) || (buf == NULL) || (bufSize == 0)) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad input parameters\n",
-	    func);	
-#endif 	    
-	return(-1);	
-    }
 
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+    
     ret = AES_set_decrypt_key(key, 8 * keySize, &aesKey);
     if(ret != 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to set AES key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "AES_set_decrypt_key");
 	return(-1);	
     }
     
@@ -764,11 +734,9 @@ xmlSecKWAesDecode(const unsigned char *key, size_t keySize,
     memset(block, 0, sizeof(block));
     
     if(memcmp(xmlSecKWAesMagicBlock, buf, 8) != 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: magic block check failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+		    "magic block");
 	return(-1);	
     }
 	
@@ -794,25 +762,22 @@ xmlSecKWAesDecode(const unsigned char *key, size_t keySize,
  */
 static xmlSecKeyPtr	
 xmlSecAesKeyCreate(xmlSecKeyId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyCreate";
     xmlSecKeyPtr key;
-    
-    if((id != xmlSecAesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
+    if(id != xmlSecAesKey) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);    
 	return(NULL);	
     }
     
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -829,14 +794,12 @@ xmlSecAesKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecAesKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyDestroy";
-
+    xmlSecAssert(key != NULL);
+    
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return;
     }
     
@@ -859,25 +822,22 @@ xmlSecAesKeyDestroy(xmlSecKeyPtr key) {
  */
 static xmlSecKeyPtr	
 xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyDuplicate";
     xmlSecKeyPtr newKey;
-    
+
+    xmlSecAssert2(key != NULL, NULL);
+        
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(NULL);
     }
     
     newKey = xmlSecAesKeyCreate(key->id);
     if(newKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAesKeyCreate");
 	return(NULL);
     }
     
@@ -887,11 +847,9 @@ xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
 	data = (xmlSecAesKeyDataPtr)key->keyData;
 	newKey->keyData = xmlSecAesKeyDataCreate(data->key, data->keySize);
 	if(newKey->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: key data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAesKeyDataCreate");
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
@@ -912,26 +870,23 @@ xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyGenerate";
     xmlSecAesKeyDataPtr data;
     int ret;
-    
+
+    xmlSecAssert2(key != NULL, -1);
+        
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
 
     data = xmlSecAesKeyDataCreate(buf, size);
     if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key data creation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAesKeyDataCreate");
 	return(-1);    
     }
 
@@ -939,11 +894,9 @@ xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 	/* generate the key */
 	ret = RAND_bytes(data->key, data->keySize);
 	if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to generate key\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"RAND_bytes");
 	    xmlSecAesKeyDataDestroy(data);
 	    return(-1);    
 	}	
@@ -970,38 +923,34 @@ xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
  */
 static int
 xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyRead";
     xmlChar *keyStr;
     size_t keyLen;
     int ret;
-    
-    if((!xmlSecKeyCheckId(key, xmlSecAesKey)) || 
-	(node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or node is null\n",
-	    func);	
-#endif 	    
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+        
+    if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);    
 	return(-1);
     }
 
     keyStr = xmlNodeGetContent(node);
     if(keyStr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    NULL);
 	return(-1);
     }
+
     /* usual trick: decode into the same buffer */
     ret = xmlSecBase64Decode(keyStr, (unsigned char*)keyStr, xmlStrlen(keyStr));
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key base64 decode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode");
 	xmlFree(keyStr);
 	return(-1);
     }
@@ -1015,11 +964,9 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     if(keyLen > 0) {
 	key->keyData = xmlSecAesKeyDataCreate((unsigned char*)keyStr, keyLen);
 	if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAesKeyDataCreate");
 	    xmlFree(keyStr);
 	    return(-1);
 	}
@@ -1043,16 +990,16 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyWrite";
     xmlSecAesKeyDataPtr ptr;
     xmlChar *str;
     
-    if((!xmlSecKeyCheckId(key, xmlSecAesKey)) || (parent == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or parent is null\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+
+    if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);    
 	return(-1);
     }
     ptr = (xmlSecAesKeyDataPtr)key->keyData;
@@ -1069,11 +1016,9 @@ xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     
     str = xmlSecBase64Encode(ptr->key, ptr->keySize, 0);
     if(str == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key base64 encode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	return(-1);
     }    
     xmlNodeSetContent(parent, str);
@@ -1093,14 +1038,12 @@ xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
  */
 static  int
 xmlSecAesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyReadBinary";
-    
+    xmlSecAssert2(key != NULL, -1);
+        
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
 
@@ -1112,11 +1055,9 @@ xmlSecAesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
     if((buf != NULL) && (size > 0)) {
 	key->keyData = xmlSecAesKeyDataCreate(buf, size);
 	if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAesKeyDataCreate");
 	    return(-1);
 	}
 	key->type = xmlSecKeyTypePrivate;
@@ -1140,16 +1081,16 @@ xmlSecAesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
 static  int
 xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 			unsigned char **buf, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyWriteBinary";
     xmlSecAesKeyDataPtr keyData;
         
-    if(!xmlSecKeyCheckId(key, xmlSecAesKey) || 
-       (buf == NULL) || (size == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or buf, size is null\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size != NULL, -1);
+    
+    if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
     (*buf) = NULL;
@@ -1157,21 +1098,17 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     
     keyData = (xmlSecAesKeyDataPtr)key->keyData;
     if((keyData == NULL) || (keyData->key == NULL) || (keyData->keySize <= 0)) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: invalid keyData\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+		    NULL);
 	return(-1);
     }
     
     (*buf) = (unsigned char *)xmlMalloc(sizeof(unsigned char) * keyData->keySize);
     if((*buf) == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate buffer\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(-1);
     }
     memcpy((*buf), keyData->key, keyData->keySize);
@@ -1197,18 +1134,15 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
  */
 static xmlSecAesKeyDataPtr	
 xmlSecAesKeyDataCreate(const unsigned char *key, size_t keySize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyDataCreate";
     xmlSecAesKeyDataPtr data;
     
     data = (xmlSecAesKeyDataPtr) xmlMalloc(
 		sizeof(xmlSecAesKeyData) +
 		sizeof(unsigned char) * keySize);	    
     if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(data, 0,  sizeof(xmlSecAesKeyData) + 
@@ -1230,16 +1164,8 @@ xmlSecAesKeyDataCreate(const unsigned char *key, size_t keySize) {
  */
 static void
 xmlSecAesKeyDataDestroy(xmlSecAesKeyDataPtr data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAesKeyDataDestroy";
 
-    if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: data is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
+    xmlSecAssert(data != NULL);
     
     memset(data, 0, sizeof(struct _xmlSecAesKeyData) +  
 		    sizeof(unsigned char) * data->keySize);

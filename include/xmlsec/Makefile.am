@@ -9,6 +9,7 @@ buffered.h \
 ciphers.h \
 digests.h \
 debug.h \
+errors.h \
 io.h \
 keyinfo.h \
 keys.h \

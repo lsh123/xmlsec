@@ -647,7 +647,7 @@ struct _xmlSecAppXmlData {
 static xmlSecAppXmlDataPtr	xmlSecAppXmlDataCreate		(const char* filename,
 								 const xmlChar* defStartNodeName,
 								 const xmlChar* defStartNodeNs);
-static void			xmlSecAppXmlDataDestroy		(xmlSecAppXmlDataPtr data);							
+static void			xmlSecAppXmlDataDestroy		(xmlSecAppXmlDataPtr data);					
 
 
 static xmlSecAppCommand 	xmlSecAppParseCommand		(const char* cmd, 
@@ -1591,7 +1591,8 @@ xmlSecAppShutdown(void) {
 static xmlSecAppXmlDataPtr 
 xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, const xmlChar* defStartNodeNs) {
     xmlSecAppXmlDataPtr data;
-    
+    xmlNodePtr cur = NULL;
+        
     if(filename == NULL) {
 	fprintf(stderr, "Error: xml filename is null\n");
 	return(NULL);
@@ -1642,7 +1643,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 	    xmlSecAppXmlDataDestroy(data);
 	    return(NULL);    
 	}
-	data->startNode = attr->parent;
+	cur = attr->parent;
     } else if(xmlSecAppCmdLineParamGetString(&nodeNameParam) != NULL) {
 	xmlChar* buf;
 	xmlChar* name;
@@ -1664,8 +1665,8 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 	    ns = NULL;
 	}
 	
-	data->startNode = xmlSecFindNode(xmlDocGetRootElement(data->doc), name, ns);
-	if(data->startNode == NULL) {
+	cur = xmlSecFindNode(xmlDocGetRootElement(data->doc), name, ns);
+	if(cur == NULL) {
 	    fprintf(stderr, "Error: failed to find node with name=\"%s\"\n", 
 		    name);
 	    xmlFree(buf);
@@ -1700,12 +1701,21 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 	    return(NULL);    
 	}
 		
-	data->startNode = obj->nodesetval->nodeTab[0];
+	cur = obj->nodesetval->nodeTab[0];
 	xmlXPathFreeContext(ctx);
 	xmlXPathFreeObject(obj);
 	
-    } else if(defStartNodeName != NULL) {
-	data->startNode = xmlSecFindNode(xmlDocGetRootElement(data->doc), defStartNodeName, defStartNodeNs);
+    } else {
+	cur = xmlDocGetRootElement(data->doc);
+	if(cur == NULL) {
+	    fprintf(stderr, "Error: failed to get root element\n"); 
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+    }
+    
+    if(defStartNodeName != NULL) {
+	data->startNode = xmlSecFindNode(cur, defStartNodeName, defStartNodeNs);
 	if(data->startNode == NULL) {
 	    fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", 
 		    defStartNodeName);
@@ -1713,12 +1723,7 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 	    return(NULL);    
 	}
     } else {
-	data->startNode = xmlDocGetRootElement(data->doc);
-	if(data->startNode == NULL) {
-	    fprintf(stderr, "Error: failed to get root element\n"); 
-	    xmlSecAppXmlDataDestroy(data);
-	    return(NULL);    
-	}
+	data->startNode = cur;
     }
     
     return(data);

@@ -2,7 +2,7 @@ AC_INIT(src/xmlsec.c)
 
 XMLSEC_VERSION_MAJOR=1
 XMLSEC_VERSION_MINOR=0
-XMLSEC_VERSION_SUBMINOR=0-rc1
+XMLSEC_VERSION_SUBMINOR=0rc1
 XMLSEC_VERSION=$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 
@@ -684,7 +684,7 @@ man/Makefile
 ]
 [xmlsec1Conf.sh:xmlsecConf.sh.in]
 [xmlsec1-config:xmlsec-config.in]
-[xmlsec1.spec:xmlsec.spec.in]
 [xmlsec1.pc:xmlsec.pc.in]
+[xmlsec1.spec:xmlsec.spec.in]
 )
 

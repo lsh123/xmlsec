@@ -28,6 +28,10 @@ EXTRA_DIST = \
 	xmlsec-config.in \
 	xmlsecConf.sh.in \
 	xmlsec.spec.in \
+	xmlsec1Conf.sh \
+	xmlsec1.pc \
+	xmlsec1-config \
+	xmlsec1.spec \
 	$(NULL)
 
 EXTRA_CLEAN = \

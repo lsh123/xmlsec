@@ -289,7 +289,6 @@ else
 	if test "$with_gnutls" != "" ; then
 	    AC_MSG_ERROR(Unable to find gnutls at '$with_gnutls')
 	else 
-	    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XSLT=1"
 	    AC_MSG_RESULT(no)
 	fi
     else

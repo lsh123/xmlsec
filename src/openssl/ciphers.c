@@ -20,6 +20,11 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
+/* this is not defined in OpenSSL 0.9.6 */
+#ifndef EVP_MAX_BLOCK_LENGTH
+#define EVP_MAX_BLOCK_LENGTH		32
+#endif /* EVP_MAX_BLOCK_LENGTH */
+
 /**************************************************************************
  *
  * Internal OpenSSL Block cipher CTX

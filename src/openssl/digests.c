@@ -194,6 +194,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     xmlSecAssert2(ctx->digest != NULL, -1);
     
     if(transform->status == xmlSecTransformStatusNone) {
+#ifndef XMLSEC_OPENSSL_096
 	ret = EVP_DigestInit(&(ctx->digestCtx), ctx->digest);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -203,6 +204,9 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
+#else /* XMLSEC_OPENSSL_096 */
+	EVP_DigestInit(&(ctx->digestCtx), ctx->digest);
+#endif /* XMLSEC_OPENSSL_096 */
 	transform->status = xmlSecTransformStatusWorking;
     }
     
@@ -211,6 +215,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
+#ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_DigestUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -220,6 +225,9 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 			    "size=%d", inSize);
 		return(-1);
 	    }
+#else /* XMLSEC_OPENSSL_096 */
+	    EVP_DigestUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
+#endif /* XMLSEC_OPENSSL_096 */
 	    
 	    ret = xmlSecBufferRemoveHead(in, inSize);
 	    if(ret < 0) {
@@ -234,6 +242,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	if(last) {
 	    xmlSecAssert2((size_t)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
 	        
+#ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -243,6 +252,9 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
+#else /* XMLSEC_OPENSSL_096 */
+	    EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
+#endif /* XMLSEC_OPENSSL_096 */
 	    xmlSecAssert2(ctx->dgstSize > 0, -1);
 	    
 	    /* copy result to output */

@@ -306,71 +306,6 @@ xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 }
 
 /**
- * xmlSecTransformReadBin:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the output buffer.
- * @size: the output buffer size.
- *
- * Reads chunk of data from the transform (wrapper transform specific
- * readBin() function).
- *
- * Returns the number of bytes in the buffer or negative value
- * if an error occurs.
- */
-int
-xmlSecTransformReadBin(xmlSecTransformPtr transform, 
-		       unsigned char *buf, size_t size) {
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    
-    if(transform->id->readBin != NULL) {
-	return((transform->id->readBin)(transform, buf, size));
-    }
-    return(0);
-}
-
-/**
- * xmlSecTransformWriteBin:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the input data buffer.
- * @size: the input data size.
- *
- * Writes data to the transform (wrapper to the transform specific
- * writeBin() function).
- * 
- * Returns 0 if success or a negative value otherwise.
- */
-int
-xmlSecTransformWriteBin(xmlSecTransformPtr transform, 
-			const unsigned char *buf, size_t size) {
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    
-    if(transform->id->writeBin != NULL) {
-	return((transform->id->writeBin)(transform, buf, size));
-    }
-    return(0);
-}
-
-/**
- * xmlSecTransformFlushBin:
- * @transform: the pointer to #xmlSecTransform structure.
- *
- * Finalizes writing (wrapper for transform specific flushBin() method). 
- *
- * Returns 0 if success or negative value otherwise.
- */
-int
-xmlSecTransformFlushBin(xmlSecTransformPtr transform) {
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-
-    if(transform->id->flushBin != NULL) {
-	return((transform->id->flushBin)(transform));
-    }
-    return(0);
-}
-
-/**
  * xmlSecTransformExecuteXml:
  * @transform: the pointer to XML transform.
  * @ctxDoc: the pointer to the document containing the transform's 
@@ -532,7 +467,7 @@ xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecTransformDefault2ReadBin:
+ * xmlSecTransformReadBin:
  * @transform: the pointer to #xmlSecTransform structure.
  * @buf: the output buffer.
  * @size: the output buffer size.
@@ -544,7 +479,7 @@ xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
  * if an error occurs.
  */
 int
-xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform, 
+xmlSecTransformReadBin(xmlSecTransformPtr transform, 
 		       unsigned char *buf, size_t size) {
     xmlSecTransformCtx ctx; /* todo */
     int ret;
@@ -565,7 +500,7 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecTransformDefault2WriteBin:
+ * xmlSecTransformWriteBin:
  * @transform: the pointer to #xmlSecTransform structure.
  * @buf: the input data buffer.
  * @size: the input data size.
@@ -573,10 +508,10 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
  * Writes data to the transform (wrapper to the transform specific
  * writeBin() function).
  * 
- * Returns 0 if success or a negative value otherwise.
+ * Returns the number of bytes consumed or a negative value otherwise.
  */
 int
-xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform, 
+xmlSecTransformWriteBin(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
     xmlSecTransformCtx ctx; /* todo */
     int ret;
@@ -597,7 +532,7 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecTransformDefault2FlushBin:
+ * xmlSecTransformFlushBin:
  * @transform: the pointer to #xmlSecTransform structure.
  *
  * Finalizes writing (wrapper for transform specific flushBin() method). 
@@ -605,7 +540,7 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
  * Returns 0 if success or negative value otherwise.
  */
 int
-xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
+xmlSecTransformFlushBin(xmlSecTransformPtr transform) {
     xmlSecTransformCtx ctx; /* todo */
     int ret;
         

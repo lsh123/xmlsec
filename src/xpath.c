@@ -106,16 +106,8 @@ struct _xmlSecTransformKlass xmlSecTransformXPathId = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,    
-    
-    /* xmlTransform info */
     xmlSecTransformXPathExecute,	/* xmlSecTransformExecuteMethod executeXml; */
-    
-    NULL,
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecTransformXPath = (xmlSecTransformId)(&xmlSecTransformXPathId);
 
@@ -142,16 +134,8 @@ struct _xmlSecTransformKlass xmlSecTransformXPath2Id = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,    
-    
-    /* xmlTransform info */
     xmlSecTransformXPath2Execute,	/* xmlSecTransformExecuteMethod executeXml; */
-
-    NULL,
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecTransformXPath2 = (xmlSecTransformId)(&xmlSecTransformXPath2Id);
 
@@ -178,16 +162,8 @@ struct _xmlSecTransformKlass xmlSecTransformXPointerId = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,    
-    
-    /* xmlTransform info */
     xmlSecTransformXPointerExecute,	/* xmlSecTransformExecuteMethod executeXml; */
-    
-    NULL,
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecTransformXPointer = (xmlSecTransformId)(&xmlSecTransformXPointerId);
 

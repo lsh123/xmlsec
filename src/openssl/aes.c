@@ -267,15 +267,9 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLAesCbcExecute,			/* xmlSecTransformExecuteMethod execute; */
-    
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
@@ -300,14 +294,8 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLAesCbcExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
@@ -332,14 +320,8 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLAesCbcExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 #define xmlSecOpenSSLAesCbcCheckId(transform) \
@@ -492,14 +474,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
@@ -524,14 +500,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
@@ -556,14 +526,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-    
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 #define XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE		8

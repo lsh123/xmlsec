@@ -246,14 +246,6 @@ XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
 
 
 
-XMLSEC_EXPORT int			xmlSecTransformDefault2ReadBin	(xmlSecTransformPtr transform,
-								 unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformDefault2WriteBin	(xmlSecTransformPtr transform,
-								 const unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformDefault2FlushBin	(xmlSecTransformPtr transform);
-
 #define xmlSecTransformGetName(transform) \
 	((xmlSecTransformIsValid((transform))) ? \
 	  xmlSecTransformKlassGetName((transform)->id) : NULL)
@@ -557,26 +549,15 @@ struct _xmlSecTransformKlass {
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
     xmlSecTransformVerifyMethod		verify;
-    xmlSecTransformPushBinMethod		pushBin;
+    xmlSecTransformPushBinMethod	pushBin;
     xmlSecTransformPopBinMethod		popBin;
-    xmlSecTransformPushXmlMethod		pushXml;
+    xmlSecTransformPushXmlMethod	pushXml;
     xmlSecTransformPopXmlMethod		popXml;
     
     /* low level method */
     xmlSecTransformExecuteMethod	execute;
     
-    
-    /* binary methods */
-    void*				deleteLater0;
-
-    xmlSecTransformReadMethod		readBin; 
-    xmlSecTransformWriteMethod		writeBin;
-    xmlSecTransformFlushMethod		flushBin;
-
-    /* xml methods */
     xmlSecTransformExecuteXmlMethod	executeXml;
-
-    /* c14n methods */
     xmlSecTransformExecuteC14NMethod	executeC14N;
 };
 

@@ -265,14 +265,8 @@ static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLDes3CbcExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId 
@@ -411,14 +405,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWDes3Execute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 

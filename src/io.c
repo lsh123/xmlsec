@@ -84,14 +84,8 @@ static const struct _xmlSecTransformKlass xmlSecInputUriTransformId = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    NULL,				/* xmlSecTransformWriteMethod writeBin; */
-    NULL, 				/* xmlSecTransformFlushMethod flushBin; */
-    
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecInputUri = (xmlSecTransformId)&xmlSecInputUriTransformId;
 

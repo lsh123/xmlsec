@@ -626,14 +626,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaSha1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
-    /* xmlSecTransform data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId 
@@ -760,14 +754,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaPkcs1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 #define xmlSecOpenSSLRsaPkcs1GetKey(transform) \
@@ -1041,14 +1029,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaOaepExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 

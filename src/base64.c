@@ -127,16 +127,9 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecBase64Execute,			/* xmlSecTransformExecuteMethod execute; */
-    
-    /* binary data/methods */
-    NULL,					/* xmlSecTransformExecuteBinMethod executeBin; */
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-    
-    /* xml/c14n methods */
-    NULL,
-    NULL,
+
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId 

@@ -55,14 +55,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRipemd160Execute,		/* xmlSecTransformExecuteMethod execute; */
     
-    /* xmlSecTransform data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId 

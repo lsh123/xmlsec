@@ -282,13 +282,8 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* xmlSecTransform data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 /** 
@@ -316,13 +311,8 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* xmlSecTransform data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 /** 
@@ -350,13 +340,8 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    /* xmlSecTransform data/methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 #define xmlSecOpenSSLHmacCheckId(transform) \

@@ -94,14 +94,8 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecXsltExecute,				/* xmlSecTransformExecuteMethod execute; */
     
-    /* binary methods */
-    NULL,
-    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
-    
-    NULL,
-    NULL,
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId 

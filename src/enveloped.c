@@ -54,17 +54,8 @@ struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    
-    /* xmlTransform info */
     xmlSecTransformEnvelopedExecute,	/* xmlSecTransformExecuteMethod executeXml; */
-
-    /* c14n */
-    NULL
+    NULL,				/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId xmlSecTransformEnveloped = (xmlSecTransformId)(&xmlSecTransformEnvelopedId);

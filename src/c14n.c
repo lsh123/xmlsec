@@ -57,16 +57,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveTransformId = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    
-    /* xml */
-    NULL,    
-    
-    /* c14n methods */
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
     xmlSecC14NTransformExec		/* xmlSecC14NTransformExecuteMethod executeC14N; */
 };
 xmlSecTransformId xmlSecC14NInclusive = (xmlSecTransformId)&xmlSecC14NInclusiveTransformId;
@@ -94,16 +85,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveWithCommentsTransfo
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    
-    /* xml */
-    NULL,    
-    
-    /* c14n methods */
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
     xmlSecC14NTransformExec		/* xmlSecC14NTransformExecuteMethod executeC14N; */
 };
 xmlSecTransformId xmlSecC14NInclusiveWithComments = (xmlSecTransformId)&xmlSecC14NInclusiveWithCommentsTransformId;
@@ -130,16 +112,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveTransformId = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    
-    /* xml */
-    NULL,    
-    
-    /* c14n methods */
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
     xmlSecC14NTransformExec		/* xmlSecC14NTransformExecuteMethod executeC14N; */
 };
 xmlSecTransformId xmlSecC14NExclusive = (xmlSecTransformId)&xmlSecC14NExclusiveTransformId;
@@ -166,16 +139,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveWithCommentsTransfo
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    /* bin transforms */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    
-    /* xml */
-    NULL,    
-    
-    /* c14n methods */
+    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
     xmlSecC14NTransformExec		/* xmlSecC14NTransformExecuteMethod executeC14N; */
 };
 xmlSecTransformId xmlSecC14NExclusiveWithComments = (xmlSecTransformId)&xmlSecC14NExclusiveWithCommentsTransformId;

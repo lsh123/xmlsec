@@ -81,6 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README Copyright
+%doc %{_mandir}/man1/xmlsec.1*  
 %{prefix}/lib/lib*.so.*
 %{prefix}/lib/lib*.so
 %{prefix}/bin/xmlsec
@@ -88,9 +89,11 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-, root, root)  
 
+%doc AUTHORS ChangeLog NEWS README Copyright
+%doc %{_mandir}/man1/xmlsec-config.1*  
+%doc docs/* 
 %{prefix}/lib/*a
 %{prefix}/bin/xmlsec-config
 %{prefix}/include/*
-%doc docs/* 
 
 %changelog

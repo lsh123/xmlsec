@@ -305,13 +305,13 @@ int main(int argc, char **argv) {
     /**
      * Read the command
      */
-    if((argc < 2) || (strcmp(argv[1], "help") == 0)) {
+    if((argc < 2) || (strcmp(argv[1], "help") == 0) || (strcmp(argv[1], "--help") == 0)) {
 	printUsage(NULL);
 	return(0);
     } else if(strncmp(argv[1], "help-", 5) == 0) { 
 	printUsage(argv[1] + 5);
 	return(0);
-    } else if(strcmp(argv[1], "version") == 0) {
+    } else if((strcmp(argv[1], "version") == 0) || (strcmp(argv[1], "--version") == 0)) {
 	printVersion();
 	return(0);
     } else if(strcmp(argv[1], "keys") == 0) {

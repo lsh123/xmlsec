@@ -1,6 +1,6 @@
 NULL =
 
-SUBDIRS = include src apps tests 
+SUBDIRS = include src apps tests man
 
 bin_SCRIPTS = xmlsec-config
 

@@ -15,52 +15,141 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/object.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
-#include <xmlsec/x509.h>
+#include <xmlsec/list.h>
 
-XMLSEC_EXPORT xmlSecKeysMngrPtr	xmlSecSimpleKeysMngrCreate 	(void);
-XMLSEC_EXPORT void		xmlSecSimpleKeysMngrDestroy 	(xmlSecKeysMngrPtr mngr);
+
+typedef struct _xmlSecKeysMngrKlass		xmlSecKeysMngrKlass,
+						*xmlSecKeysMngrKlassPtr;
+#if 0
+/* now defined in keys.h */
+typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
+						*xmlSecKeysMngrPtr;
+#endif
+
+typedef struct _xmlSecSimpleKeysMngrKlass	xmlSecSimpleKeysMngrKlass,
+						*xmlSecSimpleKeysMngrKlassPtr;
+typedef struct _xmlSecSimpleKeysMngr		xmlSecSimpleKeysMngr,
+						*xmlSecSimpleKeysMngrPtr;
+
+
+/*********************************************************************
+ *
+ * Keys Manager
+ *
+ *********************************************************************/
+#define xmlSecKeysMngrKlassId 				xmlSecKeysMngrKlassGet()
+#define xmlSecKeysMngrKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecKeysMngrKlassId, xmlSecKeysMngrKlassPtr)
+#define xmlSecKeysMngrKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecKeysMngrKlassId)
+#define xmlSecKeysMngrCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeysMngrKlassId, xmlSecKeysMngrPtr)
+#define xmlSecKeysMngrCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecKeysMngrKlassId)
 
 /**
- * Keys functions
+ * xmlSecKeysMngrGetKeyMethod:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ *
+ * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
+ *
+ * Returns the pointer to key or NULL if the key is not found or 
+ * an error occurs.
  */
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrCtxPtr keysMngrCtx);
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddKey	(xmlSecKeysMngrPtr mngr, 
-							 xmlSecKeyPtr key);
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoad 	(xmlSecKeysMngrPtr mngr,
-							 const char *uri,
-							 int strict); 
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrSave	(const xmlSecKeysMngrPtr mngr, 
-							 const char *filename,
-							 xmlSecKeyValueType type);
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
-							 const char *keyfile,
-							 const char *keyPwd,
-							 int privateKey);
+typedef xmlSecKeyPtr 	(*xmlSecKeysMngrGetKeyMethod)		(xmlSecKeysMngrPtr keysMngr, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr keyInfoNode);
+
 /**
- * X509 certificates management
+ * xmlSecKeysMngrFindKeyMethod:
+ *
+ * Searches for key.
+ *
+ * Returns the pointer to key or NULL if the key is not found or 
+ * an error occurs.
  */
-#ifndef XMLSEC_NO_X509						 
-XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecSimpleKeysMngrX509Find (xmlSecKeysMngrCtxPtr keysMngrCtx,
-							 xmlChar *subjectName,
-							 xmlChar *issuerName,
-							 xmlChar *issuerSerial,
-							 xmlChar *ski);
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrCtxPtr keysMngrCtx,
-    							 xmlSecKeyDataPtr cert);  
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
-							 const char *filename,
-							 int trusted);
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddCertsDir	(xmlSecKeysMngrPtr mngr,
-							 const char *path);
-XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPkcs12	(xmlSecKeysMngrPtr mngr,
-							 const char* name,
-							 const char *filename,
-							 const char *pwd);
-XMLSEC_EXPORT void	xmlSecSimpleKeysMngrSetCertsFlags(xmlSecKeysMngrPtr mngr,
-							unsigned long flags);    
-#endif /* XMLSEC_NO_X509 */
+typedef xmlSecKeyPtr 	(*xmlSecKeysMngrFindKeyMethod)		(xmlSecKeysMngrPtr keysMngr, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+
+struct _xmlSecKeysMngrKlass {
+    xmlSecObjKlass			parent;
+
+    xmlSecKeysMngrGetKeyMethod		getKey;
+    xmlSecKeysMngrFindKeyMethod		findKey;
+};
+
+struct _xmlSecKeysMngr {
+    xmlSecObj				parent;
+    
+    /* todo
+    xmlSecListPtr			keyInfoTypes;
+    xmlSecListPtr			keyValueTypes;
+    xmlSecListPtr			retrievalMethodTypes;
+    */
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecKeysMngrKlassGet		(void);
+XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey		(xmlSecKeysMngrPtr keysMngr, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr keyInfoNode);
+XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrFindKey		(xmlSecKeysMngrPtr keysMngr, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+
+
+
+/*********************************************************************
+ *
+ * Simple Keys Manager
+ *
+ *********************************************************************/
+#define xmlSecSimpleKeysMngrKlassId 			xmlSecSimpleKeysMngrKlassGet()
+#define xmlSecSimpleKeysMngrKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecSimpleKeysMngrKlassId, xmlSecSimpleKeysMngrKlassPtr)
+#define xmlSecSimpleKeysMngrKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecSimpleKeysMngrKlassId)
+#define xmlSecSimpleKeysMngrCast(obj) 			xmlSecObjCastMacro((obj), xmlSecSimpleKeysMngrKlassId, xmlSecSimpleKeysMngrPtr)
+#define xmlSecSimpleKeysMngrCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecSimpleKeysMngrKlassId)
+
+struct _xmlSecSimpleKeysMngrKlass {
+    xmlSecKeysMngrKlass			parent;
+};
+
+struct _xmlSecSimpleKeysMngr {
+    xmlSecKeysMngr			parent;
+
+    xmlSecListPtr			keys;    
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecSimpleKeysMngrKlassGet	(void);
+XMLSEC_EXPORT int		xmlSecSimpleKeysMngrAddKey	(xmlSecSimpleKeysMngrPtr keysMngr, 
+								 xmlSecKeyPtr key);
+XMLSEC_EXPORT int		xmlSecSimpleKeysMngrLoad 	(xmlSecSimpleKeysMngrPtr keysMngr,
+								 const char *uri,
+								 int strict); 
+XMLSEC_EXPORT int		xmlSecSimpleKeysMngrSave	(xmlSecSimpleKeysMngrPtr keysMngr, 
+								 const char *filename);
+
+#if 0
+/*********************************************************************
+ *
+ * Key data
+ *
+ *********************************************************************/
+#define xmlSecKeyDataKlassId 			xmlSecKeyDataKlassGet()
+#define xmlSecKeyDataKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecKeyDataKlassId, xmlSecKeyDataKlassPtr)
+#define xmlSecKeyDataKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecKeyDataKlassId)
+#define xmlSecKeyDataCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeyDataKlassId, xmlSecKeyDataPtr)
+#define xmlSecKeyDataCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecKeyDataKlassId)
+
+struct _xmlSecKeyDataKlass {
+    xmlSecSObjKlass			parent;
+    
+    const xmlChar*			typeHref;
+    const xmlChar*			nodeName;
+    const xmlChar*			nodeNs;
+};
+
+struct _xmlSecKeyData {
+    xmlSecSObj				parent;    
+};
+#endif /* 0 */
 
 
 #ifdef __cplusplus

@@ -41,6 +41,9 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/crypto.h>
 
+#include <xmlsec/openssl/evp.h>
+#include <xmlsec/openssl/x509.h>
+
 
 static const char copyright[] =
     "Written by Aleksey Sanin <aleksey@aleksey.com>.\n"
@@ -464,8 +467,9 @@ int main(int argc, char **argv) {
 #endif /* XMLSEC_NO_XMLENC */
 		if(keyMgr != NULL) {
 #ifdef XMLSEC_CRYPTO_OPENSSL	
-		    /* todo: */	
+		    /* todo: 
     		    xmlSecSimpleKeysMngrSetCertsFlags(keyMgr, X509_V_FLAG_USE_CHECK_TIME);
+		    */
 #endif /* XMLSEC_CRYPTO_OPENSSL */		    
 		}
     		ret = 0;
@@ -503,7 +507,7 @@ int main(int argc, char **argv) {
 	    char* type = argv[pos] + 6;
 	    key = genKey(type, argv[++pos]);
 	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
+		ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
 	    } else {
 		/* we ignore this error because it might be cause 
 		by a missed algorithm */
@@ -614,8 +618,7 @@ int main(int argc, char **argv) {
 	for(i = 0; (i < repeats); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
-		ret = xmlSecSimpleKeysMngrSave(keyMgr,  argv[pos], 
-			xmlSecKeyValueTypePublic | xmlSecKeyValueTypePrivate);
+		ret = xmlSecSimpleKeysMngrSave(xmlSecSimpleKeysMngrCast(keyMgr), argv[pos]);
 	    } else {
 		doc = xmlSecParseFile(argv[pos]);
 	        if(doc == NULL) {
@@ -851,7 +854,7 @@ void shutdownXmlsec(void) {
 #endif /* XMLSEC_NO_XMLDSIG */
 
     if(keyMgr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keyMgr);
+	xmlSecObjDelete(xmlSecObjCast(keyMgr));
     }
     
     /**
@@ -916,12 +919,14 @@ int  readTime(const char* str, time_t* t) {
 int  readPEMCertificate(const char *file, int trusted) {
 #ifndef XMLSEC_NO_X509	    
     int ret;
-
-    ret = xmlSecSimpleKeysMngrLoadPemCert(keyMgr, file, trusted);
+/* todo
+    ret = xmlSecSimpleKeysMngrLoadPemCert(xmlSecSimpleKeysMngrCast(keyMgr), 
+					file, trusted);
     if(ret < 0) {
 	fprintf(stderr, "Error: unable to load certificate file \"%s\".\n", file);
     	return(-1);
     }     
+*/    
     return(0);
 #else /* XMLSEC_NO_X509 */
     fprintf(stderr, "Error: x509 support disabled.\n");
@@ -932,7 +937,7 @@ int  readPEMCertificate(const char *file, int trusted) {
 int  readKeys(char *file) {
     int ret;
     
-    ret = xmlSecSimpleKeysMngrLoad(keyMgr, file, 0);
+    ret = xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrCast(keyMgr), file, 0);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to load keys from \"%s\".\n", file);
 	return(-1);
@@ -987,7 +992,7 @@ int readPemKey(int privateKey, char *param, char *name) {
     int ret;
     
     p = strtok(param, ","); 
-    key = xmlSecSimpleKeysMngrLoadPemKey(keyMgr, p, global_pwd, privateKey);
+    key = xmlSecOpenSSLEvpLoadPemKey(p, global_pwd, privateKey);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", p);
 	return(-1);
@@ -1002,22 +1007,32 @@ int readPemKey(int privateKey, char *param, char *name) {
 	ret = xmlSecKeyReadPemCert(key, p);
 	if(ret < 0){
 	    fprintf(stderr, "Error: failed to load cert from \"%s\"\n", p);
+	    xmlSecKeyDestroy(key);
 	    return(-1);
 	}
 	p = strtok(NULL, ","); 
     }
-    return(0);
 #else /* XMLSEC_NO_X509 */
     if(p != NULL) {
 	fprintf(stderr, "Error: x509 support disabled.\n");
+	xmlSecKeyDestroy(key);
 	return(-1);
     }
-    return(0);
 #endif /* XMLSEC_NO_X509 */        
+    
+    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
+    if(ret < 0) {
+	fprintf(stderr, "Error: failed to add key.\n");
+	xmlSecKeyDestroy(key);
+	return(-1);
+    }
+
+    return(0);
 }
 
 int readPKCS12Key(char *filename, char *name) {
 #ifndef XMLSEC_NO_X509     
+    xmlSecKeyPtr key;
     char pwd[1024] = "";
     char prompt[1024];
     int ret;
@@ -1036,10 +1051,19 @@ int readPKCS12Key(char *filename, char *name) {
 #endif /* XMLSEC_CRYPTO_OPENSSL */
     } 
 
-    ret = xmlSecSimpleKeysMngrLoadPkcs12(keyMgr, name, filename, 
-				(global_pwd != NULL) ? global_pwd : pwd);
-    if(ret < 0) {
+    key = xmlSecPKCS12ReadKey(filename, (global_pwd != NULL) ? global_pwd : pwd);
+    if(key == NULL) {
 	fprintf(stderr, "Error: failed to load pkcs12 file \"%s\"\n", filename); 
+	return(-1);
+    }
+    if(name != NULL) {
+    	key->name = xmlStrdup(BAD_CAST name);
+    }
+    
+    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
+    if(ret < 0) {
+	xmlSecKeyDestroy(key);
+	fprintf(stderr, "Error: failed to add hmac key\n"); 
 	return(-1);
     }
     
@@ -1093,7 +1117,7 @@ int readHmacKey(char *filename, char *name) {
     }    
     xmlSecKeyValueDestroy(keyValue);
 
-    ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
+    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keyMgr), key);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);
 	fprintf(stderr, "Error: failed to add hmac key\n"); 

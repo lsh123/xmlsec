@@ -31,7 +31,7 @@ typedef struct _xmlSecObj				xmlSecObj,
  ********************************************************************/
 /* macros used for creating klass/object specific ones */	
 #define xmlSecObjKlassCastMacro(klass, dstKlass, dstKlassName) \
-	((dstKlassName)xmlSecObjKlassCheckCastFunc((xmlSecObjKlassPtr)(klass), (dstKlass)))
+	((dstKlassName)(xmlSecObjKlassCheckCastFunc(((xmlSecObjKlassPtr)(klass)), (dstKlass))))
 #define xmlSecObjKlassCheckCastMacro(klass, dstKlass) \
 	(xmlSecObjKlassCastMacro((klass), (dstKlass), xmlSecPtr) != (xmlSecPtr)NULL)
 #define xmlSecObjCastMacro(obj, dstKlass, dstObjName) \
@@ -40,23 +40,20 @@ typedef struct _xmlSecObj				xmlSecObj,
 #define xmlSecObjCheckCastMacro(obj, dstKlass) \
 	(xmlSecObjCastMacro((obj), (dstKlass), xmlSecPtr) != (xmlSecPtr)NULL) 
 
-#define xmlSecObjKlassGetKlassInfo(kl) \
-	(((kl) != NULL) ? \
-	((xmlSecObjKlassPtr)(kl))->klassInfo : NULL)
+#define xmlSecObjKlassGetKlassInfo(klass) \
+	(((klass) != NULL) ? ((xmlSecObjKlassPtr)(klass))->klassInfo : (xmlSecObjKlassInfoPtr)NULL)
 #define xmlSecObjGetKlass(obj) \
-	(((obj) != NULL) ? \
-	(((xmlSecObjPtr)(obj))->klass) : (xmlSecObjKlassPtr)NULL)
+	(((obj) != NULL) ? ((xmlSecObjPtr)(obj))->klass : (xmlSecObjKlassPtr)NULL)
 #define xmlSecObjGetKlassInfo(obj) \
-	(xmlSecObjKlassGetKlassInfo(xmlSecObjGetKlass((obj))))	
+	xmlSecObjKlassGetKlassInfo(xmlSecObjGetKlass((obj)))
 
-XMLSEC_EXPORT xmlSecObjKlassPtr 	xmlSecObjKlassRegister	   (xmlSecPtr buf,
-								    size_t size,
-								    xmlSecObjKlassInfoPtr klassInfo,
-								    xmlSecObjKlassPtr parent);
-XMLSEC_EXPORT const char*		xmlSecObjKlassGetKlassName (const xmlSecObjKlassPtr klass);
-XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecObjKlassCheckCastFunc(const xmlSecObjKlassPtr klass,
-    								    const xmlSecObjKlassPtr dst);
-
+XMLSEC_EXPORT xmlSecObjKlassPtr 	xmlSecObjKlassRegister	   	(xmlSecPtr buf,
+								         size_t size,
+									 xmlSecObjKlassInfoPtr klassInfo,
+									 xmlSecObjKlassPtr parent);
+XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecObjKlassCheckCastFunc	(const xmlSecObjKlassPtr klass,
+    								         const xmlSecObjKlassPtr dst);
+XMLSEC_EXPORT const char*		xmlSecObjKlassGetKlassName 	(const xmlSecObjKlassPtr klass);
 /*********************************************************************
  *
  * Klass Info

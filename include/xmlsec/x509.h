@@ -17,7 +17,17 @@ extern "C" {
 #ifndef XMLSEC_NO_X509
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/object.h>
 #include <xmlsec/keys.h>
+
+typedef struct _xmlSecX509MngrKlass		xmlSecX509MngrKlass,
+						*xmlSecX509MngrKlassPtr;
+typedef struct _xmlSecX509Mngr			xmlSecX509Mngr,
+						*xmlSecX509MngrPtr;
+typedef struct _xmlSecX509CtxKlass		xmlSecX509CtxKlass,
+						*xmlSecX509CtxKlassPtr;
+typedef struct _xmlSecX509Ctx			xmlSecX509Ctx,
+						*xmlSecX509CtxPtr;
 
 
 /***************************************************************************
@@ -144,68 +154,6 @@ XMLSEC_EXPORT int		xmlSecKeyDataX509GetObj		(xmlSecKeyDataPtr data,
 
 
 
-
-#if 0
-
-/***************************************************************************
- *
- * xmlSecKeyDataPGP
- *
- **************************************************************************/
-typedef struct _xmlSecKeyDataPGPIdStruct*	xmlSecKeyDataPGPId;
-struct _xmlSecKeyDataPGPIdStruct {
-    /* same as xmlSecDataId */
-    const xmlChar*			href;
-    const xmlChar*			childNodeName;
-    const xmlChar*			childNodeNs;
-    xmlSecKeyOrigin			origin; 
-    
-    xmlSecKeyDataCreateMethod		create;
-    xmlSecKeyDataDestroyMethod		destroy;
-    xmlSecKeyDataDuplicateMethod	duplicate;
-
-    /* new in xmlSecDataPGPId */
-};
-
-#endif
-
-
-
-
-
-
-
-
-#include <libxml/tree.h>
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
-
-typedef struct _xmlSecX509Store			xmlSecX509Store,
-						*xmlSecX509StorePtr;
-XMLSEC_EXPORT xmlSecX509StorePtr xmlSecX509StoreCreate		(void);
-XMLSEC_EXPORT void		xmlSecX509StoreDestroy		(xmlSecX509StorePtr store);
-XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecX509StoreFind		(xmlSecX509StorePtr store,
-								 xmlChar *subjectName, 
-								 xmlChar *issuerName, 
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-XMLSEC_EXPORT int		xmlSecX509StoreVerify		(xmlSecX509StorePtr store,
-								 xmlSecKeyDataPtr x509Data);
-XMLSEC_EXPORT int		xmlSecX509StoreLoadPemCert	(xmlSecX509StorePtr store,
-								 const char *filename,
-								 int trusted);
-XMLSEC_EXPORT int		xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store, 
-							 	 const char *path);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
-								 const char *pwd);
-
-
-XMLSEC_EXPORT int		xmlSecKeyReadPemCert		(xmlSecKeyPtr key,
-								 const char *filename);
-
-#else /*  XMLSEC_NO_X509 */
-typedef void* 	xmlSecX509Store, *xmlSecX509StorePtr;
 
 #endif /* XMLSEC_NO_X509 */
 

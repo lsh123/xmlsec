@@ -434,6 +434,13 @@ xmlSecKeyDataX509ObjReadBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjTyp
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
+    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "xmlSecKeyDataTypeX509");
+	return(-1);	
+    }
+
     buf = xmlNodeGetContent(node);
     if(buf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -475,6 +482,13 @@ xmlSecKeyDataX509ObjWriteBase64Xml(xmlSecKeyDataPtr data, xmlSecKeyDataX509ObjTy
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(nodeName != NULL, -1);
+
+    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "xmlSecKeyDataTypeX509");
+	return(-1);	
+    }
 
     for(pos = 0; ; ++pos) {
 	xmlChar* base64Buf = NULL;
@@ -536,6 +550,12 @@ xmlSecKeyDataX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPt
     xmlSecAssert2(serialNode != NULL, NULL);
     xmlSecAssert2(keysMngrCtx != NULL, NULL);
 
+    if(!xmlSecKeyDataCheckType(data, xmlSecKeyDataTypeX509)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "xmlSecKeyDataTypeX509");
+	return(-1);	
+    }
 
     /* the first is required node X509IssuerName */
     cur = xmlSecGetNextElementNode(serialNode->children);

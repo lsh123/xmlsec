@@ -50,6 +50,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
@@ -481,11 +482,9 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeysMngrCtxPtr keysMngrCtx) {
  */
 static xmlSecKeyPtr
 xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlSecKeyPtr key = NULL;
-    xmlSecFindKeyCallback findKey;
-
     xmlSecAssert2(keyNameNode != NULL, NULL);
     xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
     
     if(!xmlSecKeysMngrCtxCheckOrigin(keysMngrCtx, xmlSecKeyOriginKeyName)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -504,13 +503,9 @@ xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeysMngrCtxPtr keysMngrCtx) 
 		    "KeyName");    
 	return(NULL);
     }
-    
     /* TODO: decode key name if requested */    
-    findKey = (keysMngrCtx->keysMngr != NULL) ? keysMngrCtx->keysMngr->findKey : NULL;
-    if(findKey != NULL) {
-	key = findKey(keysMngrCtx);
-    }
-    return(key);
+    
+    return(xmlSecKeysMngrFindKey(keysMngrCtx->keysMngr, keysMngrCtx));
 }
 
 /** 

@@ -80,7 +80,8 @@ xmlSecSObjKlassGet(void) {
 
 int		
 xmlSecSObjReadXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
-    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(xmlSecObjGetKlass(sobj));
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(sobj);
+    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(klass);
 
     xmlSecAssert2(sobj != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -90,7 +91,7 @@ xmlSecSObjReadXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED,	
 		    "readXml(\"%s\")", 
-    		    xmlSecObjKlassGetKlassName(xmlSecObjKlassCast(sobjKlass)));
+    		    xmlSecObjKlassGetKlassName(klass));
 	return(-1);
     }
     return((sobjKlass->readXml)(sobj, ctx, node));
@@ -99,7 +100,8 @@ xmlSecSObjReadXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
 int
 xmlSecSObjReadBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, 
 		const unsigned char *buf, size_t size) {
-    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(xmlSecObjGetKlass(sobj));
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(sobj);
+    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(klass);
 
     xmlSecAssert2(sobj != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
@@ -109,7 +111,7 @@ xmlSecSObjReadBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx,
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED,	
 		    "readBinary(\"%s\")", 
-    		    xmlSecObjKlassGetKlassName(xmlSecObjKlassCast(sobjKlass)));
+    		    xmlSecObjKlassGetKlassName(klass));
 	return(-1);
     }
     return((sobjKlass->readBinary)(sobj, ctx, buf, size));
@@ -117,7 +119,8 @@ xmlSecSObjReadBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx,
 
 int
 xmlSecSObjWriteXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
-    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(xmlSecObjGetKlass(sobj));
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(sobj);
+    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(klass);
 
     xmlSecAssert2(sobj != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -127,7 +130,7 @@ xmlSecSObjWriteXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED,	
 		    "writeXml(\"%s\")", 
-    		    xmlSecObjKlassGetKlassName(xmlSecObjKlassCast(sobjKlass)));
+    		    xmlSecObjKlassGetKlassName(klass));
 	return(-1);
     }
     return((sobjKlass->writeXml)(sobj, ctx, node));
@@ -135,7 +138,8 @@ xmlSecSObjWriteXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
 
 int
 xmlSecSObjWriteBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlSecBufferPtr buf) {
-    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(xmlSecObjGetKlass(sobj));
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(sobj);
+    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(klass);
 
     xmlSecAssert2(sobj != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
@@ -145,7 +149,7 @@ xmlSecSObjWriteBinary(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlSecBufferPtr buf)
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED,	
 		    "writeBinary(\"%s\")", 
-    		    xmlSecObjKlassGetKlassName(xmlSecObjKlassCast(sobjKlass)));
+    		    xmlSecObjKlassGetKlassName(klass));
 	return(-1);
     }
     return((sobjKlass->writeBinary)(sobj, ctx, buf));
@@ -353,7 +357,7 @@ xmlSecBufferBase64Decode(xmlSecBufferPtr buf, const xmlChar* str) {
 
 static void
 xmlSecBufferKlassInit(xmlSecObjKlassPtr klass) {
-    xmlSecSObjKlassPtr sobjKlass = xmlSecSObjKlassCast(klass);
+    xmlSecSObjKlassPtr sobjKlass = (xmlSecSObjKlassPtr)klass;
     
     xmlSecAssert(sobjKlass != NULL);
 

@@ -27,7 +27,7 @@ typedef struct _xmlSecList				xmlSecList,
  * List
  *
  *********************************************************************/
-#define xmlSecListKlassId 		xmlSecObjKlassGet()
+#define xmlSecListKlassId 		xmlSecListKlassGet()
 #define xmlSecListKlassCast(klass) 	xmlSecObjKlassCastMacro((klass), xmlSecListKlassId, xmlSecListKlassPtr)
 #define xmlSecListKlassCheckCast(klass) xmlSecObjKlassCheckCastMacro((klass), xmlSecListKlassId)
 #define xmlSecListCast(obj) 		xmlSecObjCastMacro((obj), xmlSecListKlassId, xmlSecListPtr)

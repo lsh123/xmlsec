@@ -6,6 +6,7 @@ xmlsecinc_HEADERS = \
 bn.h \
 errors.h \
 evp.h \
+keysmngr.h \
 x509.h \
 $(NULL)
 

@@ -64,16 +64,15 @@ XMLSEC_EXPORT int		xmlSecCryptoAppInit		(void);
  */
 XMLSEC_EXPORT int		xmlSecCryptoAppShutdown		(void);
 
-XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecCryptoAppLoadPemKey	(const xmlChar* keyName,
-								 const char* filename,
-								 const char* pwd,
-								 xmlSecKeyValueType type);
-XMLSEC_EXPORT xmlSecKeyData 	xmlSecCryptoAppLoadPemCert	(const char* filename,
-								 const char* pwd,
-								 xmlSecKeyDataX509ObjType type);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecCryptoAppLoadPkcs12	(const xmlChar* keyName,
-								 const char* filename,
-								 const char* pwd);
+
+
+
+/* todo: check these functions */
+XMLSEC_EXPORT xmlSecKeysMngrPtr xmlSecSimpleKeysMngrCreate	(void);
+XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey	(xmlSecKeysMngrPtr mngr,
+								 const char *keyfile,
+								 const char *keyPwd,
+								 int privateKey);
 								
 #ifdef __cplusplus
 }

@@ -69,18 +69,21 @@ struct _xmlSecOpenSSLEvpCipherTransform {
 /**
  * EVP Cipher Transform methods
  */
-XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher);
-XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherInit	(xmlSecCipherTransformPtr cipher);
-XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherUpdate	(xmlSecCipherTransformPtr cipher,
-							 const unsigned char *buffer,
-							 size_t size);
-XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherFinal	(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 		xmlSecOpenSSLEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 		xmlSecOpenSSLEvpCipherInit	(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 		xmlSecOpenSSLEvpCipherUpdate	(xmlSecCipherTransformPtr cipher,
+								 const unsigned char *buffer,
+							         size_t size);
+XMLSEC_EXPORT int 		xmlSecOpenSSLEvpCipherFinal	(xmlSecCipherTransformPtr cipher);
 
 
 /**
  * Misc EVP functions
  */
-xmlSecKeyPtr		xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecOpenSSLEvpLoadPemKey	(const char *keyfile, 
+								 const char *keyPwd,
+								 int privateKey);
 
 #ifdef __cplusplus
 }

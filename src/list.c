@@ -112,6 +112,7 @@ xmlSecListInsert(xmlSecListPtr list, size_t pos, xmlSecPtr data	) {
     int ret;
     
     xmlSecAssert2(list != NULL, -1);
+    xmlSecAssert2(pos <= list->size, -1);
     xmlSecAssert2(data != NULL, -1);
     
     
@@ -125,8 +126,10 @@ xmlSecListInsert(xmlSecListPtr list, size_t pos, xmlSecPtr data	) {
     xmlSecAssert2(list->data != NULL, -1);
     xmlSecAssert2(list->maxSize >= list->size + 1, -1);
     
-    for(i = list->size; i > pos; --i) {
-	list->data[i] = list->data[i - 1];
+    if(list->size > 0) {
+	for(i = list->size - 1; i >= pos; --i) {
+	    list->data[i + 1] = list->data[i];
+	}
     }
     list->data[pos] = data;
     ++list->size;
@@ -138,10 +141,13 @@ xmlSecListRemove(xmlSecListPtr list, size_t pos) {
     size_t i;
     
     xmlSecAssert(list != NULL);
+    xmlSecAssert2(pos < list->size, -1);
     
-    for(i = list->size - 1; i > pos ; --i) {
-        xmlSecAssert(list->data != NULL);
-        list->data[i - 1] = list->data[i];
+    if(list->size > 0) {
+	for(i = list->size - 1; i > pos ; --i) {
+    	    xmlSecAssert(list->data != NULL);
+    	    list->data[i - 1] = list->data[i];
+	}
     }
     --list->size;
 }
@@ -251,7 +257,7 @@ xmlSecListReallocate(xmlSecListPtr list, size_t delta) {
     }
     
     size = 4 * (list->size + delta) / 3 + 1;
-    p = (xmlSecPtr*)xmlRealloc(list->data, size);
+    p = (xmlSecPtr*)xmlRealloc(list->data, size * sizeof(xmlSecPtr));
     if(p == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_MALLOC_FAILED,	

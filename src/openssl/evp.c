@@ -12,11 +12,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include <openssl/evp.h>
 #include <openssl/rsa.h>
 #include <openssl/dsa.h>
 #include <openssl/rand.h>
+#include <openssl/pem.h>
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -304,3 +306,60 @@ xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
     
     return(key);
 }
+
+
+/**
+ * xmlSecOpenSSLEvpLoadPemKey:
+ * @keyfile: the PEM key file name.
+ * @keyPwd: the key file password.
+ * @privateKey: the private/public flag.
+ *
+ * Reads the key from a PEM file @keyfile.
+ * 
+ * Returns the pointer to a newly allocated #xmlSecKey structure or NULL
+ * if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecOpenSSLEvpLoadPemKey(const char *keyfile, const char *keyPwd,
+			int privateKey) {
+    xmlSecKeyPtr key = NULL;
+    EVP_PKEY *pKey = NULL;    
+    FILE *f;
+
+    xmlSecAssert2(keyfile != NULL, NULL);
+    
+    f = fopen(keyfile, "r");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\"), errno=%d", keyfile, errno);
+	return(NULL);    
+    }
+    
+    if(privateKey) {
+	pKey = PEM_read_PrivateKey(f, NULL, NULL, (void*)keyPwd);
+    } else {	
+        pKey = PEM_read_PUBKEY(f, NULL, NULL, (void*)keyPwd);
+    }
+    if(pKey == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (privateKey) ? "PEM_read_PrivateKey" : "PEM_read_PUBKEY");
+	fclose(f);
+	return(NULL);    
+    }
+    fclose(f);
+
+    key = xmlSecOpenSSLEvpParseKey(pKey);
+    if(key == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpParseKey");
+	EVP_PKEY_free(pKey);
+	return(NULL);	    
+    }
+    EVP_PKEY_free(pKey);
+    
+    return(key);
+}
+

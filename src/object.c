@@ -19,11 +19,6 @@
 #include <xmlsec/object.h>
 #include <xmlsec/errors.h>
 
-/* klasses hierarchy */
-static	void 		xmlSecObjKlassRegisterRecursive		(xmlSecPtr buf, 
-								 size_t size, 
-								 xmlSecObjKlassPtr klass);
-
 /* objects constructors/destructors */
 static int		xmlSecObjNewRecursive			(xmlSecObjPtr newObj, 
 								 xmlSecObjKlassPtr klass);
@@ -76,8 +71,13 @@ xmlSecObjKlassRegister(xmlSecPtr buf, size_t size, xmlSecObjKlassInfoPtr klassIn
         
     /* init all parents */
     if(parent != NULL) {
-	xmlSecAssert2(xmlSecObjKlassIsValid(parent), NULL);
-	xmlSecObjKlassRegisterRecursive(buf, size, parent);
+	xmlSecObjKlassInfoPtr parentKlassInfo = xmlSecObjKlassGetKlassInfo(parent);
+	
+	xmlSecAssert2(parentKlassInfo != NULL, NULL);
+	xmlSecAssert2(parentKlassInfo->klassSize <= size, NULL);
+	
+	xmlSecObjKlassRegister(buf, parentKlassInfo->klassSize,
+			parentKlassInfo, parent->klassParent);
     }
     
     /* now init our klass */
@@ -91,51 +91,34 @@ xmlSecObjKlassRegister(xmlSecPtr buf, size_t size, xmlSecObjKlassInfoPtr klassIn
 
 const char*		
 xmlSecObjKlassGetKlassName(const xmlSecObjKlassPtr klass) {
+    static const char invalid[] = "invalid";
     xmlSecObjKlassInfoPtr klassInfo = xmlSecObjKlassGetKlassInfo(klass);
 
-    return(((klassInfo != NULL) && 
-	    (klassInfo->klassName != NULL)) ? 
-	    klassInfo->klassName : "invalid");
+    xmlSecAssert2(klassInfo != NULL, invalid);
+    xmlSecAssert2(klassInfo->klassName != NULL, invalid);
+
+    return(klassInfo->klassName);
 }
 
 xmlSecObjKlassPtr	
 xmlSecObjKlassCheckCastFunc(const xmlSecObjKlassPtr klass, const xmlSecObjKlassPtr dst) {
-    xmlSecObjKlassPtr res = NULL;
-    	
     xmlSecAssert2(xmlSecObjKlassIsValid(klass), NULL);
     xmlSecAssert2(xmlSecObjKlassIsValid(dst), NULL);
     
-    if(klass == dst) {
-	res = klass;
-    } else if(klass->klassParent != NULL) {
-	res = xmlSecObjKlassCheckCastFunc(klass->klassParent, dst);
+    if((klass == dst) ||
+       ((klass->klassParent != NULL) &&
+	(xmlSecObjKlassCheckCastFunc(klass->klassParent, dst) != NULL))) {
+	
+	return(klass);
     }
     
-    if(res == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
+    xmlSecError(XMLSEC_ERRORS_HERE,
     		XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED,	
 		"unable to cast from \"%s\" klass to \"%s\" klass",
 		xmlSecObjKlassGetKlassName(klass),
 		xmlSecObjKlassGetKlassName(dst));
-	return(NULL);
-    }
-    return(res);
+    return(NULL);
 }
-
-static void
-xmlSecObjKlassRegisterRecursive(xmlSecPtr buf,  size_t size, xmlSecObjKlassPtr klass) {
-    xmlSecAssert(buf);
-    xmlSecAssert(xmlSecObjKlassIsValid(klass));
-    xmlSecAssert(xmlSecObjKlassGetKlassInfo(klass)->klassSize <= size);
-    
-    if(klass->klassParent != NULL) {
-	xmlSecObjKlassRegisterRecursive(buf, size, klass->klassParent);
-    }
-    if(xmlSecObjKlassGetKlassInfo(klass)->klassSize > 0) {
-	memcpy(buf, klass, xmlSecObjKlassGetKlassInfo(klass)->klassSize);
-    }
-}
-
 
 /*********************************************************************
  *
@@ -343,7 +326,7 @@ xmlSecObjKlassGet(void) {
 
 void
 xmlSecObjDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecObjKlassPtr klass = xmlSecObjKlassCast(xmlSecObjGetKlass(obj));
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(obj);
 
     xmlSecAssert(obj != NULL);
     xmlSecAssert(output != NULL);
@@ -355,7 +338,7 @@ xmlSecObjDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
 
 void
 xmlSecObjDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecObjKlassPtr klass = xmlSecObjKlassCast(xmlSecObjGetKlass(obj));
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(obj);
 
     xmlSecAssert(obj != NULL);
     xmlSecAssert(output != NULL);
@@ -377,11 +360,9 @@ xmlSecObjDebugIndent(FILE* output, size_t level) {
 
 static void
 xmlSecObjKlassInitImp(xmlSecObjKlassPtr klass) {
-    xmlSecObjKlassPtr objKlass = xmlSecObjKlassCast(klass);
-    
-    xmlSecAssert(objKlass);
-    objKlass->debugDump 	= xmlSecObjDebugDumpImp;
-    objKlass->debugXmlDump 	= xmlSecObjDebugXmlDumpImp;
+    xmlSecAssert(klass);
+    klass->debugDump 		= xmlSecObjDebugDumpImp;
+    klass->debugXmlDump 	= xmlSecObjDebugXmlDumpImp;
 }
 
 static void

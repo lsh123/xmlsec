@@ -32,7 +32,7 @@ typedef struct _xmlSecBuffer				xmlSecBuffer,
  * Serializable object
  *
  *********************************************************************/
-#define xmlSecSObjKlassId 		xmlSecObjKlassGet()
+#define xmlSecSObjKlassId 		xmlSecSObjKlassGet()
 #define xmlSecSObjKlassCast(klass) 	xmlSecObjKlassCastMacro((klass), xmlSecSObjKlassId, xmlSecSObjKlassPtr)
 #define xmlSecSObjKlassCheckCast(klass) xmlSecObjKlassCheckCastMacro((klass), xmlSecSObjKlassId)
 #define xmlSecSObjCast(obj) 		xmlSecObjCastMacro((obj), xmlSecSObjKlassId, xmlSecSObjPtr)
@@ -127,7 +127,7 @@ XMLSEC_EXPORT int			xmlSecSObjWriteBinary	(xmlSecSObjPtr sobj,
  * Binary Buffer
  *
  *********************************************************************/
-#define xmlSecBufferKlassId 		xmlSecObjKlassGet()
+#define xmlSecBufferKlassId 		xmlSecBufferKlassGet()
 #define xmlSecBufferKlassCast(klass) 	xmlSecObjKlassCastMacro((klass), xmlSecBufferKlassId, xmlSecBufferKlassPtr)
 #define xmlSecBufferKlassCheckCast(klass) xmlSecObjKlassCheckCastMacro((klass), xmlSecBufferKlassId)
 #define xmlSecBufferCast(obj) 		xmlSecObjCastMacro((obj), xmlSecBufferKlassId, xmlSecBufferPtr)

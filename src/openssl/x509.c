@@ -33,6 +33,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/openssl/evp.h>
+#include <xmlsec/openssl/keysmngr.h>
 #include <xmlsec/openssl/x509.h>
 #include <xmlsec/errors.h>
 
@@ -82,7 +83,7 @@ static int			xmlSecOpenSSLKeyDataX509AddCrl	(xmlSecOpenSSLKeyDataX509Ptr x509Dat
 /**
  * X509 Store
  */
-static int			xmlSecX509StoreVerifyCRL	(xmlSecX509StorePtr store, 
+static int			xmlSecOpenSSLX509StoreVerifyCRL	(xmlSecOpenSSLX509StorePtr store, 
 								 X509_CRL *crl);
 
 /**
@@ -313,16 +314,32 @@ error:
 
 static xmlSecKeyPtr		
 xmlSecOpenSSLKeyDataX509GetKey(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    /* todo */
-    return(NULL);
+    xmlSecOpenSSLKeysMngrPtr keysMngr;
+
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    
+    keysMngr = xmlSecOpenSSLKeysMngrCast(keysMngrCtx->keysMngr);
+    xmlSecAssert2(keysMngr != NULL, NULL);
+    xmlSecAssert2(keysMngr->x509Store != NULL, NULL);
+
+    return (xmlSecOpenSSLX509StoreGetKey(keysMngr->x509Store, keysMngrCtx, data));
 }
 
 static xmlSecKeyPtr		
 xmlSecOpenSSLKeyDataX509FindCert(xmlSecKeyDataPtr data, xmlSecKeysMngrCtxPtr keysMngrCtx,
 			xmlChar *subjectName, xmlChar *issuerName, xmlChar *issuerSerial,
 			xmlChar *ski) {
-    /* todo */
-    return(NULL);
+    xmlSecOpenSSLKeysMngrPtr keysMngr;
+
+    xmlSecAssert2(keysMngrCtx != NULL, NULL);
+    
+    keysMngr = xmlSecOpenSSLKeysMngrCast(keysMngrCtx->keysMngr);
+    xmlSecAssert2(keysMngr != NULL, NULL);
+    xmlSecAssert2(keysMngr->x509Store != NULL, NULL);
+    
+    return (xmlSecOpenSSLX509StoreFind(keysMngr->x509Store, keysMngrCtx, data,
+				    subjectName, issuerName,
+				    issuerSerial, ski));
 }
 
 static int
@@ -656,39 +673,39 @@ xmlSecOpenSSLKeyDataX509AddCrl(xmlSecOpenSSLKeyDataX509Ptr x509Data, X509_CRL *c
  *
  **********************************************************************/
 /**
- * xmlSecX509StoreCreate:
+ * xmlSecOpenSSLX509StoreCreate:
  *
  * Creates new x509 store.
  *
- * Returns the pointer to newly allocated #xmlSecX509Store structure.
+ * Returns the pointer to newly allocated #xmlSecOpenSSLX509Store structure.
  */
-xmlSecX509StorePtr	
-xmlSecX509StoreCreate(void) {
-    xmlSecX509StorePtr store;
+xmlSecOpenSSLX509StorePtr	
+xmlSecOpenSSLX509StoreCreate(void) {
+    xmlSecOpenSSLX509StorePtr store;
     
-    store = (xmlSecX509StorePtr)xmlMalloc(sizeof(xmlSecX509Store));
+    store = (xmlSecOpenSSLX509StorePtr)xmlMalloc(sizeof(xmlSecOpenSSLX509Store));
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecX509Store)=%d",
-		    sizeof(xmlSecX509Store));
+		    "sizeof(xmlSecOpenSSLX509Store)=%d",
+		    sizeof(xmlSecOpenSSLX509Store));
 	return(NULL);
     }
-    memset(store, 0, sizeof(xmlSecX509Store));
+    memset(store, 0, sizeof(xmlSecOpenSSLX509Store));
 
     store->xst = X509_STORE_new();
     if(store->xst == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "X509_STORE_new");
-	xmlSecX509StoreDestroy(store);
+	xmlSecOpenSSLX509StoreDestroy(store);
 	return(NULL);
     }
     if(!X509_STORE_set_default_paths(store->xst)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "X509_STORE_set_default_paths");
-	xmlSecX509StoreDestroy(store);
+	xmlSecOpenSSLX509StoreDestroy(store);
 	return(NULL);
     }
 	
@@ -697,7 +714,7 @@ xmlSecX509StoreCreate(void) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "sk_X509_new_null");
-	xmlSecX509StoreDestroy(store);
+	xmlSecOpenSSLX509StoreDestroy(store);
 	return(NULL);
     }    
 
@@ -706,20 +723,20 @@ xmlSecX509StoreCreate(void) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "sk_X509_CRL_new_null");
-	xmlSecX509StoreDestroy(store);
+	xmlSecOpenSSLX509StoreDestroy(store);
 	return(NULL);
     }    
     return(store);
 }
 
 /**
- * xmlSecX509StoreDestroy:
- * @store: the pointer to #xmlSecX509Store structure.
+ * xmlSecOpenSSLX509StoreDestroy:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
  *
- * Destroys the #xmlSecX509Store structure.
+ * Destroys the #xmlSecOpenSSLX509Store structure.
  */
 void
-xmlSecX509StoreDestroy(xmlSecX509StorePtr store) {
+xmlSecOpenSSLX509StoreDestroy(xmlSecOpenSSLX509StorePtr store) {
     xmlSecAssert(store != NULL);
 
     if(store->xst != NULL) {
@@ -732,22 +749,23 @@ xmlSecX509StoreDestroy(xmlSecX509StorePtr store) {
 	sk_X509_CRL_pop_free(store->crls, X509_CRL_free);
     }
 
-    memset(store, 0, sizeof(xmlSecX509Store));
+    memset(store, 0, sizeof(xmlSecOpenSSLX509Store));
     xmlFree(store);
 }
 
-/**
- * xmlSecX509StoreVerify:
- * @store: the pointer to #xmlSecX509Store structure.
- * @x509Data: the pointer to #xmlSecOpenSSLKeyDataX509 structure.
- *
- * Verifies the cert(s) from @x509Data against @store.
- *
- * Returns 1 if verification succeeded, 0 if not and a negative
- * value if a processing error occurs.
- */
-int
-xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecKeyDataPtr data) {
+xmlSecKeyPtr	
+xmlSecOpenSSLX509StoreGetKey(xmlSecOpenSSLX509StorePtr store, xmlSecKeysMngrCtxPtr keysMngrCtx,
+			xmlSecKeyDataPtr data) {
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(data != NULL, NULL);
+    
+    /* todo */
+    
+    return(NULL);
+}
+
+static int
+xmlSecOpenSSLX509StoreVerify(xmlSecOpenSSLX509StorePtr store, xmlSecKeyDataPtr data) {
     xmlSecOpenSSLKeyDataX509Ptr x509Data;
     int ret = 0;
     
@@ -773,7 +791,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecKeyDataPtr data) {
 
 	for(i = 0; i < x509Data->crls->num;) { 
 	    crl = ((X509_CRL**)(x509Data->crls->data))[i];
-	    ret = xmlSecX509StoreVerifyCRL(store, crl);
+	    ret = xmlSecOpenSSLX509StoreVerifyCRL(store, crl);
 	    if(ret == 1) {
 		++i;
 	    } else if(ret == 0) {
@@ -782,7 +800,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecKeyDataPtr data) {
 	    } else {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "xmlSecX509StoreVerifyCRL - %d", ret);
+			    "xmlSecOpenSSLX509StoreVerifyCRL - %d", ret);
 		return(-1);
 	    }
 	}
@@ -918,8 +936,8 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecX509StoreFind:
- * @store: the pointer to #xmlSecX509Store structure.
+ * xmlSecOpenSSLX509StoreFind:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
  * @subjectName: the subject name string.
  * @issuerName: the issuer name string.
  * @issuerSerial: the issuer serial.
@@ -931,10 +949,11 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecKeyDataPtr data) {
  * Returns the pointer to certificate that matches given criteria or NULL 
  * if an error occurs or certificate not found.
  */
-xmlSecKeyDataPtr	
-xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName, 
+xmlSecKeyPtr	
+xmlSecOpenSSLX509StoreFind(xmlSecOpenSSLX509StorePtr store, xmlSecKeysMngrCtxPtr keysMngrCtx,
+		 xmlSecKeyDataPtr data, xmlChar *subjectName, 
 		 xmlChar *issuerName,  xmlChar *issuerSerial, xmlChar *ski) {
-    xmlSecOpenSSLKeyDataX509Ptr x509Data;
+    xmlSecOpenSSLKeyDataX509Ptr x509Data = NULL;
     X509 *cert = NULL;
     int ret;
 
@@ -958,14 +977,16 @@ xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName,
 	    if(cert != NULL) X509_free(cert);
 	    return(NULL);	
 	}
-	return(x509Data);
+    }
+    if(x509Data != NULL) {
+    	return(xmlSecOpenSSLX509StoreGetKey(store, keysMngrCtx, x509Data));
     }
     return(NULL);
 }
 
 /**
- * xmlSecX509StoreLoadPemCert:
- * @store: the pointer to #xmlSecX509Store structure.
+ * xmlSecOpenSSLX509StoreLoadPemCert:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
  * @filename: the PEM file.
  * @trusted: the flag that indicates is the certificate in @filename
  *    trusted or not.
@@ -976,7 +997,7 @@ xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlChar *subjectName,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename, 
+xmlSecOpenSSLX509StoreLoadPemCert(xmlSecOpenSSLX509StorePtr store, const char *filename, 
 			   int trusted) {
     int ret;
 
@@ -1031,8 +1052,8 @@ xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename,
 }
 
 /**
- * xmlSecX509StoreAddCertsDir:
- * @store: the pointer to #xmlSecX509Store structure.
+ * xmlSecOpenSSLX509StoreAddCertsDir:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
  * @path: the path to the certs dir.
  *
  * Adds all certs in the @path to the list of trusted certs
@@ -1041,7 +1062,7 @@ xmlSecX509StoreLoadPemCert(xmlSecX509StorePtr store, const char *filename,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecX509StoreAddCertsDir(xmlSecX509StorePtr store, const char *path) {
+xmlSecOpenSSLX509StoreAddCertsDir(xmlSecOpenSSLX509StorePtr store, const char *path) {
     X509_LOOKUP *lookup = NULL;
 
     xmlSecAssert2(store != NULL, -1);
@@ -1060,7 +1081,7 @@ xmlSecX509StoreAddCertsDir(xmlSecX509StorePtr store, const char *path) {
 }
 
 static int
-xmlSecX509StoreVerifyCRL(xmlSecX509StorePtr store, X509_CRL *crl ) {
+xmlSecOpenSSLX509StoreVerifyCRL(xmlSecOpenSSLX509StorePtr store, X509_CRL *crl ) {
     X509_STORE_CTX xsc; 
     X509_OBJECT xobj;
     EVP_PKEY *pkey;
@@ -1117,7 +1138,7 @@ xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
     xmlSecAssert2(filename != NULL, -1);
 
     if(key->x509Data == NULL) {
-	key->x509Data = (xmlSecOpenSSLKeyDataX509Ptr)xmlSecKeyDataCreate(xmlSecKeyDataX509);
+	key->x509Data = xmlSecKeyDataCreate(xmlSecKeyDataX509);
 	if(key->x509Data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,

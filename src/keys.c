@@ -18,6 +18,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/x509.h>
@@ -282,6 +283,7 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id) {
 		    "id->create");
 	return(NULL);	
     }
+    data->id = id;
     return(data);
 }
 
@@ -469,51 +471,5 @@ xmlSecKeysMngrCtxSwapState(xmlSecKeysMngrCtxPtr ctx1,
 
 
 
-
-
-/**
- * xmlSecKeysMngrGetKey:
- * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
- * @mngr: the keys manager.
- * @context: the pointer to application specific data.
- * @keyId: the required key Id (or NULL for "any").
- * @keyType: the required key (may be "any").
- * @keyUsage: the required key usage.
- * 
- * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
- *
- * Returns the pointer to key or NULL if the key is not found or 
- * an error occurs.
- */
-xmlSecKeyPtr 		
-xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlSecKeyPtr key = NULL;
-        
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
-
-    if((key == NULL) && (keyInfoNode != NULL)) {
-	key = xmlSecKeyInfoNodeRead(keyInfoNode, keysMngrCtx);
-    }
-    
-    if((key == NULL) && (keysMngrCtx->allowedOrigins & xmlSecKeyOriginKeyManager) && 
-			(keysMngrCtx->keysMngr->findKey != NULL)) {
-
-	if(keysMngrCtx->keyName != NULL) {
-	    xmlFree(keysMngrCtx->keyName);
-	    keysMngrCtx->keyName = NULL;
-	}
-	key = keysMngrCtx->keysMngr->findKey(keysMngrCtx);
-    }
-    
-    if(key == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-		    " ");
-	return(NULL);    
-    }
-    
-    return(key);
-}
 
 

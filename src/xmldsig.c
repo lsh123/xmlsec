@@ -24,21 +24,13 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/membuf.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/digests.h>
 #include <xmlsec/errors.h>
-
-#define xmlSecDSigResultGetKeyCallback(result) \
-	    ( ( ((result) != NULL) && \
-	        ((result)->ctx != NULL) && \
-	        ((result)->ctx->keysMngrCtx != NULL) && \
-		((result)->ctx->keysMngrCtx->keysMngr != NULL) ) ? \
-		((result)->ctx->keysMngrCtx->keysMngr->getKey) : \
-		NULL )
-
 
 static xmlSecReferenceResultPtr	xmlSecDSigResultAddSignedInfoRef(xmlSecDSigResultPtr result,
 								 xmlSecReferenceResultPtr ref);
@@ -1383,6 +1375,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     xmlSecAssert2(result != NULL, -1);
     xmlSecAssert2(result->ctx != NULL, -1);
     xmlSecAssert2(result->ctx->keysMngrCtx != NULL, -1);
+    xmlSecAssert2(result->ctx->keysMngrCtx->keysMngr != NULL, -1);
     xmlSecAssert2(signedInfoNode != NULL, -1);
     xmlSecAssert2(signatureValueNode != NULL, -1);
     
@@ -1422,7 +1415,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
-    if((result->key == NULL) && (xmlSecDSigResultGetKeyCallback(result) != NULL)) {
+    if(result->key == NULL) {
 	if(sign) {
 	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetEncKeyType(result->signMethod);
 	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageSign;
@@ -1432,7 +1425,14 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	}
 	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->signMethod);
 	
-	result->key = xmlSecDSigResultGetKeyCallback(result)(keyInfoNode, result->ctx->keysMngrCtx);
+	if(keyInfoNode != NULL) {
+	    result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
+					   result->ctx->keysMngrCtx,
+					   keyInfoNode);
+	} else {
+	    result->key = xmlSecKeysMngrFindKey(result->ctx->keysMngrCtx->keysMngr,
+					   result->ctx->keysMngrCtx);
+	}
     }    
     if(result->key == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,

@@ -23,6 +23,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/base64.h>
@@ -67,11 +68,8 @@ static int			xmlSecEncStateAddTransform	(xmlSecEncStatePtr state,
 #define xmlSecEncResultIsValid(result) \
 	    ((( result ) != NULL) \
 	    && ((result)->ctx != NULL) \
-	    && ((result)->ctx->keysMngrCtx != NULL) )
-#define xmlSecEncResultGetKeyCallback(result) \
-	    ( ( xmlSecEncResultIsValid((result)) ) ? \
-		((result)->ctx->keysMngrCtx->keysMngr->getKey) : \
-		NULL )
+	    && ((result)->ctx->keysMngrCtx != NULL) \
+	    && ((result)->ctx->keysMngrCtx->keysMngr != NULL) )
 
 
 static int			xmlSecEncryptedDataNodeRead	(xmlNodePtr encNode,
@@ -1491,7 +1489,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     }    
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
-    if((result->key == NULL) && (xmlSecEncResultGetKeyCallback(result) != NULL)) {
+    if(result->key == NULL) {
 	if(result->encrypt) {
 	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetEncKeyType(result->encryptionMethod);
 	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageEncrypt;
@@ -1500,9 +1498,15 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageDecrypt;
 	}
 	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->encryptionMethod);
-		
-	result->key = xmlSecEncResultGetKeyCallback(result)
-					(keyInfoNode, result->ctx->keysMngrCtx); 
+	
+	if(keyInfoNode != NULL) {
+	    result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
+					   result->ctx->keysMngrCtx,
+					   keyInfoNode);
+	} else {
+	    result->key = xmlSecKeysMngrFindKey(result->ctx->keysMngrCtx->keysMngr,
+					   result->ctx->keysMngrCtx);
+	}
     }    
     if(result->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

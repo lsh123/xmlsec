@@ -1,3 +1,11 @@
+Wed Jul 31 23:38:18 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am configure.in: added "enable-profiling" config option
+	* docs/download.html docs/index.html src/c14n.c: 
+	starting XPath and enveloped transforms performance improvements
+	* tests/Makefile.am tests/merlin-c14n-three/* tests/testDSig.sh:
+	added one more Merlin's test suite for exc-c14n
+
 Wed Jul 31 15:56:17 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* apps/xmlsec.c src/xpath.c tests/testDSig.sh: improved
 	XPath2 performance

@@ -14,6 +14,8 @@ EXTRA_DIST = \
 	merlin-xmldsig-twenty-three \
 	merlin-xmlenc-five \
 	merlin-xpath-filter2-three \
+	merlin-exc-c14n-one \
+	merlin-c14n-three  \
 	$(NULL)
 
 check: $(XMLSEC_APP)

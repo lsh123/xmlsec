@@ -57,6 +57,12 @@ echo "--- log file is $logfile"
 echo "--- testDSig started ($timestamp)" >> $logfile
 
 
+execDSigTest "merlin-exc-c14n-one/exc-signature" \
+    ""
+    
+execDSigTest "merlin-c14n-three/signature" \
+    ""
+    
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
     "--privkey $topfolder/keys/dsakey.pem" \

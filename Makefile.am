@@ -28,3 +28,6 @@ api-doc:
 
 api-doc-clean:
 	@cd docs/api;make clean
+
+valgrind:
+	@export DEBUG_MEMORY=1;make check

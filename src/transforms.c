@@ -217,13 +217,13 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyInfoCtxPtr keyIn
 }
 
 int 
-xmlSecTransformValidate(xmlSecTransformPtr transform, const unsigned char* data,
+xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
 			size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(transform->id->validate != NULL, -1);
+    xmlSecAssert2(transform->id->verify != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    return((transform->id->validate)(transform, data, dataSize, transformCtx));
+    return((transform->id->verify)(transform, data, dataSize, transformCtx));
 }
 
 int 

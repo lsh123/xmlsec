@@ -505,6 +505,182 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     return(0);
 }
 
+
+/******************************************************************************
+ *
+ * EVP Digest transforms
+ *
+ * reserved0->digest (EVP_MD)
+ * reserved1->ctx (EVP_MD_CTX)
+ *****************************************************************************/
+#define xmlSecOpenSSLEvpDigestGetDigest(transform) \
+    ((const EVP_MD*)((transform)->reserved0))
+#define xmlSecOpenSSLEvpDigestGetCtx(transform) \
+    ((EVP_MD_CTX*)((transform)->reserved1))
+
+int 
+xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform, const EVP_MD* digest) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecOpenSSLEvpDigestGetDigest(transform) == NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLEvpDigestGetCtx(transform) == NULL, -1);
+    xmlSecAssert2(digest != NULL, -1);
+    
+    transform->reserved0 = (void*)digest;
+    transform->reserved1 = xmlMalloc(sizeof(EVP_MD_CTX));    
+    if(transform->reserved1 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(EVP_MD_CTX)=%d", sizeof(EVP_MD_CTX));
+	return(-1);
+    }
+    EVP_MD_CTX_init(xmlSecOpenSSLEvpDigestGetCtx(transform));
+    
+    return(0);
+}
+
+void 
+xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+    
+    if(xmlSecOpenSSLEvpDigestGetCtx(transform) != NULL) {
+	EVP_MD_CTX_cleanup(xmlSecOpenSSLEvpDigestGetCtx(transform));
+	xmlFree(transform->reserved1);
+    }
+    transform->reserved0 = transform->reserved1 = NULL;
+}
+
+int
+xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform, 
+			const unsigned char* data, size_t dataSize,
+			xmlSecTransformCtxPtr transformCtx) {
+    EVP_MD_CTX* ctx;
+    unsigned char dgst[EVP_MAX_MD_SIZE];
+    size_t dgstSize;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->encode == 0, -1);
+    xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    ret = EVP_DigestFinal(ctx, dgst, &dgstSize);
+    if(ret != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "EVP_DigestFinal");
+	return(-1);
+    }
+    
+    if(dataSize != dgstSize) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "data and digest sizes are different (data=%d, dgst=%d)", 
+		    dataSize, dgstSize);
+	transform->status = xmlSecTransformStatusFail;
+	return(0);
+    }
+    
+    if(memcmp(dgst, data, dgstSize) != 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "data and digest do not match");
+	transform->status = xmlSecTransformStatusFail;
+	return(0);
+    }
+    
+    transform->status = xmlSecTransformStatusOk;
+    return(0);
+}
+
+int 
+xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBufferPtr in, out;
+    EVP_MD_CTX* ctx;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecOpenSSLEvpDigestGetDigest(transform) != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+
+    ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    if(transform->status == xmlSecTransformStatusNone) {
+	ret = EVP_DigestInit(ctx, xmlSecOpenSSLEvpDigestGetDigest(transform));
+	if(ret != 1) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"EVP_DigestInit");
+	    return(-1);
+	}
+	transform->status = xmlSecTransformStatusWorking;
+    }
+    
+    if(transform->status == xmlSecTransformStatusWorking) {
+	size_t inSize;
+	
+	inSize = xmlSecBufferGetSize(in);
+	if(inSize > 0) {
+	    ret = EVP_DigestUpdate(ctx, xmlSecBufferGetData(in), inSize);
+	    if(ret != 1) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "EVP_DigestUpdate");
+		return(-1);
+	    }
+	    
+	    ret = xmlSecBufferRemoveHead(in, inSize);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecBufferRemoveHead(%d)", inSize);
+		return(-1);
+	    }
+	}
+	if(last) {
+	    if(transform->encode) {
+		unsigned char dgst[EVP_MAX_MD_SIZE];
+		size_t dgstSize;
+	    
+	        ret = EVP_DigestFinal(ctx, dgst, &dgstSize);
+		if(ret != 1) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"EVP_DigestFinal");
+		    return(-1);
+		}
+		
+		ret = xmlSecBufferAppend(out, dgst, dgstSize);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBufferAppend(%d)", dgstSize);
+		    return(-1);
+		}
+	    }
+	    transform->status = xmlSecTransformStatusFinished;
+	}
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+	/* the only way we can get here is if there is no input */
+	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+    } else {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "invalid transform status %d", transform->status);
+	return(-1);
+    }
+    
+    return(0);
+}
+
+
 /******************************************************************************
  *
  * EVP helper functions

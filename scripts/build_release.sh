@@ -31,5 +31,5 @@ echo "Moving sources tar file to $rpm_root/SOURCES/$tar_file"
 mv $tar_file $rpm_root/SOURCES
 
 echo "Cleanup"
-# cd "$cur_pwd"
-# rm -rf "$build_root"
+cd "$cur_pwd"
+rm -rf "$build_root"

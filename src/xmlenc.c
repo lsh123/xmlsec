@@ -461,7 +461,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 	    return(-1);
 	}
 	encCtx->resultReplaced = 1;			       
-    } else if(xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
+    } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
 	ret = xmlSecReplaceContent(node, tmpl);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,

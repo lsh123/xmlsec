@@ -460,40 +460,15 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
-    xmlNodePtr dummy;
-    xmlNodePtr ptr;
-
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);  
-	    
-    dummy = xmlNewDocNode(newNode->doc, NULL, BAD_CAST "dummy", NULL);
-    if(dummy == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlNewDocNode",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "node=dummy");
-	return(-1);
-    }
-	    
-    if(newNode == xmlDocGetRootElement(newNode->doc)) {
-	ptr = xmlDocSetRootElement(newNode->doc, dummy);
-    } else {
-	ptr = xmlReplaceNode(newNode, dummy);
-    }
-    if(ptr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlDocSetRootElement or xmlReplaceNode",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlFreeNode(dummy);
-	return(-1);
-    }
-	    
+
+    xmlUnlinkNode(newNode);
+    xmlSetTreeDoc(newNode, node->doc);
     xmlNodeSetContent(node, NULL);
-    xmlAddChild(node, ptr);
-    xmlSetTreeDoc(ptr, node->doc);
+    xmlAddChild(node, newNode);
+    xmlSetTreeDoc(newNode, node->doc);
+
     return(0);
 }
 

@@ -56,6 +56,7 @@ struct _xmlSecEncCtx {
     xmlSecKeysMngrPtr		keysMngr;
     xmlSecTransformId		encryptionMethod;
     int				ignoreType;
+    time_t			certsVerificationTime;
 };
 
 /**

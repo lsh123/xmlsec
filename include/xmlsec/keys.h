@@ -216,7 +216,8 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
 							 void *context,
 							 xmlSecKeyId keyId,
 							 xmlSecKeyType type,
-							 xmlSecKeyUsage usage);
+							 xmlSecKeyUsage usage,
+							 time_t certsVerificationTime);
 /**
  * xmlSecFindKeyCallback:
  * @mngr: the keys manager.
@@ -299,7 +300,7 @@ struct _xmlSecKeysMngr {
     xmlSecFindKeyCallback		findKey;
     void 				*keysData;
 
-    /* x509 certs */
+    /* x509 certs */    
     int					failIfCertNotFound; 
     xmlSecX509FindCallback		findX509;
     xmlSecX509VerifyCallback		verifyX509;
@@ -312,7 +313,8 @@ XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
 							 void *context,
 							 xmlSecKeyId keyId,
 							 xmlSecKeyType keyType,
-							 xmlSecKeyUsage keyUsage);
+							 xmlSecKeyUsage keyUsage,
+							 time_t certsVerificationTime);
 
 #ifdef __cplusplus
 }

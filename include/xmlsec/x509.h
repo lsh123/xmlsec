@@ -35,10 +35,19 @@ typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
  *
  * XML DSig data for the key.
  */
+
+/* openssl specific */
 struct _xmlSecX509Data {
     X509		*verified;
     STACK_OF(X509) 	*certs;
     STACK_OF(X509_CRL)  *crls;
+    time_t		certsVerificationTime;
+};
+
+struct _xmlSecX509Store {
+    X509_STORE		*xst;
+    STACK_OF(X509)	*untrusted;
+    STACK_OF(X509_CRL)	*crls;
 };
 
 XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataCreate		(void);

@@ -74,6 +74,8 @@ XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPkcs12	(xmlSecKeysMngrPtr mngr,
 							 const char* name,
 							 const char *filename,
 							 const char *pwd);
+XMLSEC_EXPORT void	xmlSecSimpleKeysMngrSetCertsFlags(xmlSecKeysMngrPtr mngr,
+							unsigned long flags);    
 #endif /* XMLSEC_NO_X509 */
 
 

@@ -22,6 +22,7 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
 
@@ -32,12 +33,6 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/errors.h>
-
-struct _xmlSecX509Store {
-    X509_STORE		*xst;
-    STACK_OF(X509)	*untrusted;
-    STACK_OF(X509_CRL)	*crls;
-};
 
 static int		xmlSecX509DataAddCrl		(xmlSecX509DataPtr x509Data,
 							 X509_CRL *crl);
@@ -180,7 +175,7 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
  * or NULL if an error occurs.
  */
 xmlSecX509DataPtr	
-xmlSecX509DataCreate(void) {
+xmlSecX509DataCreate() {
     xmlSecX509DataPtr x509Data;
     
     /*
@@ -244,6 +239,7 @@ xmlSecX509DataDup(xmlSecX509DataPtr x509Data) {
 		    "xmlSecX509DataCreate");
 	return(NULL);
     }
+    newX509->certsVerificationTime = x509Data->certsVerificationTime;
     
     /**
      * Duplicate certs
@@ -1035,6 +1031,11 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		X509_STORE_CTX xsc; 
     
 		X509_STORE_CTX_init (&xsc, store->xst, cert, certs);
+#ifndef XMLSEC_OPENSSL096
+		if(store->xst->flags & X509_V_FLAG_USE_CHECK_TIME) {
+		    X509_STORE_CTX_set_time(&xsc, 0, x509Data->certsVerificationTime);
+		}
+#endif /* XMLSEC_OPENSSL096 */
 		ret = X509_verify_cert(&xsc); 
 		X509_STORE_CTX_cleanup (&xsc);  
 

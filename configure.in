@@ -41,9 +41,11 @@ AC_HEADER_STDC
 dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
-AC_CHECK_HEADERS(stdio.h stdlib.h string.h ctype.h errno.h ansidecl.h)
+AC_CHECK_HEADERS(stdio.h stdlib.h string.h ctype.h errno.h ansidecl.h time.h)
 
 XMLSEC_DEFINES=""
+
+AC_CHECK_FUNC(strptime, , [XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_STRPTIME=1"])
 
 dnl ==========================================================================
 dnl find libxml
@@ -123,7 +125,7 @@ else
 	then
     	    LIBXSLT_LIBS="`$LIBXSLT_CONFIG --libs`"
 	    LIBXSLT_CFLAGS="`$LIBXSLT_CONFIG --cflags`"
-	    LIBXSLT_VERSION="`$LIBXSLT_VERSION --version`"
+	    LIBXSLT_VERSION="`$LIBXSLT_CONFIG --version`"
     	    AC_MSG_RESULT(yes ('$LIBXSLT_VERSION'))
 	else
     	    AC_MSG_ERROR(You need at least libxslt $LIBXSLT_MIN_VERSION for this version of $PACKAGE)

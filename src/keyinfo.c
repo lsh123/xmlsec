@@ -66,6 +66,7 @@ typedef struct _xmlSecKeyInfoNodeStatus {
     xmlSecKeyId				keyId;
     xmlSecKeyType			keyType;
     xmlSecKeyUsage			keyUsage;
+    time_t				certsVerificationTime;
     int 				retrievalsLevel;
     int					encKeysLevel;                
 } xmlSecKeyInfoNodeStatus, *xmlSecKeyInfoNodeStatusPtr;
@@ -420,7 +421,8 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
  */
 xmlSecKeyPtr	
 xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context, 
-		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
+		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage,
+		time_t certsVerificationTime) {
     xmlSecKeyInfoNodeStatus status;
     xmlNodePtr cur;
 
@@ -437,6 +439,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
     status.keyId = keyId;
     status.keyType = keyType;
     status.keyUsage = keyUsage;
+    status.certsVerificationTime = certsVerificationTime;
     return(xmlSecKeyInfoNodesListRead(cur, &status));    
 }
 
@@ -845,6 +848,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 			"xmlSecX509DataCreate");
 	    goto done;
 	}
+	x509Data->certsVerificationTime = status->certsVerificationTime;
 	
 	ret = xmlSecX509DataReadDerCert(x509Data, (unsigned char*)xmlBufferContent(state->curBuf),
 	                    	    xmlBufferLength(state->curBuf), 0);
@@ -1150,6 +1154,7 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
 		    "xmlSecX509DataCreate");
 	return(NULL);
     }
+    x509Data->certsVerificationTime = status->certsVerificationTime;
 
     ret = 0;
     cur = xmlSecGetNextElementNode(x509DataNode->children);

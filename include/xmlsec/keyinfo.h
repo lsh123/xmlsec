@@ -26,7 +26,8 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
 							 void *context,
 							 xmlSecKeyId keyId,
 							 xmlSecKeyType keyType,
-							 xmlSecKeyUsage keyUsage);
+							 xmlSecKeyUsage keyUsage,
+							 time_t certsVerificationTime);
 XMLSEC_EXPORT int 	xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 							 xmlSecKeysMngrPtr keysMngr,
 							 void *context,

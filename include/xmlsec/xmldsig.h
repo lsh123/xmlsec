@@ -49,6 +49,7 @@ struct _xmlSecDSigCtx {
     int				storeReferences;
     int				storeManifests;	
     int				fakeSignatures;
+    time_t			certsVerificationTime;
 };
 
 /**

@@ -498,14 +498,15 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
  */
 xmlSecKeyPtr 		
 xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
-		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
+		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage,
+		time_t certsVerificationTime) {
     xmlSecKeyPtr key = NULL;
         
     xmlSecAssert2(mngr != NULL, NULL);
 
     if((key == NULL) && (keyInfoNode != NULL)) {
 	key = xmlSecKeyInfoNodeRead(keyInfoNode, mngr, context,
-			keyId, keyType, keyUsage);
+			keyId, keyType, keyUsage, certsVerificationTime);
     }
     
     if((key == NULL) && (mngr->allowedOrigins & xmlSecKeyOriginKeyManager) && 

@@ -1430,7 +1430,8 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	result->key = xmlSecDSigResultGetKeyCallback(result)
 					(keyInfoNode, result->ctx->keysMngr, 
 					result->context, keyId, keyType, 
-					keyUsage); 
+					keyUsage, 
+					result->ctx->certsVerificationTime); 
     }    
     if(result->key == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,

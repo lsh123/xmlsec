@@ -1496,7 +1496,8 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	result->key = xmlSecEncResultGetKeyCallback(result)
 					(keyInfoNode, result->ctx->keysMngr, 
 					result->context, keyId, keyType, 
-					keyUsage); 
+					keyUsage,
+					result->ctx->certsVerificationTime); 
     }    
     if(result->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

@@ -1,3 +1,16 @@
+Wed Oct  9 20:58:58 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keyinfo.h include/xmlsec/keys.h 
+	include/xmlsec/keysmngr.h include/xmlsec/x509.h 
+	include/xmlsec/xmldsig.h include/xmlsec/xmlenc.h 
+	src/keyinfo.c src/keys.c src/keysmngr.c
+	src/x509.c src/xmldsig.c src/xmlenc.c: added certificates
+	verification time parameter as it was suggested in the
+	xmlsec mailing list
+	* apps/xmlsec.c: added "--verification-time" parameter
+	* config.h.in configure.in: added necessary check for 
+	strptime() function	
+
 Mon Oct  7 19:22:11 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c: added "--output" option to spefcify output file

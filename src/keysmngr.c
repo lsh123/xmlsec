@@ -258,7 +258,7 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
     cur = xmlSecGetNextElementNode(root->children);
     while(xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs)) {  
 	key = xmlSecKeyInfoNodeRead(cur, &keysMngr, NULL, xmlSecKeyIdUnknown,
-				    xmlSecKeyTypeAny, xmlSecKeyUsageAny);
+				    xmlSecKeyTypeAny, xmlSecKeyUsageAny, 0);
 	if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -708,5 +708,18 @@ xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
     
     return(0);
 }
+
+void	
+xmlSecSimpleKeysMngrSetCertsFlags(xmlSecKeysMngrPtr mngr, unsigned long flags) {
+    xmlSecAssert(mngr != NULL);
+    xmlSecAssert(mngr->x509Data != NULL);
+
+#ifndef XMLSEC_OPENSSL096
+    if(((xmlSecX509StorePtr)mngr->x509Data)->xst) {
+	X509_STORE_set_flags(((xmlSecX509StorePtr)mngr->x509Data)->xst, flags);
+    }	
+#endif  /* XMLSEC_OPENSSL096 */
+}
+
 
 #endif /* XMLSEC_NO_X509 */

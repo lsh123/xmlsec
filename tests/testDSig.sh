@@ -186,7 +186,7 @@ execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509 --verification-time 2002-10-02+10:00:00" 
+    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509 --verification-time 2002-04-17+10:00:00" 
 
 execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
     "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \

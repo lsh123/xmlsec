@@ -45,9 +45,9 @@
 <h1>
 <a name="XMLSEC-TRANSFORMSINTERNAL"></a>transformsInternal.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN6681"></a><h2>Name</h2>transformsInternal.h -- The internal transform's functions.</div>
+<a name="AEN6687"></a><h2>Name</h2>transformsInternal.h -- The internal transform's functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN6684"></a><h2>Synopsis</h2>
+<a name="AEN6690"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMRESULT">xmlSecTransformResult</a>;
@@ -83,13 +83,13 @@ int         <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMNODEWRITE">xm
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> id);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN6727"></a><h2>Description</h2>
+<a name="AEN6733"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN6730"></a><h2>Details</h2>
+<a name="AEN6736"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN6732"></a><h3>
+<a name="AEN6738"></a><h3>
 <a name="XMLSECTRANSFORMRESULT"></a>enum xmlSecTransformResult</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlSecTransformResultBinary,
@@ -98,7 +98,7 @@ int         <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMNODEWRITE">xm
 <p>The transform result types.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6738"></a><p></p>
+<a name="AEN6744"></a><p></p>
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecTransformResultBinary</tt></td>
@@ -114,7 +114,7 @@ int         <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMNODEWRITE">xm
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6751"></a><h3>
+<a name="AEN6757"></a><h3>
 <a name="XMLSECTRANSFORMSTATE"></a>struct xmlSecTransformState</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecTransformState {
     /* initial state */
@@ -137,7 +137,7 @@ int         <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMNODEWRITE">xm
 <p>The current transforms state.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6757"></a><p></p>
+<a name="AEN6763"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -198,7 +198,7 @@ int         <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMNODEWRITE">xm
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6806"></a><h3>
+<a name="AEN6812"></a><h3>
 <a name="XMLSECTRANSFORMSTATECREATE"></a>xmlSecTransformStateCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformStatePtr</strong> xmlSecTransformStateCreate
                                             (<strong>xmlDocPtr</strong> doc,
@@ -207,7 +207,7 @@ int         <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMNODEWRITE">xm
 <p>Creates new transform state.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6815"></a><p></p>
+<a name="AEN6821"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -236,13 +236,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6837"></a><h3>
+<a name="AEN6843"></a><h3>
 <a name="XMLSECTRANSFORMSTATEDESTROY"></a>xmlSecTransformStateDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformStateDestroy     (<strong>xmlSecTransformStatePtr</strong> state);</pre></td></tr></table>
 <p>Destroys the transform state.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6844"></a><p></p>
+<a name="AEN6850"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>state</i></tt> :</td>
@@ -253,7 +253,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6854"></a><h3>
+<a name="AEN6860"></a><h3>
 <a name="XMLSECTRANSFORMSTATEUPDATE"></a>xmlSecTransformStateUpdate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformStateUpdate      (<strong>xmlSecTransformStatePtr</strong> state,
                                              <strong>xmlSecTransformPtr</strong> transform);</pre></td></tr></table>
@@ -261,7 +261,7 @@ or NULL if an error occurs.</td>
 applied immidiatelly.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6864"></a><p></p>
+<a name="AEN6870"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -284,7 +284,7 @@ applied immidiatelly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6883"></a><h3>
+<a name="AEN6889"></a><h3>
 <a name="XMLSECTRANSFORMSTATEFINAL"></a>xmlSecTransformStateFinal ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformStateFinal       (<strong>xmlSecTransformStatePtr</strong> state,
                                              <a href="xmlsec-transformsinternal.html#XMLSECTRANSFORMRESULT">xmlSecTransformResult</a> type);</pre></td></tr></table>
@@ -292,7 +292,7 @@ applied immidiatelly.</p>
 creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6893"></a><p></p>
+<a name="AEN6899"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -315,7 +315,7 @@ creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6911"></a><h3>
+<a name="AEN6917"></a><h3>
 <a name="XMLSECTRANSFORMSTATEFINALTONODE"></a>xmlSecTransformStateFinalToNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformStateFinalToNode (<strong>xmlSecTransformStatePtr</strong> state,
                                              <strong>xmlNodePtr</strong> node,
@@ -323,7 +323,7 @@ creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6919"></a><p></p>
+<a name="AEN6925"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -356,7 +356,7 @@ creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6944"></a><h3>
+<a name="AEN6950"></a><h3>
 <a name="XMLSECTRANSFORMSTATEFINALVERIFYNODE"></a>xmlSecTransformStateFinalVerifyNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformStateFinalVerifyNode
                                             (<strong>xmlSecTransformStatePtr</strong> state,
@@ -365,7 +365,7 @@ creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
                                              <strong>xmlSecTransformCtxPtr</strong> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6953"></a><p></p>
+<a name="AEN6959"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -398,13 +398,13 @@ creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6978"></a><h3>
+<a name="AEN6984"></a><h3>
 <a name="XMLSECTRANSFORMREGISTER"></a>xmlSecTransformRegister ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformRegister         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> keyId);</pre></td></tr></table>
 <p>Adds the <tt class="PARAMETER"><i>transformId</i></tt> to the internal table of known transforms.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6986"></a><p></p>
+<a name="AEN6992"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -422,14 +422,14 @@ creates a result of the desired <tt class="PARAMETER"><i>type</i></tt>.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6999"></a><h3>
+<a name="AEN7005"></a><h3>
 <a name="XMLSECTRANSFORMSINIT"></a>xmlSecTransformsInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformsInit            (void);</pre></td></tr></table>
 <p>Trnasforms engine initialization (called from <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>() function).
 The applications should not call this function directly.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7006"></a><p></p>
+<a name="AEN7012"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -440,14 +440,14 @@ The applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7015"></a><h3>
+<a name="AEN7021"></a><h3>
 <a name="XMLSECTRANSFORMSNODEREAD"></a>xmlSecTransformsNodeRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformsNodeRead        (<strong>xmlSecTransformStatePtr</strong> state,
                                              <strong>xmlNodePtr</strong> transformsNode);</pre></td></tr></table>
 <p>Reads the transform node and updates <tt class="PARAMETER"><i>state</i></tt>,</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7024"></a><p></p>
+<a name="AEN7030"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -470,14 +470,14 @@ The applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7041"></a><h3>
+<a name="AEN7047"></a><h3>
 <a name="XMLSECTRANSFORMFIND"></a>xmlSecTransformFind ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> xmlSecTransformFind       (const <strong>xmlChar</strong> *href,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre></td></tr></table>
 <p>Searches the list of known transforms for transform with given href</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7050"></a><p></p>
+<a name="AEN7056"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -501,7 +501,7 @@ or transform is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7067"></a><h3>
+<a name="AEN7073"></a><h3>
 <a name="XMLSECTRANSFORMNODEREAD"></a>xmlSecTransformNodeRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecTransformPtr</strong> xmlSecTransformNodeRead  (<strong>xmlNodePtr</strong> transformNode,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage,
@@ -513,7 +513,7 @@ or transform is not found.</td>
    4) calls transform read transform node method.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7077"></a><p></p>
+<a name="AEN7083"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -542,14 +542,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7099"></a><h3>
+<a name="AEN7105"></a><h3>
 <a name="XMLSECTRANSFORMNODEWRITE"></a>xmlSecTransformNodeWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformNodeWrite        (<strong>xmlNodePtr</strong> transformNode,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMID">xmlSecTransformId</a> id);</pre></td></tr></table>
 <p>Writes Agorithm attribute in the transform node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7107"></a><p></p>
+<a name="AEN7113"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

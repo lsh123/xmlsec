@@ -551,7 +551,7 @@ struct xmlSecKey {
     xmlChar*				name;
     xmlSecPtrListPtr			dataList;
 
-
+    /* obsolete */
     xmlSecKeyDataType			type;
     xmlSecKeyOrigin			origin;
 };
@@ -634,7 +634,7 @@ xmlSecKeyPtr key,FILE *output
 <FUNCTION>
 <NAME>xmlSecKeyGenerate</NAME>
 <RETURNS>xmlSecKeyPtr 	</RETURNS>
-const xmlChar* type,const xmlChar* name,size_t sizeBits
+const xmlChar* klass,const xmlChar* name,size_t sizeBits,xmlSecKeyDataType type
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecKeyMatch</NAME>
@@ -734,6 +734,14 @@ typedef unsigned int				xmlSecKeyDataType;
 #define xmlSecKeyDataTypeSymmetric			0x0004
 </MACRO>
 <MACRO>
+<NAME>xmlSecKeyDataTypeSession</NAME>
+#define xmlSecKeyDataTypeSession			0x0008
+</MACRO>
+<MACRO>
+<NAME>xmlSecKeyDataTypePermanent</NAME>
+#define xmlSecKeyDataTypePermanent			0x0010
+</MACRO>
+<MACRO>
 <NAME>xmlSecKeyDataTypeAny</NAME>
 #define xmlSecKeyDataTypeAny				0xFFFF
 </MACRO>
@@ -810,7 +818,7 @@ xmlSecKeyDataPtr data
 <FUNCTION>
 <NAME>xmlSecKeyDataGenerate</NAME>
 <RETURNS>int 	</RETURNS>
-xmlSecKeyDataPtr data,size_t sizeBits
+xmlSecKeyDataPtr data,size_t sizeBits,xmlSecKeyDataType type
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecKeyDataGetType</NAME>
@@ -948,7 +956,8 @@ xmlSecKeyDataId id,
 <NAME>xmlSecKeyDataGenerateMethod</NAME>
 <RETURNS>int </RETURNS>
 xmlSecKeyDataPtr data,
-								 size_t sizeBits
+								 size_t sizeBits,
+								 xmlSecKeyDataType type
 </USER_FUNCTION>
 <USER_FUNCTION>
 <NAME>xmlSecKeyDataGetTypeMethod</NAME>
@@ -1257,18 +1266,18 @@ xmlNodePtr keyInfoNode,
 <STRUCT>
 <NAME>xmlSecKeysMngr</NAME>
 struct xmlSecKeysMngr {	
-    xmlSecKeyDataStorePtr		keysStore;
-    xmlSecPtrListPtr			storesList;
+    xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
+    xmlSecPtrListPtr		storesList;	/* list of other key data storages */
 
 
 
-    xmlSecGetKeyCallback		getKey;
+    xmlSecGetKeyCallback	getKey;		/* the callback used to read <dsig:KeyInfo> node. */
 
-    xmlSecKeyOrigin 			allowedOrigins;
-    int 				maxRetrievalsLevel;
-    int					maxEncKeysLevel; 
+    xmlSecKeyOrigin 		allowedOrigins;
+    int 			maxRetrievalsLevel;
+    int				maxEncKeysLevel; 
     /* x509 certs */    
-    int					failIfCertNotFound; 
+    int				failIfCertNotFound; 
 };
 </STRUCT>
 <FUNCTION>
@@ -2144,7 +2153,8 @@ struct xmlSecTransformKlass {
     
     /* low level method */
     xmlSecTransformExecuteMethod	execute;
-    
+
+    /* obsolete */    
     xmlSecTransformExecuteXmlMethod	executeXml;
     xmlSecTransformExecuteC14NMethod	executeC14N;
 };
@@ -2692,7 +2702,7 @@ xmlDocPtr doc,xmlNodePtr cur,const xmlChar** ids
 <FUNCTION>
 <NAME>xmlSecNssAppInit</NAME>
 <RETURNS>int 	</RETURNS>
-void
+const char* config
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecNssAppShutdown</NAME>
@@ -3227,7 +3237,7 @@ const char* file,int line,const char* func,const char* errorObject,const char* e
 <FUNCTION>
 <NAME>xmlSecOpenSSLAppInit</NAME>
 <RETURNS>int 	</RETURNS>
-void
+const char* config
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecOpenSSLAppShutdown</NAME>
@@ -3857,7 +3867,7 @@ xmlSecKeyDataStorePtr store,const char* path
 <FUNCTION>
 <NAME>xmlSecGnuTLSAppInit</NAME>
 <RETURNS>int 	</RETURNS>
-void
+const char* config
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecGnuTLSAppShutdown</NAME>

@@ -53,7 +53,8 @@ struct      <link linkend="xmlSecKeyData">xmlSecKeyData</link>;
 <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
 void        <link linkend="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy</link>            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate</link>           (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> sizeBits);
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyDataGetType">xmlSecKeyDataGetType</link>      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
 <link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataGetSize">xmlSecKeyDataGetSize</link>            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
 const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyDataGetIdentifier">xmlSecKeyDataGetIdentifier</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
@@ -108,7 +109,8 @@ int         (<link linkend="xmlSecKeyDataBinWriteMethod">*xmlSecKeyDataBinWriteM
                                              <link linkend="size-t">size_t</link> *bufSize,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         (<link linkend="xmlSecKeyDataGenerateMethod">*xmlSecKeyDataGenerateMethod</link>)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> sizeBits);
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> (<link linkend="xmlSecKeyDataGetTypeMethod">*xmlSecKeyDataGetTypeMethod</link>)
                                             (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
 <link linkend="size-t">size_t</link>      (<link linkend="xmlSecKeyDataGetSizeMethod">*xmlSecKeyDataGetSizeMethod</link>)   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
@@ -609,7 +611,8 @@ Destroys the data and frees all allocated memory.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate ()</title>
 <programlisting>int         xmlSecKeyDataGenerate           (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> sizeBits);</programlisting>
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 KeyData specific destroy method.</para>
 <para>
@@ -624,6 +627,9 @@ KeyData specific destroy method.</para>
 </entry></row>
 <row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
 <entry> the key data specific size.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -1138,7 +1144,8 @@ KeyData specific reading from binary buffer method.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGenerateMethod">xmlSecKeyDataGenerateMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataGenerateMethod)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="size-t">size_t</link> sizeBits);</programlisting>
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 KeyData specific new key generation method.</para>
 <para>
@@ -1153,6 +1160,9 @@ KeyData specific new key generation method.</para>
 </entry></row>
 <row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
 <entry> the key data specific size.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>

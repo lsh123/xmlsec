@@ -178,6 +178,8 @@ xmlSecKeyDataTypeNone
 xmlSecKeyDataTypePublic
 xmlSecKeyDataTypePrivate
 xmlSecKeyDataTypeSymmetric
+xmlSecKeyDataTypeSession
+xmlSecKeyDataTypePermanent
 xmlSecKeyDataTypeAny
 xmlSecKeyDataIdsInit
 xmlSecKeyDataIdsRegisterDefault

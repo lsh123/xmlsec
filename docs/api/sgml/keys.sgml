@@ -62,9 +62,10 @@ void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>        
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>           (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (const <link linkend="xmlChar">xmlChar</link> *type,
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (const <link linkend="xmlChar">xmlChar</link> *klass,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="size-t">size_t</link> sizeBits);
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
@@ -398,7 +399,7 @@ All of the above.</para>
     xmlChar*				name;
     xmlSecPtrListPtr			dataList;
 
-
+    /* obsolete */
     xmlSecKeyDataType			type;
     xmlSecKeyOrigin			origin;
 };
@@ -733,9 +734,10 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGenerate">xmlSecKeyGenerate ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyGenerate              (const <link linkend="xmlChar">xmlChar</link> *type,
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyGenerate              (const <link linkend="xmlChar">xmlChar</link> *klass,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="size-t">size_t</link> sizeBits);</programlisting>
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -743,13 +745,16 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>

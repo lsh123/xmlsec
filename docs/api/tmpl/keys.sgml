@@ -341,9 +341,10 @@ The keys helper functions.
 
 </para>
 
-@type: 
+@klass: 
 @name: 
 @sizeBits: 
+@type: 
 @Returns: 
 
 

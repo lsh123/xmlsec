@@ -14,7 +14,7 @@
 
 
 
-int         <link linkend="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit</link>             (void);
+int         <link linkend="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit</link>             (const char *config);
 int         <link linkend="xmlSecGnuTLSAppShutdown">xmlSecGnuTLSAppShutdown</link>         (void);
 int         <link linkend="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeysMngrInit</link>
                                             (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
@@ -61,7 +61,7 @@ int         <link linkend="xmlSecGnuTLSAppKeyPemCertLoad">xmlSecGnuTLSAppKeyPemC
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit ()</title>
-<programlisting>int         xmlSecGnuTLSAppInit             (void);</programlisting>
+<programlisting>int         xmlSecGnuTLSAppInit             (const char *config);</programlisting>
 <para>
 General crypto engine initialization. This function is used
 by XMLSec command line utility and called before 
@@ -73,6 +73,9 @@ by XMLSec command line utility and called before
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
+<row><entry align="right"><parameter>config</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
 
 

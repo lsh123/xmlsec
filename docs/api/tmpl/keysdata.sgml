@@ -281,6 +281,7 @@ keysdata
 
 @data: 
 @sizeBits: 
+@type: 
 @Returns: 
 
 
@@ -513,6 +514,7 @@ keysdata
 
 @data: 
 @sizeBits: 
+@type: 
 @Returns: 
 
 

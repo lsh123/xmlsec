@@ -1810,7 +1810,8 @@ The transform specific method to finalize writing.</para>
     
     /* low level method */
     xmlSecTransformExecuteMethod	execute;
-    
+
+    /* obsolete */    
     xmlSecTransformExecuteXmlMethod	executeXml;
     xmlSecTransformExecuteC14NMethod	executeC14N;
 };

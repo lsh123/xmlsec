@@ -45,9 +45,9 @@
 <h1>
 <a name="XMLSEC-IO"></a>io.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN6068"></a><h2>Name</h2>io.h -- The IO transforms.</div>
+<a name="AEN6074"></a><h2>Name</h2>io.h -- The IO transforms.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN6071"></a><h2>Synopsis</h2>
+<a name="AEN6077"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 void        <a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                    (void);
@@ -61,13 +61,13 @@ int         <a href="xmlsec-io.html#XMLSECIOREGISTERCALLBACKS">xmlSecIORegisterC
                                              <strong>xmlInputCloseCallback</strong> closeFunc);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN6083"></a><h2>Description</h2>
+<a name="AEN6089"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN6086"></a><h2>Details</h2>
+<a name="AEN6092"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN6088"></a><h3>
+<a name="AEN6094"></a><h3>
 <a name="XMLSECIOINIT"></a>xmlSecIOInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOInit                    (void);</pre></td></tr></table>
 <p>The IO initialization (called from <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>() function).
@@ -76,7 +76,7 @@ Applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6095"></a><h3>
+<a name="AEN6101"></a><h3>
 <a name="XMLSECIOSHUTDOWN"></a>xmlSecIOShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOShutdown                (void);</pre></td></tr></table>
 <p>The IO clenaup (called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>() function).
@@ -85,7 +85,7 @@ Applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6102"></a><h3>
+<a name="AEN6108"></a><h3>
 <a name="XMLSECIOCLEANUPCALLBACKS"></a>xmlSecIOCleanupCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOCleanupCallbacks        (void);</pre></td></tr></table>
 <p>Clears the entire input callback table. this includes the
@@ -94,7 +94,7 @@ compiled-in I/O.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6108"></a><h3>
+<a name="AEN6114"></a><h3>
 <a name="XMLSECIOREGISTERDEFAULTCALLBACKS"></a>xmlSecIORegisterDefaultCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIORegisterDefaultCallbacks
                                             (void);</pre></td></tr></table>
@@ -103,7 +103,7 @@ compiled-in I/O.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN6114"></a><h3>
+<a name="AEN6120"></a><h3>
 <a name="XMLSECIOREGISTERCALLBACKS"></a>xmlSecIORegisterCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIORegisterCallbacks       (<strong>xmlInputMatchCallback</strong> matchFunc,
                                              <strong>xmlInputOpenCallback</strong> openFunc,
@@ -112,7 +112,7 @@ compiled-in I/O.</p>
 <p>Register a new set of I/O callback for handling parser input.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6124"></a><p></p>
+<a name="AEN6130"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

@@ -39,6 +39,7 @@ var verMicroXmlSec;
 /* Libxmlsec features. */
 var withOpenSSL096 = 0;
 var withLibXSLT = 1;
+var withIconv = 1;
 
 /* Win32 build options. */
 var buildDebug = 0;
@@ -89,6 +90,7 @@ function usage()
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
  	txt += "  openssl_096: OpenSSL 0.9.6 is used: disable some features (" + (withOpenSSL096? "yes" : "no")  + ")\n";	
  	txt += "  xslt:       LibXSLT is not used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
+ 	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link libxmlsec statically to xmlsec (" + (buildStatic? "yes" : "no")  + ")\n";
@@ -142,6 +144,7 @@ function discoverVersion()
 	vf.WriteLine("BINDIR=" + binDir);
 	vf.WriteLine("WITH_OPENSSL096=" + (withOpenSSL096? "1" : "0"));
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
+	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
 	vf.WriteLine("PREFIX=" + buildPrefix);
@@ -201,6 +204,27 @@ function genReadme(bname, ver, file)
 	f.WriteLine("  The directory called 'util' contains various programs which count as a");
 	f.WriteLine("part of " + bname + ".");
 	f.WriteBlankLines(1);
+	f.WriteLine("  If you plan to develop your own programme, in C, which uses " + bname + ", then");
+	f.WriteLine("you should know what to do with the files in the binary package. If you don't,");
+	f.WriteLine("know this, then please, please do some research on how to use a");
+	f.WriteLine("third-party library in a C programme. The topic belongs to the very basics"); 
+	f.WriteLine("and you will not be able to do much without that knowledge.");
+	f.WriteBlankLines(1);
+	f.WriteLine("  If you wish to use " + bname + " solely through the supplied utilities,");
+	f.WriteLine("such as xmlsec executable, then all you need to do is place the");
+	f.WriteLine("contents of the 'lib' and 'util' directories from the binary package in a"); 
+	f.WriteLine("directory on your disc which is mentioned in your PATH environment"); 
+	f.WriteLine("variable. You can use an existing directory which is allready in the"); 
+	f.WriteLine("path, such as 'C:\WINDOWS', or 'C:\WINNT'. You can also create a new"); 
+	f.WriteLine("directory for " + bname + " and place the files there, but be sure to modify"); 
+	f.WriteLine("the PATH environment variable and add that new directory to its list.");
+	f.WriteBlankLines(1);
+	f.WriteLine("  If you use other software which needs " + bname + ", then please consult the"); 
+	f.WriteLine("documentation of that software and see if it mentions something about");
+	f.WriteLine("how it uses " + bname + " and how it expects it to be installed. If you find");
+	f.WriteLine("nothing, then the default installation, as described in the previous"); 
+	f.WriteLine("paragraph, should be suficient.");
+	f.WriteBlankLines(1);
 	f.WriteLine("  If there is something you cannot keep for yourself, such as a problem,");
 	f.WriteLine("a cheer of joy, a comment or a suggestion, feel free to contact me using");
 	f.WriteLine("the address below.");
@@ -226,6 +250,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withOpenSSL096 = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "xslt")
 			withLibXSLT = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "iconv")
+			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -293,6 +319,7 @@ var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
 txtOut += "   Use OpenSSL 096: " + boolToStr(withOpenSSL096) + "\n";
 txtOut += "       Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
+txtOut += "         Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";

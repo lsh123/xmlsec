@@ -1,7 +1,288 @@
 <chapter id="xmlsec-notes-new-crypto">
     <title>Adding support for new cryptographic library.</title>
-    <para>This section contains information for developers who wish to use
-    	XML Security Library with a new crypto engine.
+    <sect1 id="xmlsec-notes-new-crypto-overview">
+    <title>Overview.</title>
+    <para>XML Security Library can support practicaly any cryptographic
+    library. Currently, it has "out-of-the-box" support for OpenSSL,
+    NSS and GnuTLS. If your favorite library is not supported yet then
+    you can write necessary code yourself. If you and your company
+    (university, ...) are willing to share the results of your work I would 
+    be happy to add support for new libraries to the main XML Security 
+    Library distribution.</para>
+    <para>
+    The XML Security Library 
+    <link linkend="xmlsec-notes-structure">separates</link> 
+    the cryptographic library (engine) 
+    specific code in an "xmlsec-&lt;crypto&gt;" library (where "&lt;crypto&gt;" is 
+    "openssl", "gnutls", "nss", etc.) which includes following items:
+    <itemizedlist>
+    <listitem><para>
+    xmlSecCryptoApp* functions.
+    </para></listitem>
+    <listitem><para>
+    Cryptographic transforms and keys implementation.
+    </para></listitem>
+    <listitem><para>
+    Keys store support (X509, PGP, etc.).
+    </para></listitem>
+    </itemizedlist>    
+    In this chapter, we will discuss
+    a task of creating "xmlsec-mycrypto" library that provides support
+    for your favorite "MyCrypto" cryptographic library. 
     </para>
-    <para>TODO: example</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-skeleton">
+	<title>Creating a framework from the skeleton.</title>
+	<para>
+	The XML Security Library contains a "skeleton" for creating new
+	"xmlsec-&lt;crypto&gt;" libraries. In order to create "xmlsec-mycrypto"
+	library framework, do the following (this example assumes that you 
+	are using *nix system, adjust the commands if you are using something else):
+	<itemizedlist>
+	<listitem><para>
+	Copy src/skeleton and include/xmlsec/skeleton folders to src/mycrypto and
+	include/xmlsec/mycrypto folders and remove CVS folders from the result:
+	<example>
+	    <title>Coping skeleton folders.</title>
+	    <programlisting><![CDATA[
+cd src
+cp -r skeleton mycrypto
+cd mycrypto
+rm -rf CVS
+cd ../..
+cd include/xmlsec
+cp -r skeleton mycrypto
+cd mycrypto
+rm -rf CVS
+cd ../../..
+	    ]]></programlisting>
+	</example>	
+	</para></listitem>
+	<listitem><para>
+	Replace "skeleton" with "mycrypto" in the copied files (note that there
+	are different possible cases here):
+	<example>
+	    <title>Replacing "skeleton" with "mycrypto".</title>
+	    <programlisting><![CDATA[
+for i in `ls include/xmlsec/mycrypto/* src/mycrypto/*`;  do 
+    echo Processing $i ..;
+    sed 's/skeleton/mycrypto/g' $i | \
+    sed 's/SKELETON/MYCRYPTO/g' | \
+    sed 's/Skeleton/MyCrypto/g' > $i.tmp;
+    mv $i.tmp $i;
+done
+	    ]]></programlisting>
+	</example>
+	</para></listitem>
+	<listitem><para>
+	Add "xmlsec-mycrypto" library to the "include/xmlsec/crypto.h" file:
+	<example>
+	    <title>Modifying include/xmlsec/crypto.h file.</title>
+	    <programlisting><![CDATA[
+...	    
+#ifdef XMLSEC_CRYPTO_MYCRYPTO
+#include <xmlsec/mycrypto/app.h>
+#include <xmlsec/mycrypto/crypto.h>
+#include <xmlsec/mycrypto/symbols.h>
+#else /* XMLSEC_CRYPTO_MYCRYPTO */
+...
+#endif /* XMLSEC_CRYPTO_MYCRYPTO */
+...
+	    ]]></programlisting>
+	</example>
+	</para></listitem>
+	<listitem><para>
+	Add "xmlsec-crypto" library to the configure.in file (for *nix systems;
+	for Windows you need to modify win32/confgure.js and win32/Makefile.msvc
+	files, see win32/README.txt for details):
+	<example>
+	    <title>Modifying configure.in file.</title>
+	    <programlisting><![CDATA[
+dnl ==========================================================================
+dnl See if we can find MyCrypto
+dnl ==========================================================================
+XMLSEC_MYCRYPTO_DEFINES=""
+MYCRYPTO_CONFIG="mycrypto-config" # TODO
+MYCRYPTO_WITHOUT="no"
+MYCRYPTO_MIN_VERSION="0.0.0" # TODO 
+MYCRYPTO_VERSION=""
+MYCRYPTO_PREFIX=""
+MYCRYPTO_CFLAGS=""
+MYCRYPTO_LIBS=""
+MYCRYPTO_LDADDS=""
+AC_MSG_CHECKING(for mycrypto libraries >= $MYCRYPTO_MIN_VERSION) 
+AC_ARG_WITH(mycrypto, [  --with-mycrypto=[PFX]    mycrypto location])
+if test "$with_mycrypto" = "no" ; then
+    MYCRYPTO_WITHOUT="yes"
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mycrypto"
+    AC_MSG_RESULT(no)
+else
+    if test "$with_mycrypto" != "" ; then
+	MYCRYPTO_PREFIX=$with_mycrypto
+	MYCRYPTO_CONFIG=$MYCRYPTO_PREFIX/bin/$MYCRYPTO_CONFIG
+    fi
+    if ! $MYCRYPTO_CONFIG --version > /dev/null 2>&1
+    then
+	MYCRYPTO_WITHOUT="yes"
+	if test "$with_mycrypto" != "" ; then
+	    AC_MSG_ERROR(Unable to find mycrypto at '$with_mycrypto')
+	fi
+    else
+        vers=`$MYCRYPTO_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	minvers=`echo $MYCRYPTO_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	if test "$vers" -ge "$minvers"
+	then
+    	    MYCRYPTO_LIBS="`$MYCRYPTO_CONFIG --libs`"
+	    MYCRYPTO_CFLAGS="`$MYCRYPTO_CONFIG --cflags`"
+	    MYCRYPTO_VERSION="`$MYCRYPTO_CONFIG --version`"
+	else
+    	    AC_MSG_ERROR(You need at least mycrypto $MYCRYPTO_MIN_VERSION for this version of $PACKAGE)
+	fi	
+    fi
+
+    dnl update crypt libraries list
+    if test "$MYCRYPTO_WITHOUT" = "no" ;
+    then
+	dnl first crypto library is default one
+	if test "z$XMLSEC_CRYPTO" = "z"
+	then
+	    XMLSEC_CRYPTO="mycrypto"
+    	    XMLSEC_CRYPTO_LIB="xmlsec1-mycrypto"
+	    XMLSEC_CRYPTO_CFLAGS="$MYCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MYCRYPTO=1"
+	    XMLSEC_CRYPTO_LIBS="$MYCRYPTO_LIBS"
+	    XMLSEC_CRYPTO_LDADDS="$MYCRYPTO_LDADDS"
+	fi	
+	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mycrypto"
+    	AC_MSG_RESULT(yes ('$MYCRYPTO_VERSION'))
+    else
+	XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mycrypto"
+	AC_MSG_RESULT(no)
+    fi
+fi
+AC_SUBST(MYCRYPTO_WITHOUT)
+AC_SUBST(MYCRYPTO_MIN_VERSION)
+AC_SUBST(MYCRYPTO_VERSION)
+AC_SUBST(MYCRYPTO_CONFIG)	
+AC_SUBST(MYCRYPTO_PREFIX)
+AC_SUBST(MYCRYPTO_CFLAGS)
+AC_SUBST(MYCRYPTO_LIBS)
+AC_SUBST(MYCRYPTO_LDADDS)
+AC_SUBST(XMLSEC_MYCRYPTO_DEFINES)
+
+...
+AC_OUTPUT([
+...
+include/xmlsec/mycrypto/Makefile
+src/mycrypto/Makefile
+...
+])
+	    ]]></programlisting>
+	</example>
+	</para></listitem>
+	<listitem><para>Modify "xmlsec.spec.in" file to create "xmlsec-mycrypto"
+	RPM (if necessary).
+	</para></listitem>
+	</itemizedlist>
+	
+	By now you should be able to sucessfuly compile XML Security Library
+	with MyCrypto library (we disable all other libraries to make sure
+	that xmlsec command line utility is linked against xmlsec-mycrypto
+	library):
+	<example>
+	    <title>Compiling the results.</title>
+	    <programlisting><![CDATA[
+./autogen.sh --without-openssl --without-nss --without-gnutls \
+    	     --with-mycrypto=$HOME --disable-tmpl-tests
+make	
+	    ]]></programlisting>
+	</example>
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-functions">
+	<title>xmlSecCryptoApp* functions.</title>
+	<para>
+	The XML Security Library allows application to load multiple
+	"xmlsec-&lt;crypto&gt; libraries. To prevent symbol conflicts, 
+	all "xmlsec-mycrypto" library names MUST start with "xmlSecMyCrypto". 
+	However, in some applications (for example, the xmlsec command line
+	utility) that can use any crypto library, would prefer to 
+	use a generic function names where possible.
+	And the "include/xmlsec/mycrypto/symbols.h" include files does 
+	the magic by mapping "xmlSecMyCrypto*" to "xmlSecCrypto*".
+	</para>
+	<para>
+	In order to build xmlsec command line utility, the 
+	"xmlsec-&lt;crypto&gt;" library must implement several functions.
+	The stubs for all these functions are provided in the "skeleton"
+	we've created. While these functions are not required to be
+	implemented by "xmlsec-&lt;crypto&gt;" library, you should consider
+	doing so (if possible) to simplify testing (thru xmlsec command line
+	utility) and application development.
+	</para>
+	<para>
+	In adition to xmlSecCryptoApp* functions, the xmlsec-&lt;crypto&gt;
+	library MUST implement following xmlSecCrypto* functions:
+	<table>
+	<title>xmlSecCrypto* functions.</title>
+	<tgroup cols="2"><tbody>
+	<row><entry>xmlSecCryptoInit()</entry>
+	<entry>Initializes xmlsec-&lt;crypto&gt; library: registers cryptographic 
+	transforms implemented by the library, keys, etc. 
+	Please note, that the application might want to intialize
+	the cryprographic library by itself. The default cryprographic
+	library initialization (for example, used by xmlsec utility) 
+	is implemented in xmlSecCryptoAppInit() function.
+	</entry></row>
+	<row><entry>xmlSecCryptoShutdown()</entry>
+	<entry>Shuts down xmlsec-&lt;crypto&gt; library.
+	Please note, that the application might want to shutdown
+	the cryprographic library by itself. The default cryprographic
+	library shutdown (for example, used by xmlsec utility) 
+	is implemented in xmlSecCryptoAppShutdown() function.
+	</entry></row>
+	<row><entry>xmlSecCryptoKeysMngrInit()</entry>
+	<entry>Adds keys stores implemented by the xmlsec-&lt;crypto&gt; library
+	to the keys manager object.
+	</entry></row>
+	</tbody></tgroup></table>
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-klasses">
+	<title>Klasses and objects.</title>
+	<para>
+	TODO
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-transforms">
+	<title>Cryptographic transforms.</title>
+	<para>
+	TODO
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-keys">
+	<title>Keys.</title>
+	<para>
+	TODO
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-key-stores">
+	<title>Key stores.</title>
+	<para>
+	TODO
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-simple-keys-mngr">
+	<title>Simple keys manager.</title>
+	<para>
+	TODO
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-sharing-results">
+	<title>Sharing the results.</title>
+	<para>
+	TODO
+	</para>
+    </sect1>
 </chapter>
+
+

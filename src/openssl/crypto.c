@@ -155,7 +155,7 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_OPENSSL_096
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataAesId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataAesId)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -167,7 +167,7 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_DES    
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataDesId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataDesId)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -178,7 +178,7 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_DSA
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataDsaId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataDsaId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataDsaId)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -189,7 +189,7 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_HMAC  
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataHmacId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataHmacId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataHmacId)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -200,7 +200,7 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_RSA
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataRsaId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataRsaId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataRsaId)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -211,7 +211,7 @@ xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_X509
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataX509Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataX509Id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataX509Id)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -220,7 +220,7 @@ xmlSecOpenSSLKeysInit(void) {
 
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataRawX509CertId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataRawX509CertId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecOpenSSLKeyDataRawX509CertId)),
 		    "xmlSecKeyDataIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -236,7 +236,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_SHA1    
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformSha1Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformSha1Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -247,7 +247,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRipemd160Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRipemd160Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRipemd160Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -258,7 +258,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_HMAC
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacSha1Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacSha1Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -266,7 +266,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacRipemd160Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacRipemd160Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacRipemd160Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -274,7 +274,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacMd5Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacMd5Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformHmacMd5Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -285,7 +285,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_DSA
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformDsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformDsaSha1Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformDsaSha1Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -296,7 +296,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_RSA
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaSha1Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaSha1Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -304,7 +304,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaPkcs1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaPkcs1Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaPkcs1Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -312,7 +312,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaOaepId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaOaepId),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformRsaOaepId)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -323,7 +323,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_NO_DES    
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformDes3CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformDes3CbcId),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformDes3CbcId)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -331,7 +331,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWDes3Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWDes3Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWDes3Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -343,7 +343,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #ifndef XMLSEC_OPENSSL_096
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes128CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes128CbcId),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes128CbcId)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -351,7 +351,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes192CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes192CbcId),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes192CbcId)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -359,7 +359,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes256CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes256CbcId),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformAes256CbcId)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -368,7 +368,7 @@ xmlSecOpenSSLTransformsInit(void) {
 
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes128Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes128Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes128Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -376,7 +376,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes192Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes192Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes192Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -384,7 +384,7 @@ xmlSecOpenSSLTransformsInit(void) {
     }
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes256Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes256Id),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLTransformKWAes256Id)),
 		    "xmlSecTransformRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

@@ -166,7 +166,7 @@ xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     transform->reserved0 = xmlSecBase64CtxCreate(transform->encode, XMLSEC_BASE64_LINESIZE);
     if(transform->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBase64CtxCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -224,7 +224,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 					    buf, sizeof(buf));
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBase64CtxUpdate",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				XMLSEC_ERRORS_NO_MESSAGE);
@@ -236,7 +236,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 		ret = xmlSecBufferAppend(out, buf, outLen);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBufferAppend",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				"%d", outLen);
@@ -247,7 +247,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 		ret = xmlSecBufferRemoveHead(in, inLen);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBufferRemoveHead",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				"%d", inLen);
@@ -260,7 +260,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 		ret = xmlSecBase64CtxFinal(ctx, buf, sizeof(buf));
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBase64CtxFinal",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				XMLSEC_ERRORS_NO_MESSAGE);
@@ -272,7 +272,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 		ret = xmlSecBufferAppend(out, buf, outLen);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBufferAppend",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				"%d", outLen);
@@ -287,7 +287,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
 	    break;
 	default:
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_STATUS,
 			"%d", transform->status);

@@ -51,7 +51,7 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     sizeof(xmlSecKeyDataStore),
 
     /* data */
-    "x509-store",			/* const xmlChar* name; */ 
+    BAD_CAST "x509-store",		/* const xmlChar* name; */ 
         
     /* constructors/destructor */
     xmlSecOpenSSLX509StoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
@@ -138,7 +138,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
     certs2 = sk_X509_dup(certs);
     if(certs2 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "sk_X509_dup",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -158,7 +158,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	crls2 = sk_X509_CRL_dup(crls);
 	if(crls2 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"sk_X509_CRL_dup",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -174,7 +174,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 		sk_X509_CRL_delete(crls2, i);
 	    } else {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecKeyDataStoreGetName(store),
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "xmlSecOpenSSLX509VerifyCRL",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -194,7 +194,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 		continue;
 	    } else if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecKeyDataStoreGetName(store),
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "xmlSecOpenSSLX509VerifyCertAgainstCrls",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -210,7 +210,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 		continue;
 	    } else if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecKeyDataStoreGetName(store),
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "xmlSecOpenSSLX509VerifyCertAgainstCrls",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -242,7 +242,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 		goto done;
 	    } else if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecKeyDataStoreGetName(store),
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "X509_verify_cert",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    	    "%d (%s)", err, X509_verify_cert_error_string(err));
@@ -258,7 +258,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
 	    X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
 		        "error=%d (%s); issuer=\"%s\"", err,
@@ -267,7 +267,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	case X509_V_ERR_CERT_NOT_YET_VALID:
 	case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
 			"error=%d (%s)", err,
@@ -276,7 +276,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	case X509_V_ERR_CERT_HAS_EXPIRED:
 	case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
 			"error=%d (%s)", err,
@@ -284,7 +284,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 	    break;
 	default:			
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
 			"error=%d (%s)", err,
@@ -315,7 +315,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int tru
 	ret = X509_STORE_add_cert(xmlSecOpenSSLX509StoreGet(store), cert);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"X509_STORE_add_cert",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -329,7 +329,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int tru
 	ret = sk_X509_push(xmlSecOpenSSLX509StoreUntrusted(store), cert);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"sk_X509_push",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -360,7 +360,7 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
     lookup = X509_STORE_add_lookup(xmlSecOpenSSLX509StoreGet(store), X509_LOOKUP_hash_dir());
     if(lookup == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "X509_STORE_add_lookup",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -378,7 +378,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     store->reserved0 = X509_STORE_new();
     if(store->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "X509_STORE_new",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -386,7 +386,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     }
     if(!X509_STORE_set_default_paths(xmlSecOpenSSLX509StoreGet(store))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "X509_STORE_set_default_paths",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -397,7 +397,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     store->reserved1 = sk_X509_new_null();
     if(store->reserved1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "sk_X509_new_null",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -407,7 +407,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     store->reserved2 = sk_X509_CRL_new_null();
     if(store->reserved2 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "sk_X509_CRL_new_null",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

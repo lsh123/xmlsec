@@ -37,12 +37,11 @@ struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
     sizeof(xmlSecTransform),		/* size_t objSize */
 
-    /* same as xmlSecTransformId */ 
-    "enveloped",
+    xmlSecNameEnveloped,
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#enveloped-signature", 
-					/* const xmlChar *href; */
+    xmlSecTransformUsageDSigTransform,	/* xmlSecTransformUsage	usage; */
+    xmlSecHrefEnveloped,		/* const xmlChar *href; */
+    
     NULL,				/* xmlSecTransformInitializeMethod initialize; */
     NULL,				/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformEnvelopedReadNode,	/* xmlSecTransformReadNodeMethod read; */
@@ -125,7 +124,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
 
     if(((*doc) != ctxDoc) || (xmlTransform->hereNode == NULL) || (xmlTransform->hereNode->doc != (*doc))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED,
 		    "enveloped transform works only on the same document");
@@ -135,7 +134,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     signature = xmlSecFindParent(xmlTransform->hereNode, BAD_CAST "Signature", xmlSecDSigNs);
     if(signature == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecFindParent",
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
 		    "<dsig:Signature>");
@@ -145,7 +144,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     res = xmlSecNodeSetGetChildren((*doc), signature, 1, 1);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecNodeSetGetChildren",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -155,7 +154,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecNodeSetAdd",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

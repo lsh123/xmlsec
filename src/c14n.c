@@ -40,11 +40,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveTransformId = {
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
     sizeof(xmlSecTransform),		/* size_t objSize */
 
-    /* same as xmlSecTransformId */    
-    "c14n-inc",
+    xmlSecNameC14N,
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/TR/2001/REC-xml-c14n-20010315", /* const xmlChar href; */
+    xmlSecHrefC14N, 			/* const xmlChar href; */
 
     xmlSecC14NTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecC14NTransformFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
@@ -74,10 +73,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveWithCommentsTransfo
     sizeof(xmlSecTransform),		/* size_t objSize */
 
     /* same as xmlSecTransformId */    
-    "c14n-inc-with-comments",
+    xmlSecNameC14NWithComments,
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments", /* const xmlChar href; */
+    xmlSecHrefC14NWithComments, 	/* const xmlChar href; */
 
     xmlSecC14NTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecC14NTransformFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
@@ -106,11 +105,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveTransformId = {
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
     sizeof(xmlSecTransform),		/* size_t objSize */
 
-    /* same as xmlSecTransformId */    
-    "c14n-exc",
+    xmlSecNameExcC14N,			/* const xmlChar* name; */
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/10/xml-exc-c14n#", /* const xmlChar href; */
+    xmlSecHrefExcC14N,			/* const xmlChar href; */
 
     xmlSecC14NTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecC14NTransformFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
@@ -139,11 +137,10 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveWithCommentsTransfo
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
     sizeof(xmlSecTransform),		/* size_t objSize */
 
-    /* same as xmlSecTransformId */    
-    "c14n-exc-with-comments",
+    xmlSecNameExcC14NWithComments,
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    BAD_CAST "http://www.w3.org/2001/10/xml-exc-c14n#WithComments", /* const xmlChar href; */
+    xmlSecHrefExcC14NWithComments,	/* const xmlChar href; */
 
     xmlSecC14NTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecC14NTransformFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
@@ -242,7 +239,7 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     transform->reserved0 = buffer = xmlGetProp(node, BAD_CAST "PrefixList");
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PrefixList",
 		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 		    "<InclusiveNamespaces /> node has no PrefixList attribute");
@@ -265,7 +262,7 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     transform->reserved3 = nsList = (xmlChar**)xmlMalloc(sizeof(xmlChar*) * (count + 2));
     if(transform->reserved3 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "%d", sizeof(xmlChar*) * (count + 2));
@@ -331,7 +328,7 @@ xmlSecC14NTransformExec(xmlSecTransformPtr transform, xmlDocPtr doc,
 			1, (xmlChar**)(transform->reserved3), 1, buffer);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
 		    "xmlSecC14NInclusive, xmlSecC14NInclusiveWithComments, xmlSecC14NExclusive, xmlSecC14NExclusiveWithComments");    
@@ -340,7 +337,7 @@ xmlSecC14NTransformExec(xmlSecTransformPtr transform, xmlDocPtr doc,
     
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlC14NExecute",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

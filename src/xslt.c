@@ -140,7 +140,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlBufferCreate",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -157,7 +157,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
 			     xmlBufferLength(buffer), 1);
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecParseMemory",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -169,7 +169,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     transform->reserved0 = xsltParseStylesheetDoc(doc);
     if(transform->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xsltParseStylesheetDoc",
 		    XMLSEC_ERRORS_R_XSLT_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -208,7 +208,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 	ret = xmlSecXslProcess(in, out, xmlSecXsltGetStylesheet(transform));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecXslProcess",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -218,7 +218,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"%d", inSize);
@@ -231,7 +231,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "%d", transform->status);

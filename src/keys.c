@@ -528,7 +528,7 @@ xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
     data = xmlSecKeyDataCreate(dataId);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(dataId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -538,7 +538,7 @@ xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
     ret = xmlSecKeyDataGenerate(data, sizeBits);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(dataId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyDataGenerate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", sizeBits);
@@ -549,7 +549,7 @@ xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
     key = xmlSecKeyCreate();
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(dataId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -560,7 +560,7 @@ xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(dataId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -572,7 +572,7 @@ xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
     ret = xmlSecKeySetName(key, name);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(dataId),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeySetName",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -657,7 +657,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
  *
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
-    "keys-list",
+    BAD_CAST "keys-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
     (xmlSecPtrDestroyItemMethod)xmlSecKeyDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
     (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */

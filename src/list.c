@@ -31,7 +31,7 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
     list = (xmlSecPtrListPtr)xmlMalloc(sizeof(xmlSecPtrList));
     if(list == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecPtrListKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecPtrListKlassGetName(id)),
 		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecPtrList)=%d", 
@@ -54,7 +54,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
     newList = xmlSecPtrListCreate(list->id);
     if(newList == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecPtrListGetName(list),
+		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlSecPtrListCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -64,7 +64,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
     ret = xmlSecPtrListEnsureSize(newList, list->use);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecPtrListGetName(list),
+		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlSecPtrListEnsureSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", list->use);
@@ -80,7 +80,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
 	    newList->data[newList->use] = newList->id->duplicateItem(list->data[newList->use]);
 	    if(newList->data[newList->use] == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecPtrListGetName(list),
+			    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 			    "duplicateItem",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -143,7 +143,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecPtrListGetName(list),
+		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlSecPtrListAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", list->use + 1);
@@ -235,7 +235,7 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
     tmp = xmlRealloc(list->data, sizeof(xmlSecPtrList) * size);
     if(tmp == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecPtrListGetName(list),
+		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlRealloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecPtrList)*%d=%d", 

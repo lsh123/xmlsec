@@ -87,7 +87,7 @@ typedef void			(*xmlSecPtrDebugDumpItemMethod)	(xmlSecPtr ptr,
 								 FILE* output);
 
 struct _xmlSecPtrListKlass {
-    const char*				name;
+    const xmlChar*			name;
     xmlSecPtrDuplicateItemMethod	duplicateItem;
     xmlSecPtrDestroyItemMethod		destroyItem;
     xmlSecPtrDebugDumpItemMethod	debugDumpItem;

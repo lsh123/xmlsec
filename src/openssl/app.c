@@ -147,7 +147,7 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -192,7 +192,7 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecX509DataAddCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", ret);
@@ -284,7 +284,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     ret = xmlSecOpenSSLKeyDataX509AdoptVerified(x509Data, cert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(x509Data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
 		    "xmlSecOpenSSLKeyDataX509AdoptCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -296,7 +296,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 	ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataGetName(x509Data),
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
 			"xmlSecOpenSSLKeyDataX509AdoptCert",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -318,7 +318,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -331,7 +331,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(x509Data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
 		    "xmlSecKeyAdoptData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

@@ -215,7 +215,7 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
     data = (xmlSecKeyDataPtr)xmlMalloc(id->objSize);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "%d", id->objSize); 
@@ -228,7 +228,7 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
 	ret = (id->initialize)(data);
         if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"id->initialize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -260,7 +260,7 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
     newData = xmlSecKeyDataCreate(data->id);
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE); 
@@ -270,7 +270,7 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
     ret = (data->id->duplicate)(newData, data);
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "id->duplicate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -406,7 +406,7 @@ xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     ret = data->id->generate(data, sizeBits);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "id->generate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", sizeBits);
@@ -493,7 +493,7 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
     ret = xmlSecBufferInitialize(buffer, 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -522,7 +522,7 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 		    xmlSecBufferGetSize(buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(dst),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
 		    "xmlSecKeyDataBinaryValueSetBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -561,7 +561,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     str = xmlNodeGetContent(node);
     if(str == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlNodeGetContent",
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
 		    "name=%s", (node->name != NULL) ? node->name : BAD_CAST "NULL");
@@ -572,7 +572,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     ret = xmlSecBase64Decode(str, (unsigned char*)str, xmlStrlen(str));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecBase64Decode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -588,7 +588,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 	
 	if(!xmlSecKeyDataCheckId(data, id)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecKeyDataCheckId",
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a value of different type");
@@ -599,7 +599,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
 	if((buffer != NULL) && ((size_t)xmlSecBufferGetSize(buffer) != len)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a value of different size");
@@ -608,7 +608,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 	}
 	if((buffer != NULL) && (len > 0) && (memcmp(xmlSecBufferGetData(buffer), str, len) != 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a different value");
@@ -628,7 +628,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -639,7 +639,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     ret = xmlSecKeyDataBinaryValueSetBuffer(data, (unsigned char*)str, len);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataBinaryValueSetBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", len);
@@ -657,7 +657,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -693,7 +693,7 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 			     keyInfoCtx->base64LineSize);
     if(str == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecBase64Encode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -722,7 +722,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 	
 	if(!xmlSecKeyDataCheckId(data, id)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecKeyDataCheckId",
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a value of different type");
@@ -732,7 +732,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
 	if((buffer != NULL) && ((size_t)xmlSecBufferGetSize(buffer) != bufSize)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a value of different size");
@@ -740,7 +740,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 	}
 	if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a different value");
@@ -757,7 +757,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -767,7 +767,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
     ret = xmlSecKeyDataBinaryValueSetBuffer(data, buf, bufSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataBinaryValueSetBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", bufSize);
@@ -783,7 +783,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -818,7 +818,7 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned 
     (*buf) = (unsigned char*) xmlMalloc((*bufSize));
     if((*buf) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -906,7 +906,7 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, const unsigned char* bu
  *
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataPtrListKlass = {
-    "keys-data-list",
+    BAD_CAST "keys-data-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDataDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
     (xmlSecPtrDestroyItemMethod)xmlSecKeyDataDestroy,		/* xmlSecPtrDestroyItemMethod destroyItem; */
     (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDataDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
@@ -944,7 +944,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     store = (xmlSecKeyDataStorePtr)xmlMalloc(id->objSize);
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
 		    "xmlMalloc",		    
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "%d", id->objSize); 
@@ -957,7 +957,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
 	ret = (id->initialize)(store);
         if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
 			"id->initialize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -1001,7 +1001,7 @@ xmlSecKeyDataStoreFind(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key,
     ret = store->id->find(store, key, params, paramsSize, keyInfoCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "id->find",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -1016,7 +1016,7 @@ xmlSecKeyDataStoreFind(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key,
  *
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataStorePtrListKlass = {
-    "keys-data-store-list",
+    BAD_CAST "keys-data-store-list",
     NULL, 							/* xmlSecPtrDuplicateItemMethod duplicateItem; */
     (xmlSecPtrDestroyItemMethod)xmlSecKeyDataStoreDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
     NULL,							/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */

@@ -83,7 +83,7 @@ static int			xmlSecManifestRead		(xmlNodePtr manifestNode,
 
 
 /* The ID attribute in XMLDSig is 'Id' */
-static const xmlChar*		xmlSecDSigIds[] = { BAD_CAST "Id", NULL };
+static const xmlChar*		xmlSecDSigIds[] = { xmlSecAttrId, NULL };
 
 
 /**************************************************************************
@@ -119,10 +119,13 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     xmlSecAssert2(result != NULL, -1);
 
     (*result) = NULL;    
-    if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecDSigNs)) {
+    if(!xmlSecCheckNodeName(signNode, xmlSecNodeSignature, xmlSecDSigNs)) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(signNode)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Signature");
+		    "expected=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeSignature));
 	return(-1);	    
     }
     
@@ -132,8 +135,10 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     res = xmlSecDSigResultCreate(ctx, context, signNode, 0);
     if(res == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecDSigResultCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDSigResultCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -144,8 +149,11 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     ret = xmlSecSignatureRead(signNode, 0, res);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSignatureRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSignatureRead - %d", ret);
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(signNode)));
         xmlSecDSigResultDestroy(res);
 	return(-1);	    		
     }
@@ -181,10 +189,13 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
     (*result) = NULL;
     
-    if(!xmlSecCheckNodeName(signNode, BAD_CAST "Signature", xmlSecDSigNs)) {
+    if(!xmlSecCheckNodeName(signNode, xmlSecNodeSignature, xmlSecDSigNs)) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(signNode)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Signature");
+		    "expected=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeSignature));
 	return(-1);	    
     }
 
@@ -195,8 +206,10 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     res = xmlSecDSigResultCreate(ctx, context, signNode, 1);
     if(res == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecDSigResultCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDSigResultCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -207,8 +220,11 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
     ret = xmlSecSignatureRead(signNode, 1, res);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSignatureRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSignatureRead - %d", ret);
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(signNode)));
         xmlSecDSigResultDestroy(res);
 	return(-1);	    		
     }
@@ -248,6 +264,8 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
     result = (xmlSecDSigResultPtr) xmlMalloc(sizeof(xmlSecDSigResult));
     if(result == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecDSigResult)=%d",
 		    sizeof(xmlSecDSigResult));
@@ -447,6 +465,8 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     ctx = (xmlSecDSigCtxPtr) xmlMalloc(sizeof(xmlSecDSigCtx));
     if(ctx == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecDSigCtx)=%d",
 		    sizeof(xmlSecDSigCtx));
@@ -524,27 +544,33 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     cur = xmlSecGetNextElementNode(signNode->children);
     
     /* first node is required SignedInfo */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignedInfo", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignedInfo, xmlSecDSigNs))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "SignedInfo");
+		    "expected=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeSignedInfo));
         return(-1);
     }
     signedInfoNode = cur;
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required SignatureValue */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureValue", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignatureValue, xmlSecDSigNs))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "SignatureValue");
+		    "expected=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeSignatureValue));
 	return(-1);
     }
     signatureValueNode = cur;
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is optional KeyInfo */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
 	keyInfoNode = cur;
 	cur = xmlSecGetNextElementNode(cur->next);
     } else{
@@ -554,7 +580,7 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     
     /* next nodes are optional Object */
     firstObjectNode = NULL;
-    while((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Object", xmlSecDSigNs))) {
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeObject, xmlSecDSigNs))) {
 	if(firstObjectNode == NULL) {
 	    firstObjectNode = cur;
 	}
@@ -564,8 +590,10 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
 	    ret = xmlSecObjectRead(cur, sign, result);
 	    if(ret < 0) {
     		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecObjectRead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecObjectRead - %d", ret);
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);	    	    
 	    }
 	}
@@ -574,8 +602,10 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
     
     if(cur != NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -584,8 +614,10 @@ xmlSecSignatureRead(xmlNodePtr signNode, int sign, xmlSecDSigResultPtr result) {
 				keyInfoNode, result);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSignedInfoRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSignedInfoRead - %d", ret);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }				
     
@@ -637,27 +669,35 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     
     /* this should be done in different way if C14N is binary! */
     nodeSet = xmlSecNodeSetGetChildren(signedInfoNode->doc, 
-					signedInfoNode, 1, 0);
+				       signedInfoNode, 1, 0);
     if(nodeSet == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNodeSetGetChildren",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetGetChildren");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(signedInfoNode)));
 	goto done;
     }
 
     state = xmlSecTransformStateCreate(signedInfoNode->doc, nodeSet, NULL);
     if(state == NULL){
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformStateCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformStateCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }	
 
     ret = xmlSecTransformStateUpdate(state, c14nMethod);
     if(ret < 0){
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformStateUpdate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformStateUpdate");
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(c14nMethod)));
 	goto done;
     }
 
@@ -668,15 +708,21 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
 	memBuffer = xmlSecTransformCreate(xmlSecTransformMemBufId, 1);
 	if(memBuffer == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformCreate(xmlSecTransformMemBufId)");
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
 	    goto done;
 	}
 	ret = xmlSecTransformStateUpdate(state, memBuffer);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformStateUpdate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformStateUpdate - %d", ret);
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(memBuffer)));
 	    goto done;
 	}
     }
@@ -685,8 +731,11 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
 	ret = xmlSecTransformStateUpdate(state, signMethod);
 	if(ret < 0){
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformStateUpdate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformStateUpdate - %d", ret);
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(signMethod)));
 	    goto done;
 	}
 	signMethod->encode = sign;
@@ -696,8 +745,10 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
 						&transformCtx);
 	    if(ret < 0) {    
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecTransformStateFinalToNode",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformStateFinalToNode");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 	        goto done;
 	    }
         } else {
@@ -705,8 +756,10 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
 						signatureValueNode, &transformCtx);
 	    if(ret < 0) {    
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecTransformStateFinalVerifyNode",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformStateFinalVerifyNode");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		goto done;
 	    }
 	}	
@@ -788,33 +841,45 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     cur = xmlSecGetNextElementNode(signedInfoNode->children);
     
     /* first node is required CanonicalizationMethod */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CanonicalizationMethod", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "CanonicalizationMethod");
+		    "%s",
+		    xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
 	goto done;
     }
     c14nMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageC14NMethod, 1);
     if(c14nMethod == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformNodeRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformNodeRead(c14nNode)");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	goto done;
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required SignatureMethod */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "SignatureMethod", xmlSecDSigNs))) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,	
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignatureMethod, xmlSecDSigNs))) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "SignatureMethod");
+		    "%s",
+		    xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
 	goto done;
     }
     signMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageSignatureMethod, 1);
     if(signMethod == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformNodeRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformNodeRead(SignatureMethod Node)");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	goto done;
     }
     result->signMethod = signMethod->id;
@@ -828,23 +893,31 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	ret = xmlSecTransformSetKeyReq(signMethod, keyInfoCtx);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformSetKeyReq",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformSetKeyReq");
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(signMethod)));
 	    goto done;
 	}		
 	result->key = (xmlSecDSigResultGetKeyCallback(result))(keyInfoNode, keyInfoCtx);
     }    
     if(result->key == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-		    " ");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
     ret = xmlSecTransformSetKey(signMethod, result->key);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformSetKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformAddKey - %d", ret);
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(signMethod)));
 	goto done;
     }
     if(sign && (keyInfoNode != NULL)) {
@@ -856,36 +929,44 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 				     &result->ctx->keyInfoCtx);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecKeyInfoNodeWrite",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyInfoNodeWrite - %d", ret);
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}	
     }
     
     /* next is Reference nodes (at least one must present!) */
-    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecDSigNs)) {
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs)) {
 	ref = xmlSecReferenceCreate(xmlSecSignedInfoReference, 
 				     result->ctx, cur);
 	if(ref == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecReferenceCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecReferenceCreate");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 	
 	ret = xmlSecReferenceRead(ref, cur, sign);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecReferenceRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecReferenceRead - %d", ret);
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecReferenceDestroy(ref);
 	    goto done;
 	}
 	
 	if(xmlSecDSigResultAddSignedInfoRef(result, ref) == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecDSigResultAddSignedInfoRef",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecDSigResultAddSignedInfoRef");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecReferenceDestroy(ref);
 	    goto done;
 	}	
@@ -893,8 +974,10 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 
 	if((!sign) && (ref->result != xmlSecTransformStatusOk)) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
 			XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,
-			" ");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    /* "soft" error */
 	    res = 0;
 	    goto done;
@@ -904,6 +987,8 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     
     if(result->firstSignRef == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "Reference");
 	goto done;
@@ -911,8 +996,10 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 
     if(cur != NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -922,8 +1009,10 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 				    signatureValueNode, result);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSignedInfoCalculate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecSignedInfoCalculate - %d", ret);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }				    
     
@@ -996,25 +1085,30 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     cur = xmlSecGetNextElementNode(self->children);
     
     /* read attributes first */
-    ref->uri = xmlGetProp(self, BAD_CAST "URI");
-    ref->id  = xmlGetProp(self, BAD_CAST "Id");
-    ref->type= xmlGetProp(self, BAD_CAST "Type");
+    ref->uri = xmlGetProp(self, xmlSecAttrURI);
+    ref->id  = xmlGetProp(self, xmlSecAttrId);
+    ref->type= xmlGetProp(self, xmlSecAttrType);
 
     state = xmlSecTransformStateCreate(self->doc, NULL, (char*)ref->uri);
     if(state == NULL){
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformStateCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformStateCreate");
+		    "uri=%s",
+		    xmlSecErrorsSafeString(ref->uri));
 	goto done;
     }	
 
     /* first is optional Transforms node */
-    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecDSigNs)) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecDSigNs)) {
 	ret = xmlSecTransformsNodeRead(state, cur);
 	if(ret < 0){
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformsNodeRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformsNodeRead - %d", ret);
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}	
 	cur = xmlSecGetNextElementNode(cur->next);
@@ -1027,31 +1121,42 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 	memBuffer = xmlSecTransformCreate(xmlSecTransformMemBufId, 1);
 	if(memBuffer == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformCreate(xmlSecTransformMemBufId)");
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
 	    goto done;
 	}
 	ret = xmlSecTransformStateUpdate(state, memBuffer);
 	if(ret < 0){
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformStateUpdate",			
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformStateUpdate - %d", ret);
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
 	    goto done;
 	}
     }
      
     /* next node is required DigestMethod */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestMethod", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "DigestMethod");
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "%s",
+		    xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
 	goto done;
     }
     digestMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageDigestMethod, 1);
     if(digestMethod == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformNodeRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformNodeRead(digestMethodNode)");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
     digestMethod->encode = sign;
@@ -1059,18 +1164,24 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     ret = xmlSecTransformStateUpdate(state, digestMethod);
     if(ret < 0){
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformStateUpdate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformStateUpdate(digestMethod)");
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(digestMethod)));
 	goto done;
     }
     ref->digestMethod = digestMethod->id;
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next node is required DigestValue */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "DigestValue", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestValue, xmlSecDSigNs))) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "DigestValue");
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "%s",
+		    xmlSecErrorsSafeString(xmlSecNodeDigestValue));
 	goto done;
     }
     digestValueNode = cur;
@@ -1078,8 +1189,10 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 
     if(cur != NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
     
@@ -1087,16 +1200,21 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 	ret = xmlSecTransformStateFinalToNode(state, digestValueNode, 1, &transformCtx);
 	if(ret < 0) {    
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformStateFinalToNode",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformStateFinalToNode");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
     } else {
 	ret = xmlSecTransformStateFinalVerifyNode(state, digestMethod, digestValueNode, &transformCtx);
 	if(ret < 0) {    
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformStateFinalVerifyNode",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformStateFinalVerifyNode");
+			"digest=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(digestMethod)));
 	    goto done;
 	}
     }	
@@ -1140,6 +1258,8 @@ xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr
     ref = (xmlSecReferenceResultPtr) xmlMalloc(sizeof(xmlSecReferenceResult));
     if(ref == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecReferenceResult)=%d",
 		    sizeof(xmlSecReferenceResult));
@@ -1354,12 +1474,14 @@ xmlSecObjectRead(xmlNodePtr objectNode, int sign, xmlSecDSigResultPtr result) {
     
     cur = xmlSecGetNextElementNode(objectNode->children);
     while(cur != NULL) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "Manifest", xmlSecDSigNs)) {
+	if(xmlSecCheckNodeName(cur, xmlSecNodeManifest, xmlSecDSigNs)) {
 	    ret = xmlSecManifestRead(cur, sign, result);
 	    if(ret < 0){
     		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecManifestRead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecManifestRead - %d", ret);
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);	    
 	    }
 	}
@@ -1409,29 +1531,35 @@ xmlSecManifestRead(xmlNodePtr manifestNode, int sign, xmlSecDSigResultPtr result
     xmlSecAssert2(manifestNode != NULL, -1);
 
     cur = xmlSecGetNextElementNode(manifestNode->children);
-    while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Reference", xmlSecDSigNs)) { 
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs)) { 
 	ref = xmlSecReferenceCreate(xmlSecManifestReference, 
 				     result->ctx, cur);
 	if(ref == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecReferenceCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecReferenceCreate");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
 	ret = xmlSecReferenceRead(ref, cur, sign);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecReferenceRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecReferenceRead - %d", ret);
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecReferenceDestroy(ref);
 	    return(-1);
 	}
 	
 	if(xmlSecDSigResultAddManifestRef(result, ref) == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecDSigResultAddManifestRef",		
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecDSigResultAddManifestRef");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecReferenceDestroy(ref);
 	    return(-1);
 	}	
@@ -1440,13 +1568,14 @@ xmlSecManifestRead(xmlNodePtr manifestNode, int sign, xmlSecDSigResultPtr result
 
     if(cur != NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }    
     return(0);
 }
 
 #endif /* XMLSEC_NO_XMLDSIG */
-
 

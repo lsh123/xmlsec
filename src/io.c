@@ -66,7 +66,7 @@ static const struct _xmlSecTransformKlass xmlSecInputUriTransformId = {
 
 
     /* same as xmlSecTransformId */    
-    "input-uri",
+    BAD_CAST "input-uri",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
@@ -185,7 +185,7 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
 
     if(t->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    "uri=%s (errno=%d)", uri, errno);
@@ -212,7 +212,7 @@ xmlSecInputUriTransformRead(xmlSecTransformPtr transform,
 	ret = xmlSecInputUriTransformReadClbk(t)(t->reserved0, (char*)buf, (int)size);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecInputUriTransformReadClbk",
 			XMLSEC_ERRORS_R_IO_FAILED,
 			"errno=%d", errno);

@@ -180,7 +180,7 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
 	pKey = EVP_PKEY_new();
 	if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataGetName(data),
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 			"EVP_PKEY_new",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -190,7 +190,7 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
 	ret = EVP_PKEY_assign_DSA(pKey, dsa);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataGetName(data),
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 			"EVP_PKEY_assign_DSA",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -201,7 +201,7 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLKeyDataDsaAdoptEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -268,7 +268,7 @@ xmlSecOpenSSLKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 	pKeyDst = xmlSecOpenSSLEvpKeyDup(pKeySrc);
 	if(pKeyDst == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataGetName(dst),
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
 			"xmlSecOpenSSLEvpKeyDup",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -279,7 +279,7 @@ xmlSecOpenSSLKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(dst, pKeyDst);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(dst),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
 		    "xmlSecOpenSSLKeyDataDsaAdoptEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -300,7 +300,7 @@ xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, NULL);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLKeyDataDsaAdoptEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -322,7 +322,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     if(xmlSecKeyGetValue(key) != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyGetValue",
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -332,7 +332,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     dsa = DSA_new();
     if(dsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "DSA_new",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -344,7 +344,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "<dsig:P> expected");
@@ -353,7 +353,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->p)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:P>");
@@ -365,7 +365,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "<dsig:Q> expected");
@@ -374,7 +374,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->q)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Q>");
@@ -386,7 +386,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "<dsig:G>");
@@ -395,7 +395,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->g)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Q>");
@@ -409,7 +409,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	 * we are not sure exactly what do we read */
 	if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->priv_key)) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLNodeGetBNValue",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"<xmlsec:X>");
@@ -422,7 +422,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* next is Y node. */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "<dsig:Y>");
@@ -431,7 +431,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->pub_key)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Y>");
@@ -452,7 +452,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "no more nodes expected");
@@ -463,7 +463,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -474,7 +474,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLKeyDataDsaAdoptDsa",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -486,7 +486,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -523,7 +523,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "P", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:P>");
@@ -532,7 +532,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->p, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:P>");
@@ -544,7 +544,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "Q", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Q>");	
@@ -553,7 +553,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->q, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Q>");
@@ -565,7 +565,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "G", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:G>");	
@@ -574,7 +574,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->g, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:G>");
@@ -586,7 +586,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	cur = xmlSecAddChild(node, BAD_CAST "X", xmlSecNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"<dsig:X>");	
@@ -595,7 +595,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->priv_key, 1);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataKlassGetName(id),
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLNodeSetBNValue",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"<dsig:X>");
@@ -608,7 +608,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecAddChild(node, BAD_CAST "Y", xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Y>");	
@@ -617,7 +617,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->pub_key, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataKlassGetName(id),
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:Y>");
@@ -639,7 +639,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     dsa = DSA_generate_parameters(sizeBits, NULL, 0, &counter_ret, &h_ret, NULL, NULL); 
     if(dsa == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "DSA_generate_parameters",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "size=%d", sizeBits);
@@ -649,7 +649,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     ret = DSA_generate_key(dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "DSA_generate_key",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -660,7 +660,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataGetName(data),
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLKeyDataDsaAdoptDsa",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -820,7 +820,7 @@ xmlSecOpenSSLDsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     pKey = xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecOpenSSLKeyDataDsaGetEvp",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -830,7 +830,7 @@ xmlSecOpenSSLDsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ret = xmlSecOpenSSLEvpSignatureSetKey(transform, pKey);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecOpenSSLEvpSignatureSetKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

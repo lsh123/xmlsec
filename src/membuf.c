@@ -466,7 +466,7 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
     transform->reserved0 = xmlSecBufferCreate(0);
     if(transform->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -512,7 +512,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 	ret = xmlSecBufferAppend(buffer, xmlSecBufferGetData(in), inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferAppend",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"size=%d", inSize);
@@ -522,7 +522,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 	ret = xmlSecBufferAppend(out, xmlSecBufferGetData(in), inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferAppend",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"size=%d", inSize);
@@ -532,7 +532,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"size=%d", inSize);
@@ -547,7 +547,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 	xmlSecAssert2(inSize == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "status=%d", transform->status);

@@ -407,7 +407,7 @@ xmlSecOpenSSLAesCbcSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 					    xmlSecBufferGetSize(buffer)); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecOpenSSLEvpBlockCipherSetKey",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -575,7 +575,7 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(xmlSecOpenSSLKWAesGetKey(transform), 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecOpenSSLKWAesGetKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -632,7 +632,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     expectedKeySize = xmlSecOpenSSLKWAesGetKeySize(transform);
     if(keySize < expectedKeySize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "key length %d is not enough (%d expected)",
@@ -645,7 +645,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 			    expectedKeySize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", expectedKeySize);
@@ -685,7 +685,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	if((inSize % 8) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_SIZE,
 			"%d bytes - not 8 bytes aligned", inSize);
@@ -703,7 +703,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	ret = xmlSecBufferSetMaxSize(out, outSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"%d", outSize);
@@ -716,7 +716,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 					    xmlSecBufferGetData(out), outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecOpenSSLKWAesEncode",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -729,7 +729,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 					    xmlSecBufferGetData(out), outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecOpenSSLKWAesDecode",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -741,7 +741,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	ret = xmlSecBufferSetSize(out, outSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetSize", 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"%d", outSize);
@@ -751,7 +751,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"%d", inSize);
@@ -764,7 +764,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "%d", transform->status);

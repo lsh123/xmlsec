@@ -366,7 +366,7 @@ struct _xmlSecKeyDataKlass {
     size_t				objSize;
 
     /* data */
-    const char*				name;    
+    const xmlChar*			name;    
     xmlSecKeyDataUsage			usage;
     const xmlChar*			href;
     const xmlChar*			dataNodeName;
@@ -559,7 +559,7 @@ struct _xmlSecKeyDataStoreKlass {
     size_t				objSize;
 
     /* data */
-    const char*				name;    
+    const xmlChar*			name;    
         
     /* constructors/destructor */
     xmlSecKeyDataStoreInitializeMethod	initialize;

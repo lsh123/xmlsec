@@ -229,6 +229,12 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 53
 /**
+ * XMLSEC_ERRORS_R_UNEXPECTED_NODE:
+ * 
+ * Unexpected node.
+ */
+#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54
+/**
  * XMLSEC_ERRORS_R_ASSERTION:
  *
  * Invalid assertion.
@@ -310,7 +316,7 @@ XMLSEC_EXPORT_VAR int xmlSecPrintErrorMessages;
 #define XMLSEC_ERRORS_PRINTF_ATTRIBUTE 		
 #endif /* __GNUC__ */
 
-#define xmlSecErrorSafeString(str) \
+#define xmlSecErrorsSafeString(str) \
 	(((str) != NULL) ? ((char*)(str)) : (char*)"NULL")
 #define XMLSEC_ERRORS_NO_MESSAGE 		xmlSecErrorGetEmptyMessage()
 XMLSEC_EXPORT const char* xmlSecErrorGetEmptyMessage	(void);

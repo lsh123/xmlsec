@@ -233,7 +233,7 @@ static xmlSecKeyDataStoreKlass xmlSecSimpleKeysStoreKlass = {
     sizeof(xmlSecKeyData),
 
     /* data */
-    "simple-keys-store",		/* const xmlChar* name; */ 
+    BAD_CAST "simple-keys-store",	/* const xmlChar* name; */ 
         
     /* constructors/destructor */
     xmlSecSimpleKeysStoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
@@ -265,7 +265,7 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key) {
 	list = xmlSecPtrListCreate(xmlSecKeyPtrListId);
 	if(list == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"xmlSecPtrListCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyPtrListId");
@@ -277,7 +277,7 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key) {
     ret = xmlSecPtrListAdd(list, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlSecPtrListAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -328,7 +328,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
     doc = xmlParseFile(uri);
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlParseFile",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "uri=\"%s\"", uri);
@@ -338,7 +338,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
     root = xmlDocGetRootElement(doc);
     if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    xmlSecNodeGetName(root),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "<xmlsec:Keys>");
@@ -358,7 +358,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	key = xmlSecKeyCreate();
 	if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			xmlSecNodeGetName(cur),
 			XMLSEC_ERRORS_R_INVALID_NODE,
 			"<dsig:KeyInfo>");
@@ -369,7 +369,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"xmlSecKeyInfoNodeRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -381,7 +381,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecKeyDataStoreGetName(store),
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"xmlSecSimpleKeysStoreAdoptKey",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -394,7 +394,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
     
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "no more nodes expected");
@@ -428,7 +428,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     doc = xmlNewDoc(BAD_CAST "1.0");
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlNewDoc",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -439,7 +439,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     root = xmlNewDocNode(doc, NULL, BAD_CAST "Keys", NULL); 
     if(root == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlNewDocNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "Keys");
@@ -449,7 +449,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     xmlDocSetRootElement(doc, root);
     if(xmlNewNs(root, xmlSecNs, NULL) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlNewNs",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "xmlSecNs");
@@ -476,7 +476,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     	    cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecDSigNs);
 	    if(cur == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecKeyDataStoreGetName(store),
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "xmlSecAddChild",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "<dsig:KeyInfo>");
@@ -488,7 +488,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 	    if(xmlSecKeyGetName(key) != NULL) {
     		if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecDSigNs) == NULL) {
 		    xmlSecError(XMLSEC_ERRORS_HERE,
-				xmlSecKeyDataStoreGetName(store),
+				xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 				"xmlSecAddChild",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				"<dsig:KeyName>");
@@ -514,7 +514,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 
 	        if(xmlSecAddChild(cur, dataId->dataNodeName, dataId->dataNodeNs) == NULL) {
 		    xmlSecError(XMLSEC_ERRORS_HERE,
-				xmlSecKeyDataStoreGetName(store),
+				xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 				"xmlSecAddChild",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				"node=\"%s\"", dataId->dataNodeName);
@@ -527,7 +527,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 	    ret = xmlSecKeyInfoNodeWrite(cur, key, &keyInfoCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecKeyDataStoreGetName(store),
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "xmlSecKeyInfoNodeWrite",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -541,7 +541,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     ret = xmlSaveFormatFile(filename, doc, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlSaveFormatFile",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    "filename=\"%s\"", filename);
@@ -607,7 +607,7 @@ xmlSecSimpleKeysStoreFind(xmlSecKeyDataStorePtr store,  xmlSecKeyPtr key,
     ret = xmlSecKeyCopy(key, storedKey);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecKeyDataStoreGetName(store),
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "xmlSecKeyCopy",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

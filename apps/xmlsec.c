@@ -365,8 +365,10 @@ int main(int argc, char **argv) {
 
     if(xmlSecAppInit(&gXmlSecAppCtx) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAppInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAppInit");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -462,8 +464,10 @@ done:
 
     if(xmlSecAppShutdown(&gXmlSecAppCtx) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAppShutdown",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAppShutdown");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	/* could do nothing with that */
     }
     return(res);
@@ -1020,16 +1024,20 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
     /* Init xmlsec */
     if(xmlSecInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecInit");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     /* Init Crypto */
     if(xmlSecAppCryptoInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAppCryptoInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAppCryptoInit");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -1037,14 +1045,18 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
     gXmlSecAppCtx.keysMngr = xmlSecKeysMngrCreate();
     if(gXmlSecAppCtx.keysMngr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeysMngrCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if(xmlSecAppCryptoSimpleKeysMngrInit(gXmlSecAppCtx.keysMngr) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAppCryptoSimpleKeysMngrInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAppCryptoSimpleKeysMngrInit");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }    
     
@@ -1053,8 +1065,10 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
     ctx->dsigCtx = xmlSecDSigCtxCreate(gXmlSecAppCtx.keysMngr);
     if(ctx->dsigCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecDSigCtxCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecDSigCtxCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     /**
@@ -1072,8 +1086,10 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
     ctx->encCtx = xmlSecEncCtxCreate(gXmlSecAppCtx.keysMngr);
     if(ctx->encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecEncCtxCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecEncCtxCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 #endif /* XMLSEC_NO_XMLENC */
@@ -1108,16 +1124,20 @@ xmlSecAppShutdown(xmlSecAppCtxPtr ctx) {
     /* Shutdown Crypto */
     if(xmlSecAppCryptoShutdown() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAppCryptoShutdown",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAppCryptoShutdown");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     /* Shutdown xmlsec */
     if(xmlSecShutdown() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecShutdown",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecShutdown");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
@@ -1252,8 +1272,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
     if((strcmp(argv[pos], "--allowed") == 0) && (pos + 1 < argc)) {
 	if(readKeyOrigins(argv[++pos]) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "readKeyOrigins");
+			NULL,
+			"readKeyOrigins",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else 
@@ -1264,8 +1286,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
     if((strcmp(argv[pos], "--keys") == 0) && (pos + 1 < argc)) {
 	if(xmlSecAppCryptoSimpleKeysMngrLoad(ctx->keysMngr, argv[++pos]) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAppCryptoSimpleKeysMngrLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrLoad");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else if((strncmp(argv[pos], "--privkey", 9) == 0) && (pos + 1 < argc)) {
@@ -1275,8 +1299,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	if(name != NULL) ++name;
 	if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(ctx->keysMngr, argv[++pos], global_pwd, name, 1) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else if((strncmp(argv[pos], "--pubkey", 8) == 0) && (pos + 1 < argc)) {
@@ -1286,8 +1312,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	if(name != NULL) ++name;
 	if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(ctx->keysMngr, argv[++pos], global_pwd, name, 0) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else if((strncmp(argv[pos], "--pkcs12", 8) == 0) && (pos + 1 < argc)) {
@@ -1297,8 +1325,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	if(name != NULL) ++name;	    
 	if(xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(ctx->keysMngr, argv[++pos], global_pwd, name) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else if((strncmp(argv[pos], "--hmackey", 9) == 0) && (pos + 1 < argc)) {
@@ -1308,8 +1338,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	if(name != NULL) ++name;	    
 	if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(ctx->keysMngr, "hmac", argv[++pos], name) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(hmac)");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else 
@@ -1322,16 +1354,20 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	
 	if(ctx->sessionKey != NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "xmlSecAppCryptoShutdown");
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
 	ctx->sessionKey = xmlSecAppCryptoKeyGenerate(klassAndSize, NULL);
 	if(ctx->sessionKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoKeyGenerate(klassAndSize)");
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else 
@@ -1344,8 +1380,10 @@ xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	
 	if(xmlSecAppCryptoSimpleKeysMngrKeyGenerate(ctx->keysMngr, klassAndSize, argv[++pos]) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrKeyGenerate(klassAndSize)");
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else {
@@ -1424,15 +1462,19 @@ xmlSecAppX509OptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
     if((strcmp(argv[pos], "--trusted") == 0) && (pos + 1 < argc)) {
 	if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(ctx->keysMngr, argv[++pos], 1) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrPemCertLoad(%s)", argv[pos]);
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else if((strcmp(argv[pos], "--untrusted") == 0) && (pos + 1 < argc)) {	
 	if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(ctx->keysMngr, argv[++pos], 0) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAppCryptoSimpleKeysMngrPemCertLoad(%s)", argv[pos]);
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     } else if((strcmp(argv[pos], "--verification-time") == 0) && (pos + 1 < argc)) {
@@ -1440,8 +1482,10 @@ xmlSecAppX509OptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	     
 	if(readTime(argv[++pos], &t) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"readTime");
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
@@ -1485,8 +1529,10 @@ xmlSecAppMiscOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
     if((strcmp(argv[pos], "--repeat") == 0) && (pos + 1 < argc)) {
 	if(readNumber(argv[++pos], &repeats) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"readNumber");
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}	
     } else if((strcmp(argv[pos], "--pwd") == 0) && (pos + 1 < argc)) {

@@ -1252,7 +1252,7 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    xmlSecErrorSafeString(xmlSecNodeX509Data),
+		    xmlSecErrorsSafeString(xmlSecNodeX509Data),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);	
@@ -1265,7 +1265,7 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=\"%s\"", 
-		    xmlSecErrorSafeString(xmlSecNodeX509Data)); 
+		    xmlSecErrorsSafeString(xmlSecNodeX509Data)); 
 	return(NULL);	
     }
     
@@ -1294,7 +1294,7 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    xmlSecErrorSafeString(xmlSecNodeRetrievalMethod),
+		    xmlSecErrorsSafeString(xmlSecNodeRetrievalMethod),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);	
@@ -1307,7 +1307,7 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=\"%s\"", 
-		    xmlSecErrorSafeString(xmlSecNodeRetrievalMethod));
+		    xmlSecErrorsSafeString(xmlSecNodeRetrievalMethod));
 	return(NULL);	
     }
     
@@ -1408,7 +1408,7 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=\"%s\"", 
-		    xmlSecErrorSafeString(xmlSecNodeEncryptedKey));
+		    xmlSecErrorsSafeString(xmlSecNodeEncryptedKey));
 	return(NULL);	
     }
     
@@ -1459,7 +1459,7 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
     if(node != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    xmlSecErrorSafeString(xmlSecNodeHMACOutputLength),
+		    xmlSecErrorsSafeString(xmlSecNodeHMACOutputLength),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -1472,7 +1472,7 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s", 
-		    xmlSecErrorSafeString(xmlSecNodeHMACOutputLength));
+		    xmlSecErrorsSafeString(xmlSecNodeHMACOutputLength));
 	return(-1);
     }    
     
@@ -1505,7 +1505,7 @@ xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf,
     if(oaepParamNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    xmlSecErrorSafeString(xmlSecNodeRsaOAEPparams),
+		    xmlSecErrorsSafeString(xmlSecNodeRsaOAEPparams),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
@@ -1518,7 +1518,7 @@ xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf,
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s", 
-		    xmlSecErrorSafeString(xmlSecNodeRsaOAEPparams));
+		    xmlSecErrorsSafeString(xmlSecNodeRsaOAEPparams));
 	return(-1);    
     }
     

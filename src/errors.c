@@ -120,7 +120,7 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 	    }
 	}
 	xmlGenericError(xmlGenericErrorContext,
-	    "func=%s:file=%s:line=%d:obj=%s:subj=%s:error=%d: %s : %s \n",
+	    "func=%s:file=%s:line=%d:obj=%s:subj=%s:error=%d:%s:%s\n",
 	    (func != NULL) ? func : "unknown",
 	    (file != NULL) ? file : "unknown",
 	    line,
@@ -186,9 +186,10 @@ xmlSecError(const char* file, int line, const char* func,
 #endif /* WIN32 */
 	    error_msg[sizeof(error_msg) - 1] = '\0';
 	    va_end(va);	
+	} else {
+	    error_msg[0] = '\0';	    
 	}
-	xmlSecErrorsClbk(file, line, func, errorObject, errorSubject, reason, 
-			(msg != NULL) ? error_msg : XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecErrorsClbk(file, line, func, errorObject, errorSubject, reason, error_msg);
     }	
 }
  

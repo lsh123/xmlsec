@@ -79,7 +79,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, const unsigned c
 
     if(keySize < (size_t)keyLen) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "key length %d is not enough (%d expected)",
@@ -92,7 +92,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, const unsigned c
 			 key, NULL, transform->encode);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_CipherInit",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -127,7 +127,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	ret = xmlSecOpenSSLEvpBlockCipherInit(transform, transformCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecOpenSSLEvpBlockCipherInit",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -139,7 +139,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	ret = xmlSecOpenSSLEvpBlockCipherUpdate(transform, transformCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecOpenSSLEvpBlockCipherUpdate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -150,7 +150,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	    ret = xmlSecOpenSSLEvpBlockCipherFinal(transform, transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecOpenSSLEvpBlockCipherFinal",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -165,7 +165,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 	xmlSecAssert2(last == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "%d", transform->status);
@@ -202,7 +202,7 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = xmlSecBufferSetSize(out, ivLen);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"%d", ivLen);
@@ -213,7 +213,7 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
         ret = RAND_bytes(xmlSecBufferGetData(out), ivLen);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"RAND_bytes",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			"%d", ivLen);
@@ -224,7 +224,7 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = EVP_CipherInit(ctx, NULL, NULL, xmlSecBufferGetData(out), transform->encode);
         if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"EVP_CipherInit",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -241,7 +241,7 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = EVP_CipherInit(ctx, NULL, NULL, xmlSecBufferGetData(in), transform->encode);
         if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"EVP_CipherInit",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -252,7 +252,7 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
 	ret = xmlSecBufferRemoveHead(in, ivLen);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"%d", ivLen);
@@ -302,7 +302,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", outSize + inSize + blockLen);
@@ -337,7 +337,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = EVP_CipherUpdate(ctx, outBuf, &outLen, xmlSecBufferGetData(in), inSize);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_CipherUpdate",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -369,7 +369,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", outSize + outLen);
@@ -380,7 +380,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferRemoveHead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", inSize);
@@ -423,7 +423,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", outSize + 2 * blockLen);
@@ -457,7 +457,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 	    ret = RAND_bytes(pad, padLen - 1);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "RAND_bytes",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    "%d", padLen - 1);
@@ -470,7 +470,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 	ret = EVP_CipherUpdate(ctx, outBuf, &outLen, pad, padLen);
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"EVP_CipherUpdate",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -484,7 +484,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     ret = EVP_CipherFinal(ctx, outBuf, &outLen2);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_CipherFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -517,7 +517,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 		memcpy(outBuf, ctx->final, outLen2);
 	    } else if(outLen2 < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    NULL,
 			    XMLSEC_ERRORS_R_INVALID_DATA,
 			    "padding %d is greater than buffer %d",
@@ -532,7 +532,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     ret = xmlSecBufferSetSize(out, outSize + outLen + outLen2);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "%d", outSize + outLen + outLen2);
@@ -602,7 +602,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     ret = EVP_DigestFinal(ctx, dgst, &dgstSize);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_DigestFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -612,7 +612,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     
     if(dataSize != dgstSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "data and digest sizes are different (data=%d, dgst=%d)", 
@@ -623,7 +623,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     
     if(memcmp(dgst, data, dgstSize) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "data and digest do not match");
@@ -656,7 +656,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	ret = EVP_DigestInit(ctx, xmlSecOpenSSLEvpDigestGetDigest(transform));
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"EVP_DigestInit",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -673,7 +673,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	    ret = EVP_DigestUpdate(ctx, xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "EVP_DigestUpdate",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -683,7 +683,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	    ret = xmlSecBufferRemoveHead(in, inSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecBufferRemoveHead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "%d", inSize);
@@ -698,7 +698,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	        ret = EVP_DigestFinal(ctx, dgst, &dgstSize);
 		if(ret != 1) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"EVP_DigestFinal",
 				XMLSEC_ERRORS_R_CRYPTO_FAILED,
 				XMLSEC_ERRORS_NO_MESSAGE);
@@ -708,7 +708,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 		ret = xmlSecBufferAppend(out, dgst, dgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecTransformGetName(transform),
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBufferAppend",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
 				"%d", dgstSize);
@@ -722,7 +722,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "%d", transform->status);
@@ -793,7 +793,7 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, EVP_PKEY* pKey) {
     transform->reserved1 = xmlSecOpenSSLEvpKeyDup(pKey);
     if(transform->reserved1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecOpenSSLEvpKeyDup",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -827,14 +827,14 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     ret = EVP_VerifyFinal(ctx, (unsigned char*)data, dataSize, pKey);
     if(ret < 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_VerifyFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     } else if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "EVP_VerifyFinal",
 		    XMLSEC_ERRORS_R_DATA_NOT_MATCH,
 		    "signature do not match");
@@ -876,7 +876,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_SignInit(ctx, xmlSecOpenSSLEvpSignatureGetDigest(transform));
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "EVP_SignInit",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -886,7 +886,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_VerifyInit(ctx, xmlSecOpenSSLEvpSignatureGetDigest(transform));
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "EVP_VerifyInit",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -901,7 +901,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_SignUpdate(ctx, xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "EVP_SignUpdate",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -911,7 +911,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_VerifyUpdate(ctx, xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "EVP_VerifyUpdate",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -922,7 +922,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecTransformGetName(transform),
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -943,7 +943,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = xmlSecBufferSetMaxSize(out, outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecBufferSetMaxSize",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "%d", outSize);
@@ -953,7 +953,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = EVP_SignFinal(ctx, xmlSecBufferGetData(out), &outSize, pKey);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "EVP_SignFinal",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
@@ -963,7 +963,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	    ret = xmlSecBufferSetSize(out, outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecTransformGetName(transform),
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecBufferSetSize",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "%d", outSize);
@@ -978,7 +978,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecTransformGetName(transform),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "%d", transform->status);

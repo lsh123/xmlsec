@@ -495,7 +495,7 @@ struct _xmlSecTransformKlass {
     size_t				objSize;
 
     /* general data */
-    const char*				name;
+    const xmlChar*			name;
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
     const xmlChar			*href;

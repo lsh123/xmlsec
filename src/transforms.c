@@ -88,8 +88,10 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
     transform = (xmlSecTransformPtr)xmlMalloc(id->objSize);
     if(transform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", id->objSize); 
+		    "size=%d", id->objSize); 
 	return(NULL);
     }
     memset(transform, 0, id->objSize);    
@@ -100,8 +102,10 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 	ret = (id->initialize)(transform);
         if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"id->initialize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"id->initialize");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecTransformDestroy(transform, 1);
 	    return(NULL);
 	}
@@ -110,8 +114,10 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
     ret = xmlSecBufferInitialize(&(transform->inBuf), 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferInitialize");
+		    "size=%d", 0);
 	xmlSecTransformDestroy(transform, 1);
 	return(NULL);	
     }
@@ -119,8 +125,10 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
     ret = xmlSecBufferInitialize(&(transform->outBuf), 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferInitialize");
+		    "size=%d", 0);
 	xmlSecTransformDestroy(transform, 1);
 	return(NULL);	
     }
@@ -512,8 +520,10 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
 	    ret = xmlSecTransformReadBin(transform->prev, chunk, sizeof(chunk));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform->prev)),
+			    "xmlSecTransformReadBin",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformReadBin");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	    chunkSize = ret;
@@ -521,8 +531,10 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
 	    ret = xmlSecBufferAppend(&(transform->inBuf), chunk, chunkSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecBufferAppend",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBufferAppend(%d)", chunkSize);
+			    "size=%d", chunkSize);
 		return(-1);
 	    }
 	} else {
@@ -533,8 +545,10 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
 	ret = xmlSecTransformExecute(transform, (chunkSize == 0) ? 1 : 0, &ctx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformExecute",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecute");
+			"chunkSize=%d", chunkSize);
 	    return(-1);
 	}
 	
@@ -594,8 +608,10 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 	ret = xmlSecBufferAppend(&(transform->inBuf), buf, chunkSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecBufferAppend",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferAppend(%d)", chunkSize);
+			"chunkSize=%d", chunkSize);
 	    return(-1);
 	}
 	
@@ -603,8 +619,10 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 	ret = xmlSecTransformExecute(transform, 0, &ctx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformExecute",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecute");
+			"chunkSize=%d", chunkSize);
 	    return(-1);
 	}
     
@@ -615,8 +633,10 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 					  xmlSecBufferGetSize(&(transform->outBuf)));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform->next)),
+			    "xmlSecTransformWriteBin",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformWriteBin");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	}	
@@ -645,8 +665,10 @@ xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
 	ret = xmlSecTransformExecute(transform, 1, &ctx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformExecute",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecute");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     
@@ -659,8 +681,10 @@ xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
 					  xmlSecBufferGetSize(&(transform->outBuf)));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform->next)),
+			    "xmlSecTransformWriteBin",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformWriteBin");
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
 	}	
@@ -671,8 +695,10 @@ xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
 	ret = xmlSecTransformFlushBin(transform->next);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform->next)),
+			"xmlSecTransformFlushBin",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformFlushBin");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }

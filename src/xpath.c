@@ -263,19 +263,24 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
     xmlSecAssert2(expression != NULL, -1);
     
 
-    xpathNode = xmlSecFindChild(transformNode, BAD_CAST "XPath", xmlSecDSigNs);
+    xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeXPath),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "XPath");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }
 
-    xpathNode = xmlSecAddChild(transformNode, BAD_CAST "XPath", xmlSecDSigNs);
+    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(XPath)");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPath));
 	return(-1);    
     }
     
@@ -296,6 +301,8 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	    }
 	    if((++ptr) == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    NULL,
 			    XMLSEC_ERRORS_R_INVALID_DATA,
 			    "unexpected end of namespaces list");
 		return(-1);
@@ -305,10 +312,12 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	    ns = xmlNewNs(xpathNode, href, prefix);
 	    if(ns == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlNewNs",
 			    XMLSEC_ERRORS_R_XML_FAILED,
-			    "xmlNewNs(%s, %s)", 
-			    (href != NULL) ? (char*)href : "NULL", 
-			    (prefix != NULL) ? (char*)prefix : "NULL");
+			    "href=%s;prefix=%s", 
+			    xmlSecErrorsSafeString(href),
+			    xmlSecErrorsSafeString(prefix));
 		return(-1);
 	    }
 	}
@@ -328,39 +337,40 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPath), -1);
     xmlSecAssert2(transformNode != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPath");
-	return(-1);
-    }    
+
     xmlTransform = (xmlSecTransformPtr)transform;
     
     /* There is only one required node XPath*/
     cur = xmlSecGetNextElementNode(transformNode->children);  
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeXPath, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "XPath");
+		    "%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPath));
 	return(-1);
     }
 
     data = xmlSecXPathDataCreate(cur, NULL, xmlSecXPathTypeXPath);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     cur = xmlSecGetNextElementNode(cur->next);        
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecXPathDataDestroy(data);
 	return(-1);
     }
@@ -369,7 +379,7 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
 	xmlSecXPathDataDestroy((xmlSecXPathDataPtr)xmlTransform->reserved2);
     }
     xmlTransform->reserved2 = data;
-    xmlTransform->hereNode 	  = transformNode;
+    xmlTransform->hereNode  = transformNode;
     return(0);
 }
 
@@ -384,17 +394,11 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     xmlNodePtr hereNode;
     xmlSecNodeSetPtr res;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPath), -1);
     xmlSecAssert2(doc != NULL, -1);
     xmlSecAssert2((*doc) != NULL, -1);
     xmlSecAssert2(nodes != NULL, -1);
 
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPath");
-	return(-1);
-    }    
     xmlTransform = (xmlSecTransformPtr)transform;
     data = (xmlSecXPathDataPtr)xmlTransform->reserved2;
 
@@ -407,16 +411,20 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     res = xmlSecXPathDataExecute(data, (*doc), hereNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataExecute",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataExecute");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNodeSetAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetAdd");
+		    "xmlSecNodeSetIntersection");
 	xmlSecNodeSetDestroy(res);
 	return(-1);
     }
@@ -451,11 +459,14 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
 
-    xpathNode = xmlSecAddChild(transformNode, BAD_CAST "XPath", xmlSecXPath2Ns);
+    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(XPath)");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPath));
 	return(-1);    
     }
     
@@ -471,6 +482,8 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
 	break;
     default:
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
 		    "type=%d", type);
 	return(-1);    	
@@ -492,6 +505,8 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
 	    }
 	    if((++ptr) == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    NULL,
 			    XMLSEC_ERRORS_R_INVALID_DATA,
 			    "unexpected end of namespaces list");
 		return(-1);
@@ -501,10 +516,12 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
 	    ns = xmlNewNs(xpathNode, href, prefix);
 	    if(ns == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlNewNs",
 			    XMLSEC_ERRORS_R_XML_FAILED,
-			    "xmlNewNs(%s, %s)", 
-			    (href != NULL) ? (char*)href : "NULL", 
-			    (prefix != NULL) ? (char*)prefix : "NULL");
+			    "href=%s;prefix=%s", 
+			    xmlSecErrorsSafeString(href),
+			    xmlSecErrorsSafeString(prefix));
 		return(-1);
 	    }
 	}
@@ -522,15 +539,9 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
     xmlSecXPathType xpathType = xmlSecXPathTypeXPath2;
     xmlNodePtr cur;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPath2), -1);
     xmlSecAssert2(transformNode != NULL, -1);
     
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath2)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPath2");
-	return(-1);
-    }    
     xmlTransform = (xmlSecTransformPtr)transform;
     if(xmlTransform->reserved2 != NULL) {
 	xmlSecXPathDataDestroy((xmlSecXPathDataPtr)xmlTransform->reserved2);
@@ -540,10 +551,10 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
     /* There are only XPath nodes */
     cur = xmlSecGetNextElementNode(transformNode->children);  
     while(cur != NULL) {
-	if(xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecXPath2Ns)) {
+	if(xmlSecCheckNodeName(cur, xmlSecNodeXPath, xmlSecXPath2Ns)) {
 	    xpathType = xmlSecXPathTypeXPath2;
 #ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecXPath2Ns)) {
+	} else if(xmlSecCheckNodeName(cur, xmlSecNodeXPointer, xmlSecXPath2Ns)) {
 	    xpathType = xmlSecXPathTypeXPointer2;
 #endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
 	} else {
@@ -552,9 +563,11 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
 	
         data = xmlSecXPathDataCreate(cur, data, xpathType);
 	if(data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecXPathDataCreate");
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	if(xmlTransform->reserved2 == NULL) {
@@ -565,8 +578,10 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
 
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecXPathDataDestroy(data);
 	return(-1);
     }
@@ -585,17 +600,11 @@ xmlSecTransformXPath2Execute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     xmlNodePtr hereNode;
     xmlSecNodeSetPtr res = NULL;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPath2), -1);
     xmlSecAssert2(doc != NULL, -1);
     xmlSecAssert2((*doc) != NULL, -1);
     xmlSecAssert2(nodes != NULL, -1);
     
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath2)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPath2");
-	return(-1);
-    }    
     xmlTransform = (xmlSecTransformPtr)transform;
     data = (xmlSecXPathDataPtr)xmlTransform->reserved2;
     hereNode = ((*doc) == ctxDoc) ? xmlTransform->hereNode : NULL;
@@ -605,16 +614,20 @@ xmlSecTransformXPath2Execute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     res = xmlSecXPathDataExecute(data, (*doc), hereNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataExecute",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataExecute");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     (*nodes) = xmlSecNodeSetAddList((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNodeSetAddList",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetAddList");
+		    "xmlSecNodeSetIntersection");
 	xmlSecNodeSetDestroy(res);
 	return(-1);
     }
@@ -648,19 +661,24 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
     xmlSecAssert2(expression != NULL, -1);
     xmlSecAssert2(transformNode != NULL, -1);
 
-    xpointerNode = xmlSecFindChild(transformNode, BAD_CAST "XPointer", xmlSecXPointerNs);
+    xpointerNode = xmlSecFindChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeXPointer),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "XPointer");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }
 
-    xpointerNode = xmlSecAddChild(transformNode, BAD_CAST "XPointer", xmlSecXPointerNs);
+    xpointerNode = xmlSecAddChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(XPath)");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPointer));
 	return(-1);    
     }
     
@@ -681,6 +699,8 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	    }
 	    if((++ptr) == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    NULL,
 			    XMLSEC_ERRORS_R_INVALID_DATA,
 			    "unexpected end of namespaces list");
 		return(-1);
@@ -690,10 +710,12 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	    ns = xmlNewNs(xpointerNode, href, prefix);
 	    if(ns == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlNewNs",
 			    XMLSEC_ERRORS_R_XML_FAILED,
-			    "xmlNewNs(%s, %s)", 
-			    (href != NULL) ? (char*)href : "NULL", 
-			    (prefix != NULL) ? (char*)prefix : "NULL");
+			    "href=%s;prefix=%s", 
+			    xmlSecErrorsSafeString(href),
+			    xmlSecErrorsSafeString(prefix));
 		return(-1);
 	    }
 	}
@@ -713,39 +735,40 @@ xmlSecTransformXPointerReadNode(xmlSecTransformPtr transform, xmlNodePtr transfo
     xmlSecXPathDataPtr data;
     xmlNodePtr cur;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointer), -1);
     xmlSecAssert2(transformNode != NULL, -1);
     
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPointer)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPointer");
-	return(-1);
-    }    
     xmlTransform = (xmlSecTransformPtr)transform;
     
     /* There is only one required node XPointer*/
     cur = xmlSecGetNextElementNode(transformNode->children);  
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecXPointerNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "XPointer");
+		    "%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPointer));
 	return(-1);
     }
 
     data = xmlSecXPathDataCreate(cur, NULL, xmlSecXPathTypeXPointer);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     cur = xmlSecGetNextElementNode(cur->next);        
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecXPathDataDestroy(data);
 	return(-1);
     }
@@ -769,17 +792,11 @@ xmlSecTransformXPointerExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     xmlNodePtr hereNode;
     xmlSecNodeSetPtr res;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointer), -1);
     xmlSecAssert2(doc != NULL, -1);
     xmlSecAssert2((*doc) != NULL, -1);
     xmlSecAssert2(nodes != NULL, -1);
 
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPointer)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPointer");
-	return(-1);
-    }    
     xmlTransform = (xmlSecTransformPtr)transform;
     data = (xmlSecXPathDataPtr)xmlTransform->reserved2;
 
@@ -792,16 +809,20 @@ xmlSecTransformXPointerExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     res = xmlSecXPathDataExecute(data, (*doc), hereNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataExecute",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataExecute");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNodeSetAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecNodeSetAdd");
+		    "xmlSecNodeSetIntersection");
 	xmlSecNodeSetDestroy(res);
 	return(-1);
     }
@@ -826,6 +847,8 @@ xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, xmlSecXPat
     data = (xmlSecXPathDataPtr) xmlMalloc(sizeof(xmlSecXPathData));
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecXPathData)=%d",
 		    sizeof(xmlSecXPathData));
@@ -836,8 +859,11 @@ xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, xmlSecXPat
     data->xpathType = xpathType;        
     if((node != NULL) && (xmlSecXPathDataReadNode(data, node) < 0)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataReadNode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataReadNode");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	xmlSecXPathDataDestroy(data);    
 	return(NULL);	
     }
@@ -888,8 +914,10 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     expr = xmlNodeGetContent(node);
     if(expr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    " ");
+		    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
 	
@@ -903,8 +931,10 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 	        (xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1));
 	if(data->expr == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlMalloc",
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d",
+			"size=%d",
 			xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1);
     	    return(-1);
         }
@@ -926,8 +956,10 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 
     if(xmlSecXPathDataReadNsList(data, node) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataReadNsList",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecXPathDataReadNsList");
+		    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
     
@@ -940,11 +972,14 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 #ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
     case xmlSecXPathTypeXPointer2: 
 #endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
-        xpath2Type = xmlGetProp(node, BAD_CAST "Filter");
+        xpath2Type = xmlGetProp(node, xmlSecAttrFilter);
         if(xpath2Type == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlGetProp",
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"Filter not present" );
+			"attr=%s",
+			xmlSecErrorsSafeString(xmlSecAttrFilter));
 	    return(-1);
         }
 
@@ -956,8 +991,11 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 	    data->xpath2Type = xmlSecXPathTransformUnion;
 	} else {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"Filter=%s", xpath2Type);
+			"filter=%s", 
+			xmlSecErrorsSafeString(xpath2Type));
 	    xmlFree(xpath2Type);
 	    return(-1);
 	}
@@ -990,8 +1028,10 @@ xmlSecXPathDataReadNsList(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     data->nsList = (xmlChar**)xmlMalloc(sizeof(xmlChar*) * (2 * count));
     if(data->nsList == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", 2 * count);
+		    "size=%d", 2 * count);
 	return(-1);
     }    
     data->nsListSize = 2 * count;
@@ -1045,9 +1085,13 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	    break;
 	default:
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
 			XMLSEC_ERRORS_R_INVALID_TYPE,
 			"xpathType=%d", data->xpath2Type);
-	    if(res != NULL) xmlSecNodeSetDestroy(res);
+	    if(res != NULL) {
+		xmlSecNodeSetDestroy(res);
+	    }
 	    return(NULL);
 	}
 
@@ -1068,8 +1112,10 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	}
         if(ctx == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlXPathNewContext or xmlXPtrNewContext",			
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlXPathNewContext or xmlXPtrNewContext");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    if(res != NULL) xmlSecNodeSetDestroy(res);
 	    return(NULL);
 	}
@@ -1093,10 +1139,12 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 		prefix = (data->nsList)[i--];
 	        if((prefix != NULL) && (xmlXPathRegisterNs(ctx, prefix, href) != 0)) {
 		    xmlSecError(XMLSEC_ERRORS_HERE,
+				NULL,
+				"xmlXPathRegisterNs",
 				XMLSEC_ERRORS_R_XML_FAILED,
-				"xmlXPathRegisterNs(%s, %s)", 
-				(href != NULL) ? (char*)href : "NULL", 
-				(prefix != NULL) ? (char*)prefix : "NULL");
+				"href=%s;prefix=%s",
+				xmlSecErrorsSafeString(href),
+				xmlSecErrorsSafeString(prefix)); 
 		    xmlXPathFreeContext(ctx); 	     
 		    if(res != NULL) xmlSecNodeSetDestroy(res);
 		    return(NULL);
@@ -1121,8 +1169,10 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	}
 	if(xpath == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlXPathEvalExpression or xmlXPtrEval",
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlXPathEvalExpression or xmlXPtrEval");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlXPathFreeContext(ctx); 
 	    if(res != NULL) xmlSecNodeSetDestroy(res);
     	    return(NULL);
@@ -1148,8 +1198,10 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	tmp1 = xmlSecNodeSetCreate(doc, xpath->nodesetval, nodeSetType);
 	if(tmp1 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecNodeSetCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeSetCreate");
+			"type=%d", nodeSetType);
 	    xmlXPathFreeObject(xpath);     
 	    xmlXPathFreeContext(ctx); 
 	    if(res != NULL) xmlSecNodeSetDestroy(res);
@@ -1160,8 +1212,10 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	tmp2 = xmlSecNodeSetAdd(res, tmp1, op);
 	if(tmp2 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecNodeSetAdd",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeSetAdd");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecNodeSetDestroy(tmp1);
 	    xmlXPathFreeObject(xpath);     
 	    xmlXPathFreeContext(ctx); 

@@ -118,7 +118,7 @@ the_xml_libs="`@LIBXML_CONFIG@ --libs`"
 #
 the_xslt_flags=""
 the_xslt_libs=""
-if test "@LIBXSLT_WITHOUT@" = "no"; then 
+if test "@XMLSEC_NO_LIBXSLT@" = "0"; then 
     the_xslt_flags="`@LIBXSLT_CONFIG@ --cflags`"
     the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
 fi    
@@ -135,19 +135,19 @@ none)
     # than one crypto engine i sused by application)
     if [ "z@XMLSEC_NO_CRYPTO_DYNAMIC_LOADING@" != "z1" ] ;
     then
-	the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
+	the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=\\\"@XMLSEC_CRYPTO@\\\""
     fi
     ;;
 
 default) 
-    the_crypto_flags="@XMLSEC_CRYPTO_CFLAGS@ -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
+    the_crypto_flags="@XMLSEC_CRYPTO_CFLAGS@ -DXMLSEC_CRYPTO=\\\"@XMLSEC_CRYPTO@\\\""
     the_crypto_libs="@XMLSEC_CRYPTO_LIBS@"
     the_xmlsec_crypto_lib="-l@XMLSEC_CRYPTO_LIB@"
     ;;
     
 openssl)
-    if test "@OPENSSL_WITHOUT@" = "no"; then
-        the_crypto_flags="@OPENSSL_CFLAGS@"
+    if test "@XMLSEC_NO_OPENSSL@" = "0"; then
+        the_crypto_flags="@OPENSSL_CFLAGS@ -DXMLSEC_CRYPTO=\\\"openssl\\\""
 	the_crypto_libs="@OPENSSL_LIBS@"
         the_xmlsec_crypto_lib="-l@OPENSSL_CRYPTO_LIB@"
     else
@@ -157,8 +157,8 @@ openssl)
     ;;
 
 gnutls)
-    if test "@GNUTLS_WITHOUT@" = "no"; then
-        the_crypto_flags="@GNUTLS_CFLAGS@"
+    if test "@XMLSEC_NO_GNUTLS@" = "0"; then
+        the_crypto_flags="@GNUTLS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gnutls\\\""
 	the_crypto_libs="@GNUTLS_LIBS@"
         the_xmlsec_crypto_lib="-l@GNUTLS_CRYPTO_LIB@"
     else
@@ -168,8 +168,8 @@ gnutls)
     ;;
 
 nss)
-    if test "@NSS_WITHOUT@" = "no"; then
-        the_crypto_flags="@NSS_CFLAGS@"
+    if test "@XMLSEC_NO_NSS@" = "no"; then
+        the_crypto_flags="@NSS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"nss\\\""
 	the_crypto_libs="@NSS_LIBS@"
         the_xmlsec_crypto_lib="-l@NSS_CRYPTO_LIB@"
     else
@@ -188,8 +188,8 @@ esac
 #
 # Assemble all the settings together
 #
-the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include/xmlsec1 $the_xml_flags $the_xslt_flags $the_crypto_flags"
-the_libs="$the_libs -L${exec_prefix}/lib $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
+the_flags="$the_flags @XMLSEC_CORE_CFLAGS@ $the_xml_flags $the_xslt_flags $the_crypto_flags"
+the_libs="$the_libs -L${exec_prefix}/lib @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
 
 if $cflags; then
     all_flags="$the_flags"

@@ -552,8 +552,8 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 				  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     int ret, len;
     CRYPT_DATA_BLOB pfx;
-    HCERTSTORE hCertStore;
-    PCCERT_CONTEXT tmpcert;
+    HCERTSTORE hCertStore = NULL;
+    PCCERT_CONTEXT tmpcert = NULL;
     PCCERT_CONTEXT pCert = NULL;
     WCHAR* wcPwd = NULL;
     xmlSecKeyDataPtr x509Data = NULL;

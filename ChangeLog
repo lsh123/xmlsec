@@ -1,3 +1,7 @@
+Thu 13 Nov 2003 08:19:55 AM PST <aleksey@aleksey.com>
+	
+	* src/mscrypto/app.c: fixed non-initialized values (Glenn)
+
 2003-11-11  Aleksey Sanin <aleksey@aleksey.com>
 
 	* docs/download.html docs/index.html docs/news.html 

@@ -53,6 +53,15 @@
 	     <example>
 		<title>Verifying a document.</title>
 		<programlisting><![CDATA[
+/** 
+ * verify_file:
+ * @xml_file:		the signed XML file name.
+ * @key_file:		the PEM public key file name.
+ *
+ * Verifies XML signature in #xml_file using public key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -119,7 +128,7 @@ done:
     return(res);
 }
 		]]></programlisting>
-	    <simpara><link linkend="xmlsec-example-dsig2">Full Program Listing</link></simpara>
+	    <simpara><link linkend="xmlsec-example-dsig3">Full Program Listing</link></simpara>
 	    </example>
 	</para>
 	</sect2>
@@ -204,12 +213,17 @@ decrypt_file(const char* enc_file, const char* key_file) {
     }
         
     /* print decrypted data to stdout */
-    fprintf(stdout, "Decrypted data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
-    if(xmlSecBufferGetData(encCtx->result) != NULL) {
-	fwrite(xmlSecBufferGetData(encCtx->result), 
-	       1, 
-	       xmlSecBufferGetSize(encCtx->result),
-	       stdout);
+    if(encCtx->resultReplaced != 0) {
+	fprintf(stdout, "Decrypted XML data:\n");
+	xmlDocDump(stdout, doc);
+    } else {
+	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
+	if(xmlSecBufferGetData(encCtx->result) != NULL) {
+	    fwrite(xmlSecBufferGetData(encCtx->result), 
+	          1, 
+	          xmlSecBufferGetSize(encCtx->result),
+	          stdout);
+	}
     }
     fprintf(stdout, "\n");
         
@@ -228,7 +242,7 @@ done:
     return(res);
 }
 		]]></programlisting>
-	    <simpara><link linkend="xmlsec-example-enc2">Full Program Listing</link></simpara>
+	    <simpara><link linkend="xmlsec-example-enc3">Full Program Listing</link></simpara>
 	    </example>
 	</para>
 	</sect2>

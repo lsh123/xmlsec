@@ -364,53 +364,36 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
-    xmlNodePtr old;
-    xmlNodePtr ptr;
-    xmlNodePtr dummy;
-
+    xmlNodePtr oldNode;
+    int restoreRoot = 0;
+    
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);    
-	    
-    dummy = xmlNewDocNode(newNode->doc, NULL, BAD_CAST "dummy", NULL);
-    if(dummy == NULL) {
+
+    /* fix documents children if necessary first */
+    if((node->doc != NULL) && (node->doc->children == node)) {
+	node->doc->children = node->next;
+	restoreRoot = 1;
+    }
+    if((newNode->doc != NULL) && (newNode->doc->children == newNode)) {
+	newNode->doc->children = newNode->next;
+    }
+
+    oldNode = xmlReplaceNode(node, newNode);
+    if(oldNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlNewDocNode",		    
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "node=dummy");
-	return(-1);
-    }
-	    
-    if(newNode == xmlDocGetRootElement(newNode->doc)) {
-	ptr = xmlDocSetRootElement(newNode->doc, dummy);
-    } else {
-	ptr = xmlReplaceNode(newNode, dummy);
-    }
-    if(ptr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlDocSetRootElement or xmlReplaceNode",
+                    "xmlReplaceNode",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlFreeNode(dummy);
 	return(-1);
     }
-	    
-    if(node == xmlDocGetRootElement(node->doc)) {
-	old = xmlDocSetRootElement(node->doc, ptr);		
-    } else {
-	old = xmlReplaceNode(node, ptr);
+
+    if(restoreRoot != 0) {
+	xmlDocSetRootElement(oldNode->doc, newNode);
     }
-    if(old == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-                    "xmlDocSetRootElement or xmlReplaceNode",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlFreeNode(ptr);
-	return(-1);
-    }
-    xmlFreeNode(old);
+
+    xmlFreeNode(oldNode);
     return(0);
 }
 

@@ -42,17 +42,21 @@
 <!ENTITY xmlsec-nss-crypto 		SYSTEM "sgml/nss/crypto.sgml">
 <!ENTITY xmlsec-nss-symbols		SYSTEM "sgml/nss/symbols.sgml">
 
-
 <!ENTITY xmlsec-example-dsig1 		SYSTEM "examples/dsig1.sgml">
 <!ENTITY xmlsec-example-dsig2 		SYSTEM "examples/dsig2.sgml">
 <!ENTITY xmlsec-example-dsig3 		SYSTEM "examples/dsig3.sgml">
 <!ENTITY xmlsec-example-dsig4 		SYSTEM "examples/dsig4.sgml">
 <!ENTITY xmlsec-example-enc1 		SYSTEM "examples/enc1.sgml">
 <!ENTITY xmlsec-example-enc2 		SYSTEM "examples/enc2.sgml">
+<!ENTITY xmlsec-example-enc3 		SYSTEM "examples/enc3.sgml">
 <!ENTITY xmlsec-example-dsig1-tmpl	SYSTEM "examples/dsig1-tmpl.sgml">
 <!ENTITY xmlsec-example-dsig1-res	SYSTEM "examples/dsig1-res.sgml">
+<!ENTITY xmlsec-example-dsig2-doc	SYSTEM "examples/dsig2-doc.sgml">
+<!ENTITY xmlsec-example-dsig2-res	SYSTEM "examples/dsig2-res.sgml">
 <!ENTITY xmlsec-example-enc1-tmpl	SYSTEM "examples/enc1-tmpl.sgml">
 <!ENTITY xmlsec-example-enc1-res	SYSTEM "examples/enc1-res.sgml">
+<!ENTITY xmlsec-example-enc2-doc	SYSTEM "examples/enc2-doc.sgml">
+<!ENTITY xmlsec-example-enc2-res	SYSTEM "examples/enc2-res.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -127,8 +131,8 @@
     &chapter-compiling-and-linking;
     &chapter-init-and-shutdown;
     &chapter-sign-and-encrypt;
-    &chapter-verify-and-decrypt;
     &chapter-creating-templates;
+    &chapter-verify-and-decrypt;
     &chapter-using-keysmngr;
     <sect1 id="xmlsec-notes-transforms">
 	<title>Transforms and transforms chain.</title>
@@ -231,7 +235,7 @@ TODO
 	<para>TODO: example</para>
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-library">
-        <title>Supporting new cryptographic library.</title>
+        <title>Adding support for new cryptographic library.</title>
         <para>This section contains information for developers who wish to use
     	XML Security Library with a new crypto engine.
         </para>
@@ -303,12 +307,19 @@ TODO
     
     &xmlsec-example-dsig1;
     &xmlsec-example-dsig1-tmpl;
+    &xmlsec-example-dsig1-res;
     &xmlsec-example-dsig2;
+    &xmlsec-example-dsig2-doc;
+    &xmlsec-example-dsig2-res;
     &xmlsec-example-dsig3;
     &xmlsec-example-dsig4;
     &xmlsec-example-enc1;
     &xmlsec-example-enc1-tmpl;
+    &xmlsec-example-enc1-res;
     &xmlsec-example-enc2;
+    &xmlsec-example-enc2-doc;
+    &xmlsec-example-enc2-res;
+    &xmlsec-example-enc3;
   </chapter>
   
   <chapter id="xmlsec-index">
@@ -318,4 +329,5 @@ TODO
 	&xmlsec-index;
 	</itemizedlist>
     </para>	
+  </chapter>
 </book>

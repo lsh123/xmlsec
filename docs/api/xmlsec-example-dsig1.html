@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG1"></a>dsig1.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15416"></a><h2>Name</h2>dsig1.c -- Signing a template file.</div>
+<a name="AEN15427"></a><h2>Name</h2>dsig1.c -- Signing a template file.</div>
 <div class="REFSECT1">
-<a name="AEN15419"></a><h2>Example: Signing a template file.</h2>
+<a name="AEN15430"></a><h2>Example: Signing a template file.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15422"></a><p></p>
+<a name="AEN15433"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Signing a template file.
  * 
@@ -58,6 +58,9 @@
  *
  * Example:
  *	./dsig1 ./dsig1-tmpl.xml rsakey.pem &gt; dsig1-res.xml
+ *
+ * The result signature could be validated using dsig3 example:
+ *	./dsig3 ./dsig2-res.xml ./rsapub.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -144,6 +147,15 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/** 
+ * sign_file:
+ * @tmpl_file:		the signature template file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #tmpl_file using private key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+XML Security Library example: Signed XML doc file. 
+-->
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<SignedInfo>
+<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+<Reference>
+<Transforms>
+<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+</Transforms>
+<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+<DigestValue>HjY8ilZAIEM2tBbPn5mYO1ieIX6=</DigestValue>
+</Reference>
+</SignedInfo>
+<SignatureValue>kKNRSlGMOogaXosFhSdptV/7yPUrG+M5FvxuT0NNEYiI2iMUKz3Leyu+qHQvrqSL
+R6a3+GHmsPH7bdKPGXVOag175MT0jPnjPXr+q+FbX0+yzYCPLZ5vKA4q89jrkoA/
+otZjzuz7K9W4HoGtjZxCBBZZ1bPrjZp+rPOnSeTVvV8XnQuCGnfw/XpcsHSxfTTu
+uuzZQEJpCnA5oVtpNtfNF06vY4UDtGQP4Ezsr7gBP97EilKOC0OSh0ouCxiyNt2d
+fH/5KVwpEZXQnQ0JYWGwugyQVgPqPxnvtMO55FiIpVWlDqFgQzIGMpPwwJQN3F9H
+zHilIG1b/L7inbvqz0cotE==</SignatureValue>
+</Signature></Envelope>

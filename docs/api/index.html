@@ -77,17 +77,21 @@
 <dt><a href="xmlsec-notes-sign-encrypt.html#AEN96">Signing a document.</a></dt>
 <dt><a href="xmlsec-notes-sign-encrypt.html#AEN133">Encrypting data.</a></dt>
 </dl></dd>
+<dt><a href="xmlsec-notes-templates.html">Creating dynamic templates.</a></dt>
+<dd><dl>
+<dt><a href="xmlsec-notes-templates.html#AEN181">Creating dynamic signature templates.</a></dt>
+<dt><a href="xmlsec-notes-templates.html#AEN194">Creating dynamic encryption templates.</a></dt>
+</dl></dd>
 <dt><a href="xmlsec-notes-verify-decrypt.html">Verifing and decrypting documents.</a></dt>
 <dd><dl>
-<dt><a href="xmlsec-notes-verify-decrypt.html#AEN185">Verifying a signed document</a></dt>
-<dt><a href="xmlsec-notes-verify-decrypt.html#AEN219">Decrypting an encrypted document</a></dt>
+<dt><a href="xmlsec-notes-verify-decrypt.html#AEN214">Verifying a signed document</a></dt>
+<dt><a href="xmlsec-notes-verify-decrypt.html#AEN248">Decrypting an encrypted document</a></dt>
 </dl></dd>
-<dt><a href="xmlsec-notes-templates.html">Creating dynamic templates.</a></dt>
 <dt><a href="xmlsec-notes-keysmngr.html">Keys and keys manager.</a></dt>
 <dt><a href="xmlsec-notes-transforms.html">Transforms and transforms chain.</a></dt>
 <dt><a href="xmlsec-notes-cusomize-signature.html">Customizing signature and verification process.</a></dt>
 <dt><a href="xmlsec-notes-customize-encryption.html">Customizing encryption and decryption process.</a></dt>
-<dt><a href="xmlsec-notes-new-crypto-library.html">Supporting new cryptographic library.</a></dt>
+<dt><a href="xmlsec-notes-new-crypto-library.html">Adding support for new cryptographic library.</a></dt>
 </dl></dd>
 <dt><a href="xmlsec-ref.html">XML Security Library API Reference.</a></dt>
 <dd><dl>
@@ -162,9 +166,15 @@
 <dt>
 <a href="xmlsec-example-dsig1-tmpl.html">dsig1-tmpl.xml</a> -- Simple signature template file. </dt>
 <dt>
-<a href="xmlsec-example-dsig2.html">dsig2.c</a> -- Verifying a file.</dt>
+<a href="xmlsec-example-dsig1-res.html">dsig1-res.xml</a> -- Signed file. </dt>
 <dt>
-<a href="xmlsec-example-dsig3.html">dsig3.c</a> -- </dt>
+<a href="xmlsec-example-dsig2.html">dsig2.c</a> -- Signing a file with a dynamicaly created template.</dt>
+<dt>
+<a href="xmlsec-example-dsig2-doc.html">dsig2-doc.xml</a> -- Original XML doc file. </dt>
+<dt>
+<a href="xmlsec-example-dsig2-res.html">dsig2-res.xml</a> -- Signed XML doc file. </dt>
+<dt>
+<a href="xmlsec-example-dsig3.html">dsig3.c</a> -- Verifying a file.</dt>
 <dt>
 <a href="xmlsec-example-dsig4.html">dsig4.c</a> -- </dt>
 <dt>
@@ -172,7 +182,15 @@
 <dt>
 <a href="xmlsec-example-enc1-tmpl.html">enc1-tmpl.xml</a> -- Simple encryption template file. </dt>
 <dt>
-<a href="xmlsec-example-enc2.html">enc2.c</a> -- Decrypting an encrypted file.</dt>
+<a href="xmlsec-example-enc1-res.html">enc1-res.xml</a> -- Encrypted data file. </dt>
+<dt>
+<a href="xmlsec-example-enc2.html">enc2.c</a> -- Encrypting data using a template file.</dt>
+<dt>
+<a href="xmlsec-example-enc2-doc.html">enc2-doc.xml</a> -- Original XML doc file before encryption. </dt>
+<dt>
+<a href="xmlsec-example-enc2-res.html">enc2-res.xml</a> -- Original XML doc file before encryption. </dt>
+<dt>
+<a href="xmlsec-example-enc3.html">enc3.c</a> -- Decrypting an encrypted file.</dt>
 </dl></dd>
 <dt><a href="xmlsec-index.html">XML Security Library Reference Index</a></dt>
 </dl></div>

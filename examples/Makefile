@@ -1,7 +1,7 @@
 #
 #
 #
-PROGRAMS	 = dsig1 dsig2 enc1 enc2
+PROGRAMS	 = dsig1 dsig2 dsig3 enc1 enc2 enc3
 
 cc	 	 = gcc
 CC	 	 = gcc

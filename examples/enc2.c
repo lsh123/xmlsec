@@ -1,13 +1,17 @@
 /** 
- * XML Security Library example: Decrypting an encrypted file.
+ * XML Security Library example: Encrypting data using a template file.
  * 
- * Decrypts encrypted XML file using DES key from a binary file
+ * Encrypts XML file using a dynamicaly created template file and a DES key 
+ * from a binary file
  * 
  * Usage: 
- *	enc2 <xml-enc> <des-key-file> 
+ *	enc2 <xml-doc> <des-key-file> 
  *
  * Example:
- *	./enc2 ./enc1-res.xml deskey.bin
+ *	./enc2 ./enc2-doc.xml ./deskey.bin > ./enc2-res.xml
+ *
+ * The result could be decrypted with enc3 example:
+ *	./enc3 ./enc2-res.xml ./deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -31,9 +35,10 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmlenc.h>
+#include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-int decrypt_file(const char* enc_file, const char* key_file);
+int encrypt_file(const char* xml_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -41,7 +46,7 @@ main(int argc, char **argv) {
 
     if(argc != 3) {
 	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <enc-file> <key-file>\n", argv[0]);
+	fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
 	return(1);
     }
 
@@ -72,7 +77,7 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(decrypt_file(argv[1], argv[2]) < 0) {
+    if(encrypt_file(argv[1], argv[2]) < 0) {
 	return(-1);
     }    
     
@@ -94,28 +99,46 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/**
+ * encrypt_file:
+ * @xml_file:		the encryption template file name.
+ * @key_file:		the Triple DES key file.
+ *
+ * Encrypts #xml_file using a dynamicaly created template and DES key from
+ * #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
-decrypt_file(const char* enc_file, const char* key_file) {
+encrypt_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
+    xmlNodePtr encDataNode = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
     
-    assert(enc_file);
+    assert(xml_file);
     assert(key_file);
 
     /* load template */
-    doc = xmlParseFile(enc_file);
+    doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
-    if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
-	goto done;	
+    /* create encryption template to encrypt XML file and replace 
+     * its content with encryption result */
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+				NULL, xmlSecTypeEncElement, NULL, NULL);
+    if(encDataNode == NULL) {
+	fprintf(stderr, "Error: failed to create encryption template\n");
+	goto done;   
+    }
+
+    /* we want to put encrypted data in the <enc:CipherValue/> node */
+    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
+	goto done;   
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -125,38 +148,39 @@ decrypt_file(const char* enc_file, const char* key_file) {
 	goto done;
     }
 
-    /* load DES key */
+    /* load DES key, assuming that there is not password */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
-    /* decrypt the data */
-    if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+    /* encrypt the data */
+    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {
+        fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
+    
+    /* we template is inserted in the doc */
+    encDataNode = NULL;
         
-    /* print decrypted data to stdout */
-    fprintf(stdout, "Decrypted data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
-    if(xmlSecBufferGetData(encCtx->result) != NULL) {
-	fwrite(xmlSecBufferGetData(encCtx->result), 
-	       1, 
-	       xmlSecBufferGetSize(encCtx->result),
-	       stdout);
-    }
-    fprintf(stdout, "\n");
-        
+    /* print encrypted data with document to stdout */
+    xmlDocDump(stdout, doc);
+    
     /* success */
     res = 0;
 
 done:    
+
     /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }
-    
+
+    if(encDataNode != NULL) {
+	xmlFreeNode(encDataNode);
+    }
+        
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }

@@ -96,8 +96,21 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/**
+ * encrypt_file:
+ * @tmpl_file:		the encryption template file name.
+ * @key_file:		the Triple DES key file.
+ * @data:		the binary data to encrypt.
+ * @dataSize:		the binary data size.
+ *
+ * Encrypts binary #data using template from #tmpl_file and DES key from
+ * #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
-encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
+encrypt_file(const char* tmpl_file, const char* key_file, 
+	     const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;

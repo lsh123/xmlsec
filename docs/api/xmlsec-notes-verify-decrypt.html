@@ -6,8 +6,8 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
-<link rel="NEXT" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
+<link rel="PREVIOUS" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
+<link rel="NEXT" title="Keys and keys manager." href="xmlsec-notes-keysmngr.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,10 +33,10 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <br clear="all"><div class="SECT1">
@@ -53,12 +53,12 @@
 	encrypted document.
     	  </p>
 <div class="FIGURE">
-<a name="AEN182"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
+<a name="AEN211"></a><p><b>Figure 5. The verification or decryption processing model.</b></p>
 <p><img src="images/verif-dec-model.png" align="CENTER"></p>
 </div>	 
 	<br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN185"></a>Verifying a signed document</h2>
+<a name="AEN214"></a>Verifying a signed document</h2>
 <p>The typical siganture verification process includes following steps:
 	  </p>
 <p></p>
@@ -89,8 +89,17 @@
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN214"></a><p><b>Example 6. Verifying a document.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
+<a name="AEN243"></a><p><b>Example 8. Verifying a document.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
+ * verify_file:
+ * @xml_file:		the signed XML file name.
+ * @key_file:		the PEM public key file name.
+ *
+ * Verifies XML signature in #xml_file using public key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
@@ -156,12 +165,12 @@ done:
     return(res);
 }
 		</pre></td></tr></table>
-<p><a href="xmlsec-example-dsig2.html">Full Program Listing</a></p>
+<p><a href="xmlsec-example-dsig3.html">Full Program Listing</a></p>
 </div>
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN219"></a>Decrypting an encrypted document</h2>
+<a name="AEN248"></a>Decrypting an encrypted document</h2>
 <p>The typical decryption process includes following steps:
 	  </p>
 <p></p>
@@ -188,7 +197,7 @@ done:
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN244"></a><p><b>Example 7. Decrypting a document.</b></p>
+<a name="AEN273"></a><p><b>Example 9. Decrypting a document.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
 decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -234,12 +243,17 @@ decrypt_file(const char* enc_file, const char* key_file) {
     }
         
     /* print decrypted data to stdout */
-    fprintf(stdout, &quot;Decrypted data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
-    if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
-	fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
-	       1, 
-	       xmlSecBufferGetSize(encCtx-&gt;result),
-	       stdout);
+    if(encCtx-&gt;resultReplaced != 0) {
+	fprintf(stdout, &quot;Decrypted XML data:\n&quot;);
+	xmlDocDump(stdout, doc);
+    } else {
+	fprintf(stdout, &quot;Decrypted binary data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
+	if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
+	    fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
+	          1, 
+	          xmlSecBufferGetSize(encCtx-&gt;result),
+	          stdout);
+	}
     }
     fprintf(stdout, &quot;\n&quot;);
         
@@ -258,21 +272,21 @@ done:
     return(res);
 }
 		</pre></td></tr></table>
-<p><a href="xmlsec-example-enc2.html">Full Program Listing</a></p>
+<p><a href="xmlsec-example-enc3.html">Full Program Listing</a></p>
 </div>
 	</div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Signing and encrypting documents.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Creating dynamic templates.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Creating dynamic templates.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Keys and keys manager.</b></font></td>
 </tr>
 </table>
 </div>

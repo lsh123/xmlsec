@@ -1,61 +1,284 @@
-    <sect1 id="xmlsec-notes-templates">
-	<title>Creating dynamic templates.</title>
-	<para>TODO</para>    
-    <figure>
-    <title>XML Digital Signature Structure</title>
-    <programlisting>
-        &lt;Signature ID?&gt; 
-	    &lt;SignedInfo&gt;
-	        &lt;CanonicalizationMethod/&gt;
-	        &lt;SignatureMethod/&gt;
-	        (&lt;Reference URI? &gt;
-    	    (&lt;Transforms&gt;)?
-    	    &lt;DigestMethod&gt;
-    	    &lt;DigestValue&gt;
-	        &lt;/Reference&gt;)+
-	    &lt;/SignedInfo&gt;
-	    &lt;SignatureValue&gt; 
-	(&lt;KeyInfo&gt;)?
-	(&lt;Object ID?&gt;)*
-        &lt;/Signature&gt;
-    </programlisting>
-    </figure>
+<sect1 id="xmlsec-notes-templates">
+    <title>Creating dynamic templates.</title>
+    <para>The XML Security Library uses templates to describe
+    how and what data should be signed or encrypted. The template
+    is a regular XML file. You can create templates in advance
+    using your favorite XML files editor, load them from a file
+    and use for creating signature or encrypting data. You can 
+    also create templates dynamicaly. The XML Security Library
+    provides helper functions to quickly create dynamic templates
+    inside your application.</para>
+    <sect2>
+	<title>Creating dynamic signature templates.</title>
+	<para>The signature template has structure similar 
+	to the XML Digital Signature structure as it is described in 
+	<ulink URL="http://www.w3.org/TR/xmldsig-core">specification</ulink>.
+	The only difference is that some nodes (for example,
+	&lt;dsig:DigestValue/&gt; or &lt;SignatureValue/&gt;)
+	are empty. The XML Security Library sets the content of these
+	nodes after doing necessary calculations.
+	</para>
+	<figure>
+	    <title>XML Digital Signature structure</title>
+	    <programlisting>
+&lt;dsig:Signature ID?&gt; 
+    &lt;dsig:SignedInfo&gt;
+        &lt;dsig:CanonicalizationMethod Algorithm /&gt;
+        &lt;dsig:SignatureMethod Algorithm /&gt;
+        (&lt;dsig:Reference URI? &gt;
+    	    (&lt;dsig:Transforms&gt;
+		(&lt;dsig:Transform Algorithm /&gt;)+
+	     &lt;/dsig:Transforms&gt;)?
+	    &lt;dsig:DigestMethod Algorithm &gt;
+	    &lt;dsig:DigestValue&gt;
+	&lt;/dsig:Reference&gt;)+
+    &lt;/dsig:SignedInfo&gt;
+    &lt;dsig:SignatureValue&gt; 
+    (&lt;dsig:KeyInfo&gt;
+	&lt;dsig:KeyName&gt;?
+	&lt;dsig:KeyValue&gt;?
+	&lt;dsig:RetrievalMethod&gt;?
+	&lt;dsig:X509Data&gt;?
+	&lt;dsig:PGPData&gt;?
+	&lt;enc:EncryptedKey&gt;?
+	&lt;enc:AgreementMethod&gt;?
+	&lt;dsig:KeyName&gt;?
+	&lt;dsig:RetrievalMethod&gt;?
+	&lt;*&gt;?
+    &lt;/dsig:KeyInfo&gt;)?
+    (&lt;dsig:Object ID?&gt;)*
+&lt;/dsig:Signature&gt;
+	    </programlisting>
+	</figure>
 	<para>
 	     <example>
 		<title>Creating dynamic signature template.</title>
 		<programlisting><![CDATA[
-TODO
+/** 
+ * sign_file:
+ * @xml_file:		the XML file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #xml_file using private key from #key_file and dynamicaly
+ * created enveloped signature template.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+sign_file(const char* xml_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr refNode = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(xml_file);
+    assert(key_file);
+
+    /* load doc file */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	goto done;	
+    }
+    
+    /* create signature template for RSA-SHA1 enveloped signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
+				         xmlSecTransformRsaSha1Id, NULL);
+    if(signNode == NULL) {
+	fprintf(stderr, "Error: failed to create signature template\n");
+	goto done;		
+    }
+
+    /* add <dsig:Signature/> node to the doc */
+    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+    
+    /* add reference */
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
+					NULL, NULL, NULL);
+    if(refNode == NULL) {
+	fprintf(stderr, "Error: failed to add reference to signature template\n");
+	goto done;		
+    }
+
+    /* add enveloped transform */
+    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
+	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+	goto done;		
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,"Error: failed to create signature context\n");
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
+    if(dsigCtx->signKey == NULL) {
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
+        fprintf(stderr,"Error: signature failed\n");
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
 		]]></programlisting>
+		<simpara><link linkend="xmlsec-example-dsig2">Full program listing</link></simpara>
 	    </example>
 	</para>
-
-	<para>TODO</para>
-    <figure>
-    <title>XML Encryption Structure</title>
-    <programlisting>
-        &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
-	&lt;EncryptionMethod/&gt;?
-	&lt;ds:KeyInfo&gt;
-	        &lt;EncryptedKey&gt;?
-	        &lt;AgreementMethod&gt;?
-	        &lt;ds:KeyName&gt;?
-	        &lt;ds:RetrievalMethod&gt;?
-	        &lt;ds:*&gt;?
-	&lt;/ds:KeyInfo&gt;?
-	&lt;CipherData&gt;
-	    &lt;CipherValue&gt;?
-	        &lt;CipherReference URI?&gt;?
-	&lt;/CipherData&gt;
-	&lt;EncryptionProperties&gt;?
-        &lt;/EncryptedData&gt;	
-	</programlisting>
-    </figure>
+    </sect2>
+        
+    <sect2>
+	<title>Creating dynamic encryption templates.</title>
+	<para>The encryption template has structure similar 
+	to the XML Encryption structure as it is described in 
+	<ulink URL="http://www.w3.org/TR/xmlenc-core">specification</ulink>.
+	The only difference is that some nodes (for example,
+	&lt;enc:CipherValue/&gt;)
+	are empty. The XML Security Library sets the content of these
+	nodes after doing necessary calculations.
+	</para>
+	<figure>
+	    <title>XML Encryption structure</title>
+	    <programlisting>
+&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
+    &lt;enc:EncryptionMethod Algorithm /&gt;?
+    (&lt;dsig:KeyInfo&gt;
+	&lt;dsig:KeyName&gt;?
+	&lt;dsig:KeyValue&gt;?
+	&lt;dsig:RetrievalMethod&gt;?
+	&lt;dsig:X509Data&gt;?
+	&lt;dsig:PGPData&gt;?
+	&lt;enc:EncryptedKey&gt;?
+	&lt;enc:AgreementMethod&gt;?
+	&lt;dsig:KeyName&gt;?
+	&lt;dsig:RetrievalMethod&gt;?
+	&lt;*&gt;?
+    &lt;/dsig:KeyInfo&gt;)?
+    &lt;enc:CipherData&gt;
+	&lt;enc:CipherValue&gt;?
+	&lt;enc:CipherReference URI?&gt;?
+    &lt;/enc:CipherData&gt;
+    &lt;enc:EncryptionProperties&gt;?
+&lt;/enc:EncryptedData&gt;	
+	    </programlisting>
+	</figure>
 	<para>
 	     <example>
 		<title>Creating dynamic encrytion template.</title>
 		<programlisting><![CDATA[
-TODO
+/**
+ * encrypt_file:
+ * @xml_file:		the encryption template file name.
+ * @key_file:		the Triple DES key file.
+ *
+ * Encrypts #xml_file using a dynamicaly created template and DES key from
+ * #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+encrypt_file(const char* xml_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr encDataNode = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(xml_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	goto done;	
+    }
+    
+    /* create encryption template to encrypt XML file and replace 
+     * its content with encryption result */
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+				NULL, xmlSecTypeEncElement, NULL, NULL);
+    if(encDataNode == NULL) {
+	fprintf(stderr, "Error: failed to create encryption template\n");
+	goto done;   
+    }
+
+    /* we want to put encrypted data in the <enc:CipherValue/> node */
+    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
+	goto done;   
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
+	goto done;
+    }
+
+    /* load DES key, assuming that there is not password */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx->encKey == NULL) {
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* encrypt the data */
+    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {
+        fprintf(stderr,"Error: encryption failed\n");
+	goto done;
+    }
+    
+    /* we template is inserted in the doc */
+    encDataNode = NULL;
+        
+    /* print encrypted data with document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
+
+    if(encDataNode != NULL) {
+	xmlFreeNode(encDataNode);
+    }
+        
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
 		]]></programlisting>
+		<simpara><link linkend="xmlsec-example-enc2">Full program listing</link></simpara>
 	    </example>
 	</para>
-    </sect1>
+    </sect2>
+</sect1>

@@ -1,14 +1,19 @@
 /** 
- * XML Security Library example: Verifying a file.
- *
- * Verifies a file using a key from PEM file.
+ * XML Security Library example: Signing a file with a dynamicaly created template.
+ * 
+ * Signs a file using a dynamicaly created template and key from PEM file.
+ * The signature has one reference with one enveloped transform to sign
+ * the whole document except the <dsig:Signature/> node itself.
  * 
  * Usage: 
- *	dsig4 <signed-file> <pem-key> 
+ *	dsig2 <xml-doc> <pem-key> 
  *
  * Example:
- *	./dsig4 ./dsig1-res.xml rsapub.pem
- * 
+ *	./dsig2 ./dsig2-doc.xml rsakey.pem > dsig2-res.xml
+ *
+ * The result signature could be validated using dsig3 example:
+ *	./dsig3 ./dsig2-res.xml ./rsapub.pem
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
@@ -31,9 +36,10 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmldsig.h>
+#include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-int verify_file(const char* xml_file, const char* key_file);
+int sign_file(const char* xml_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -72,7 +78,7 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(verify_file(argv[1], argv[2]) < 0) {
+    if(sign_file(argv[1], argv[2]) < 0) {
 	return(-1);
     }    
     
@@ -94,28 +100,57 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/** 
+ * sign_file:
+ * @xml_file:		the XML file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #xml_file using private key from #key_file and dynamicaly
+ * created enveloped signature template.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
-verify_file(const char* xml_file, const char* key_file) {
+sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr refNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
     
     assert(xml_file);
     assert(key_file);
 
-    /* load file */
+    /* load doc file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
-    if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
-	goto done;	
+    /* create signature template for RSA-SHA1 enveloped signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
+				         xmlSecTransformRsaSha1Id, NULL);
+    if(signNode == NULL) {
+	fprintf(stderr, "Error: failed to create signature template\n");
+	goto done;		
+    }
+
+    /* add <dsig:Signature/> node to the doc */
+    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+    
+    /* add reference */
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
+					NULL, NULL, NULL);
+    if(refNode == NULL) {
+	fprintf(stderr, "Error: failed to add reference to signature template\n");
+	goto done;		
+    }
+
+    /* add enveloped transform */
+    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
+	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+	goto done;		
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -125,26 +160,22 @@ verify_file(const char* xml_file, const char* key_file) {
 	goto done;
     }
 
-    /* load public key */
-    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
+    /* load private key, assuming that there is not password */
+    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
     if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
 	goto done;
     }
 
-    /* Verify signature */
-    if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
+        fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
         
-    /* print verification result to stdout */
-    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, "Signature is OK\n");
-    } else {
-	fprintf(stdout, "Signature is INVALID\n");
-    }    
-
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
     /* success */
     res = 0;
 
@@ -159,5 +190,4 @@ done:
     }
     return(res);
 }
-
 

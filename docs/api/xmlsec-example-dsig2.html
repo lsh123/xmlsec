@@ -6,8 +6,8 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="dsig1-tmpl.xml" href="xmlsec-example-dsig1-tmpl.html">
-<link rel="NEXT" title="dsig3.c" href="xmlsec-example-dsig3.html">
+<link rel="PREVIOUS" title="dsig1-res.xml" href="xmlsec-example-dsig1-res.html">
+<link rel="NEXT" title="dsig2-doc.xml" href="xmlsec-example-dsig2-doc.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,32 +33,37 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-dsig1-tmpl.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-dsig1-res.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-dsig3.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-dsig2-doc.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG2"></a>dsig2.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15434"></a><h2>Name</h2>dsig2.c -- Verifying a file.</div>
+<a name="AEN15454"></a><h2>Name</h2>dsig2.c -- Signing a file with a dynamicaly created template.</div>
 <div class="REFSECT1">
-<a name="AEN15437"></a><h2>Example: Verifying a file.</h2>
+<a name="AEN15457"></a><h2>Example: Signing a file with a dynamicaly created template.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15440"></a><p></p>
+<a name="AEN15460"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * XML Security Library example: Verifying a file.
- *
- * Verifies a file using a key from PEM file.
+ * XML Security Library example: Signing a file with a dynamicaly created template.
+ * 
+ * Signs a file using a dynamicaly created template and key from PEM file.
+ * The signature has one reference with one enveloped transform to sign
+ * the whole document except the &lt;dsig:Signature/&gt; node itself.
  * 
  * Usage: 
- *	dsig4 &lt;signed-file&gt; &lt;pem-key&gt; 
+ *	dsig2 &lt;xml-doc&gt; &lt;pem-key&gt; 
  *
  * Example:
- *	./dsig4 ./dsig1-res.xml rsapub.pem
- * 
+ *	./dsig2 ./dsig2-doc.xml rsakey.pem &gt; dsig2-res.xml
+ *
+ * The result signature could be validated using dsig3 example:
+ *	./dsig3 ./dsig2-res.xml ./rsapub.pem
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
@@ -81,9 +86,10 @@
 #include &lt;xmlsec/keys.h&gt;
 #include &lt;xmlsec/keysmngr.h&gt;
 #include &lt;xmlsec/xmldsig.h&gt;
+#include &lt;xmlsec/templates.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-int verify_file(const char* xml_file, const char* key_file);
+int sign_file(const char* xml_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -122,7 +128,7 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(verify_file(argv[1], argv[2]) &lt; 0) {
+    if(sign_file(argv[1], argv[2]) &lt; 0) {
 	return(-1);
     }    
     
@@ -144,28 +150,57 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/** 
+ * sign_file:
+ * @xml_file:		the XML file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #xml_file using private key from #key_file and dynamicaly
+ * created enveloped signature template.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
-verify_file(const char* xml_file, const char* key_file) {
+sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
+    xmlNodePtr signNode = NULL;
+    xmlNodePtr refNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
     
     assert(xml_file);
     assert(key_file);
 
-    /* load file */
+    /* load doc file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
 	goto done;	
     }
     
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
-    if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
-	goto done;	
+    /* create signature template for RSA-SHA1 enveloped signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
+				         xmlSecTransformRsaSha1Id, NULL);
+    if(signNode == NULL) {
+	fprintf(stderr, &quot;Error: failed to create signature template\n&quot;);
+	goto done;		
+    }
+
+    /* add &lt;dsig:Signature/&gt; node to the doc */
+    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+    
+    /* add reference */
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
+					NULL, NULL, NULL);
+    if(refNode == NULL) {
+	fprintf(stderr, &quot;Error: failed to add reference to signature template\n&quot;);
+	goto done;		
+    }
+
+    /* add enveloped transform */
+    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
+	fprintf(stderr, &quot;Error: failed to add enveloped transform to reference\n&quot;);
+	goto done;		
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -175,26 +210,22 @@ verify_file(const char* xml_file, const char* key_file) {
 	goto done;
     }
 
-    /* load public key */
-    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
+    /* load private key, assuming that there is not password */
+    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
     if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
-    /* Verify signature */
-    if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature verify\n&quot;);
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, signNode) &lt; 0) {
+        fprintf(stderr,&quot;Error: signature failed\n&quot;);
 	goto done;
     }
         
-    /* print verification result to stdout */
-    if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, &quot;Signature is OK\n&quot;);
-    } else {
-	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
-    }    
-
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
     /* success */
     res = 0;
 
@@ -208,22 +239,21 @@ done:
 	xmlFreeDoc(doc); 
     }
     return(res);
-}
-</pre></td></tr></table>
+}</pre></td></tr></table>
 <p></p>
 </div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-dsig1-tmpl.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-dsig1-res.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-dsig3.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-dsig2-doc.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>dsig1-tmpl.xml</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>dsig3.c</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>dsig1-res.xml</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>dsig2-doc.xml</b></font></td>
 </tr>
 </table>
 </div>

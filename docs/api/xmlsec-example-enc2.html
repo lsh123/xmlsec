@@ -6,8 +6,8 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Examples." href="xmlsec-examples.html">
-<link rel="PREVIOUS" title="enc1-tmpl.xml" href="xmlsec-example-enc1-tmpl.html">
-<link rel="NEXT" title="XML Security Library Reference Index" href="xmlsec-index.html">
+<link rel="PREVIOUS" title="enc1-res.xml" href="xmlsec-example-enc1-res.html">
+<link rel="NEXT" title="enc2-doc.xml" href="xmlsec-example-enc2-doc.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,31 +33,35 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1-tmpl.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1-res.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-index.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-enc2-doc.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <h1>
 <a name="XMLSEC-EXAMPLE-ENC2"></a>enc2.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15479"></a><h2>Name</h2>enc2.c -- Decrypting an encrypted file.</div>
+<a name="AEN15526"></a><h2>Name</h2>enc2.c -- Encrypting data using a template file.</div>
 <div class="REFSECT1">
-<a name="AEN15482"></a><h2>Example: Decrypting an encrypted file.</h2>
+<a name="AEN15529"></a><h2>Example: Encrypting data using a template file.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15485"></a><p></p>
+<a name="AEN15532"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * XML Security Library example: Decrypting an encrypted file.
+ * XML Security Library example: Encrypting data using a template file.
  * 
- * Decrypts encrypted XML file using DES key from a binary file
+ * Encrypts XML file using a dynamicaly created template file and a DES key 
+ * from a binary file
  * 
  * Usage: 
- *	enc2 &lt;xml-enc&gt; &lt;des-key-file&gt; 
+ *	enc2 &lt;xml-doc&gt; &lt;des-key-file&gt; 
  *
  * Example:
- *	./enc2 ./enc1-res.xml deskey.bin
+ *	./enc2 ./enc2-doc.xml ./deskey.bin &gt; ./enc2-res.xml
+ *
+ * The result could be decrypted with enc3 example:
+ *	./enc3 ./enc2-res.xml ./deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -81,9 +85,10 @@
 #include &lt;xmlsec/keys.h&gt;
 #include &lt;xmlsec/keysmngr.h&gt;
 #include &lt;xmlsec/xmlenc.h&gt;
+#include &lt;xmlsec/templates.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-int decrypt_file(const char* enc_file, const char* key_file);
+int encrypt_file(const char* xml_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -91,7 +96,7 @@ main(int argc, char **argv) {
 
     if(argc != 3) {
 	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
-	fprintf(stderr, &quot;Usage: %s &lt;enc-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
+	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
 	return(1);
     }
 
@@ -122,7 +127,7 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(decrypt_file(argv[1], argv[2]) &lt; 0) {
+    if(encrypt_file(argv[1], argv[2]) &lt; 0) {
 	return(-1);
     }    
     
@@ -144,28 +149,46 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/**
+ * encrypt_file:
+ * @xml_file:		the encryption template file name.
+ * @key_file:		the Triple DES key file.
+ *
+ * Encrypts #xml_file using a dynamicaly created template and DES key from
+ * #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
-decrypt_file(const char* enc_file, const char* key_file) {
+encrypt_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
+    xmlNodePtr encDataNode = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
     
-    assert(enc_file);
+    assert(xml_file);
     assert(key_file);
 
     /* load template */
-    doc = xmlParseFile(enc_file);
+    doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, enc_file);
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
 	goto done;	
     }
     
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
-    if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, enc_file);
-	goto done;	
+    /* create encryption template to encrypt XML file and replace 
+     * its content with encryption result */
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+				NULL, xmlSecTypeEncElement, NULL, NULL);
+    if(encDataNode == NULL) {
+	fprintf(stderr, &quot;Error: failed to create encryption template\n&quot;);
+	goto done;   
+    }
+
+    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
+    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
+	fprintf(stderr, &quot;Error: failed to add CipherValue node\n&quot;);
+	goto done;   
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -175,38 +198,39 @@ decrypt_file(const char* enc_file, const char* key_file) {
 	goto done;
     }
 
-    /* load DES key */
+    /* load DES key, assuming that there is not password */
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
-    /* decrypt the data */
-    if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
-        fprintf(stderr,&quot;Error: decryption failed\n&quot;);
+    /* encrypt the data */
+    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &lt; 0) {
+        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
 	goto done;
     }
+    
+    /* we template is inserted in the doc */
+    encDataNode = NULL;
         
-    /* print decrypted data to stdout */
-    fprintf(stdout, &quot;Decrypted data (%d bytes):\n&quot;, xmlSecBufferGetSize(encCtx-&gt;result));
-    if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
-	fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
-	       1, 
-	       xmlSecBufferGetSize(encCtx-&gt;result),
-	       stdout);
-    }
-    fprintf(stdout, &quot;\n&quot;);
-        
+    /* print encrypted data with document to stdout */
+    xmlDocDump(stdout, doc);
+    
     /* success */
     res = 0;
 
 done:    
+
     /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }
-    
+
+    if(encDataNode != NULL) {
+	xmlFreeNode(encDataNode);
+    }
+        
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
@@ -218,14 +242,14 @@ done:
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1-tmpl.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-enc1-res.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-index.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-enc2-doc.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>enc1-tmpl.xml</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Reference Index</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>enc1-res.xml</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>enc2-doc.xml</b></font></td>
 </tr>
 </table>
 </div>

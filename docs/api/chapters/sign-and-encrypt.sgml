@@ -57,6 +57,15 @@
 	     <example>
 		<title>Signing a template.</title>
 		<programlisting><![CDATA[
+/** 
+ * sign_file:
+ * @tmpl_file:		the signature template file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #tmpl_file using private key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -179,6 +188,18 @@ done:
 	     <example>
 		<title>Encrypting binary data with a template.</title>
 		<programlisting><![CDATA[
+/**
+ * encrypt_file:
+ * @tmpl_file:		the encryption template file name.
+ * @key_file:		the Triple DES key file.
+ * @data:		the binary data to encrypt.
+ * @dataSize:		the binary data size.
+ *
+ * Encrypts binary #data using template from #tmpl_file and DES key from
+ * #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;

@@ -6,11 +6,9 @@ Files List:
     rsapub.pem			Public PEM key file.
     dsig1.c			Signing a template file.
     dsig1-tmpl.xml		The template file for dsig1 example.
-    dsig1-res.xml		The result of processing dsig1_tmpl.xml 
-				with dsig1 example:
-				    ./dsig1 ./dsig1-tmpl.xml rsakey.pem > dsig1-res.xml
+    dsig1-res.xml		The result of processing dsig1_tmpl.xml by dsig1.c
     dsig2.c			Verifying a signed document.
-    dsig3.c	
+    dsig3.c			Signing a template file with key and x509 certificate.
     dsig4.c
     enc1.c			Encrypting binary data with a template file.
     enc2.c			Decrypting binary data.

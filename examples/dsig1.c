@@ -9,6 +9,9 @@
  * Example:
  *	./dsig1 ./dsig1-tmpl.xml rsakey.pem > dsig1-res.xml
  *
+ * The result signature could be validated using dsig3 example:
+ *	./dsig3 ./dsig2-res.xml ./rsapub.pem
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
@@ -94,6 +97,15 @@ main(int argc, char **argv) {
     return(0);
 }
 
+/** 
+ * sign_file:
+ * @tmpl_file:		the signature template file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #tmpl_file using private key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+XML Security Library example: Original XML doc file before encryption. 
+-->
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+<CipherData>
+<CipherValue>PCv6MH6RMjnk0Gw/nK79aKS3bMp91Sf5ac/SFAxbEKd39CC6O/vIsrKsySpCjPSf
+eWc60Dh8tyMzPWMcw14tdZCQFZttJFTygRI9rbX3lpVV7XVonaqMoA==</CipherValue>
+</CipherData>
+</EncryptedData>

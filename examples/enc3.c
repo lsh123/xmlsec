@@ -1,15 +1,14 @@
 /** 
- * XML Security Library example: Verifying a file.
- *
- * Verifies a file using a key from PEM file.
+ * XML Security Library example: Decrypting an encrypted file.
+ * 
+ * Decrypts encrypted XML file using DES key from a binary file
  * 
  * Usage: 
- *	dsig3 <signed-file> <pem-key> 
+ *	enc3 <xml-enc> <des-key-file> 
  *
  * Example:
- *	./dsig3 ./dsig1-res.xml rsapub.pem
- *	./dsig3 ./dsig2-res.xml rsapub.pem
- * 
+ *	./enc3 ./enc1-res.xml deskey.bin
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
@@ -31,10 +30,10 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/xmldsig.h>
+#include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-int verify_file(const char* xml_file, const char* key_file);
+int decrypt_file(const char* enc_file, const char* key_file);
 
 int 
 main(int argc, char **argv) {
@@ -42,7 +41,7 @@ main(int argc, char **argv) {
 
     if(argc != 3) {
 	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
+	fprintf(stderr, "Usage: %s <enc-file> <key-file>\n", argv[0]);
 	return(1);
     }
 
@@ -73,7 +72,7 @@ main(int argc, char **argv) {
 	return(-1);
     }
 
-    if(verify_file(argv[1], argv[2]) < 0) {
+    if(decrypt_file(argv[1], argv[2]) < 0) {
 	return(-1);
     }    
     
@@ -95,73 +94,82 @@ main(int argc, char **argv) {
     return(0);
 }
 
-/** 
- * verify_file:
- * @xml_file:		the signed XML file name.
- * @key_file:		the PEM public key file name.
+/**
+ * decrypt_file:
+ * @enc_file:		the encrypted XML  file name.
+ * @key_file:		the Triple DES key file.
  *
- * Verifies XML signature in #xml_file using public key from #key_file.
+ * Decrypts the XML file #enc_file using DES key from #key_file and 
+ * prints results to stdout.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-verify_file(const char* xml_file, const char* key_file) {
+decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
     
-    assert(xml_file);
+    assert(enc_file);
     assert(key_file);
 
-    /* load file */
-    doc = xmlParseFile(xml_file);
+    /* load template */
+    doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
 	goto done;	
     }
     
     /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
 	goto done;	
     }
 
-    /* create signature context, we don't need keys manager in this example */
-    dsigCtx = xmlSecDSigCtxCreate(NULL);
-    if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
 	goto done;
     }
 
-    /* load public key */
-    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
-    if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+    /* load DES key */
+    encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx->encKey == NULL) {
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
-    /* Verify signature */
-    if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
+        fprintf(stderr,"Error: decryption failed\n");
 	goto done;
     }
         
-    /* print verification result to stdout */
-    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, "Signature is OK\n");
+    /* print decrypted data to stdout */
+    if(encCtx->resultReplaced != 0) {
+	fprintf(stdout, "Decrypted XML data:\n");
+	xmlDocDump(stdout, doc);
     } else {
-	fprintf(stdout, "Signature is INVALID\n");
-    }    
-
+	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
+	if(xmlSecBufferGetData(encCtx->result) != NULL) {
+	    fwrite(xmlSecBufferGetData(encCtx->result), 
+	          1, 
+	          xmlSecBufferGetSize(encCtx->result),
+	          stdout);
+	}
+    }
+    fprintf(stdout, "\n");
+        
     /* success */
     res = 0;
 
 done:    
     /* cleanup */
-    if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
     }
     
     if(doc != NULL) {
@@ -169,5 +177,4 @@ done:
     }
     return(res);
 }
-
 

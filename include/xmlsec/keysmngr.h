@@ -72,7 +72,7 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
  */
 struct _xmlSecKeysMngr {	
     xmlSecKeyStorePtr		keysStore;	
-    xmlSecPtrListPtr		storesList;	
+    xmlSecPtrList		storesList;	
     xmlSecGetKeyCallback	getKey;		
 };
 

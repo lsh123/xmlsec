@@ -43,7 +43,8 @@
 xmlSecKeysMngrPtr 
 xmlSecKeysMngrCreate(void) {
     xmlSecKeysMngrPtr mngr;
-
+    int ret;
+    
     /* Allocate a new xmlSecKeysMngr and fill the fields. */
     mngr = (xmlSecKeysMngrPtr)xmlMalloc(sizeof(xmlSecKeysMngr));
     if(mngr == NULL) {
@@ -56,6 +57,17 @@ xmlSecKeysMngrCreate(void) {
 	return(NULL);
     }
     memset(mngr, 0, sizeof(xmlSecKeysMngr));    
+
+    ret = xmlSecPtrListInitialize(&(mngr->storesList), xmlSecKeyDataStorePtrListId);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "xmlSecKeysMngr",
+		    "xmlSecPtrListInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataStorePtrListId");
+	return(-1);
+    }
+
     return(mngr);    
 }
 
@@ -75,9 +87,7 @@ xmlSecKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
     }
     
     /* destroy other data stores */
-    if(mngr->storesList != NULL) {
-	xmlSecPtrListDestroy(mngr->storesList);
-    }
+    xmlSecPtrListFinalize(&(mngr->storesList));
 
     memset(mngr, 0, sizeof(xmlSecKeysMngr));    
     xmlFree(mngr);    
@@ -167,27 +177,15 @@ xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataStoreIsValid(store), -1);
 
-    if(mngr->storesList == NULL) {
-	mngr->storesList = xmlSecPtrListCreate(xmlSecKeyDataStorePtrListId);
-	if(mngr->storesList == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKeysMngr",
-			"xmlSecPtrListCreate",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataStorePtrListId");
-	    return(-1);
-	}
-    }
-
-    size = xmlSecPtrListGetSize(mngr->storesList);
+    size = xmlSecPtrListGetSize(&(mngr->storesList));
     for(pos = 0; pos < size; ++pos) {
-	tmp = (xmlSecKeyDataStorePtr)xmlSecPtrListGetItem(mngr->storesList, pos);
+	tmp = (xmlSecKeyDataStorePtr)xmlSecPtrListGetItem(&(mngr->storesList), pos);
 	if((tmp != NULL) && (tmp->id == store->id)) {	
-	    return(xmlSecPtrListSet(mngr->storesList, store, pos));
+	    return(xmlSecPtrListSet(&(mngr->storesList), store, pos));
 	}
     }
     
-    return(xmlSecPtrListAdd(mngr->storesList, store));
+    return(xmlSecPtrListAdd(&(mngr->storesList), store));
 }
 
 
@@ -203,19 +201,17 @@ xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store
  */
 xmlSecKeyDataStorePtr 
 xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
+    xmlSecKeyDataStorePtr tmp;
+    size_t pos, size;
+    
     xmlSecAssert2(mngr != NULL, NULL);
     xmlSecAssert2(id != xmlSecKeyDataStoreIdUnknown, NULL);
 
-    if(mngr->storesList != NULL) {
-	xmlSecKeyDataStorePtr tmp;
-	size_t pos, size;
-	
-	size = xmlSecPtrListGetSize(mngr->storesList);
-	for(pos = 0; pos < size; ++pos) {
-	    tmp = (xmlSecKeyDataStorePtr)xmlSecPtrListGetItem(mngr->storesList, pos);
-	    if((tmp != NULL) && (tmp->id == id)) {	
-		return(tmp);
-	    }
+    size = xmlSecPtrListGetSize(&(mngr->storesList));
+    for(pos = 0; pos < size; ++pos) {
+	tmp = (xmlSecKeyDataStorePtr)xmlSecPtrListGetItem(&(mngr->storesList), pos);
+	if((tmp != NULL) && (tmp->id == id)) {	
+	    return(tmp);
 	}
     }
     

@@ -101,10 +101,7 @@
 	    </li>	    
 	    <ul>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">http://www.aleksey.com/xmlsec/xmldsig-verifier.html</xsl:with-param> 
-		    <xsl:with-param name="text">Online Verifier</xsl:with-param> 
-		</xsl:call-template>
+		<a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a> 
 	    </li>
 	    </ul>
 	    <li>

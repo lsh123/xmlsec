@@ -310,6 +310,9 @@ install : all
 	copy $(BINDIR)\$(XMLSEC_SO) $(SOPREFIX)
 	copy $(BINDIR)\$(XMLSEC_A) $(LIBPREFIX)
 	copy $(BINDIR)\$(XMLSEC_IMP) $(LIBPREFIX)
+	copy $(BINDIR)\$(XMLSEC_CRYPTO_SO) $(SOPREFIX)
+	copy $(BINDIR)\$(XMLSEC_CRYPTO_A) $(LIBPREFIX)
+	copy $(BINDIR)\$(XMLSEC_CRYPTO_IMP) $(LIBPREFIX)
 	copy $(BINDIR)\*.exe $(BINPREFIX)
 
 # This is a target for me, to make a binary distribution. Not for the public use,

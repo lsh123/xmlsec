@@ -17,7 +17,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/gnutls/app.h>
@@ -441,8 +440,8 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -476,8 +475,8 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacRipemd160Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -511,8 +510,8 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacMd5Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

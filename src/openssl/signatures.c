@@ -442,8 +442,8 @@ static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpSignatureExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -634,8 +634,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpSignatureExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

@@ -22,7 +22,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
@@ -479,8 +478,8 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 /**
@@ -625,8 +624,8 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 /**
@@ -766,8 +765,8 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 /**

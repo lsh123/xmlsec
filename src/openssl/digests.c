@@ -316,8 +316,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -356,8 +356,8 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

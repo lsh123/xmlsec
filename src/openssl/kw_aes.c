@@ -23,7 +23,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
@@ -93,8 +92,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
@@ -120,8 +119,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
@@ -147,8 +146,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 #define XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE		8

@@ -20,7 +20,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
 /**************************************************************************
@@ -56,8 +55,8 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformEnvelopedExecute,		/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 /**

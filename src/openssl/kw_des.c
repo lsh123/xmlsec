@@ -22,7 +22,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
@@ -99,8 +98,8 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLKWDes3Execute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 

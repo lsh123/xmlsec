@@ -19,7 +19,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/nss/app.h>
@@ -485,8 +484,8 @@ static xmlSecTransformKlass xmlSecNssHmacSha1Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -520,8 +519,8 @@ static xmlSecTransformKlass xmlSecNssHmacRipemd160Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -555,8 +554,8 @@ static xmlSecTransformKlass xmlSecNssHmacMd5Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

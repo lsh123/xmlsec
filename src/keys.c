@@ -20,7 +20,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 

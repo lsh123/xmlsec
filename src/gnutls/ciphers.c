@@ -707,8 +707,8 @@ static xmlSecTransformKlass xmlSecGnuTLSAes128CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSBlockCipherExecute,		/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -739,8 +739,8 @@ static xmlSecTransformKlass xmlSecGnuTLSAes192CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSBlockCipherExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -771,8 +771,8 @@ static xmlSecTransformKlass xmlSecGnuTLSAes256CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSBlockCipherExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -806,8 +806,8 @@ static xmlSecTransformKlass xmlSecGnuTLSDes3CbcKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSBlockCipherExecute,		/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

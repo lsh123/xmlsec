@@ -515,9 +515,9 @@ struct _xmlSecTransformKlass {
     /* low level method */
     xmlSecTransformExecuteMethod	execute;
 
-    /* obsolete */    
-    xmlSecTransformExecuteXmlMethod	executeXml;
-    xmlSecTransformExecuteC14NMethod	executeC14N;
+    /* reserved for future */ 
+    void* 				reserved0;
+    void* 				reserved1;
 };
 
 #define xmlSecTransformKlassGetName(klass) \

@@ -39,29 +39,29 @@ static int xmlSecTransformXmlParserPopXml			(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecTransformXmlParserKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
     BAD_CAST "xml-parser",
-    xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDSigTransform,	/* xmlSecTransformUsage	usage; */
-    NULL,				/* const xmlChar *href; */
+    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    NULL,					/* const xmlChar *href; */
     
-    NULL,				/* xmlSecTransformInitializeMethod initialize; */
-    NULL,				/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformXmlParserPushBin,	/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformXmlParserPopXml,	/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    NULL,					/* xmlSecTransformInitializeMethod initialize; */
+    NULL,					/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformXmlParserPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,					/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformXmlParserPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,				/* xmlSecTransformExecuteMethod executeXml; */
-    NULL,				/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 /**

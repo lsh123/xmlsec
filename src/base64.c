@@ -18,7 +18,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
@@ -129,8 +128,8 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecBase64Execute,			/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

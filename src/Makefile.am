@@ -10,8 +10,6 @@ $(LIBXML_CFLAGS) \
 $(NULL)
 
 EXTRA_DIST = \
-transforms-old.c \
-xmldsig-old.c \
 $(NULL)
 
 lib_LTLIBRARIES = libxmlsec.la

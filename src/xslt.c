@@ -49,7 +49,6 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
@@ -110,8 +109,8 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecXsltExecute,				/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 

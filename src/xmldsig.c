@@ -1512,6 +1512,6 @@ xmlSecDSigReferenceCtxListGetKlass(void) {
     return(&xmlSecDSigReferenceCtxListKlass);
 }
 
-/* TODO: destroy/print-debug */
 #endif /* XMLSEC_NO_XMLDSIG */
+
 

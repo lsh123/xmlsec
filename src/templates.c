@@ -17,7 +17,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/strings.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/templates.h>
@@ -231,6 +230,35 @@ xmlSecSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, const xmlChar *
     }
     return(res);        
 }
+
+/**
+ * xmlSecTransformNodeWrite:
+ * @node: the pointer to <dsig:Transform> node.
+ * @id: the transform id.
+ *
+ * Writes Agorithm attribute in the transform node.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecTransformNodeWrite(xmlNodePtr node, xmlSecTransformId id) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(id != NULL, -1);
+    
+    if(xmlSetProp(node, xmlSecAttrAlgorithm, id->href) == NULL) {	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSetProp",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "name=%s,value=%s",
+		    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
+		    xmlSecErrorsSafeString(id->href));
+	return(-1);	
+    }
+
+    return(0);
+}
+
 
 /**
  * xmlSecSignedInfoAddC14NMethod:

@@ -20,7 +20,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/transformsInternal.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 
@@ -468,8 +467,8 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -501,8 +500,8 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -533,8 +532,8 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
     
-    NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -565,8 +564,8 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    xmlSecTransformC14NOldExec		/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecTransformId 
@@ -597,8 +596,8 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
     NULL,				/* xmlSecTransformExecuteMethod execute; */
 
-    NULL,				/* xmlSecTransformExecuteXmlMethod executeXml; */
-    NULL,				/* xmlSecTransformC14NOldExecuteMethod executeC14N; */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 /**

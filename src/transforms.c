@@ -2268,6 +2268,3 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
     xmlSecTransformIOBufferDestroy(buffer);
     return(0);
 }
-
-
-#include "transforms-old.c"

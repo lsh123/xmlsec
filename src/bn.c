@@ -387,6 +387,10 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     xmlSecAssert2(bn != NULL, -1);
     xmlSecAssert2(multiplier > 0, -1);
 
+    if(multiplier == 1) {
+	return(0);
+    }
+
     data = xmlSecBufferGetData(bn);
     for(over = 0, i = xmlSecBufferGetSize(bn); i > 0;) {
 	xmlSecAssert2(data != NULL, -1);
@@ -434,6 +438,10 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     xmlSecAssert2(bn != NULL, -1);
     xmlSecAssert2(divider > 0, -1);
     xmlSecAssert2(mod != NULL, -1);
+
+    if(divider == 1) {
+	return(0);
+    }
 
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
@@ -486,7 +494,11 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
-    xmlSecAssert2(delta > 0, -1);
+    xmlSecAssert2(delta >= 0, -1);
+
+    if(delta == 0) {
+	return(0);
+    }
 
     data = xmlSecBufferGetData(bn);
     for(over = delta, i = xmlSecBufferGetSize(bn); i > 0;) {

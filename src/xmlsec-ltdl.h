@@ -34,9 +34,6 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* --- MACROS FOR PORTABILITY --- */
 
 
-/* Saves on those hard to debug '\0' typos....  */
-#define LT_EOS_CHAR	'\0'
-
 /* LTDL_BEGIN_C_DECLS should be used at the beginning of your declarations,
    so that C++ compilers don't mangle their names.  Use LTDL_END_C_DECLS at
    the end of C declarations. */
@@ -79,14 +76,12 @@ LT_BEGIN_C_DECLS
 
 /* LT_CONC creates a new concatenated symbol for the compiler
    in a portable way.  */
-#if defined(__STDC__) || defined(__cplusplus)
+#if defined(__STDC__) || defined(__cplusplus) || defined(_MSC_VER)
 #  define LT_CONC(s,t)	s##t
 #else
 #  define LT_CONC(s,t)	s/**/t
 #endif
 
-/* LT_STRLEN can be used safely on NULL pointers.  */
-#define LT_STRLEN(s)	(((s) && (s)[0]) ? strlen (s) : 0)
 
 
 
@@ -148,31 +143,25 @@ LT_BEGIN_C_DECLS
 typedef	struct xmlsec_lt_dlhandle_struct *xmlsec_lt_dlhandle;	/* A loaded module.  */
 
 /* Initialisation and finalisation functions for libltdl. */
-extern	int	    xmlsec_lt_dlinit		LT_PARAMS((void));
-extern	int	    xmlsec_lt_dlexit		LT_PARAMS((void));
+LT_SCOPE	int	    xmlsec_lt_dlinit		LT_PARAMS((void));
+LT_SCOPE	int	    xmlsec_lt_dlexit		LT_PARAMS((void));
 
-/* Module search path manipulation.  */
-extern	int	    xmlsec_lt_dladdsearchdir	 LT_PARAMS((const char *search_dir));
-extern	int	    xmlsec_lt_dlinsertsearchdir LT_PARAMS((const char *before,
-						    const char *search_dir));
-extern	int 	    xmlsec_lt_dlsetsearchpath	 LT_PARAMS((const char *search_path));
-extern	const char *xmlsec_lt_dlgetsearchpath	 LT_PARAMS((void));
-extern	int	    xmlsec_lt_dlforeachfile	 LT_PARAMS((
-			const char *search_path,
-			int (*func) (const char *filename, xmlsec_lt_ptr data),
-			xmlsec_lt_ptr data));
+/* Module search path manipultation.  */
+LT_SCOPE	int	    xmlsec_lt_dladdsearchdir	LT_PARAMS((const char *search_dir));
+LT_SCOPE	int 	    xmlsec_lt_dlsetsearchpath	LT_PARAMS((const char *search_path));
+LT_SCOPE	const char *xmlsec_lt_dlgetsearchpath	LT_PARAMS((void));
 
 /* Portable libltdl versions of the system dlopen() API. */
-extern	xmlsec_lt_dlhandle xmlsec_lt_dlopen		LT_PARAMS((const char *filename));
-extern	xmlsec_lt_dlhandle xmlsec_lt_dlopenext	LT_PARAMS((const char *filename));
-extern	xmlsec_lt_ptr	    xmlsec_lt_dlsym		LT_PARAMS((xmlsec_lt_dlhandle handle,
+LT_SCOPE	xmlsec_lt_dlhandle xmlsec_lt_dlopen		LT_PARAMS((const char *filename));
+LT_SCOPE	xmlsec_lt_dlhandle xmlsec_lt_dlopenext	LT_PARAMS((const char *filename));
+LT_SCOPE	xmlsec_lt_ptr	    xmlsec_lt_dlsym		LT_PARAMS((xmlsec_lt_dlhandle handle,
 						     const char *name));
-extern	const char *xmlsec_lt_dlerror		LT_PARAMS((void));
-extern	int	    xmlsec_lt_dlclose		LT_PARAMS((xmlsec_lt_dlhandle handle));
+LT_SCOPE	const char *xmlsec_lt_dlerror		LT_PARAMS((void));
+LT_SCOPE	int	    xmlsec_lt_dlclose		LT_PARAMS((xmlsec_lt_dlhandle handle));
 
 /* Module residency management. */
-extern	int	    xmlsec_lt_dlmakeresident	LT_PARAMS((xmlsec_lt_dlhandle handle));
-extern	int	    xmlsec_lt_dlisresident	LT_PARAMS((xmlsec_lt_dlhandle handle));
+LT_SCOPE	int	    xmlsec_lt_dlmakeresident	LT_PARAMS((xmlsec_lt_dlhandle handle));
+LT_SCOPE	int	    xmlsec_lt_dlisresident	LT_PARAMS((xmlsec_lt_dlhandle handle));
 
 
 
@@ -182,10 +171,10 @@ extern	int	    xmlsec_lt_dlisresident	LT_PARAMS((xmlsec_lt_dlhandle handle));
 
 typedef void	xmlsec_lt_dlmutex_lock		LT_PARAMS((void));
 typedef void	xmlsec_lt_dlmutex_unlock	LT_PARAMS((void));
-typedef void	xmlsec_lt_dlmutex_seterror	LT_PARAMS((const char *errmsg));
+typedef void	xmlsec_lt_dlmutex_seterror	LT_PARAMS((const char *error));
 typedef const char *xmlsec_lt_dlmutex_geterror	LT_PARAMS((void));
 
-extern	int	xmlsec_lt_dlmutex_register	LT_PARAMS((xmlsec_lt_dlmutex_lock *lock,
+LT_SCOPE	int	xmlsec_lt_dlmutex_register	LT_PARAMS((xmlsec_lt_dlmutex_lock *lock,
 					    xmlsec_lt_dlmutex_unlock *unlock,
 					    xmlsec_lt_dlmutex_seterror *seterror,
 					    xmlsec_lt_dlmutex_geterror *geterror));
@@ -196,13 +185,8 @@ extern	int	xmlsec_lt_dlmutex_register	LT_PARAMS((xmlsec_lt_dlmutex_lock *lock,
 /* --- MEMORY HANDLING --- */
 
 
-/* By default, the realloc function pointer is set to our internal
-   realloc implementation which iself uses xmlsec_lt_dlmalloc and xmlsec_lt_dlfree.
-   libltdl relies on a featureful realloc, but if you are sure yours
-   has the right semantics then you can assign it directly.  Generally,
-   it is safe to assign just a malloc() and a free() function.  */
+/* Pointers to memory management functions to be used by libltdl. */
 LT_SCOPE  xmlsec_lt_ptr   (*xmlsec_lt_dlmalloc)	LT_PARAMS((size_t size));
-LT_SCOPE  xmlsec_lt_ptr   (*xmlsec_lt_dlrealloc)	LT_PARAMS((xmlsec_lt_ptr ptr, size_t size));
 LT_SCOPE  void	   (*xmlsec_lt_dlfree)		LT_PARAMS((xmlsec_lt_ptr ptr));
 
 
@@ -218,12 +202,12 @@ typedef struct {
   xmlsec_lt_ptr      address;
 } xmlsec_lt_dlsymlist;
 
-extern	int	xmlsec_lt_dlpreload	LT_PARAMS((const xmlsec_lt_dlsymlist *preloaded));
-extern	int	xmlsec_lt_dlpreload_default
+LT_SCOPE	int	xmlsec_lt_dlpreload	LT_PARAMS((const xmlsec_lt_dlsymlist *preloaded));
+LT_SCOPE	int	xmlsec_lt_dlpreload_default
 				LT_PARAMS((const xmlsec_lt_dlsymlist *preloaded));
 
 #define LTDL_SET_PRELOADED_SYMBOLS() 		LT_STMT_START{	\
-	extern const xmlsec_lt_dlsymlist xmlsec_lt_preloaded_symbols[];		\
+	LT_SCOPE const xmlsec_lt_dlsymlist xmlsec_lt_preloaded_symbols[];		\
 	xmlsec_lt_dlpreload_default(xmlsec_lt_preloaded_symbols);			\
 						}LT_STMT_END
 
@@ -241,20 +225,20 @@ typedef	struct {
 				   number of times xmlsec_lt_dlclosed. */
 } xmlsec_lt_dlinfo;
 
-extern	const xmlsec_lt_dlinfo	*xmlsec_lt_dlgetinfo	    LT_PARAMS((xmlsec_lt_dlhandle handle));
-extern	xmlsec_lt_dlhandle	xmlsec_lt_dlhandle_next    LT_PARAMS((xmlsec_lt_dlhandle place));
-extern	int		xmlsec_lt_dlforeach	    LT_PARAMS((
+LT_SCOPE	const xmlsec_lt_dlinfo	*xmlsec_lt_dlgetinfo	    LT_PARAMS((xmlsec_lt_dlhandle handle));
+LT_SCOPE	xmlsec_lt_dlhandle	xmlsec_lt_dlhandle_next    LT_PARAMS((xmlsec_lt_dlhandle place));
+LT_SCOPE	int		xmlsec_lt_dlforeach	    LT_PARAMS((
 				int (*func) (xmlsec_lt_dlhandle handle, xmlsec_lt_ptr data),
 				xmlsec_lt_ptr data));
 
 /* Associating user data with loaded modules. */
 typedef unsigned xmlsec_lt_dlcaller_id;
 
-extern	xmlsec_lt_dlcaller_id	xmlsec_lt_dlcaller_register  LT_PARAMS((void));
-extern	xmlsec_lt_ptr		xmlsec_lt_dlcaller_set_data  LT_PARAMS((xmlsec_lt_dlcaller_id key,
+LT_SCOPE	xmlsec_lt_dlcaller_id	xmlsec_lt_dlcaller_register  LT_PARAMS((void));
+LT_SCOPE	xmlsec_lt_ptr		xmlsec_lt_dlcaller_set_data  LT_PARAMS((xmlsec_lt_dlcaller_id key,
 						xmlsec_lt_dlhandle handle,
 						xmlsec_lt_ptr data));
-extern	xmlsec_lt_ptr		xmlsec_lt_dlcaller_get_data  LT_PARAMS((xmlsec_lt_dlcaller_id key,
+LT_SCOPE	xmlsec_lt_ptr		xmlsec_lt_dlcaller_get_data  LT_PARAMS((xmlsec_lt_dlcaller_id key,
 						xmlsec_lt_dlhandle handle));
 
 
@@ -285,15 +269,15 @@ struct xmlsec_lt_user_dlloader {
   xmlsec_lt_user_data		dlloader_data;
 };
 
-extern	xmlsec_lt_dlloader    *xmlsec_lt_dlloader_next    LT_PARAMS((xmlsec_lt_dlloader *place));
-extern	xmlsec_lt_dlloader    *xmlsec_lt_dlloader_find    LT_PARAMS((
+LT_SCOPE	xmlsec_lt_dlloader    *xmlsec_lt_dlloader_next    LT_PARAMS((xmlsec_lt_dlloader *place));
+LT_SCOPE	xmlsec_lt_dlloader    *xmlsec_lt_dlloader_find    LT_PARAMS((
 						const char *loader_name));
-extern	const char     *xmlsec_lt_dlloader_name    LT_PARAMS((xmlsec_lt_dlloader *place));
-extern	xmlsec_lt_user_data   *xmlsec_lt_dlloader_data    LT_PARAMS((xmlsec_lt_dlloader *place));
-extern	int		xmlsec_lt_dlloader_add     LT_PARAMS((xmlsec_lt_dlloader *place,
-				const struct xmlsec_lt_user_dlloader *dlloader,
-				const char *loader_name));
-extern	int		xmlsec_lt_dlloader_remove  LT_PARAMS((
+LT_SCOPE	const char     *xmlsec_lt_dlloader_name    LT_PARAMS((xmlsec_lt_dlloader *place));
+LT_SCOPE	xmlsec_lt_user_data   *xmlsec_lt_dlloader_data    LT_PARAMS((xmlsec_lt_dlloader *place));
+LT_SCOPE	int		xmlsec_lt_dlloader_add     LT_PARAMS((xmlsec_lt_dlloader *place,
+						const struct xmlsec_lt_user_dlloader *dlloader,
+						const char *loader_name));
+LT_SCOPE	int		xmlsec_lt_dlloader_remove  LT_PARAMS((
 						const char *loader_name));
 
 
@@ -323,8 +307,7 @@ extern	int		xmlsec_lt_dlloader_remove  LT_PARAMS((
     LT_ERROR(INVALID_ERRORCODE,     "invalid errorcode")		\
     LT_ERROR(SHUTDOWN,		    "library already shutdown")		\
     LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")	\
-    LT_ERROR(INVALID_MUTEX_ARGS,    "invalid mutex handler registration") \
-    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position")
+    LT_ERROR(INVALID_MUTEX_ARGS,    "invalid mutex handler registration")
 
 /* Enumerate the symbolic error names. */
 enum {
@@ -336,8 +319,8 @@ enum {
 };
 
 /* These functions are only useful from inside custom module loaders. */
-extern	int	xmlsec_lt_dladderror	LT_PARAMS((const char *diagnostic));
-extern	int	xmlsec_lt_dlseterror	LT_PARAMS((int errorcode));
+LT_SCOPE	int	xmlsec_lt_dladderror	LT_PARAMS((const char *diagnostic));
+LT_SCOPE	int	xmlsec_lt_dlseterror	LT_PARAMS((int errorcode));
 
 
 

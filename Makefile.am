@@ -64,10 +64,10 @@ check-km: $(TEST_APP)
 	@$(SHELL) $(top_srcdir)/tests/testKeys.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der
 
 check-dsig: $(TEST_APP)
-	@$(SHELL) $(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der
+	@$(SHELL) $(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der pkcs8
 
 check-enc: $(TEST_APP)
-	@$(SHELL) $(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der
+	@$(SHELL) $(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(top_builddir)/$(TEST_APP) der pkcs8
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

@@ -2,7 +2,18 @@
 
 topfolder=$1
 xmlsec_app=$2
-key_format=$3
+file_format=$3
+priv_format=$4
+
+if [ "z$priv_format" = "zpkcs8" ]
+then 
+    priv_key_format="p8-$file_format"
+else
+    priv_key_format=$file_format
+fi    
+pub_key_format=$file_format
+cert_format=$file_format
+
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testEnc.$timestamp-$$.tmp
@@ -143,13 +154,13 @@ execEncTest "merlin-xmlenc-five/encrypt-content-aes256-cbc-prop" \
 execEncTest "merlin-xmlenc-five/encrypt-element-aes192-cbc-ref" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5" \
-    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 --privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase"  \
-    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format"
+    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 --privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase --pwd secret"  \
+    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 execEncTest "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p" \
-    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 --privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data"  \
-    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format"
+    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 --privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data --pwd secret"  \
+    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 execEncTest "merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-256 --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.data" \

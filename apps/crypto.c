@@ -100,7 +100,7 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
 #endif /* XMLSEC_NO_X509 */    
 }
 
-static int 
+int 
 xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
 					     const char* files, const char* pwd, 
 					     const char* name, 
@@ -177,24 +177,6 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     return(0);
 }
 
-
-int 
-xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
-					     const char* files, const char* pwd, 
-					     const char* name) {
-
-    return xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(mngr, files, pwd, name, 
-							xmlSecKeyDataFormatPem);
-}
-
-int 
-xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
-					     const char* files, const char* pwd, 
-					     const char* name) {
-
-    return xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(mngr, files, pwd, name, 
-							xmlSecKeyDataFormatDer);
-}
 
 int 
 xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd, const char *name) {

@@ -2,7 +2,18 @@
 
 topfolder=$1
 xmlsec_app=$2
-key_format=$3
+file_format=$3
+priv_format=$4
+
+if [ "z$priv_format" = "zpkcs8" ]
+then 
+    priv_key_format="p8-$file_format"
+else
+    priv_key_format=$file_format
+fi    
+pub_key_format=$file_format
+cert_format=$file_format
+
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testKeys.$timestamp-$$.tmp

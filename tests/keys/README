@@ -1,5 +1,9 @@
 README
 
+0. Passwords
+ For the cacert.pe the password is "qwerty".
+ For all *.p8-pem and *.p8-der keys the password is "secret".
+
 1. Files list
 
  cakey.pem	Root CA private key
@@ -63,4 +67,8 @@ README
   Convert PEM cert file to DER file
     > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
 
+4. Converting an unencrypted PEM or DER file containing a private key
+   to an encrypted PEM or DER file containing the same private key but
+   encrypted
+     > openssl pkcs8 -in unencryptedfile.<der|pem> -inform <der|pem> -out encryptedfile.<der|pem> -outform <der|pem> -topk8
 

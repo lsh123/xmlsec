@@ -158,6 +158,32 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 	    }
 	}
 	break;
+    case xmlSecKeyDataFormatPkcs8Pem:
+        /* try to read private key first */    
+	pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCallback, (void*)pwd);
+        if(pKey == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"PEM_read_bio_PrivateKey",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"file=%s", xmlSecErrorsSafeString(filename));
+	    BIO_free(bio);
+	    return(NULL);	
+	}
+	break;
+    case xmlSecKeyDataFormatPkcs8Der:
+        /* try to read private key first */    
+	pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCallback, (void*)pwd);
+        if(pKey == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"d2i_PrivateKey_bio and d2i_PUBKEY_bio",
+		XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		"file=%s", xmlSecErrorsSafeString(filename));
+	    BIO_free(bio);
+	    return(NULL);
+	}
+	break;
     default:
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -223,6 +249,7 @@ static X509*		xmlSecOpenSSLAppCertLoad		(const char* filename,
  */
 int		
 xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
+    xmlSecKeyDataFormat certFormat;
     xmlSecKeyDataPtr data;
     X509 *cert;
     int ret;
@@ -242,14 +269,26 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
 	return(-1);
     }
 
-    cert = xmlSecOpenSSLAppCertLoad(filename, format);
+    /* adjust cert format */
+    switch(format) {
+    case xmlSecKeyDataFormatPkcs8Pem:
+	certFormat = xmlSecKeyDataFormatPem;
+	break;
+    case xmlSecKeyDataFormatPkcs8Der:
+	certFormat = xmlSecKeyDataFormatDer;
+	break;
+    default:
+	certFormat = format;
+    }
+
+    cert = xmlSecOpenSSLAppCertLoad(filename, certFormat);
     if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecOpenSSLAppCertLoad", 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "filename=%s;format=%d", 
-		    xmlSecErrorsSafeString(filename), format);
+		    xmlSecErrorsSafeString(filename), certFormat);
 	return(-1);    
     }    	
     

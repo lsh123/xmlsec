@@ -254,6 +254,31 @@ static xmlSecAppCmdLineParam privkeyDerParam = {
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
 };
+
+static xmlSecAppCmdLineParam pkcs8PemParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pkcs8-pem",
+    "--privkey-p8-pem",
+    "--pkcs-pem[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
+    "\n\tload private key from PKCS8 PEM file and PEM certificates"
+    "\n\tthat verify this key",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam pkcs8DerParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pkcs8-der",
+    "--privkey-p8-der",
+    "--pkcs8-der[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
+    "\n\tload private key from PKCS8 DER file and DER certificates"
+    "\n\tthat verify this key",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 static xmlSecAppCmdLineParam pubkeyParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
     "--pubkey-pem",
@@ -678,6 +703,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &keysFileParam,
     &privkeyParam,
     &privkeyDerParam,
+    &pkcs8PemParam,
+    &pkcs8DerParam,
     &pubkeyParam,
     &pubkeyDerParam,
 #ifndef XMLSEC_NO_AES    
@@ -1912,10 +1939,11 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
 		    privkeyParam.fullName);
 	    return(-1);
-	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
-		    value->paramNameValue) < 0) {
+		    value->paramNameValue, 
+		    xmlSecKeyDataFormatPem) < 0) {
 	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
 		    value->strListValue);
 	    return(-1);
@@ -1927,10 +1955,43 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
 		    privkeyDerParam.fullName);
 	    return(-1);
-	} else if(xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad(gKeysMngr, 
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
-		    value->paramNameValue) < 0) {
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatDer) < 0) {
+	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
+		    value->strListValue);
+	    return(-1);
+	}
+    }
+
+    for(value = pkcs8PemParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    pkcs8PemParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
+		    value->strListValue, 
+		    xmlSecAppCmdLineParamGetString(&pwdParam),
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatPkcs8Pem) < 0) {
+	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
+		    value->strListValue);
+	    return(-1);
+	}
+    }
+
+    for(value = pkcs8DerParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    pkcs8DerParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
+		    value->strListValue, 
+		    xmlSecAppCmdLineParamGetString(&pwdParam),
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatPkcs8Der) < 0) {
 	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
 		    value->strListValue);
 	    return(-1);
@@ -1943,10 +2004,11 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
 		    pubkeyParam.fullName);
 	    return(-1);
-	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
-		    value->paramNameValue) < 0) {
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatPem) < 0) {
 	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
 		    value->strListValue);
 	    return(-1);
@@ -1958,10 +2020,11 @@ xmlSecAppLoadKeys(void) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
 		    pubkeyDerParam.fullName);
 	    return(-1);
-	} else if(xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad(gKeysMngr, 
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
-		    value->paramNameValue) < 0) {
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatDer) < 0) {
 	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
 		    value->strListValue);
 	    return(-1);

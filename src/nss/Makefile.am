@@ -2,6 +2,7 @@ NULL =
 
 EXTRA_DIST = \
 	globals.h \
+	README \
 	$(NULL)
 
 INCLUDES = \

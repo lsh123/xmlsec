@@ -87,7 +87,7 @@ xmlSecAppCmdLineParamsListPrint(xmlSecAppCmdLineParamPtr* params,
     
     for(i = 0; params[i] != NULL; ++i) {
 	if(((params[i]->topics & topics) != 0) && (params[i]->help != NULL)) {
-	    fprintf(output, "%s\n", params[i]->help);
+	    fprintf(output, "  %s\n", params[i]->help);
 	}
     }    
 }

@@ -398,7 +398,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if(store->reserved1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecKeyDataStoreGetName(store),
-		    "xmlSecOpenSSLX509StoreUntrusted",
+		    "sk_X509_new_null",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);

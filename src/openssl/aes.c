@@ -633,7 +633,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(keySize < expectedKeySize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecTransformGetName(transform),
-		    xmlSecKeyDataGetName(xmlSecKeyGetValue(key)),
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "key length %d is not enough (%d expected)",
 		    keySize, expectedKeySize);

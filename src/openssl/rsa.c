@@ -678,25 +678,25 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
     
     /* Modulus is required */
-    if(xmlSecBnFromCryptoBinary(modValue, modSize, &(rsa->n)) == NULL) {
+    if(xmlSecOpenSSLBnFromCryptoBinary(modValue, modSize, &(rsa->n)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnFromCryptoBinary - %d (Modulus)", ret);
+		    "xmlSecOpenSSLBnFromCryptoBinary - %d (Modulus)", ret);
 	goto done;
     }
     /* Exponent is required */
-    if(xmlSecBnFromCryptoBinary(expValue, expSize, &(rsa->e)) == NULL) {
+    if(xmlSecOpenSSLBnFromCryptoBinary(expValue, expSize, &(rsa->e)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnFromCryptoBinary - %d (Exponent)", ret);
+		    "xmlSecOpenSSLBnFromCryptoBinary - %d (Exponent)", ret);
 	goto done;
     }
     /* PrivateExponent is required for private keys only*/
     if(privExpValue != NULL) {
-	if(xmlSecBnFromCryptoBinary(privExpValue, privExpSize, &(rsa->d)) == NULL) {
+	if(xmlSecOpenSSLBnFromCryptoBinary(privExpValue, privExpSize, &(rsa->d)) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBnFromCryptoBinary - %d (PrivateExponent)", ret);
+			"xmlSecOpenSSLBnFromCryptoBinary - %d (PrivateExponent)", ret);
 	    goto done;
 	}
     }
@@ -750,20 +750,20 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     }
     
     /* Modulus */
-    ret = xmlSecBnToCryptoBinary(xmlSecGetRsaKey(key)->n, &modValue, &modSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetRsaKey(key)->n, &modValue, &modSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnToCryptoBinary - %d (Modulus - n)", ret);
+		    "xmlSecOpenSSLBnToCryptoBinary - %d (Modulus - n)", ret);
 	goto done;
     }
 
     /* Exponent */
-    ret = xmlSecBnToCryptoBinary(xmlSecGetRsaKey(key)->e, &expValue, &expSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetRsaKey(key)->e, &expValue, &expSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnToCryptoBinary - %d (Exponent - e)", ret);
+		    "xmlSecOpenSSLBnToCryptoBinary - %d (Exponent - e)", ret);
 	goto done;
     }
 
@@ -771,11 +771,11 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     if((type == xmlSecKeyTypePrivate) || 
        ((type == xmlSecKeyTypeAny) && (xmlSecGetRsaKey(key)->d != NULL))) {
 
-	ret = xmlSecBnToCryptoBinary(xmlSecGetRsaKey(key)->d, &privExpValue, &privExpSize);
+	ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetRsaKey(key)->d, &privExpValue, &privExpSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBnToCryptoBinary - %d (PrivateExponent - d)", ret);
+			"xmlSecOpenSSLBnToCryptoBinary - %d (PrivateExponent - d)", ret);
 	    goto done;
 	}
     }

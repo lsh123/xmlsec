@@ -19,10 +19,10 @@ extern "C" {
 
 
 
-XMLSEC_EXPORT int	xmlSecBnToCryptoBinary		(const BIGNUM *a, 
+XMLSEC_EXPORT int	xmlSecOpenSSLBnToCryptoBinary	(const BIGNUM *a, 
 							 unsigned char** value, 
 							 size_t* valueSize);
-XMLSEC_EXPORT BIGNUM*	xmlSecBnFromCryptoBinary	(const unsigned char* value, 
+XMLSEC_EXPORT BIGNUM*	xmlSecOpenSSLBnFromCryptoBinary	(const unsigned char* value, 
 							 size_t valueSize, 
 							 BIGNUM **a);
 

@@ -179,7 +179,7 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDuplicate	(xmlSecKeyPtr key,
 XMLSEC_EXPORT int		xmlSecKeySetValue	(xmlSecKeyPtr key, 
 							 void* data,
 							 int dataSize);
-XMLSEC_EXPORT int		xmlSecVerifyKey		(xmlSecKeyPtr key, 
+XMLSEC_EXPORT int		xmlSecKeyCheck		(xmlSecKeyPtr key, 
 							 const xmlChar *name,
 							 xmlSecKeyId id, 
 							 xmlSecKeyType type);

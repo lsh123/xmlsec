@@ -130,7 +130,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecTransformXsltHref[];
 XMLSEC_EXPORT int	xmlSecInit			(void);
 XMLSEC_EXPORT int	xmlSecShutdown			(void);
 
-
+typedef void (*xmlSecDestroyMethod) (void*);
 /**
  * ATTRIBUTE_UNUSED:
  *

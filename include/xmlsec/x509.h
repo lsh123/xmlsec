@@ -20,6 +20,14 @@ extern "C" {
 typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
 typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
 
+typedef enum {
+    xmlSecX509DataTypeUnknown = 0,
+    xmlSecX509DataTypeVerifiedCert,
+    xmlSecX509DataTypeTrustedCert,
+    xmlSecX509DataTypeCert,
+    xmlSecX509DataTypeCrl
+} xmlSecX509DataType;
+
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
@@ -64,7 +72,7 @@ XMLSEC_EXPORT int		xmlSecX509StoreVerify		(xmlSecX509StorePtr store,
 								 xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT int		xmlSecX509StoreLoadPemCert	(xmlSecX509StorePtr store,
 								 const char *filename,
-								 int trusted);						
+								 int trusted);
 XMLSEC_EXPORT int		xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store, 
 							 	 const char *path);
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 

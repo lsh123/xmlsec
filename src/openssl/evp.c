@@ -34,7 +34,7 @@
  *
  *********************************************************************/
 /**
- * xmlSecEvpCipherGenerateIv:
+ * xmlSecOpenSSLEvpCipherGenerateIv:
  * @cipher: the pointer to EVP_* cipher transform. 
  *
  * Generates IV vector.
@@ -43,7 +43,7 @@
  * if an error occurs.
  */
 int 	
-xmlSecEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher) {
+xmlSecOpenSSLEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher) {
     int ret;
 
     xmlSecAssert2(cipher != NULL, -1);
@@ -72,7 +72,7 @@ xmlSecEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher) {
 }
 
 /**
- * xmlSecEvpCipherInit:
+ * xmlSecOpenSSLEvpCipherInit:
  * @cipher: the pointer to EVP_* cipher transform. 
  *
  * Initialize encryption/decryption.
@@ -81,8 +81,8 @@ xmlSecEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher) {
  * if an error occurs.
  */
 int 	
-xmlSecEvpCipherInit(xmlSecCipherTransformPtr cipher) {
-    xmlSecEvpCipherTransformPtr evpCipher;
+xmlSecOpenSSLEvpCipherInit(xmlSecCipherTransformPtr cipher) {
+    xmlSecOpenSSLEvpCipherTransformPtr evpCipher;
     int ret;
 
     xmlSecAssert2(cipher != NULL, -1);
@@ -95,7 +95,7 @@ xmlSecEvpCipherInit(xmlSecCipherTransformPtr cipher) {
 	return(-1);
     }
     
-    evpCipher = (xmlSecEvpCipherTransformPtr)cipher;
+    evpCipher = (xmlSecOpenSSLEvpCipherTransformPtr)cipher;
     if(cipher->encode) {
 	ret = EVP_EncryptInit(&(evpCipher->cipherCtx), NULL, NULL, cipher->iv); 		
 	if(ret != 1) {
@@ -117,7 +117,7 @@ xmlSecEvpCipherInit(xmlSecCipherTransformPtr cipher) {
 }
 
 /**
- * xmlSecEvpCipherUpdate:
+ * xmlSecOpenSSLEvpCipherUpdate:
  * @cipher: the pointer to EVP_* cipher transform. 
  * @buffer: the input buffer.
  * @size: the input buffer size.
@@ -128,9 +128,9 @@ xmlSecEvpCipherInit(xmlSecCipherTransformPtr cipher) {
  * if an error occurs.
  */
 int 	
-xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
+xmlSecOpenSSLEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 			 const unsigned char *buffer, size_t size) {
-    xmlSecEvpCipherTransformPtr evpCipher;
+    xmlSecOpenSSLEvpCipherTransformPtr evpCipher;
     int res;
     int ret;
 
@@ -146,7 +146,7 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 	return(-1);
     }
 
-    evpCipher = (xmlSecEvpCipherTransformPtr)cipher;
+    evpCipher = (xmlSecOpenSSLEvpCipherTransformPtr)cipher;
     res = cipher->id->bufOutSize;
     if(cipher->encode) {	
 	ret = EVP_EncryptUpdate(&(evpCipher->cipherCtx), 
@@ -165,7 +165,7 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 }
 
 /**
- * xmlSecEvpCipherFinal:
+ * xmlSecOpenSSLEvpCipherFinal:
  * @cipher: the pointer to EVP_* cipher transform. 
  *
  * Finalize encryption/decryption.
@@ -174,8 +174,8 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
  * if an error occurs.
  */
 int 	
-xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
-    xmlSecEvpCipherTransformPtr evpCipher;
+xmlSecOpenSSLEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
+    xmlSecOpenSSLEvpCipherTransformPtr evpCipher;
     int res;
     int ret;
 
@@ -189,7 +189,7 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 	return(-1);
     }
 
-    evpCipher = (xmlSecEvpCipherTransformPtr)cipher;
+    evpCipher = (xmlSecOpenSSLEvpCipherTransformPtr)cipher;
     res = cipher->id->bufOutSize;
     if(cipher->encode) {	
 	ret = EVP_EncryptFinal(&(evpCipher->cipherCtx), 
@@ -237,7 +237,7 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
  * Misc EVP functions
  */
 xmlSecKeyPtr	
-xmlSecEvpParseKey(EVP_PKEY *pKey) {
+xmlSecOpenSSLEvpParseKey(EVP_PKEY *pKey) {
     xmlSecKeyPtr key = NULL;
     int ret;
     

@@ -127,7 +127,7 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUS
 
     keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);    
     for(i = 0; i < keysData->curSize; ++i) {
-	if(xmlSecVerifyKey(keysData->keys[i], name, id, type) == 1) {
+	if(xmlSecKeyCheck(keysData->keys[i], name, id, type) == 1) {
 	    key = xmlSecKeyDuplicate(keysData->keys[i], xmlSecKeyOriginKeyManager);
 	    if(key == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,

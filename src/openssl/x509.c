@@ -139,11 +139,11 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
     /* todo: should we put the key cert into stack */
     sk_X509_push(chain, cert);
     
-    key = xmlSecEvpParseKey(pKey);
+    key = xmlSecOpenSSLEvpParseKey(pKey);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecEvpParseKey");
+		    "xmlSecOpenSSLEvpParseKey");
 	EVP_PKEY_free(pKey);
 	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
 	return(NULL);	    
@@ -400,11 +400,11 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 	return(NULL);
     }    
 
-    key = xmlSecEvpParseKey(pKey);
+    key = xmlSecOpenSSLEvpParseKey(pKey);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecEvpParseKey");
+		    "xmlSecOpenSSLEvpParseKey");
 	EVP_PKEY_free(pKey);
 	return(NULL);	    
     }    

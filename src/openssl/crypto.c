@@ -28,7 +28,7 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/openssl/errors.h>
 
-static ERR_STRING_DATA xmlSecStrReasons[]= {
+static ERR_STRING_DATA xmlSecOpenSSLStrReasons[]= {
   { XMLSEC_ERRORS_R_MALLOC_FAILED,		"failed to allocate memory" },
   { XMLSEC_ERRORS_R_XMLSEC_FAILED,		"xmlsec operation failed" },
   { XMLSEC_ERRORS_R_CRYPTO_FAILED,		"crypto operation failed" },
@@ -67,13 +67,13 @@ static ERR_STRING_DATA xmlSecStrReasons[]= {
   { 0,						NULL}
 };
 
-static ERR_STRING_DATA xmlSecStrLib[]= {
-  { ERR_PACK(XMLSEC_ERRORS_LIB,0,0),		"xmlsec routines"},
+static ERR_STRING_DATA xmlSecOpenSSLStrLib[]= {
+  { ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB,0,0),	"xmlsec function"},
   { 0,     					NULL}
 };
  
-static ERR_STRING_DATA xmlSecStrDefReason[]= {
-  { XMLSEC_ERRORS_LIB,				"xmlsec lib"},
+static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[]= {
+  { XMLSEC_OPENSSL_ERRORS_LIB,				"xmlsec lib"},
   { 0,						NULL}
 };
 
@@ -89,7 +89,7 @@ static int  xmlSecOpenSSLSaveRandFile		(const char *file);
  * 
  * XMLSec library specific crypto engine initialization. 
  * This is an internal function called by @xmlSecInit function.
- * The application must call @xmlSecAppCryptoInit before
+ * The application must call @xmlSecCryptoAppInit before
  * calling @xmlSecInit function or do general crypto engine
  * initialization by itself.
  *
@@ -99,9 +99,9 @@ int
 xmlSecCryptoInit(void) {
     /* Initialize errors reporting system */
     ERR_load_crypto_strings();
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrLib); /* define xmlsec lib name */
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrDefReason); /* define default reason */
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrReasons); 
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons); 
 
     xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
 
@@ -201,7 +201,7 @@ xmlSecCryptoInit(void) {
  * XMLSec library specific crypto engine shutdown. 
  * This is an internal function called by @xmlSecShutdown function.
  * The application must call @xmlSecShutdown function
- * before calling @xmlSecAppCryptoInit or doing general 
+ * before calling @xmlSecCryptoAppInit or doing general 
  * crypto engine shutdown by itself.
  *
  * Returns 0 on success or a negative value otherwise.
@@ -214,7 +214,7 @@ xmlSecCryptoShutdown(void) {
 }
 
 /**
- * xmlSecAppCryptoInit:
+ * xmlSecCryptoAppInit:
  * 
  * General crypto engine initialization. This function is used
  * by XMLSec command line utility and called before 
@@ -223,7 +223,7 @@ xmlSecCryptoShutdown(void) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecAppCryptoInit(void) {
+xmlSecCryptoAppInit(void) {
     int ret;
     
     OpenSSL_add_all_algorithms();
@@ -240,7 +240,7 @@ xmlSecAppCryptoInit(void) {
 }
 
 /**
- * xmlSecAppCryptoShutdown:
+ * xmlSecCryptoAppShutdown:
  * 
  * General crypto engine shutdown. This function is used
  * by XMLSec command line utility and called after 
@@ -249,7 +249,7 @@ xmlSecAppCryptoInit(void) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecAppCryptoShutdown(void) {
+xmlSecCryptoAppShutdown(void) {
     xmlSecOpenSSLSaveRandFile(NULL);
     RAND_cleanup();
     EVP_cleanup();    
@@ -266,16 +266,19 @@ void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 			    int reason, const char* msg) {
     const char* error_msg = NULL;
-    unsigned long error = ERR_PACK(XMLSEC_ERRORS_LIB, XMLSEC_ERRORS_FUNCTION, reason);
+    unsigned long error = ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB, 
+				   XMLSEC_OPENSSL_ERRORS_FUNCTION, 
+				   reason);
     unsigned int i;
 
     /* in the OpenSSL case we want to put error in the stack */
-    ERR_put_error(XMLSEC_ERRORS_LIB, XMLSEC_ERRORS_FUNCTION, reason, file, line);
+    ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB, XMLSEC_OPENSSL_ERRORS_FUNCTION, 
+		reason, file, line);
 
     /* search for printable error name */
-    for(i = 0; i < sizeof(xmlSecStrReasons)/sizeof(xmlSecStrReasons[0]); ++i) {
-        if(xmlSecStrReasons[i].error == error) {
-    	    error_msg = xmlSecStrReasons[i].string;
+    for(i = 0; i < sizeof(xmlSecOpenSSLStrReasons)/sizeof(xmlSecOpenSSLStrReasons[0]); ++i) {
+        if(xmlSecOpenSSLStrReasons[i].error == error) {
+    	    error_msg = xmlSecOpenSSLStrReasons[i].string;
 	    break;
 	}
     }

@@ -1,3 +1,19 @@
+Thu Nov  7 00:25:41 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* apps/xmlsec.c 
+	include/xmlsec/crypto.h include/xmlsec/keys.h 
+	include/xmlsec/x509.h include/xmlsec/xmlsec.h
+	src/keyinfo.c src/keys.c	
+	src/nss/keysmngr.c
+	include/xmlsec/openssl/bn.h include/xmlsec/openssl/errors.h
+	include/xmlsec/openssl/evp.h
+	src/openssl/aes.c src/openssl/bn.c 
+	src/openssl/crypto.c src/openssl/des.c
+	src/openssl/dsa.c src/openssl/evp.c
+	src/openssl/keysmngr.c src/openssl/rsa.c
+	src/openssl/x509.c:
+	internal functions re-naming to avoid conflicts between
+	crypto engines
+
 Wed Nov  6 15:45:35 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/keyinfo.h include/xmlsec/transforms.h

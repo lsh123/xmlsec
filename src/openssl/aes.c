@@ -115,11 +115,11 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecEvpCipherTransform data/methods */
-    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
-    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
+    /* xmlSecOpenSSLEvpCipherTransform data/methods */
+    xmlSecOpenSSLEvpCipherGenerateIv,	/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherUpdate,	/* xmlSecCipherUpdateMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherFinal,	/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_AES128_KEY_SIZE,		/* size_t keySize */
     XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
@@ -147,11 +147,11 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecEvpCipherTransform data/methods */
-    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
-    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
+    /* xmlSecOpenSSLEvpCipherTransform data/methods */
+    xmlSecOpenSSLEvpCipherGenerateIv,	/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherUpdate,	/* xmlSecCipherUpdateMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherFinal,	/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_AES192_KEY_SIZE,		/* size_t keySize */
     XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
@@ -179,11 +179,11 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecEvpCipherTransform data/methods */
-    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
-    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
+    /* xmlSecOpenSSLEvpCipherTransform data/methods */
+    xmlSecOpenSSLEvpCipherGenerateIv,	/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherUpdate,	/* xmlSecCipherUpdateMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherFinal,	/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_AES256_KEY_SIZE,		/* size_t keySize */
     XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
@@ -298,7 +298,7 @@ xmlSecTransformId xmlSecKWAes256 = (xmlSecTransformId)&xmlSecKWAes256Id;
 static xmlSecTransformPtr 
 xmlSecAesCreate(xmlSecTransformId id) {
     xmlSecCipherTransformId cipherId;
-    xmlSecEvpCipherTransformPtr cipher;
+    xmlSecOpenSSLEvpCipherTransformPtr cipher;
     const EVP_CIPHER *type;
     size_t size;
     
@@ -318,11 +318,11 @@ xmlSecAesCreate(xmlSecTransformId id) {
     }
     cipherId = (xmlSecCipherTransformId)id;
     
-    size = sizeof(xmlSecEvpCipherTransform) +
+    size = sizeof(xmlSecOpenSSLEvpCipherTransform) +
 	   sizeof(unsigned char) * (cipherId->bufInSize + 
 				    cipherId->bufOutSize + 
 				    cipherId->ivSize);
-    cipher = (xmlSecEvpCipherTransformPtr)xmlMalloc(size);
+    cipher = (xmlSecOpenSSLEvpCipherTransformPtr)xmlMalloc(size);
     if(cipher == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -330,13 +330,13 @@ xmlSecAesCreate(xmlSecTransformId id) {
 	return(NULL);
     }
 
-    memset(cipher, 0, sizeof(xmlSecEvpCipherTransform) + 
+    memset(cipher, 0, sizeof(xmlSecOpenSSLEvpCipherTransform) + 
 			sizeof(unsigned char) * (cipherId->bufInSize + 
         		cipherId->bufOutSize + cipherId->ivSize));
     EVP_CIPHER_CTX_init(&(cipher->cipherCtx));
     
     cipher->id = cipherId;
-    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecEvpCipherTransform);
+    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecOpenSSLEvpCipherTransform);
     cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
     cipher->iv = cipher->bufOut + cipherId->bufOutSize; 
     cipher->cipherData = (void*)type; /* cache cipher type */
@@ -348,7 +348,7 @@ xmlSecAesCreate(xmlSecTransformId id) {
  */ 
 static void 	
 xmlSecAesDestroy(xmlSecTransformPtr transform) {
-    xmlSecEvpCipherTransformPtr cipher;
+    xmlSecOpenSSLEvpCipherTransformPtr cipher;
 
     xmlSecAssert(transform != NULL);
         
@@ -362,9 +362,9 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
 	return;
     }
     
-    cipher = (xmlSecEvpCipherTransformPtr) transform;
+    cipher = (xmlSecOpenSSLEvpCipherTransformPtr) transform;
     EVP_CIPHER_CTX_cleanup(&(cipher->cipherCtx));
-    memset(cipher, 0, sizeof(xmlSecEvpCipherTransform) +
+    memset(cipher, 0, sizeof(xmlSecOpenSSLEvpCipherTransform) +
 			sizeof(unsigned char) * (cipher->id->bufInSize + 
         		cipher->id->bufOutSize + cipher->id->ivSize));
     xmlFree(cipher);
@@ -375,7 +375,7 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
  */ 
 static int  	
 xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecEvpCipherTransformPtr cipher;
+    xmlSecOpenSSLEvpCipherTransformPtr cipher;
     xmlSecAesKeyDataPtr aesKey;
     int ret;
     
@@ -393,7 +393,7 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	return(-1);
     }
     
-    cipher = (xmlSecEvpCipherTransformPtr) transform;
+    cipher = (xmlSecOpenSSLEvpCipherTransformPtr) transform;
     aesKey = (xmlSecAesKeyDataPtr)key->keyData;
 
     if(aesKey->keySize < cipher->id->keySize) {

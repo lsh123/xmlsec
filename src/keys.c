@@ -400,7 +400,7 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 }
 
 /**
- * xmlSecVerifyKey:
+ * xmlSecKeyCheck:
  * @key: the pointer to the #xmlSecKey structure.
  * @name: the pointer to key name (may be NULL).
  * @id: the key id (may be "any").
@@ -413,7 +413,7 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
  * Returns 1 if the key satisfies the given criteria or 0 otherwise.
  */
 int
-xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, 
+xmlSecKeyCheck(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, 
 		xmlSecKeyType type) {
     xmlSecAssert2(key != NULL, -1);
 

@@ -21,9 +21,10 @@ extern "C" {
 #include <xmlsec/ciphers.h>
 #include <xmlsec/keys.h>
 
-typedef struct _xmlSecEvpCipherTransform 	xmlSecEvpCipherTransform, *xmlSecEvpCipherTransformPtr; 
-    /**
- * xmlSecEvpCipherTransform:
+typedef struct _xmlSecOpenSSLEvpCipherTransform xmlSecOpenSSLEvpCipherTransform, 
+						*xmlSecOpenSSLEvpCipherTransformPtr; 
+/**
+ * xmlSecOpenSSLEvpCipherTransform:
  * @id: the transform id (pointer to #xmlSecBinTransformId).
  * @status: the transform status (ok/fail/unknown).
  * @dontDestroy: the don't automatically destroy flag.
@@ -41,7 +42,7 @@ typedef struct _xmlSecEvpCipherTransform 	xmlSecEvpCipherTransform, *xmlSecEvpCi
  *
  * The cipher (encrypt/decrypt) transform.
  */
-struct _xmlSecEvpCipherTransform {	
+struct _xmlSecOpenSSLEvpCipherTransform {	
     /* same as for xmlSecTransform but id type changed */
     xmlSecCipherTransformId		id;    
     xmlSecTransformStatus		status;
@@ -61,25 +62,25 @@ struct _xmlSecEvpCipherTransform {
     size_t				ivPos;
     void				*cipherData;
     
-    /* xmlSecEvpCipherTransform specific */
+    /* xmlSecOpenSSLEvpCipherTransform specific */
     EVP_CIPHER_CTX 			cipherCtx;
 };
  
 /**
  * EVP Cipher Transform methods
  */
-XMLSEC_EXPORT int 	xmlSecEvpCipherGenerateIv	(xmlSecCipherTransformPtr cipher);
-XMLSEC_EXPORT int 	xmlSecEvpCipherInit		(xmlSecCipherTransformPtr cipher);
-XMLSEC_EXPORT int 	xmlSecEvpCipherUpdate		(xmlSecCipherTransformPtr cipher,
+XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherGenerateIv(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherInit	(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherUpdate	(xmlSecCipherTransformPtr cipher,
 							 const unsigned char *buffer,
 							 size_t size);
-XMLSEC_EXPORT int 	xmlSecEvpCipherFinal		(xmlSecCipherTransformPtr cipher);
+XMLSEC_EXPORT int 	xmlSecOpenSSLEvpCipherFinal	(xmlSecCipherTransformPtr cipher);
 
 
 /**
  * Misc EVP functions
  */
-xmlSecKeyPtr		xmlSecEvpParseKey		(EVP_PKEY *pKey);
+xmlSecKeyPtr		xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
 
 #ifdef __cplusplus
 }

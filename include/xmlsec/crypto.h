@@ -13,19 +13,20 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/keys.h>
 
 /**
  * xmlSecCryptoInit:
  * 
  * XMLSec library specific crypto engine initialization. 
  * This is an internal function called by @xmlSecInit function.
- * The application must call @xmlSecAppCryptoInit before
+ * The application must call @xmlSecCryptoAppInit before
  * calling @xmlSecInit function or do general crypto engine
  * initialization by itself.
  *
  * Returns 0 on success or a negative value otherwise.
  */
-XMLSEC_EXPORT int	xmlSecCryptoInit		(void);
+XMLSEC_EXPORT int		xmlSecCryptoInit		(void);
 
 /**
  * xmlSecCryptoShutdown:
@@ -33,15 +34,15 @@ XMLSEC_EXPORT int	xmlSecCryptoInit		(void);
  * XMLSec library specific crypto engine shutdown. 
  * This is an internal function called by @xmlSecShutdown function.
  * The application must call @xmlSecShutdown function
- * before calling @xmlSecAppCryptoInit or doing general 
+ * before calling @xmlSecCryptoAppInit or doing general 
  * crypto engine shutdown by itself.
  *
  * Returns 0 on success or a negative value otherwise.
  */
-XMLSEC_EXPORT int	xmlSecCryptoShutdown		(void);
+XMLSEC_EXPORT int		xmlSecCryptoShutdown		(void);
 
 /**
- * xmlSecAppCryptoInit:
+ * xmlSecCryptoAppInit:
  * 
  * General crypto engine initialization. This function is used
  * by XMLSec command line utility and called before 
@@ -49,9 +50,10 @@ XMLSEC_EXPORT int	xmlSecCryptoShutdown		(void);
  *
  * Returns 0 on success or a negative value otherwise.
  */
-XMLSEC_EXPORT int	xmlSecAppCryptoInit		(void);
+XMLSEC_EXPORT int		xmlSecCryptoAppInit		(void);
+
 /**
- * xmlSecAppCryptoShutdown:
+ * xmlSecCryptoAppShutdown:
  * 
  * General crypto engine shutdown. This function is used
  * by XMLSec command line utility and called after 
@@ -59,8 +61,19 @@ XMLSEC_EXPORT int	xmlSecAppCryptoInit		(void);
  *
  * Returns 0 on success or a negative value otherwise.
  */
-XMLSEC_EXPORT int	xmlSecAppCryptoShutdown		(void);
+XMLSEC_EXPORT int		xmlSecCryptoAppShutdown		(void);
 
+XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecCryptoAppLoadPemKey	(const xmlChar* keyName,
+								 const char* filename,
+								 const char* pwd,
+								 xmlSecKeyType type);
+XMLSEC_EXPORT xmlSecX509Data 	xmlSecCryptoAppLoadPemCert	(const char* filename,
+								 const char* pwd,
+								 xmlSecX509DataType type);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecCryptoAppLoadPkcs12	(const xmlChar* keyName,
+								 const char* filename,
+								 const char* pwd);
+								
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

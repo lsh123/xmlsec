@@ -876,7 +876,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 	    goto done;
 	}
 
-    	if(xmlSecVerifyKey(res, NULL, status->keyId, status->keyType) != 1) {
+    	if(xmlSecKeyCheck(res, NULL, status->keyId, status->keyType) != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY,
 			" ");
@@ -1813,7 +1813,7 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
     }
     x509Data = NULL; /* x509Data assigned to key now */
     
-    if(xmlSecVerifyKey(key, NULL, status->keyId, status->keyType) != 1) {
+    if(xmlSecKeyCheck(key, NULL, status->keyId, status->keyType) != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
 		    " ");

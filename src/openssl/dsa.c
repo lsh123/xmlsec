@@ -651,31 +651,31 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
     
     /* P is required */
-    if(xmlSecBnFromCryptoBinary(pValue, pSize, &(dsa->p)) == NULL) {
+    if(xmlSecOpenSSLBnFromCryptoBinary(pValue, pSize, &(dsa->p)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnFromCryptoBinary - %d (P)", ret);
+		    "xmlSecOpenSSLBnFromCryptoBinary - %d (P)", ret);
 	goto done;
     }
     /* Q is required */
-    if(xmlSecBnFromCryptoBinary(qValue, qSize, &(dsa->q)) == NULL) {
+    if(xmlSecOpenSSLBnFromCryptoBinary(qValue, qSize, &(dsa->q)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnFromCryptoBinary - %d (Q)", ret);
+		    "xmlSecOpenSSLBnFromCryptoBinary - %d (Q)", ret);
 	goto done;
     }
     /* G is required */
-    if(xmlSecBnFromCryptoBinary(gValue, gSize, &(dsa->g)) == NULL) {
+    if(xmlSecOpenSSLBnFromCryptoBinary(gValue, gSize, &(dsa->g)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnFromCryptoBinary - %d (G)", ret);
+		    "xmlSecOpenSSLBnFromCryptoBinary - %d (G)", ret);
 	goto done;
     }
     /* Y is required */
-    if(xmlSecBnFromCryptoBinary(yValue, ySize, &(dsa->pub_key)) == NULL) {
+    if(xmlSecOpenSSLBnFromCryptoBinary(yValue, ySize, &(dsa->pub_key)) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnFromCryptoBinary - %d (Y)", ret);
+		    "xmlSecOpenSSLBnFromCryptoBinary - %d (Y)", ret);
 	goto done;
     }
     
@@ -683,10 +683,10 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     
     /* X is required for private keys only*/
     if(xValue != NULL) {
-	if(xmlSecBnFromCryptoBinary(xValue, xSize, &(dsa->priv_key)) == NULL) {
+	if(xmlSecOpenSSLBnFromCryptoBinary(xValue, xSize, &(dsa->priv_key)) == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBnFromCryptoBinary - %d (Y)", ret);
+			"xmlSecOpenSSLBnFromCryptoBinary - %d (Y)", ret);
 	    goto done;
 	}
     }
@@ -751,38 +751,38 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     }
     
     /* P */
-    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->p, &pValue, &pSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->p, &pValue, &pSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnToCryptoBinary - %d (p)", ret);
+		    "xmlSecOpenSSLBnToCryptoBinary - %d (p)", ret);
 	goto done;
     }
 
     /* Q */
-    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->q, &qValue, &qSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->q, &qValue, &qSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnToCryptoBinary - %d (q)", ret);
+		    "xmlSecOpenSSLBnToCryptoBinary - %d (q)", ret);
 	goto done;
     }
 
     /* G */
-    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->g, &gValue, &gSize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->g, &gValue, &gSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnToCryptoBinary - %d (g)", ret);
+		    "xmlSecOpenSSLBnToCryptoBinary - %d (g)", ret);
 	goto done;
     }
 
     /* Y */
-    ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->pub_key, &yValue, &ySize);
+    ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->pub_key, &yValue, &ySize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBnToCryptoBinary - %d (pub_key - y)", ret);
+		    "xmlSecOpenSSLBnToCryptoBinary - %d (pub_key - y)", ret);
 	goto done;
     }
 
@@ -790,11 +790,11 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     if((type == xmlSecKeyTypePrivate) || 
        ((type == xmlSecKeyTypeAny) && (xmlSecGetDsaKey(key)->priv_key != NULL))) {
 
-	ret = xmlSecBnToCryptoBinary(xmlSecGetDsaKey(key)->priv_key, &xValue, &xSize);
+	ret = xmlSecOpenSSLBnToCryptoBinary(xmlSecGetDsaKey(key)->priv_key, &xValue, &xSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBnToCryptoBinary - %d (priv_key - x)", ret);
+			"xmlSecOpenSSLBnToCryptoBinary - %d (priv_key - x)", ret);
 	    goto done;
 	}
     }

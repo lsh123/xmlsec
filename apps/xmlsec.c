@@ -758,7 +758,7 @@ int initXmlsec(xmlsecCommand command) {
     /* 
      * Init crypto engine
      */
-    if(xmlSecAppCryptoInit() < 0) { 
+    if(xmlSecCryptoAppInit() < 0) { 
 	fprintf(stderr, "Failed to initialize crypto engine\n"); 
 	return(-1);
     }
@@ -870,7 +870,7 @@ void shutdownXmlsec(void) {
     /**
      * Shutdown crypto engine
      */    
-    xmlSecAppCryptoShutdown();
+    xmlSecCryptoAppShutdown();
 }
 
 /**

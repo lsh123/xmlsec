@@ -22,17 +22,17 @@ extern "C" {
  *************************************************************/
 
 /**
- * XMLSEC_ERRORS_LIB:
+ * XMLSEC_OPENSSL_ERRORS_LIB:
  *
  * Macro. The XMLSec library id for OpenSSL errors reporting functions.
  */
-#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
+#define XMLSEC_OPENSSL_ERRORS_LIB		(ERR_LIB_USER + 57)
 /**
- * XMLSEC_ERRORS_FUNCTION:
+ * XMLSEC_OPENSSL_ERRORS_FUNCTION:
  *
  * Macro. The XMLSec library functions OpenSSL errors reporting functions.
  */
-#define XMLSEC_ERRORS_FUNCTION			0
+#define XMLSEC_OPENSSL_ERRORS_FUNCTION			0
 
 #ifdef __cplusplus
 }

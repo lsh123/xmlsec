@@ -114,11 +114,11 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecEvpCipherTransform data/methods */
-    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
-    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
+    /* xmlSecOpenSSLEvpCipherTransform data/methods */
+    xmlSecOpenSSLEvpCipherGenerateIv,	/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherUpdate,	/* xmlSecCipherUpdateMethod cipherUpdate; */
+    xmlSecOpenSSLEvpCipherFinal,	/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_DES3_KEY_SIZE,		/* size_t keySize */
     XMLSEC_DES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_DES_BLOCK_SIZE,		/* size_t bufInSize */
@@ -188,7 +188,7 @@ xmlSecTransformId xmlSecKWDes3Cbc = (xmlSecTransformId)&xmlSecKWDes3CbcId;
 static xmlSecTransformPtr 
 xmlSecDesCreate(xmlSecTransformId id) {
     xmlSecCipherTransformId cipherId;
-    xmlSecEvpCipherTransformPtr cipher;
+    xmlSecOpenSSLEvpCipherTransformPtr cipher;
     const EVP_CIPHER *type;
     size_t size;
     
@@ -204,11 +204,11 @@ xmlSecDesCreate(xmlSecTransformId id) {
     type = EVP_des_ede3_cbc();	
 
     cipherId = (xmlSecCipherTransformId)id;
-    size = sizeof(xmlSecEvpCipherTransform) +
+    size = sizeof(xmlSecOpenSSLEvpCipherTransform) +
 	   sizeof(unsigned char) * (cipherId->bufInSize + 
         			    cipherId->bufOutSize + 
 				    cipherId->ivSize);
-    cipher = (xmlSecEvpCipherTransformPtr)xmlMalloc(size);
+    cipher = (xmlSecOpenSSLEvpCipherTransformPtr)xmlMalloc(size);
     if(cipher == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -216,13 +216,13 @@ xmlSecDesCreate(xmlSecTransformId id) {
 	return(NULL);
     }
 
-    memset(cipher, 0, sizeof(xmlSecEvpCipherTransform) + 
+    memset(cipher, 0, sizeof(xmlSecOpenSSLEvpCipherTransform) + 
 			sizeof(unsigned char) * (cipherId->bufInSize + 
         		cipherId->bufOutSize + cipherId->ivSize));
     EVP_CIPHER_CTX_init(&(cipher->cipherCtx));
     
     cipher->id = (xmlSecCipherTransformId)id;
-    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecEvpCipherTransform);
+    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecOpenSSLEvpCipherTransform);
     cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
     cipher->iv = cipher->bufOut + cipherId->bufOutSize; 
     cipher->cipherData = (void*)type; /* cache cipher type */
@@ -234,7 +234,7 @@ xmlSecDesCreate(xmlSecTransformId id) {
  */ 
 static void 	
 xmlSecDesDestroy(xmlSecTransformPtr transform) {
-    xmlSecEvpCipherTransformPtr cipher;
+    xmlSecOpenSSLEvpCipherTransformPtr cipher;
 
     xmlSecAssert(transform != NULL);    
     if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc)) {
@@ -244,9 +244,9 @@ xmlSecDesDestroy(xmlSecTransformPtr transform) {
 	return;
     }
     
-    cipher = (xmlSecEvpCipherTransformPtr) transform;
+    cipher = (xmlSecOpenSSLEvpCipherTransformPtr) transform;
     EVP_CIPHER_CTX_cleanup(&(cipher->cipherCtx));
-    memset(cipher, 0, sizeof(xmlSecEvpCipherTransform) +
+    memset(cipher, 0, sizeof(xmlSecOpenSSLEvpCipherTransform) +
 			sizeof(unsigned char) * (cipher->id->bufInSize + 
         		cipher->id->bufOutSize + cipher->id->ivSize));
     xmlFree(cipher);
@@ -257,7 +257,7 @@ xmlSecDesDestroy(xmlSecTransformPtr transform) {
  */ 
 static int  	
 xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecEvpCipherTransformPtr cipher;
+    xmlSecOpenSSLEvpCipherTransformPtr cipher;
     xmlSecDesKeyDataPtr desKey;
     int ret;
 
@@ -272,7 +272,7 @@ xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 		    "xmlSecEncDes3Cbc and xmlSecDesKey");
 	return(-1);
     }    
-    cipher = (xmlSecEvpCipherTransformPtr) transform;
+    cipher = (xmlSecOpenSSLEvpCipherTransformPtr) transform;
     desKey = (xmlSecDesKeyDataPtr)key->keyData;
 
     if(desKey->keySize < cipher->id->keySize) {

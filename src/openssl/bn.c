@@ -21,7 +21,7 @@
 #include <xmlsec/openssl/bn.h>
 
 /**
- * xmlSecBnToCryptoBinary:
+ * xmlSecOpenSSLBnToCryptoBinary:
  * @a: the pointer to BIGNUM.
  * @value: the returned value.
  * @valueSize: the returned value size.
@@ -33,7 +33,7 @@
  * Caller is responsible for freeing @value with @xmlFree function.
  */
 int		
-xmlSecBnToCryptoBinary(const BIGNUM *a, unsigned char** value, size_t* valueSize) {
+xmlSecOpenSSLBnToCryptoBinary(const BIGNUM *a, unsigned char** value, size_t* valueSize) {
     unsigned char* buf = NULL;
     size_t bufSize = 0;
     int ret;
@@ -68,7 +68,7 @@ xmlSecBnToCryptoBinary(const BIGNUM *a, unsigned char** value, size_t* valueSize
 }
 
 /**
- * xmlSecBnFromCryptoBinary:
+ * xmlSecOpenSSLBnFromCryptoBinary:
  * @value: the input buffer.
  * @valueSize: the input buffer size.
  * @a: the buffer to store the result.
@@ -82,7 +82,7 @@ xmlSecBnToCryptoBinary(const BIGNUM *a, unsigned char** value, size_t* valueSize
  * or NULL if an error occurs.
  */
 BIGNUM*
-xmlSecBnFromCryptoBinary(const unsigned char* value, size_t valueSize, BIGNUM **a) {
+xmlSecOpenSSLBnFromCryptoBinary(const unsigned char* value, size_t valueSize, BIGNUM **a) {
     BIGNUM* res;
 
     xmlSecAssert2(a != NULL, NULL);

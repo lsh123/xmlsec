@@ -2,6 +2,7 @@
 
 topfolder=$1
 xmlsec_app=$2
+key_format=$3
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testKeys.$timestamp-$$.tmp

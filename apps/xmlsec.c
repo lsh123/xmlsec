@@ -233,9 +233,9 @@ static xmlSecAppCmdLineParam keysFileParam = {
 
 static xmlSecAppCmdLineParam privkeyParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
+    "--privkey-pem",
     "--privkey",
-    NULL,
-    "--privkey[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
+    "--privkey-pem[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
     "\n\tload private key from PEM file and certificates"
     "\n\tthat verify this key",
     xmlSecAppCmdLineParamTypeStringList,
@@ -243,12 +243,34 @@ static xmlSecAppCmdLineParam privkeyParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam privkeyDerParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--privkey-der",
+    NULL,
+    "--privkey-der[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
+    "\n\tload private key from DER file and certificates"
+    "\n\tthat verify this key",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
 static xmlSecAppCmdLineParam pubkeyParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-pem",
     "--pubkey",
-    NULL,
-    "--pubkey[:<name>] <file>"
+    "--pubkey-pem[:<name>] <file>"
     "\n\tload public key from PEM file",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam pubkeyDerParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-der",
+    NULL,
+    "--pubkey-der[:<name>] <file>"
+    "\n\tload public key from DER file",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -557,9 +579,9 @@ static xmlSecAppCmdLineParam pkcs12Param = {
 
 static xmlSecAppCmdLineParam trustedParam = { 
     xmlSecAppCmdLineTopicX509Certs,
+    "--trusted-pem",
     "--trusted",
-    NULL,
-    "--trusted <file>"
+    "--trusted-pem <file>"
     "\n\tload trusted (root) certificate from PEM file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagMultipleValues,
@@ -568,9 +590,9 @@ static xmlSecAppCmdLineParam trustedParam = {
 
 static xmlSecAppCmdLineParam untrustedParam = { 
     xmlSecAppCmdLineTopicX509Certs,
+    "--untrusted-pem",
     "--untrusted",
-    NULL,
-    "--untrusted <file>"
+    "--untrusted-pem <file>"
     "\n\tload untrusted certificate from PEM file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagMultipleValues,
@@ -655,7 +677,9 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &genKeyParam,
     &keysFileParam,
     &privkeyParam,
+    &privkeyDerParam,
     &pubkeyParam,
+    &pubkeyDerParam,
 #ifndef XMLSEC_NO_AES    
     &aeskeyParam,
 #endif  /* XMLSEC_NO_AES */    
@@ -1898,6 +1922,21 @@ xmlSecAppLoadKeys(void) {
 	}
     }
 
+    for(value = privkeyDerParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    privkeyDerParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad(gKeysMngr, 
+		    value->strListValue, 
+		    xmlSecAppCmdLineParamGetString(&pwdParam),
+		    value->paramNameValue) < 0) {
+	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
+		    value->strListValue);
+	    return(-1);
+	}
+    }
+
     /* read all public keys */
     for(value = pubkeyParam.value; value != NULL; value = value->next) {
 	if(value->strValue == NULL) {
@@ -1905,6 +1944,21 @@ xmlSecAppLoadKeys(void) {
 		    pubkeyParam.fullName);
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
+		    value->strListValue, 
+		    xmlSecAppCmdLineParamGetString(&pwdParam),
+		    value->paramNameValue) < 0) {
+	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
+		    value->strListValue);
+	    return(-1);
+	}
+    }
+
+    for(value = pubkeyDerParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    pubkeyDerParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
 		    value->paramNameValue) < 0) {

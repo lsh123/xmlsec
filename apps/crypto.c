@@ -100,11 +100,11 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
 #endif /* XMLSEC_NO_X509 */    
 }
 
-
-int 
-xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
+static int 
+xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
 					     const char* files, const char* pwd, 
-					     const char* name) {
+					     const char* name, 
+					     xmlSecKeyDataFormat format) {
     xmlSecKeyPtr key;
     int ret;
 
@@ -112,7 +112,7 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(files != NULL, -1);
 
     /* first is the key file */
-    key = xmlSecCryptoAppKeyLoad(files, xmlSecKeyDataFormatPem, pwd, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(files, format, pwd, NULL, NULL);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -139,7 +139,7 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 
 #ifndef XMLSEC_NO_X509     
     for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
-	ret = xmlSecCryptoAppKeyCertLoad(key, files, xmlSecKeyDataFormatPem);
+	ret = xmlSecCryptoAppKeyCertLoad(key, files, format);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -175,6 +175,25 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     }
     
     return(0);
+}
+
+
+int 
+xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
+					     const char* files, const char* pwd, 
+					     const char* name) {
+
+    return xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(mngr, files, pwd, name, 
+							xmlSecKeyDataFormatPem);
+}
+
+int 
+xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad(xmlSecKeysMngrPtr mngr, 
+					     const char* files, const char* pwd, 
+					     const char* name) {
+
+    return xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(mngr, files, pwd, name, 
+							xmlSecKeyDataFormatDer);
 }
 
 int 

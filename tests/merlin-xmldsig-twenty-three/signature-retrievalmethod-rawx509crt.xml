@@ -12,6 +12,6 @@
     SNB5FI193RFXoG2j8Z9bXWgW7BMPICqNob4Hjh08oou4tkhGxz4+pg==
   </SignatureValue>
   <KeyInfo>
-    <RetrievalMethod Type="http://www.w3.org/2000/09/xmldsig#rawX509Certificate" URI="tests/merlin-xmldsig-twenty-three/certs/balor.crt" />
+    <RetrievalMethod Type="http://www.w3.org/2000/09/xmldsig#rawX509Certificate" URI="tests/merlin-xmldsig-twenty-three/certs/balor.der" />
   </KeyInfo>
 </Signature>

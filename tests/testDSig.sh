@@ -2,6 +2,7 @@
 
 topfolder=$1
 xmlsec_app=$2
+key_format=$3
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testDSig.$timestamp-$$.tmp
@@ -67,17 +68,17 @@ echo "--- testDSig started ($timestamp)" >> $logfile
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
-    "--privkey $topfolder/keys/dsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format" \
     " " 
     
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloping-dsa" \
     " " \
-    "--privkey $topfolder/keys/dsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format" \
     " " 
     
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa" \
     " " \
-    "--privkey $topfolder/keys/dsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format" \
     " " 
     
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40" \
@@ -92,53 +93,53 @@ execDSigTest "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1" \
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloping-rsa" \
     " " \
-    "--privkey $topfolder/keys/rsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/rsakey.$key_format" \
     " " 
     
 execDSigTest "merlin-xmldsig-twenty-three/signature-external-b64-dsa" \
     " " \
-    "--privkey $topfolder/keys/dsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format" \
     " " 
     
 execDSigTest "merlin-xmldsig-twenty-three/signature-external-dsa" \
     " " \
-    "--privkey $topfolder/keys/dsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format" \
     " " 
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-keyname" \
-    "--pubkey:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh.key" \
-    "--privkey:test-dsa $topfolder/keys/dsakey.pem" \
-    "--privkey:test-dsa $topfolder/keys/dsakey.pem"
+    "--pubkey-$key_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh.$key_format" \
+    "--privkey-$key_format:test-dsa $topfolder/keys/dsakey.$key_format" \
+    "--privkey-$key_format:test-dsa $topfolder/keys/dsakey.$key_format"
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem" \
-    "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem"\
-    "--trusted $topfolder/keys/cacert.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$key_format" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format,$topfolder/keys/dsacert.$key_format,$topfolder/keys/ca2cert.$key_format"\
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format"
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-sn" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem --untrusted $topfolder/merlin-xmldsig-twenty-three/certs/badb.pem" \
-    "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem"\
-    "--trusted $topfolder/keys/cacert.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$key_format --untrusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$key_format" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format,$topfolder/keys/dsacert.$key_format,$topfolder/keys/ca2cert.$key_format"\
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format"
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-is" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem --untrusted $topfolder/merlin-xmldsig-twenty-three/certs/macha.pem" \
-    "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem"\
-    "--trusted $topfolder/keys/cacert.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$key_format --untrusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$key_format" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format,$topfolder/keys/dsacert.$key_format,$topfolder/keys/ca2cert.$key_format"\
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format"
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-ski" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem --untrusted $topfolder/merlin-xmldsig-twenty-three/certs/nemain.pem" \
-    "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem"\
-    "--trusted $topfolder/keys/cacert.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$key_format --untrusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$key_format" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format,$topfolder/keys/dsacert.$key_format,$topfolder/keys/ca2cert.$key_format"\
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format"
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem --untrusted $topfolder/merlin-xmldsig-twenty-three/certs/nemain.pem" \
-    "--privkey $topfolder/keys/dsakey.pem"\
-    "--trusted $topfolder/keys/cacert.pem --trusted $topfolder/keys/ca2cert.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$key_format --untrusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$key_format" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format"\
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --trusted-$key_format $topfolder/keys/ca2cert.$key_format"
     
 execDSigTest "merlin-xmldsig-twenty-three/signature" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/merlin.pem" \
-    "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem" \
-    "--trusted $topfolder/keys/cacert.pem --untrusted $topfolder/keys/ca2cert.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$key_format" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format,$topfolder/keys/dsacert.$key_format,$topfolder/keys/ca2cert.$key_format" \
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --untrusted-$key_format $topfolder/keys/ca2cert.$key_format"
 
 execDSigTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
@@ -147,18 +148,18 @@ execDSigTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
     
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     " " \
-    "--privkey $topfolder/keys/dsakey.pem" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format" \
     " " 
     
 execDSigTest "aleksey-xmldsig-01/enveloping-dsa-x509chain" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509" \
-    "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509"
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --enabled-key-data x509" \
+    "--privkey-$key_format $topfolder/keys/dsakey.$key_format,$topfolder/keys/dsacert.$key_format,$topfolder/keys/ca2cert.$key_format" \
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --enabled-key-data x509"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-rsa-x509chain" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509" \
-    "--privkey $topfolder/keys/rsakey.pem,$topfolder/keys/rsacert.pem,$topfolder/keys/ca2cert.pem" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509"
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --enabled-key-data x509" \
+    "--privkey-$key_format $topfolder/keys/rsakey.$key_format,$topfolder/keys/rsacert.$key_format,$topfolder/keys/ca2cert.$key_format" \
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --enabled-key-data x509"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-hmac-ripemd160" \
     "--hmackey $topfolder/keys/hmackey.bin" \
@@ -186,7 +187,7 @@ execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509 --verification-time 2002-04-17+10:00:00" 
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --enabled-key-data x509 --verification-time 2002-04-17+10:00:00" 
 
 execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
     "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
@@ -219,10 +220,10 @@ printRes
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
-    "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem"
+    "--trusted-$key_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$key_format"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509" 
+    "--trusted-$key_format $topfolder/keys/cacert.$key_format --enabled-key-data x509" 
 
 execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
     "--enabled-reference-uris empty --hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" 

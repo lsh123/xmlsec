@@ -46,6 +46,10 @@ int 	xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad		(xmlSecKeysMngrPtr mngr,
 								 const char *files, 
 								 const char* pwd, 
 								 const char* name);
+int 	xmlSecAppCryptoSimpleKeysMngrDerKeyAndCertsLoad		(xmlSecKeysMngrPtr mngr, 
+								 const char *files, 
+								 const char* pwd, 
+								 const char* name);
 int 	xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad		(xmlSecKeysMngrPtr mngr, 
 								 const char *filename, 
 								 const char* pwd, 

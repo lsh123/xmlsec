@@ -1,3 +1,15 @@
+Thu May 15 03:08:18 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/crypto.c apps/crypto.h apps/xmlsec.c: added command line 
+	options to support DER keys and certs format (Tej)
+	* Makefile.am: use DER format for all tests
+	* tests/testDSig.sh tests/testEnc.sh tests/testKeys.sh: added a new
+	command line option "key-format" with possible values "der" or "pem"
+	* tests/*/*.der tests/merlin-xmldsig-twenty-three/certs/*.crt: 
+	converted PEM keys and certs to DER format, removed *.crt files that 
+	used to have DER certificates (Tej)
+	* tests/merlin-xmlenc-five/*.p8: re-added *.p8 files with '-kb' option
+
 Mon 12 May 2003 01:38:11 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
     
 	* configure.in: use '-rpath-link' instead '-rpath' for NSS (Wan-Teh)

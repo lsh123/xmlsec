@@ -2,6 +2,7 @@
 
 topfolder=$1
 xmlsec_app=$2
+key_format=$3
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testEnc.$timestamp-$$.tmp
@@ -142,13 +143,13 @@ execEncTest "merlin-xmlenc-five/encrypt-content-aes256-cbc-prop" \
 execEncTest "merlin-xmlenc-five/encrypt-element-aes192-cbc-ref" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5" \
-    "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 --privkey $topfolder/merlin-xmlenc-five/rsapriv.pem --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase"  \
-    "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem"
+    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 --privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase"  \
+    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format"
 execEncTest "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p" \
-    "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 --privkey $topfolder/merlin-xmlenc-five/rsapriv.pem --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data"  \
-    "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem"
+    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 --privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data"  \
+    "--privkey-$key_format $topfolder/merlin-xmlenc-five/rsapriv.$key_format"
 execEncTest "merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-256 --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.data" \

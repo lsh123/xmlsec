@@ -1,3 +1,10 @@
+Sun May 25 22:01:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c docs/xmlsec-man.html man/xmlsec1-config.1 man/xmlsec1.1: 
+	fixed help typo (reported by John Belmonte)
+	* examples/README: removed obsolete autoconf information (reported by John Belmonte)
+	* configure.in: added /usr/include/mozilla to NSS include path search list (reported by John Belmonte)
+
 Thu May 15 03:08:18 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/crypto.c apps/crypto.h apps/xmlsec.c: added command line 

@@ -44,13 +44,8 @@ This folder contains XML Security Library examples.
 -------------------------
 
 Unixes:  
-    The usual (assuming that xmlsec, libxml and all other required 
-    libraries are already installed):
-	./autogen.sh
-	./configure
-	make    
-    This will build all the examples. Please note that you MUST run
-    ./autogen,sh first!!!
+    Just run the usual 'make' command (assuming that xmlsec, libxml and 
+    all other required libraries are already installed).
 
 Windows:
     - Add paths to include and library files for xmlsec, libxml2, libexslt and 

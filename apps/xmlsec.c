@@ -52,7 +52,7 @@ static const char bugs[] =
 static const char helpCommands1[] =     
     "Usage: xmlsec <command> [<options>] [<file>]\n"
     "\n"
-    "xmlsec is a command line tool for singining, verifying, encrypting and\n"
+    "xmlsec is a command line tool for signing, verifying, encrypting and\n"
     "decrypting XML documents. The allowed <command> values are:\n"
     "  --help      "	"\tdisplay this help information and exit\n"
     "  --help-all  "	"\tdisplay help information for all commands/options and exit\n"

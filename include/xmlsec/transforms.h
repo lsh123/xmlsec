@@ -622,7 +622,7 @@ typedef int 		(*xmlSecTransformNodeWriteMethod)	(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 /**
- * xmlSecTransformSetKeyRequirements:
+ * xmlSecTransformSetKeyRequirementsMethod:
  * @transform:			the pointer to transform object.
  * @keyReq:			the pointer to key requirements structure.
  *
@@ -630,7 +630,7 @@ typedef int 		(*xmlSecTransformNodeWriteMethod)	(xmlSecTransformPtr transform,
  * 
  * Returns 0 on success or a negative value otherwise.
  */
-typedef int  		(*xmlSecTransformSetKeyRequirements)	(xmlSecTransformPtr transform, 
+typedef int  		(*xmlSecTransformSetKeyRequirementsMethod)(xmlSecTransformPtr transform, 
 								 xmlSecKeyReqPtr keyReq);
 
 /**
@@ -784,7 +784,7 @@ struct _xmlSecTransformKlass {
     xmlSecTransformNodeReadMethod	readNode;
     xmlSecTransformNodeWriteMethod	writeNode;
 
-    xmlSecTransformSetKeyRequirements	setKeyReq;
+    xmlSecTransformSetKeyRequirementsMethod	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
     xmlSecTransformVerifyMethod		verify;
     xmlSecTransformGetDataTypeMethod	getDataType;

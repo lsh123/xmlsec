@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE test [
-<!ATTLIST Info Id ID #IMPLIED>
-]>
 <Letter>
     Hello, World!    
     <Info Id="SomeData">
@@ -9,7 +6,7 @@
 	<Data1> Some data </Data1>
 	<Data2> More data </Data2>
     </Info>
-<Something>Some important data</Something><Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
 <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
@@ -21,7 +18,7 @@
 <DigestValue>x/tL8hKZQyExW6ba0pi5h8eWRCc=</DigestValue>
 </Reference>
 </SignedInfo>
-<SignatureValue>uwYbk29Juoe8B0eCW6aAjw4t+QBT7oQsjAmQnu8fFQPNy0RwP6pWNA==</SignatureValue>
+<SignatureValue>sSXCVpcCRydyUIebOFA1xw2Yfgy+YP0Dd41jIz/57iGbowwqyODPfA==</SignatureValue>
 <KeyInfo Id="">
 <KeyValue>
 <DSAKeyValue>

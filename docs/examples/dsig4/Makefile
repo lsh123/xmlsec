@@ -1,7 +1,7 @@
 #
 #
 #
-PROGRAM		 = xmldsigverify
+PROGRAM		 = dsig4
 
 cc	 	 = gcc
 CC	 	 = gcc

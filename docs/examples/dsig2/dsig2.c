@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     int rnd_seed = 0;
     int len; 
         
-    if(argc < 3) {
+    if(argc < 2) {
 	fprintf(stderr, "Error: missed required parameter. Usage: %s <key-file> <xml-file>\n", argv[0]);
 	return(1);
     }
@@ -175,7 +175,7 @@ xmlNodePtr addSignature(xmlDocPtr doc) {
     /**
      * Create Signature node 
      */
-    signatureNode = xmlSecSignatureCreate("my-signature");
+    signatureNode = xmlSecSignatureCreate(NULL);
     if(signatureNode == NULL) {
     	fprintf(stderr,"Error: failed to create signature\n");
 	return(NULL);
@@ -210,10 +210,12 @@ xmlNodePtr addSignature(xmlDocPtr doc) {
      * Create Reference node with SHA1 as digest method and one
      * C14N transform to include comments in the digest
      */
+
     referenceNode = xmlSecSignedInfoAddReference(signedInfoNode,
-					"my-reference",
-					"#xpointer(id('SomeData'))",
+					NULL,
+					NULL,
 					NULL);
+
     if(referenceNode == NULL) {
     	fprintf(stderr,"Error: failed to add Reference\n");
 	xmlSecSignatureDestroy(signatureNode);
@@ -226,11 +228,11 @@ xmlNodePtr addSignature(xmlDocPtr doc) {
 	xmlSecSignatureDestroy(signatureNode);
 	return(NULL);
     }
-    
+
     cur = xmlSecReferenceAddTransform(referenceNode, 
-				      xmlSecC14NExclusiveWithComments);
+				      xmlSecTransformEnveloped);
     if(cur == NULL) {
-    	fprintf(stderr,"Error: failed to add c14n transform\n");
+    	fprintf(stderr,"Error: failed to add enveloped transform\n");
 	xmlSecSignatureDestroy(signatureNode);
 	return(NULL);
     }

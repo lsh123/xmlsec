@@ -27,6 +27,8 @@
           </li>
           <li><a href="example-dsig3.html">Example 3</a>
           </li>
+          <li><a href="example-dsig4.html">Example 4</a>
+          </li>
         </ul>
         <li><a href="xmlenc.html">XML Encryption</a>
         </li>
@@ -54,14 +56,14 @@
                   Example 2. Creating signature dynamically.</h2>
       </div>
                   In this example we will add a signature to the document 
-dynamically.   Comparing to the <a href="example-dsig1.html"> first example</a>
-              now we are going to create template ourselves instead of loading 
-  it  from   a file. This way gives an application more flexibility but requires 
-    more  work from software developer. Moreover, you can add all required 
+dynamically.   Comparing to the <a href="example-dsig1.html"> first example</a>,
+              now we are going to create the signature section of the template ourselves instead of loading 
+  it  from the file. This way gives an application more flexibility but requires 
+    more  work on the part of the software developer. Moreover, you can add all required 
  information    to the document yourself! XML Security Library simplifies 
-this task but you are not required     to use it! Of course, you have to read
+this task, but you are not required     to use it! Of course, you have to read
 XMLDSig specification before.<br>
-                 The source code for this example is included into the package: 
+                 The source code for this example is included in the package: 
          <a href="examples/dsig2/dsig2.c">          source code</a>
      , <a href="examples/dsig2/test.tmpl"> the original template</a>
        and <a href="examples/dsig2/test.xml"> the signed document</a>
@@ -169,7 +171,7 @@ dsig   context\n");<br>
                &nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; </code><code></code>
       <h4>Step 3. addSignature() function</h4>
               The XMLDSig standard defines &lt;Signature&gt; element that 
-holds  all signature     information. XML Security Library provides function 
+holds  all signature     information. XML Security Library provides functions 
 to create the Signature element dynamically. However, you are not limited 
 to use XML Security Library for this and can create the template yourself! 
  In this example, we use a separate&nbsp;<code> addSignature</code> () function
@@ -184,7 +186,7 @@ to use XML Security Library for this and can create the template yourself!
      &nbsp;&nbsp;&nbsp; /**<br>
      &nbsp;&nbsp;&nbsp;&nbsp; * Create Signature node <br>
      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
-     &nbsp;&nbsp;&nbsp; signatureNode = xmlSecSignatureCreate("my-signature");<br>
+     &nbsp;&nbsp;&nbsp; signatureNode = xmlSecSignatureCreate("NULL");<br>
      &nbsp;&nbsp;&nbsp; if(signatureNode == NULL) {<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
 to  create  signature\n");<br>
@@ -224,15 +226,14 @@ to  add  sign method\n");<br>
         <br>
      &nbsp;&nbsp;&nbsp; /** <br>
      &nbsp;&nbsp;&nbsp;&nbsp; * Create Reference node with SHA1 as digest 
-method   and one<br>
-     &nbsp;&nbsp;&nbsp;&nbsp; * C14N transform to include comments in the 
-digest<br>
+method   and<br>
+     &nbsp;&nbsp;&nbsp;&nbsp; * enveloped transform<br>
      &nbsp;&nbsp;&nbsp;&nbsp; */<br>
      &nbsp;&nbsp;&nbsp; referenceNode = xmlSecSignedInfoAddReference(signedInfoNode,<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp; "my-reference",<br>
+  &nbsp;&nbsp;&nbsp; NULL,<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp; "#xpointer(id('SomeData'))",<br>
+  &nbsp;&nbsp;&nbsp; NULL,<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
   &nbsp;&nbsp;&nbsp; NULL);<br>
      &nbsp;&nbsp;&nbsp; if(referenceNode == NULL) {<br>
@@ -254,10 +255,10 @@ to  add  digest method\n");<br>
      &nbsp;&nbsp;&nbsp; cur = xmlSecReferenceAddTransform(referenceNode, 
         <br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlSecC14NExclusiveWithComments);<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlSecTransformEnveloped);<br>
      &nbsp;&nbsp;&nbsp; if(cur == NULL) {<br>
      &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fprintf(stderr,"Error: failed
-to  add  c14n transform\n");<br>
+to  add enveloped transform\n");<br>
      &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; xmlSecSignatureDestroy(signatureNode);<br>
      &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; return(NULL);<br>
      &nbsp;&nbsp;&nbsp; }<br>
@@ -344,8 +345,8 @@ to  dump   document     to memory\n");<br>
         <h4>Step 6. Cleanup.</h4>
                   At the end we need to destroy DSig context, the doc and 
 KeysManager;       shutdown  XML Security Library, LIBXml and OpenSSL<br>
-              (please note that we do not delete creted Signature, Reference
-  andKeyInfo  nodes    separatelly because all nodes are included into the
+              (please note that we do not delete created Signature, Reference
+  andKeyInfo  nodes    separately because all nodes are included in the
  XML document  doc):<br>
                  &nbsp;&nbsp;&nbsp; <code>&nbsp;/*<br>
       &nbsp;&nbsp;&nbsp;&nbsp; * Cleanup<br>

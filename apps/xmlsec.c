@@ -425,19 +425,7 @@ static xmlSecAppCmdLineParam storeReferencesParam = {
     "--store-references",
     NULL,
     "--store-references"
-    "\n\tstore and print the result of <dsig:Reference> processing"
-    "\n\tjust before calculating digest",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-static xmlSecAppCmdLineParam storeManifestsParam = { 
-    xmlSecAppCmdLineTopicDSigCommon,
-    "--store-manifests",
-    NULL,
-    "--store-manifests"
-    "\n\tstore and print the result of <dsig:Manifest> processing"
+    "\n\tstore and print the result of <dsig:Reference/> element processing"
     "\n\tjust before calculating digest",
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
@@ -456,16 +444,6 @@ static xmlSecAppCmdLineParam storeSignaturesParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam storeAllParam = { 
-    xmlSecAppCmdLineTopicDSigCommon,
-    "--store-all",
-    NULL,
-    "--store-all"
-    "\n\tcombination of all the \"--store-*\" options",
-    xmlSecAppCmdLineParamTypeFlag,
-    xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
 #endif /* XMLSEC_NO_XMLDSIG */
 
 /****************************************************************
@@ -578,9 +556,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_XMLDSIG
     &ignoreManifestsParam,
     &storeReferencesParam,
-    &storeManifestsParam,
     &storeSignaturesParam,
-    &storeAllParam,
 #endif /* XMLSEC_NO_XMLDSIG */
 
     /* enc params */
@@ -1070,7 +1046,7 @@ xmlSecAppSignTmpl(void) {
 	goto done;
     }
     xmlDocSetRootElement(doc, cur);
-    
+
     /* set hmac signature length */
     cur = xmlSecTmplSignatureGetSignMethodNode(xmlDocGetRootElement(doc));
     if(cur == NULL) {
@@ -1180,24 +1156,15 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
 
     /* set dsig params */
     if(xmlSecAppCmdLineParamIsSet(&ignoreManifestsParam)) {
-	dsigCtx->processManifests = 0; 
+	dsigCtx->flags |= XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS; 
     }
     if(xmlSecAppCmdLineParamIsSet(&storeReferencesParam)) {
-	dsigCtx->storeReferences = 1; 
-	print_debug = 1;
-    }
-    if(xmlSecAppCmdLineParamIsSet(&storeManifestsParam)) {
-	dsigCtx->storeManifests = 1; 
+	dsigCtx->flags |= XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES |
+			  XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES; 
 	print_debug = 1;
     }
     if(xmlSecAppCmdLineParamIsSet(&storeSignaturesParam)) {
-	dsigCtx->storeSignatures = 1; 
-	print_debug = 1;
-    }
-    if(xmlSecAppCmdLineParamIsSet(&storeAllParam)) {
-	dsigCtx->storeReferences = 1; 
-	dsigCtx->storeManifests = 1; 
-	dsigCtx->storeSignatures = 1; 
+	dsigCtx->flags |= XMLSEC_DSIG_FLAGS_STORE_SIGNATURE; 
 	print_debug = 1;
     }
     

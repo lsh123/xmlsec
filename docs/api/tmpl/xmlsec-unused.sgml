@@ -1640,6 +1640,12 @@ transformsInternal
 @id: 
 @Returns: 
 
+<!-- ##### TYPEDEF xmlSecKeyDataId ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION xmlSecKeyDataIdsClear ##### -->
 <para>
 
@@ -1697,6 +1703,12 @@ transformsInternal
 @Returns: 
 
 <!-- ##### MACRO xmlSecKeyDataPtrListId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF xmlSecKeyDataStoreId ##### -->
 <para>
 
 </para>

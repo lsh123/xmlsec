@@ -4,6 +4,7 @@
 <!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">
 <!ENTITY xmlsec-keyinfo SYSTEM "sgml/keyinfo.sgml">
 <!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
+<!ENTITY xmlsec-keysdata SYSTEM "sgml/keysdata.sgml">
 <!ENTITY xmlsec-keysmngr SYSTEM "sgml/keysmngr.sgml">
 <!ENTITY xmlsec-membuf SYSTEM "sgml/membuf.sgml">
 <!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
@@ -83,6 +84,7 @@
     &xmlsec-errors;
     &xmlsec-keyinfo;
     &xmlsec-keys;
+    &xmlsec-keysdata;
     &xmlsec-keysmngr;
     &xmlsec-templates;
     &xmlsec-transforms;

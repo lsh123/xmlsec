@@ -7,7 +7,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="keyinfo.h" href="xmlsec-keyinfo.html">
-<link rel="NEXT" title="keysmngr.h" href="xmlsec-keysmngr.html">
+<link rel="NEXT" title="keysdata" href="xmlsec-keysdata.html">
 </head>
 <body><table witdh="100%"><tr>
 <td valign="top" align="left" width="210">
@@ -40,7 +40,7 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keyinfo.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysdata.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <h1>
@@ -77,7 +77,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYCOPY">xmlSecKeyCopy</a>          
 const <font>xmlChar</font>* <a href="xmlsec-keys.html#XMLSECKEYGETNAME">xmlSecKeyGetName</a>             (<font>xmlSecKeyPtr</font> key);
 int         <a href="xmlsec-keys.html#XMLSECKEYSETNAME">xmlSecKeySetName</a>                (<font>xmlSecKeyPtr</font> key,
                                              const <font>xmlChar</font> *name);
-<font>xmlSecKeyDataType</font> <a href="xmlsec-keys.html#XMLSECKEYGETTYPE">xmlSecKeyGetType</a>          (<font>xmlSecKeyPtr</font> key);
+<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <a href="xmlsec-keys.html#XMLSECKEYGETTYPE">xmlSecKeyGetType</a>          (<font>xmlSecKeyPtr</font> key);
 <font>xmlSecKeyDataPtr</font> <a href="xmlsec-keys.html#XMLSECKEYGETVALUE">xmlSecKeyGetValue</a>          (<font>xmlSecKeyPtr</font> key);
 int         <a href="xmlsec-keys.html#XMLSECKEYSETVALUE">xmlSecKeySetValue</a>               (<font>xmlSecKeyPtr</font> key,
                                              <font>xmlSecKeyDataPtr</font> value);
@@ -94,7 +94,7 @@ void        <a href="xmlsec-keys.html#XMLSECKEYDEBUGXMLDUMP">xmlSecKeyDebugXmlDu
 <font>xmlSecKeyPtr</font> <a href="xmlsec-keys.html#XMLSECKEYGENERATE">xmlSecKeyGenerate</a>              (const <font>xmlChar</font> *klass,
                                              const <font>xmlChar</font> *name,
                                              <font>size_t</font> sizeBits,
-                                             <font>xmlSecKeyDataType</font> type);
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
 int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>                  (<font>xmlSecKeyPtr</font> key,
                                              const <font>xmlChar</font> *name,
                                              <font>xmlSecKeyReqPtr</font> keyReq);
@@ -179,7 +179,7 @@ int         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>        
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecKeyDataType</font> <tt class="STRUCTFIELD"><i>keyType</i></tt>
+<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <tt class="STRUCTFIELD"><i>keyType</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the desired key type.</td>
 </tr>
@@ -559,7 +559,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN2869"></a><h3>
 <a name="XMLSECKEYGETTYPE"></a>xmlSecKeyGetType ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataType</font> xmlSecKeyGetType          (<font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> xmlSecKeyGetType          (<font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN2876"></a><p></p>
@@ -774,7 +774,7 @@ or NULL if an error occurs.</td>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeyGenerate              (const <font>xmlChar</font> *klass,
                                              const <font>xmlChar</font> *name,
                                              <font>size_t</font> sizeBits,
-                                             <font>xmlSecKeyDataType</font> type);</pre></td></tr></table>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN3067"></a><p></p>
@@ -919,11 +919,11 @@ or 0 otherwise.</p>
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keyinfo.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-keysdata.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keyinfo.h</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keysmngr.h</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>keysdata</b></font></td>
 </tr>
 </table>
 </div>

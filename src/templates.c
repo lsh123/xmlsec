@@ -384,7 +384,7 @@ xmlNodePtr
 xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
     xmlNodePtr signedInfoNode;
     
-    xmlSecAssert2(signNode == NULL, NULL);
+    xmlSecAssert2(signNode != NULL, NULL);
     
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
@@ -410,7 +410,7 @@ xmlNodePtr
 xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
     xmlNodePtr signedInfoNode;
     
-    xmlSecAssert2(signNode == NULL, NULL);
+    xmlSecAssert2(signNode != NULL, NULL);
     
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
@@ -955,7 +955,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  */
 xmlNodePtr 
 xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
-    xmlSecAssert2(encNode == NULL, NULL);
+    xmlSecAssert2(encNode != NULL, NULL);
 
     return(xmlSecFindChild(encNode, xmlSecNodeEncryptionMethod, xmlSecEncNs));
 }

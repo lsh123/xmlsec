@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Reference" href="xmlsec-ref.html">
-<link rel="PREVIOUS" title="keys.h" href="xmlsec-keys.html">
+<link rel="PREVIOUS" title="keysdata" href="xmlsec-keysdata.html">
 <link rel="NEXT" title="templates" href="xmlsec-templates.html">
 </head>
 <body><table witdh="100%"><tr>
@@ -37,7 +37,7 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysdata.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
@@ -46,9 +46,9 @@
 <h1>
 <a name="XMLSEC-KEYSMNGR"></a>keysmngr.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN3192"></a><h2>Name</h2>keysmngr.h -- The simple keys manager implementation.</div>
+<a name="AEN5329"></a><h2>Name</h2>keysmngr.h -- The simple keys manager implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN3195"></a><h2>Synopsis</h2>
+<a name="AEN5332"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
@@ -64,7 +64,7 @@ int         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD">xmlSecSimpl
                                              <font>xmlSecKeysMngrPtr</font> keysMngr);
 int         <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE">xmlSecSimpleKeysStoreSave</a>       (<font>xmlSecKeyDataStorePtr</font> store,
                                              const char *filename,
-                                             <font>xmlSecKeyDataType</font> type);
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
 <font>xmlSecKeysMngrPtr</font> <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE">xmlSecKeysMngrCreate</a>      (void);
 void        <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY">xmlSecKeysMngrDestroy</a>           (<font>xmlSecKeysMngrPtr</font> mngr);
 int         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEY">xmlSecKeysMngrFindKey</a>           (<font>xmlSecKeysMngrPtr</font> mngr,
@@ -93,26 +93,26 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN3253"></a><h2>Description</h2>
+<a name="AEN5390"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN3256"></a><h2>Details</h2>
+<a name="AEN5393"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN3258"></a><h3>
+<a name="AEN5395"></a><h3>
 <a name="XMLSECSIMPLEKEYSSTOREID"></a>xmlSecSimpleKeysStoreId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()</pre></td></tr></table>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3263"></a><h3>
+<a name="AEN5400"></a><h3>
 <a name="XMLSECSIMPLEKEYSSTOREGETKLASS"></a>xmlSecSimpleKeysStoreGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStoreId</font> xmlSecSimpleKeysStoreGetKlass
                                             (void);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3269"></a><p></p>
+<a name="AEN5406"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -123,13 +123,13 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3278"></a><h3>
+<a name="AEN5415"></a><h3>
 <a name="XMLSECSIMPLEKEYSSTOREADOPTKEY"></a>xmlSecSimpleKeysStoreAdoptKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreAdoptKey   (<font>xmlSecKeyDataStorePtr</font> store,
                                              <font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3285"></a><p></p>
+<a name="AEN5422"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -152,14 +152,14 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3302"></a><h3>
+<a name="AEN5439"></a><h3>
 <a name="XMLSECSIMPLEKEYSSTOREFINDKEY"></a>xmlSecSimpleKeysStoreFindKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecSimpleKeysStoreFindKey   (<font>xmlSecKeyDataStorePtr</font> store,
                                              const <font>xmlChar</font> *name,
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3311"></a><p></p>
+<a name="AEN5448"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -187,14 +187,14 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3332"></a><h3>
+<a name="AEN5469"></a><h3>
 <a name="XMLSECSIMPLEKEYSSTORELOAD"></a>xmlSecSimpleKeysStoreLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreLoad       (<font>xmlSecKeyDataStorePtr</font> store,
                                              const char *uri,
                                              <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3339"></a><p></p>
+<a name="AEN5476"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -222,14 +222,14 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3360"></a><h3>
+<a name="AEN5497"></a><h3>
 <a name="XMLSECSIMPLEKEYSSTORESAVE"></a>xmlSecSimpleKeysStoreSave ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecSimpleKeysStoreSave       (<font>xmlSecKeyDataStorePtr</font> store,
                                              const char *filename,
-                                             <font>xmlSecKeyDataType</font> type);</pre></td></tr></table>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3367"></a><p></p>
+<a name="AEN5504"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -257,12 +257,12 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3388"></a><h3>
+<a name="AEN5525"></a><h3>
 <a name="XMLSECKEYSMNGRCREATE"></a>xmlSecKeysMngrCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeysMngrPtr</font> xmlSecKeysMngrCreate      (void);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3394"></a><p></p>
+<a name="AEN5531"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -273,12 +273,12 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3403"></a><h3>
+<a name="AEN5540"></a><h3>
 <a name="XMLSECKEYSMNGRDESTROY"></a>xmlSecKeysMngrDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeysMngrDestroy           (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3409"></a><p></p>
+<a name="AEN5546"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>mngr</i></tt> :</td>
@@ -289,7 +289,7 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3418"></a><h3>
+<a name="AEN5555"></a><h3>
 <a name="XMLSECKEYSMNGRFINDKEY"></a>xmlSecKeysMngrFindKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrFindKey           (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyPtr</font> key,
@@ -297,7 +297,7 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3427"></a><p></p>
+<a name="AEN5564"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -330,7 +330,7 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3452"></a><h3>
+<a name="AEN5589"></a><h3>
 <a name="XMLSECKEYSMNGRFINDKEYDATA"></a>xmlSecKeysMngrFindKeyData ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrFindKeyData       (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyDataStoreId</font> storeId,
@@ -340,7 +340,7 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3463"></a><p></p>
+<a name="AEN5600"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -383,13 +383,13 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3496"></a><h3>
+<a name="AEN5633"></a><h3>
 <a name="XMLSECKEYSMNGRADOPTKEYSSTORE"></a>xmlSecKeysMngrAdoptKeysStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrAdoptKeysStore    (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3503"></a><p></p>
+<a name="AEN5640"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -412,13 +412,13 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3520"></a><h3>
+<a name="AEN5657"></a><h3>
 <a name="XMLSECKEYSMNGRGETKEYSSTORE"></a>xmlSecKeysMngrGetKeysStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStorePtr</font> xmlSecKeysMngrGetKeysStore
                                             (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3527"></a><p></p>
+<a name="AEN5664"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -436,13 +436,13 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3540"></a><h3>
+<a name="AEN5677"></a><h3>
 <a name="XMLSECKEYSMNGRADOPTDATASTORE"></a>xmlSecKeysMngrAdoptDataStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeysMngrAdoptDataStore    (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3547"></a><p></p>
+<a name="AEN5684"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -465,14 +465,14 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3564"></a><h3>
+<a name="AEN5701"></a><h3>
 <a name="XMLSECKEYSMNGRGETDATASTORE"></a>xmlSecKeysMngrGetDataStore ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStorePtr</font> xmlSecKeysMngrGetDataStore
                                             (<font>xmlSecKeysMngrPtr</font> mngr,
                                              <font>xmlSecKeyDataStoreId</font> id);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3572"></a><p></p>
+<a name="AEN5709"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -495,14 +495,14 @@ struct      <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngr</a>;
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3589"></a><h3>
+<a name="AEN5726"></a><h3>
 <a name="XMLSECGETKEYCALLBACK"></a>xmlSecGetKeyCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> (*xmlSecGetKeyCallback)        (<font>xmlNodePtr</font> keyInfoNode,
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 <p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3599"></a><p></p>
+<a name="AEN5736"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -526,7 +526,7 @@ an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3616"></a><h3>
+<a name="AEN5753"></a><h3>
 <a name="XMLSECKEYSMNGR"></a>struct xmlSecKeysMngr</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeysMngr {	
     xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
@@ -536,7 +536,7 @@ an error occurs.</td>
 <p>The keys manager structure.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3622"></a><p></p>
+<a name="AEN5759"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -562,14 +562,14 @@ an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3642"></a><h3>
+<a name="AEN5779"></a><h3>
 <a name="XMLSECKEYSMNGRGETKEY"></a>xmlSecKeysMngrGetKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeysMngrGetKey           (<font>xmlNodePtr</font> keyInfoNode,
                                              <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
 <p>Reads the &lt;dsig:KeyInfo&gt; node <tt class="PARAMETER"><i>keyInfoNode</i></tt> and extracts the key.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3652"></a><p></p>
+<a name="AEN5789"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -595,13 +595,13 @@ an error occurs.</td>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysdata.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keys.h</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keysdata</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>templates</b></font></td>
 </tr>
 </table>

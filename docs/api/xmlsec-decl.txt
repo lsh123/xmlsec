@@ -736,16 +736,8 @@ xmlSecKeyPtr key,const xmlChar *name,xmlSecKeyReqPtr keyReq
 void
 </FUNCTION>
 <TYPEDEF>
-<NAME>xmlSecKeyDataId</NAME>
-typedef const struct _xmlSecKeyDataKlass 	xmlSecKeyDataKlass, *xmlSecKeyDataId; 
-</TYPEDEF>
-<TYPEDEF>
-<NAME>xmlSecKeyDataStoreId</NAME>
-typedef const struct _xmlSecKeyDataStoreKlass 	xmlSecKeyDataStoreKlass, *xmlSecKeyDataStoreId; 
-</TYPEDEF>
-<TYPEDEF>
 <NAME>xmlSecKeyDataUsage</NAME>
-typedef unsigned int				xmlSecKeyDataUsage;
+typedef unsigned int					xmlSecKeyDataUsage;
 </TYPEDEF>
 <MACRO>
 <NAME>xmlSecKeyDataUsageUnknown</NAME>

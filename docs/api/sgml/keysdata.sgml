@@ -14,8 +14,6 @@
 
 
 
-typedef     <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>;
-typedef     <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>;
 typedef     <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link>;
 #define     <link linkend="xmlSecKeyDataUsageUnknown">xmlSecKeyDataUsageUnknown</link>
 #define     <link linkend="xmlSecKeyDataUsageKeyInfoNodeRead">xmlSecKeyDataUsageKeyInfoNodeRead</link>
@@ -219,23 +217,11 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="xmlSecKeyDataId">xmlSecKeyDataId</title>
-<programlisting>typedef const struct _xmlSecKeyDataKlass 	xmlSecKeyDataKlass, *xmlSecKeyDataId; 
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</title>
-<programlisting>typedef const struct _xmlSecKeyDataStoreKlass 	xmlSecKeyDataStoreKlass, *xmlSecKeyDataStoreId; 
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKeyDataUsage">xmlSecKeyDataUsage</title>
-<programlisting>typedef unsigned int				xmlSecKeyDataUsage;
+<programlisting>typedef unsigned int					xmlSecKeyDataUsage;
 </programlisting>
+<para>
+The bits mask that determines possible keys data usage.</para>
 <para>
 
 </para></refsect2>
@@ -243,6 +229,8 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <title><anchor id="xmlSecKeyDataUsageUnknown">xmlSecKeyDataUsageUnknown</title>
 <programlisting>#define xmlSecKeyDataUsageUnknown			0x00000
 </programlisting>
+<para>
+The key data usage is unknown.</para>
 <para>
 
 </para></refsect2>
@@ -318,12 +306,16 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <programlisting>typedef unsigned int				xmlSecKeyDataType;
 </programlisting>
 <para>
+The key data type (public/private, session/permanet, etc.).</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataTypeUnknown">xmlSecKeyDataTypeUnknown</title>
 <programlisting>#define xmlSecKeyDataTypeUnknown			0x0000
 </programlisting>
+<para>
+The key data type is unknown (same as <link linkend="xmlSecKeyDataTypeNone">xmlSecKeyDataTypeNone</link>).</para>
 <para>
 
 </para></refsect2>
@@ -332,12 +324,16 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <programlisting>#define xmlSecKeyDataTypeNone				xmlSecKeyDataTypeUnknown
 </programlisting>
 <para>
+The key data type is unknown (same as <link linkend="xmlSecKeyDataTypeUnknown">xmlSecKeyDataTypeUnknown</link>).</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataTypePublic">xmlSecKeyDataTypePublic</title>
 <programlisting>#define xmlSecKeyDataTypePublic				0x0001
 </programlisting>
+<para>
+The key data contain a public key.</para>
 <para>
 
 </para></refsect2>
@@ -346,12 +342,16 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <programlisting>#define xmlSecKeyDataTypePrivate			0x0002
 </programlisting>
 <para>
+The key data contain a private key.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</title>
 <programlisting>#define xmlSecKeyDataTypeSymmetric			0x0004
 </programlisting>
+<para>
+The key data contain a symmetric key.</para>
 <para>
 
 </para></refsect2>
@@ -360,6 +360,8 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <programlisting>#define xmlSecKeyDataTypeSession			0x0008
 </programlisting>
 <para>
+The key data contain session key (one time key, not stored in keys manager).</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -367,12 +369,16 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <programlisting>#define xmlSecKeyDataTypePermanent			0x0010
 </programlisting>
 <para>
+The key data contain permanent key (stored in keys manager).</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</title>
 <programlisting>#define xmlSecKeyDataTypeAny				0xFFFF
 </programlisting>
+<para>
+Any key data.</para>
 <para>
 
 </para></refsect2>
@@ -454,7 +460,7 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 };
 </programlisting>
 <para>
-The data.</para>
+The key data: key value (crypto material), x509 data, pgp data, etc.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="struct">
@@ -464,18 +470,17 @@ The data.</para>
 <tbody>
 <row>
 <entry><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <structfield>id</structfield></entry>
-<entry> the data id (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>).
+<entry> 		the data id (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>).
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved0</structfield></entry>
-<entry>
+<entry> 		reserved for the future.
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-
+<entry> 		reserved for the future.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -785,6 +790,8 @@ Reads the data from binary buffer <parameter>buf</parameter>.</para>
 <title><anchor id="xmlSecKeyDataGetName">xmlSecKeyDataGetName()</title>
 <programlisting>#define     xmlSecKeyDataGetName(data)</programlisting>
 <para>
+Macro. Returns the key data name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -792,9 +799,7 @@ Reads the data from binary buffer <parameter>buf</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> 		the pointer to key data.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -811,7 +816,7 @@ or 0 otherwise.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the pointer to data.
+<entry> 		the pointer to data.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -827,10 +832,10 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</pa
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the pointer to data.
+<entry> 		the pointer to data.
 </entry></row>
 <row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
-<entry> the data Id.
+<entry> 		the data Id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -846,10 +851,10 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and could be used for <
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the pointer to data.
+<entry> 		the pointer to data.
 </entry></row>
 <row><entry align="right"><parameter>usg</parameter>&nbsp;:</entry>
-<entry> the data usage.
+<entry> 		the data usage.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -865,10 +870,10 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</pa
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the pointer to data.
+<entry> 		the pointer to data.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the expected size.
+<entry> 		the expected size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -884,7 +889,7 @@ The "unknown" id.</para>
 <title><anchor id="xmlSecKeyDataInitMethod">xmlSecKeyDataInitMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataInitMethod)      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-KeyData specific creation method.</para>
+Key data specific initialization method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -893,10 +898,9 @@ KeyData specific creation method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry> 		the data.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure
-or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -904,7 +908,7 @@ or NULL if an error occurs.
 <programlisting>int         (*xmlSecKeyDataDuplicateMethod) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
                                              <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);</programlisting>
 <para>
-KeyData specific duplication method.</para>
+Key data specific duplication (copy) method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -918,15 +922,15 @@ KeyData specific duplication method.</para>
 <row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure
-or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataFinalizeMethod">xmlSecKeyDataFinalizeMethod ()</title>
 <programlisting>void        (*xmlSecKeyDataFinalizeMethod)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-KeyData specific destroy method.</para>
+Key data specific finalization method. All the objects and resources allocated
+by the key data object must be freed inside this method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -935,7 +939,7 @@ KeyData specific destroy method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry> 		the data.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -945,7 +949,7 @@ KeyData specific destroy method.</para>
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-KeyData specific reading from XML node method.</para>
+Key data specific method for reading XML node.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -954,16 +958,16 @@ KeyData specific reading from XML node method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the data id.
+<entry> 		the data id.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the key.
+<entry> 		the key.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the pointer to data's value XML node.
+<entry> 		the pointer to data's value XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> the &lt;dsig:KeyInfo&gt; node reading context
+<entry> 	the &lt;dsig:KeyInfo/&gt; node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1006,7 +1010,7 @@ KeyData specific reading from XML node method.</para>
                                              <link linkend="size-t">size_t</link> bufSize,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-KeyData specific reading from binary buffer method.</para>
+Key data specific method for reading binary buffer.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1015,19 +1019,19 @@ KeyData specific reading from binary buffer method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the data id.
+<entry> 		the data id.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the key.
+<entry> 		the key.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry> the input buffer.
+<entry> 		the input buffer.
 </entry></row>
 <row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
-<entry> the buffer size.
+<entry>		the buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> the &lt;dsig:KeyInfo&gt; node reading context
+<entry> 	the &lt;dsig:KeyInfo/&gt; node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1072,7 +1076,7 @@ KeyData specific reading from binary buffer method.</para>
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
-KeyData specific new key generation method.</para>
+Key data specific method for generating new key data.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1081,10 +1085,11 @@ KeyData specific new key generation method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry> 		the data.
 </entry></row>
 <row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
-<entry> the key data specific size.
+<entry> 		the key data specific size.
+ &amp; <parameter>type</parameter>:		the required key type (session/permanent, etc.)
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
 <entry>
@@ -1097,7 +1102,7 @@ KeyData specific new key generation method.</para>
 <programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> (*xmlSecKeyDataGetTypeMethod)
                                             (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-KeyData specific method to get the key type.</para>
+Key data specific method to get the key type.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1106,7 +1111,7 @@ KeyData specific method to get the key type.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry>		 the data.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the key type.
 </entry></row>
@@ -1115,7 +1120,7 @@ KeyData specific method to get the key type.</para>
 <title><anchor id="xmlSecKeyDataGetSizeMethod">xmlSecKeyDataGetSizeMethod ()</title>
 <programlisting><link linkend="size-t">size_t</link>      (*xmlSecKeyDataGetSizeMethod)   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-KeyData specific method to get the key size.</para>
+Key data specific method to get the key size.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1124,7 +1129,7 @@ KeyData specific method to get the key size.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry> 		the data.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the key size in bits.
 </entry></row>
@@ -1134,7 +1139,7 @@ KeyData specific method to get the key size.</para>
 <programlisting>const <link linkend="xmlChar">xmlChar</link>* (*xmlSecKeyDataGetIdentifierMethod)
                                             (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-KeyData specific method to get the data identifier string (for example,
+Key data specific method to get the key data identifier string (for example,
 X509 data identifier is the subject of the verified cert).</para>
 <para>
 
@@ -1144,7 +1149,7 @@ X509 data identifier is the subject of the verified cert).</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry> 		the data.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the identifier string or NULL if an error occurs.
 </entry></row>
@@ -1154,7 +1159,7 @@ X509 data identifier is the subject of the verified cert).</para>
 <programlisting>void        (*xmlSecKeyDataDebugDumpMethod) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-KeyData specific method for printing debug info.</para>
+Key data specific method for printing debug info.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1163,10 +1168,10 @@ KeyData specific method for printing debug info.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry> the data.
+<entry> 		the data.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry> the FILE to print debug info (should be open for writing).
+<entry> 		the FILE to print debug info (should be open for writing).
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1209,13 +1214,130 @@ KeyData specific method for printing debug info.</para>
 };
 </programlisting>
 <para>
-The data id.</para>
+The data id (klass).</para>
 <para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></entry>
+<entry>		the klass size.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>objSize</structfield></entry>
+<entry>		the object size.
+</entry>
+</row>
+<row>
+<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
+<entry>		the object name.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> <structfield>usage</structfield></entry>
+<entry>		the allowed data usage.
+</entry>
+</row>
+<row>
+<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>href</structfield></entry>
+<entry>		the identification string (href).
+</entry>
+</row>
+<row>
+<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>dataNodeName</structfield></entry>
+<entry>	the data's XML node name.
+</entry>
+</row>
+<row>
+<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>dataNodeNs</structfield></entry>
+<entry>		the data's XML node namespace.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataInitMethod">xmlSecKeyDataInitMethod</link> <structfield>initialize</structfield></entry>
+<entry>		the initialization method.  
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataDuplicateMethod">xmlSecKeyDataDuplicateMethod</link> <structfield>duplicate</structfield></entry>
+<entry>		the duplicate (copy) method.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataFinalizeMethod">xmlSecKeyDataFinalizeMethod</link> <structfield>finalize</structfield></entry>
+<entry>		the finalization (destroy) method.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataGenerateMethod">xmlSecKeyDataGenerateMethod</link> <structfield>generate</structfield></entry>
+<entry>		the new data generation method.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataGetTypeMethod">xmlSecKeyDataGetTypeMethod</link> <structfield>getType</structfield></entry>
+<entry>		the method to access data's type information.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataGetSizeMethod">xmlSecKeyDataGetSizeMethod</link> <structfield>getSize</structfield></entry>
+<entry>		the method to access data's size.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataGetIdentifierMethod">xmlSecKeyDataGetIdentifierMethod</link> <structfield>getIdentifier</structfield></entry>
+<entry>	the method to access data's string identifier.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataXmlReadMethod">xmlSecKeyDataXmlReadMethod</link> <structfield>xmlRead</structfield></entry>
+<entry>		the method for reading data from XML node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataXmlWriteMethod">xmlSecKeyDataXmlWriteMethod</link> <structfield>xmlWrite</structfield></entry>
+<entry>		the method for writing data to XML node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataBinReadMethod">xmlSecKeyDataBinReadMethod</link> <structfield>binRead</structfield></entry>
+<entry>		the method for reading data from a binary buffer.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataBinWriteMethod">xmlSecKeyDataBinWriteMethod</link> <structfield>binWrite</structfield></entry>
+<entry>		the method for writing data to binary buffer.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataDebugDumpMethod">xmlSecKeyDataDebugDumpMethod</link> <structfield>debugDump</structfield></entry>
+<entry> 		the method for printing debug data information.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataDebugDumpMethod">xmlSecKeyDataDebugDumpMethod</link> <structfield>debugXmlDump</structfield></entry>
+<entry>	the method for printing debug data information in XML format.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataKlassGetName">xmlSecKeyDataKlassGetName()</title>
 <programlisting>#define     xmlSecKeyDataKlassGetName(klass)</programlisting>
+<para>
+Macro. Returns data klass name.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1224,15 +1346,15 @@ The data id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> 		the data klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataListId">xmlSecKeyDataListId</title>
 <programlisting>#define xmlSecKeyDataListId	xmlSecKeyDataListGetKlass()
 </programlisting>
+<para>
+The key data klasses list klass id.</para>
 <para>
 
 </para></refsect2>
@@ -1255,6 +1377,8 @@ The data id.</para>
 <title><anchor id="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</title>
 <programlisting>#define xmlSecKeyDataIdListId	xmlSecKeyDataIdListGetKlass()
 </programlisting>
+<para>
+The key data list klass id.</para>
 <para>
 
 </para></refsect2>
@@ -1383,6 +1507,8 @@ The data id.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</title>
 <programlisting>#define     xmlSecKeyDataBinarySize</programlisting>
+<para>
+The binary key data object size.</para>
 <para>
 
 </para></refsect2>
@@ -1692,7 +1818,9 @@ The data id.</para>
 };
 </programlisting>
 <para>
-The store.</para>
+The key data store. Key data store holds common key data specific information
+required for key data processing. For example, X509 data store may hold 
+information about trusted (root) certificates.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="struct">
@@ -1702,18 +1830,17 @@ The store.</para>
 <tbody>
 <row>
 <entry><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> <structfield>id</structfield></entry>
-<entry> the store id (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>).
+<entry> 		the store id (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>).
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved0</structfield></entry>
-<entry>
+<entry>		reserved for the future.
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-
+<entry>		reserved for the future.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -1791,6 +1918,8 @@ Destroys the store and frees all allocated memory.</para>
 <title><anchor id="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName()</title>
 <programlisting>#define     xmlSecKeyDataStoreGetName(store)</programlisting>
 <para>
+Macro. Returns key data store name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -1798,9 +1927,7 @@ Destroys the store and frees all allocated memory.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> 		the pointer to store.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1817,7 +1944,7 @@ or 0 otherwise.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry> the pointer to store.
+<entry> 		the pointer to store.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1833,10 +1960,10 @@ Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry> the pointer to store.
+<entry> 		the pointer to store.
 </entry></row>
 <row><entry align="right"><parameter>storeId</parameter>&nbsp;:</entry>
-<entry> the store Id.
+<entry> 		the store Id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1852,10 +1979,10 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>stores</
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry> the pointer to store.
+<entry> 		the pointer to store.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the expected size.
+<entry> 		the expected size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1872,7 +1999,7 @@ The "unknown" id.</para>
 <programlisting>int         (*xmlSecKeyDataStoreInitializeMethod)
                                             (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
-KeyDataStore specific creation method.</para>
+Key data store specific initialization method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1883,8 +2010,7 @@ KeyDataStore specific creation method.</para>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link> structure
-or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1892,7 +2018,7 @@ or NULL if an error occurs.
 <programlisting>void        (*xmlSecKeyDataStoreFinalizeMethod)
                                             (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
-KeyDataStore specific destroy method.</para>
+Key	data dtore specific finalization (destroy) method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1914,7 +2040,7 @@ KeyDataStore specific destroy method.</para>
                                              <link linkend="size-t">size_t</link> paramsSize,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-KeyDataStore specific find method.</para>
+Key data store specific find method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -1926,16 +2052,16 @@ KeyDataStore specific find method.</para>
 <entry>
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the destination key.
+<entry> 		the destination key.
 </entry></row>
 <row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
-<entry> the params strings array.
+<entry> 		the params strings array.
 </entry></row>
 <row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
-<entry> the params strings array <parameter>params</parameter>.
+<entry> 	the params strings array <parameter>params</parameter>.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> the pointer to key info context.
+<entry> 	the pointer to key info context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1966,6 +2092,8 @@ KeyDataStore specific find method.</para>
 <title><anchor id="xmlSecKeyDataStoreKlassGetName">xmlSecKeyDataStoreKlassGetName()</title>
 <programlisting>#define     xmlSecKeyDataStoreKlassGetName(klass)</programlisting>
 <para>
+Macro. Returns store klass name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -1973,15 +2101,15 @@ KeyDataStore specific find method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to store klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</title>
 <programlisting>#define xmlSecKeyDataStorePtrListId	xmlSecKeyDataStorePtrListGetKlass()
 </programlisting>
+<para>
+The data store list id (klass).</para>
 <para>
 
 </para></refsect2>

@@ -25,6 +25,11 @@ extern "C" {
  * Simple Keys Store
  *
  ***************************************************************************/
+/**
+ * xmlSecSimpleKeysStoreId:
+ *
+ * A simple keys store klass id.
+ */
 #define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataStoreId	xmlSecSimpleKeysStoreGetKlass	(void);
 XMLSEC_EXPORT int			xmlSecSimpleKeysStoreAdoptKey	(xmlSecKeyDataStorePtr store,
@@ -71,14 +76,10 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr	xmlSecKeysMngrGetDataStore	(xmlSecKeysMngrPt
 
 /**
  * xmlSecGetKeyCallback:
- * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
- * @mngr: the keys manager.
- * @context: the pointer to application specific data.
- * @keyId: the required key Id (or NULL for "any").
- * @type: the required key (may be "any").
- * @usage: the required key usage.
+ * @keyInfoNode: 		the pointer to <dsig:KeyInfo/> node.
+ * @keyInfoContext:		the pointer to <dsig:KeyInfo/> node processing context.
  *
- * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
+ * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
  *
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
@@ -88,23 +89,16 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
 
 /**
  * xmlSecKeysMngr:
- * @getKey: the callback used to read <dsig:KeyInfo> node.
- * @allowedOrigins: the allowed origins bits mask.
- * @maxRetrievalsLevel: the max allowed <dsig:RetrievalMethod> level to prevent DOS attack.
- * @maxEncKeysLevel: the max allowed <enc:EncryptedKey> level to prevent DOS attack.
- * @findKey: the callback used to serach for key in the keys manager.
- * @keysData: the keys manager data.
- * @failIfCertNotFound: the flag.
- * @findX509: the callback used to search for a cert.
- * @verifyX509: the callback used to verify a cert.
- * @x509Data: the X509 certificates manager specific data.
+ * @keysStore:			the key store (list of keys known to keys manager).
+ * @storesList:			the list of key data stores known to keys manager.
+ * @getKey: 			the callback used to read <dsig:KeyInfo/> node.
  *
  * The keys manager structure.
  */
 struct _xmlSecKeysMngr {	
-    xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
-    xmlSecPtrListPtr		storesList;	/* list of other key data storages */
-    xmlSecGetKeyCallback	getKey;		/* the callback used to read <dsig:KeyInfo> node. */
+    xmlSecKeyDataStorePtr	keysStore;	
+    xmlSecPtrListPtr		storesList;	
+    xmlSecGetKeyCallback	getKey;		
 };
 
 

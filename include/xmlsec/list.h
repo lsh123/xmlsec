@@ -16,11 +16,28 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 
+typedef const struct _xmlSecPtrListKlass			xmlSecPtrListKlass, 
+								*xmlSecPtrListId;
+typedef struct _xmlSecPtrList 					xmlSecPtrList, 
+								*xmlSecPtrListPtr;
+/**
+ * xmlSecPtr:
+ *
+ * Void pointer.
+ */
 typedef void*	xmlSecPtr;
-typedef const struct _xmlSecPtrListKlass	xmlSecPtrListKlass, *xmlSecPtrListId;
-typedef struct _xmlSecPtrList 			xmlSecPtrList, *xmlSecPtrListPtr;
 
 
+/**
+ * xmlSecPtrList:
+ * @id:				the list items description.
+ * @data:			the list data.
+ * @use:			the current list size.
+ * @max:			the max (allocated) list size.
+ * @allocMode:			the memory allocation mode.
+ * 
+ * The pointers list.
+ */
 struct _xmlSecPtrList {
     xmlSecPtrListId		id;        
 
@@ -57,13 +74,20 @@ XMLSEC_EXPORT int		xmlSecPtrListRemove		(xmlSecPtrListPtr list,
 XMLSEC_EXPORT void		xmlSecPtrListDebugDump		(xmlSecPtrListPtr list,
     								 FILE* output);
 XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,
-								 FILE* output);
+ 								 FILE* output);
+
+/**
+ * xmlSecPtrListGetName:
+ * @list: 		the ponter to list.
+ * 
+ * Macro. Returns lists's name.
+ */
 #define xmlSecPtrListGetName(list) \
 	(((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
 
 /**
  * xmlSecPtrListIsValid:
- * @list: the pointer to list.
+ * @list: 		the pointer to list.
  *
  * Macro. Returns 1 if @list is not NULL and @list->id is not NULL
  * or 0 otherwise.
@@ -72,8 +96,8 @@ XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,
 	((( list ) != NULL) && ((( list )->id) != NULL))
 /**
  * xmlSecPtrListCheckId:
- * @list: the pointer to list.
- * @dataId: the list Id.
+ * @list: 		the pointer to list.
+ * @dataId: 		the list Id.
  *
  * Macro. Returns 1 if @list is valid and @list's id is equal to @dataId.
  */

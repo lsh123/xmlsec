@@ -735,7 +735,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     } else if(encCtx->defEncMethodId != xmlSecTransformIdUnknown) {
 	encCtx->encMethod = xmlSecTransformCtxCreateAndAppend(&(encCtx->encTransformCtx), 
 							      encCtx->defEncMethodId);
-	if(encCtx->encMethod) {
+	if(encCtx->encMethod == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecTransformCtxAppend",

@@ -1,6 +1,6 @@
-41% function docs coverage.
-217 functions documented.
-315 not documented.
+44% function docs coverage.
+234 functions documented.
+298 not documented.
 
 
 XMLSEC_CRYPTO_EXPORT
@@ -91,7 +91,6 @@ xmlSecKeyAdoptData
 xmlSecKeyCopy
 xmlSecKeyDataAesId
 xmlSecKeyDataBinWrite
-xmlSecKeyDataBinarySize
 xmlSecKeyDataBinaryValueBinRead
 xmlSecKeyDataBinaryValueBinWrite
 xmlSecKeyDataBinaryValueDebugDump
@@ -108,7 +107,6 @@ xmlSecKeyDataDesId
 xmlSecKeyDataDsaId
 xmlSecKeyDataEncryptedKeyGetKlass
 xmlSecKeyDataGetIdentifier
-xmlSecKeyDataGetName
 xmlSecKeyDataGetSize
 xmlSecKeyDataGetType
 xmlSecKeyDataHmacId
@@ -117,32 +115,18 @@ xmlSecKeyDataIdListFindByHref
 xmlSecKeyDataIdListFindByName
 xmlSecKeyDataIdListFindByNode
 xmlSecKeyDataIdListGetKlass
-xmlSecKeyDataIdListId
 xmlSecKeyDataIdsGet
 xmlSecKeyDataIdsInit
 xmlSecKeyDataIdsRegister
 xmlSecKeyDataIdsRegisterDefault
 xmlSecKeyDataIdsShutdown
-xmlSecKeyDataKlassGetName
 xmlSecKeyDataListGetKlass
-xmlSecKeyDataListId
 xmlSecKeyDataNameGetKlass
 xmlSecKeyDataRawX509CertId
 xmlSecKeyDataRetrievalMethodGetKlass
 xmlSecKeyDataRsaId
 xmlSecKeyDataStoreFind
-xmlSecKeyDataStoreGetName
-xmlSecKeyDataStoreKlassGetName
 xmlSecKeyDataStorePtrListGetKlass
-xmlSecKeyDataStorePtrListId
-xmlSecKeyDataTypeAny
-xmlSecKeyDataTypeNone
-xmlSecKeyDataTypePermanent
-xmlSecKeyDataTypePrivate
-xmlSecKeyDataTypePublic
-xmlSecKeyDataTypeSession
-xmlSecKeyDataTypeSymmetric
-xmlSecKeyDataTypeUnknown
 xmlSecKeyDataUsageAny
 xmlSecKeyDataUsageKeyInfoNode
 xmlSecKeyDataUsageKeyInfoNodeRead
@@ -153,7 +137,6 @@ xmlSecKeyDataUsageKeyValueNodeWrite
 xmlSecKeyDataUsageRetrievalMethodNode
 xmlSecKeyDataUsageRetrievalMethodNodeBin
 xmlSecKeyDataUsageRetrievalMethodNodeXml
-xmlSecKeyDataUsageUnknown
 xmlSecKeyDataValueGetKlass
 xmlSecKeyDataX509Id
 xmlSecKeyEmpty

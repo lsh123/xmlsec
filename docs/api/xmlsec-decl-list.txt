@@ -172,8 +172,6 @@ xmlSecKeyPtrListGetKlass
 
 <SECTION>
 <FILE>keysdata</FILE>
-xmlSecKeyDataId
-xmlSecKeyDataStoreId
 xmlSecKeyDataUsage
 xmlSecKeyDataUsageUnknown
 xmlSecKeyDataUsageKeyInfoNodeRead

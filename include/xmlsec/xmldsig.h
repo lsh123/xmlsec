@@ -40,6 +40,35 @@ typedef enum {
  *************************************************************************/
 
 /**
+ *
+ *
+ *
+ */
+#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS			0x00000001
+
+/**
+ *
+ *
+ *
+ */
+#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES		0x00000002
+
+/**
+ *
+ *
+ *
+ */
+#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES		0x00000004
+
+/**
+ *
+ *
+ *
+ */
+#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE			0x00000008
+
+
+/**
  * xmlSecDSigCtx:
  * @processManifests: if 0 then <dsig:Manifests> nodes are not processed.
  * @storeSignatures: store the signed content just (<dsig:SignedInfo> element)
@@ -54,17 +83,18 @@ typedef enum {
 struct _xmlSecDSigCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		signTransformCtx;
-    int				processManifests;
-    int				storeSignatures;
-    int				storeReferences;
-    int				storeManifests;	
-
     xmlSecTransformUriType	enabledReferenceUris;
     xmlSecPtrListPtr		enabledReferenceTransforms;
     
+    /* TODO */
+    xmlSecTransformId		defSignMethodId;
+    xmlSecTransformId		defC14NMethodId;
+        
     /* these data are returned */
     xmlSecTransformOperation	operation;
     xmlSecKeyPtr		signKey;
@@ -73,14 +103,10 @@ struct _xmlSecDSigCtx {
     xmlSecTransformPtr		signMethod;
     xmlSecTransformPtr		c14nMethod;
     xmlSecTransformPtr		preSignMemBufMethod;
+    xmlNodePtr			signValueNode;
     xmlChar*			id;    
     xmlSecPtrList    		references;
     xmlSecPtrList		manifests;
-        
-    /* these are internal data, nobody should change that except us */
-    xmlNodePtr			signValueNode;
-    int				dontDestroySignMethod;
-    int				dontDestroyC14NMethod;
 
     /* reserved for future */
     void*			reserved0;

@@ -1152,7 +1152,31 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 	    }
 	    
 	    /* evaluate expression but skip '#' */
-	    res = xmlXPtrEval(BAD_CAST (xptr + 1), ctxt);
+	    if(strncmp(xptr, "#xpointer(", 10) == 0) {
+		type = xmlSecNodeSetTree;
+		res = xmlXPtrEval(BAD_CAST (xptr + 1), ctxt);
+	    } else {
+		static xmlChar tmpl[] = "xpointer(id(\'%s\'))";
+		xmlChar* tmp;
+		int size;
+		
+		/* we need to construct new expression */
+		size = xmlStrlen(tmpl) + xmlStrlen(xptr) + 2;
+		tmp = (xmlChar*)xmlMalloc(size);
+		if(tmp == NULL) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_MALLOC_FAILED,
+				"%d", size);
+		    xmlXPathFreeContext(ctxt);
+		    return(-1);	    
+		}
+		
+		sprintf(tmp, tmpl, xptr + 1);
+		type = xmlSecNodeSetTreeWithoutComments;
+		res = xmlXPtrEval(tmp, ctxt);
+		xmlFree(tmp);
+	    }
+
 	    if(res == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XML_FAILED,
@@ -1168,11 +1192,6 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 			    "empty");
 	    }
 
-	    if(strncmp(xptr, "#xpointer(", 10) == 0) {
-		type = xmlSecNodeSetTree;
-	    } else {
-		type = xmlSecNodeSetTreeWithoutComments;
-	    }
 	    state->curNodeSet = xmlSecNodeSetCreate(state->curDoc, 
 					    res->nodesetval,
 					    type);

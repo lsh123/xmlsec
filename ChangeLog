@@ -1,3 +1,8 @@
+Thu Nov 28 10:44:06 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c: fixed a bug in numeric references evaluation 
+	reported by Ingo Fischer
+
 Wed Oct 30 17:14:03 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* config.h.in configure.in: do not add -I/usr/include

@@ -1,14 +1,14 @@
 Tue Sep  9 16:14:01 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* win32/Makefile.msvc win32/configure.js win32/mycfg.bat win32/mycfg_nss.bat:
-	windows build cleanup
+	windows build cleanup (bug #121579)
 
 Tue Sep  9 12:52:00 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am apps/* configure.in include/* src/* tests/*: implemented
-	loading xmlsec-crypto libraries as plugins
+	loading xmlsec-crypto libraries as plugins (bug #121579)
 	* win32/: change build to allow building of more than one
-	xmlsec-crypto library
+	xmlsec-crypto library (bug #121579)
 
 Sun 24 Aug 2003 05:20:14 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
 	

@@ -1,3 +1,11 @@
+Mon Feb  2 13:12:07 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c include/xmlsec/xkms.h include/xmlsec/xmlsec.h src/xkms.c:
+	updated xkms schemas from xkms 2.0, renamed a couple functions
+	
+	* tests/aleksey-xkms-01: copied new examples from xkms 2.0 spec
+	and created keys for using with these examples
+
 Mon Jan 26 11:48:42 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html docs/news.html

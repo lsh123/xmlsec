@@ -67,6 +67,9 @@ xmlSecNssShutdown(void) {
 
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+    
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
@@ -96,6 +99,27 @@ xmlSecNssKeysInit(void) {
 
 static int 
 xmlSecNssTransformsInit(void) {
+#ifndef XMLSEC_NO_AES    
+    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataAesId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataAesId)),
+		    "xmlSecKeyDataIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES    
+    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataDesId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataDesId)),
+		    "xmlSecKeyDataIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_HMAC
     if(xmlSecTransformRegister(xmlSecNssTransformHmacSha1Id) < 0) {

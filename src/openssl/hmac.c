@@ -342,6 +342,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 	    size_t dgstSize;
 	    
 	    HMAC_Final(&(ctx->hmacCtx), ctx->dgst, &dgstSize);
+	    xmlSecAssert2(dgstSize > 0, -1);
 	    	    
 	    /* check/set the result digest size */
 	    if(ctx->dgstSize == 0) {

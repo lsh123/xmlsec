@@ -11,6 +11,10 @@
 
 #include <nspr/nspr.h>
 #include <nss/nss.h>
+#include <nss/pk11func.h>
+/*
+#include <nss/ssl.h>
+*/
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -32,12 +36,16 @@
  */
 int
 xmlSecNssAppInit(void) {
-    if(NSS_NoDB_Init(NULL) != SECSuccess) {
+    SECStatus rv;
+
+    rv = NSS_NoDB_Init(NULL);
+    if(rv != SECSuccess) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "NSS_NoDB_Init",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%d", PR_GetError());
+		    "error=%d", PR_GetError());
+	return(-1);
     }
 
     /* configure PKCS11 */
@@ -60,7 +68,20 @@ xmlSecNssAppInit(void) {
  */
 int
 xmlSecNssAppShutdown(void) {
-    NSS_Shutdown();
+    SECStatus rv;
+/*
+    SSL_ClearSessionCache();
+*/    
+    PK11_LogoutAll();    
+    rv = NSS_Shutdown();
+    if(rv != SECSuccess) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "NSS_Shutdown",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "error=%d", PR_GetError());
+	return(-1);
+    }
     return(0);
 }
 
@@ -68,6 +89,8 @@ xmlSecKeyPtr
 xmlSecNssAppPemKeyLoad(const char *keyfile, const char *keyPwd,
 			    void* keyPwdCallback, 
 			    int privateKey) {
+    xmlSecAssert2(keyfile != NULL, NULL);
+    
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
@@ -80,6 +103,9 @@ xmlSecNssAppPemKeyLoad(const char *keyfile, const char *keyPwd,
 #ifndef XMLSEC_NO_X509
 int		
 xmlSecNssAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
@@ -91,6 +117,8 @@ xmlSecNssAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 
 xmlSecKeyPtr	
 xmlSecNssAppPkcs12Load(const char *filename, const char *pwd) {
+    xmlSecAssert2(filename != NULL, NULL);
+
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
@@ -114,6 +142,9 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd) {
  */
 int
 xmlSecNssAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, int trusted) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
@@ -125,6 +156,9 @@ xmlSecNssAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, in
 
 int
 xmlSecNssAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(path != NULL, -1);
+
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,

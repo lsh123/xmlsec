@@ -25,21 +25,30 @@
 
 #define XMLSEC_NSS_MAX_DIGEST_SIZE		32
 
+/**************************************************************************
+ *
+ * Internal NSS Digest CTX
+ *
+ *****************************************************************************/
+typedef struct _xmlSecNssDigestCtx		xmlSecNssDigestCtx, *xmlSecNssDigestCtxPtr;
+struct _xmlSecNssDigestCtx {
+    SECOidData*		digest;
+    PK11Context*	digestCtx;
+    unsigned char 	dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
+    size_t		dgstSize;	/* dgst size in bytes */
+};	    
+
 /******************************************************************************
  *
  * Digest transforms
  *
- * reserved0-->digestOid (SECOidData*)
- * reserved1-->digestCtx (PK11Context*)
+ * xmlSecNssDigestCtx is located after xmlSecTransform
  *
  *****************************************************************************/
-#define xmlSecNssDigestGetOid(transform) \
-    ((SECOidData*)((transform)->reserved0))
+#define xmlSecNssDigestSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecNssDigestCtx))	
 #define xmlSecNssDigestGetCtx(transform) \
-    ((PK11Context*)((transform)->reserved1))
-
-#define xmlSecNssDigestCheckId(transform) \
-    (xmlSecTransformCheckId((transform), xmlSecNssTransformSha1Id))
+    ((xmlSecNssDigestCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
 
 static int 	xmlSecNssDigestInitialize		(xmlSecTransformPtr transform);
 static void 	xmlSecNssDigestFinalize			(xmlSecTransformPtr transform);
@@ -50,14 +59,40 @@ static int	xmlSecNssDigestVerify			(xmlSecTransformPtr transform,
 static int 	xmlSecNssDigestExecute			(xmlSecTransformPtr transform, 
 							 int last, 
 							 xmlSecTransformCtxPtr transformCtx);
+static int	xmlSecNssDigestCheckId			(xmlSecTransformPtr transform);
+
+static int
+xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_SHA1 */    
+
+    return(0);
+}
 
 static int 
 xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
-    xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
+    xmlSecNssDigestCtxPtr ctx;
 
+    xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
+
+    ctx = xmlSecNssDigestGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* initialize context */
+    memset(ctx, 0, sizeof(xmlSecNssDigestCtx));
+
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
-	transform->reserved0 = SECOID_FindOIDByTag(SEC_OID_SHA1);
-    } else {
+	ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */    	
+
+    if(1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -66,7 +101,7 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
     
-    if(xmlSecNssDigestGetOid(transform) == NULL) {
+    if(ctx->digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecNssDigestGetOid",
@@ -75,8 +110,8 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
     
-    transform->reserved1 = PK11_CreateDigestContext(xmlSecNssDigestGetOid(transform)->offset);
-    if(xmlSecNssDigestGetCtx(transform) == NULL) {
+    ctx->digestCtx = PK11_CreateDigestContext(ctx->digest->offset);
+    if(ctx->digestCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "PK11_CreateDigestContext",
@@ -90,24 +125,28 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 
 static void 
 xmlSecNssDigestFinalize(xmlSecTransformPtr transform) {
+    xmlSecNssDigestCtxPtr ctx;
+
     xmlSecAssert(xmlSecNssDigestCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize));
+
+    ctx = xmlSecNssDigestGetCtx(transform);
+    xmlSecAssert(ctx != NULL);
     
-    if(xmlSecNssDigestGetCtx(transform) != NULL) {
-	PK11_DestroyContext(xmlSecNssDigestGetCtx(transform), PR_TRUE);
+    if(ctx->digestCtx != NULL) {
+	PK11_DestroyContext(ctx->digestCtx, PR_TRUE);
     }
-    transform->reserved0 = transform->reserved1 = NULL;
+    memset(ctx, 0, sizeof(xmlSecNssDigestCtx));
 }
 
 static int
 xmlSecNssDigestVerify(xmlSecTransformPtr transform, 
 			const unsigned char* data, size_t dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
-    PK11Context* ctx;
-    unsigned char dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
-    size_t dgstSize = 0;
-    SECStatus rv;
+    xmlSecNssDigestCtxPtr ctx;
     
     xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
     xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -115,30 +154,20 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
 
     ctx = xmlSecNssDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->dgstSize > 0, -1);
     
-    rv = PK11_DigestFinal(ctx, dgst, &dgstSize, sizeof(dgst));
-    if(rv != SECSuccess) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "PK11_DigestFinal",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    xmlSecAssert2(dgstSize > 0, -1);
-    
-    if(dataSize != dgstSize) {
+    if(dataSize != ctx->dgstSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "data and digest sizes are different (data=%d, dgst=%d)", 
-		    dataSize, dgstSize);
+		    dataSize, ctx->dgstSize);
 	transform->status = xmlSecTransformStatusFail;
 	return(0);
     }
     
-    if(memcmp(dgst, data, dgstSize) != 0) {
+    if(memcmp(ctx->dgst, data, dataSize) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -154,22 +183,23 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
 
 static int 
 xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    PK11Context* ctx;
+    xmlSecNssDigestCtxPtr ctx;
     xmlSecBufferPtr in, out;
     SECStatus rv;
     int ret;
     
     xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-
-    in = &(transform->inBuf);
-    out = &(transform->outBuf);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
 
     ctx = xmlSecNssDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+
     if(transform->status == xmlSecTransformStatusNone) {
-	rv = PK11_DigestBegin(ctx);
+	rv = PK11_DigestBegin(ctx->digestCtx);
 	if(rv != SECSuccess) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -186,7 +216,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
-	    rv = PK11_DigestOp(ctx, xmlSecBufferGetData(in), inSize);
+	    rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
 	    if (rv != SECSuccess) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -202,33 +232,30 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecBufferRemoveHead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "%d", inSize);
+			    "size=%d", inSize);
 		return(-1);
 	    }
 	}
 	if(last) {
-	    if(transform->encode) {
-		unsigned char dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
-		size_t dgstSize;
+	    rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &ctx->dgstSize, sizeof(ctx->dgst));
+	    if(rv != SECSuccess) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "PK11_DigestFinal",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	    xmlSecAssert2(ctx->dgstSize > 0, -1);
 
-		rv = PK11_DigestFinal(ctx, dgst, &dgstSize, sizeof(dgst));
-	        if(rv != SECSuccess) {
-		    xmlSecError(XMLSEC_ERRORS_HERE, 
-				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			        "PK11_DigestFinal",
-				XMLSEC_ERRORS_R_CRYPTO_FAILED,
-				XMLSEC_ERRORS_NO_MESSAGE);
-		    return(-1);
-	        }
-		xmlSecAssert2(dgstSize > 0, -1);
-	    
-		ret = xmlSecBufferAppend(out, dgst, dgstSize);
+	    if(transform->encode) {
+		ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
 				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 				"xmlSecBufferAppend",
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"%d", dgstSize);
+				"size=%d", ctx->dgstSize);
 		    return(-1);
 		}
 	    }
@@ -242,23 +269,23 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "%d", transform->status);
+		    "status=%d", transform->status);
 	return(-1);
     }
     
     return(0);
 }
 
+#ifndef XMLSEC_NO_SHA1
 /******************************************************************************
  *
  * SHA1 Digest transforms
  *
  *****************************************************************************/
-#ifndef XMLSEC_NO_SHA1
 static xmlSecTransformKlass xmlSecNssSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecNssDigestSize,			/* size_t objSize */
 
     /* data */
     xmlSecNameSha1,
@@ -287,7 +314,6 @@ xmlSecTransformId
 xmlSecNssTransformSha1GetKlass(void) {
     return(&xmlSecNssSha1Klass);
 }
-
 #endif /* XMLSEC_NO_SHA1 */
 
 

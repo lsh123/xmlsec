@@ -32,7 +32,7 @@ $(XMLSEC_HTML): xmlsec1.1
 
 xmlsec1.1:
 	@rm -f xmlsec1.1
-	help2man --help-option=--help-all \
+	help2man --help-option=--help-all --no-info \
 		  --version-option=--version \
 		  $(XMLSEC_PROGRAM) > xmlsec1.1
 

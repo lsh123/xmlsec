@@ -18,6 +18,12 @@ extern "C" {
 #include <libxml/xpath.h>
 #include <xmlsec/xmlsec.h>
 
+/**
+ * xmlSecNodeGetName:
+ * @node:		the pointer to node.
+ *
+ * Macro. Returns node's name.
+ */
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
 
@@ -59,7 +65,7 @@ XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 const xmlChar** ids);
 /**
  * xmlSecIsHex:
- * @c: the character.
+ * @c: 			the character.
  * 
  * Macro. Returns 1 if @c is a hex digit or 0 other wise.
  */
@@ -70,7 +76,7 @@ XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 
 /**
  * xmlSecGetHex:
- * @c: the character,
+ * @c: 			the character,
  *
  * Macro. Returns the hex value of the @c.
  */

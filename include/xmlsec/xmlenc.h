@@ -26,6 +26,13 @@ extern "C" {
 #include <xmlsec/buffer.h>
 #include <xmlsec/transforms.h>
 
+/** 
+ * xmlEncCtxMode: 
+ * @xmlEncCtxModeEncryptedData:	the <enc:EncryptedData/> element procesing.
+ * @xmlEncCtxModeEncryptedKey:	the <enc:EncryptedKey/> element processing.
+ *
+ * The #xmlSecEncCtx mode.
+ */
 typedef enum {
     xmlEncCtxModeEncryptedData = 0,
     xmlEncCtxModeEncryptedKey
@@ -33,18 +40,42 @@ typedef enum {
 
 /** 
  * xmlSecEncCtx:
- * @self: the pointer to  <enc:EncryptedData> node.
- * @id: the Id attribute of the  <enc:EncryptedData> node.
- * @type: the Type attribute of the  <enc:EncryptedData> node.
- * @mimeType: the MimeType attribute of the  <enc:EncryptedData> node.
- * @encoding: the Encoding attribute of the  <enc:EncryptedData> node.
- * @encryptionMethod: the used encryption algorithm id.
- * @encryptionKey: the used encryption key.
- * @encryptionResult: the encrypted or decrypted data.
- * @keysMngr: the pointer to keys manager #xmlSecKeysMngr.
- * @ignoreType:	the flag to ignore Type attribute in the <enc:EncryptedData> 
- * 	node
- *
+ * @userData:			the pointer to user data (xmlsec and xmlsec-crypto libraries
+ *				never touches this).
+ * @flags:			the XML Encryption processing flags.
+ * @flags2:			the XML Encryption processing flags.
+ * @mode:			the mode.
+ * @keyInfoReadCtx:		the reading key context.
+ * @keyInfoWriteCtx:		the writing key context (not used for signature verification).
+ * @transformCtx:		the transforms processing context.
+ * @defEncMethodId:		the default encryption method (used if
+ *				<enc:EncryptionMethod/> node is not present).
+ * @encKey:			the signature key; application may set #encKey
+ *				before calling encryption/decryption functions.
+ * @operation:			the operation: encrypt or decrypt.
+ * @result:			the pointer to signature (not valid for signature verificaction).
+ * @resultBase64Encoded:	the flag: if set then result in #result is base64 encoded.
+ * @resultReplaced:		the flag: if set then resulted <enc:EncryptedData/>
+ *				or <enc:EncryptedKey/> node is added to the document.
+ * @encMethod:			the pointer to encryption transform.
+ * @id:				the ID attribute of <enc:EncryptedData/>
+ *				or <enc:EncryptedKey/> node.
+ * @type:			the Type attribute of <enc:EncryptedData/>
+ *				or <enc:EncryptedKey/> node.
+ * @mimeType:			the MimeType attribute of <enc:EncryptedData/>
+ *				or <enc:EncryptedKey/> node.
+ * @encoding:			the Encoding attributeof <enc:EncryptedData/>
+ *				or <enc:EncryptedKey/> node. 
+ * @recipient:			the Recipient attribute of <enc:EncryptedKey/> node..
+ * @carriedKeyName:		the CarriedKeyName attribute of <enc:EncryptedKey/> node.
+ * @encDataNode:		the pointer to <enc:EncryptedData/>
+ *				or <enc:EncryptedKey/> node.
+ * @encMethodNode:		the pointer to <enc:EncryptionMethod/> node.
+ * @keyInfoNode:		the pointer to <enc:KeyInfo/> node.
+ * @cipherValueNode:		the pointer to <enc:CipherValue/> node.
+ * @reserved0:			reserved for the future.
+ * @reserved1:			reserved for the future.
+ * 
  * XML Encrypiton context.
  */
 struct _xmlSecEncCtx {
@@ -53,18 +84,18 @@ struct _xmlSecEncCtx {
     unsigned int		flags;
     unsigned int		flags2;    
     xmlEncCtxMode		mode;
-    xmlSecTransformId		defEncMethodId;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
-    xmlSecTransformCtx		encTransformCtx;
+    xmlSecTransformCtx		transformCtx;
+    xmlSecTransformId		defEncMethodId;
 
     /* these data are returned */
+    xmlSecKeyPtr		encKey;
     xmlSecTransformOperation	operation;
     xmlSecBufferPtr		result;
     int				resultBase64Encoded;
     int				resultReplaced;
     xmlSecTransformPtr		encMethod;
-    xmlSecKeyPtr		encKey;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;

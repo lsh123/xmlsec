@@ -23,8 +23,9 @@ extern "C" {
 /****************************************************************************
  *
  * xmlSecOpenSSLKeyDataX509Id:
- *
  * 
+ * The OpenSSL X509 data klass.
+ *
  ***************************************************************************/
 #define xmlSecOpenSSLKeyDataX509Id \
 	xmlSecOpenSSLKeyDataX509GetKlass()
@@ -51,7 +52,7 @@ XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataP
  *
  * xmlSecOpenSSLKeyDataRawX509CertId:
  * 
- * The raw X509 certificate
+ * The OpenSSL raw X509 certificate klass.
  *
  ***************************************************************************/
 #define xmlSecOpenSSLKeyDataRawX509CertId \
@@ -62,7 +63,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass(vo
  *
  * xmlSecOpenSSLX509StoreId:
  * 
- * The X509 store 
+ * The OpenSSL X509 store klass.
  *
  ***************************************************************************/
 #define xmlSecOpenSSLX509StoreId \

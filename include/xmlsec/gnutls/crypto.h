@@ -34,7 +34,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSGenerateRandom	(xmlSecBufferPtr buffer,
 /**
  * xmlSecAesKey:
  * 
- * The AES key id.
+ * The AES key klass.
  */
 #define xmlSecGnuTLSKeyDataAesId \
 	xmlSecGnuTLSKeyDataAesGetKlass()
@@ -45,7 +45,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataAesSet	(xmlSecKeyDataPtr data,
 /**
  * xmlSecGnuTLSTransformAes128CbcId:
  * 
- * The AES128 CBC cipher transform id.
+ * The AES128 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformAes128CbcId \
 	xmlSecGnuTLSTransformAes128CbcGetKlass()
@@ -54,7 +54,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes128CbcGetKlass(vo
 /**
  * xmlSecGnuTLSTransformAes192CbcId:
  * 
- * The AES192 CBC cipher transform id.
+ * The AES192 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformAes192CbcId \
 	xmlSecGnuTLSTransformAes192CbcGetKlass()
@@ -63,7 +63,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes192CbcGetKlass(vo
 /**
  * xmlSecGnuTLSTransformAes256CbcId:
  * 
- * The AES256 CBC cipher transform id.
+ * The AES256 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformAes256CbcId \
 	xmlSecGnuTLSTransformAes256CbcGetKlass()
@@ -80,7 +80,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecGnuTLSTransformAes256CbcGetKlass(vo
 /**
  * xmlSecDesKey:
  * 
- * The DES key id.
+ * The DES key klass.
  */
 #define xmlSecGnuTLSKeyDataDesId \
 	xmlSecGnuTLSKeyDataDesGetKlass()
@@ -92,7 +92,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataDesSet	(xmlSecKeyDataPtr data,
 /**
  * xmlSecGnuTLSTransformDes3CbcId:
  * 
- * The DES3 CBC cipher transform id.
+ * The DES3 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformDes3CbcId \
 	xmlSecGnuTLSTransformDes3CbcGetKlass()
@@ -109,7 +109,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass(void
 #ifndef XMLSEC_NO_HMAC
 /** * xmlSecGnuTLSKeyDataHmac:
  * 
- * The DHMAC key id.
+ * The DHMAC key klass.
  */
 #define xmlSecGnuTLSKeyDataHmacId \
 	xmlSecGnuTLSKeyDataHmacGetKlass()
@@ -120,7 +120,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecGnuTLSKeyDataHmacSet	(xmlSecKeyDataPtr data,
 /**
  * xmlSecGnuTLSTransformHmacSha1Id:
  * 
- * The HMAC with SHA1 signature transform id.
+ * The HMAC with SHA1 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacSha1Id \
 	xmlSecGnuTLSTransformHmacSha1GetKlass()
@@ -129,7 +129,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass(voi
 /**
  * xmlSecGnuTLSTransformHmacRipeMd160Id:
  * 
- * The HMAC with RipeMD160 signature transform id.
+ * The HMAC with RipeMD160 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacRipemd160Id \
 	xmlSecGnuTLSTransformHmacRipemd160GetKlass()
@@ -138,13 +138,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlas
 /**
  * xmlSecGnuTLSTransformHmacMd5Id:
  * 
- * The HMAC with MD5 signature transform id.
+ * The HMAC with MD5 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacMd5Id \
 	xmlSecGnuTLSTransformHmacMd5GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass(void);
-
-
 #endif /* XMLSEC_NO_HMAC */
 
 
@@ -157,7 +155,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass(void
 /**
  * xmlSecGnuTLSTransformSha1Id:
  * 
- * The SHA1 digest transform id.
+ * The SHA1 digest transform klass.
  */
 #define xmlSecGnuTLSTransformSha1Id \
 	xmlSecGnuTLSTransformSha1GetKlass()

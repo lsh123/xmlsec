@@ -112,7 +112,7 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
     encCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 
     /* initializes transforms encCtx */
-    ret = xmlSecTransformCtxInitialize(&(encCtx->encTransformCtx));
+    ret = xmlSecTransformCtxInitialize(&(encCtx->transformCtx));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -131,7 +131,7 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr encCtx) {
 
     xmlSecEncCtxReset(encCtx);
     
-    xmlSecTransformCtxFinalize(&(encCtx->encTransformCtx));
+    xmlSecTransformCtxFinalize(&(encCtx->transformCtx));
     xmlSecKeyInfoCtxFinalize(&(encCtx->keyInfoReadCtx));
     xmlSecKeyInfoCtxFinalize(&(encCtx->keyInfoWriteCtx));
 
@@ -142,7 +142,7 @@ void
 xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
     xmlSecAssert(encCtx != NULL);
     
-    xmlSecTransformCtxReset(&(encCtx->encTransformCtx));
+    xmlSecTransformCtxReset(&(encCtx->transformCtx));
     xmlSecKeyInfoCtxReset(&(encCtx->keyInfoReadCtx));
     xmlSecKeyInfoCtxReset(&(encCtx->keyInfoWriteCtx));
 
@@ -198,7 +198,7 @@ xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
     dst->defEncMethodId = src->defEncMethodId;
     dst->mode 		= src->mode;
     
-    ret = xmlSecTransformCtxCopyUserPref(&(dst->encTransformCtx), &(src->encTransformCtx));
+    ret = xmlSecTransformCtxCopyUserPref(&(dst->transformCtx), &(src->transformCtx));
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -256,7 +256,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
 	return(-1);
     }
 
-    ret = xmlSecTransformCtxBinaryExecute(&(encCtx->encTransformCtx), data, dataSize);
+    ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, dataSize);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -267,7 +267,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
 	return(-1);
     }
 
-    encCtx->result = encCtx->encTransformCtx.result;
+    encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, -1);
     
     ret = xmlSecEncCtxEncDataNodeWrite(encCtx);
@@ -309,7 +309,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 	return(-1);
     }
 
-    ret = xmlSecTransformCtxPrepare(&(encCtx->encTransformCtx), xmlSecTransformDataTypeBin);
+    ret = xmlSecTransformCtxPrepare(&(encCtx->transformCtx), xmlSecTransformDataTypeBin);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -319,12 +319,12 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 	return(-1);
     }
     
-    xmlSecAssert2(encCtx->encTransformCtx.first != NULL, -1);
-    output = xmlSecTransformCreateOutputBuffer(encCtx->encTransformCtx.first, 
-						&(encCtx->encTransformCtx));
+    xmlSecAssert2(encCtx->transformCtx.first != NULL, -1);
+    output = xmlSecTransformCreateOutputBuffer(encCtx->transformCtx.first, 
+						&(encCtx->transformCtx));
     if(output == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encTransformCtx.first)),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->transformCtx.first)),
 		    "xmlSecTransformCreateOutputBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -356,7 +356,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
     /* close the buffer and flush everything */
     xmlOutputBufferClose(output);
 
-    encCtx->result = encCtx->encTransformCtx.result;
+    encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, -1);
     
     ret = xmlSecEncCtxEncDataNodeWrite(encCtx);
@@ -421,7 +421,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* we need to add input uri transform first */
-    ret = xmlSecTransformCtxSetUri(&(encCtx->encTransformCtx), uri, tmpl);
+    ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, tmpl);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -444,7 +444,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
     }
 
     /* encrypt the data */
-    ret = xmlSecTransformCtxExecute(&(encCtx->encTransformCtx), tmpl->doc);
+    ret = xmlSecTransformCtxExecute(&(encCtx->transformCtx), tmpl->doc);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -454,7 +454,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
 	return(-1);
     }
         
-    encCtx->result = encCtx->encTransformCtx.result;
+    encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, -1);
     
     ret = xmlSecEncCtxEncDataNodeWrite(encCtx);
@@ -558,7 +558,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	}	
 	dataSize = xmlStrlen(data);
 
-        ret = xmlSecTransformCtxBinaryExecute(&(encCtx->encTransformCtx), data, dataSize);
+        ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), data, dataSize);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -574,7 +574,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	    xmlFree(data);
 	}
     } else {
-        ret = xmlSecTransformCtxExecute(&(encCtx->encTransformCtx), node->doc);
+        ret = xmlSecTransformCtxExecute(&(encCtx->transformCtx), node->doc);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -585,7 +585,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	}
     }
     
-    encCtx->result = encCtx->encTransformCtx.result;
+    encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, NULL);
     
     return(encCtx->result);
@@ -721,7 +721,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* now read the encryption method node */
     xmlSecAssert2(encCtx->encMethod == NULL, -1);
     if(encCtx->encMethodNode != NULL) {
-	encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->encTransformCtx), encCtx->encMethodNode,
+	encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), encCtx->encMethodNode,
 						xmlSecTransformUsageEncryptionMethod);
 	if(encCtx->encMethod == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -733,7 +733,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	    return(-1);	    
 	}	
     } else if(encCtx->defEncMethodId != xmlSecTransformIdUnknown) {
-	encCtx->encMethod = xmlSecTransformCtxCreateAndAppend(&(encCtx->encTransformCtx), 
+	encCtx->encMethod = xmlSecTransformCtxCreateAndAppend(&(encCtx->transformCtx), 
 							      encCtx->defEncMethodId);
 	if(encCtx->encMethod == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -800,7 +800,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	xmlSecTransformPtr base64Encode;
 	
 	/* we need to add base64 encode transform */
-	base64Encode = xmlSecTransformCtxCreateAndAppend(&(encCtx->encTransformCtx), xmlSecTransformBase64Id);
+	base64Encode = xmlSecTransformCtxCreateAndAppend(&(encCtx->transformCtx), xmlSecTransformBase64Id);
     	if(base64Encode == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -868,7 +868,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	    xmlSecTransformPtr base64Decode;
 	
 	    /* we need to add base64 decode transform */
-	    base64Decode = xmlSecTransformCtxCreateAndPrepend(&(encCtx->encTransformCtx), xmlSecTransformBase64Id);
+	    base64Decode = xmlSecTransformCtxCreateAndPrepend(&(encCtx->transformCtx), xmlSecTransformBase64Id);
     	    if(base64Decode == NULL) {
     		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
@@ -919,7 +919,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     
     /* first read the optional uri attr and check that we can process it */
     uri = xmlGetProp(node, xmlSecAttrURI);
-    ret = xmlSecTransformCtxSetUri(&(encCtx->encTransformCtx), uri, node);
+    ret = xmlSecTransformCtxSetUri(&(encCtx->transformCtx), uri, node);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -936,7 +936,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     
     /* the only one node is optional Transforms node */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecEncNs))) {
-	ret = xmlSecTransformCtxNodesListRead(&(encCtx->encTransformCtx), cur,
+	ret = xmlSecTransformCtxNodesListRead(&(encCtx->transformCtx), cur,
 				    xmlSecTransformUsageDSigTransform);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1014,7 +1014,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     xmlSecKeyInfoCtxDebugDump(&(encCtx->keyInfoWriteCtx), output);
 
     fprintf(output, "== Encryption Transform Ctx:\n");
-    xmlSecTransformCtxDebugDump(&(encCtx->encTransformCtx), output);
+    xmlSecTransformCtxDebugDump(&(encCtx->transformCtx), output);
 
     if(encCtx->encMethod != NULL) {
         fprintf(output, "== Encryption Method:\n");
@@ -1091,7 +1091,7 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     fprintf(output, "</KeyInfoWriteCtx>\n");
 
     fprintf(output, "<EncryptionTransformCtx>\n");
-    xmlSecTransformCtxDebugXmlDump(&(encCtx->encTransformCtx), output);
+    xmlSecTransformCtxDebugXmlDump(&(encCtx->transformCtx), output);
     fprintf(output, "</EncryptionTransformCtx>\n");
 
     if(encCtx->encMethod != NULL) {

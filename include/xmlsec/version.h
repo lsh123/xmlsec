@@ -21,18 +21,21 @@ extern "C" {
  * "<major-number>.<minor-number>.<sub-minor-number>".
  */
 #define XMLSEC_VERSION			"0.1.0"
+
 /**
  * XMLSEC_VERSION_MAJOR:
  *
  * The library major version number.
  */
 #define XMLSEC_VERSION_MAJOR		0
+
 /**
  * XMLSEC_VERSION_MINOR:
  *
  * The library minor version number.
  */
 #define XMLSEC_VERSION_MINOR		1
+
 /**
  * XMLSEC_VERSION_SUBMINOR:
  *

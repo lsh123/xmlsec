@@ -450,6 +450,18 @@ static xmlSecAppCmdLineParam storeSignaturesParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+static xmlSecAppCmdLineParam enabledRefUrisParam = { 
+    xmlSecAppCmdLineTopicDSigCommon,
+    "--enabled-reference-uris",
+    NULL,
+    "--enabled-reference-uris <list>"
+    "\n\tcomma separated list of of the following values:\n"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI\n"
+    "\n\tattribute values for the <dsig:Reference> element",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
 
 #endif /* XMLSEC_NO_XMLDSIG */
 
@@ -564,6 +576,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &ignoreManifestsParam,
     &storeReferencesParam,
     &storeSignaturesParam,
+    &enabledRefUrisParam,
 #endif /* XMLSEC_NO_XMLDSIG */
 
     /* enc params */
@@ -998,9 +1011,9 @@ done:
 	}    
 
 	/* print stats about # of good/bad references/manifests */
-	size = xmlSecPtrListGetSize(&(dsigCtx.references));
+	size = xmlSecPtrListGetSize(&(dsigCtx.signedInfoReferences));
 	for(i = good = 0; i < size; ++i) {
-	    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.references), i);
+	    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.signedInfoReferences), i);
 	    if(dsigRefCtx == NULL) {
 		fprintf(stderr,"Error: reference ctx is null\n");
 		goto done;
@@ -1011,9 +1024,9 @@ done:
 	}
 	fprintf(stderr, "SignedInfo References (ok/all): %d/%d\n", good, size);
 
-	size = xmlSecPtrListGetSize(&(dsigCtx.manifests));
+	size = xmlSecPtrListGetSize(&(dsigCtx.manifestReferences));
 	for(i = good = 0; i < size; ++i) {
-	    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.manifests), i);
+	    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx.manifestReferences), i);
 	    if(dsigRefCtx == NULL) {
 		fprintf(stderr,"Error: reference ctx is null\n");
 		goto done;
@@ -1186,6 +1199,16 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
 	print_debug = 1;
     }
     
+    if(xmlSecAppCmdLineParamGetStringList(&enabledRefUrisParam) != NULL) {
+	dsigCtx->enabledReferenceUris = xmlSecAppGetUriType(
+		    xmlSecAppCmdLineParamGetStringList(&enabledRefUrisParam));
+	if(dsigCtx->enabledReferenceUris == xmlSecTransformUriTypeNone) {
+	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
+		    xmlSecAppCmdLineParamGetStringList(&enabledRefUrisParam));
+	    return(-1);
+	}
+    }
+
     return(0);
 }
 
@@ -1478,9 +1501,9 @@ xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {
     }
 
     if(xmlSecAppCmdLineParamGetStringList(&enabledCipherRefUrisParam) != NULL) {
-	encCtx->encTransformCtx.enabledUris = xmlSecAppGetUriType(
+	encCtx->transformCtx.enabledUris = xmlSecAppGetUriType(
 		    xmlSecAppCmdLineParamGetStringList(&enabledCipherRefUrisParam));
-	if(encCtx->encTransformCtx.enabledUris == xmlSecTransformUriTypeNone) {
+	if(encCtx->transformCtx.enabledUris == xmlSecTransformUriTypeNone) {
 	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
 		    xmlSecAppCmdLineParamGetStringList(&enabledCipherRefUrisParam));
 	    return(-1);

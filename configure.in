@@ -252,8 +252,10 @@ else
     if test "$with_openssl" = "no" ; then
 	AC_MSG_ERROR(at least one crypto engine is required for $PACKAGE)
     else
+	ac_openssl_inc_folder=""
 	if test "x$with_openssl" != "x" ; then
 	    OPENSSL_PREFIX=$with_openssl
+	    ac_openssl_inc_folder="$OPENSSL_PREFIX/include"
 	    dnl do not add -I/usr/include and -L/usr/lib because 
 	    dnl compiler does it anyway
 	    if test "$OPENSSL_PREFIX" = "/usr" ; then
@@ -265,10 +267,12 @@ else
 	    fi
 	    OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
 	else
+	    
 	    OPENSSL_INCLUDES_FOUND="no"
 	    OPENSSL_LIBS_FOUND="no"
 	    for dir in $ac_openssl_inc_dir; do
 		if test -f $dir/openssl/ssl.h; then
+		    ac_openssl_inc_folder="$dir/include"
 		    dnl do not add -I/usr/include because compiler does it anyway
 		    if test "$dir" = "/usr/include" ; then
 			OPENSSL_CFLAGS=""
@@ -299,7 +303,7 @@ else
 	fi
     
 	dnl Check the OpenSSL version    
-	OLD_CPPFLAGS=$CPPFLAGS
+	OLD_CPPFLAGS="-I$ac_openssl_inc_folder"
 	CPPFLAGS="$OPENSSL_CFLAGS"
 	AC_EGREP_CPP(yes,[
 	    #include <openssl/opensslv.h>

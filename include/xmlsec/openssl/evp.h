@@ -33,14 +33,9 @@ XMLSEC_EXPORT void	xmlSecOpenSSLEvpBlockCipherFinalize	(xmlSecTransformPtr trans
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherSetKey	(xmlSecTransformPtr transform,
 								 const unsigned char* key,
 								 size_t keySize);								 
-XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherExecuteBin	(xmlSecTransformPtr transform,
-								 const unsigned char* in,
-								 size_t inSize,
-								 size_t* inRes,
-								 unsigned char* out,
-								 size_t outSize,
-								 size_t* outRes);
-
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherExecute	(xmlSecTransformPtr transform,
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
 /******************************************************************************
  *
  * EVP helper functions

@@ -73,7 +73,7 @@ struct _xmlSecBufferedTransformIdStruct {
     xmlSecTransformExecuteMethod	execute;
     
     /* binary methods */
-    xmlSecTransformExecuteBinMethod	executeBin;
+    void*				deleteLater0;
 
     xmlSecTransformReadMethod		readBin; 
     xmlSecTransformWriteMethod		writeBin;

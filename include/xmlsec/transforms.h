@@ -23,7 +23,7 @@ extern "C" {
 #include <xmlsec/nodeset.h>
 
 
-#define XMLSEC_TRANSFORM_BINARY_CHUNK	64
+#define XMLSEC_TRANSFORM_BINARY_CHUNK			8
 
 
 #define XMLSEC_TRANSFORM_MIN_BLOCK_SIZE			32	/* should be less than XMLSEC_TRANSFORM_BUFFER_SIZE */
@@ -133,13 +133,6 @@ XMLSEC_EXPORT int  			xmlSecTransformExecute	(xmlSecTransformPtr transform,
 
 
 
-XMLSEC_EXPORT int			xmlSecTransformExecuteBin(xmlSecTransformPtr transform,
-								 const unsigned char* in,
-								 size_t inSize,
-								 size_t* inRes,
-								 unsigned char* out,
-								 size_t outSize,
-								 size_t* outRes);
 XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
 								 unsigned char *buf,
 								 size_t size);		
@@ -166,14 +159,6 @@ XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr cur
 XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
 
 
-
-XMLSEC_EXPORT int			xmlSecTransformDefaultReadBin	(xmlSecTransformPtr transform,
-								 unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformDefaultWriteBin	(xmlSecTransformPtr transform,
-								 const unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformDefaultFlushBin	(xmlSecTransformPtr transform);
 
 XMLSEC_EXPORT int			xmlSecTransformDefault2ReadBin	(xmlSecTransformPtr transform,
 								 unsigned char *buf,
@@ -353,15 +338,6 @@ typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform,
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
 
-
-
-typedef int 		(*xmlSecTransformExecuteBinMethod)	(xmlSecTransformPtr transform, 
-								 const unsigned char* in,
-								 size_t inSize,
-								 size_t* inRes,
-								 unsigned char* out,
-								 size_t outSize,
-								 size_t* outRes);
 /**
  * xmlSecTransformReadMethod:
  * @transform: the pointer to #xmlSecTransform structure.
@@ -461,7 +437,7 @@ struct _xmlSecTransformKlass {
     
     
     /* binary methods */
-    xmlSecTransformExecuteBinMethod	executeBin;
+    void*				deleteLater0;
 
     xmlSecTransformReadMethod		readBin; 
     xmlSecTransformWriteMethod		writeBin;

@@ -24,13 +24,13 @@ static xmlSecTransformKlass xmlSecEncAes128CbcId = {
     xmlSecAesSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLEvpBlockCipherExecute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
-    xmlSecOpenSSLEvpBlockCipherExecuteBin,
-    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
+    NULL,
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     /* xml / c14n methods */
     NULL,
@@ -51,13 +51,13 @@ static xmlSecTransformKlass xmlSecEncAes192CbcId = {
     xmlSecAesSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLEvpBlockCipherExecute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
-    xmlSecOpenSSLEvpBlockCipherExecuteBin,
-    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
+    NULL,
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
     NULL,
 };
@@ -76,13 +76,13 @@ static xmlSecTransformKlass xmlSecEncAes256CbcId = {
     xmlSecAesSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLEvpBlockCipherExecute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
-    xmlSecOpenSSLEvpBlockCipherExecuteBin,
-    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
+    NULL,
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
     NULL,
 };

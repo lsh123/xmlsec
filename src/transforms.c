@@ -55,6 +55,8 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
+#define XMLSEC_BUFFER_DEBUG 1
+
 /**************************************************************************
  *
  * xmlSecTransform
@@ -131,7 +133,15 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
 	/* requested do not destroy transform */
 	return;
     }    
-    
+
+#ifdef XMLSEC_BUFFER_DEBUG
+    fprintf(stderr, "-- buffer debug: %s, in: %d\n", 
+	    transform->id->name, 
+	    xmlSecBufferGetMaxSize(&(transform->inBuf)));
+    fprintf(stderr, "-- buffer debug: %s, out: %d\n", 
+	    transform->id->name, 
+	    xmlSecBufferGetMaxSize(&(transform->outBuf)));
+#endif /* XMLSEC_BUFFER_DEBUG */
     xmlSecBufferFinalize(&(transform->inBuf));
     xmlSecBufferFinalize(&(transform->outBuf));
     transform->id->destroy(transform);
@@ -221,25 +231,6 @@ xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     xmlSecAssert2(transformCtx != NULL, -1);
 
     return((transform->id->execute)(transform, last, transformCtx));
-}
-
-/**
- * xmlSecTransformExecuteBin:
- * @transform: the pointer to #xmlSecTransform structure.
- */
-int
-xmlSecTransformExecuteBin(xmlSecTransformPtr transform, 
-		const unsigned char* in, size_t inSize, size_t* inRes,
-		unsigned char* out, size_t outSize, size_t* outRes) {
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(inRes != NULL, -1);
-    xmlSecAssert2(outRes != NULL, -1);
-
-    (*inRes) = (*outRes) = 0;
-    if(transform->id->executeBin != NULL) {
-	return((transform->id->executeBin)(transform, in, inSize, inRes, out, outSize, outRes));
-    }
-    return(0);
 }
 
 /**
@@ -467,185 +458,6 @@ xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
     }	
     xmlSecTransformDestroy(transform, 0);
 }
-
-
-
-/**
- * xmlSecTransformDefaultReadBin:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the output buffer.
- * @size: the output buffer size.
- *
- * Reads chunk of data from the transform (wrapper transform specific
- * readBin() function).
- *
- * Returns the number of bytes in the buffer or negative value
- * if an error occurs.
- */
-int
-xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform, 
-		       unsigned char *buf, size_t size) {
-    size_t inRes = 0, outRes = 0;
-    int ret;
-    
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-        
-    while(outRes == 0) {
-	if(((transform->binBufSize + XMLSEC_TRANSFORM_MIN_BLOCK_SIZE) < sizeof(transform->binBuf)) && 
-	    (transform->prev != NULL) && 
-	    !xmlSecTransformStatusIsDone(transform->prev->status)) {
-	
-	    ret = xmlSecTransformReadBin(transform->prev, transform->binBuf,
-			sizeof(transform->binBuf) - transform->binBufSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformReadBin");
-		return(-1);
-	    }
-	    transform->binBufSize += ret;
-	}
-	
-	ret = xmlSecTransformExecuteBin(transform, 
-			    transform->binBuf, transform->binBufSize, &inRes,
-			    buf, size, &outRes);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformReadBin");
-	    return(-1);
-	}
-	
-	if(inRes > 0) {
-	    xmlSecAssert2(inRes <= transform->binBufSize, -1);
-	    if(inRes < transform->binBufSize) {
-	        memmove(transform->binBuf, transform->binBuf + inRes, transform->binBufSize - inRes);
-	    }	
-	    transform->binBufSize -= inRes;
-	} else if(outRes > 0) {
-	    /* we have something to return to the caller */
-	    break;
-	} else {
-	    /* if we processed nothing and have nothing in return
-	     * then we had nothing to process and it's the end
-	     */
-	     xmlSecAssert2(transform->binBufSize == 0, -1);
-	     break;
-	}
-    }
-
-    return(outRes);
-}
-
-/**
- * xmlSecTransformDefaultWriteBin:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the input data buffer.
- * @size: the input data size.
- *
- * Writes data to the transform (wrapper to the transform specific
- * writeBin() function).
- * 
- * Returns 0 if success or a negative value otherwise.
- */
-int
-xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform, 
-			const unsigned char *buf, size_t size) {
-    size_t inRes = 0, outRes = 0;
-    int ret;
-
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-
-    if(buf == NULL) {
-	return(0);
-    }
-
-    while(size > 0) {
-	if((transform->binBufSize > 0) && (transform->next != NULL)) {
-	    ret = xmlSecTransformWriteBin(transform->next,
-					  transform->binBuf,
-					  transform->binBufSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformWriteBin");
-		return(-1);
-	    }
-	    transform->binBufSize = 0;
-	}
-	
-	ret = xmlSecTransformExecuteBin(transform, buf, size, &inRes,
-			transform->binBuf, sizeof(transform->binBuf), &outRes);
-    	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecuteBin");
-	    return(-1);
-	}
-	if(inRes > 0) {
-	    xmlSecAssert2(inRes <= size, -1);
-	    buf += inRes;
-	    size -= inRes;
-	}
-	transform->binBufSize = outRes;
-    };
-    
-    return(0);
-}
-
-/**
- * xmlSecTransformDefaultFlushBin:
- * @transform: the pointer to #xmlSecTransform structure.
- *
- * Finalizes writing (wrapper for transform specific flushBin() method). 
- *
- * Returns 0 if success or negative value otherwise.
- */
-int
-xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
-    size_t inRes = 0, outRes = 0;
-    int ret;
-
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-
-    do {
-	if((transform->binBufSize > 0) && (transform->next != NULL)) {
-	    ret = xmlSecTransformWriteBin(transform->next,
-					  transform->binBuf,
-					  transform->binBufSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecTransformWriteBin");
-		return(-1);
-	    }
-	    transform->binBufSize = 0;
-	}
-	
-	ret = xmlSecTransformExecuteBin(transform, NULL, 0, &inRes,
-			transform->binBuf, sizeof(transform->binBuf), &outRes);
-    	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformExecuteBin");
-	    return(-1);
-	}
-	xmlSecAssert2(inRes == 0, -1);
-	transform->binBufSize = outRes;
-    } while(outRes > 0);
-    
-    if(transform->next != NULL) {
-	ret = xmlSecTransformFlushBin(transform->next);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformFlushBin");
-	    return(-1);
-	}
-    }
-    return(0);
-}
-
 
 /**
  * xmlSecTransformDefault2ReadBin:

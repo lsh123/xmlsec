@@ -1,3 +1,7 @@
+Mon Feb 24 10:04:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xmltree.c src/xslt.c: fixed bug in xmlSecTransformXsltAdd
+
 Fri Feb 21 13:06:44 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/version.h 

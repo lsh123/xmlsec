@@ -557,7 +557,7 @@ static int  	xmlSecOpenSSLRsaSha1Execute			(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLEvpSignatureSize,		/* size_t objSize */
 
     xmlSecNameRsaSha1,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -912,7 +912,16 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
  *
  * reserved0->key (EVP_PKEY*)
  *
+ * OAEP Params (xmlSecBuffer) is located after xmlSecTransform structure
+ *
  ********************************************************************/
+#define xmlSecOpenSSLRsaOaepGetKey(transform) \
+    ((EVP_PKEY*)((transform)->reserved0))
+#define xmlSecOpenSSLRsaOaepGetParams(transform) \
+    ((xmlSecBufferPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecOpenSSLRsaOaepSize \
+    (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
+
 static int 	xmlSecOpenSSLRsaOaepInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaOaepFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLRsaOaepReadNode			(xmlSecTransformPtr transform, 
@@ -930,7 +939,7 @@ static int  	xmlSecOpenSSLRsaOaepProcess			(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLRsaOaepSize,			/* size_t objSize */
 
     xmlSecNameRsaOaep,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -955,10 +964,6 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     NULL,
 };
 
-#define xmlSecOpenSSLRsaOaepGetKey(transform) \
-    ((EVP_PKEY*)((transform)->reserved0))
-#define xmlSecOpenSSLRsaOaepGetParams(transform) \
-    ((xmlSecBufferPtr)((transform)->reserved1))
 
 xmlSecTransformId 
 xmlSecOpenSSLTransformRsaOaepGetKlass(void) {
@@ -970,18 +975,8 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
     int ret;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
-    xmlSecAssert2(xmlSecOpenSSLRsaOaepGetKey(transform) == NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLRsaOaepGetParams(transform) == NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
 
-    /* todo: put this after transform */
-    transform->reserved1 = xmlMalloc(sizeof(xmlSecBuffer));    
-    if(transform->reserved1 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecBuffer)=%d", sizeof(xmlSecBuffer));
-	return(-1);
-    }
-    
     ret = xmlSecBufferInitialize(xmlSecOpenSSLRsaOaepGetParams(transform), 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -989,6 +984,7 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
 		    "xmlSecBufferInitialize");
 	return(-1);
     }
+    transform->reserved0 = NULL;
     
     return(0);
 }
@@ -996,17 +992,16 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
 static void 
 xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize));
     
     if(xmlSecOpenSSLRsaOaepGetKey(transform) != NULL) {
 	EVP_PKEY_free(xmlSecOpenSSLRsaOaepGetKey(transform));
-	transform->reserved0 = NULL;
     }
 
     if(xmlSecOpenSSLRsaOaepGetParams(transform) != NULL) {
 	xmlSecBufferFinalize(xmlSecOpenSSLRsaOaepGetParams(transform));
-	xmlFree(transform->reserved1);
-	transform->reserved1 = NULL;
     }
+    transform->reserved0 = NULL;
 }
 
 static int 	
@@ -1016,6 +1011,7 @@ xmlSecOpenSSLRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     int ret;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
     
     params = xmlSecOpenSSLRsaOaepGetParams(transform);
@@ -1073,6 +1069,7 @@ xmlSecOpenSSLRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
 static int  
 xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
@@ -1092,6 +1089,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     EVP_PKEY* pKey;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(xmlSecOpenSSLRsaOaepGetKey(transform) == NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataRsaId), -1);
@@ -1122,6 +1120,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
@@ -1160,6 +1159,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     params = xmlSecOpenSSLRsaOaepGetParams(transform);

@@ -226,17 +226,20 @@ xmlSecOpenSSLKeyDataHmacDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * HMAC transforms
  *
  * reserved0->digest (EVP_MD)
- * reserved1->ctx (HMAC_CTX)
  * reserved4->hmac size in bits
+ * HMAC_CTX is located after xmlSecTransform
+ *
  *****************************************************************************/
 #define xmlSecOpenSSLHmacGetDigest(transform) \
     ((const EVP_MD*)((transform)->reserved0))
-#define xmlSecOpenSSLHmacGetCtx(transform) \
-    ((HMAC_CTX*)((transform)->reserved1))
 #define xmlSecOpenSSLHmacBitsSize(transform) \
     ((transform)->reserved4)
 #define xmlSecOpenSSLHmacBytesSize(transform) \
     (((xmlSecOpenSSLHmacBitsSize(transform)) + 7) / 8)
+#define xmlSecOpenSSLHmacGetCtx(transform) \
+    ((HMAC_CTX*)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecOpenSSLHmacSize	\
+    (sizeof(xmlSecTransform) + sizeof(HMAC_CTX))
 
 static int	xmlSecOpenSSLHmacInitialize			(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLHmacFinalize			(xmlSecTransformPtr transform);
@@ -260,7 +263,7 @@ static int	xmlSecOpenSSLHmacExecute			(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLHmacSize,			/* size_t objSize */
 
     xmlSecNameHmacSha1,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -290,7 +293,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
 static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLHmacSize,			/* size_t objSize */
 
     xmlSecNameHmacRipemd160,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -320,7 +323,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
 static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLHmacSize,			/* size_t objSize */
 
     xmlSecNameHmacMd5,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -369,6 +372,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     const EVP_MD *digest = NULL;
     
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha1Id)) {
 	digest = EVP_sha1();
@@ -379,13 +383,7 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     }
     
     transform->reserved0 = (void*)digest;
-    transform->reserved1 = xmlMalloc(sizeof(HMAC_CTX));    
-    if(transform->reserved1 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(HMAC_CTX)=%d", sizeof(HMAC_CTX));
-	return(-1);
-    }
+    transform->reserved4 = 0;
     HMAC_CTX_init(xmlSecOpenSSLHmacGetCtx(transform));
     
     return(0);
@@ -394,12 +392,13 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
 static void 
 xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecOpenSSLHmacCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize));
     
     if(xmlSecOpenSSLHmacGetCtx(transform) != NULL) {
 	HMAC_CTX_cleanup(xmlSecOpenSSLHmacGetCtx(transform));
-	xmlFree(transform->reserved1);
     }
-    transform->reserved0 = transform->reserved1 = NULL;
+    transform->reserved0 = NULL;
+    transform->reserved4 = 0;
 }
 
 /**
@@ -429,6 +428,7 @@ xmlSecOpenSSLHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode
     xmlNodePtr cur;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(transformNode!= NULL, -1);
 
     cur = xmlSecGetNextElementNode(transformNode->children); 
@@ -456,6 +456,7 @@ xmlSecOpenSSLHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode
 static int  
 xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataHmacId;
@@ -474,6 +475,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(xmlSecOpenSSLHmacGetDigest(transform) != NULL, -1);
     xmlSecAssert2(xmlSecOpenSSLHmacGetCtx(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -507,6 +509,7 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     size_t bytesDgstSize;
         
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -569,6 +572,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
     xmlSecAssert2(xmlSecOpenSSLHmacGetDigest(transform) != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 

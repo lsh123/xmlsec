@@ -146,5 +146,5 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 
     xmlSecBufferFinalize(&buf);
     return(0);
-};
+}
 

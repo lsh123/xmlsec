@@ -249,7 +249,7 @@ static int  	xmlSecOpenSSLAesCbcExecute			(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
 
     xmlSecNameAes128Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -277,7 +277,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
 static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
 
     xmlSecNameAes192Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -305,7 +305,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
 static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
 
     xmlSecNameAes256Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -425,7 +425,14 @@ xmlSecOpenSSLAesCbcExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
  *
  * AES KW transforms
  *
+ * key (xmlSecBuffer) is located after xmlSecTransform structure
+ *
  ********************************************************************/
+#define xmlSecOpenSSLKWAesGetKey(transform) \
+    ((xmlSecBufferPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecOpenSSLKWAesSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
+
 static int 	xmlSecOpenSSLKWAesInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLKWAesFinalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLKWAesSetKeyReq			(xmlSecTransformPtr transform, 
@@ -452,7 +459,7 @@ static int  	xmlSecOpenSSLKWAesDecode			(const unsigned char *key,
 static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLKWAesSize,			/* size_t objSize */
 
     xmlSecNameKWAes128,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -480,7 +487,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
 static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLKWAesSize,			/* size_t objSize */
 
     xmlSecNameKWAes192,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -508,7 +515,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
 static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLKWAesSize,			/* size_t objSize */
 
     xmlSecNameKWAes256,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
@@ -535,9 +542,6 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
 
 #define XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE		8
 
-#define xmlSecOpenSSLKWAesGetKey(transform) \
-    ((xmlSecBufferPtr)((transform)->reserved0))
-
 #define xmlSecOpenSSLKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWAes128Id) || \
      xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWAes192Id) || \
@@ -563,15 +567,7 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
-    
-    /* todo: put this after transform */
-    transform->reserved0 = xmlMalloc(sizeof(xmlSecBuffer));    
-    if(transform->reserved0 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecBuffer)=%d", sizeof(xmlSecBuffer));
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     
     ret = xmlSecBufferInitialize(xmlSecOpenSSLKWAesGetKey(transform), 0);
     if(ret < 0) {
@@ -587,17 +583,17 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
 static void 
 xmlSecOpenSSLKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecOpenSSLKWAesCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize));
     
     if(xmlSecOpenSSLKWAesGetKey(transform) != NULL) {
 	xmlSecBufferFinalize(xmlSecOpenSSLKWAesGetKey(transform));
-	xmlFree(transform->reserved0);
-	transform->reserved0 = NULL;
     }
 }
 
 static int  
 xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataAesId;
@@ -619,6 +615,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(xmlSecOpenSSLKWAesGetKey(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataAesId), -1);
@@ -657,6 +654,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     key = xmlSecOpenSSLKWAesGetKey(transform);

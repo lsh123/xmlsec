@@ -25,7 +25,7 @@
  * EVP Block Cipher transforms
  *
  * reserved0->EVP_CIPHER
- * reserved1->EVP_CIPHER_CTX
+ * EVP_CIPHER_CTX block is located after xmlSecTransform structure
  * 
  *****************************************************************************/
 static int xmlSecOpenSSLEvpBlockCipherInit		(xmlSecTransformPtr transform,
@@ -38,23 +38,15 @@ static int xmlSecOpenSSLEvpBlockCipherFinal		(xmlSecTransformPtr transform,
 #define xmlSecOpenSSLEvpBlockCipherGetCipher(transform) \
     ((const EVP_CIPHER*)((transform)->reserved0))
 #define xmlSecOpenSSLEvpBlockCipherGetCtx(transform) \
-    ((EVP_CIPHER_CTX*)((transform)->reserved1))
+    ((EVP_CIPHER_CTX*)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
 
 int 
 xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform, const EVP_CIPHER *cipher) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherGetCipher(transform) == NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherGetCtx(transform) == NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(cipher != NULL, -1);
     
     transform->reserved0 = (void*)cipher;
-    transform->reserved1 = xmlMalloc(sizeof(EVP_CIPHER_CTX));    
-    if(transform->reserved1 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(EVP_CIPHER_CTX)=%d", sizeof(EVP_CIPHER_CTX));
-	return(-1);
-    }
     EVP_CIPHER_CTX_init(xmlSecOpenSSLEvpBlockCipherGetCtx(transform));
     return(0);
 }
@@ -62,12 +54,12 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform, const EVP_CI
 void 
 xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize));
     
     if(xmlSecOpenSSLEvpBlockCipherGetCtx(transform) != NULL) {
 	EVP_CIPHER_CTX_cleanup(xmlSecOpenSSLEvpBlockCipherGetCtx(transform));
-	xmlFree(transform->reserved1);
     }
-    transform->reserved0 = transform->reserved1 = NULL;
+    transform->reserved0 = NULL;
 }
 
 int
@@ -77,6 +69,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, const unsigned c
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherGetCipher(transform) != NULL, -1);
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherGetCtx(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -121,6 +114,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherGetCipher(transform) != NULL, -1);
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherGetCtx(transform) != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -177,6 +171,7 @@ xmlSecOpenSSLEvpBlockCipherInit(xmlSecTransformPtr transform, xmlSecTransformCtx
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusNone, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -257,6 +252,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -373,6 +369,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -509,28 +506,21 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
  * EVP Digest transforms
  *
  * reserved0->digest (EVP_MD)
- * reserved1->ctx (EVP_MD_CTX)
+ * EVP_MD_CTX block is located after xmlSecTransform structure
+ *
  *****************************************************************************/
 #define xmlSecOpenSSLEvpDigestGetDigest(transform) \
     ((const EVP_MD*)((transform)->reserved0))
 #define xmlSecOpenSSLEvpDigestGetCtx(transform) \
-    ((EVP_MD_CTX*)((transform)->reserved1))
+    ((EVP_MD_CTX*)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
 
 int 
 xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform, const EVP_MD* digest) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(xmlSecOpenSSLEvpDigestGetDigest(transform) == NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLEvpDigestGetCtx(transform) == NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
     xmlSecAssert2(digest != NULL, -1);
     
     transform->reserved0 = (void*)digest;
-    transform->reserved1 = xmlMalloc(sizeof(EVP_MD_CTX));    
-    if(transform->reserved1 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(EVP_MD_CTX)=%d", sizeof(EVP_MD_CTX));
-	return(-1);
-    }
     EVP_MD_CTX_init(xmlSecOpenSSLEvpDigestGetCtx(transform));
     
     return(0);
@@ -539,12 +529,12 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform, const EVP_MD* dig
 void 
 xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize));
     
     if(xmlSecOpenSSLEvpDigestGetCtx(transform) != NULL) {
 	EVP_MD_CTX_cleanup(xmlSecOpenSSLEvpDigestGetCtx(transform));
-	xmlFree(transform->reserved1);
     }
-    transform->reserved0 = transform->reserved1 = NULL;
+    transform->reserved0 = NULL;
 }
 
 int
@@ -557,6 +547,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
     xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -602,6 +593,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
     xmlSecAssert2(xmlSecOpenSSLEvpDigestGetDigest(transform) != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -687,50 +679,58 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
  * EVP Signature transforms
  *
  * reserved0--->digest (EVP_MD)
- * reserved1--->ctx (EVP_MD_CTX)
- * reserved2--->key (EVP_PKEY)
+ * reserved1--->key (EVP_PKEY)
+ * EVP_MD_CTX block is located after xmlSecTransform structure
+ *
  *****************************************************************************/
 #define xmlSecOpenSSLEvpSignatureGetDigest(transform) \
     ((const EVP_MD*)((transform)->reserved0))
-#define xmlSecOpenSSLEvpSignatureGetCtx(transform) \
-    ((EVP_MD_CTX*)((transform)->reserved1))
 #define xmlSecOpenSSLEvpSignatureGetKey(transform) \
-    ((EVP_PKEY*)((transform)->reserved2))
+    ((EVP_PKEY*)((transform)->reserved1))
+#define xmlSecOpenSSLEvpSignatureGetCtx(transform) \
+    ((EVP_MD_CTX*)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
 
 int 
 xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform, const EVP_MD* digest) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(xmlSecOpenSSLEvpSignatureGetDigest(transform) == NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLEvpSignatureGetCtx(transform) == NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(digest != NULL, -1);
     
     transform->reserved0 = (void*)digest;
-    transform->reserved1 = xmlMalloc(sizeof(EVP_MD_CTX));    
-    if(transform->reserved1 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(EVP_MD_CTX)=%d", sizeof(EVP_MD_CTX));
-	return(-1);
-    }
-    
+    transform->reserved1 = NULL;
     EVP_MD_CTX_init(xmlSecOpenSSLEvpSignatureGetCtx(transform));
     return(0);
+}
+
+void 
+xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize));
+    
+    if(xmlSecOpenSSLEvpSignatureGetKey(transform) != NULL) {
+	EVP_PKEY_free(xmlSecOpenSSLEvpSignatureGetKey(transform));
+    }
+    if(xmlSecOpenSSLEvpSignatureGetCtx(transform) != NULL) {
+	EVP_MD_CTX_cleanup(xmlSecOpenSSLEvpSignatureGetCtx(transform));
+    }
+    transform->reserved0 = transform->reserved1 = NULL;
 }
 
 int 
 xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureGetDigest(transform) != NULL, -1);
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureGetCtx(transform) != NULL, -1);
     xmlSecAssert2(pKey != NULL, -1);
     
     if(xmlSecOpenSSLEvpSignatureGetKey(transform) != NULL) {
 	EVP_PKEY_free(xmlSecOpenSSLEvpSignatureGetKey(transform));
-	transform->reserved2 = NULL;
+	transform->reserved1 = NULL;
     }
 
-    transform->reserved2 = xmlSecOpenSSLEvpKeyDup(pKey);
-    if(transform->reserved2 == NULL) {
+    transform->reserved1 = xmlSecOpenSSLEvpKeyDup(pKey);
+    if(transform->reserved1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLEvpKeyDup");
@@ -738,20 +738,6 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, EVP_PKEY* pKey) {
     }
 
     return(0);
-}
-
-void 
-xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformIsValid(transform));
-    
-    if(xmlSecOpenSSLEvpSignatureGetKey(transform) != NULL) {
-	EVP_PKEY_free(xmlSecOpenSSLEvpSignatureGetKey(transform));
-    }
-    if(xmlSecOpenSSLEvpSignatureGetCtx(transform) != NULL) {
-	EVP_MD_CTX_cleanup(xmlSecOpenSSLEvpSignatureGetCtx(transform));
-	xmlFree(transform->reserved1);
-    }
-    transform->reserved0 = transform->reserved1 = transform->reserved2 = NULL;
 }
 
 int
@@ -763,6 +749,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -801,6 +788,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureGetDigest(transform) != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -914,8 +902,6 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     
     return(0);
 }
-
-
 
 /******************************************************************************
  *

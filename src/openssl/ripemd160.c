@@ -35,7 +35,7 @@ static int  	xmlSecOpenSSLRipemd160Execute			(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLEvpDigestSize,			/* size_t objSize */
 
     /* same as xmlSecTransformId */    
     xmlSecNameRipemd160,

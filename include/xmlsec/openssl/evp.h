@@ -36,6 +36,8 @@ XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherSetKey	(xmlSecTransformPtr transfor
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherExecute	(xmlSecTransformPtr transform,
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
+#define xmlSecOpenSSLEvpBlockCipherSize	\
+	(sizeof(xmlSecTransform) + sizeof(EVP_CIPHER_CTX))
 
 
 /******************************************************************************
@@ -53,6 +55,8 @@ XMLSEC_EXPORT int  	xmlSecOpenSSLEvpDigestVerify		(xmlSecTransformPtr transform,
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform, 
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
+#define xmlSecOpenSSLEvpDigestSize	\
+	(sizeof(xmlSecTransform) + sizeof(EVP_MD))
 
 /******************************************************************************
  *
@@ -73,6 +77,8 @@ XMLSEC_EXPORT int  	xmlSecOpenSSLEvpSignatureVerify		(xmlSecTransformPtr transfo
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureExecute	(xmlSecTransformPtr transform, 
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
+#define xmlSecOpenSSLEvpSignatureSize	\
+	(sizeof(xmlSecTransform) + sizeof(EVP_MD))
 
 
 /******************************************************************************

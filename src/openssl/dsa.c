@@ -680,7 +680,7 @@ static const EVP_MD *xmlSecOpenSSLDsaEvp			(void);
 static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    xmlSecOpenSSLEvpSignatureSize,	/* size_t objSize */
 
     xmlSecNameDsaSha1,
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */

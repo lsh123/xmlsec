@@ -35,7 +35,7 @@ static int  	xmlSecOpenSSLSha1Execute			(xmlSecTransformPtr transform,
 static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecOpenSSLEvpDigestSize,			/* size_t objSize */
 
     /* data */
     xmlSecNameSha1,

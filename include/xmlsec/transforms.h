@@ -174,7 +174,12 @@ XMLSEC_EXPORT int			xmlSecTransformDefault2FlushBin	(xmlSecTransformPtr transfor
  * Macro. Returns 1 if the @transform is valid or 0 otherwise.
  */
 #define xmlSecTransformIsValid(transform) \
-	((( transform ) != NULL) && ((( transform )->id) != NULL))
+	((( transform ) != NULL) && \
+	 (( transform )->id != NULL) && \
+	 (( transform )->id->klassSize >= sizeof(xmlSecTransformKlass)) && \
+	 (( transform )->id->objSize >= sizeof(xmlSecTransform)) && \
+	 (( transform )->id->name != NULL))
+ 
 /**
  * xmlSecTransformCheckType:
  * @transform: the pointer to transform.
@@ -186,6 +191,7 @@ XMLSEC_EXPORT int			xmlSecTransformDefault2FlushBin	(xmlSecTransformPtr transfor
 #define xmlSecTransformCheckType(transform, t) \
  	(xmlSecTransformIsValid(( transform )) && \
 	((( transform )->id->type) == ( t )))
+
 /**
  * xmlSecTransformCheckId:
  * @transform: the pointer to transform.
@@ -198,6 +204,17 @@ XMLSEC_EXPORT int			xmlSecTransformDefault2FlushBin	(xmlSecTransformPtr transfor
  	(xmlSecTransformIsValid(( transform )) && \
 	((((const xmlSecTransformId) (( transform )->id))) == ( i )))
 
+/**
+ * xmlSecTransformCheckSize:
+ * @transform: the pointer to transform.
+ * @size: the transform object size.
+ *
+ * Macro. Returns 1 if the @transform is valid and has at least @size
+ * bytes or 0 otherwise.
+ */
+#define xmlSecTransformCheckSize(transform, size) \
+ 	(xmlSecTransformIsValid(( transform )) && \
+	((( transform )->id->objSize) >= ( size )))
 
 /**************************************************************************
  *

@@ -1,0 +1,106 @@
+#
+# aleksey-xkms-01 OpenSSL configuration file.
+# 
+# Environment variables:
+# 	CA_TOP		- the CA folder (./demoCA)
+# 	CERT_NAME	- the currently generated certificate name ("")
+
+# This definition stops the following lines choking if HOME isn't
+# defined.
+HOME				= .
+RANDFILE			= $ENV::HOME/.rnd
+
+[ ca ]
+default_ca			= CA_default		# The default ca section
+
+[ CA_default ]
+dir				= $ENV::CA_TOP		# Where everything is kept
+certs				= $dir/certs		# Where the issued certs are kept
+crl_dir				= $dir/crl		# Where the issued crl are kept
+database			= $dir/index.txt	# database index file.
+new_certs_dir			= $dir/newcerts		# default place for new certs.
+
+certificate			= cert1.pem 		# The CA certificate
+private_key			= key1.pem		# The private key
+serial				= $dir/serial 		# The current serial number
+crl				= $dir/crl.pem 		# The current CRL
+RANDFILE			= $dir/private/.rand	# private random number file
+
+x509_extensions			= usr_cert		# The extentions to add to the cert
+
+# Comment out the following two lines for the "traditional"
+# (and highly broken) format.
+name_opt 			= ca_default		# Subject Name options
+cert_opt 			= ca_default		# Certificate field options
+
+default_days			= 3650			# how long to certify for
+default_crl_days		= 30			# how long before next CRL
+default_md			= sha1			# which md to use.
+preserve			= no			# keep passed DN ordering
+
+policy				= policy_match
+
+[ policy_match ]
+countryName			= match
+stateOrProvinceName		= match
+organizationName		= match
+organizationalUnitName		= optional
+commonName			= supplied
+emailAddress			= optional
+
+[ policy_anything ]
+countryName			= optional
+stateOrProvinceName		= optional
+localityName			= optional
+organizationName		= optional
+organizationalUnitName		= optional
+commonName			= supplied
+emailAddress			= optional
+
+####################################################################
+[ req ]
+default_bits			= 1024
+default_keyfile 		= privkey.pem
+distinguished_name		= req_distinguished_name
+attributes              	= req_attributes
+x509_extensions			= v3_ca	
+input_password  		= secret
+output_password 		= secret
+string_mask 			= nombstr
+
+[ req_distinguished_name ]
+countryName			= Country Name (2 letter code)
+countryName_default		= US
+stateOrProvinceName		= State or Province Name (full name)
+stateOrProvinceName_default	= California
+localityName			= Locality Name (eg, city)
+localityName_default		= Sunnyvale
+0.organizationName		= Organization Name (eg, company)
+0.organizationName_default	= XML Security Library
+organizationalUnitName		= Organizational Unit Name (eg, section)
+organizationalUnitName_default	= $ENV::CERT_NAME
+commonName			= Common Name (eg, your name or your server\'s hostname)
+commonName_default		= http://www.aleksey.com/xmlsec
+emailAddress			= Email Address
+emailAddress_default		= xmlsec@aleksey.com
+
+[ req_attributes ]
+
+[ v3_req ]
+basicConstraints 		= CA:FALSE
+keyUsage 			= nonRepudiation, digitalSignature, keyEncipherment
+nsComment			= $ENV::CERT_NAME
+
+[ v3_ca ]
+basicConstraints 		= CA:TRUE
+subjectKeyIdentifier		= hash
+authorityKeyIdentifier		= keyid:always,issuer:always
+nsComment			= $ENV::CERT_NAME
+
+[ usr_cert ]
+basicConstraints		= CA:FALSE
+nsCertType 			= client, email, objsign
+keyUsage 			= nonRepudiation, digitalSignature, keyEncipherment
+nsComment			= $ENV::CERT_NAME
+subjectKeyIdentifier		= hash
+authorityKeyIdentifier		= keyid,issuer:always

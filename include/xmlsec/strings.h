@@ -302,6 +302,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAP[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAQ[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAG[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAJ[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAX[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAY[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSASeed[];

@@ -294,6 +294,7 @@ const xmlChar xmlSecHrefDSAKeyValue[]		= "http://www.w3.org/2000/09/xmldsig#DSAK
 const xmlChar xmlSecNodeDSAP[]			= "P";
 const xmlChar xmlSecNodeDSAQ[]			= "Q";
 const xmlChar xmlSecNodeDSAG[]			= "G";
+const xmlChar xmlSecNodeDSAJ[]			= "J";
 const xmlChar xmlSecNodeDSAX[]			= "X";
 const xmlChar xmlSecNodeDSAY[]			= "Y";
 const xmlChar xmlSecNodeDSASeed[]		= "Seed";

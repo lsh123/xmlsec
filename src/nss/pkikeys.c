@@ -691,6 +691,11 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
     cur = xmlSecGetNextElementNode(cur->next);
     
+    /* todo: add support for J */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
+	cur = xmlSecGetNextElementNode(cur->next);  
+    }
+
     /* todo: add support for seed */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
 	cur = xmlSecGetNextElementNode(cur->next);  

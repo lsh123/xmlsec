@@ -1,3 +1,11 @@
+2004-03-16  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/strings.h src/mscrypto/certkeys.c
+	src/nss/pkikeys.c src/openssl/evp.c src/strings.c: added J node
+	for DSAKeyValue
+	* tests/phaos-xmldsig-three/* tests/testDSig.sh: added new
+	phaos-xmldsig-three XMLDSig tests vectors
+
 Mon Feb 23 17:44:29 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* examples/xkms-server.c: finished xkms-server example

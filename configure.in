@@ -246,7 +246,11 @@ else
     if test "z$with_openssl" != "z" ; then
 	OPENSSL_PREFIX=$with_openssl
 	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$OPENSSL_PREFIX/include"
-	OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
+	if test -f "$OPENSSL_PREFIX/lib/libcrypto.so"; then
+	    OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
+	else
+	    OPENSSL_LIBS="$OPENSSL_PREFIX/lib/libcrypto.a"
+	fi
 	OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
 	OPENSSL_INCLUDES_FOUND="yes"
 	OPENSSL_LIBS_FOUND="yes"

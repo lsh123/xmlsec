@@ -1,3 +1,9 @@
+Mon Oct 20 08:40:46 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: load correct static openssl library when 
+	more than one one openssl version is available (patch
+	from Roumen, bug #124534)
+
 Mon Oct 13 19:43:52 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html docs/news.html

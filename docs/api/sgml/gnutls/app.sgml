@@ -35,11 +35,14 @@ int         <link linkend="xmlSecGnuTLSAppKeysMngrPemCertLoad">xmlSecGnuTLSAppKe
 int         <link linkend="xmlSecGnuTLSAppKeysMngrAddCertsPath">xmlSecGnuTLSAppKeysMngrAddCertsPath</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *path);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppPemKeyLoad">xmlSecGnuTLSAppPemKeyLoad</link>      (const char *keyfile,
-                                             const char *keyPwd,
-                                             void *keyPwdCallback);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppPemKeyLoad">xmlSecGnuTLSAppPemKeyLoad</link>      (const char *filename,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppPkcs12Load">xmlSecGnuTLSAppPkcs12Load</link>      (const char *filename,
-                                             const char *pwd);
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
 int         <link linkend="xmlSecGnuTLSAppKeyPemCertLoad">xmlSecGnuTLSAppKeyPemCertLoad</link>   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename);
 </synopsis>
@@ -107,14 +110,17 @@ int         <link linkend="xmlSecGnuTLSAppKeyPemCertLoad">xmlSecGnuTLSAppKeyPemC
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppPemKeyLoad">xmlSecGnuTLSAppPemKeyLoad ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppPemKeyLoad      (const char *keyfile,
-                                             const char *keyPwd,
-                                             void *keyPwdCallback);</programlisting>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppPemKeyLoad      (const char *filename,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppPkcs12Load">xmlSecGnuTLSAppPkcs12Load ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppPkcs12Load      (const char *filename,
-                                             const char *pwd);</programlisting>
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSAppKeyPemCertLoad">xmlSecGnuTLSAppKeyPemCertLoad ()</title>

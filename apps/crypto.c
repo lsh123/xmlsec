@@ -111,7 +111,7 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(files != NULL, -1);
 
     /* first is the key file */
-    key = xmlSecCryptoAppPemKeyLoad(files, pwd, NULL);
+    key = xmlSecCryptoAppPemKeyLoad(files, pwd, NULL, NULL);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -202,7 +202,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	pwd = buf;
     } 
 
-    key = xmlSecCryptoAppPkcs12Load(filename, pwd);
+    key = xmlSecCryptoAppPkcs12Load(filename, pwd, NULL, NULL);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

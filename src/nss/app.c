@@ -100,8 +100,11 @@ xmlSecNssAppShutdown(void) {
 }
 
 xmlSecKeyPtr
-xmlSecNssAppPemKeyLoad(const char *keyfile, const char *keyPwd, void* keyPwdCallback) {
-    xmlSecAssert2(keyfile != NULL, NULL);
+xmlSecNssAppPemKeyLoad(const char *filename, 
+		       const char *pwd ATTRIBUTE_UNUSED, 
+		       void* pwdCallback ATTRIBUTE_UNUSED, 
+		       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+    xmlSecAssert2(filename != NULL, NULL);
     
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
@@ -128,7 +131,10 @@ xmlSecNssAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 }
 
 xmlSecKeyPtr	
-xmlSecNssAppPkcs12Load(const char *filename, const char *pwd) {
+xmlSecNssAppPkcs12Load(const char *filename, 
+		       const char *pwd ATTRIBUTE_UNUSED,
+		       void* pwdCallback ATTRIBUTE_UNUSED, 
+		       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
     /* TODO */

@@ -47,12 +47,15 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mng
 /** 
  * Keys
  */
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecNssAppPemKeyLoad		(const char *keyfile, 
-									 const char *keyPwd,
-									 void *keyPwdCallback); 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecNssAppPemKeyLoad		(const char *filename, 
+									 const char *pwd,
+									 void *pwdCallback,
+									 void* pwdCallbackCtx);
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecNssAppPkcs12Load		(const char *filename, 
-									 const char *pwd);
+									 const char *pwd,
+		    							 void* pwdCallback, 
+									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeyPemCertLoad	(xmlSecKeyPtr key,
 									 const char* filename);
 #endif /* XMLSEC_NO_X509 */

@@ -301,38 +301,33 @@ extern "C" {
  *
  * The errors reporting callback function.
  */
-typedef void (*xmlSecErrorsCallback) 			(const char* file, 
-						         int line, 
-				    			 const char* func,
-							 const char* errorObject,
-							 const char* errorSubject,
-							 int reason, 
-							 const char* msg);
+typedef void (*xmlSecErrorsCallback) 				(const char* file, 
+						    		 int line, 
+				    				 const char* func,
+								 const char* errorObject,
+								 const char* errorSubject,
+								 int reason, 
+								 const char* msg);
 
 
-XMLSEC_EXPORT void xmlSecErrorsInit			(void);
-XMLSEC_EXPORT void xmlSecErrorsShutdown			(void);
-XMLSEC_EXPORT void xmlSecErrorsSetCallback		(xmlSecErrorsCallback callback);
-XMLSEC_EXPORT void xmlSecErrorsDefaultCallback		(const char* file, 
-							 int line, 
-				    			 const char* func,
-							 const char* errorObject,
-							 const char* errorSubject,
-							 int reason, 
-							 const char* msg);
-XMLSEC_EXPORT int xmlSecErrorsGetCode			(size_t pos);
-XMLSEC_EXPORT const char* xmlSecErrorsGetMsg		(size_t pos);
+XMLSEC_EXPORT void 		xmlSecErrorsInit		(void);
+XMLSEC_EXPORT void 		xmlSecErrorsShutdown		(void);
+XMLSEC_EXPORT void 		xmlSecErrorsSetCallback		(xmlSecErrorsCallback callback);
+XMLSEC_EXPORT void 		xmlSecErrorsDefaultCallback	(const char* file, 
+								 int line, 
+				    				 const char* func,
+								 const char* errorObject,
+								 const char* errorSubject,
+								 int reason, 
+								 const char* msg);
+XMLSEC_EXPORT void 		xmlSecErrorsDefaultCallbackEnableOutput
+								(int enabled);
+
+XMLSEC_EXPORT int 		xmlSecErrorsGetCode		(size_t pos);
+XMLSEC_EXPORT const char* 	xmlSecErrorsGetMsg		(size_t pos);
 
 
  
-/**
- * xmlSecPrintErrorMessages:
- *
- * The flag that determines whether the error message will be printed
- * out immidiatelly. For default errors reporting callback, this flag
- * determines whether the error is reported to LibXML library or not.
- */
-XMLSEC_EXPORT_VAR int xmlSecPrintErrorMessages;
 
 /** 
  * XMLSEC_ERRORS_HERE:

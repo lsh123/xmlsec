@@ -61,8 +61,11 @@ xmlSecGnuTLSAppShutdown(void) {
 }
 
 xmlSecKeyPtr
-xmlSecGnuTLSAppPemKeyLoad(const char *keyfile, const char *keyPwd, void* keyPwdCallback) {
-    xmlSecAssert2(keyfile != NULL, NULL);
+xmlSecGnuTLSAppPemKeyLoad(const char *filename, 
+			  const char *pwd ATTRIBUTE_UNUSED, 
+			  void* pwdCallback ATTRIBUTE_UNUSED, 
+			  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+    xmlSecAssert2(filename != NULL, NULL);
     
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
@@ -89,7 +92,10 @@ xmlSecGnuTLSAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 }
 
 xmlSecKeyPtr	
-xmlSecGnuTLSAppPkcs12Load(const char *filename, const char *pwd) {
+xmlSecGnuTLSAppPkcs12Load(const char *filename, 
+			  const char *pwd ATTRIBUTE_UNUSED,
+		          void* pwdCallback ATTRIBUTE_UNUSED, 
+			  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
     /* TODO */

@@ -70,7 +70,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
 };
 
 static xmlSecErrorsCallback xmlSecErrorsClbk = xmlSecErrorsDefaultCallback;
-int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed immidiatelly */
+static int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed immidiatelly */
 
 /** 
  * xmlSecErrorsInit:
@@ -142,6 +142,18 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 	    (error_msg != NULL) ? error_msg : "",
 	    (msg != NULL) ? msg : "");
     }
+}
+
+/**
+ * xmlSecErrorsDefaultCallbackEnableOutput:
+ * @enabled:		the flag.
+ * 
+ * Enables or disables calling LibXML2 callback from the default
+ * errors callback.
+ */
+void 
+xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
+    xmlSecPrintErrorMessages = enabled;
 }
 
 /**

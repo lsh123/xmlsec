@@ -84,39 +84,52 @@ xmlSecOpenSSLAppShutdown(void) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLAppPemKeyLoad:
+ * @filename:		the PEM key filename.
+ * @pwd:		the PEM key file password.
+ * @pwdCallback:	the PEM key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from the PEM file.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr
-xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd, pem_password_cb *keyPwdCallback) {
+xmlSecOpenSSLAppPemKeyLoad(const char *filename, const char *pwd, 
+			   pem_password_cb *pwdCallback, 
+			   void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data;
     EVP_PKEY *pKey = NULL;    
     FILE *f;
     int ret;
 
-    xmlSecAssert2(keyfile != NULL, NULL);
+    xmlSecAssert2(filename != NULL, NULL);
     
-    f = fopen(keyfile, "r");
+    f = fopen(filename, "r");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "keyfile=%s;errno=%d", 
-		    xmlSecErrorsSafeString(keyfile), errno);
+		    "filename=%s;errno=%d", 
+		    xmlSecErrorsSafeString(filename), errno);
 	return(NULL);    
     }
 
     /* try to read private key first */    
-    pKey = PEM_read_PrivateKey(f, NULL, keyPwdCallback, (void*)keyPwd);
+    pKey = PEM_read_PrivateKey(f, NULL, pwdCallback, (void*)pwd);
     if(pKey == NULL) {
 	/* go to start of the file and try to read public key */
 	rewind(f); 
-	pKey = PEM_read_PUBKEY(f, NULL, keyPwdCallback, (void*)keyPwd);
+	pKey = PEM_read_PUBKEY(f, NULL, pwdCallback, (void*)pwd);
 	if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"PEM_read_PrivateKey and PEM_read_PUBKEY",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"file=%s", xmlSecErrorsSafeString(keyfile));
+			"file=%s", xmlSecErrorsSafeString(filename));
 	    fclose(f);
 	    return(NULL);
 	}
@@ -161,6 +174,15 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd, pem_password
 }
 
 #ifndef XMLSEC_NO_X509
+/**
+ * xmlSecOpenSSLAppKeyPemCertLoad:
+ * @key:		the pointer to key.
+ * @filename:		the certificate filename.
+ *
+ * Reads the PEM certificate from $@filename and adds it to key.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
 int		
 xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
     xmlSecKeyDataPtr data;
@@ -205,8 +227,21 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
     return(0);        
 }
 
+/**
+ * xmlSecOpenSSLAppPkcs12Load:
+ * @filename:		the PKCS12 key filename.
+ * @pwd:		the PEM key file password.
+ * @pwdCallback:	the PEM key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 file.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr	
-xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
+xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
+			   pem_password_cb *pwdCallback ATTRIBUTE_UNUSED, 
+			   void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     FILE *f = NULL;
     PKCS12 *p12 = NULL;
     EVP_PKEY *pKey = NULL;
@@ -388,10 +423,10 @@ done:
 
 /**
  * xmlSecOpenSSLAppKeysMngrPemCertLoad:
- * @mngr: keys manager.
- * @filename: the PEM file.
- * @trusted: the flag that indicates is the certificate in @filename
- *    trusted or not.
+ * @mngr: 		the keys manager.
+ * @filename: 		the PEM file.
+ * @trusted: 		the flag that indicates is the certificate in @filename
+ *    			trusted or not.
  * 
  * Reads cert from PEM @filename and adds to the list of trusted or known
  * untrusted certs in @store.
@@ -441,6 +476,15 @@ xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLAppKeysMngrPemCertLoad:
+ * @mngr: 		the keys manager.
+ * @path:		the path to trusted certificates.
+ * 
+ * Reads cert from @path and adds to the list of trusted certificates.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
     xmlSecKeyDataStorePtr x509Store;
@@ -474,7 +518,15 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
 
 #endif /* XMLSEC_NO_X509 */
 
-
+/**
+ * xmlSecOpenSSLAppSimpleKeysMngrInit:
+ * @mngr: 		the pointer to keys manager.
+ *
+ * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * and a default OpenSSL crypto key data stores.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int
 xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
@@ -522,6 +574,16 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLAppSimpleKeysMngrAdoptKey:
+ * @mngr: 		the pointer to keys manager.
+ * @key:		the pointer to key.
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecOpenSSLAppSimpleKeysMngrInit
+ * function.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
@@ -553,6 +615,16 @@ xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLAppSimpleKeysMngrLoad:
+ * @mngr: 		the pointer to keys manager.
+ * @uri:		the uri.
+ *
+ * Loads XML keys file from @uri to the keys manager @mngr created 
+ * with #xmlSecOpenSSLAppSimpleKeysMngrInit function.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
@@ -584,8 +656,18 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLAppSimpleKeysMngrSave:
+ * @mngr: 		the pointer to keys manager.
+ * @filename:		the destination filename.
+ *
+ * Saves keys from @mngr to  XML keys file.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
-xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
+xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
+				    xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;
     int ret;
     

@@ -97,6 +97,7 @@
 <listitem><para><link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link></para></listitem>
 <listitem><para><link linkend="xmlSecError">xmlSecError</link></para></listitem>
 <listitem><para><link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link></para></listitem>
+<listitem><para><link linkend="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput</link></para></listitem>
 <listitem><para><link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback</link></para></listitem>
 <listitem><para><link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link></para></listitem>
 <listitem><para><link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link></para></listitem>

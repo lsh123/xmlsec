@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-OPENSSL-CRYPTO"></a>crypto</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14007"></a><h2>Name</h2>crypto -- </div>
+<a name="AEN14009"></a><h2>Name</h2>crypto -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN14010"></a><h2>Synopsis</h2>
+<a name="AEN14012"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 int         <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLINIT">xmlSecOpenSSLInit</a>               (void);
@@ -151,51 +151,51 @@ void        <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLERRORSDEFAULTCALLBA
                                              const char *msg);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN14122"></a><h2>Description</h2>
+<a name="AEN14124"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN14125"></a><h2>Details</h2>
+<a name="AEN14127"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN14127"></a><h3>
+<a name="AEN14129"></a><h3>
 <a name="XMLSECOPENSSLINIT"></a>xmlSecOpenSSLInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLInit               (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14131"></a><h3>
+<a name="AEN14133"></a><h3>
 <a name="XMLSECOPENSSLSHUTDOWN"></a>xmlSecOpenSSLShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLShutdown           (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14135"></a><h3>
+<a name="AEN14137"></a><h3>
 <a name="XMLSECOPENSSLKEYSMNGRINIT"></a>xmlSecOpenSSLKeysMngrInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeysMngrInit       (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14140"></a><h3>
+<a name="AEN14142"></a><h3>
 <a name="XMLSECOPENSSLGENERATERANDOM"></a>xmlSecOpenSSLGenerateRandom ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLGenerateRandom     (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buffer,
                                              <font>size_t</font> sizeBytes);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14146"></a><h3>
+<a name="AEN14148"></a><h3>
 <a name="XMLSECOPENSSLKEYDATAAESID"></a>xmlSecOpenSSLKeyDataAesId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataAesId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14150"></a><h3>
+<a name="AEN14152"></a><h3>
 <a name="XMLSECOPENSSLKEYDATAAESGETKLASS"></a>xmlSecOpenSSLKeyDataAesGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataAesGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14155"></a><h3>
+<a name="AEN14157"></a><h3>
 <a name="XMLSECOPENSSLKEYDATAAESSET"></a>xmlSecOpenSSLKeyDataAesSet ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataAesSet      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              unsigned char *buf,
@@ -203,98 +203,98 @@ void        <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLERRORSDEFAULTCALLBA
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14161"></a><h3>
+<a name="AEN14163"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMAES128CBCID"></a>xmlSecOpenSSLTransformAes128CbcId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformAes128CbcId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14165"></a><h3>
+<a name="AEN14167"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMAES128CBCGETKLASS"></a>xmlSecOpenSSLTransformAes128CbcGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformAes128CbcGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14170"></a><h3>
+<a name="AEN14172"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMAES192CBCID"></a>xmlSecOpenSSLTransformAes192CbcId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformAes192CbcId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14174"></a><h3>
+<a name="AEN14176"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMAES192CBCGETKLASS"></a>xmlSecOpenSSLTransformAes192CbcGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformAes192CbcGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14179"></a><h3>
+<a name="AEN14181"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMAES256CBCID"></a>xmlSecOpenSSLTransformAes256CbcId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformAes256CbcId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14183"></a><h3>
+<a name="AEN14185"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMAES256CBCGETKLASS"></a>xmlSecOpenSSLTransformAes256CbcGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformAes256CbcGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14188"></a><h3>
+<a name="AEN14190"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWAES128ID"></a>xmlSecOpenSSLTransformKWAes128Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformKWAes128Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14192"></a><h3>
+<a name="AEN14194"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWAES128GETKLASS"></a>xmlSecOpenSSLTransformKWAes128GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformKWAes128GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14197"></a><h3>
+<a name="AEN14199"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWAES192ID"></a>xmlSecOpenSSLTransformKWAes192Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformKWAes192Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14201"></a><h3>
+<a name="AEN14203"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWAES192GETKLASS"></a>xmlSecOpenSSLTransformKWAes192GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformKWAes192GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14206"></a><h3>
+<a name="AEN14208"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWAES256ID"></a>xmlSecOpenSSLTransformKWAes256Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformKWAes256Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14210"></a><h3>
+<a name="AEN14212"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWAES256GETKLASS"></a>xmlSecOpenSSLTransformKWAes256GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformKWAes256GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14215"></a><h3>
+<a name="AEN14217"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADESID"></a>xmlSecOpenSSLKeyDataDesId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataDesId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14219"></a><h3>
+<a name="AEN14221"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADESGETKLASS"></a>xmlSecOpenSSLKeyDataDesGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataDesGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14224"></a><h3>
+<a name="AEN14226"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADESSET"></a>xmlSecOpenSSLKeyDataDesSet ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataDesSet      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              unsigned char *buf,
@@ -302,98 +302,98 @@ void        <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLERRORSDEFAULTCALLBA
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14230"></a><h3>
+<a name="AEN14232"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMDES3CBCID"></a>xmlSecOpenSSLTransformDes3CbcId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformDes3CbcId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14234"></a><h3>
+<a name="AEN14236"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMDES3CBCGETKLASS"></a>xmlSecOpenSSLTransformDes3CbcGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformDes3CbcGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14239"></a><h3>
+<a name="AEN14241"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWDES3ID"></a>xmlSecOpenSSLTransformKWDes3Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformKWDes3Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14243"></a><h3>
+<a name="AEN14245"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMKWDES3GETKLASS"></a>xmlSecOpenSSLTransformKWDes3GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformKWDes3GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14248"></a><h3>
+<a name="AEN14250"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADSAID"></a>xmlSecOpenSSLKeyDataDsaId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataDsaId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14252"></a><h3>
+<a name="AEN14254"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADSAGETKLASS"></a>xmlSecOpenSSLKeyDataDsaGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataDsaGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14257"></a><h3>
+<a name="AEN14259"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADSAADOPTDSA"></a>xmlSecOpenSSLKeyDataDsaAdoptDsa ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataDsaAdoptDsa (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>DSA</font> *dsa);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14263"></a><h3>
+<a name="AEN14265"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADSAGETDSA"></a>xmlSecOpenSSLKeyDataDsaGetDsa ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>DSA</font>*        xmlSecOpenSSLKeyDataDsaGetDsa   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14269"></a><h3>
+<a name="AEN14271"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADSAADOPTEVP"></a>xmlSecOpenSSLKeyDataDsaAdoptEvp ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataDsaAdoptEvp (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>EVP_PKEY</font> *key);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14275"></a><h3>
+<a name="AEN14277"></a><h3>
 <a name="XMLSECOPENSSLKEYDATADSAGETEVP"></a>xmlSecOpenSSLKeyDataDsaGetEvp ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>EVP_PKEY</font>*   xmlSecOpenSSLKeyDataDsaGetEvp   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14281"></a><h3>
+<a name="AEN14283"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMDSASHA1ID"></a>xmlSecOpenSSLTransformDsaSha1Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformDsaSha1Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14285"></a><h3>
+<a name="AEN14287"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMDSASHA1GETKLASS"></a>xmlSecOpenSSLTransformDsaSha1GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformDsaSha1GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14290"></a><h3>
+<a name="AEN14292"></a><h3>
 <a name="XMLSECOPENSSLKEYDATAHMACID"></a>xmlSecOpenSSLKeyDataHmacId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataHmacId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14294"></a><h3>
+<a name="AEN14296"></a><h3>
 <a name="XMLSECOPENSSLKEYDATAHMACGETKLASS"></a>xmlSecOpenSSLKeyDataHmacGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataHmacGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14299"></a><h3>
+<a name="AEN14301"></a><h3>
 <a name="XMLSECOPENSSLKEYDATAHMACSET"></a>xmlSecOpenSSLKeyDataHmacSet ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataHmacSet     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              unsigned char *buf,
@@ -401,162 +401,162 @@ void        <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLERRORSDEFAULTCALLBA
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14305"></a><h3>
+<a name="AEN14307"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMHMACSHA1ID"></a>xmlSecOpenSSLTransformHmacSha1Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformHmacSha1Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14309"></a><h3>
+<a name="AEN14311"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMHMACSHA1GETKLASS"></a>xmlSecOpenSSLTransformHmacSha1GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformHmacSha1GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14314"></a><h3>
+<a name="AEN14316"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMHMACRIPEMD160ID"></a>xmlSecOpenSSLTransformHmacRipemd160Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformHmacRipemd160Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14318"></a><h3>
+<a name="AEN14320"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMHMACRIPEMD160GETKLASS"></a>xmlSecOpenSSLTransformHmacRipemd160GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformHmacRipemd160GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14323"></a><h3>
+<a name="AEN14325"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMHMACMD5ID"></a>xmlSecOpenSSLTransformHmacMd5Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformHmacMd5Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14327"></a><h3>
+<a name="AEN14329"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMHMACMD5GETKLASS"></a>xmlSecOpenSSLTransformHmacMd5GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformHmacMd5GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14332"></a><h3>
+<a name="AEN14334"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRIPEMD160ID"></a>xmlSecOpenSSLTransformRipemd160Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformRipemd160Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14336"></a><h3>
+<a name="AEN14338"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRIPEMD160GETKLASS"></a>xmlSecOpenSSLTransformRipemd160GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformRipemd160GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14341"></a><h3>
+<a name="AEN14343"></a><h3>
 <a name="XMLSECOPENSSLKEYDATARSAID"></a>xmlSecOpenSSLKeyDataRsaId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLKeyDataRsaId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14345"></a><h3>
+<a name="AEN14347"></a><h3>
 <a name="XMLSECOPENSSLKEYDATARSAGETKLASS"></a>xmlSecOpenSSLKeyDataRsaGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecOpenSSLKeyDataRsaGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14350"></a><h3>
+<a name="AEN14352"></a><h3>
 <a name="XMLSECOPENSSLKEYDATARSAADOPTRSA"></a>xmlSecOpenSSLKeyDataRsaAdoptRsa ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataRsaAdoptRsa (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>RSA</font> *rsa);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14356"></a><h3>
+<a name="AEN14358"></a><h3>
 <a name="XMLSECOPENSSLKEYDATARSAGETRSA"></a>xmlSecOpenSSLKeyDataRsaGetRsa ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>RSA</font>*        xmlSecOpenSSLKeyDataRsaGetRsa   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14362"></a><h3>
+<a name="AEN14364"></a><h3>
 <a name="XMLSECOPENSSLKEYDATARSAADOPTEVP"></a>xmlSecOpenSSLKeyDataRsaAdoptEvp ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLKeyDataRsaAdoptEvp (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>EVP_PKEY</font> *key);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14368"></a><h3>
+<a name="AEN14370"></a><h3>
 <a name="XMLSECOPENSSLKEYDATARSAGETEVP"></a>xmlSecOpenSSLKeyDataRsaGetEvp ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>EVP_PKEY</font>*   xmlSecOpenSSLKeyDataRsaGetEvp   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14374"></a><h3>
+<a name="AEN14376"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRSASHA1ID"></a>xmlSecOpenSSLTransformRsaSha1Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformRsaSha1Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14378"></a><h3>
+<a name="AEN14380"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRSASHA1GETKLASS"></a>xmlSecOpenSSLTransformRsaSha1GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformRsaSha1GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14383"></a><h3>
+<a name="AEN14385"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRSAPKCS1ID"></a>xmlSecOpenSSLTransformRsaPkcs1Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformRsaPkcs1Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14387"></a><h3>
+<a name="AEN14389"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRSAPKCS1GETKLASS"></a>xmlSecOpenSSLTransformRsaPkcs1GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformRsaPkcs1GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14392"></a><h3>
+<a name="AEN14394"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRSAOAEPID"></a>xmlSecOpenSSLTransformRsaOaepId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformRsaOaepId</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14396"></a><h3>
+<a name="AEN14398"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMRSAOAEPGETKLASS"></a>xmlSecOpenSSLTransformRsaOaepGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformRsaOaepGetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14401"></a><h3>
+<a name="AEN14403"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMSHA1ID"></a>xmlSecOpenSSLTransformSha1Id</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecOpenSSLTransformSha1Id</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14405"></a><h3>
+<a name="AEN14407"></a><h3>
 <a name="XMLSECOPENSSLTRANSFORMSHA1GETKLASS"></a>xmlSecOpenSSLTransformSha1GetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecOpenSSLTransformSha1GetKlass
                                             (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14410"></a><h3>
+<a name="AEN14412"></a><h3>
 <a name="XMLSEC-OPENSSL-ERRORS-LIB-CAPS"></a>XMLSEC_OPENSSL_ERRORS_LIB</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_OPENSSL_ERRORS_LIB			(ERR_LIB_USER + 57)</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14414"></a><h3>
+<a name="AEN14416"></a><h3>
 <a name="XMLSEC-OPENSSL-ERRORS-FUNCTION-CAPS"></a>XMLSEC_OPENSSL_ERRORS_FUNCTION</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_OPENSSL_ERRORS_FUNCTION			0</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14418"></a><h3>
+<a name="AEN14420"></a><h3>
 <a name="XMLSECOPENSSLERRORSDEFAULTCALLBACK"></a>xmlSecOpenSSLErrorsDefaultCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecOpenSSLErrorsDefaultCallback
                                             (const char *file,

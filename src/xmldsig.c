@@ -1387,7 +1387,7 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
 		xmlSecTransformPtr c14nMethod, xmlSecTransformPtr signMethod, 
 		xmlNodePtr signatureValueNode, xmlSecDSigResultPtr result) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignedInfoCalculate";
-    xmlNodeSetPtr nodeSet = NULL;
+    xmlSecNodeSetPtr nodeSet = NULL;
     xmlSecTransformStatePtr state = NULL;
     xmlSecTransformPtr memBuffer = NULL;
     int res = -1;
@@ -1404,7 +1404,7 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     }
     
     /* this should be done in different way if C14N is binary! */
-    nodeSet = xmlSecGetChildNodeSet(signedInfoNode, NULL, 1);
+    nodeSet = xmlSecNodeSetGetChilds(signedInfoNode->doc, signedInfoNode, 1, 0);
     if(nodeSet == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,
@@ -1514,7 +1514,7 @@ done:
 	xmlSecTransformStateDestroy(state);
     }
     if(nodeSet != NULL) {
-	xmlXPathFreeNodeSet(nodeSet);
+	xmlSecNodeSetDestroy(nodeSet);
     }
     if(memBuffer != NULL) {
 	xmlSecTransformDestroy(memBuffer, 1);

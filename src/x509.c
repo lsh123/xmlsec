@@ -1063,7 +1063,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 #endif 	    
 	return(-1);
     }
-
+    
     /*
      * verify all crls in the X509Data (if any) and remove
      * all not verified
@@ -1094,15 +1094,33 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
     if(x509Data->certs != NULL) {
 	X509 *cert;
 	int i;
+	STACK_OF(X509)* certs;
+
+	/** 
+         * dup certs and add untrusted certs to the stack
+	 */ 
+        certs = sk_X509_dup(x509Data->certs);
+	if(certs == NULL) {
+#ifdef XMLSEC_DEBUG
+    	    xmlGenericError(xmlGenericErrorContext,
+	        "%s: failed to dup certs\n",
+	        func);	
+#endif 	    
+	    return(-1);
+        }
+	if(store->untrusted != NULL) {
+	    for(i = 0; i < store->untrusted->num; ++i) { 
+		sk_X509_push(certs, ((X509**)(store->untrusted->data))[i]);
+	    }
+	}
 	
 	/* remove all revoked certs */
-	for(i = 0; i < x509Data->certs->num; ++i) { 
-	    cert = ((X509**)(x509Data->certs->data))[i];
+	for(i = 0; i < certs->num; ++i) { 
+	    cert = ((X509**)(certs->data))[i];
 	    if(x509Data->crls != NULL) {
 		ret = xmlSec509VerifyCertAgainstCrls(x509Data->crls, cert);
 		if(ret == 0) {
-		    sk_delete(x509Data->certs, i);
-		    X509_free(cert); 
+		    sk_X509_delete(certs, i);
 		    continue;
 		} else if(ret != 1) {
 #ifdef XMLSEC_DEBUG
@@ -1110,14 +1128,14 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 			"%s: cert verification against crls list failed\n",
 			func);	
 #endif 	    	
+		    sk_X509_free(certs);
 		    return(-1);
 		}
 	    }	    	    
 	    if(store->crls != NULL) {
 		ret = xmlSec509VerifyCertAgainstCrls(store->crls, cert);
 		if(ret == 0) {
-		    sk_delete(x509Data->certs, i);
-		    X509_free(cert); 
+		    sk_X509_delete(certs, i);
 		    continue;
 		} else if(ret != 1) {
 #ifdef XMLSEC_DEBUG
@@ -1125,18 +1143,19 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 			"%s: cert verification against local crls list failed\n",
 			func);	
 #endif 	    	
+		    sk_X509_free(certs);
 		    return(-1);
 		}
 	    }
 	    ++i;
 	}	
 	
-	for(i = 0; i < x509Data->certs->num; ++i) { 
-	    cert = ((X509**)(x509Data->certs->data))[i];
-	    if(xmlSecX509FindNextChainCert(x509Data->certs, cert) == NULL) {
+	for(i = 0; i < certs->num; ++i) { 
+	    cert = ((X509**)(certs->data))[i];
+	    if(xmlSecX509FindNextChainCert(certs, cert) == NULL) {
 		X509_STORE_CTX xsc; 
     
-		X509_STORE_CTX_init (&xsc, store->xst, cert, x509Data->certs);
+		X509_STORE_CTX_init (&xsc, store->xst, cert, certs);
 		ret = X509_verify_cert(&xsc); 
 		if(ret != 1) {
 #ifdef XMLSEC_DEBUG
@@ -1149,6 +1168,7 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 
 		if(ret == 1) {
 		    x509Data->verified = cert;
+		    sk_X509_free(certs);
 		    return(1);
 		} else if(ret < 0) {
 #ifdef XMLSEC_DEBUG
@@ -1156,10 +1176,12 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 			"%s: certificate verification error\n",
 		        func);	
 #endif
+		    sk_X509_free(certs);
 		    return(-1);
 		}
 	    }
 	}
+	sk_X509_free(certs);
     }
     return(0);
 }

@@ -36,7 +36,7 @@ static int  xmlSecTransformCreateXml(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBin(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state);
-static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlNodeSetPtr nodeSet, 
+static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlSecNodeSetPtr nodeSet, 
 					xmlOutputBufferPtr output);
 
 /** 
@@ -113,10 +113,6 @@ void xmlSecTransformsInit(void) {
     xmlSecAllTransforms[i++] = xmlSecKWAes256;
 #endif /* XMLSEC_NO_DES */
 
-#ifndef XMLSEC_NO_XPATHALT 
-    xmlSecAllTransforms[i++] =  xmlSecXPathAlt;
-#endif /* XMLSEC_NO_XPATHALT */    
-    
     /* Input/memory buffer */
     xmlSecAllTransforms[i++] = xmlSecInputUri;
     xmlSecAllTransforms[i++] = xmlSecMemBuf;
@@ -733,7 +729,7 @@ xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
  */
 int
 xmlSecXmlTransformExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
-			  xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
+			  xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecXmlTransformExecute";
     xmlSecXmlTransformId id;
     
@@ -764,7 +760,7 @@ xmlSecXmlTransformExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
  */
 int	
 xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
-			   xmlDocPtr doc, xmlNodeSetPtr nodes,
+			   xmlDocPtr doc, xmlSecNodeSetPtr nodes,
 			   xmlOutputBufferPtr buffer) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformExecute";
     xmlSecC14NTransformId id;  
@@ -802,7 +798,7 @@ xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
  *
  */
 xmlSecTransformStatePtr	
-xmlSecTransformStateCreate(xmlDocPtr doc, xmlNodeSetPtr nodeSet, const char *uri) {
+xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet, const char *uri) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateCreate";
     xmlSecTransformStatePtr state;
     int ret;
@@ -925,7 +921,7 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr tra
 	    break;
     case xmlSecTransformTypeXml: {
 	xmlDocPtr doc;
-	xmlNodeSetPtr nodes;
+	xmlSecNodeSetPtr nodes;
 	
         ret = xmlSecTransformCreateXml(state);
         if(ret < 0) {
@@ -954,7 +950,7 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, xmlSecTransformPtr tra
 	    xmlSecTransformStateDestroyCurrentDoc(state);
 	} else if(nodes != state->curNodeSet) {
 	    if((state->curNodeSet != NULL) && (state->curNodeSet != state->initNodeSet)) {
-    		xmlXPathFreeNodeSet(state->curNodeSet);
+    		xmlSecNodeSetDestroy(state->curNodeSet);
 	    }
 	}	
 	state->curDoc = doc;
@@ -1096,9 +1092,10 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 	 * TODO: optimize! 
 	 */
 	state->curDoc = state->initDoc;
-	state->curNodeSet = 
-	    xmlSecGetChildNodeSet(xmlDocGetRootElement(state->initDoc), NULL, 0);
-	if(state->curNodeSet == NULL) {
+	state->curNodeSet = xmlSecNodeSetGetChilds(state->initDoc, 
+				xmlDocGetRootElement(state->initDoc), 
+				0, 0);
+	if((state->curNodeSet == NULL) || (state->curNodeSet->nodes == NULL)){
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
 		"%s: failed to create node set\n",
@@ -1182,8 +1179,8 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
     }
     
 
-    state->curNodeSet = xmlSecGetChildNodeSet(cur, NULL, withComments);
-    if(state->curNodeSet == NULL) {
+    state->curNodeSet = xmlSecNodeSetGetChilds(state->curDoc, cur, withComments, 0);
+    if((state->curNodeSet == NULL)|| (state->curNodeSet->nodes == NULL)) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,
 	    "%s: failed to create node set for node\n",
@@ -1219,7 +1216,7 @@ xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
         xmlFreeDoc(state->curDoc);
     }
     if((state->curNodeSet != NULL) && (state->curNodeSet != state->initNodeSet)) {
-        xmlXPathFreeNodeSet(state->curNodeSet);
+        xmlSecNodeSetDestroy(state->curNodeSet);
     }
     state->curDoc = NULL;
     state->curNodeSet = NULL;    
@@ -1578,8 +1575,27 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
  * processing instructions. The output of this transform is an octet stream.
  *
  */
+static int
+xmlSecTransformPreBase64DecodeWalk(xmlSecNodeSetPtr nodeSet, xmlNodePtr cur, xmlNodePtr parent, void* data) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformPreBase64DecodeWalk";
+
+    if((nodeSet == NULL) || (cur == NULL) || (data == NULL)) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext,
+	    "%s: cur or data is null\n",
+	    func);
+#endif	    
+	return(-1);
+    }    
+
+    if(cur->type == XML_TEXT_NODE) {
+	xmlOutputBufferWriteString((xmlOutputBufferPtr)data, (char*)(cur->content)); 
+    }
+    return(0);
+}
+
 static int 
-xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlNodeSetPtr nodeSet, 
+xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet, 
 			       xmlOutputBufferPtr output) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformPreBase64Decode";
     xmlNodePtr cur;
@@ -1595,13 +1611,13 @@ xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlNodeSetPtr nodeSe
     }    
     
     if(nodeSet != NULL) {
-	int i;
-	/* simply walk thru all TEXT nodes */	
-	for(i = 0; i < nodeSet->nodeNr; ++i) {
-	    cur = nodeSet->nodeTab[i];
-	    if(cur->type == XML_TEXT_NODE) {
-                xmlOutputBufferWriteString(output, (char*)(cur->content)); 
-	    }
+	if(xmlSecNodeSetWalk(nodeSet, xmlSecTransformPreBase64DecodeWalk, output) < 0) {
+#ifdef XMLSEC_DEBUG
+	    xmlGenericError(xmlGenericErrorContext,
+		"%s: node set walk function failed\n",
+		func);
+#endif	    
+	    return(-1);
 	}
     } else if(node->type == XML_ELEMENT_NODE) {
 	cur = node->children;

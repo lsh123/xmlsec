@@ -91,7 +91,7 @@ xmlSecClearIdAttributeNames(void) {
 	if(id_attributes[i] == NULL) {
 	    break;
 	}	
-	xmlFree(id_attributes[i]);	
+	xmlFree((void*)id_attributes[i]);	
     }
     memset(id_attributes, 0, sizeof(id_attributes));
 }
@@ -405,8 +405,6 @@ xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
     if(attr != NULL) {
 	return(attr->parent);
     } else if(id_attributes[0] != NULL) {
-        xmlNodePtr cur;
-    
 	/* this is hack for Ids w/o dtd or schemas */
     	cur = parent;
 	while(cur != NULL) {
@@ -439,102 +437,6 @@ xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
     return(NULL);
 }
 
-/**
- * xmlSecGetChildNodeSet:
- * @parent:
- * @nodeSet:
- * @withComments
- *
- * Creates a node set that includes all nodes in given subtree
- *
- */
-xmlNodeSetPtr
-xmlSecGetChildNodeSet(const xmlNodePtr parent, xmlNodeSetPtr nodeSet, int withComments) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecGetChildNodeSet";
-    xmlNodePtr cur;
-    xmlNsPtr ns;
-    xmlAttrPtr attr;
-    
-    if(parent == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the node  is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
-    
-    /* add the node */
-    if(nodeSet == NULL) {	
-	nodeSet = xmlXPathNodeSetCreate(NULL);
-	if(nodeSet == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create node set\n",
-		func);
-#endif
-	    return(NULL);
-	}	
-    } 
-
-    switch(parent->type) {
-    case XML_COMMENT_NODE:
-        if(!withComments) return(nodeSet);
-        xmlXPathNodeSetAdd(nodeSet, parent);
-        return(nodeSet);	
-    case XML_ELEMENT_NODE:
-        xmlXPathNodeSetAdd(nodeSet, parent);
-	
-	/* add all attrs */
-	attr = parent->properties; 
-	while (attr != NULL) {
-    	    xmlXPathNodeSetAdd(nodeSet, (xmlNodePtr)attr); 
-    	    attr = attr->next; 
-	}	
-    
-	/* add namespaces for the node and all parents */
-	for(cur = parent; cur != NULL; cur = cur->parent) {
-	    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
-		xmlNsPtr tmp;
-		
-		/* include only the last namespace */
-		tmp = xmlSearchNs(parent->doc, parent, ns->prefix);
-		if(tmp == ns) {
-		    xmlXPathNodeSetAddNs(nodeSet, parent, ns);
-		}
-	    }
-	}
-
-        break;
-    case XML_TEXT_NODE:
-        xmlXPathNodeSetAdd(nodeSet, parent);
-        return(nodeSet);
-    case XML_PI_NODE:
-        xmlXPathNodeSetAdd(nodeSet, parent);
-        return(nodeSet);
-    default:
-        return(nodeSet);
-    }
-        
-    
-    /* add all childrens */
-    cur = parent->children;
-    while(cur != NULL) {
-	nodeSet = xmlSecGetChildNodeSet(cur, nodeSet, withComments);
-	if(nodeSet == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add child namespace\n",
-		func);	
-#endif
-	    return(NULL);	    
-	}
-	cur = cur->next;
-    }
-    
-    return(nodeSet);
-    
-}
 
 /** 
  * xmlSecCheckNodeName:
@@ -947,5 +849,4 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t siz
     xmlFreeDoc(doc);
     return(0);
 }
-
 

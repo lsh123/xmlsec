@@ -32,11 +32,8 @@ static int 		xmlSecC14NTransformReadNode	(xmlSecTransformPtr transform,
 							 xmlNodePtr transformNode);
 static int 		xmlSecC14NTransformExec		(xmlSecC14NTransformPtr transform,
 							 xmlDocPtr doc,
-							 xmlNodeSetPtr nodes,
+							 xmlSecNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
-static int		xmlSecC14NIsNodeVisible		(xmlNodeSetPtr nodes, 
-							 xmlNodePtr node, 
-							 xmlNodePtr parent);
 
 static const struct _xmlSecC14NTransformIdStruct xmlSecC14NInclusiveTransformId = {
     /* same as xmlSecTransformId */    
@@ -340,33 +337,36 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
  */
 static int
 xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
-			xmlNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
+			xmlSecNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformExec";
     int ret;
         
     if(xmlSecTransformCheckId(transform, xmlSecC14NInclusive)) {    
     	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecC14NIsNodeVisible, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
 			nodes, 
 			0, NULL, 0, buffer);
     } else if(xmlSecTransformCheckId(transform, xmlSecC14NInclusiveWithComments)) {
 	 ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecC14NIsNodeVisible, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
 			nodes, 
 			0, NULL, 1, buffer); 
     } else if(xmlSecTransformCheckId(transform, xmlSecC14NExclusive)) {
 	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecC14NIsNodeVisible, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
 			nodes, 
 			1, (xmlChar**)(transform->c14nData), 0, buffer);
     } else if(xmlSecTransformCheckId(transform, xmlSecC14NExclusiveWithComments)) {
 	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecC14NIsNodeVisible, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
 			nodes, 
 			1, (xmlChar**)(transform->c14nData), 1, buffer);
     } else if(transform == NULL) {
 	/* the default c14n trasnform */
-    	ret = xmlC14NDocSaveTo(doc, nodes, 0, NULL, 0, buffer);	
+	ret = xmlC14NExecute(doc, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
+			nodes, 
+			0, NULL, 0, buffer);
     } else {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -387,26 +387,6 @@ xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
     return(0);
 }
 
-static int			
-xmlSecC14NIsNodeVisible(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) {
-    if((nodes != NULL) && (node != NULL)) {
-	if(node->type != XML_NAMESPACE_DECL) {
-	    return(xmlXPathNodeSetContains(nodes, node));
-	} else {
-	    xmlNs ns;
-	    
-	    memcpy(&ns, node, sizeof(ns)); 
-	    ns.next = (xmlNsPtr)parent; /* this is a libxml hack! check xpath.c for details */
-
-	    /* 
-	     * If the input is an XPath node-set, then the node-set must explicitly 
-	     * contain every node to be rendered to the canonical form.
-	     */
-	    return(xmlXPathNodeSetContains(nodes, (xmlNodePtr)&ns));
-	}
-    }
-    return(1);
-}
 
 
 

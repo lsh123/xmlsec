@@ -16,7 +16,6 @@ extern "C" {
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
-
 #include <xmlsec/xmlsec.h>
 
 XMLSEC_EXPORT xmlDocPtr		xmlSecParseFile		(const char *filename);
@@ -45,9 +44,6 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecFindNode		(const xmlNodePtr parent,
 							 const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr	xmlSecFindNodeById	(const xmlNodePtr parent,
 							 const xmlChar *id);
-XMLSEC_EXPORT xmlNodeSetPtr	xmlSecGetChildNodeSet	(const xmlNodePtr parent,
-							 xmlNodeSetPtr nodeSet,
-							 int withComments);
 XMLSEC_EXPORT xmlNodePtr	xmlSecAddChild		(xmlNodePtr parent, 
 							 const xmlChar *name,
 							 const xmlChar *ns);
@@ -65,6 +61,9 @@ XMLSEC_EXPORT int		xmlSecReplaceContent	(xmlNodePtr node,
 XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 							 const unsigned char *buffer, 
 							 size_t size);
+
+
+
 
 /* 
  * hack for specifying ID attributes names for xml documents

@@ -23,6 +23,7 @@ x509.c \
 keysmngr.c \
 buffered.c \
 membuf.c \
+nodeset.c \
 base64.c \
 io.c \
 digests.c \
@@ -40,7 +41,6 @@ xmldsig.c \
 des.c \
 aes.c \
 xmlenc.c \
-xpathalt.c \
 $(NULL)
 
 

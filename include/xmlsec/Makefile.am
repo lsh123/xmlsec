@@ -15,6 +15,7 @@ keys.h \
 keysInternal.h \
 keysmngr.h \
 membuf.h \
+nodeset.h \
 transforms.h \
 transformsInternal.h \
 version.h \

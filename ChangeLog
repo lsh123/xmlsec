@@ -1,3 +1,16 @@
+Mon Aug  5 17:58:31 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am configure.in  src/xpathalt.c:
+	Removed alt xpath trasnform implementation as outdated
+	* include/xmlsec/nodeset.h  src/nodeset.c
+	src/Makefile.am include/xmlsec/Makefile.am 
+	include/xmlsec/transforms.h include/xmlsec/transformsInternal.h 
+	src/transforms.c include/xmlsec/xmltree.h src/xmltree.c
+	src/c14n.c src/enveloped.c src/xmldsig.c 
+	src/xpath.c: create xmlsec specific nodes set object
+	and start using it everythere
+	* src/x509.c: updated the code to use new openssl 0.9.7 builds 
+
 Wed Jul 31 23:38:18 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am configure.in: added "enable-profiling" config option

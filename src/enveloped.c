@@ -31,7 +31,7 @@ static int 		xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform,
 static int 		xmlSecTransformEnvelopedExecute	(xmlSecXmlTransformPtr transform,
 							 xmlDocPtr ctxDoc,
 							 xmlDocPtr *doc,
-							 xmlNodeSetPtr *nodes);
+							 xmlSecNodeSetPtr *nodes);
 
 
 struct _xmlSecXmlTransformIdStruct xmlSecTransformEnvelopedId = {
@@ -178,7 +178,7 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
 #ifdef XMLSEC_NO_OPT_ENVELOPED
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
-			     xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
+			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlXPathObjectPtr xpath; 
@@ -247,38 +247,27 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
         return(-1);
     }
 
+    if((*nodes) != NULL) {
+	(*nodes) = xmlSecNodeSetIntersect((*nodes), xpath->nodesetval);
+    } else {
+	(*nodes) = xmlSecNodeSetCreate((*doc), xpath->nodesetval, xmlSecNodeSetNormal);
+	xpath->nodesetval = NULL;
+    }
+    
     /* free everything we do not need */
     xmlXPathFreeContext(ctx);      
-    
-    if((*nodes) != NULL) {
-	(*nodes) = xmlXPathIntersection((*nodes), xpath->nodesetval);
-    } else {
-	(*nodes) = xmlXPathNodeSetMerge(NULL, xpath->nodesetval);
-    }
-    if((*nodes) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: result node set is null\n",
-	    func);	
-#endif
-	xmlXPathFreeObject(xpath); 
-	return(-1);
-    }   
-    
     xmlXPathFreeObject(xpath);     
     return(0);
 }
 #else /* XMLSEC_NO_OPT_ENVELOPED */
 
-static xmlNodeSetPtr	xmlSecEnvelopedRemoveTree	(xmlNodeSetPtr nodes, 
-							 xmlNodePtr cur);
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
-			     xmlDocPtr *doc, xmlNodeSetPtr *nodes) {
+			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
-    int allocated = 0;
     xmlSecXmlTransformPtr xmlTransform;
     xmlNodePtr signature;
+    xmlSecNodeSetPtr tmp;
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
        (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
@@ -311,101 +300,25 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 	return(-1);
     }
     
-    if((*nodes) == NULL) {
-	xmlNodeSetPtr tmp;
-	xmlNodePtr cur;
-	
-	for(cur = (*doc)->children; cur != NULL; cur = cur->next) {
-	    tmp = xmlSecGetChildNodeSet(cur, (*nodes), 1);
-	    if(tmp == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to create nodes set\n",
-	    	    func);	
-#endif
-		if((*nodes) != NULL) {
-		    xmlXPathFreeNodeSet(*nodes); 
-		}
-		return(-1);
-	    }
-	    (*nodes) = tmp;
-	}
-	allocated = 1;
-    }
-
-    if(xmlSecEnvelopedRemoveTree((*nodes), signature) == NULL) {
+    tmp = xmlSecNodeSetGetChilds((*doc), signature, 1, 1);
+    if(tmp == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
-	    "%s: operation failed\n",
+	    "%s: failed to create nodes set\n",
 	    func);	
 #endif
-	if(allocated) {
-	    xmlXPathFreeNodeSet(*nodes);  
-	}
 	return(-1);
+    }
 	
+    if((*nodes) == NULL) {
+	(*nodes) = tmp;
+    } else {
+	(*nodes) = xmlSecNodeSetIntersect2((*nodes), tmp);	
+	xmlSecNodeSetDestroy(tmp);
     }
     return(0);
 }
 
-static xmlNodeSetPtr
-xmlSecEnvelopedRemoveTree(xmlNodeSetPtr nodes, xmlNodePtr cur) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEnvelopedRemoveTree";
-    if((nodes == NULL) || (cur == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: nodes or cur is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
-    
-    if(cur->type == XML_ELEMENT_NODE) {	
-	int delNode, i, j;
-	
-	for (i = 0; i < nodes->nodeNr;) {
-	    delNode = 0;	    
-	    if(nodes->nodeTab[i] == cur) {
-		/* delete node by itself */
-		delNode = 1;	
-	    } else if((nodes->nodeTab[i]->type == XML_NAMESPACE_DECL) &&
-		    (((xmlNsPtr)nodes->nodeTab[i])->next == (xmlNsPtr)cur)) {
-		/* delete all node's namespaces */
-		delNode = 1;
-		/* special namespaces processing in XPath */
-		xmlXPathNodeSetFreeNs((xmlNsPtr) nodes->nodeTab[i]);    
-	    } else if((nodes->nodeTab[i]->type == XML_ATTRIBUTE_NODE) &&
-		    (((xmlAttrPtr)nodes->nodeTab[i])->parent == cur)) {
-		/* delete all node's attributes */
-		delNode = 1;
-	    }
-	    
-	    if(delNode) {
-		nodes->nodeNr--;
-		for (j = i; j < nodes->nodeNr; j++)
-    		    nodes->nodeTab[j] = nodes->nodeTab[j + 1];
-		nodes->nodeTab[nodes->nodeNr] = NULL;		
-	    } else {
-		++i;
-	    }
-	}
-	
-	/* delete all node's childrens */
-	for(cur = cur->children; cur != NULL; cur = cur->next) {
-	    if(xmlSecEnvelopedRemoveTree(nodes, cur) == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: children failed\n",
-		    func);	
-#endif 	    
-		return(NULL);
-	    }
-	}
-    } else {
-	xmlXPathNodeSetDel(nodes, cur);
-    }
-    return(nodes);
-}
 
 #endif /* XMLSEC_NO_OPT_ENVELOPED */
 

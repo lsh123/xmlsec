@@ -29,5 +29,5 @@ api-doc:
 api-doc-clean:
 	@cd docs/api;make clean
 
-valgrind:
+memcheck:
 	@export DEBUG_MEMORY=1;make check

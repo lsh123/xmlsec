@@ -21,6 +21,7 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/nodeset.h>
 
 /* 
  * Transforms usage constants
@@ -147,7 +148,7 @@ typedef struct _xmlSecBinTransform {
 typedef int 	(*xmlSecXmlTransformExecuteMethod)	(xmlSecXmlTransformPtr transform,
 							 xmlDocPtr ctxDoc,
 							 xmlDocPtr *doc,
-							 xmlNodeSetPtr *nodes);
+							 xmlSecNodeSetPtr *nodes);
 typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;
 struct _xmlSecXmlTransformIdStruct {
     /* same as xmlSecTransformId */ 
@@ -180,7 +181,7 @@ typedef struct _xmlSecXmlTransform {
  */
 typedef int 	(*xmlSecC14NTransformExecuteMethod)	(xmlSecC14NTransformPtr transform,
 							 xmlDocPtr doc,
-							 xmlNodeSetPtr nodes,
+							 xmlSecNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
 typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;
 struct _xmlSecC14NTransformIdStruct {
@@ -215,12 +216,12 @@ typedef struct _xmlSecC14NTransform {
 typedef struct _xmlSecTransformState {
     /* initial state */
     xmlDocPtr				initDoc;
-    xmlNodeSetPtr			initNodeSet;
+    xmlSecNodeSetPtr			initNodeSet;
     char				*initUri;
 
     /* current state: xml */    
     xmlDocPtr				curDoc;
-    xmlNodeSetPtr			curNodeSet;
+    xmlSecNodeSetPtr			curNodeSet;
     
     /* current state: binary */
     xmlBufferPtr			curBuf;
@@ -312,7 +313,7 @@ void			xmlSecBinTransformSetEncrypt	(xmlSecTransformPtr transform,
 int 			xmlSecXmlTransformExecute	(xmlSecTransformPtr transform,
 							 xmlDocPtr ctxDoc,
 							 xmlDocPtr *doc,
-							 xmlNodeSetPtr *nodes);
+							 xmlSecNodeSetPtr *nodes);
 void			xmlSecXmlTransformSetHere	(xmlSecTransformPtr trasnform,
 							 xmlNodePtr here);
 							 
@@ -321,13 +322,13 @@ void			xmlSecXmlTransformSetHere	(xmlSecTransformPtr trasnform,
  */ 
 int 			xmlSecC14NTransformExecute	(xmlSecTransformPtr transform,
 							 xmlDocPtr doc,
-							 xmlNodeSetPtr nodes,
+							 xmlSecNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
 /**
  * Transforms State
  */
 xmlSecTransformStatePtr	xmlSecTransformStateCreate	(xmlDocPtr doc,
-							 xmlNodeSetPtr nodeSet,
+							 xmlSecNodeSetPtr nodeSet,
 							 const char *uri);
 void			xmlSecTransformStateDestroy	(xmlSecTransformStatePtr state);
 int			xmlSecTransformStateUpdate	(xmlSecTransformStatePtr state,

@@ -166,9 +166,6 @@ typedef enum {
  
 XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPath;
 XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecTransformXPath2;
-#ifndef XMLSEC_NO_XPATHALT  
-XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecXPathAlt;
-#endif /* XMLSEC_NO_XPATHALT */
 
 XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
 						 const xmlChar *expression,

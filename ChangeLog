@@ -1,3 +1,8 @@
+Tue Apr 22 13:51:33 2003  Igor Zlatkovic  <igor@zlatkovic.com>
+
+	* win32/configure.js: updated the email address in the generated
+	  readme.txt file.
+	
 Sun 20 Apr 2003 03:12:02 PM PDT Aleksey Sanin <aleksey@aleksey.com>
 	
 	* docs/*: updated docs with new xmlSecByte and xmlSecSize types

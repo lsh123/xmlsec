@@ -192,6 +192,8 @@ if test "z$LIBXML_FOUND" = "zyes" ; then
 fi
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
+AC_SUBST(LIBXML_CONFIG)
+AC_SUBST(LIBXML_MIN_VERSION)
 
 dnl ==========================================================================
 dnl find libxslt
@@ -246,6 +248,8 @@ fi
 AC_SUBST(XMLSEC_NO_LIBXSLT)
 AC_SUBST(LIBXSLT_CFLAGS)
 AC_SUBST(LIBXSLT_LIBS)
+AC_SUBST(LIBXSLT_CONFIG)
+AC_SUBST(LIBXSLT_MIN_VERSION)
 
 dnl ==========================================================================
 dnl See if we can find a crypto library
@@ -388,6 +392,7 @@ AC_SUBST(XMLSEC_NO_OPENSSL)
 AC_SUBST(OPENSSL_CFLAGS)
 AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_CRYPTO_LIB)
+AC_SUBST(OPENSSL_MIN_VERSION)
 
 dnl ==========================================================================
 dnl See if we can find GnuTLS
@@ -457,6 +462,7 @@ AC_SUBST(XMLSEC_NO_GNUTLS)
 AC_SUBST(GNUTLS_CFLAGS)
 AC_SUBST(GNUTLS_LIBS)
 AC_SUBST(GNUTLS_CRYPTO_LIB)
+AC_SUBST(GNUTLS_MIN_VERSION)
 
 dnl ==========================================================================
 dnl See if we can find NSS and NSPR
@@ -687,6 +693,8 @@ AC_SUBST(XMLSEC_NO_NSS)
 AC_SUBST(NSS_CFLAGS)
 AC_SUBST(NSS_LIBS)
 AC_SUBST(NSS_CRYPTO_LIB)
+AC_SUBST(NSS_MIN_VERSION)
+AC_SUBST(NSPR_MIN_VERSION)
 
 dnl ==========================================================================
 dnl Do we have a crypto library?

@@ -124,7 +124,7 @@
   </bookinfo>
 
   <part id="xmlsec-notes">
-    <title>XML Security Tutorial</title>
+    <title>XML Security Library Tutorial</title>
     <chapter id="xmlsec-notes-overview">
 	<title>Overview.</title>
 	<para>XML Security Library provides support for XML Digital Signature 

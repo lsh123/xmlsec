@@ -22,7 +22,7 @@ extern "C" {
 /**
  * Init/shutdown
  */
-XMLSEC_EXPORT int		xmlSecOpenSSLAppInit			(void);
+XMLSEC_EXPORT int		xmlSecOpenSSLAppInit			(const char* config);
 XMLSEC_EXPORT int		xmlSecOpenSSLAppShutdown		(void);
 
 /** 

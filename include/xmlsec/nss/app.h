@@ -20,7 +20,7 @@ extern "C" {
 /**
  * Init/shutdown
  */
-XMLSEC_EXPORT int		xmlSecNssAppInit			(void);
+XMLSEC_EXPORT int		xmlSecNssAppInit			(const char* config);
 XMLSEC_EXPORT int		xmlSecNssAppShutdown			(void);
 
 /** 

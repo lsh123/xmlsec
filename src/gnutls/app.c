@@ -30,7 +30,7 @@
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppInit(void) {
+xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
     int ret;
 
     ret = gnutls_global_init();

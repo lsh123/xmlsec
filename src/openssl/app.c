@@ -39,7 +39,7 @@ static X509*		xmlSecOpenSSLAppPemCertLoad		(const char* filename);
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppInit(void) {
+xmlSecOpenSSLAppInit(const char* config ATTRIBUTE_UNUSED) {
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {

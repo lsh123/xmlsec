@@ -35,17 +35,31 @@
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssAppInit(void) {
+xmlSecNssAppInit(const char* config) {
     SECStatus rv;
 
-    rv = NSS_NoDB_Init(NULL);
-    if(rv != SECSuccess) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "NSS_NoDB_Init",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error=%d", PR_GetError());
-	return(-1);
+    if(config) {
+        rv = NSS_Init(config);
+	if(rv != SECSuccess) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"NSS_Init",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"config=%s;error=%d", 
+			xmlSecErrorsSafeString(config),
+			PR_GetError());
+	    return(-1);
+	}
+    } else {
+        rv = NSS_NoDB_Init(NULL);
+	if(rv != SECSuccess) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"NSS_NoDB_Init",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"error=%d", PR_GetError());
+	    return(-1);
+	}
     }
 
     /* configure PKCS11 */

@@ -40,7 +40,7 @@ extern "C" {
 #endif /* XMLSEC_CRYPTO_NSS */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 
-int	xmlSecAppCryptoInit					(void);
+int	xmlSecAppCryptoInit					(const char* config);
 int	xmlSecAppCryptoShutdown					(void);
 
 xmlSecKeyPtr xmlSecAppCryptoKeyGenerate				(char* keyKlassAndSize,

@@ -21,8 +21,8 @@
 #include "crypto.h"
 
 int
-xmlSecAppCryptoInit(void) {
-    if(xmlSecCryptoAppInit() < 0) {
+xmlSecAppCryptoInit(const char* config) {
+    if(xmlSecCryptoAppInit(config) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecCryptoAppInit",

@@ -206,6 +206,9 @@ static const char helpX509[] =
     
 static const char helpMisc[] = 
     "Misc. options:\n"
+#ifdef XMLSEC_CRYPTO_NSS
+    "  --nss-config       path to crypto engine configuration\n"
+#endif /* XMLSEC_CRYPTO_NSS */    
     "  --repeat <number>     repeat the operation <number> times\n"
     "  --disable-error-msgs  do not print xmlsec error messages\n"
 #ifdef XMLSEC_CRYPTO_OPENSSL
@@ -315,6 +318,7 @@ clock_t total_time = 0;
 char *global_pwd = NULL;
 int print_openssl_errors = 0;
 xmlDtdPtr idsDtd = NULL;
+char* crypto_config = NULL;
 
 int main(int argc, char **argv) {
     int res = 1;
@@ -362,6 +366,15 @@ int main(int argc, char **argv) {
 	printUsage(NULL);
 	return(0);
     }
+
+#ifdef XMLSEC_CRYPTO_NSS
+    for(pos = 2; pos < argc && argv[pos][0] == '-'; ++pos) {
+        if((strcmp(argv[pos], "--nss-config") == 0) && (pos + 1 < argc)) {
+	    crypto_config = argv[++pos];
+	    break;
+	}
+    }    
+#endif /* XMLSEC_CRYPTO_NSS */    
 
     if(xmlSecAppInit(&gXmlSecAppCtx) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1032,7 +1045,7 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
     }
 
     /* Init Crypto */
-    if(xmlSecAppCryptoInit() < 0) {
+    if(xmlSecAppCryptoInit(crypto_config) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecAppCryptoInit",
@@ -1247,6 +1260,14 @@ xmlSecAppOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	    pos = ret;
 	    continue;
 	}
+	
+#ifdef XMLSEC_CRYPTO_NSS
+	/* we did read this option before */
+        if((strcmp(argv[pos], "--nss-config") == 0) && (pos + 1 < argc)) {
+	    pos += 2;
+	    continue;
+	}
+#endif /* XMLSEC_CRYPTO_NSS */    
 
 	/* if we are here then option is unknown */
 	fprintf(stderr, "Error: option \"%s\" is unknown\n", argv[pos]);

@@ -11,7 +11,7 @@
 <li><a href="download.html">Download</a></li>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
-<li><a href="faq.html">FAQ</a></li>
+<li><a href="api-0.0.x/faq.html">FAQ</a></li>
 <li><a href="xmldsig.html">XML Digital Signature</a></li>
 <ul><li><a href="xmldsig-verifier.html">Online Verifier</a></li></ul>
 <li><a href="xmlenc.html">XML Encryption</a></li>
@@ -20,7 +20,20 @@
 <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
 <li><a href="related.html">Related</a></li>
 </ul>
-<a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+</table>
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
@@ -56,11 +69,11 @@
       </p>
 <h2>Development release.</h2>
 <p>
-      The latest development XML Security Library version is <b>0.1.1</b>:
+      The latest development XML Security Library version is <b>1.0.0rc1</b>:
       </p>
 <ul>
 <li>
-<a href="download/xmlsec-0.1.1.tar.gz">Sources</a> 
+<a href="download/xmlsec-1.0.0rc1.tar.gz">Sources</a> 
 	    (<a href="ftp://ftp.xmlsoft.org/xmlsec/releases">XMLSoft.org</a> and 
  	     <a href="ftp://ftp.rpmfind.net/pub/XML/xmlsec/releases">RPMFind.net</a> mirrors).
         </li>
@@ -84,15 +97,28 @@
       </p>
 <h2>Requirements</h2>
 <p>
-      The XML Security Library requires:
-      </p>
+    The XML Security Library requires:
+    </p>
+<ul>
+<li><a href="http://xmlsoft.org/downloads.html">LibXML</a></li>
+    <li>
+<a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> (optional)</li>
+    </ul>
 <ul>
 <li>
-<a href="http://xmlsoft.org/downloads.html">LibXML version 2.4.24</a> or geater</li>
-         <li>
-<a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT 1.0.20</a> or greater (optional)</li>
-         <li><a href="http://www.openssl.org/source/openssl-0.9.7a.tar.gz">OpenSSL version 0.9.7a</a></li>
-      </ul>
+<a href="http://www.openssl.org/">OpenSSL</a> version 0.9.7 
+	(prefered) or version 0.9.6.
+        </li>
+	<li>
+<a href="http://www.gnu.org/software/gnutls/">GnuTLS</a>
+	and <a href="http://www.gnu.org/directory/security/libgcrypt.html">Libgcrypt</a> - 
+	GNU SSL and cryptographic libraries.
+	</li>
+        <li>
+<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a> -
+	Mozilla cryptographic library.
+	</li>
+    </ul>
 <h2>Installation (source archive)</h2>
 <p>
       All steps are usual:<br>

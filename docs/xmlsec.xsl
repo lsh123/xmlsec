@@ -69,7 +69,7 @@
 	    </li>	    
 	    <li>
 		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">faq.html</xsl:with-param> 
+		    <xsl:with-param name="href">api-0.0.x/faq.html</xsl:with-param> 
 		    <xsl:with-param name="text">FAQ</xsl:with-param> 
 		</xsl:call-template>
 	    </li>	    
@@ -113,26 +113,28 @@
 		</xsl:call-template>
 	    </li>	    
 	</ul>
+	<table width="100%"><tr><td width="15"></td><td>
       	<a href="http://xmlsoft.org/">
 	    <xsl:call-template name="myimg"> 
 		<xsl:with-param name="src">images/libxml2-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">LibXML2</xsl:with-param> 
 	    </xsl:call-template>
 	</a>
-      	<br/>
+	</td></tr><tr><td width="15"></td><td>
 	<a href="http://xmlsoft.org/XSLT">
 	    <xsl:call-template name="myimg"> 
 		<xsl:with-param name="src">images/libxslt-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">LibXSLT</xsl:with-param> 
 	    </xsl:call-template>
 	</a>
-      	<br/>
+	</td></tr><tr><td width="15"></td><td>
 	<a href="http://www.openssl.org/">
 	    <xsl:call-template name="myimg"> 
 		<xsl:with-param name="src">images/openssl-logo.png</xsl:with-param> 
 		<xsl:with-param name="alt">OpenSSL</xsl:with-param> 
 	    </xsl:call-template>
 	</a>
+	</td></tr></table>
      </td>
      <!-- top navigation menu end -->
 

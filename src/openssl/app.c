@@ -23,6 +23,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/app.h>

@@ -19,6 +19,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 #include <xmlsec/errors.h>
 
 #define XMLSEC_ERRORS_BUFFER_SIZE	1024

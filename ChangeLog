@@ -1,3 +1,12 @@
+Thu Nov  6 22:52:57 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: use pkgconfig for configuration if possible
+	(based on Daniel's idea)
+	* include/xmlsec/private.h include/xmlsec/xmltree.h
+	src/errors.c src/openssl/app.c: made xmlSecStrPrintf and
+	xmlSecStrVPrintf declarations private to xmlsec to fix
+	examples build failure
+
 Wed Nov  5 14:19:11 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: fixed "--with-html-doc" option (patch from Daniel)

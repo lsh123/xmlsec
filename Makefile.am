@@ -44,19 +44,47 @@ EXTRA_CLEAN = \
 	examples \
 	$(NULL)
 
+if XMLSEC_APPS_NO_CRYPTO_DYNAMIC_LOADING
+PRECHECK_COMMANDS = \
+	ABS_BUILDDIR=`pwd` && cd $(top_srcdir) \
+	$(NULL)
+CHECK_CRYPTO_LIST = \
+	"default" \
+	$(NULL)
+else
+CRYPTO_FOLDERS=$(patsubst %,$(top_builddir)/src/%/.libs:,$(XMLSEC_CRYPTO_LIST))
+PRECHECK_COMMANDS= \
+	ABS_BUILDDIR=`pwd` && cd $(top_srcdir) && \
+	export LD_LIBRARY_PATH="$(CRYPTO_FOLDERS)$$LD_LIBRARY_PATH" \
+	$(NULL)	
+CHECK_CRYPTO_LIST = \
+	$(XMLSEC_CRYPTO_LIST) \
+	$(NULL)
+endif
+
 xmlsec1.pc: xmlsec1-@XMLSEC_CRYPTO@.pc
 	@(rm -f xmlsec1.pc && $(LN_S) xmlsec1-@XMLSEC_CRYPTO@.pc xmlsec1.pc)
 
 docs: docs-man
-	@(cd docs; $(MAKE) docs)
+	@(cd docs && $(MAKE) docs)
 
 docs-clean: 
-	@(cd docs; $(MAKE) clean)
+	@(cd docs && $(MAKE) clean)
 
 docs-man: 
-	@(cd man;$(MAKE) docs)
+	@(cd man && $(MAKE) docs)
 
-check: check-info check-km check-dsig check-enc
+check: check-all check-info 
+
+check-all: $(TEST_APP) reset-nss-db
+	@($(PRECHECK_COMMANDS) && \
+	for i in $(CHECK_CRYPTO_LIST) ; do \
+	    echo "=================== Checking xmlsec-$$i =================================" && \
+	    $(SHELL) ./tests/testKeys.sh $$i ./tests $$ABS_BUILDDIR/$(TEST_APP) der && \
+	    $(SHELL) ./tests/testDSig.sh $$i ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der && \
+	    $(SHELL) ./tests/testEnc.sh $$i ./tests $$ABS_BUILDDIR/$(TEST_APP) der ; \
+	done; )
+
 
 check-info:
 	@echo "-------------------------- ATTENTION -----------------------------------"
@@ -69,25 +97,25 @@ check-info:
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
 reset-nss-db:
-	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir);\
+	@(ABS_BUILDDIR=`pwd` && cd $(top_srcdir) && \
 	if [ "z$(DEFAULT_CRYPTO)" = "znss" ] ; \
 	then \
-	    echo "Removing old nss db and replacing with a new one"; \
-	    rm -rf ./tests/cert*.db ./tests/key*.db ./tests/secmod*.db; \
+	    echo "Removing old nss db and replacing with a new one" && \
+	    rm -rf ./tests/cert*.db ./tests/key*.db ./tests/secmod*.db && \
 	    cp ./tests/nssdb/*.db ./tests; \
 	fi)
 
 check-km: $(TEST_APP) reset-nss-db
-	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir); \
-	$(SHELL) ./tests/testKeys.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
+	@($(PRECHECK_COMMANDS) && \
+	$(SHELL) ./tests/testKeys.sh default ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
 check-dsig: $(TEST_APP) reset-nss-db
-	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir); \
-	$(SHELL) ./tests/testDSig.sh ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
+	@($(PRECHECK_COMMANDS) && \
+	$(SHELL) ./tests/testDSig.sh default ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
 
 check-enc: $(TEST_APP) reset-nss-db
-	@(ABS_BUILDDIR="`pwd`"; cd $(top_srcdir); \
-	$(SHELL) ./tests/testEnc.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
+	@($(PRECHECK_COMMANDS) && \
+	$(SHELL) ./tests/testEnc.sh default ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u
@@ -95,10 +123,10 @@ memcheck-res:
 	@grep -i 'in use' /tmp/*.log | sed 's/==.*== *//' | sort -u
 
 memcheck: $(TEST_APP)
-	@(export DEBUG_MEMORY=1;$(MAKE) check;$(MAKE) memcheck-res)
+	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)
 
 perfcheck: $(TEST_APP)
-	@(export PERF_TEST=10;$(MAKE) check)
+	@(export PERF_TEST=10 && $(MAKE) check)
 
 dist-hook:
 	@(rm -rf `find $(distdir) -name CVS`)
@@ -107,7 +135,7 @@ cleantar:
 	@(rm -f xmlsec*.tar.gz COPYING.LIB)
 
 rpm: cleantar
-	@(unset CDPATH ; $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
+	@(unset CDPATH && $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
 
 tag-release:
 	@cvs tag -F xmlsec-$(SAFE_VERSION) > /dev/null

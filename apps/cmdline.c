@@ -252,7 +252,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 	    ++value->paramNameValue;
 	}
     }
-        
+    
     switch(param->type) {
 	case xmlSecAppCmdLineParamTypeFlag:
 	    /* do nothing */

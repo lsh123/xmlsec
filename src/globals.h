@@ -12,8 +12,14 @@
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__
 
+/**
+ * Use autoconf defines if present. 
+ */
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif /* HAVE_CONFIG_H */
 
 #define IN_XMLSEC
+#define XMLSEC_PRIVATE
 
 #endif /* __XMLSEC_GLOBALS_H__ */

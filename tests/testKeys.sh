@@ -1,8 +1,9 @@
 #!/bin/sh
 
-topfolder=$1
-xmlsec_app=$2
-file_format=$3
+crypto=$1
+topfolder=$2
+xmlsec_app=$3
+file_format=$4
 
 pub_key_format=$file_format
 cert_format=$file_format
@@ -15,6 +16,11 @@ tmpfile=/tmp/testKeys.$timestamp-$$.tmp
 logfile=/tmp/testKeys.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
+
+if [ "z$crypto" != "z" -a "z$crypto" != "zdefault" ] ; then
+    xmlsec_params="$xmlsec_params --crypto $crypto"
+fi
+xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
 printRes() {	
     if [ $1 = 0 ]; then
@@ -31,7 +37,7 @@ echo "--- testKeys started ($timestamp) ---"
 echo "--- testKeys started ($timestamp) ---" >> $logfile
 
 printf "    Creating new keys                                    "
-$xmlsec_app keys --crypto-config $crypto_config \
+$xmlsec_app keys $xmlsec_params \
     --gen-key:test-hmac-sha1 hmac-192 \
     --gen-key:test-rsa rsa-1024  \
     --gen-key:test-dsa dsa-1024 \

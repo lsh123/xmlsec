@@ -9,10 +9,13 @@
 #ifndef __XMLSEC_OPENSSL_SYMBOLS_H__
 #define __XMLSEC_OPENSSL_SYMBOLS_H__    
 
+#if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+#error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING
+#endif /* !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-
 
 /**
  * Defines for writing simple code
@@ -74,10 +77,14 @@ extern "C" {
 #define xmlSecCryptoAppDefaultKeysMngrLoad	xmlSecOpenSSLAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave	xmlSecOpenSSLAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad		xmlSecOpenSSLAppKeysMngrCertLoad
-#define xmlSecCryptoAppKeysMngrAddCertsPath	xmlSecOpenSSLAppKeysMngrAddCertsPath
 #define xmlSecCryptoAppKeyLoad			xmlSecOpenSSLAppKeyLoad
 #define xmlSecCryptoAppPkcs12Load		xmlSecOpenSSLAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad		xmlSecOpenSSLAppKeyCertLoad
+#define xmlSecCryptoAppGetDefaultPwdCallback	xmlSecOpenSSLAppGetDefaultPwdCallback
+
+
+/* todo: this should go away on next API refresh */
+#define xmlSecCryptoAppKeysMngrAddCertsPath	xmlSecOpenSSLAppKeysMngrAddCertsPath
 
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 

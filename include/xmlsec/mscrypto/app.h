@@ -40,8 +40,6 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeysMngrCertLoad	(xmlSecKeysMngrPtr mn
 									 const char *filename, 
 									 xmlSecKeyDataFormat format, 
 									 xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeysMngrAddCertsPath	(xmlSecKeysMngrPtr mngr, 
-									 const char *path);
 #endif /* XMLSEC_NO_X509 */
 
 
@@ -62,6 +60,7 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeyCertLoad		(xmlSecKeyPtr key,
 									 const char* filename,
 									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
+XMLSEC_CRYPTO_EXPORT void*	xmlSecMSCryptoAppGetDefaultPwdCallback	(void);
 
 #ifdef __cplusplus
 }

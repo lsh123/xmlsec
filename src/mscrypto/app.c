@@ -228,30 +228,6 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     return(-1);
 }
 
-/**
- * xmlSecMSCryptoAppKeysMngrAddCertsPath:
- * @mngr: 		the keys manager.
- * @path:		the path to trusted certificates.
- * 
- * Reads cert from @path and adds to the list of trusted certificates
- * (not implemented yet).
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecMSCryptoAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
-    xmlSecAssert2(mngr != NULL, -1);
-    xmlSecAssert2(path != NULL, -1);
-
-    /* TODO: load trusted cert from path */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		"xmlSecMSCryptoAppKeysMngrAddCertsPath",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
-}
-
 static PCCERT_CONTEXT	
 xmlSecMSCryptoAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
     PCCERT_CONTEXT pCert = NULL;
@@ -510,3 +486,16 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
     
     return(0);
 }
+
+/**
+ * xmlSecMSCryptoAppGetDefaultPwdCallback:
+ *
+ * Gets default password callback.
+ *
+ * Returns default password callback.
+ */
+void*
+xmlSecMSCryptoAppGetDefaultPwdCallback(void) {
+    return(NULL);
+}
+

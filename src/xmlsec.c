@@ -19,6 +19,7 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/app.h>
 #include <xmlsec/io.h>
 #include <xmlsec/xkms.h>
 #include <xmlsec/errors.h>
@@ -35,6 +36,17 @@ int
 xmlSecInit(void) {
     xmlSecErrorsInit();
     xmlSecIOInit();
+    
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
+    if(xmlSecCryptoDLInit() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecCryptoDLInit",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
     
     if(xmlSecKeyDataIdsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -77,6 +89,7 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
+    int res = 0;    
 
 #ifndef XMLSEC_NO_XKMS    
     xmlSecXkmsRespondWithIdsShutdown();
@@ -84,8 +97,20 @@ xmlSecShutdown(void) {
 
     xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();
+
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
+    if(xmlSecCryptoDLShutdown() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecCryptoDLShutdown",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	res = -1;
+    }
+#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
     xmlSecIOShutdown();
     xmlSecErrorsShutdown();    
-    return(0);
+    return(res);
 }
 

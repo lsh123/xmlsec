@@ -10,6 +10,11 @@
 #ifndef __XMLSEC_NSS_SYMBOLS_H__
 #define __XMLSEC_NSS_SYMBOLS_H__    
 
+#if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+#error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING
+#endif /* !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
@@ -77,6 +82,7 @@ extern "C" {
 #define xmlSecCryptoAppKeyLoad			xmlSecNssAppKeyLoad
 #define xmlSecCryptoAppPkcs12Load		xmlSecNssAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad		xmlSecNssAppKeyCertLoad
+#define xmlSecCryptoAppGetDefaultPwdCallback	xmlSecNssAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_NSS */
 

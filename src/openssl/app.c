@@ -9,6 +9,10 @@
 #include "globals.h"
 
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include <libxml/tree.h>
 
 #include <openssl/evp.h>
 #include <openssl/rand.h>
@@ -27,6 +31,11 @@
 
 static int 		xmlSecOpenSSLAppLoadRANDFile		(const char *file);
 static int 		xmlSecOpenSSLAppSaveRANDFile		(const char *file);
+static int		xmlSecOpenSSLDefaultPasswordCallback	(char *buf, int bufsiz, int verify, void *userdata);
+
+#if defined(_MSC_VER)
+#define snprintf _snprintf
+#endif
 
 /**
  * xmlSecOpenSSLAppInit:
@@ -1284,4 +1293,91 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
 
     return 1;
 }
+
+/**
+ * xmlSecOpenSSLAppGetDefaultPwdCallback:
+ *
+ * Gets default password callback.
+ *
+ * Returns default password callback.
+ */
+void*
+xmlSecOpenSSLAppGetDefaultPwdCallback(void) {
+    return((void*)xmlSecOpenSSLDefaultPasswordCallback);
+}
+
+static int
+xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *userdata) {
+    char* filename = (char*)userdata;
+    char* buf2;
+    char prompt[2048];
+    int i, ret;
+        
+    xmlSecAssert2(buf != NULL, -1);
+
+    /* try 3 times */
+    for(i = 0; i < 3; i++) {
+        if(filename != NULL) {
+    	    snprintf(prompt, sizeof(prompt), "Enter password for \"%s\" file: ", filename); 
+	} else {
+	    snprintf(prompt, sizeof(prompt), "Enter password: "); 
+        }
+	ret = EVP_read_pw_string(buf, bufsize, prompt, 0);
+        if(ret != 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"EVP_read_pw_string",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    
+	/* if we don't need to verify password then we are done */
+        if(verify == 0) {
+	    return(0);
+        }
+
+	if(filename != NULL) {
+	    snprintf(prompt, sizeof(prompt), "Enter password for \"%s\" file again: ", filename); 
+	} else {
+	    snprintf(prompt, sizeof(prompt), "Enter password again: "); 
+	}
+
+	buf2 = (char*)xmlMalloc(bufsize);
+	if(buf2 == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"size=%d", bufsize);
+	    return(-1);
+	}
+	ret = EVP_read_pw_string(buf2, bufsize, prompt, 0);
+	if(ret != 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"EVP_read_pw_string",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    memset(buf2, 0, bufsize);
+    	    xmlFree(buf2);
+	    return(-1);
+	}
+    
+	/* check if passwords match */
+	if(strcmp(buf, buf2) == 0) {
+	    memset(buf2, 0, bufsize);
+    	    xmlFree(buf2);
+	    return(-1);	    
+	}
+	
+	/* try again */
+	memset(buf2, 0, bufsize);
+	xmlFree(buf2);
+    }
+    
+    return(-1);
+}
+
+
 

@@ -6,9 +6,11 @@ EXTRA_DIST = skeleton mscrypto $(XMLSEC_CRYPTO_DISABLED_LIST)
 xmlsecincdir = $(includedir)/xmlsec1/xmlsec
 
 xmlsecinc_HEADERS = \
+	app.h \
 	base64.h \
 	buffer.h \
 	crypto.h \
+	dl.h \
 	errors.h \
 	exports.h \
 	io.h \
@@ -20,6 +22,7 @@ xmlsecinc_HEADERS = \
 	membuf.h \
 	nodeset.h \
 	parser.h \
+	private.h \
 	strings.h \
 	templates.h \
 	transforms.h \

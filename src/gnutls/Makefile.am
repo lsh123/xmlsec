@@ -5,6 +5,7 @@ EXTRA_DIST = \
 	$(NULL)
 
 INCLUDES = \
+	-DPACKAGE=\"@PACKAGE@\" \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \

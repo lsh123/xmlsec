@@ -61,6 +61,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeyCertLoad		(xmlSecKeyPtr key,
 									 const char* filename,
 									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
+XMLSEC_CRYPTO_EXPORT void*		xmlSecNssAppGetDefaultPwdCallback(void);
 
 #ifdef __cplusplus
 }

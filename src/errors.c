@@ -22,6 +22,10 @@
 
 #define XMLSEC_ERRORS_BUFFER_SIZE	1024
 
+#if defined(_MSC_VER)
+#define snprintf _snprintf
+#endif
+
 typedef struct _xmlSecErrorDescription			xmlSecErrorDescription, *xmlSecErrorDescriptionPtr;
 struct _xmlSecErrorDescription {
     int 		errorCode;

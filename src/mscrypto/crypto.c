@@ -14,12 +14,101 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/dl.h>
+#include <xmlsec/private.h>
 
+#include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 
-static int		xmlSecMSCryptoKeysInit			(void);
-static int		xmlSecMSCryptoTransformsInit		(void);
+static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
+
+xmlSecCryptoDLFunctionsPtr
+xmlSecCryptoGetFunctions_mscrypto(void) {
+    static xmlSecCryptoDLFunctions functions;
+    
+    if(gXmlSecMSCryptoFunctions != NULL) {
+	return(gXmlSecMSCryptoFunctions);
+    }
+
+    memset(&functions, 0, sizeof(functions));
+    gXmlSecMSCryptoFunctions = &functions;
+
+    /**  
+     * Crypto Init/shutdown
+     */
+    gXmlSecMSCryptoFunctions->cryptoInit 			= xmlSecMSCryptoInit;
+    gXmlSecMSCryptoFunctions->cryptoShutdown 			= xmlSecMSCryptoShutdown;
+    gXmlSecMSCryptoFunctions->cryptoKeysMngrInit 		= xmlSecMSCryptoKeysMngrInit;
+
+    /**
+     * Key data ids
+     */
+#ifndef XMLSEC_NO_DES    
+    gXmlSecMSCryptoFunctions->keyDataDesGetKlass 		= xmlSecMSCryptoKeyDataDesGetKlass;
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_RSA
+    gXmlSecMSCryptoFunctions->keyDataRsaGetKlass 		= xmlSecMSCryptoKeyDataRsaGetKlass;
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_X509
+    gXmlSecMSCryptoFunctions->keyDataX509GetKlass 		= xmlSecMSCryptoKeyDataX509GetKlass;
+    gXmlSecMSCryptoFunctions->keyDataRawX509CertGetKlass	= xmlSecMSCryptoKeyDataRawX509CertGetKlass;
+#endif /* XMLSEC_NO_X509 */
+
+    /**
+     * Key data store ids
+     */
+#ifndef XMLSEC_NO_X509
+    gXmlSecMSCryptoFunctions->x509StoreGetKlass 		= xmlSecMSCryptoX509StoreGetKlass;
+#endif /* XMLSEC_NO_X509 */
+
+    /**
+     * Crypto transforms ids
+     */
+#ifndef XMLSEC_NO_AES    
+    gXmlSecMSCryptoFunctions->transformAes128CbcGetKlass	= xmlSecMSCryptoTransformAes128CbcGetKlass;
+    gXmlSecMSCryptoFunctions->transformAes192CbcGetKlass	= xmlSecMSCryptoTransformAes192CbcGetKlass;
+    gXmlSecMSCryptoFunctions->transformAes256CbcGetKlass	= xmlSecMSCryptoTransformAes256CbcGetKlass;
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES    
+    gXmlSecMSCryptoFunctions->transformDes3CbcGetKlass 		= xmlSecMSCryptoTransformDes3CbcGetKlass;
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_HMAC
+    gXmlSecMSCryptoFunctions->transformHmacSha1GetKlass 	= xmlSecMSCryptoTransformHmacSha1GetKlass;
+#endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_RSA
+    gXmlSecMSCryptoFunctions->transformRsaSha1GetKlass 		= xmlSecMSCryptoTransformRsaSha1GetKlass;
+    gXmlSecMSCryptoFunctions->transformRsaPkcs1GetKlass 	= xmlSecMSCryptoTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_SHA1    
+    gXmlSecMSCryptoFunctions->transformSha1GetKlass 		= xmlSecMSCryptoTransformSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+    /**
+     * High level routines form xmlsec command line utility
+     */ 
+    gXmlSecMSCryptoFunctions->cryptoAppInit 			= xmlSecMSCryptoAppInit;
+    gXmlSecMSCryptoFunctions->cryptoAppShutdown 		= xmlSecMSCryptoAppShutdown;
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrInit 	= xmlSecMSCryptoAppDefaultKeysMngrInit;
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrAdoptKey 	= xmlSecMSCryptoAppDefaultKeysMngrAdoptKey;
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrLoad 	= xmlSecMSCryptoAppDefaultKeysMngrLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrSave 	= xmlSecMSCryptoAppDefaultKeysMngrSave;
+#ifndef XMLSEC_NO_X509
+    gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoad 	= xmlSecMSCryptoAppKeysMngrCertLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppPkcs12Load  		= xmlSecMSCryptoAppPkcs12Load; 
+    gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoad 		= xmlSecMSCryptoAppKeyCertLoad;
+#endif /* XMLSEC_NO_X509 */
+    gXmlSecMSCryptoFunctions->cryptoAppKeyLoad 			= xmlSecMSCryptoAppKeyLoad; 
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecMSCryptoAppGetDefaultPwdCallback;
+
+    return(gXmlSecMSCryptoFunctions);
+}
 
 /**
  * xmlSecMSCryptoInit:
@@ -31,23 +120,14 @@ static int		xmlSecMSCryptoTransformsInit		(void);
 int 
 xmlSecMSCryptoInit (void)  {
     /* TODO: if necessary do, additional initialization here */
-    
-    if(xmlSecMSCryptoKeysInit() < 0) {
+    if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_mscrypto()) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecMSCryptoKeysInit",
+		    "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    if(xmlSecMSCryptoTransformsInit() < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecMSCryptoTransformsInit",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }    
     return(0);
 }
 
@@ -133,112 +213,4 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     return(0);
 }
 
-
-static int		
-xmlSecMSCryptoKeysInit(void) {
-    /* TODO: register key data here */
-#ifndef XMLSEC_NO_DES    
-    if(xmlSecKeyDataIdsRegister(xmlSecMSCryptoKeyDataDesId) < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-				xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecMSCryptoKeyDataDesId)),
-				"xmlSecKeyDataIdsRegister",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
-    }
-#endif /* XMLSEC_NO_DES */
-	/*
-	#ifndef XMLSEC_NO_RSA
-    if(xmlSecKeyDataIdsRegister(xmlSecMSCryptoKeyDataRsaId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecMSCryptoKeyDataRsaId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_RSA */
-	
-
-#ifndef XMLSEC_NO_X509
-    if(xmlSecKeyDataIdsRegister(xmlSecMSCryptoKeyDataX509Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecMSCryptoKeyDataX509Id)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-
-    if(xmlSecKeyDataIdsRegister(xmlSecMSCryptoKeyDataRawX509CertId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecMSCryptoKeyDataRawX509CertId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_X509 */
-
-    return(0);
-}
-
-static int 
-xmlSecMSCryptoTransformsInit(void) {
-    /* TODO: register transforms here */
-#ifndef XMLSEC_NO_SHA1    
-    if(xmlSecTransformIdsRegister(xmlSecMSCryptoTransformSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoTransformSha1Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_HMAC
-    if(xmlSecTransformIdsRegister(xmlSecMSCryptoTransformHmacSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoTransformHmacSha1Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_HMAC */
-
-#ifndef XMLSEC_NO_RSA
-    if(xmlSecTransformIdsRegister(xmlSecMSCryptoTransformRsaSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoTransformRsaSha1Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    
-    if(xmlSecTransformIdsRegister(xmlSecMSCryptoTransformRsaPkcs1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoTransformRsaPkcs1Id)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-
-#endif /* XMLSEC_NO_RSA */
-
-#ifndef XMLSEC_NO_DES    
-    if(xmlSecTransformIdsRegister(xmlSecMSCryptoTransformDes3CbcId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoTransformDes3CbcId)),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_DES */
-    return(0);
-}
 

@@ -184,30 +184,6 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
     return(-1);
 }
 
-/**
- * xmlSecGnuTLSAppKeysMngrAddCertsPath:
- * @mngr: 		the keys manager.
- * @path:		the path to trusted certificates.
- * 
- * Reads cert from @path and adds to the list of trusted certificates
- * (not implemented yet).
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecGnuTLSAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
-    xmlSecAssert2(mngr != NULL, -1);
-    xmlSecAssert2(path != NULL, -1);
-
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		"xmlSecGnuTLSAppKeysMngrAddCertsPath",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
-}
-
 #endif /* XMLSEC_NO_X509 */
 
 /**
@@ -388,5 +364,17 @@ xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
     }
     
     return(0);
+}
+
+/**
+ * xmlSecGnuTLSAppGetDefaultPwdCallback:
+ *
+ * Gets default password callback.
+ *
+ * Returns default password callback.
+ */
+void*
+xmlSecGnuTLSAppGetDefaultPwdCallback(void) {
+    return(NULL);
 }
 

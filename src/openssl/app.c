@@ -111,11 +111,11 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
     }
     fclose(f);
 
-    data = xmlSecOpenSSLParseEvpKey(pKey);
+    data = xmlSecOpenSSLEvpParseKey(pKey);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLParseEvpKey");
+		    "xmlSecOpenSSLEvpParseKey");
 	EVP_PKEY_free(pKey);
 	return(NULL);	    
     }    
@@ -229,11 +229,11 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 	goto done;
     }    
 
-    data = xmlSecOpenSSLParseEvpKey(pKey);
+    data = xmlSecOpenSSLEvpParseKey(pKey);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLParseEvpKey");
+		    "xmlSecOpenSSLEvpParseKey");
 	goto done;
     }    
 

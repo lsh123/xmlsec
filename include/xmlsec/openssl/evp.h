@@ -20,7 +20,33 @@ extern "C" {
 
 #include <xmlsec/openssl/crypto.h>
 
-XMLSEC_EXPORT	xmlSecKeyDataPtr 	xmlSecOpenSSLParseEvpKey	(EVP_PKEY *pKey);
+
+
+/******************************************************************************
+ *
+ * EVP Block Cipher transforms
+ *
+ *****************************************************************************/
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherInitialize	(xmlSecTransformPtr transform,
+								 const EVP_CIPHER *type);
+XMLSEC_EXPORT void	xmlSecOpenSSLEvpBlockCipherFinalize	(xmlSecTransformPtr transform);
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherSetKey	(xmlSecTransformPtr transform,
+								 const unsigned char* key,
+								 size_t keySize);								 
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherExecuteBin	(xmlSecTransformPtr transform,
+								 const unsigned char* in,
+								 size_t inSize,
+								 size_t* inRes,
+								 unsigned char* out,
+								 size_t outSize,
+								 size_t* outRes);
+
+/******************************************************************************
+ *
+ * EVP helper functions
+ *
+ *****************************************************************************/
+XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
 
 
 #ifdef __cplusplus

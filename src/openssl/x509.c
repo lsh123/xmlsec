@@ -1153,7 +1153,7 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
 	return(NULL);
     }    
 
-    data = xmlSecOpenSSLParseEvpKey(pKey);
+    data = xmlSecOpenSSLEvpParseKey(pKey);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

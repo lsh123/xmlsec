@@ -1,0 +1,96 @@
+     Rules for commits on the xmlsec module
+     =========================================
+
+0) DO NOT COMMIT DIRECTLY !
+If you have a patch send a mail to xmlsec@aleksey.com mailing 
+list (you must be subscribed to the list, go to 
+http://www.aleksey.com/mailman/listinfo/xmlsec to subscribe).
+
+If there is a problem in xmlsec module that prevents you
+from building other major components then feel free to patch
+first and then send a mail. This is an EXCEPTIONAL case and
+you should be VERY carefull when you are doing this.
+
+Igor Zlatkovic get an exception for the send before commit rule.
+
+1) Coding style.
+    - Use explicit "!= NULL", "!= 0", etc. This makes code
+    easier to read and remove warnings on some platform. 
+    Example:
+	BAD:
+	    if(a) 
+	GOOD:
+	    if(a != NULL)
+	or 
+	    if(a != 0)
+   - Put figure brackets '{}' even if you have only one operator
+   in "if", "for", etc. This also makes code easier to read and 
+   saves a lot of time when you need to quickly change something. 
+   Example:
+	BAD:
+             if(a != NULL) 
+		xmlFree(a);
+	GOOD:
+             if(a != NULL) {
+		xmlFree(a);
+	    }
+    - Use round brackets '()' in conditions to show the precedence order.
+    I don't remember what goes first '<<' or '*', do you?
+    Example:
+	BAD:
+            if(privkey == NULL || pubkey == NULL)
+	GOOD:
+	    if((privkey == NULL) || (pubkey == NULL))
+   - Use round brackets '()' for "return". 
+   Example:
+	BAD:
+	    return 0;
+	GOOD:
+	    return(0);
+    - Check for warnings! Use "--enable-pedantic" option
+    for "configure.in" script to enable as much warnings as possible.
+    Your patch should produce no new warnings and if you'll
+    see something that you can fix, then do it.
+    - Check for memory leaks. There is a built in support for 
+    valgrind (http://devel-home.kde.org/~sewardj/). In order to use it,
+    use "enable_static_linking" option for "configure.in" script to 
+    force static linking of xmlsec command line utility and run 
+    "make memcheck" from the top xmlsec source folder. The results are printed
+    at the end. More detailed logs could be found in /tmp/test*.log files.
+
+2) Preparing and submiting a patch.
+If you want to submit a patch please do following:
+  - Get a CVS source copy (see http://www.aleksey.com/xmlsec/download.html).
+    It's much easier to prepare patch from CVS than to diff two set of files.
+  - Test your patch! Make sure that your patch complain with xmlsec coding 
+    style (see above) and that you don't introduce new warnings or memory leaks
+    (also see above). If you have a new functionality in the patch,
+    do not forget to add a test case(s) in the xmlsec test suite.
+  - If you have new files in your patch mark them "to be added" with 
+	cvs add <filename>
+    command. If you have binary files, do not forget to use '-kb' option
+	cvs add -kb <filename>
+    If you have new folders in your patch and you don't have write access to CVS, 
+    send a mail to xmlsec@aleksey.com and I'll create them for you.
+  - Prepare patch by running diff command from the top of the source tree:
+	cvs -z3 diff -uN [<file or folder names>...] > <output filename>
+    The file or folder names are optional and you can use it to save
+    yourself some time. "-u" option produces a human readble diff,
+    "-N" option includes to the diff new files created on prevous step.
+    Finally, "-z3" forces cvs to compress the network traffic and make things
+    faster. Please use ".diff" extension in your output filename. This will
+    add colors to my editor when I would be looking at it :)
+  - Gzip or zip your diff file! Don't send plain diff file because some mailers
+    corrupt it.
+  - Send your patch along with a short description of the problem or feature
+    you are fixing/implementing to the xmlsec@aleksey.com mailing list 
+    (you must be subscribed to the list, go to http://www.aleksey.com/mailman/listinfo/xmlsec to subscribe).
+    If you are fixing a bug, it might be a good idea to bugzilla it first
+    (http://www.aleksey.com/xmlsec/bugs.html) for the record. Do not forget
+    to put link or bug number in your message if the bug is in bugzilla.
+    
+
+
+    
+    
+

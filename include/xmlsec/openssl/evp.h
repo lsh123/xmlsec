@@ -22,8 +22,8 @@ extern "C" {
 
 
 XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLEvpKeyDataAdoptEvp	(xmlSecKeyDataPtr data, 
-								 EVP_PKEY* pKey);
-XMLSEC_CRYPTO_EXPORT EVP_PKEY* 	xmlSecOpenSSLEvpKeyDataGetEvp	(xmlSecKeyDataPtr data);
+									 EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY* 		xmlSecOpenSSLEvpKeyDataGetEvp	(xmlSecKeyDataPtr data);
 
 /******************************************************************************
  *

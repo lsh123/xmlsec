@@ -28,23 +28,23 @@ extern "C" {
  ***************************************************************************/
 #define xmlSecOpenSSLKeyDataX509Id \
 	xmlSecOpenSSLKeyDataX509GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataX509GetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataX509GetKlass(void);
 
-XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetKeyCert	(xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataX509AdoptKeyCert	(xmlSecKeyDataPtr data, 
+XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, 
 									 X509* cert);
 
-XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCert	(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data,
 									 X509* cert);
-XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetCert		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLKeyDataX509GetCert	(xmlSecKeyDataPtr data,
 									 size_t pos);
-XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCertsSize	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCrl	(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data,
 									 X509_CRL* crl);
-XMLSEC_CRYPTO_EXPORT X509_CRL*		xmlSecOpenSSLKeyDataX509GetCrl		(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT X509_CRL*		xmlSecOpenSSLKeyDataX509GetCrl	(xmlSecKeyDataPtr data,
 									 size_t pos);
-XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsSize	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data);
 
 
 /****************************************************************************
@@ -56,7 +56,7 @@ XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsSize	(xmlSecKeyData
  ***************************************************************************/
 #define xmlSecOpenSSLKeyDataRawX509CertId \
 	xmlSecOpenSSLKeyDataRawX509CertGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass	(void);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass(void);
 
 /****************************************************************************
  *
@@ -67,21 +67,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass	(v
  ***************************************************************************/
 #define xmlSecOpenSSLX509StoreId \
 	xmlSecOpenSSLX509StoreGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass	(void);
-XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreFindCert		(xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass(void);
+XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreFindCert	(xmlSecKeyDataStorePtr store,
 									 xmlChar *subjectName,
 									 xmlChar *issuerName, 
 									 xmlChar *issuerSerial,
 									 xmlChar *ski,
 									 xmlSecKeyInfoCtx* keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreVerify		(xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreVerify	(xmlSecKeyDataStorePtr store,
 									 STACK_OF(X509)* certs,
 									 STACK_OF(X509_CRL)* crls,
 									 xmlSecKeyInfoCtx* keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAdoptCert		(xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAdoptCert	(xmlSecKeyDataStorePtr store,
 									 X509* cert,
 									 int trusted);
-XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAddCertsPath	(xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store,
 									 const char* path);
 #endif /* XMLSEC_NO_X509 */
 
@@ -90,5 +90,3 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAddCertsPath	(xmlSecKeyDataStore
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_OPENSSL_X509_H__ */
-
-

@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<StatusResult xmlns="http://www.w3.org/2002/03/xkms#" Service="http://www.example.com/xkms" RequestId="aleksey_xkms_01_status_request" ResultMajor="Success"/>

@@ -1,14 +1,6 @@
 - Unify password callback (one of parameters: filename)
-- Windows, nmake check.
-    1) I would like to execute test suite for all available 
-    xmlsec-crypto libs on Windows (in the same way as we do it on Linux). 
-    2) Since the working directory is xmlsec/win32, instead of
-    xmlsec, some files with keys are not found. (Causes raw-cert
-    sig test to fail, for example.)
-    3) Thirdly the command diff is used, but this may result into
-    finding differences in files simply because of the original
-    file may have lf and the newly generated files have crlf as
-    linebreaks.
-    5) Create platform independent test files format and generate
-    test*.sh, test*.bat, etc scripts "on the fly".
+- get key usage from certs
+- extend keys manager to return more info when key is found or not found
+(what cheks were performed, etc.)
+
     

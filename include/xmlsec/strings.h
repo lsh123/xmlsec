@@ -78,7 +78,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncElement[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestResultName[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestStatusName[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestLocateName[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestVerifyName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestValidateName[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsServerRequestCompoundName[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeResult[];
@@ -103,6 +103,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeTimeInstant[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRequestSignatureValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeUnverifiedKeyBinding[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidityInterval[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeStatus[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidReason[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeInvalidReason[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeIndeterminateReason[];
+
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrService[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNonce[];
@@ -117,6 +122,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrRequestId[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNotBefore[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrNotOnOrAfter[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrTime[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrStatusValue[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseMechanismPending[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResponseMechanismRepresent[];
@@ -142,12 +148,22 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyUsageEncryption[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyUsageSignature[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyUsageExchange[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingStatusValid[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingStatusInvalid[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingStatusIndeterminate[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingReasonIssuerTrust[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingReasonRevocationStatus[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingReasonValidityInterval[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecKeyBindingReasonSignature[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeSuccess[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeVersionMismatch[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeSender[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeReceiver[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodeRepresent[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMajorCodePending[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNoMatch[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeTooManyResponses[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeIncomplete[];

@@ -1872,7 +1872,7 @@ xmlSecAppPrepareXkmsServerCtx(xmlSecXkmsServerCtxPtr xkmsServerCtx) {
     }
 
     if(xmlSecAppCmdLineParamGetString(&serviceParam) != NULL) {
-	xkmsServerCtx->expectedService = xmlStrdup(xmlSecAppCmdLineParamGetString(&serviceParam));
+	xkmsServerCtx->expectedService = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&serviceParam));
 	if(xkmsServerCtx->expectedService == NULL) {
 	    fprintf(stderr, "Error: failed to duplicate string \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&serviceParam));

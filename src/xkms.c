@@ -3,199 +3,6 @@
  *
  * "XML Key Management Specification v 2.0" implementation
  *  http://www.w3.org/TR/xkms2/
- *
- *  <xkms:MessageAbstractType Id Service Nonce?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *  
- *  <xkms:RequestAbstractType Id Service Nonce? OriginalRequestId? ResponseLimit?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:ResponseMechanism>*
- *      <xkms:RespondWith>*
- *      <xkms:PendingNotification Mechanism Identifier>?
- *  
- *  <xkms:PendingRequestType Id Service Nonce? OriginalRequestId? ResponseLimit? ResponseId?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:ResponseMechanism>*
- *      <xkms:RespondWith>*
- *      <xkms:PendingNotification Mechanism Identifier>?
- *  
- *  <xkms:ResultType Id Service Nonce? ResultMajor ResultMinor? RequestId?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:RequestSignatureValue>*
- *       
- *  <xkms:KeyBindingAbstractType Id?>
- *      <ds:KeyInfo>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:UseKeyWith Application Identifier>*    
- *  
- *  <xkms:UnverifiedKeyBindingType Id?>
- *      <ds:KeyInfo>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:UseKeyWith Application Identifier>*    
- *      <xkms:ValidityInterval NotBefore NotOnOrAfter>?
- *  
- *  <xkms:KeyBindingType Id?>
- *      <ds:KeyInfo>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:UseKeyWith Application Identifier>*    
- *      <xkms:ValidityInterval NotBefore NotOnOrAfter>?
- *      <xkms:Status StatusValue>
- *      <xkms:ValidReason>*
- *      <xkms:IndeterminateReason>*
- *      <xkms:InvalidReason>*
- *       
- *  <xkms:QueryKeyBindingType Id?
- *      <ds:KeyInfo>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:KeyUsage>?
- *      <xkms:UseKeyWith Application Identifier>*    
- *      <xkms:TimeInstant Time>?
- *  
- *  <xkms:StatusRequest Id Service Nonce? OriginalRequestId? ResponseLimit? ResponseId?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:ResponseMechanism>*
- *      <xkms:RespondWith>*
- *      <xkms:PendingNotification Mechanism Identifier>?
- *  
- *  <xkms:StatusResult Id Service Nonce? ResultMajor ResultMinor? RequestId? Success? Failure? Pending?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:RequestSignatureValue>*
- *  
- *  <xkms:LocateRequest Id Service Nonce? OriginalRequestId? ResponseLimit?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:ResponseMechanism>*
- *      <xkms:RespondWith>*
- *      <xkms:PendingNotification Mechanism Identifier>?
- *      <xkms:QueryKeyBinding Id?>
- *          <ds:KeyInfo>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:UseKeyWith Application Identifier>*    
- *          <xkms:TimeInstant Time>?
- *  
- *  <xkms:LocateResult Id Service Nonce? ResultMajor ResultMinor? RequestId?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:RequestSignatureValue>*
- *      (<xkms:UnverifiedKeyBinding Id?>
- *          <ds:KeyInfo>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:UseKeyWith Application Identifier>*    
- *          <xkms:ValidityInterval NotBefore NotOnOrAfter>?
- *      )*
- *  
- *  <xkms:ValidateRequest Id Service Nonce? OriginalRequestId? ResponseLimit?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:ResponseMechanism>*
- *      <xkms:RespondWith>*
- *      <xkms:PendingNotification Mechanism Identifier>?
- *      <xkms:QueryKeyBinding Id?>
- *          <ds:KeyInfo>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:UseKeyWith Application Identifier>*    
- *          <xkms:TimeInstant Time>?
- *  
- *  <xkms:ValidateResult Id Service Nonce? ResultMajor ResultMinor? RequestId?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *           <xkms:OpaqueData>?
- *      )?
- *      <xkms:RequestSignatureValue>*
- *      (<xkms:KeyBindingType Id?>
- *          <ds:KeyInfo>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:UseKeyWith Application Identifier>*    
- *          <xkms:ValidityInterval NotBefore NotOnOrAfter>?
- *          <xkms:Status StatusValue>
- *          <xkms:ValidReason>*
- *          <xkms:IndeterminateReason>*
- *          <xkms:InvalidReason>*
- *      )*
- *  
- *  
- *  <xkms:CompoundRequest Id Service Nonce? OriginalRequestId? ResponseLimit?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:ResponseMechanism>*
- *      <xkms:RespondWith>*
- *      <xkms:PendingNotification Mechanism Identifier>?
- *      (
- *       <xkms:LocateRequest>?
- *       <xkms:ValidateRequest>?
- *       <xkms:RegisterRequest>?
- *       <xkms:ReissueRequest>?
- *       <xkms:RecoverRequest>?
- *       <xkms:RevokeRequest>?
- *      )*
- *       
- *  <xkms:CompoundResult Id Service Nonce? ResultMajor ResultMinor? RequestId?>
- *      <ds:Signature>?
- *      <xkms:MessageExtension>*
- *      (<xkms:OpaqueClientData>
- *          <xkms:OpaqueData>?
- *      )?
- *      <xkms:RequestSignatureValue>*
- *      (
- *       <xkms:LocateResult>?
- *       <xkms:ValidateResult>?
- *       <xkms:RegisterResult>?
- *       <xkms:ReissueResult>?
- *       <xkms:RecoverResult>?
- *       <xkms:RevokeResult>?
- *      )*
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -245,6 +52,8 @@ static int	xmlSecXkmsServerCtxPendingNotificationNodeRead	(xmlSecXkmsServerCtxPt
 								 xmlNodePtr node);
 static int	xmlSecXkmsServerCtxRespondWithNodesRead		(xmlSecXkmsServerCtxPtr ctx, 
 								 xmlNodePtr* node);
+static int	xmlSecXkmsServerCtxPendingRequestNodeRead	(xmlSecXkmsServerCtxPtr ctx,
+							         xmlNodePtr* node);
 static int	xmlSecXkmsServerCtxQueryKeyBindingNodeRead	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 static int	xmlSecXkmsServerCtxKeyBindingAbstractTypeNodeRead(xmlSecXkmsServerCtxPtr ctx,
@@ -269,8 +78,14 @@ static int	xmlSecXkmsServerCtxRequestSignatureValueNodeWrite(xmlSecXkmsServerCtx
 static int	xmlSecXkmsServerCtxUnverifiedKeyBindingNodeWrite(xmlSecXkmsServerCtxPtr ctx,
 							    	 xmlNodePtr node,
 								 xmlSecKeyPtr key);
+static int	xmlSecXkmsServerCtxKeyBindingNodeWrite		(xmlSecXkmsServerCtxPtr ctx,
+							    	 xmlNodePtr node,
+								 xmlSecKeyPtr key);
 static int 	xmlSecXkmsServerCtxValidityIntervalNodeWrite	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node, 
+								 xmlSecKeyPtr key);
+static int	xmlSecXkmsServerCtxKeyBindingStatusNodeWrite	(xmlSecXkmsServerCtxPtr ctx,
+							    	 xmlNodePtr node,
 								 xmlSecKeyPtr key);
 
 
@@ -336,6 +151,32 @@ static const xmlSecString2BitMaskInfo gXmlSecXkmsKeyUsageInfo[] =
       xmlSecKeyUsageSign | xmlSecKeyUsageVerify },
     { xmlSecKeyUsageExchange,
       xmlSecKeyUsageKeyExchange},
+    { NULL, 
+      0 }	/* MUST be last in the list */
+};
+
+static const xmlSecString2IntegerInfo gXmlSecXkmsKeyBindingStatusInfo[] = 
+{
+    { xmlSecKeyBindingStatusValid,
+      XMLSEC_XKMS_KEY_BINDING_STATUS_VALID },
+    { xmlSecKeyBindingStatusInvalid,
+      XMLSEC_XKMS_KEY_BINDING_STATUS_INVALID },
+    { xmlSecKeyBindingStatusIndeterminate,
+      XMLSEC_XKMS_KEY_BINDING_STATUS_INDETERMINATE },
+    { NULL, 
+      0 }	/* MUST be last in the list */
+};
+
+static const xmlSecString2BitMaskInfo gXmlSecXkmsKeyBindingReasonInfo[] = 
+{
+    { xmlSecKeyBindingReasonIssuerTrust,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST },
+    { xmlSecKeyBindingReasonRevocationStatus,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS },
+    { xmlSecKeyBindingReasonValidityInterval,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL },
+    { xmlSecKeyBindingReasonSignature,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE },
     { NULL, 
       0 }	/* MUST be last in the list */
 };
@@ -556,6 +397,11 @@ xmlSecXkmsServerCtxReset(xmlSecXkmsServerCtxPtr ctx) {
 	xmlFree(ctx->pendingNotificationIdentifier); 
 	ctx->pendingNotificationIdentifier = NULL;
     }
+    if(ctx->compoundRequestContexts != NULL) {
+        xmlSecPtrListDestroy(ctx->compoundRequestContexts);
+        ctx->compoundRequestContexts = NULL;
+    }
+    
     ctx->responseLimit 		= XMLSEC_XKMS_NO_RESPONSE_LIMIT;
     ctx->responseMechanismMask  = 0;
 }
@@ -800,7 +646,26 @@ error:
 	    xmlFreeNode(cur);
 	}
     }
-    return(-1);
+
+    /* we've tried to write back xkms:Result and failed... no more options left */
+    if(ctx->requestId == xmlSecXkmsServerRequestResultId) {
+	return(-1);
+    }
+
+    /* try to write back the simplest "xkms:Result" response as the last resort */
+    ctx->requestId = xmlSecXkmsServerRequestResultId;
+    ret = xmlSecXkmsServerCtxResponseWrite(ctx, node);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxResponseWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	return(-1);
+    }
+	
+    return(0);
 }
 
 /** 
@@ -849,11 +714,7 @@ xmlSecXkmsServerCtxProcess(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr inNode, xmlNod
     }
     
 done:
-    /* make sure that we have a valid request id before writing response */
-    if(ctx->requestId == xmlSecXkmsServerRequestIdUnknown) {
-	ctx->requestId = xmlSecXkmsServerRequestResultId;
-    }
-
+    /* always try to write back response */
     ret = xmlSecXkmsServerCtxResponseWrite(ctx, outNode);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -863,24 +724,7 @@ done:
 		    "node=%s",
 		    xmlSecErrorsSafeString(inNode->name));
 	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
-
-        /* to to write back the simplest "xkms:Result" response as the last resort */
-	if(ctx->requestId != xmlSecXkmsServerRequestResultId) {
-	    ctx->requestId = xmlSecXkmsServerRequestResultId;
-
-	    ret = xmlSecXkmsServerCtxResponseWrite(ctx, outNode);
-	    if(ret < 0) {
-    		xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
-			    "xmlSecXkmsServerCtxResponseWrite",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "node=%s",
-			    xmlSecErrorsSafeString(inNode->name));
-		xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
-		/* and only if we can't do that bail out */
-		return(-1);
-	    }
-	}
+	return(-1);
     }
     
     xmlSecAssert2((*outNode) != NULL, -1);
@@ -963,7 +807,11 @@ xmlSecXkmsServerCtxDebugDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
 
     fprintf(output, "== Keys:\n");
     xmlSecPtrListDebugDump(&(ctx->keys), output);
-
+    
+    if(ctx->compoundRequestContexts != NULL) {
+        fprintf(output, "== Compound Request:\n");
+        xmlSecPtrListDebugDump(ctx->compoundRequestContexts, output);
+    }
 }
 
 /**
@@ -1051,12 +899,25 @@ xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
     xmlSecPtrListDebugXmlDump(&(ctx->keys), output);
     fprintf(output, "</Keys>\n");
 
+    if(ctx->compoundRequestContexts != NULL) {
+        fprintf(output, "<CompoundRequest>\n");
+        xmlSecPtrListDebugXmlDump(ctx->compoundRequestContexts, output);
+        fprintf(output, "</CompoundRequest>\n");
+    }
+
     fprintf(output, "</XkmsServerRequestContext>\n");
 }
 
 
 
 /**
+ *  <xkms:MessageAbstractType Id Service Nonce?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *  
  *  <xkms:RequestAbstractType Id Service Nonce? OriginalRequestId? ResponseLimit?>
  *      <ds:Signature>?
  *      <xkms:MessageExtension>*
@@ -1318,7 +1179,7 @@ xmlSecXkmsServerCtxRespondWithNodesRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* 
 	if(content != NULL) {
 	    xmlSecXkmsRespondWithId id = xmlSecXkmsRespondWithIdUnknown;
 
-	    /* todo: trim content? */
+	    /* todo: trim node content? */
 	    if(xmlSecPtrListGetSize(&(ctx->enabledRespondWithIds)) > 0) {
 		id = xmlSecXkmsRespondWithIdListFindByName(&(ctx->enabledRespondWithIds), content);
 	    } else {
@@ -1338,7 +1199,7 @@ xmlSecXkmsServerCtxRespondWithNodesRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* 
 		}
 	    } else if(0) {
 /*
-		TODO: add a flag to skip this error
+		todo: add a flag to skip this error
     		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
 			    NULL,
@@ -1401,14 +1262,60 @@ xmlSecXkmsServerCtxPendingNotificationNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNo
 }
 
 /**
- *      <xkms:QueryKeyBinding Id?>
- *          <ds:KeyInfo>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:KeyUsage>?
- *          <xkms:UseKeyWith Application Identifier>*    
- *          <xkms:TimeInstant Time>?
+ *  <xkms:PendingRequestType Id Service Nonce? OriginalRequestId? ResponseLimit? ResponseId?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:ResponseMechanism>*
+ *      <xkms:RespondWith>*
+ *      <xkms:PendingNotification Mechanism Identifier>?
+ *  
+ * XML Schema:
  *
+ *   <!-- PendingRequest -->  
+ *   <element name="PendingRequest" type="xkms:PendingRequestType"/>   
+ *   <complexType name="PendingRequestType">
+ *       <complexContent>
+ *           <extension base="xkms:RequestAbstractType">
+ *               <attribute name="ResponseId" type="anyURI" use="optional"/>
+ *            </extension>
+ *       </complexContent>
+ *    </complexType>
+ *    <!-- /PendingRequest --> * 
+ */
+static int 
+xmlSecXkmsServerCtxPendingRequestNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    
+    /* first read "parent" type */
+    ret = xmlSecXkmsServerCtxRequestAbstractTypeNodeRead(ctx, node);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxRequestAbstractTypeNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* todo: read responseId */
+    return(0);
+}
+
+/**
+ *  <xkms:QueryKeyBinding Id?
+ *      <ds:KeyInfo>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:UseKeyWith Application Identifier>*    
+ *      <xkms:TimeInstant Time>?
+ *  
  * XML Schema:
  *   <!-- QueryKeyBinding -->
  *   <element name="QueryKeyBinding" type="xkms:QueryKeyBindingType"/>
@@ -1471,6 +1378,13 @@ xmlSecXkmsServerCtxQueryKeyBindingNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePt
 }
 
 /**
+ *  <xkms:KeyBindingAbstractType Id?>
+ *      <ds:KeyInfo>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:UseKeyWith Application Identifier>*
+ *
  * XML Schema:
  *    <!-- KeyBindingAbstractType-->
  *    <complexType name="KeyBindingAbstractType" abstract="true">
@@ -1719,7 +1633,7 @@ xmlSecXkmsServerCtxUseKeyWithNodesWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr n
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* todo: */
+    /* todo: write UseKeyWith */
     return(0);
 }
 
@@ -1767,6 +1681,7 @@ xmlSecXkmsServerCtxResultTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr no
     xmlSecAssert2(node != NULL, -1);
 
     /* todo: generate and write Id attribute */
+
     /* todo: generate nonce? */
 
     /* set Service atribute (required) */   
@@ -1887,7 +1802,7 @@ xmlSecXkmsServerCtxRequestSignatureValueNodeWrite(xmlSecXkmsServerCtxPtr ctx, xm
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     
-    /* todo: check all conditions */
+    /* todo: check all conditions for RequestSignatureValue */
     if((ctx->responseMechanismMask & XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE) == 0) {
 	/* The ResponseMechanism RequestSignatureValue was not specified. */
 	return(0);
@@ -1899,6 +1814,15 @@ xmlSecXkmsServerCtxRequestSignatureValueNodeWrite(xmlSecXkmsServerCtxPtr ctx, xm
 
 
 /** 
+ *  
+ *  <xkms:UnverifiedKeyBindingType Id?>
+ *      <ds:KeyInfo>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:UseKeyWith Application Identifier>*    
+ *      <xkms:ValidityInterval NotBefore NotOnOrAfter>?
+ *  
  * XML Schema:
  *
  *    <!-- UnverifiedKeyBinding -->
@@ -1953,9 +1877,159 @@ xmlSecXkmsServerCtxValidityIntervalNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNode
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     
-    /* todo: */
+    /* todo: write key validity interval */
     return(0);
 }
+
+/** 
+ *  <xkms:KeyBinding Id?>
+ *      <ds:KeyInfo>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:KeyUsage>?
+ *      <xkms:UseKeyWith Application Identifier>*    
+ *      <xkms:ValidityInterval NotBefore NotOnOrAfter>?
+ *      <xkms:Status StatusValue>
+ *          (<xkms:ValidReason>?
+ *           <xkms:IndeterminateReason>?
+ *           <xkms:InvalidReason>?
+ *           )*
+ *
+ * XML Schema:
+ * 
+ *    <!-- KeyBinding -->   
+ *    <element name="KeyBinding" type="xkms:KeyBindingType"/>   
+ *    <complexType name="KeyBindingType">      
+ *        <complexContent>         
+ *            <extension base="xkms:UnverifiedKeyBindingType">            
+ *                <sequence>               
+ *                    <element ref="xkms:Status"/>
+ *                </sequence>
+ *            </extension>
+ *        </complexContent>
+ *    </complexType>
+ *    <!-- /KeyBinding -->
+ */
+static int 
+xmlSecXkmsServerCtxKeyBindingNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node, xmlSecKeyPtr key) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first write "parent" type */
+    ret = xmlSecXkmsServerCtxUnverifiedKeyBindingNodeWrite(ctx, node, key);    
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxKeyBindingAbstractTypeNodeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
+
+    /* <xkms:Status/> node */
+    ret = xmlSecXkmsServerCtxKeyBindingStatusNodeWrite(ctx, node, key);    
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxKeyBindingStatusNodeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
+
+    return(0);
+}
+
+/**
+ *  <xkms:Status StatusValue>
+ *      (<xkms:ValidReason>?
+ *       <xkms:IndeterminateReason>?
+ *       <xkms:InvalidReason>?
+ *      )*
+ * 
+ * XML Schema:
+ *
+ *    <!-- Status -->   
+ *    <element name="Status" type="xkms:StatusType"/>
+ *    <complexType name="StatusType">
+ *       <sequence>
+ *          <element ref="xkms:ValidReason" minOccurs="0" 
+ *                maxOccurs="unbounded"/>
+ *          <element ref="xkms:IndeterminateReason" minOccurs="0" 
+ *                maxOccurs="unbounded"/>
+ *          <element ref="xkms:InvalidReason" minOccurs="0" 
+ *                maxOccurs="unbounded"/>
+ *       </sequence>
+ *       <attribute name="StatusValue" type="xkms:KeyBindingStatus" 
+ *             use="required"/>
+ *    </complexType>
+ *    <simpleType name="KeyBindingStatus">
+ *       <restriction base="QName">
+ *          <enumeration value="xkms:Valid"/>
+ *          <enumeration value="xkms:Invalid"/>
+ *          <enumeration value="xkms:Indeterminate"/>
+ *       </restriction>
+ *    </simpleType>
+ *    <!-- /Status -->
+ */
+static int 
+xmlSecXkmsServerCtxKeyBindingStatusNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node, xmlSecKeyPtr key) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = xmlSecAddChild(node, xmlSecNodeStatus, xmlSecXkmsNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeStatus));
+	return(-1);  	
+    }
+
+    /* if we are here then the key was validated */
+    ret = xmlSecString2IntegerAttributeWrite(gXmlSecXkmsKeyBindingStatusInfo, cur, 
+		    xmlSecAttrStatusValue, XMLSEC_XKMS_KEY_BINDING_STATUS_VALID);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecString2IntegerAttributeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecAttrStatusValue));
+	return(-1);	
+    }
+    
+    /* todo: write the reasons */
+    return(0);
+}
+
+/************************************************************************
+ *
+ * xmlSecXkmsServerCtx list
+ *
+ ************************************************************************/ 
+static xmlSecPtrListKlass xmlSecXkmsServerCtxPtrListKlass = {
+    BAD_CAST "xkms-server-ctx-list",
+    NULL, 								/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    (xmlSecPtrDestroyItemMethod)xmlSecXkmsServerCtxDestroy,	        /* xmlSecPtrDestroyItemMethod destroyItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecXkmsServerCtxDebugDump,	        /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecXkmsServerCtxDebugXmlDump,	/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId	
+xmlSecXkmsServerCtxPtrListGetKlass(void) {
+    return(&xmlSecXkmsServerCtxPtrListKlass);
+}
+
 
 /**************************************************************************
  *
@@ -2574,11 +2648,6 @@ xmlSecXkmsRespondWithX509CertNodeRead(xmlSecXkmsRespondWithId id, xmlSecXkmsServ
 	return(-1);  	
     }
     
-    /* and now set some parameters in the ctx */
-
-    /* todo 
-    ctx->keyInfoWriteCtx;
-    */
     return(0);
 }
 
@@ -2625,11 +2694,6 @@ xmlSecXkmsRespondWithX509ChainNodeRead(xmlSecXkmsRespondWithId id, xmlSecXkmsSer
 	return(-1);  	
     }
     
-    /* and now set some parameters in the ctx */
-
-    /* todo 
-    ctx->keyInfoWriteCtx;
-    */
     return(0);
 }
 
@@ -2676,11 +2740,6 @@ xmlSecXkmsRespondWithX509CRLNodeRead(xmlSecXkmsRespondWithId id, xmlSecXkmsServe
 	return(-1);  	
     }
     
-    /* and now set some parameters in the ctx */
-
-    /* todo 
-    ctx->keyInfoWriteCtx;
-    */
     return(0);
 }
 
@@ -2780,7 +2839,7 @@ xmlSecXkmsServerRequestIdsInit(void) {
 }
 
 /**
- * xmlSecXkmsServerRequestIdsShutdown:
+ *  xmlSecXkmsServerRequestIdsShutdown:
  * 
  * Shuts down the keys data klasses. This function is called from the 
  * #xmlSecShutdown function and the application should not call it directly.
@@ -2838,6 +2897,26 @@ xmlSecXkmsServerRequestIdsRegisterDefault(void) {
 	return(-1);
     }
 
+    if(xmlSecXkmsServerRequestIdsRegister(xmlSecXkmsServerRequestStatusId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerRequestIdsRegister",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(xmlSecXkmsServerRequestStatusId)));
+	return(-1);
+    }
+
+    if(xmlSecXkmsServerRequestIdsRegister(xmlSecXkmsServerRequestCompoundId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerRequestIdsRegister",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(xmlSecXkmsServerRequestCompoundId)));
+	return(-1);
+    }
+
     if(xmlSecXkmsServerRequestIdsRegister(xmlSecXkmsServerRequestLocateId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -2845,6 +2924,16 @@ xmlSecXkmsServerRequestIdsRegisterDefault(void) {
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(xmlSecXkmsServerRequestLocateId)));
+	return(-1);
+    }
+
+    if(xmlSecXkmsServerRequestIdsRegister(xmlSecXkmsServerRequestValidateId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerRequestIdsRegister",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(xmlSecXkmsServerRequestValidateId)));
 	return(-1);
     }
 
@@ -2902,7 +2991,7 @@ xmlSecXkmsServerRequestExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtx
 
 
 /**
- * xmlSecXkmsServerRequestNodeWrite:
+ * xmlSecXkmsServerResponseNodeWrite:
  * @id:			the ServerRequest class.
  * @ctx:		the XKMS request processing context.
  * @node:		the pointer to <xkms:ServerRequest/> node.
@@ -3032,6 +3121,13 @@ xmlSecXkmsServerRequestIdListFindByNode(xmlSecPtrListPtr list, xmlNodePtr node) 
  * XML Sec Library ServerRequest Ids
  *
  *******************************************************************/
+
+
+/******************************************************************** 
+ *
+ * Result response
+ *
+ *******************************************************************/
 static int		xmlSecXkmsServerRequestResultNodeWrite	(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
@@ -3042,9 +3138,12 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestResultKlass = {
     NULL,					/* const xmlChar* requestNodeNs; */
     xmlSecNodeResult,				/* const xmlChar* responseNodeName; */
     xmlSecXkmsNs,				/* const xmlChar* responseNodeNs; */
+    0,                                          /* xmlSecBitMask flags; */
     NULL,					/* xmlSecXkmsServerRequestNodeReadMethod readNode; */
+    xmlSecXkmsServerRequestResultNodeWrite,	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
     NULL,					/* xmlSecXkmsServerRequestExecuteMethod execute; */
-    xmlSecXkmsServerRequestResultNodeWrite	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -3094,16 +3193,533 @@ xmlSecXkmsServerRequestResultNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkmsS
     return(0);
 }
 
+/******************************************************************** 
+ *
+ * StatusRequest/StatusResponse
+ *
+ *******************************************************************/
+static int  		xmlSecXkmsServerRequestStatusNodeRead	(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+static int		xmlSecXkmsServerRequestStatusNodeWrite	(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+
+static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestStatusKlass = {
+    xmlSecXkmsServerRequestStatusName,		/* const xmlChar* name; */
+    xmlSecNodeStatusRequest,			/* const xmlChar* requestNodeName; */
+    xmlSecXkmsNs,				/* const xmlChar* requestNodeNs; */
+    xmlSecNodeStatusResult,			/* const xmlChar* responseNodeName; */
+    xmlSecXkmsNs,				/* const xmlChar* responseNodeNs; */
+    0,                                          /* xmlSecBitMask flags; */
+    xmlSecXkmsServerRequestStatusNodeRead,	/* xmlSecXkmsServerRequestNodeReadMethod readNode; */
+    xmlSecXkmsServerRequestStatusNodeWrite,	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecXkmsServerRequestExecuteMethod execute; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
+};
+
+/**
+ * xmlSecXkmsServerRequestStatusGetKlass:
+ *
+ * The StatusRequest klass.
+ *
+ * Returns StatusRequest klass.
+ */ 
+xmlSecXkmsServerRequestId	
+xmlSecXkmsServerRequestStatusGetKlass(void) {
+    return(&xmlSecXkmsServerRequestStatusKlass);
+}
+
+/**
+ * 
+ *  <xkms:StatusRequest Id Service Nonce? OriginalRequestId? ResponseLimit? ResponseId?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:ResponseMechanism>*
+ *      <xkms:RespondWith>*
+ *      <xkms:PendingNotification Mechanism Identifier>?
+ *  
+ * XML Schema:
+ *    <!-- StatusRequest -->   
+ *    <element name="StatusRequest" type="xkms:StatusRequestType"/>   
+ *    <complexType name="StatusRequestType">      
+ *        <complexContent>         
+ *            <extension base="xkms:PendingRequestType"/>      
+ *        </complexContent>   
+ *    </complexType>   
+ *    <!-- /StatusRequest -->
+ */
+static int  
+xmlSecXkmsServerRequestStatusNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecXkmsServerRequestStatusId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = node;
+    
+    /* first read "parent" type */
+    ret = xmlSecXkmsServerCtxPendingRequestNodeRead(ctx, &cur);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxPendingRequestNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* check that there is nothing after the last node */
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    return(0);
+}
+
+/**
+ * 
+ *  <xkms:StatusResult Id Service Nonce? ResultMajor ResultMinor? RequestId? Success? Failure? Pending?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:RequestSignatureValue>*
+ *
+ * XML Schema:
+ * 
+ *    <!-- StatusResult -->   
+ *    <element name="StatusResult" type="xkms:StatusResultType"/>   
+ *    <complexType name="StatusResultType">      
+ *        <complexContent>
+ *            <extension base="xkms:ResultType">
+ *                <attribute name="Success" type="integer" use="optional"/>
+ *                <attribute name="Failure" type="integer" use="optional"/>
+ *                <attribute name="Pending" type="integer" use="optional"/>
+ *            </extension>
+ *        </complexContent>
+ *    </complexType>
+ *    <!-- /StatusResult --> *
+ */ 
+static int 
+xmlSecXkmsServerRequestStatusNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
+    int ret;
+
+    xmlSecAssert2(id == xmlSecXkmsServerRequestStatusId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first write the "parent" type */
+    ret = xmlSecXkmsServerCtxResultTypeNodeWrite(ctx, node);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxResultTypeNodeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
+    
+    /* todo: add optional StatusResult attributes */
+    return(0);
+}
+
+/******************************************************************** 
+ *
+ * CompoundRequest/CompoundResponse
+ *
+ *******************************************************************/
+static int  		xmlSecXkmsServerRequestCompoundNodeRead	(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+static int		xmlSecXkmsServerRequestCompoundNodeWrite(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+static int 		xmlSecXkmsServerRequestCompoundExecute	(xmlSecXkmsServerRequestId id, 
+								 xmlSecXkmsServerCtxPtr ctx);
+
+static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestCompoundKlass = {
+    xmlSecXkmsServerRequestCompoundName,	/* const xmlChar* name; */
+    xmlSecNodeCompoundRequest,			/* const xmlChar* requestNodeName; */
+    xmlSecXkmsNs,				/* const xmlChar* requestNodeNs; */
+    xmlSecNodeCompoundResult,			/* const xmlChar* responseNodeName; */
+    xmlSecXkmsNs,				/* const xmlChar* responseNodeNs; */
+    0,                                          /* xmlSecBitMask flags; */
+    xmlSecXkmsServerRequestCompoundNodeRead,	/* xmlSecXkmsServerRequestNodeReadMethod readNode; */
+    xmlSecXkmsServerRequestCompoundNodeWrite,	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
+    xmlSecXkmsServerRequestCompoundExecute,	/* xmlSecXkmsServerRequestExecuteMethod execute; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
+};
+
+/**
+ * xmlSecXkmsServerRequestCompoundGetKlass:
+ *
+ * The CompoundRequest klass.
+ *
+ * Returns CompoundRequest klass.
+ */ 
+xmlSecXkmsServerRequestId	
+xmlSecXkmsServerRequestCompoundGetKlass(void) {
+    return(&xmlSecXkmsServerRequestCompoundKlass);
+}
+
+/**
+ *  <xkms:CompoundRequest Id Service Nonce? OriginalRequestId? ResponseLimit?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:ResponseMechanism>*
+ *      <xkms:RespondWith>*
+ *      <xkms:PendingNotification Mechanism Identifier>?
+ *      (
+ *       <xkms:LocateRequest>?
+ *       <xkms:ValidateRequest>?
+ *       <xkms:RegisterRequest>?
+ *       <xkms:ReissueRequest>?
+ *       <xkms:RecoverRequest>?
+ *       <xkms:RevokeRequest>?
+ *      )*
+ *       
+ * XML Schema:
+ *
+ *    <!-- CompoundRequest -->   
+ *    <element name="CompoundRequest" type="xkms:CompoundRequestType"/>   
+ *    <complexType name="CompoundRequestType">      
+ *        <complexContent>         
+ *            <extension base="xkms:RequestAbstractType">            
+ *                <choice maxOccurs="unbounded">               
+ *                    <element ref="xkms:LocateRequest"/>               
+ *                    <element ref="xkms:ValidateRequest"/>               
+ *                    <element ref="xkms:RegisterRequest"/>               
+ *                    <element ref="xkms:ReissueRequest"/>               
+ *                    <element ref="xkms:RecoverRequest"/>               
+ *                    <element ref="xkms:RevokeRequest"/>            
+ *                </choice>         
+ *            </extension>      
+ *        </complexContent>   
+ *    </complexType>   
+ *    <!-- /CompoundRequest -->
+ */
+static int  
+xmlSecXkmsServerRequestCompoundNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
+    xmlSecPtrListPtr serverRequestIdsList;
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecXkmsServerRequestCompoundId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = node;
+    
+    /* first read "parent" type */
+    ret = xmlSecXkmsServerCtxRequestAbstractTypeNodeRead(ctx, &cur);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxRequestAbstractTypeNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* create list for compound requests */
+    xmlSecAssert2(ctx->compoundRequestContexts == NULL, -1);
+    ctx->compoundRequestContexts = xmlSecPtrListCreate(xmlSecXkmsServerCtxPtrListId);
+    if(ctx->compoundRequestContexts == NULL) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* get the list of enabled or all request klasses */
+    if(xmlSecPtrListGetSize(&(ctx->enabledServerRequestIds)) > 0) {
+	serverRequestIdsList = &(ctx->enabledServerRequestIds);
+    } else {
+	serverRequestIdsList = xmlSecXkmsServerRequestIdsGet();
+    }
+    xmlSecAssert2(serverRequestIdsList != NULL, -1); 
+    
+    while(cur != NULL) {
+        xmlSecXkmsServerCtxPtr ctxChild;    
+        
+        /* create a new context */
+        ctxChild = xmlSecXkmsServerCtxCreate(ctx->keyInfoReadCtx.keysMngr);
+        if(ctxChild == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerCtxCreate",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+        }
+
+        /* copy all settings from us */
+        ret = xmlSecXkmsServerCtxCopyUserPref(ctxChild, ctx);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerCtxCopyUserPref",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXkmsServerCtxDestroy(ctxChild);
+	    return(-1);
+        }
+
+        /* add it to the list */
+        ret = xmlSecPtrListAdd(ctx->compoundRequestContexts, ctxChild);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecPtrListAdd",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXkmsServerCtxDestroy(ctxChild);
+	    return(-1);
+        }
+
+        /* and now process request from current node */
+        ctxChild->requestId = xmlSecXkmsServerRequestIdListFindByNode(serverRequestIdsList, cur);
+        if((ctxChild->requestId == xmlSecXkmsServerRequestIdUnknown) || 
+           ((ctxChild->requestId->flags & XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND) == 0)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerRequestIdListFindByNode",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(node->name));
+	    xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED);
+	    return(-1);
+        }
+
+        ret = xmlSecXkmsServerRequestNodeRead(ctxChild->requestId, ctxChild, cur);
+        if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerRequestNodeRead",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "request=%s",
+		        xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctxChild->requestId)));
+	    xmlSecXkmsServerCtxSetError(ctxChild, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	    return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* check that there is nothing after the last node */
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    return(0);
+}
+
+/**
+ *  <xkms:CompoundResult Id Service Nonce? ResultMajor ResultMinor? RequestId?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:RequestSignatureValue>*
+ *      (
+ *       <xkms:LocateResult>?
+ *       <xkms:ValidateResult>?
+ *       <xkms:RegisterResult>?
+ *       <xkms:ReissueResult>?
+ *       <xkms:RecoverResult>?
+ *       <xkms:RevokeResult>?
+ *      )*
+ *
+ * 
+ * XML Schema:
+ *
+ *    <!-- CompoundResponse -->   
+ *    <element name="CompoundResult" type="xkms:CompoundResultType"/>   
+ *    <complexType name="CompoundResultType">      
+ *        <complexContent>         
+ *            <extension base="xkms:ResultType">            
+ *                <choice maxOccurs="unbounded">               
+ *                    <element ref="xkms:LocateResult"/>
+ *                    <element ref="xkms:ValidateResult"/>
+ *                    <element ref="xkms:RegisterResult"/>
+ *                    <element ref="xkms:ReissueResult"/>
+ *                    <element ref="xkms:RecoverResult"/>
+ *                    <element ref="xkms:RevokeResult"/>
+ *                </choice>
+ *            </extension>
+ *        </complexContent>
+ *   </complexType>
+ *   <!-- /CompoundResponse -->
+ */ 
+static int 
+xmlSecXkmsServerRequestCompoundNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
+    int ret;
+
+    xmlSecAssert2(id == xmlSecXkmsServerRequestCompoundId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* walk thru the list of chilren and pickup first error */
+    if(ctx->compoundRequestContexts != NULL) {
+        xmlSecSize pos;
+
+        for(pos = 0; pos < xmlSecPtrListGetSize(ctx->compoundRequestContexts); pos++) {
+            xmlSecXkmsServerCtxPtr ctxChild;
+            xmlNodePtr cur;
+
+            ctxChild = (xmlSecXkmsServerCtxPtr)xmlSecPtrListGetItem(ctx->compoundRequestContexts, pos);
+            if(ctxChild == NULL) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecPtrListGetItem",
+		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		            XMLSEC_ERRORS_NO_MESSAGE);
+	        return(-1);  	
+            }
+	    
+	    if(ctxChild->majorError != XMLSEC_XKMS_ERROR_MAJOR_SUCCESS) {
+	        xmlSecXkmsServerCtxSetError(ctx, ctxChild->majorError, ctxChild->minorError);
+		break;
+	    }
+	}
+    }
+    
+    /* first write the "parent" type */
+    ret = xmlSecXkmsServerCtxResultTypeNodeWrite(ctx, node);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxResultTypeNodeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
+    
+    /* write compound result */
+    if(ctx->compoundRequestContexts != NULL) {
+        xmlSecSize pos;
+
+        for(pos = 0; pos < xmlSecPtrListGetSize(ctx->compoundRequestContexts); pos++) {
+            xmlSecXkmsServerCtxPtr ctxChild;
+            xmlNodePtr cur;
+
+            ctxChild = (xmlSecXkmsServerCtxPtr)xmlSecPtrListGetItem(ctx->compoundRequestContexts, pos);
+            if(ctxChild == NULL) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecPtrListGetItem",
+		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		            XMLSEC_ERRORS_NO_MESSAGE);
+	        return(-1);  	
+            }
+            
+            cur = xmlSecAddChild(node, ctxChild->requestId->resultNodeName, ctxChild->requestId->resultNodeNs);
+	    if(cur == NULL) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecAddChild",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+	    }
+
+            xmlSecAssert2(cur != NULL, -1);
+            ret = xmlSecXkmsServerRequestNodeWrite(ctxChild->requestId, ctxChild, cur);
+            if(ret < 0) {
+    	        xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecXkmsServerRequestNodeWrite",
+		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		            "request=%s",
+		            xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctxChild->requestId)));
+                /* remove node */
+                return(-1);
+            }
+        }
+    }
+
+    return(0);
+}
+
+static int 
+xmlSecXkmsServerRequestCompoundExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx) {
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecXkmsServerRequestCompoundId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    if(ctx->compoundRequestContexts != NULL) {
+        xmlSecSize pos;
+
+        for(pos = 0; pos < xmlSecPtrListGetSize(ctx->compoundRequestContexts); pos++) {
+            xmlSecXkmsServerCtxPtr ctxChild;
+
+            ctxChild = (xmlSecXkmsServerCtxPtr)xmlSecPtrListGetItem(ctx->compoundRequestContexts, pos);
+            if(ctxChild == NULL) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecPtrListGetItem",
+		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		            XMLSEC_ERRORS_NO_MESSAGE);
+	        xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	        continue;  	
+            }
+            
+            ret = xmlSecXkmsServerRequestExecute(ctxChild->requestId, ctxChild);
+            if(ret < 0) {
+    	        xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecXkmsServerRequestExecute",
+		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		            "request=%s",
+		            xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctxChild->requestId)));
+	        xmlSecXkmsServerCtxSetError(ctxChild, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	        continue;  	
+            }
+        }
+    }
+
+    return(0);
+}
 
 
+/******************************************************************** 
+ *
+ * LocateRequest/LocateResponse
+ *
+ *******************************************************************/
 static int  		xmlSecXkmsServerRequestLocateNodeRead	(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+static int		xmlSecXkmsServerRequestLocateNodeWrite	(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 static int 		xmlSecXkmsServerRequestLocateExecute	(xmlSecXkmsServerRequestId id, 
 								 xmlSecXkmsServerCtxPtr ctx);
-static int		xmlSecXkmsServerRequestLocateNodeWrite	(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
 
 static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestLocateKlass = {
     xmlSecXkmsServerRequestLocateName,		/* const xmlChar* name; */
@@ -3111,9 +3727,12 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestLocateKlass = {
     xmlSecXkmsNs,				/* const xmlChar* requestNodeNs; */
     xmlSecNodeLocateResult,			/* const xmlChar* responseNodeName; */
     xmlSecXkmsNs,				/* const xmlChar* responseNodeNs; */
+    XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND,      /* xmlSecBitMask flags; */
     xmlSecXkmsServerRequestLocateNodeRead,	/* xmlSecXkmsServerRequestNodeReadMethod readNode; */
+    xmlSecXkmsServerRequestLocateNodeWrite,	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
     xmlSecXkmsServerRequestLocateExecute,	/* xmlSecXkmsServerRequestExecuteMethod execute; */
-    xmlSecXkmsServerRequestLocateNodeWrite	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -3219,44 +3838,6 @@ xmlSecXkmsServerRequestLocateNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsSe
     return(0);
 }
 
-static int 
-xmlSecXkmsServerRequestLocateExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx) {
-    xmlSecKeyPtr key = NULL;
-    int ret;
-    
-    xmlSecAssert2(id == xmlSecXkmsServerRequestLocateId, -1);
-    xmlSecAssert2(ctx != NULL, -1);
-
-    /* now we are ready to search for key */
-    if((ctx->keyInfoReadCtx.keysMngr != NULL) && (ctx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
-	key = (ctx->keyInfoReadCtx.keysMngr->getKey)(ctx->keyInfoNode, &(ctx->keyInfoReadCtx));
-    }
-    
-    /* check that we got what we needed */
-    if((key == NULL) || (!xmlSecKeyMatch(key, NULL, &(ctx->keyInfoReadCtx.keyReq)))) {
-	if(key != NULL) {
-    	    xmlSecKeyDestroy(key);
-	}
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_NO_MATCH);
-	return(-1);
-    } 
-        
-    xmlSecAssert2(key != NULL, -1);
-    ret = xmlSecPtrListAdd(&(ctx->keys), key);
-    if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecPtrListAdd",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDestroy(key);
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
-	return(-1);
-    }
-    
-    return(0);
-}
-
 /**
  *  <xkms:LocateResult Id Service Nonce? ResultMajor ResultMinor? RequestId?>
  *      <ds:Signature>?
@@ -3344,6 +3925,305 @@ xmlSecXkmsServerRequestLocateNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkmsS
     return(0);
 }
 
+static int 
+xmlSecXkmsServerRequestLocateExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx) {
+    xmlSecKeyPtr key = NULL;
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecXkmsServerRequestLocateId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* now we are ready to search for key */
+    if((ctx->keyInfoReadCtx.keysMngr != NULL) && (ctx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
+	/* todo: set parameters to locate but not validate the key */
+	key = (ctx->keyInfoReadCtx.keysMngr->getKey)(ctx->keyInfoNode, &(ctx->keyInfoReadCtx));
+    }
+    
+    /* check that we got what we needed */
+    if((key == NULL) || (!xmlSecKeyMatch(key, NULL, &(ctx->keyInfoReadCtx.keyReq)))) {
+	if(key != NULL) {
+    	    xmlSecKeyDestroy(key);
+	}
+	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_NO_MATCH);
+	return(-1);
+    } 
+        
+    xmlSecAssert2(key != NULL, -1);
+    ret = xmlSecPtrListAdd(&(ctx->keys), key);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListAdd",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	return(-1);
+    }
+    
+    return(0);
+}
+
+
+/******************************************************************** 
+ *
+ * ValidateRequest/ValidateResponse
+ *
+ *******************************************************************/
+static int  		xmlSecXkmsServerRequestValidateNodeRead	(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+static int		xmlSecXkmsServerRequestValidateNodeWrite(xmlSecXkmsServerRequestId id,
+								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+static int 		xmlSecXkmsServerRequestValidateExecute	(xmlSecXkmsServerRequestId id, 
+								 xmlSecXkmsServerCtxPtr ctx);
+
+static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestValidateKlass = {
+    xmlSecXkmsServerRequestValidateName,	/* const xmlChar* name; */
+    xmlSecNodeValidateRequest,			/* const xmlChar* requestNodeName; */
+    xmlSecXkmsNs,				/* const xmlChar* requestNodeNs; */
+    xmlSecNodeValidateResult,			/* const xmlChar* responseNodeName; */
+    xmlSecXkmsNs,				/* const xmlChar* responseNodeNs; */
+    XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND,      /* xmlSecBitMask flags; */
+    xmlSecXkmsServerRequestValidateNodeRead,	/* xmlSecXkmsServerRequestNodeReadMethod readNode; */
+    xmlSecXkmsServerRequestValidateNodeWrite,	/* xmlSecXkmsServerRequestNodeWriteMethod writeNode; */
+    xmlSecXkmsServerRequestValidateExecute,	/* xmlSecXkmsServerRequestExecuteMethod execute; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
+};
+
+/**
+ * xmlSecXkmsServerRequestValidateGetKlass:
+ *
+ * The ValidateRequest klass.
+ *
+ * Returns ValidateRequest klass.
+ */ 
+xmlSecXkmsServerRequestId	
+xmlSecXkmsServerRequestValidateGetKlass(void) {
+    return(&xmlSecXkmsServerRequestValidateKlass);
+}
+
+/**
+ *  <xkms:ValidateRequest Id Service Nonce? OriginalRequestId? ResponseLimit?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *          <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:ResponseMechanism>*
+ *      <xkms:RespondWith>*
+ *      <xkms:PendingNotification Mechanism Identifier>?
+ *      <xkms:QueryKeyBinding Id?>
+ *          <ds:KeyInfo>?
+ *          <xkms:KeyUsage>?
+ *          <xkms:KeyUsage>?
+ *          <xkms:KeyUsage>?
+ *          <xkms:UseKeyWith Application Identifier>*    
+ *          <xkms:TimeInstant Time>?
+ * 
+ * XML Schema:
+ * 
+ *    <!-- ValidateRequest -->   
+ *    <element name="ValidateRequest" type="xkms:ValidateRequestType"/>   
+ *    <complexType name="ValidateRequestType">      
+ *        <complexContent>         
+ *            <extension base="xkms:RequestAbstractType">
+ *                <sequence>
+ *                    <element ref="xkms:QueryKeyBinding"/>
+ *                </sequence>
+ *            </extension>						         
+ *        </complexContent> 
+ *    </complexType>
+ *    <!-- /ValidateRequest -->							        
+ */
+static int  
+xmlSecXkmsServerRequestValidateNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecXkmsServerRequestValidateId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = node;
+    
+    /* first read "parent" type */
+    ret = xmlSecXkmsServerCtxRequestAbstractTypeNodeRead(ctx, &cur);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxRequestAbstractTypeNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* now read required <xkms:QueryKeyBinding/> node */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeQueryKeyBinding, xmlSecXkmsNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeQueryKeyBinding));
+	return(-1);
+    }
+    
+    /* read <xkms:QueryKeyBinding/> node */    
+    ret = xmlSecXkmsServerCtxQueryKeyBindingNodeRead(ctx, cur);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxQueryKeyBindingNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);    
+
+    /* check that there is nothing after the last node */
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    return(0);
+}
+
+/**
+ *  <xkms:ValidateResult Id Service Nonce? ResultMajor ResultMinor? RequestId?>
+ *      <ds:Signature>?
+ *      <xkms:MessageExtension>*
+ *      (<xkms:OpaqueClientData>
+ *           <xkms:OpaqueData>?
+ *      )?
+ *      <xkms:RequestSignatureValue>*
+ *      (<xkms:KeyBinding Id?>
+ *          <ds:KeyInfo>?
+ *          <xkms:KeyUsage>?
+ *          <xkms:KeyUsage>?
+ *          <xkms:KeyUsage>?
+ *          <xkms:UseKeyWith Application Identifier>*    
+ *          <xkms:ValidityInterval NotBefore NotOnOrAfter>?
+ *          <xkms:Status StatusValue>
+ *              (<xkms:ValidReason>?
+ *               <xkms:IndeterminateReason>?
+ *               <xkms:InvalidReason>?
+ *              )*
+ *      )*
+ * 
+ * XML Schema:
+ *
+ *    <!-- ValidateResult -->   
+ *    <element name="ValidateResult" type="xkms:ValidateResultType"/>
+ *    <complexType name="ValidateResultType">
+ *        <complexContent>
+ *            <extension base="xkms:ResultType">
+ *                <sequence>
+ *                    <element ref="xkms:KeyBinding" minOccurs="0" 
+ *				    maxOccurs="unbounded"/>
+ *                </sequence>
+ *            </extension>
+ *        </complexContent>
+ *    </complexType>
+ *    <!-- /ValidateResult -->
+ */ 
+static int 
+xmlSecXkmsServerRequestValidateNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
+    xmlSecSize pos, size;
+    xmlSecKeyPtr key;
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecXkmsServerRequestValidateId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first write the "parent" type */
+    ret = xmlSecXkmsServerCtxResultTypeNodeWrite(ctx, node);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxResultTypeNodeWrite",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
+    
+    /* write keys in <xkms:UnverifiedKeyBinding> nodes */
+    size = xmlSecPtrListGetSize(&(ctx->keys));
+    for(pos = 0; pos < size; ++pos) {
+	key = (xmlSecKeyPtr)xmlSecPtrListGetItem(&(ctx->keys), pos);
+	if(key == NULL) {
+	    continue;
+	}
+            
+	cur = xmlSecAddChild(node, xmlSecNodeUnverifiedKeyBinding, xmlSecXkmsNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecAddChild",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeUnverifiedKeyBinding));
+	    return(-1);  	
+    	}
+
+	ret = xmlSecXkmsServerCtxKeyBindingNodeWrite(ctx, cur, key);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecXkmsServerCtxKeyBindingNodeWrite",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);  	
+	}
+    }
+
+    return(0);
+}
+
+static int 
+xmlSecXkmsServerRequestValidateExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx) {
+    xmlSecKeyPtr key = NULL;
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecXkmsServerRequestValidateId, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* now we are ready to search for key */
+    if((ctx->keyInfoReadCtx.keysMngr != NULL) && (ctx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
+	key = (ctx->keyInfoReadCtx.keysMngr->getKey)(ctx->keyInfoNode, &(ctx->keyInfoReadCtx));
+    }
+    
+    /* check that we got what we needed */
+    if((key == NULL) || (!xmlSecKeyMatch(key, NULL, &(ctx->keyInfoReadCtx.keyReq)))) {
+	if(key != NULL) {
+    	    xmlSecKeyDestroy(key);
+	}
+	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_NO_MATCH);
+	return(-1);
+    } 
+        
+    xmlSecAssert2(key != NULL, -1);
+    ret = xmlSecPtrListAdd(&(ctx->keys), key);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListAdd",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	return(-1);
+    }
+    
+    return(0);
+}
 
 #endif /* XMLSEC_NO_XKMS */
 

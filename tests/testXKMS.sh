@@ -89,6 +89,18 @@ execXkmsServerTest \
     "--xkms-server-service http://www.example.com/xkms"
 
 execXkmsServerTest \
+    "aleksey-xkms-01/validate-example-1" "no-match" \
+    "--xkms-server-service http://www.example.com/xkms"
+
+execXkmsServerTest \
+    "aleksey-xkms-01/compound-example-1" "no-match" \
+    "--xkms-server-service http://www.example.com/xkms"
+
+execXkmsServerTest \
+    "aleksey-xkms-01/status-request" "success" \
+    "--xkms-server-service http://www.example.com/xkms"
+
+execXkmsServerTest \
     "aleksey-xkms-01/bad-request-name" "not-supported" \
     "--xkms-server-service http://www.example.com/xkms"
 

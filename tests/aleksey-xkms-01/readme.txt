@@ -13,27 +13,47 @@ XKMS Featrues
 
 Expected service is http://www.example.com/xkms
 
-Tests
-  locate-example-1.xml 		- LocateRequest example 4.1.1 from XKMS 2.0 spec
-  locate-example-1-no-match.xml	- "NoMatch" LocateResponse for locate-example-1.xml
-  locate-example-1-bad-service.xml	
-				- Bad service LocateResponse for locate-example-1.xml
-  locate-example-2.xml 		- LocateRequest example 4.1.2 from XKMS 2.0 spec 
-				with certificate from cert3.pem 
-  locate-example-2-no-match.xml	- "NoMatch" LocateResponse for locate-example-2.xml
-  validate-example-1.xml	- ValidateRequest example 4.2.1 from XKMS 2.0 spec 
-				with certificates from cert2.pem and cert3.pem 
-  compaund-example-1.xml	- CompaundRequest example 2.8.1 from XKMS 2.0 spec 
-				with certificate from cert3.pem 
-  locate-opaque-client-data.xml	- LocateRequest with xkms:MessageExtension and 
-  				xkms:OpaqueClientData nodes
-  locate-opaque-client-data-no-match.xml	
-				- "NoMatch" LocateResponse for locate-opaque-client-data.xml
-  bad-request-name.xml		- Invalid request name.    
-  bad-request-name-not-supported.xml	
-				- Message not supported error for bad-request-name.xml
+1) Tests
+1.1) locate-example-1 (LocateRequest example 4.1.1 from XKMS 2.0 spec).
 
-Keys and certificates (private keys are encrypted with password "secret")
+    * locate-example-1.xml		- LocateRequest file.
+    * locate-example-1-no-match.xml	- LocateResult: "NoMatch" error (key not found).
+    * locate-example-1-bad-service.xml	- LocateResult: bad "Service".
+    
+1.2) locate-example-2 (LocateRequest example 4.1.2 from XKMS 2.0 spec 
+with certificate from cert2.pem file). 
+
+    * locate-example-2.xml		- LocateRequest file.
+    * locate-example-2-no-match.xml	- LocateResult: "NoMatch" error (key not found).
+
+1.3) validate-example-1 (ValidateRequest example 4.2.1 from XKMS 2.0 spec 
+with certificates from cert2.pem and cert3.pem file).
+
+    * validate-example-1.xml		- ValidateRequest file.
+    * validate-example-1-no-match.xml	- ValidateResult: "NoMatch" error (key not found).
+   
+1.4) compaund-example-1 (CompaundRequest example 2.8.1 from XKMS 2.0 spec \
+with certificate from cert3.pem file).
+
+    * compaund-example-1.xml		- CompaundRequest file.
+    * compound-example-1-no-match.xml	- CompoundResult: "NoMatch" error (key not found).
+
+1.5) locate-opaque-client-data (LocateRequest with xkms:MessageExtension and 
+xkms:OpaqueClientData nodes).
+    
+    * locate-opaque-client-data.xml	- LocateRequest file.
+    * locate-opaque-client-data-no-match.xml	- LocateResult: "NoMatch" error (key not found).
+
+1.6) status-request (simple StatusRequest)
+
+    * status-request.xml		- StatusRequest file.
+    * status-request-success.xml	- StatusResult: success.
+    
+1.7) bad-request-name (A request with invalid node name).
+  bad-request-name.xml			- Invalid request file.    
+  bad-request-name-not-supported.xml	- Result: MessageNotSupported error.
+
+2) Keys and certificates (private keys are encrypted with password "secret")
   keys/create-keys.sh		- shell script to create the keys and certificates chain
   keys/openssl.cnf		- config file for create-keys.sh script
   keys/key1.pem			- root certificate RSA 1024 key in PEM format

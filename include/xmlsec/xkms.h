@@ -84,7 +84,8 @@ struct _xmlSecXkmsServerCtx {
     xmlChar*                    pendingNotificationMechanism;
     xmlChar*                    pendingNotificationIdentifier;
     int 			responseLimit;
-    unsigned int		responseMechanismMask;
+    xmlSecBitMask		responseMechanismMask;
+    xmlSecPtrListPtr		compoundRequestContexts;
 
     /* these are internal data, nobody should change that except us */
     xmlNodePtr			opaqueClientDataNode;
@@ -120,6 +121,18 @@ XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugDump	(xmlSecXkmsServerCtxPtr ctx,
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
 
+/************************************************************************
+ *
+ * xmlSecXkmsServerCtxPtr list
+ *
+ ************************************************************************/ 
+/**
+ * xmlSecXkmsServerCtxPtrListId:
+ *
+ * zmlSecXkmsServerCtx klasses list klass.
+ */
+#define xmlSecXkmsServerCtxPtrListId	xmlSecXkmsServerCtxPtrListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsServerCtxPtrListGetKlass(void);
 
 /************************************************************************
  *
@@ -304,6 +317,94 @@ XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx,
  * The ResponseLimit is not specified.
  */
 #define XMLSEC_XKMS_NO_RESPONSE_LIMIT			-1
+
+/************************************************************************
+ *
+ * XKMS KeyBinding Status attribute values
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_KEY_BINDING_STATUS_UNKNOWN:
+ *
+ * The status is not known.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_STATUS_UNKNOWN		 0
+
+/**
+ * XMLSEC_XKMS_KEY_BINDING_STATUS_VALID:
+ *
+ * Key is valid.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_STATUS_VALID		 1
+
+/**
+ * XMLSEC_XKMS_KEY_BINDING_STATUS_INVALID:
+ *
+ * Key is not valid.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_STATUS_INVALID		 2
+
+/**
+ * XMLSEC_XKMS_KEY_BINDING_STATUS_INDETERMINATE:
+ *
+ * Status can't be determinated.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_STATUS_INDETERMINATE	 3
+
+/************************************************************************
+ *
+ * XKMS KeyBinding reason values
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST:
+ *
+ * The issuer of the information on which the key binding is based is 
+ * considered to be trustworthy by the XKMS service.
+ *
+ * X.509 Equivalents
+ *   - Valid:	Certificate path anchored by trusted root successfully constructed.
+ *   - Invalid:	Certificate path could not be constructed to a trusted root.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST	0x00000001
+
+/**
+ * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS:
+ *
+ * The XKMS service has affirmatively verified the status of the 
+ * key binding with an authoritative source
+ *
+ * X.509 Equivalents
+ *   - Valid:	Certificate status validated using CRL or OCSP.
+ *   - Invalid:	Certificate status returned revoked or suspended.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS	0x00000002
+
+/**
+ * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL:
+ *
+ * The requested time instant was within the validity interval of 
+ * the key binding
+ *
+ * X.509 Equivalents
+ *   - Valid:	The certificate chain was valid at the requested time instant.
+ *   - Invalid:	The requested time instant was before or after the certificate 
+ *              chain validity interval.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL	 0x00000004
+
+/**
+ * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE:
+ *
+ * Signature on signed data provided by the client in the <Keyinfo> element was 
+ * successfully verified.
+ *
+ * X.509 Equivalents
+ *   - Valid: 	Certificate Signature verified.
+ *   - Invalid: Certificate Signature verification failed.
+ */
+#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE		 0x00000008
+
 
 /************************************************************************
  *
@@ -506,16 +607,27 @@ typedef int  			(*xmlSecXkmsServerRequestNodeWriteMethod)
 								(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
+/** 
+ * XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND:
+ *
+ * This request/response can be a part of CompundRequest/CompoundResponse.
+ */
+#define XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND	0x00000001
+
 struct _xmlSecXkmsServerRequestKlass {
     const xmlChar*				name;
     const xmlChar*				requestNodeName;
     const xmlChar*				requestNodeNs;
     const xmlChar*				resultNodeName;
     const xmlChar*				resultNodeNs;
+    xmlSecBitMask				flags;
     
     xmlSecXkmsServerRequestNodeReadMethod	readNode;
-    xmlSecXkmsServerRequestExecuteMethod	execute;
     xmlSecXkmsServerRequestNodeWriteMethod	writeNode;
+    xmlSecXkmsServerRequestExecuteMethod	execute;
+    
+    void*					reserved1;
+    void*					reserved2;
 };
 
 #define xmlSecXkmsServerRequestKlassGetName(id) \
@@ -561,6 +673,24 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestIdListFindByNode
 XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestResultGetKlass(void);
 
 /**
+ * xmlSecXkmsServerRequestStatusId:
+ *
+ * The StatusRequest klass.
+ */ 
+#define xmlSecXkmsServerRequestStatusId \
+	xmlSecXkmsServerRequestStatusGetKlass()
+XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestStatusGetKlass(void);
+
+/**
+ * xmlSecXkmsServerRequestCompoundId:
+ *
+ * The CompoundRequest klass.
+ */ 
+#define xmlSecXkmsServerRequestCompoundId \
+	xmlSecXkmsServerRequestCompoundGetKlass()
+XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestCompoundGetKlass(void);
+
+/**
  * xmlSecXkmsServerRequestLocateId:
  *
  * The LocateRequest klass.
@@ -568,6 +698,15 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestResultGetKlass(vo
 #define xmlSecXkmsServerRequestLocateId \
 	xmlSecXkmsServerRequestLocateGetKlass()
 XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestLocateGetKlass(void);
+
+/**
+ * xmlSecXkmsServerRequestValidateId:
+ *
+ * The ValidateRequest klass.
+ */ 
+#define xmlSecXkmsServerRequestValidateId \
+	xmlSecXkmsServerRequestValidateGetKlass()
+XMLSEC_EXPORT xmlSecXkmsServerRequestId	xmlSecXkmsServerRequestValidateGetKlass(void);
 
 #ifdef __cplusplus
 }

@@ -100,6 +100,7 @@ xmlSecShutdown(void) {
     int res = 0;    
 
 #ifndef XMLSEC_NO_XKMS    
+    xmlSecXkmsServerRequestIdsShutdown();
     xmlSecXkmsRespondWithIdsShutdown();
 #endif /* XMLSEC_NO_XKMS */
 

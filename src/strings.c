@@ -73,7 +73,7 @@ const xmlChar xmlSecTypeEncElement[]		= "http://www.w3.org/2001/04/xmlenc#Elemen
 const xmlChar xmlSecXkmsServerRequestResultName[]	= "result-response";
 const xmlChar xmlSecXkmsServerRequestStatusName[]	= "status-request";
 const xmlChar xmlSecXkmsServerRequestLocateName[]	= "locate-request";
-const xmlChar xmlSecXkmsServerRequestVerifyName[]	= "verify-request";
+const xmlChar xmlSecXkmsServerRequestValidateName[]	= "validate-request";
 const xmlChar xmlSecXkmsServerRequestCompoundName[]	= "compound-request";
 
 const xmlChar xmlSecNodeResult[]		= "Result";
@@ -98,6 +98,10 @@ const xmlChar xmlSecNodeTimeInstant[]		= "TimeInstant";
 const xmlChar xmlSecNodeRequestSignatureValue[]	= "RequestSignatureValue";
 const xmlChar xmlSecNodeUnverifiedKeyBinding[]	= "UnverifiedKeyBinding";
 const xmlChar xmlSecNodeValidityInterval[]	= "ValidityInterval";
+const xmlChar xmlSecNodeStatus[]                = "Status";
+const xmlChar xmlSecNodeValidReason[]           = "ValidReason";
+const xmlChar xmlSecNodeInvalidReason[]         = "InvalidReason";
+const xmlChar xmlSecNodeIndeterminateReason[]   = "IndeterminateReason";
 
 const xmlChar xmlSecAttrService[]		= "Service";
 const xmlChar xmlSecAttrNonce[]			= "Nonce";
@@ -112,6 +116,7 @@ const xmlChar xmlSecAttrRequestId[]		= "RequestId";
 const xmlChar xmlSecAttrNotBefore[]		= "NotBefore";
 const xmlChar xmlSecAttrNotOnOrAfter[]		= "NotOnOrAfter";
 const xmlChar xmlSecAttrTime[]			= "Time";
+const xmlChar xmlSecAttrStatusValue[]           = "StatusValue";
 
 const xmlChar xmlSecResponseMechanismPending[]	= "Pending";
 const xmlChar xmlSecResponseMechanismRepresent[]= "Represent";
@@ -136,6 +141,15 @@ const xmlChar xmlSecStatusResultPending[]	= "Pending";
 const xmlChar xmlSecKeyUsageEncryption[]	= "Encryption";
 const xmlChar xmlSecKeyUsageSignature[]		= "Signature";
 const xmlChar xmlSecKeyUsageExchange[]		= "Exchange";
+
+const xmlChar xmlSecKeyBindingStatusValid[]	        = "Valid";
+const xmlChar xmlSecKeyBindingStatusInvalid[]	        = "Invalid";
+const xmlChar xmlSecKeyBindingStatusIndeterminate[]	= "Indeterminate";
+
+const xmlChar xmlSecKeyBindingReasonIssuerTrust[]       = "IssuerTrust";
+const xmlChar xmlSecKeyBindingReasonRevocationStatus[]  = "RevocationStatus";
+const xmlChar xmlSecKeyBindingReasonValidityInterval[]  = "ValidityInterval";
+const xmlChar xmlSecKeyBindingReasonSignature[]         = "Signature";
 
 const xmlChar xmlSecResultMajorCodeSuccess[]		= "Success";
 const xmlChar xmlSecResultMajorCodeVersionMismatch[]	= "VersionMismatch";

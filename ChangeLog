@@ -1,3 +1,11 @@
+Tue Feb  3 22:44:36 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: combined xkms server commands into one
+	* include/xmlsec/* src/*: added ValidateRequest/ValidateResult
+	StatusRequest/StatusResult and CompoundRequest/CompoundResult
+	* tests/aleksey-xkms-01/* tests/testXKMS.sh: added new negative
+	test cases
+
 Tue Feb  3 18:12:10 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c: added xkms server "expected service" param

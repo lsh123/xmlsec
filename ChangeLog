@@ -1,3 +1,8 @@
+Fri 12 Sep 2003 09:43:21 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/buffer.h src/buffer.c: added functions to convert 
+	binary buffer to hex string and vice versa (based on patch from Remy)
+
 Sun 24 Aug 2003 05:20:14 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* docs/faq.html: upgraded licenses FAQ section to include

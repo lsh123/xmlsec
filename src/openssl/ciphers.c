@@ -14,7 +14,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
@@ -423,7 +422,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 static int	xmlSecOpenSSLEvpBlockCipherInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLEvpBlockCipherFinalize	(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLEvpBlockCipherSetKeyReq	(xmlSecTransformPtr transform, 
-							 xmlSecKeyInfoCtxPtr keyInfoCtx);
+							 xmlSecKeyReqPtr keyReq);
 static int	xmlSecOpenSSLEvpBlockCipherSetKey	(xmlSecTransformPtr transform,
 							 xmlSecKeyPtr key);
 static int	xmlSecOpenSSLEvpBlockCipherExecute	(xmlSecTransformPtr transform,
@@ -517,23 +516,23 @@ xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
 }
 
 static int  
-xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
 
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
-    keyInfoCtx->keyId 	= ctx->keyId;
-    keyInfoCtx->keyType = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId 	= ctx->keyId;
+    keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
+	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
+	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
     
     return(0);

@@ -77,10 +77,8 @@ struct _xmlSecKeyInfoCtx {
     xmlSecKeysMngrPtr			keysMngr;
     void				*context;
     
-    xmlSecKeyDataId			keyId;
-    xmlSecKeyDataType			keyType;
-    xmlSecKeyUsage			keyUsage;
-    
+    xmlSecKeyReq			keyReq;
+
     int					base64LineSize;
     int 				retrievalsLevel;
     int					encKeysLevel;                

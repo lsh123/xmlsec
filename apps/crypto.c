@@ -335,7 +335,7 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     }
 
     memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
-    keyInfoCtx.keyType = xmlSecKeyDataTypeAny;
+    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
     ret = xmlSecKeyDataBinRead(dataId, key, 
 			xmlSecBufferGetData(buffer),
 			xmlSecBufferGetSize(buffer),

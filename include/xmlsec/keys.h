@@ -56,8 +56,10 @@ XMLSEC_EXPORT int	xmlSecKeyReqInitialize			(xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT void	xmlSecKeyReqFinalize			(xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT int	xmlSecKeyReqCopy			(xmlSecKeyReqPtr dst,
 								 xmlSecKeyReqPtr src);
-XMLSEC_EXPORT int	xmlSecKeyReqValidate			(xmlSecKeyReqPtr keyReq,
+XMLSEC_EXPORT int	xmlSecKeyReqMatchKey			(xmlSecKeyReqPtr keyReq,
 								 xmlSecKeyPtr key);
+XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
+								 xmlSecKeyDataPtr value);
 
 /**
  * xmlSecKeyInifiteRetrivals:
@@ -219,10 +221,9 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(const xmlChar* type,
 							 size_t sizeBits);
 
 
-XMLSEC_EXPORT int		xmlSecKeyVerify		(xmlSecKeyPtr key, 
+XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key, 
 							 const xmlChar *name,
-							 xmlSecKeyDataId id, 
-							 xmlSecKeyDataType type);
+							 xmlSecKeyReqPtr keyReq);
 							 
 
 /***********************************************************************

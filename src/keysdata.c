@@ -649,7 +649,12 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     }
     xmlFree(str);
 
-    if((xmlSecKeyDataGetType(data) & keyInfoCtx->keyType) == 0) {
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), data) != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecKeyReqMatchKeyValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDataDestroy(data);
 	return(0);
     }
@@ -671,21 +676,27 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 int 
 xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecBufferPtr buffer;
+    xmlSecKeyDataPtr value;
     xmlChar* str;
     
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(key->value->id == id, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    if((xmlSecKeyDataGetType(key->value) & keyInfoCtx->keyType) == 0) {
-	/* we can have only private key */
+    value = xmlSecKeyGetValue(key);
+    xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
+
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), value) != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecKeyReqMatchKeyValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(0);
     }
 
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
     str = xmlSecBase64Encode(xmlSecBufferGetData(buffer),
@@ -775,7 +786,12 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 	return(-1);
     }
 
-    if((xmlSecKeyDataGetType(data) & keyInfoCtx->keyType) == 0) {
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), data) != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecKeyReqMatchKeyValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDataDestroy(data);
 	return(0);
     }
@@ -796,18 +812,24 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 
 int 
 xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned char** buf, size_t* bufSize, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(key->value->id == id, -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    if((xmlSecKeyDataGetType(key->value) & keyInfoCtx->keyType) == 0) {
-	/* we can have only private key */
+    value = xmlSecKeyGetValue(key);
+    xmlSecAssert2(xmlSecKeyDataIsValid(value), -1);
+
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), value) != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+		    "xmlSecKeyReqMatchKeyValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(0);
     }
 

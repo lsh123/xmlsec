@@ -54,20 +54,28 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
 }
 
 int 
-xmlSecKeyReqValidate(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
-    xmlSecKeyDataPtr value;
-    
+xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     xmlSecAssert2(keyReq != NULL, -1);
     xmlSecAssert2(xmlSecKeyIsValid(key), -1);
-    
-    value = xmlSecKeyGetValue(key);
-    if(!xmlSecKeyDataCheckId(value, keyReq->keyId)) {
-	return(0);
-    }
+
     if((xmlSecKeyGetType(key) & keyReq->keyType) == 0) {
 	 return(0);
     }
     /* todo: key usage! */
+    
+    return(xmlSecKeyReqMatchKeyValue(keyReq, xmlSecKeyGetValue(key)));
+}
+
+int 
+xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
+    xmlSecAssert2(keyReq != NULL, -1);
+    xmlSecAssert2(value != NULL, -1);
+    
+    if((keyReq->keyId != xmlSecKeyDataIdUnknown) && 
+       (!xmlSecKeyDataCheckId(value, keyReq->keyId))) {
+
+	return(0);
+    }
     return(1);
 }
 
@@ -220,11 +228,9 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyVerify:
+ * xmlSecKeyMatch:
  * @key: the pointer to the #xmlSecKey structure.
  * @name: the pointer to key name (may be NULL).
- * @id: the key id (may be "any").
- * @type: the key type to write (public/private).
  * 
  * Checks whether the @key matches the given criteria
  * (key name is equal to @name, key id is equal to @id,
@@ -233,19 +239,14 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
  * Returns 1 if the key satisfies the given criteria or 0 otherwise.
  */
 int
-xmlSecKeyVerify(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyDataId id, xmlSecKeyDataType keyType) {
+xmlSecKeyMatch(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecKeyIsValid(key), -1);
-
-    if((id != xmlSecKeyDataIdUnknown) && (id != key->value->id)) {
-	return(0);
-    }
-    if((xmlSecKeyGetType(key) & keyType) == 0) {
-	 return(0);
-    }
+    xmlSecAssert2(keyReq != NULL, -1);
+    
     if((name != NULL) && (!xmlStrEqual(xmlSecKeyGetName(key), name))) {
 	return(0);
     }
-    return(1);
+    return(xmlSecKeyReqMatchKey(keyReq, key));
 }
 
 xmlSecKeyDataType 

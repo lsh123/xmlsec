@@ -14,7 +14,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
@@ -57,7 +56,7 @@ static int	xmlSecOpenSSLEvpSignatureCheckId		(xmlSecTransformPtr transform);
 static int	xmlSecOpenSSLEvpSignatureInitialize		(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLEvpSignatureFinalize		(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLEvpSignatureSetKeyReq		(xmlSecTransformPtr transform, 
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+								 xmlSecKeyReqPtr keyReq);
 static int	xmlSecOpenSSLEvpSignatureSetKey			(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLEvpSignatureVerify			(xmlSecTransformPtr transform, 
@@ -186,24 +185,24 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 }
 
 static int  
-xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
-    keyInfoCtx->keyId 	     = ctx->keyId;
+    keyReq->keyId 	     = ctx->keyId;
     if(transform->encode) {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePrivate;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
+        keyReq->keyType  = xmlSecKeyDataTypePrivate;
+	keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePublic;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageVerify;
+        keyReq->keyType  = xmlSecKeyDataTypePublic;
+	keyReq->keyUsage = xmlSecKeyUsageVerify;
     }
     return(0);
 }

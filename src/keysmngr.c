@@ -306,7 +306,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyDataStorePtr store, const xmlChar* name,
     size = xmlSecPtrListGetSize(list);
     for(pos = 0; pos < size; ++pos) {
 	key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, pos);
-	if((key != NULL) && (xmlSecKeyVerify(key, name, keyInfoCtx->keyId, keyInfoCtx->keyType) == 1)) {
+	if((key != NULL) && (xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq)) == 1)) {
 	    return(key);
 	}
     }
@@ -347,9 +347,9 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
     }
     
     memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
-    keyInfoCtx.keyId 		= xmlSecKeyDataIdUnknown;
-    keyInfoCtx.keyType		= xmlSecKeyDataTypeAny;
-    keyInfoCtx.keyUsage 	= xmlSecKeyDataUsageAny;
+    keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
+    keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;
+    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
     keyInfoCtx.retrievalsLevel 	= 0;
     keyInfoCtx.encKeysLevel 	= 1;
     
@@ -459,9 +459,9 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     
     
     memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
-    keyInfoCtx.keyId 		= xmlSecKeyDataIdUnknown;
-    keyInfoCtx.keyType		= type;
-    keyInfoCtx.keyUsage 	= xmlSecKeyDataUsageAny;
+    keyInfoCtx.keyReq.keyId 	= xmlSecKeyDataIdUnknown;
+    keyInfoCtx.keyReq.keyType	= type;
+    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
     keyInfoCtx.retrievalsLevel 	= 0;
     keyInfoCtx.encKeysLevel 	= 1;
 

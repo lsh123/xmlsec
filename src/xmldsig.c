@@ -891,7 +891,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	xmlSecKeyInfoCtxPtr keyInfoCtx;
 
 	keyInfoCtx = &(result->ctx->keyInfoCtx);	
-	ret = xmlSecTransformSetKeyReq(signMethod, keyInfoCtx);
+	ret = xmlSecTransformSetKeyReq(signMethod, &(keyInfoCtx->keyReq));
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -924,7 +924,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     if(sign && (keyInfoNode != NULL)) {
 	/* update KeyInfo! */
 	/* todo: do we want to write anything else??? */
-	result->ctx->keyInfoCtx.keyType = xmlSecKeyDataTypePublic;
+	result->ctx->keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, 
 		    		     result->key, 
 				     &result->ctx->keyInfoCtx);

@@ -1245,6 +1245,16 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 	    }
 	    
 	    /* todo: verify that the key matches our expectations */
+	    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			    "xmlSecKeyReqMatchKeyValue",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecKeyDataDestroy(keyValue);
+		return(-1);
+	    }	
+	        
 	    ret = xmlSecKeySetValue(key, keyValue);
     	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1252,6 +1262,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 			    "xmlSecKeySetValue",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecKeyDataDestroy(keyValue);
 		return(-1);
 	    }	    
 	}	

@@ -22,7 +22,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
@@ -51,7 +50,7 @@
 static int 	xmlSecOpenSSLKWAesInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLKWAesFinalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLKWAesSetKeyReq			(xmlSecTransformPtr transform, 
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+								 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecOpenSSLKWAesSetKey			(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLKWAesExecute			(xmlSecTransformPtr transform, 
@@ -202,17 +201,17 @@ xmlSecOpenSSLKWAesFinalize(xmlSecTransformPtr transform) {
 }
 
 static int  
-xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataAesId;
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId 	 = xmlSecOpenSSLKeyDataAesId;
+    keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
+	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
+	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
     
     return(0);

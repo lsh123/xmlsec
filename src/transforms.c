@@ -232,16 +232,16 @@ xmlSecTransformSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
         
-    keyInfoCtx->keyId 	= xmlSecKeyDataIdUnknown;
-    keyInfoCtx->keyType = xmlSecKeyDataTypeUnknown;
-    keyInfoCtx->keyUsage= xmlSecKeyUsageAny;
+    keyReq->keyId 	= xmlSecKeyDataIdUnknown;
+    keyReq->keyType = xmlSecKeyDataTypeUnknown;
+    keyReq->keyUsage= xmlSecKeyUsageAny;
     
     if(transform->id->setKeyReq != NULL) {
-	return((transform->id->setKeyReq)(transform, keyInfoCtx));
+	return((transform->id->setKeyReq)(transform, keyReq));
     }
     return(0);
 }

@@ -26,7 +26,6 @@
 #include <xmlsec/buffer.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/strings.h>
@@ -63,7 +62,7 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
 static int 	xmlSecOpenSSLRsaPkcs1Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaPkcs1Finalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLRsaPkcs1SetKeyReq			(xmlSecTransformPtr transform, 
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+								 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecOpenSSLRsaPkcs1SetKey			(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLRsaPkcs1Execute			(xmlSecTransformPtr transform, 
@@ -134,23 +133,23 @@ xmlSecOpenSSLRsaPkcs1Finalize(xmlSecTransformPtr transform) {
 }
 
 static int  
-xmlSecOpenSSLRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecOpenSSLRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
+    keyReq->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
     if(transform->encode) {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePublic;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
+        keyReq->keyType  = xmlSecKeyDataTypePublic;
+	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePrivate;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
+        keyReq->keyType  = xmlSecKeyDataTypePrivate;
+	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }    
     return(0);
 }
@@ -373,7 +372,7 @@ static void 	xmlSecOpenSSLRsaOaepFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLRsaOaepReadNode			(xmlSecTransformPtr transform, 
 								 xmlNodePtr node);
 static int  	xmlSecOpenSSLRsaOaepSetKeyReq			(xmlSecTransformPtr transform, 
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+								 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecOpenSSLRsaOaepSetKey			(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLRsaOaepExecute			(xmlSecTransformPtr transform, 
@@ -527,23 +526,23 @@ xmlSecOpenSSLRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
 }
 
 static int  
-xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
+    keyReq->keyId 	 = xmlSecOpenSSLKeyDataRsaId;
     if(transform->encode) {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePublic;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
+        keyReq->keyType  = xmlSecKeyDataTypePublic;
+	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePrivate;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
+        keyReq->keyType  = xmlSecKeyDataTypePrivate;
+	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
     
     return(0);

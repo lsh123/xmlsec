@@ -923,7 +923,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 	goto done;
     } 
 
-    ret = xmlSecKeyDataBinRead(keyInfoCtx->keyId, key,
+    ret = xmlSecKeyDataBinRead(keyInfoCtx->keyReq.keyId, key,
 			   xmlSecBufferGetData(encResult->buffer),
 			   xmlSecBufferGetSize(encResult->buffer),
 			   keyInfoCtx);
@@ -951,7 +951,7 @@ done:
 static int 
 xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecEncCtxPtr encCtx = NULL;
-    xmlSecKeyDataType type;
+    xmlSecKeyReq keyReq;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
     int ret;
@@ -972,9 +972,11 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     }
 
     /* dump key to a binary buffer */
-    /* TODO: parameter for enc key type? */
-    type = keyInfoCtx->keyType;
-    keyInfoCtx->keyType = xmlSecKeyDataTypeAny;
+
+    /* remeber key parameters we have */
+    xmlSecKeyReqCopy(&keyReq, &(keyInfoCtx->keyReq));
+    xmlSecKeyReqInitialize(&(keyInfoCtx->keyReq));
+    keyInfoCtx->keyReq.keyType = xmlSecKeyDataTypeAny;
     ret = xmlSecKeyDataBinWrite(key->value->id, key, &keyBuf, &keySize, keyInfoCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -984,7 +986,8 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
-    keyInfoCtx->keyType = type;
+    /* restore key requirements */
+    xmlSecKeyReqCopy(&(keyInfoCtx->keyReq), &keyReq);
     
     /**
      * Init Enc context

@@ -1138,7 +1138,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	xmlSecKeyInfoCtxPtr keyInfoCtx;
 
 	keyInfoCtx = &(result->ctx->keyInfoCtx);	
-	ret = xmlSecTransformSetKeyReq(encryptionMethod, keyInfoCtx);
+	ret = xmlSecTransformSetKeyReq(encryptionMethod, &(keyInfoCtx->keyReq));
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -1171,7 +1171,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     if(result->encrypt && (keyInfoNode != NULL)) {
 	/* update KeyInfo! */
 	/* todo: do we want to write anything else??? */
-	result->ctx->keyInfoCtx.keyType = xmlSecKeyDataTypePublic;
+	result->ctx->keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, 
 		    		     result->key, 
 				     &result->ctx->keyInfoCtx);

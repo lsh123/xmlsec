@@ -20,7 +20,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
@@ -59,7 +58,7 @@ static void	xmlSecOpenSSLHmacFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLHmacReadNode			(xmlSecTransformPtr transform,
 								 xmlNodePtr transformNode);
 static int  	xmlSecOpenSSLHmacSetKeyReq			(xmlSecTransformPtr transform, 
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+								 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecOpenSSLHmacSetKey				(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLHmacVerify				(xmlSecTransformPtr transform, 
@@ -182,17 +181,17 @@ xmlSecOpenSSLHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode
 
 
 static int  
-xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecOpenSSLKeyDataHmacId;
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId 	 = xmlSecOpenSSLKeyDataHmacId;
+    keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
+	keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageVerify;
+	keyReq->keyUsage = xmlSecKeyUsageVerify;
     }
     
     return(0);

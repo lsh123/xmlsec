@@ -61,7 +61,7 @@ static void 	xmlSecNssHmacFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecNssHmacReadNode			(xmlSecTransformPtr transform,
 							 xmlNodePtr transformNode);
 static int  	xmlSecNssHmacSetKeyReq			(xmlSecTransformPtr transform, 
-							 xmlSecKeyInfoCtxPtr keyInfoCtx);
+							 xmlSecKeyReqPtr keyReq);
 static int  	xmlSecNssHmacSetKey			(xmlSecTransformPtr transform, 
 							 xmlSecKeyPtr key);
 static int	xmlSecNssHmacVerify			(xmlSecTransformPtr transform, 
@@ -176,22 +176,22 @@ xmlSecNssHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 
 
 static int  
-xmlSecNssHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecNssHmacCtxPtr ctx;
 
     xmlSecAssert2(xmlSecNssHmacCheckId(transform), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssHmacSize), -1);
 
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyInfoCtx->keyId 	 = xmlSecNssKeyDataHmacId;
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId  = xmlSecNssKeyDataHmacId;
+    keyReq->keyType= xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
+	keyReq->keyUsage = xmlSecKeyUsageSign;
     } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageVerify;
+	keyReq->keyUsage = xmlSecKeyUsageVerify;
     }
     
     return(0);

@@ -1,22 +1,37 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
 <!ENTITY xmlsec-base64 SYSTEM "sgml/base64.sgml">
-<!ENTITY xmlsec-io SYSTEM "sgml/io.sgml">
+<!ENTITY xmlsec-buffer SYSTEM "sgml/buffer.sgml">
 <!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">
+<!ENTITY xmlsec-io SYSTEM "sgml/io.sgml">
 <!ENTITY xmlsec-keyinfo SYSTEM "sgml/keyinfo.sgml">
-<!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
 <!ENTITY xmlsec-keysdata SYSTEM "sgml/keysdata.sgml">
+<!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
 <!ENTITY xmlsec-keysmngr SYSTEM "sgml/keysmngr.sgml">
+<!ENTITY xmlsec-list SYSTEM "sgml/list.sgml">
 <!ENTITY xmlsec-membuf SYSTEM "sgml/membuf.sgml">
 <!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
+<!ENTITY xmlsec-parser SYSTEM "sgml/parser.sgml">
 <!ENTITY xmlsec-templates SYSTEM "sgml/templates.sgml">
 <!ENTITY xmlsec-transforms SYSTEM "sgml/transforms.sgml">
-<!ENTITY xmlsec-strings SYSTEM "sgml/strings.sgml">
 <!ENTITY xmlsec-version SYSTEM "sgml/version.sgml">
-<!ENTITY xmlsec-x509 SYSTEM "sgml/x509.sgml">
 <!ENTITY xmlsec-xmldsig SYSTEM "sgml/xmldsig.sgml">
 <!ENTITY xmlsec-xmlenc SYSTEM "sgml/xmlenc.sgml">
 <!ENTITY xmlsec-xmlsec SYSTEM "sgml/xmlsec.sgml">
 <!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
+
+<!ENTITY xmlsec-openssl-app SYSTEM "sgml/openssl/app.sgml">
+<!ENTITY xmlsec-openssl-bn SYSTEM "sgml/openssl/bn.sgml">
+<!ENTITY xmlsec-openssl-crypto SYSTEM "sgml/openssl/crypto.sgml">
+<!ENTITY xmlsec-openssl-x509 SYSTEM "sgml/openssl/x509.sgml">
+<!ENTITY xmlsec-openssl-symbols SYSTEM "sgml/openssl/symbols.sgml">
+
+<!ENTITY xmlsec-gnutls-app SYSTEM "sgml/gnutls/app.sgml">
+<!ENTITY xmlsec-gnutls-crypto SYSTEM "sgml/gnutls/crypto.sgml">
+<!ENTITY xmlsec-gnutls-symbols SYSTEM "sgml/gnutls/symbols.sgml">
+
+<!ENTITY xmlsec-nss-app SYSTEM "sgml/nss/app.sgml">
+<!ENTITY xmlsec-nss-crypto SYSTEM "sgml/nss/crypto.sgml">
+<!ENTITY xmlsec-nss-symbols SYSTEM "sgml/nss/symbols.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -33,20 +48,19 @@
       </author>
     </authorgroup>
     <copyright>
-      <year>2002</year>
+      <year>2002-2003</year>
       <holder>Aleksey Sanin</holder>
     </copyright>	
     <legalnotice>
       <para>Permission is granted to make and distribute verbatim
       copies of this manual provided the copyright notice and this
       permission notice are preserved on all copies.</para>
-
       <para>Permission is granted to copy and distribute modified
       versions of this manual under the conditions for verbatim
       copying, provided also that the entire resulting derived work is
       distributed under the terms of a permission notice identical to
       this one.</para>
-
+      
       <para>Permission is granted to copy and distribute translations
       of this manual into another language, under the above conditions
       for modified versions.</para>
@@ -57,55 +71,212 @@
       library and has some short notes to help get you up to speed
       with using the library.</para>
     </abstract>
-
   </bookinfo>
 
   <chapter id="xmlsec-notes">
-     <title>XML Security Library Programming Notes</title>
-
-     <para>XML Security Library combines the power of 
-     <ulink url="http://www.openssl.org">OpenSSL</ulink> and 
-     <ulink url="http://www.xmlsoft.org">LibXML2</ulink>
-     libraries and provides implementation for major XML Security 
-     standards: 
-     <ulink url="http://www.w3.org/Signature/">XML Digital Signature</ulink> 
-     and
-     <ulink url="http://www.w3.org/Encryption/">XML Encrytpion</ulink>.   
-    </para>
+    <title>XML Security Library Programming Notes</title>
+    <sect1 id="xmlsec-notes-overview">
+	<title>Overview.</title>
+	<para>XML Security Library provides support for XML Digital Signature 
+	and XML Encryption. It is based on LibXML/LibXSLT and can use
+	practicaly any crypto library (currently there is "out of the box" 
+	support for OpenSSL, GnuTLS and NSS).
+	</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-structure">
+	<title>XML Security Library Structure.</title>
+	<para>In order to provide the an ability to use different crypto engines, 
+	the XML Security Library is splitted in two parts: core library (xmlsec)
+	and crypto library (xmlsec-openssl, xmlsec-gnutls, xmlsec-nss, ...). 
+	<figure>
+	    <title>The library structure and dependencies.</title>
+	    <graphic fileref="images/structure.png" align="center" />
+	</figure>	 
+	</para>
+	<para>The core library has no dependency on any crypto library and provides 
+	implementation of all the engines as well as support for all the non 
+	crypto transforms (xml parser, c14n transforms, xpath and xslt 
+	transforms,...). The XML Security Crypto library provides 
+	implementations for crypto transforms, crypto keys data and key 
+	data stores. Application is linked with particular XML Security 
+	Crypto library (or even libraries), but the actual application 
+	code might be general enough so switching crypto engine would be 
+	a matter of changing several #include directives.</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-init-shutdown">
+      <title>Initialization and shutdown.</title>
+      <para>TODO: example</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-sign-encrypt">
+      <title>Signing and encrypting documents.</title>
+	<para>XML Security Library performs signature or encryption by processing 
+	input xml or binary data and a template that specifies a signature or 
+	encryption skeleton: the transforms, algorithms, the key selection 
+	process. A template has the same structure as the desired result but 
+	some of the nodes are empty. XML Security Library gets the key for 
+	signature/encryption from keys managers using the information from 
+	the template, does necessary computations and puts the results in 
+	the template. Signature or encryption context controls the whole 
+	process and stores the required temporary data.
+	  <figure>
+	    <title>The signature or encryption processing model.</title>
+	    <graphic fileref="images/sign-enc-model.png" align="center" />
+	  </figure>
+	</para>
+	<para>The typical siganture or encryption process includes following steps:
+	  <itemizedlist>
+	    <listitem><para>
+		Prepare data for signature or encryption.
+	    </para></listitem>
+	    <listitem><para>
+		Create or load signature/encryption template.
+	    </para></listitem>
+	    <listitem><para>
+		Initialize signature/encryption context.
+	    </para></listitem>
+	    <listitem><para>
+		Load signature/encryption key in keys manager or generate
+		a sesison key and set it in the signature/encryption context.
+	    </para></listitem>
+	    <listitem><para>
+		Select signature/encryption start node.
+	    </para></listitem>
+	    <listitem><para>
+		Call one of signature/encrypiton functions.
+	    </para></listitem>
+	    <listitem><para>
+		Check returned value and if necessary consume returned
+		signed/encrypted data from the context.
+	    </para></listitem>
+	  </itemizedlist>
+	</para>
+	<para>TODO: example signature</para>
+	<para>TODO: example encryption</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-verify-decrypt">
+      <title>Verifing and decrypting documents.</title>
+	<para>Since the template is just an XML file, it might be created in advance 
+	and saved in a file. It's also possible for application to create 
+	templates without using XML Security Library functions. Also in some 
+	cases template should be inserted in the signed or encrypted data 
+	(for example, if you want to create an enveloped or enveloping 
+	signature).</para>
+	<para>Signature verification and data decryption do not require template 
+	because all the necessary information is provided in the signed or 
+	encrypted document.
+    	  <figure>
+	    <title>The verification or decryption processing model.</title>
+	    <graphic fileref="images/verif-dec-model.png" align="center" />
+	  </figure>	 
+	</para>
+	<para>The typical siganture verification or decryption process includes following steps:
+	  <itemizedlist>
+	    <listitem><para>
+		Initialize keys manager with keys, X509 certificates, etc.
+	    </para></listitem>
+	    <listitem><para>
+		Initialize signature/encryption context.
+	    </para></listitem>
+	    <listitem><para>
+		Select verification/decryption start node in the signed/encrypted data.
+	    </para></listitem>
+	    <listitem><para>
+		Call verification/decrypiton functions.
+	    </para></listitem>
+	    <listitem><para>
+		Check returned value and if necessary consume returned
+		verified/decrypted data from the context.
+	    </para></listitem>
+	  </itemizedlist>
+	</para>
+	<para>TODO: example signature</para>
+	<para>TODO: example encryption</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-keysmngr">
+        <title>Keys and keys manager.</title>
+	<para>TODO: example</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-transforms">
+	<title>Transforms and transforms chain.</title>
+	<para>TODO: example</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-templates">
+	<title>Creating dynamic templates.</title>
+	<para>TODO: example signature</para>
+	<para>TODO: example encryption</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-cusomize-signature">
+	<title>Customizing signature and verification process.</title>
+	<para>TODO: example</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-customize-encryption">
+	<title>Customizing encryption and decryption process.</title>
+	<para>TODO: example</para>
+    </sect1>
+    <sect1 id="xmlsec-notes-new-crypto-library">
+        <title>Supporting new cryptographic library.</title>
+        <para>This section contains information for developers who wish to use
+    	XML Security Library with a new crypto engine.
+        </para>
+	<para>TODO: example</para>
+    </sect1>
   </chapter>
 
   <chapter id="xmlsec-ref">
-    <title>XML Security Library Reference</title>
+    <title>XML Security Library API Reference</title>
     <para>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
-    &xmlsec-xmlsec;
-    &xmlsec-xmldsig;
-    &xmlsec-xmlenc;
-    &xmlsec-errors;
-    &xmlsec-keyinfo;
-    &xmlsec-keys;
-    &xmlsec-keysdata;
-    &xmlsec-keysmngr;
-    &xmlsec-templates;
-    &xmlsec-transforms;
-    &xmlsec-strings;
-    &xmlsec-version;
-    &xmlsec-x509;
-  </chapter>
-  <chapter id="xmlsec-ref-int">
-    <title>XML Security Library Internal Functions Reference</title>
-    <para>This section contains the internal API reference for xmlsec
-    developers. This reference guide is build by extracting comments 
-    from the code sources. </para>
+
     &xmlsec-base64;
+    &xmlsec-buffer;
+    &xmlsec-errors;
     &xmlsec-io;
+    &xmlsec-keyinfo;
+    &xmlsec-keysdata;
+    &xmlsec-keys;
+    &xmlsec-keysmngr;
+    &xmlsec-list;
     &xmlsec-membuf;
     &xmlsec-nodeset;
+    &xmlsec-parser;
+    &xmlsec-templates;
+    &xmlsec-transforms;
+    &xmlsec-version;
+    &xmlsec-xmldsig;
+    &xmlsec-xmlenc;
+    &xmlsec-xmlsec;
     &xmlsec-xmltree;
   </chapter>
 
+  <chapter id="xmlsec-openssl-ref">
+    <title>XML Security Library for OpenSLL API Reference</title>
+    <para>This section contains the API reference for xmlsec-openssl. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+    
+    &xmlsec-openssl-app;
+    &xmlsec-openssl-bn;
+    &xmlsec-openssl-crypto;
+    &xmlsec-openssl-x509;
+  </chapter>
+
+  <chapter id="xmlsec-gnutls-ref">
+    <title>XML Security Library for GnuTLS API Reference</title>
+    <para>This section contains the API reference for xmlsec-gnutls. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+    &xmlsec-gnutls-app;
+    &xmlsec-gnutls-crypto;
+  </chapter>
+
+  <chapter id="xmlsec-nss-ref">
+    <title>XML Security Library for NSS API Reference</title>
+    <para>This section contains the API reference for xmlsec-nss. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+    &xmlsec-nss-app;
+    &xmlsec-nss-crypto;
+  </chapter>
 </book>
-
-
 

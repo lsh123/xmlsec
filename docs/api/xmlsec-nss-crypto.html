@@ -1,0 +1,308 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>crypto</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library for NSS API Reference" href="xmlsec-nss-ref.html">
+<link rel="PREVIOUS" title="app" href="xmlsec-nss-app.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-app.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"> </td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-NSS-CRYPTO"></a>crypto</h1>
+<div class="REFNAMEDIV">
+<a name="AEN14227"></a><h2>Name</h2>crypto -- </div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN14230"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+
+int         <a href="xmlsec-nss-crypto.html#XMLSECNSSINIT">xmlSecNssInit</a>                   (void);
+int         <a href="xmlsec-nss-crypto.html#XMLSECNSSSHUTDOWN">xmlSecNssShutdown</a>               (void);
+int         <a href="xmlsec-nss-crypto.html#XMLSECNSSGENERATERANDOM">xmlSecNssGenerateRandom</a>         (<font>xmlSecBufferPtr</font> buffer,
+                                             <font>size_t</font> sizeBytes);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAAESID">xmlSecNssKeyDataAesId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAAESGETKLASS">xmlSecNssKeyDataAesGetKlass</a> (void);
+int         <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAAESSET">xmlSecNssKeyDataAesSet</a>          (<font>xmlSecKeyDataPtr</font> data,
+                                             unsigned char *buf,
+                                             <font>size_t</font> bufSize);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES128CBCID">xmlSecNssTransformAes128CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES128CBCGETKLASS">xmlSecNssTransformAes128CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES192CBCID">xmlSecNssTransformAes192CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES192CBCGETKLASS">xmlSecNssTransformAes192CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES256CBCID">xmlSecNssTransformAes256CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES256CBCGETKLASS">xmlSecNssTransformAes256CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADESID">xmlSecNssKeyDataDesId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADESGETKLASS">xmlSecNssKeyDataDesGetKlass</a> (void);
+int         <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADESSET">xmlSecNssKeyDataDesSet</a>          (<font>xmlSecKeyDataPtr</font> data,
+                                             unsigned char *buf,
+                                             <font>size_t</font> bufSize);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMDES3CBCID">xmlSecNssTransformDes3CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMDES3CBCGETKLASS">xmlSecNssTransformDes3CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACID">xmlSecNssKeyDataHmacId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACGETKLASS">xmlSecNssKeyDataHmacGetKlass</a>
+                                            (void);
+int         <a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACSET">xmlSecNssKeyDataHmacSet</a>         (<font>xmlSecKeyDataPtr</font> data,
+                                             unsigned char *buf,
+                                             <font>size_t</font> bufSize);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACSHA1ID">xmlSecNssTransformHmacSha1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACSHA1GETKLASS">xmlSecNssTransformHmacSha1GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACRIPEMD160ID">xmlSecNssTransformHmacRipemd160Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACRIPEMD160GETKLASS">xmlSecNssTransformHmacRipemd160GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACMD5ID">xmlSecNssTransformHmacMd5Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACMD5GETKLASS">xmlSecNssTransformHmacMd5GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1ID">xmlSecNssTransformSha1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1GETKLASS">xmlSecNssTransformSha1GetKlass</a>
+                                            (void);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN14280"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN14283"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN14285"></a><h3>
+<a name="XMLSECNSSINIT"></a>xmlSecNssInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssInit                   (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14289"></a><h3>
+<a name="XMLSECNSSSHUTDOWN"></a>xmlSecNssShutdown ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssShutdown               (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14293"></a><h3>
+<a name="XMLSECNSSGENERATERANDOM"></a>xmlSecNssGenerateRandom ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssGenerateRandom         (<font>xmlSecBufferPtr</font> buffer,
+                                             <font>size_t</font> sizeBytes);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14299"></a><h3>
+<a name="XMLSECNSSKEYDATAAESID"></a>xmlSecNssKeyDataAesId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataAesId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14303"></a><h3>
+<a name="XMLSECNSSKEYDATAAESGETKLASS"></a>xmlSecNssKeyDataAesGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataAesGetKlass (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14308"></a><h3>
+<a name="XMLSECNSSKEYDATAAESSET"></a>xmlSecNssKeyDataAesSet ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeyDataAesSet          (<font>xmlSecKeyDataPtr</font> data,
+                                             unsigned char *buf,
+                                             <font>size_t</font> bufSize);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14314"></a><h3>
+<a name="XMLSECNSSTRANSFORMAES128CBCID"></a>xmlSecNssTransformAes128CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes128CbcId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14318"></a><h3>
+<a name="XMLSECNSSTRANSFORMAES128CBCGETKLASS"></a>xmlSecNssTransformAes128CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes128CbcGetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14323"></a><h3>
+<a name="XMLSECNSSTRANSFORMAES192CBCID"></a>xmlSecNssTransformAes192CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes192CbcId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14327"></a><h3>
+<a name="XMLSECNSSTRANSFORMAES192CBCGETKLASS"></a>xmlSecNssTransformAes192CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes192CbcGetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14332"></a><h3>
+<a name="XMLSECNSSTRANSFORMAES256CBCID"></a>xmlSecNssTransformAes256CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformAes256CbcId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14336"></a><h3>
+<a name="XMLSECNSSTRANSFORMAES256CBCGETKLASS"></a>xmlSecNssTransformAes256CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformAes256CbcGetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14341"></a><h3>
+<a name="XMLSECNSSKEYDATADESID"></a>xmlSecNssKeyDataDesId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataDesId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14345"></a><h3>
+<a name="XMLSECNSSKEYDATADESGETKLASS"></a>xmlSecNssKeyDataDesGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataDesGetKlass (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14350"></a><h3>
+<a name="XMLSECNSSKEYDATADESSET"></a>xmlSecNssKeyDataDesSet ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeyDataDesSet          (<font>xmlSecKeyDataPtr</font> data,
+                                             unsigned char *buf,
+                                             <font>size_t</font> bufSize);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14356"></a><h3>
+<a name="XMLSECNSSTRANSFORMDES3CBCID"></a>xmlSecNssTransformDes3CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformDes3CbcId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14360"></a><h3>
+<a name="XMLSECNSSTRANSFORMDES3CBCGETKLASS"></a>xmlSecNssTransformDes3CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformDes3CbcGetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14365"></a><h3>
+<a name="XMLSECNSSKEYDATAHMACID"></a>xmlSecNssKeyDataHmacId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssKeyDataHmacId</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14369"></a><h3>
+<a name="XMLSECNSSKEYDATAHMACGETKLASS"></a>xmlSecNssKeyDataHmacGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecNssKeyDataHmacGetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14374"></a><h3>
+<a name="XMLSECNSSKEYDATAHMACSET"></a>xmlSecNssKeyDataHmacSet ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssKeyDataHmacSet         (<font>xmlSecKeyDataPtr</font> data,
+                                             unsigned char *buf,
+                                             <font>size_t</font> bufSize);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14380"></a><h3>
+<a name="XMLSECNSSTRANSFORMHMACSHA1ID"></a>xmlSecNssTransformHmacSha1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacSha1Id</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14384"></a><h3>
+<a name="XMLSECNSSTRANSFORMHMACSHA1GETKLASS"></a>xmlSecNssTransformHmacSha1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacSha1GetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14389"></a><h3>
+<a name="XMLSECNSSTRANSFORMHMACRIPEMD160ID"></a>xmlSecNssTransformHmacRipemd160Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacRipemd160Id</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14393"></a><h3>
+<a name="XMLSECNSSTRANSFORMHMACRIPEMD160GETKLASS"></a>xmlSecNssTransformHmacRipemd160GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacRipemd160GetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14398"></a><h3>
+<a name="XMLSECNSSTRANSFORMHMACMD5ID"></a>xmlSecNssTransformHmacMd5Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformHmacMd5Id</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14402"></a><h3>
+<a name="XMLSECNSSTRANSFORMHMACMD5GETKLASS"></a>xmlSecNssTransformHmacMd5GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformHmacMd5GetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14407"></a><h3>
+<a name="XMLSECNSSTRANSFORMSHA1ID"></a>xmlSecNssTransformSha1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNssTransformSha1Id</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN14411"></a><h3>
+<a name="XMLSECNSSTRANSFORMSHA1GETKLASS"></a>xmlSecNssTransformSha1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecNssTransformSha1GetKlass
+                                            (void);</pre></td></tr></table>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-app.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-nss-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"> </td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>app</b></font></td>
+<td colspan="2" align="right"> </td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

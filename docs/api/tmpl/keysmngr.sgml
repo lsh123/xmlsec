@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-keysmngr.h
+keysmngr
 
 <!-- ##### SECTION Short_Description ##### -->
-The simple keys manager implementation.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -89,12 +89,6 @@ The simple keys manager implementation.
 @keyInfoNode: 
 @keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@mngr: 
-@context: 
-@keyId: 
-@type: 
-@usage: 
 
 
 <!-- ##### STRUCT xmlSecKeysMngr ##### -->
@@ -114,12 +108,6 @@ The simple keys manager implementation.
 @keyInfoNode: 
 @keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@mngr: 
-@context: 
-@keyId: 
-@keyType: 
-@keyUsage: 
 
 
 <!-- ##### STRUCT xmlSecKeyStore ##### -->

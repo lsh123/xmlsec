@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-keys.h
+keys
 
 <!-- ##### SECTION Short_Description ##### -->
-The keys helper functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -138,9 +138,6 @@ The keys helper functions.
 </para>
 
 @Returns: 
-<!-- # Unused Parameters # -->
-@id: 
-@origin: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDestroy ##### -->
@@ -166,8 +163,6 @@ The keys helper functions.
 
 @key: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@origin: 
 
 
 <!-- ##### FUNCTION xmlSecKeyCopy ##### -->

@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-version.h
+version
 
 <!-- ##### SECTION Short_Description ##### -->
-The library version infromation.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

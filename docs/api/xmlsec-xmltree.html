@@ -1,12 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>xmltree.h</title>
+<title>xmltree</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="UP" title="XML Security Library Internal Functions Reference" href="xmlsec-ref-int.html">
-<link rel="PREVIOUS" title="nodeset.h" href="xmlsec-nodeset.html">
+<link rel="UP" title="XML Security Library API Reference" href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="xmlsec" href="xmlsec-xmlsec.html">
+<link rel="NEXT" title="XML Security Library for OpenSLL API Reference" href="xmlsec-openssl-ref.html">
 </head>
 <body><table witdh="100%"><tr>
 <td valign="top" align="left" width="210">
@@ -36,18 +37,18 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nodeset.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmlsec.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"> </td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <h1>
-<a name="XMLSEC-XMLTREE"></a>xmltree.h</h1>
+<a name="XMLSEC-XMLTREE"></a>xmltree</h1>
 <div class="REFNAMEDIV">
-<a name="AEN11007"></a><h2>Name</h2>xmltree.h -- The XML tree helper functions.</div>
+<a name="AEN12620"></a><h2>Name</h2>xmltree -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN11010"></a><h2>Synopsis</h2>
+<a name="AEN12623"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-xmltree.html#XMLSECNODEGETNAME">xmlSecNodeGetName</a>               (node)
@@ -88,34 +89,35 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 #define     <a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a>                    (c)</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN11069"></a><h2>Description</h2>
+<a name="AEN12682"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN11072"></a><h2>Details</h2>
+<a name="AEN12685"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN11074"></a><h3>
+<a name="AEN12687"></a><h3>
 <a name="XMLSECNODEGETNAME"></a>xmlSecNodeGetName()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNodeGetName(node)</pre></td></tr></table>
+<p>Macro. Returns node's name.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11079"></a><p></p>
+<a name="AEN12693"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to node.</td>
 </tr></tbody></table>
 <p></p>
 </div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11088"></a><h3>
+<a name="AEN12702"></a><h3>
 <a name="XMLSECGETNODENSHREF"></a>xmlSecGetNodeNsHref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecGetNodeNsHref          (const <font>xmlNodePtr</font> cur);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11095"></a><p></p>
+<a name="AEN12709"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -133,7 +135,7 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11108"></a><h3>
+<a name="AEN12722"></a><h3>
 <a name="XMLSECCHECKNODENAME"></a>xmlSecCheckNodeName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCheckNodeName             (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
@@ -141,7 +143,7 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 <p>Checks that the node has a given name and a given namespace href.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11117"></a><p></p>
+<a name="AEN12731"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -169,13 +171,13 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11138"></a><h3>
+<a name="AEN12752"></a><h3>
 <a name="XMLSECGETNEXTELEMENTNODE"></a>xmlSecGetNextElementNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecGetNextElementNode        (<font>xmlNodePtr</font> cur);</pre></td></tr></table>
 <p>Seraches for the next element node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11146"></a><p></p>
+<a name="AEN12760"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -193,7 +195,7 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11159"></a><h3>
+<a name="AEN12773"></a><h3>
 <a name="XMLSECFINDCHILD"></a>xmlSecFindChild ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindChild                 (const <font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
@@ -202,7 +204,7 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 namespace href.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11170"></a><p></p>
+<a name="AEN12784"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -231,7 +233,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11191"></a><h3>
+<a name="AEN12805"></a><h3>
 <a name="XMLSECFINDPARENT"></a>xmlSecFindParent ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindParent                (const <font>xmlNodePtr</font> cur,
                                              const <font>xmlChar</font> *name,
@@ -240,7 +242,7 @@ node is not found.</td>
 and namespace href.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11202"></a><p></p>
+<a name="AEN12816"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -269,7 +271,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11223"></a><h3>
+<a name="AEN12837"></a><h3>
 <a name="XMLSECFINDNODE"></a>xmlSecFindNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecFindNode                  (const <font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
@@ -278,7 +280,7 @@ node is not found.</td>
 namespace href.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11234"></a><p></p>
+<a name="AEN12848"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -307,7 +309,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11255"></a><h3>
+<a name="AEN12869"></a><h3>
 <a name="XMLSECADDCHILD"></a>xmlSecAddChild ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddChild                  (<font>xmlNodePtr</font> parent,
                                              const <font>xmlChar</font> *name,
@@ -315,7 +317,7 @@ node is not found.</td>
 <p>Adds a child to the node <tt class="PARAMETER"><i>parent</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11268"></a><p></p>
+<a name="AEN12882"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -343,7 +345,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11289"></a><h3>
+<a name="AEN12903"></a><h3>
 <a name="XMLSECADDNEXTSIBLING"></a>xmlSecAddNextSibling ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddNextSibling            (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *name,
@@ -351,7 +353,7 @@ node is not found.</td>
 <p>Adds next sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11302"></a><p></p>
+<a name="AEN12916"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -379,7 +381,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11323"></a><h3>
+<a name="AEN12937"></a><h3>
 <a name="XMLSECADDPREVSIBLING"></a>xmlSecAddPrevSibling ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlNodePtr</font>  xmlSecAddPrevSibling            (<font>xmlNodePtr</font> node,
                                              const <font>xmlChar</font> *name,
@@ -387,7 +389,7 @@ node is not found.</td>
 <p>Adds prev sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11336"></a><p></p>
+<a name="AEN12950"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -415,14 +417,14 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11357"></a><h3>
+<a name="AEN12971"></a><h3>
 <a name="XMLSECREPLACENODE"></a>xmlSecReplaceNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNode               (<font>xmlNodePtr</font> node,
                                              <font>xmlNodePtr</font> newNode);</pre></td></tr></table>
 <p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt> in the XML tree.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11367"></a><p></p>
+<a name="AEN12981"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -445,14 +447,14 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11384"></a><h3>
+<a name="AEN12998"></a><h3>
 <a name="XMLSECREPLACECONTENT"></a>xmlSecReplaceContent ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceContent            (<font>xmlNodePtr</font> node,
                                              <font>xmlNodePtr</font> newNode);</pre></td></tr></table>
 <p>Swaps the content of <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11394"></a><p></p>
+<a name="AEN13008"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -475,7 +477,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11411"></a><h3>
+<a name="AEN13025"></a><h3>
 <a name="XMLSECREPLACENODEBUFFER"></a>xmlSecReplaceNodeBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNodeBuffer         (<font>xmlNodePtr</font> node,
                                              unsigned char *buffer,
@@ -483,7 +485,7 @@ node is not found.</td>
 <p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and the parsed XML data from the <tt class="PARAMETER"><i>buffer</i></tt> in the XML tree.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11421"></a><p></p>
+<a name="AEN13035"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -511,7 +513,7 @@ node is not found.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11442"></a><h3>
+<a name="AEN13056"></a><h3>
 <a name="XMLSECADDIDS"></a>xmlSecAddIDs ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecAddIDs                    (<font>xmlDocPtr</font> doc,
                                              <font>xmlNodePtr</font> cur,
@@ -520,7 +522,7 @@ node is not found.</td>
 from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"><i>doc</i></tt> document IDs attributes hash.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11454"></a><p></p>
+<a name="AEN13068"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -543,34 +545,34 @@ from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11471"></a><h3>
+<a name="AEN13085"></a><h3>
 <a name="XMLSECISHEX"></a>xmlSecIsHex()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecIsHex(c)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>c</i></tt> is a hex digit or 0 other wise.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11478"></a><p></p>
+<a name="AEN13092"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>c</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the character.</td>
+<td width="80%" align="LEFT" valign="TOP"> 			the character.</td>
 </tr></tbody></table>
 <p></p>
 </div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11487"></a><h3>
+<a name="AEN13101"></a><h3>
 <a name="XMLSECGETHEX"></a>xmlSecGetHex()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGetHex(c)</pre></td></tr></table>
 <p>Macro. Returns the hex value of the <tt class="PARAMETER"><i>c</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN11494"></a><p></p>
+<a name="AEN13108"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>c</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the character,</td>
+<td width="80%" align="LEFT" valign="TOP"> 			the character,</td>
 </tr></tbody></table>
 <p></p>
 </div>
@@ -579,14 +581,14 @@ from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nodeset.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-xmlsec.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref-int.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"> </td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>nodeset.h</b></font></td>
-<td colspan="2" align="right"> </td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>xmlsec</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library for OpenSLL API Reference</b></font></td>
 </tr>
 </table>
 </div>

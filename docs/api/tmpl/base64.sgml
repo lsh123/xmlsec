@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-base64.h
+base64
 
 <!-- ##### SECTION Short_Description ##### -->
-The BASE64 encode/decode functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

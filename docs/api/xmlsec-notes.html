@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="PREVIOUS" title="XML Security Library Reference Manual" href="index.html">
-<link rel="NEXT" title="XML Security Library Reference" href="xmlsec-ref.html">
+<link rel="NEXT" title="XML Security Library Structure." href="xmlsec-notes-structure.html">
 </head>
 <body><table witdh="100%"><tr>
 <td valign="top" align="left" width="210">
@@ -39,21 +39,35 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="index.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-structure.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <div class="CHAPTER">
 <h1>
 <a name="XMLSEC-NOTES"></a>XML Security Library Programming Notes</h1>
-<p>XML Security Library combines the power of 
-     <a href="http://www.openssl.org" target="_top">OpenSSL</a> and 
-     <a href="http://www.xmlsoft.org" target="_top">LibXML2</a>
-     libraries and provides implementation for major XML Security 
-     standards: 
-     <a href="http://www.w3.org/Signature/" target="_top">XML Digital Signature</a> 
-     and
-     <a href="http://www.w3.org/Encryption/" target="_top">XML Encrytpion</a>.   
-    </p>
+<div class="TOC"><dl>
+<dt><b>Table of Contents</b></dt>
+<dt><a href="xmlsec-notes.html#XMLSEC-NOTES-OVERVIEW">Overview.</a></dt>
+<dt><a href="xmlsec-notes-structure.html">XML Security Library Structure.</a></dt>
+<dt><a href="xmlsec-notes-init-shutdown.html">Initialization and shutdown.</a></dt>
+<dt><a href="xmlsec-notes-sign-encrypt.html">Signing and encrypting documents.</a></dt>
+<dt><a href="xmlsec-notes-verify-decrypt.html">Verifing and decrypting documents.</a></dt>
+<dt><a href="xmlsec-notes-keysmngr.html">Keys and keys manager.</a></dt>
+<dt><a href="xmlsec-notes-transforms.html">Transforms and transforms chain.</a></dt>
+<dt><a href="xmlsec-notes-templates.html">Creating dynamic templates.</a></dt>
+<dt><a href="xmlsec-notes-cusomize-signature.html">Customizing signature and verification process.</a></dt>
+<dt><a href="xmlsec-notes-customize-encryption.html">Customizing encryption and decryption process.</a></dt>
+<dt><a href="xmlsec-notes-new-crypto-library.html">Supporting new cryptographic library.</a></dt>
+</dl></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-OVERVIEW"></a>Overview.</h1>
+<p>XML Security Library provides support for XML Digital Signature 
+	and XML Encryption. It is based on LibXML/LibXSLT and can use
+	practicaly any crypto library (currently there is &quot;out of the box&quot; 
+	support for OpenSSL, GnuTLS and NSS).
+	</p>
+</div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
@@ -61,11 +75,11 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="index.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-structure.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library Reference Manual</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Reference</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Structure.</b></font></td>
 </tr>
 </table>
 </div>

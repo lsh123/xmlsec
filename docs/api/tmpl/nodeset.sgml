@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-nodeset.h
+nodeset
 
 <!-- ##### SECTION Short_Description ##### -->
-The enchanced nodes set imlmentation.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -143,8 +143,6 @@ The enchanced nodes set imlmentation.
 @walkFunc: 
 @data: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@func: 
 
 
 <!-- ##### FUNCTION xmlSecNodeSetDumpTextNodes ##### -->

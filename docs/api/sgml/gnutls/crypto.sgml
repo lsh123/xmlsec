@@ -1,0 +1,215 @@
+<refentry id="xmlsec-gnutls-crypto">
+<refmeta>
+<refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-GNUTLS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>crypto</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+int         <link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link>                (void);
+int         <link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link>            (void);
+int         <link linkend="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</link>      (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
+                                             <link linkend="size-t">size_t</link> sizeBytes);
+#define     <link linkend="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSTransformAes192CbcId">xmlSecGnuTLSTransformAes192CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes192CbcGetKlass">xmlSecGnuTLSTransformAes192CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSTransformAes256CbcId">xmlSecGnuTLSTransformAes256CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes256CbcGetKlass">xmlSecGnuTLSTransformAes256CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSKeyDataDesId">xmlSecGnuTLSKeyDataDesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link>      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass</link>
+                                            (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSInit">xmlSecGnuTLSInit ()</title>
+<programlisting>int         xmlSecGnuTLSInit                (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown ()</title>
+<programlisting>int         xmlSecGnuTLSShutdown            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom ()</title>
+<programlisting>int         xmlSecGnuTLSGenerateRandom      (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
+                                             <link linkend="size-t">size_t</link> sizeBytes);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</title>
+<programlisting>#define     xmlSecGnuTLSKeyDataAesId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecGnuTLSKeyDataAesGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet ()</title>
+<programlisting>int         xmlSecGnuTLSKeyDataAesSet       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</title>
+<programlisting>#define     xmlSecGnuTLSTransformAes128CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformAes128CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformAes192CbcId">xmlSecGnuTLSTransformAes192CbcId</title>
+<programlisting>#define     xmlSecGnuTLSTransformAes192CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformAes192CbcGetKlass">xmlSecGnuTLSTransformAes192CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformAes192CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformAes256CbcId">xmlSecGnuTLSTransformAes256CbcId</title>
+<programlisting>#define     xmlSecGnuTLSTransformAes256CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformAes256CbcGetKlass">xmlSecGnuTLSTransformAes256CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformAes256CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataDesId">xmlSecGnuTLSKeyDataDesId</title>
+<programlisting>#define     xmlSecGnuTLSKeyDataDesId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecGnuTLSKeyDataDesGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet ()</title>
+<programlisting>int         xmlSecGnuTLSKeyDataDesSet       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</title>
+<programlisting>#define     xmlSecGnuTLSTransformDes3CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformDes3CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</title>
+<programlisting>#define     xmlSecGnuTLSKeyDataHmacId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecGnuTLSKeyDataHmacGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet ()</title>
+<programlisting>int         xmlSecGnuTLSKeyDataHmacSet      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</title>
+<programlisting>#define     xmlSecGnuTLSTransformHmacSha1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacSha1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</title>
+<programlisting>#define     xmlSecGnuTLSTransformHmacRipemd160Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacRipemd160GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</title>
+<programlisting>#define     xmlSecGnuTLSTransformHmacMd5Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacMd5GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</title>
+<programlisting>#define     xmlSecGnuTLSTransformSha1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformSha1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

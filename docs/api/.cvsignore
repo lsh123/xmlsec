@@ -7,3 +7,4 @@ Makefile.in
 core
 code
 *.stamp
+*.txt

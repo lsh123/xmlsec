@@ -1,12 +1,12 @@
 <refentry id="xmlsec-base64">
 <refmeta>
-<refentrytitle>base64.h</refentrytitle>
+<refentrytitle>base64</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>base64.h</refname><refpurpose>The BASE64 encode/decode functions.</refpurpose>
+<refname>base64</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -57,7 +57,7 @@ int         <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>        
 <programlisting>#define XMLSEC_BASE64_LINESIZE				64
 </programlisting>
 <para>
-The default max line size for base64 encoding</para>
+The default maximum base64 encoded line size.</para>
 <para>
 
 </para></refsect2>

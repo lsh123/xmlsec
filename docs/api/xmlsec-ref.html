@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Library Reference</title>
+<title>XML Security Library API Reference</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="PREVIOUS" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="NEXT" title="xmlsec.h" href="xmlsec-xmlsec.html">
+<link rel="PREVIOUS" title="Supporting new cryptographic library." href="xmlsec-notes-new-crypto-library.html">
+<link rel="NEXT" title="base64" href="xmlsec-base64.html">
 </head>
 <body><table witdh="100%"><tr>
 <td valign="top" align="left" width="210">
@@ -36,43 +36,55 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto-library.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-xmlsec.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <div class="CHAPTER">
 <h1>
-<a name="XMLSEC-REF"></a>XML Security Library Reference</h1>
+<a name="XMLSEC-REF"></a>XML Security Library API Reference</h1>
 <div class="TOC"><dl>
 <dt><b>Table of Contents</b></dt>
 <dt>
-<a href="xmlsec-xmlsec.html">xmlsec.h</a> -- The library initialization/cleanup functions.</dt>
+<a href="xmlsec-base64.html">base64</a> -- </dt>
 <dt>
-<a href="xmlsec-xmldsig.html">xmldsig.h</a> -- The <a href="http://www.w3.org/Signature/" target="_top">XML Digital Signature</a> 
-standard implementation.</dt>
+<a href="xmlsec-buffer.html">buffer</a> -- </dt>
 <dt>
-<a href="xmlsec-xmlenc.html">xmlenc.h</a> -- The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
-standard implementation.</dt>
+<a href="xmlsec-errors.html">errors</a> -- </dt>
 <dt>
-<a href="xmlsec-errors.html">errors.h</a> -- The errors reporting functions.</dt>
+<a href="xmlsec-io.html">io</a> -- </dt>
 <dt>
-<a href="xmlsec-keyinfo.html">keyinfo.h</a> -- The &lt;dsig:KeyInfo&gt; element manipulation functions.</dt>
-<dt>
-<a href="xmlsec-keys.html">keys.h</a> -- The keys helper functions.</dt>
+<a href="xmlsec-keyinfo.html">keyinfo</a> -- </dt>
 <dt>
 <a href="xmlsec-keysdata.html">keysdata</a> -- </dt>
 <dt>
-<a href="xmlsec-keysmngr.html">keysmngr.h</a> -- The simple keys manager implementation.</dt>
+<a href="xmlsec-keys.html">keys</a> -- </dt>
+<dt>
+<a href="xmlsec-keysmngr.html">keysmngr</a> -- </dt>
+<dt>
+<a href="xmlsec-list.html">list</a> -- </dt>
+<dt>
+<a href="xmlsec-membuf.html">membuf</a> -- </dt>
+<dt>
+<a href="xmlsec-nodeset.html">nodeset</a> -- </dt>
+<dt>
+<a href="xmlsec-parser.html">parser</a> -- </dt>
 <dt>
 <a href="xmlsec-templates.html">templates</a> -- </dt>
 <dt>
-<a href="xmlsec-transforms.html">transforms.h</a> -- The transforms functions.</dt>
+<a href="xmlsec-transforms.html">transforms</a> -- </dt>
 <dt>
-<a href="xmlsec-version.html">version.h</a> -- The library version infromation.</dt>
+<a href="xmlsec-version.html">version</a> -- </dt>
 <dt>
-<a href="xmlsec-x509.html">x509.h</a> -- The X509 certificates functions.</dt>
+<a href="xmlsec-xmldsig.html">xmldsig</a> -- </dt>
+<dt>
+<a href="xmlsec-xmlenc.html">xmlenc</a> -- </dt>
+<dt>
+<a href="xmlsec-xmlsec.html">xmlsec</a> -- </dt>
+<dt>
+<a href="xmlsec-xmltree.html">xmltree</a> -- </dt>
 </dl></div>
 <p>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
@@ -81,14 +93,14 @@ standard implementation.</dt>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto-library.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-xmlsec.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library Programming Notes</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>xmlsec.h</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Supporting new cryptographic library.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>base64</b></font></td>
 </tr>
 </table>
 </div>

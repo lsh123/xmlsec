@@ -15,16 +15,40 @@ DOC_SOURCE_FILES=$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
 all: sgml html
 
 html: sgml xmlsec.sgml
-	gtkdoc-mkhtml $(MODULE) xmlsec.sgml
+	gtkdoc-mkhtml xmlsec xmlsec.sgml
 	
 sgml: templates
-	@gtkdoc-mkdb --module=$(MODULE) --main-sgml-file xmlsec.sgml --source-dir=$(DOC_SOURCE_DIR) 
-
+	@gtkdoc-mkdb --module=xmlsec --main-sgml-file xmlsec.sgml \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
+	@gtkdoc-mkdb --module=xmlsec-openssl --main-sgml-file xmlsec-openssl.sgml \
+		    --tmpl-dir=tmpl/openssl --output-dir=sgml/openssl \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
+	@gtkdoc-mkdb --module=xmlsec-gnutls --main-sgml-file xmlsec-gnutls.sgml \
+		    --tmpl-dir=tmpl/gnutls --output-dir=sgml/gnutls \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
+	@gtkdoc-mkdb --module=xmlsec-nss --main-sgml-file xmlsec-nss.sgml \
+		    --tmpl-dir=tmpl/nss --output-dir=sgml/nss \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
 templates: scan
-	@gtkdoc-mktmpl --module=$(MODULE)
+	@gtkdoc-mktmpl --module=xmlsec 
 	
 scan: doc_sources
-	@gtkdoc-scan --module=$(MODULE)  --source-dir=$(DOC_SOURCE_DIR)
+	@gtkdoc-scan --module=xmlsec \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
+	@gtkdoc-scan --module=xmlsec-openssl \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
+	@gtkdoc-scan --module=xmlsec-gnutls \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
+	@gtkdoc-scan --module=xmlsec-nss \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
 		
 doc_sources: $(DOC_SOURCE_FILES)
 	@(for i in $(DOC_SOURCE_FILES) ; do \
@@ -35,11 +59,16 @@ doc_sources: $(DOC_SOURCE_FILES)
 		sed 's/#if.*//' | \
 		sed 's/#el.*//' | \
 		sed 's/#end.*//' | \
-		sed 's/XMLSEC_EXPORT_VAR/extern/' | \
+		sed 's/XMLSEC_CRYPTO_EXPORT//' | \
+		sed 's/XMLSEC_EXPORT_VAR//' | \
 		sed 's/XMLSEC_EXPORT//' | \
 		sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
 		$(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
-	done)
+	done);
+	@mkdir -p $(DOC_SOURCE_DIR)/src/base
+	@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
+	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
+	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
 
 clean:
 	@rm -rf $(DOC_SOURCE_DIR)
@@ -48,7 +77,10 @@ clean:
 	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
 
 clean-local:
-	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
+	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
 maintainer-clean-local: clean
-	rm -rf sgml/*.sgml *.html xmlsec-decl-list.txt xmlsec-decl.txt xmlsec-sections.txt
+	@rm -rf *.html *.txt \
+	    sgml/*.sgml sgml/openssl/*.sgml \
+	    sgml/gnutls/*.sgml sgml/nss/*.sgml
+	

@@ -1,13 +1,12 @@
 <refentry id="xmlsec-xmlenc">
 <refmeta>
-<refentrytitle>xmlenc.h</refentrytitle>
+<refentrytitle>xmlenc</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>xmlenc.h</refname><refpurpose>The <ulink url="http://www.w3.org/Encryption/">XML Encrypiton</ulink> 
-standard implementation.</refpurpose>
+<refname>xmlenc</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -67,8 +66,25 @@ void        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</l
 } xmlEncCtxMode;
 </programlisting>
 <para>
+The <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> mode.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlEncCtxModeEncryptedData</literal></entry>
+<entry>	the &lt;enc:EncryptedData/&gt; element procesing.
+</entry>
+</row>
+<row>
+<entry><literal>xmlEncCtxModeEncryptedKey</literal></entry>
+<entry>	the &lt;enc:EncryptedKey/&gt; element processing.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
 <programlisting>struct xmlSecEncCtx {
@@ -77,18 +93,18 @@ void        <link linkend="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump</l
     unsigned int		flags;
     unsigned int		flags2;    
     xmlEncCtxMode		mode;
-    xmlSecTransformId		defEncMethodId;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
-    xmlSecTransformCtx		encTransformCtx;
+    xmlSecTransformCtx		transformCtx;
+    xmlSecTransformId		defEncMethodId;
 
     /* these data are returned */
+    xmlSecKeyPtr		encKey;
     xmlSecTransformOperation	operation;
     xmlSecBufferPtr		result;
     int				resultBase64Encoded;
     int				resultReplaced;
     xmlSecTransformPtr		encMethod;
-    xmlSecKeyPtr		encKey;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
@@ -120,133 +136,141 @@ XML Encrypiton context.</para>
 <tbody>
 <row>
 <entry>void *<structfield>userData</structfield></entry>
-<entry>
+<entry>			the pointer to user data (xmlsec and xmlsec-crypto libraries
+			never touches this).
 </entry>
 </row>
 <row>
 <entry>unsigned int <structfield>flags</structfield></entry>
-<entry>
+<entry>			the XML Encryption processing flags.
 </entry>
 </row>
 <row>
 <entry>unsigned int <structfield>flags2</structfield></entry>
-<entry>
+<entry>			the XML Encryption processing flags.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlEncCtxMode">xmlEncCtxMode</link> <structfield>mode</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>defEncMethodId</structfield></entry>
-<entry>
+<entry>			the mode.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoReadCtx</structfield></entry>
-<entry>
+<entry>		the reading key context.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoWriteCtx</structfield></entry>
-<entry>
+<entry>		the writing key context (not used for signature verification).
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>encTransformCtx</structfield></entry>
-<entry>
+<entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>transformCtx</structfield></entry>
+<entry>		the transforms processing context.
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>int <structfield>resultBase64Encoded</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>int <structfield>resultReplaced</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>encMethod</structfield></entry>
-<entry>
+<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>defEncMethodId</structfield></entry>
+<entry>		the default encryption method (used if
+			&lt;enc:EncryptionMethod/&gt; node is not present).
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>encKey</structfield></entry>
-<entry>
+<entry>			the signature key; application may set <link linkend="encKey">encKey</link>
+			before calling encryption/decryption functions.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
+<entry>			the operation: encrypt or decrypt.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
+<entry>			the pointer to signature (not valid for signature verificaction).
+</entry>
+</row>
+<row>
+<entry>int <structfield>resultBase64Encoded</structfield></entry>
+<entry>	the flag: if set then result in <link linkend="result">result</link> is base64 encoded.
+</entry>
+</row>
+<row>
+<entry>int <structfield>resultReplaced</structfield></entry>
+<entry>		the flag: if set then resulted &lt;enc:EncryptedData/&gt;
+			or &lt;enc:EncryptedKey/&gt; node is added to the document.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>encMethod</structfield></entry>
+<entry>			the pointer to encryption transform.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry> the Id attribute of the  &lt;enc:EncryptedData&gt; node.
+<entry>				the ID attribute of &lt;enc:EncryptedData/&gt;
+			or &lt;enc:EncryptedKey/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></entry>
-<entry> the Type attribute of the  &lt;enc:EncryptedData&gt; node.
+<entry>			the Type attribute of &lt;enc:EncryptedData/&gt;
+			or &lt;enc:EncryptedKey/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>mimeType</structfield></entry>
-<entry> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.
+<entry>			the MimeType attribute of &lt;enc:EncryptedData/&gt;
+			or &lt;enc:EncryptedKey/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>encoding</structfield></entry>
-<entry> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.
+<entry>			the Encoding attributeof &lt;enc:EncryptedData/&gt;
+			or &lt;enc:EncryptedKey/&gt; node. 
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>recipient</structfield></entry>
-<entry>
+<entry>			the Recipient attribute of &lt;enc:EncryptedKey/&gt; node..
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>carriedKeyName</structfield></entry>
-<entry>
+<entry>		the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>encDataNode</structfield></entry>
-<entry>
+<entry>		the pointer to &lt;enc:EncryptedData/&gt;
+			or &lt;enc:EncryptedKey/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>encMethodNode</structfield></entry>
-<entry>
+<entry>		the pointer to &lt;enc:EncryptionMethod/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>keyInfoNode</structfield></entry>
-<entry>
+<entry>		the pointer to &lt;enc:KeyInfo/&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>cipherValueNode</structfield></entry>
-<entry>
+<entry>		the pointer to &lt;enc:CipherValue/&gt; node.
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved0</structfield></entry>
-<entry>
+<entry>			reserved for the future.
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-
+<entry>			reserved for the future.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -280,6 +304,8 @@ XML Encrypiton context.</para>
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
 <entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

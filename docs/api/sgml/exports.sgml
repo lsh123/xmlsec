@@ -15,7 +15,6 @@
 
 
 #define     <link linkend="extern">extern</link>
-#define     <link linkend="XMLSEC-CRYPTO-EXPORT-CAPS">XMLSEC_CRYPTO_EXPORT</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -35,12 +34,6 @@
 <refsect2>
 <title><anchor id="extern">extern</title>
 <programlisting>#define     extern</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-CRYPTO-EXPORT-CAPS">XMLSEC_CRYPTO_EXPORT</title>
-<programlisting>#define     XMLSEC_CRYPTO_EXPORT</programlisting>
 <para>
 
 </para></refsect2>

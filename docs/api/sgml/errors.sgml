@@ -1,12 +1,12 @@
 <refentry id="xmlsec-errors">
 <refmeta>
-<refentrytitle>errors.h</refentrytitle>
+<refentrytitle>errors</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>errors.h</refname><refpurpose>The errors reporting functions.</refpurpose>
+<refname>errors</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -101,10 +101,7 @@ void        <link linkend="xmlSecError">xmlSecError</link>                     (
 <refsect1>
 <title>Description</title>
 <para>
-All errors are reported to application provided callback function.
-The default callback function reports an error to OpenSSL using
-<link linkend="ERR-put-error">ERR_put_error</link>() function and to LibXML using <link linkend="xmlGenericError">xmlGenericError</link>() 
-function.
+
 </para>
 </refsect1>
 

@@ -1,12 +1,12 @@
 <!-- ##### SECTION Title ##### -->
-xmldsig.h
+xmldsig
 
 <!-- ##### SECTION Short_Description ##### -->
-The <ulink url="http://www.w3.org/Signature/">XML Digital Signature</ulink> 
-standard implementation.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -61,13 +61,15 @@ standard implementation.
 @flags2: 
 @keyInfoReadCtx: 
 @keyInfoWriteCtx: 
-@signTransformCtx: 
+@transformCtx: 
 @enabledReferenceUris: 
 @enabledReferenceTransforms: 
+@referencePreExecuteCallback: 
 @defSignMethodId: 
 @defC14NMethodId: 
-@operation: 
+@defDigestMethodId: 
 @signKey: 
+@operation: 
 @result: 
 @status: 
 @signMethod: 
@@ -75,8 +77,8 @@ standard implementation.
 @preSignMemBufMethod: 
 @signValueNode: 
 @id: 
-@references: 
-@manifests: 
+@signedInfoReferences: 
+@manifestReferences: 
 @reserved0: 
 @reserved1: 
 
@@ -95,8 +97,6 @@ standard implementation.
 </para>
 
 @dsigCtx: 
-<!-- # Unused Parameters # -->
-@ctx: 
 
 
 <!-- ##### FUNCTION xmlSecDSigCtxInitialize ##### -->
@@ -179,7 +179,7 @@ standard implementation.
 
 @dsigCtx: 
 @origin: 
-@digestTransformCtx: 
+@transformCtx: 
 @digestMethod: 
 @result: 
 @status: 

@@ -1,9 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-xmlenc.h
+xmlenc
 
 <!-- ##### SECTION Short_Description ##### -->
-The <ulink url="http://www.w3.org/Encryption/">XML Encrypiton</ulink> 
-standard implementation.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -32,16 +31,16 @@ standard implementation.
 @flags: 
 @flags2: 
 @mode: 
-@defEncMethodId: 
 @keyInfoReadCtx: 
 @keyInfoWriteCtx: 
-@encTransformCtx: 
+@transformCtx: 
+@defEncMethodId: 
+@encKey: 
 @operation: 
 @result: 
 @resultBase64Encoded: 
 @resultReplaced: 
 @encMethod: 
-@encKey: 
 @id: 
 @type: 
 @mimeType: 
@@ -70,8 +69,6 @@ standard implementation.
 </para>
 
 @encCtx: 
-<!-- # Unused Parameters # -->
-@ctx: 
 
 
 <!-- ##### FUNCTION xmlSecEncCtxInitialize ##### -->

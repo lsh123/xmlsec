@@ -1,0 +1,267 @@
+<refentry id="xmlsec-nss-symbols">
+<refmeta>
+<refentrytitle>symbols</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-NSS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>symbols</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link>
+#define     <link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link>
+#define     <link linkend="xmlSecKeyDataAesId">xmlSecKeyDataAesId</link>
+#define     <link linkend="xmlSecKeyDataDesId">xmlSecKeyDataDesId</link>
+#define     <link linkend="xmlSecKeyDataDsaId">xmlSecKeyDataDsaId</link>
+#define     <link linkend="xmlSecKeyDataHmacId">xmlSecKeyDataHmacId</link>
+#define     <link linkend="xmlSecKeyDataRsaId">xmlSecKeyDataRsaId</link>
+#define     <link linkend="xmlSecKeyDataX509Id">xmlSecKeyDataX509Id</link>
+#define     <link linkend="xmlSecKeyDataRawX509CertId">xmlSecKeyDataRawX509CertId</link>
+#define     <link linkend="xmlSecX509StoreId">xmlSecX509StoreId</link>
+#define     <link linkend="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</link>
+#define     <link linkend="xmlSecTransformAes192CbcId">xmlSecTransformAes192CbcId</link>
+#define     <link linkend="xmlSecTransformAes256CbcId">xmlSecTransformAes256CbcId</link>
+#define     <link linkend="xmlSecTransformKWAes128Id">xmlSecTransformKWAes128Id</link>
+#define     <link linkend="xmlSecTransformKWAes192Id">xmlSecTransformKWAes192Id</link>
+#define     <link linkend="xmlSecTransformKWAes256Id">xmlSecTransformKWAes256Id</link>
+#define     <link linkend="xmlSecTransformDes3CbcId">xmlSecTransformDes3CbcId</link>
+#define     <link linkend="xmlSecTransformKWDes3Id">xmlSecTransformKWDes3Id</link>
+#define     <link linkend="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</link>
+#define     <link linkend="xmlSecTransformHmacSha1Id">xmlSecTransformHmacSha1Id</link>
+#define     <link linkend="xmlSecTransformHmacRipemd160Id">xmlSecTransformHmacRipemd160Id</link>
+#define     <link linkend="xmlSecTransformHmacMd5Id">xmlSecTransformHmacMd5Id</link>
+#define     <link linkend="xmlSecTransformRipemd160Id">xmlSecTransformRipemd160Id</link>
+#define     <link linkend="xmlSecTransformRsaSha1Id">xmlSecTransformRsaSha1Id</link>
+#define     <link linkend="xmlSecTransformRsaPkcs1Id">xmlSecTransformRsaPkcs1Id</link>
+#define     <link linkend="xmlSecTransformRsaOaepId">xmlSecTransformRsaOaepId</link>
+#define     <link linkend="xmlSecTransformSha1Id">xmlSecTransformSha1Id</link>
+#define     <link linkend="xmlSecCryptoAppInit">xmlSecCryptoAppInit</link>
+#define     <link linkend="xmlSecCryptoAppShutdown">xmlSecCryptoAppShutdown</link>
+#define     <link linkend="xmlSecCryptoAppSimpleKeysMngrInit">xmlSecCryptoAppSimpleKeysMngrInit</link>
+#define     <link linkend="xmlSecCryptoAppSimpleKeysMngrAdoptKey">xmlSecCryptoAppSimpleKeysMngrAdoptKey</link>
+#define     <link linkend="xmlSecCryptoAppSimpleKeysMngrLoad">xmlSecCryptoAppSimpleKeysMngrLoad</link>
+#define     <link linkend="xmlSecCryptoAppSimpleKeysMngrSave">xmlSecCryptoAppSimpleKeysMngrSave</link>
+#define     <link linkend="xmlSecCryptoAppKeysMngrPemCertLoad">xmlSecCryptoAppKeysMngrPemCertLoad</link>
+#define     <link linkend="xmlSecCryptoAppKeysMngrAddCertsPath">xmlSecCryptoAppKeysMngrAddCertsPath</link>
+#define     <link linkend="xmlSecCryptoAppPemKeyLoad">xmlSecCryptoAppPemKeyLoad</link>
+#define     <link linkend="xmlSecCryptoAppPkcs12Load">xmlSecCryptoAppPkcs12Load</link>
+#define     <link linkend="xmlSecCryptoAppKeyPemCertLoad">xmlSecCryptoAppKeyPemCertLoad</link>
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecCryptoInit">xmlSecCryptoInit</title>
+<programlisting>#define xmlSecCryptoInit			xmlSecNssInit
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoShutdown">xmlSecCryptoShutdown</title>
+<programlisting>#define xmlSecCryptoShutdown			xmlSecNssShutdown
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataAesId">xmlSecKeyDataAesId</title>
+<programlisting>#define xmlSecKeyDataAesId			xmlSecNssKeyDataAesId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDesId">xmlSecKeyDataDesId</title>
+<programlisting>#define xmlSecKeyDataDesId			xmlSecNssKeyDataDesId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDsaId">xmlSecKeyDataDsaId</title>
+<programlisting>#define xmlSecKeyDataDsaId			xmlSecNssKeyDataDsaId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataHmacId">xmlSecKeyDataHmacId</title>
+<programlisting>#define xmlSecKeyDataHmacId			xmlSecNssKeyDataHmacId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataRsaId">xmlSecKeyDataRsaId</title>
+<programlisting>#define xmlSecKeyDataRsaId			xmlSecNssKeyDataRsaId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataX509Id">xmlSecKeyDataX509Id</title>
+<programlisting>#define xmlSecKeyDataX509Id			xmlSecNssKeyDataX509Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataRawX509CertId">xmlSecKeyDataRawX509CertId</title>
+<programlisting>#define xmlSecKeyDataRawX509CertId		xmlSecNssKeyDataRawX509CertId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecX509StoreId">xmlSecX509StoreId</title>
+<programlisting>#define xmlSecX509StoreId			xmlSecNssX509StoreId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</title>
+<programlisting>#define xmlSecTransformAes128CbcId		xmlSecNssTransformAes128CbcId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformAes192CbcId">xmlSecTransformAes192CbcId</title>
+<programlisting>#define xmlSecTransformAes192CbcId		xmlSecNssTransformAes192CbcId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformAes256CbcId">xmlSecTransformAes256CbcId</title>
+<programlisting>#define xmlSecTransformAes256CbcId		xmlSecNssTransformAes256CbcId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformKWAes128Id">xmlSecTransformKWAes128Id</title>
+<programlisting>#define xmlSecTransformKWAes128Id		xmlSecNssTransformKWAes128Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformKWAes192Id">xmlSecTransformKWAes192Id</title>
+<programlisting>#define xmlSecTransformKWAes192Id		xmlSecNssTransformKWAes192Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformKWAes256Id">xmlSecTransformKWAes256Id</title>
+<programlisting>#define xmlSecTransformKWAes256Id		xmlSecNssTransformKWAes256Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformDes3CbcId">xmlSecTransformDes3CbcId</title>
+<programlisting>#define xmlSecTransformDes3CbcId		xmlSecNssTransformDes3CbcId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformKWDes3Id">xmlSecTransformKWDes3Id</title>
+<programlisting>#define xmlSecTransformKWDes3Id			xmlSecNssTransformKWDes3Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</title>
+<programlisting>#define xmlSecTransformDsaSha1Id		xmlSecNssTransformDsaSha1Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformHmacSha1Id">xmlSecTransformHmacSha1Id</title>
+<programlisting>#define xmlSecTransformHmacSha1Id		xmlSecNssTransformHmacSha1Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformHmacRipemd160Id">xmlSecTransformHmacRipemd160Id</title>
+<programlisting>#define xmlSecTransformHmacRipemd160Id		xmlSecNssTransformHmacRipemd160Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformHmacMd5Id">xmlSecTransformHmacMd5Id</title>
+<programlisting>#define xmlSecTransformHmacMd5Id		xmlSecNssTransformHmacMd5Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformRipemd160Id">xmlSecTransformRipemd160Id</title>
+<programlisting>#define xmlSecTransformRipemd160Id		xmlSecNssTransformRipemd160Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformRsaSha1Id">xmlSecTransformRsaSha1Id</title>
+<programlisting>#define xmlSecTransformRsaSha1Id		xmlSecNssTransformRsaSha1Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformRsaPkcs1Id">xmlSecTransformRsaPkcs1Id</title>
+<programlisting>#define xmlSecTransformRsaPkcs1Id		xmlSecNssTransformRsaPkcs1Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformRsaOaepId">xmlSecTransformRsaOaepId</title>
+<programlisting>#define xmlSecTransformRsaOaepId		xmlSecNssTransformRsaOaepId
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformSha1Id">xmlSecTransformSha1Id</title>
+<programlisting>#define xmlSecTransformSha1Id			xmlSecNssTransformSha1Id
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppInit">xmlSecCryptoAppInit</title>
+<programlisting>#define xmlSecCryptoAppInit			xmlSecNssAppInit
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppShutdown">xmlSecCryptoAppShutdown</title>
+<programlisting>#define xmlSecCryptoAppShutdown			xmlSecNssAppShutdown
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppSimpleKeysMngrInit">xmlSecCryptoAppSimpleKeysMngrInit</title>
+<programlisting>#define xmlSecCryptoAppSimpleKeysMngrInit	xmlSecNssAppSimpleKeysMngrInit
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppSimpleKeysMngrAdoptKey">xmlSecCryptoAppSimpleKeysMngrAdoptKey</title>
+<programlisting>#define xmlSecCryptoAppSimpleKeysMngrAdoptKey	xmlSecNssAppSimpleKeysMngrAdoptKey
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppSimpleKeysMngrLoad">xmlSecCryptoAppSimpleKeysMngrLoad</title>
+<programlisting>#define xmlSecCryptoAppSimpleKeysMngrLoad	xmlSecNssAppSimpleKeysMngrLoad
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppSimpleKeysMngrSave">xmlSecCryptoAppSimpleKeysMngrSave</title>
+<programlisting>#define xmlSecCryptoAppSimpleKeysMngrSave	xmlSecNssAppSimpleKeysMngrSave
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppKeysMngrPemCertLoad">xmlSecCryptoAppKeysMngrPemCertLoad</title>
+<programlisting>#define xmlSecCryptoAppKeysMngrPemCertLoad	xmlSecNssAppKeysMngrPemCertLoad
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppKeysMngrAddCertsPath">xmlSecCryptoAppKeysMngrAddCertsPath</title>
+<programlisting>#define xmlSecCryptoAppKeysMngrAddCertsPath	xmlSecNssAppKeysMngrAddCertsPath
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppPemKeyLoad">xmlSecCryptoAppPemKeyLoad</title>
+<programlisting>#define xmlSecCryptoAppPemKeyLoad		xmlSecNssAppPemKeyLoad
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppPkcs12Load">xmlSecCryptoAppPkcs12Load</title>
+<programlisting>#define xmlSecCryptoAppPkcs12Load		xmlSecNssAppPkcs12Load
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoAppKeyPemCertLoad">xmlSecCryptoAppKeyPemCertLoad</title>
+<programlisting>#define xmlSecCryptoAppKeyPemCertLoad		xmlSecNssAppKeyPemCertLoad
+</programlisting>
+</refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

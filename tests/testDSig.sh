@@ -65,7 +65,6 @@ echo "--- testDSig started ($timestamp)"
 echo "--- log file is $logfile"
 echo "--- testDSig started ($timestamp)" >> $logfile
 
-
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
     "--privkey $topfolder/keys/dsakey.pem" \
@@ -225,6 +224,8 @@ execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
     "--trusted $topfolder/keys/cacert.pem --enabled-key-data x509" 
 
+execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
+    "--enabled-reference-uris empty --hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" 
     
 rm -rf $tmpfile
 echo "--- testDSig finished" >> $logfile

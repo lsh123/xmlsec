@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-keyinfo.h
+keyinfo
 
 <!-- ##### SECTION Short_Description ##### -->
-The &lt;dsig:KeyInfo&gt; element manipulation functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -23,12 +23,6 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 @key: 
 @keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@keysMngr: 
-@context: 
-@keyId: 
-@keyType: 
-@keyUsage: 
 
 
 <!-- ##### FUNCTION xmlSecKeyInfoNodeWrite ##### -->
@@ -40,10 +34,6 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 @key: 
 @keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@keysMngr: 
-@context: 
-@type: 
 
 
 <!-- ##### ENUM xmlSecKeyInfoMode ##### -->

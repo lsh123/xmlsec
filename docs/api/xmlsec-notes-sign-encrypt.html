@@ -1,0 +1,107 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Signing and encrypting documents.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
+<link rel="PREVIOUS" title="Initialization and shutdown." href="xmlsec-notes-init-shutdown.html">
+<link rel="NEXT" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-init-shutdown.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-SIGN-ENCRYPT"></a>Signing and encrypting documents.</h1>
+<p>XML Security Library performs signature or encryption by processing 
+	input xml or binary data and a template that specifies a signature or 
+	encryption skeleton: the transforms, algorithms, the key selection 
+	process. A template has the same structure as the desired result but 
+	some of the nodes are empty. XML Security Library gets the key for 
+	signature/encryption from keys managers using the information from 
+	the template, does necessary computations and puts the results in 
+	the template. Signature or encryption context controls the whole 
+	process and stores the required temporary data.
+	  </p>
+<div class="FIGURE">
+<a name="AEN38"></a><p><b>Figure 2. The signature or encryption processing model.</b></p>
+<p><img src="images/sign-enc-model.png" align="CENTER"></p>
+</div>
+	<p>The typical siganture or encryption process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Prepare data for signature or encryption.
+	    </p></li>
+<li><p>		Create or load signature/encryption template.
+	    </p></li>
+<li><p>		Initialize signature/encryption context.
+	    </p></li>
+<li><p>		Load signature/encryption key in keys manager or generate
+		a sesison key and set it in the signature/encryption context.
+	    </p></li>
+<li><p>		Select signature/encryption start node.
+	    </p></li>
+<li><p>		Call one of signature/encrypiton functions.
+	    </p></li>
+<li><p>		Check returned value and if necessary consume returned
+		signed/encrypted data from the context.
+	    </p></li>
+</ul>
+<p>TODO: example signature</p>
+<p>TODO: example encryption</p>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-init-shutdown.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Initialization and shutdown.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Verifing and decrypting documents.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

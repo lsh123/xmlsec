@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-xmltree.h
+xmltree
 
 <!-- ##### SECTION Short_Description ##### -->
-The XML tree helper functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

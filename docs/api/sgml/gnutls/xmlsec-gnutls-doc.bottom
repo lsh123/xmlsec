@@ -1,0 +1,3 @@
+    &xmlsec-gnutls-app;
+    &xmlsec-gnutls-crypto;
+    &xmlsec-gnutls-symbols;

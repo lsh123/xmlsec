@@ -38,7 +38,7 @@
 <a name="AEN5"></a>Aleksey Sanin</h3>
 <div class="AFFILIATION"><div class="ADDRESS"><p class="ADDRESS">	    aleksey@aleksey.com<br>
 	  </p></div></div>
-<p class="COPYRIGHT">Copyright © 2002 by Aleksey Sanin</p>
+<p class="COPYRIGHT">Copyright © 2002-2003 by Aleksey Sanin</p>
 <div><div class="ABSTRACT">
 <a name="AEN18"></a><p></p>
 <p>This manual documents the interfaces of the xmlsec
@@ -65,47 +65,84 @@
 <div class="TOC"><dl>
 <dt><b>Table of Contents</b></dt>
 <dt><a href="xmlsec-notes.html">XML Security Library Programming Notes</a></dt>
-<dt><a href="xmlsec-ref.html">XML Security Library Reference</a></dt>
+<dd><dl>
+<dt><a href="xmlsec-notes.html#XMLSEC-NOTES-OVERVIEW">Overview.</a></dt>
+<dt><a href="xmlsec-notes-structure.html">XML Security Library Structure.</a></dt>
+<dt><a href="xmlsec-notes-init-shutdown.html">Initialization and shutdown.</a></dt>
+<dt><a href="xmlsec-notes-sign-encrypt.html">Signing and encrypting documents.</a></dt>
+<dt><a href="xmlsec-notes-verify-decrypt.html">Verifing and decrypting documents.</a></dt>
+<dt><a href="xmlsec-notes-keysmngr.html">Keys and keys manager.</a></dt>
+<dt><a href="xmlsec-notes-transforms.html">Transforms and transforms chain.</a></dt>
+<dt><a href="xmlsec-notes-templates.html">Creating dynamic templates.</a></dt>
+<dt><a href="xmlsec-notes-cusomize-signature.html">Customizing signature and verification process.</a></dt>
+<dt><a href="xmlsec-notes-customize-encryption.html">Customizing encryption and decryption process.</a></dt>
+<dt><a href="xmlsec-notes-new-crypto-library.html">Supporting new cryptographic library.</a></dt>
+</dl></dd>
+<dt><a href="xmlsec-ref.html">XML Security Library API Reference</a></dt>
 <dd><dl>
 <dt>
-<a href="xmlsec-xmlsec.html">xmlsec.h</a> -- The library initialization/cleanup functions.</dt>
+<a href="xmlsec-base64.html">base64</a> -- </dt>
 <dt>
-<a href="xmlsec-xmldsig.html">xmldsig.h</a> -- The <a href="http://www.w3.org/Signature/" target="_top">XML Digital Signature</a> 
-standard implementation.</dt>
+<a href="xmlsec-buffer.html">buffer</a> -- </dt>
 <dt>
-<a href="xmlsec-xmlenc.html">xmlenc.h</a> -- The <a href="http://www.w3.org/Encryption/" target="_top">XML Encrypiton</a> 
-standard implementation.</dt>
+<a href="xmlsec-errors.html">errors</a> -- </dt>
 <dt>
-<a href="xmlsec-errors.html">errors.h</a> -- The errors reporting functions.</dt>
+<a href="xmlsec-io.html">io</a> -- </dt>
 <dt>
-<a href="xmlsec-keyinfo.html">keyinfo.h</a> -- The &lt;dsig:KeyInfo&gt; element manipulation functions.</dt>
-<dt>
-<a href="xmlsec-keys.html">keys.h</a> -- The keys helper functions.</dt>
+<a href="xmlsec-keyinfo.html">keyinfo</a> -- </dt>
 <dt>
 <a href="xmlsec-keysdata.html">keysdata</a> -- </dt>
 <dt>
-<a href="xmlsec-keysmngr.html">keysmngr.h</a> -- The simple keys manager implementation.</dt>
+<a href="xmlsec-keys.html">keys</a> -- </dt>
+<dt>
+<a href="xmlsec-keysmngr.html">keysmngr</a> -- </dt>
+<dt>
+<a href="xmlsec-list.html">list</a> -- </dt>
+<dt>
+<a href="xmlsec-membuf.html">membuf</a> -- </dt>
+<dt>
+<a href="xmlsec-nodeset.html">nodeset</a> -- </dt>
+<dt>
+<a href="xmlsec-parser.html">parser</a> -- </dt>
 <dt>
 <a href="xmlsec-templates.html">templates</a> -- </dt>
 <dt>
-<a href="xmlsec-transforms.html">transforms.h</a> -- The transforms functions.</dt>
+<a href="xmlsec-transforms.html">transforms</a> -- </dt>
 <dt>
-<a href="xmlsec-version.html">version.h</a> -- The library version infromation.</dt>
+<a href="xmlsec-version.html">version</a> -- </dt>
 <dt>
-<a href="xmlsec-x509.html">x509.h</a> -- The X509 certificates functions.</dt>
+<a href="xmlsec-xmldsig.html">xmldsig</a> -- </dt>
+<dt>
+<a href="xmlsec-xmlenc.html">xmlenc</a> -- </dt>
+<dt>
+<a href="xmlsec-xmlsec.html">xmlsec</a> -- </dt>
+<dt>
+<a href="xmlsec-xmltree.html">xmltree</a> -- </dt>
 </dl></dd>
-<dt><a href="xmlsec-ref-int.html">XML Security Library Internal Functions Reference</a></dt>
+<dt><a href="xmlsec-openssl-ref.html">XML Security Library for OpenSLL API Reference</a></dt>
 <dd><dl>
 <dt>
-<a href="xmlsec-base64.html">base64.h</a> -- The BASE64 encode/decode functions.</dt>
+<a href="xmlsec-openssl-app.html">app</a> -- </dt>
 <dt>
-<a href="xmlsec-io.html">io.h</a> -- The IO transforms.</dt>
+<a href="xmlsec-openssl-bn.html">bn</a> -- </dt>
 <dt>
-<a href="xmlsec-membuf.html">membuf.h</a> -- The memory buffer transform.</dt>
+<a href="xmlsec-openssl-crypto.html">crypto</a> -- </dt>
 <dt>
-<a href="xmlsec-nodeset.html">nodeset.h</a> -- The enchanced nodes set imlmentation.</dt>
+<a href="xmlsec-openssl-x509.html">x509.h</a> -- The X509 certificates functions.</dt>
+</dl></dd>
+<dt><a href="xmlsec-gnutls-ref.html">XML Security Library for GnuTLS API Reference</a></dt>
+<dd><dl>
 <dt>
-<a href="xmlsec-xmltree.html">xmltree.h</a> -- The XML tree helper functions.</dt>
+<a href="xmlsec-gnutls-app.html">app</a> -- </dt>
+<dt>
+<a href="xmlsec-gnutls-crypto.html">crypto</a> -- </dt>
+</dl></dd>
+<dt><a href="xmlsec-nss-ref.html">XML Security Library for NSS API Reference</a></dt>
+<dd><dl>
+<dt>
+<a href="xmlsec-nss-app.html">app</a> -- </dt>
+<dt>
+<a href="xmlsec-nss-crypto.html">crypto</a> -- </dt>
 </dl></dd>
 </dl></div>
 </div>

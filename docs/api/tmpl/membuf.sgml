@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-membuf.h
+membuf
 
 <!-- ##### SECTION Short_Description ##### -->
-The memory buffer transform.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -36,7 +36,5 @@ The memory buffer transform.
 
 @transform: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@removeBuffer: 
 
 

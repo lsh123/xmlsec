@@ -1,12 +1,12 @@
 <refentry id="xmlsec-nodeset">
 <refmeta>
-<refentrytitle>nodeset.h</refentrytitle>
+<refentrytitle>nodeset</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>nodeset.h</refname><refpurpose>The enchanced nodes set imlmentation.</refpurpose>
+<refname>nodeset</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

@@ -1,12 +1,12 @@
 <refentry id="xmlsec-membuf">
 <refmeta>
-<refentrytitle>membuf.h</refentrytitle>
+<refentrytitle>membuf</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>membuf.h</refname><refpurpose>The memory buffer transform.</refpurpose>
+<refname>membuf</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

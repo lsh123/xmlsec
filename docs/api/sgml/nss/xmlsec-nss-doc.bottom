@@ -1,0 +1,3 @@
+    &xmlsec-nss-app;
+    &xmlsec-nss-crypto;
+    &xmlsec-nss-symbols;

@@ -1,12 +1,12 @@
 <refentry id="xmlsec-transforms">
 <refmeta>
-<refentrytitle>transforms.h</refentrytitle>
+<refentrytitle>transforms</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>transforms.h</refname><refpurpose>The transforms functions.</refpurpose>
+<refname>transforms</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -304,6 +304,9 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>#define XMLSEC_TRANSFORM_BINARY_CHUNK			64
 </programlisting>
 <para>
+The binary data chunks size. XMLSec processes binary data one chunk 
+at a time. Changing this impacts xmlsec memory usage and performance.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -420,12 +423,16 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>typedef unsigned int				xmlSecTransformUriType;
 </programlisting>
 <para>
+URI transform type bit mask.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeNone">xmlSecTransformUriTypeNone</title>
 <programlisting>#define xmlSecTransformUriTypeNone		0x0000
 </programlisting>
+<para>
+The URI type is unknown or not set.</para>
 <para>
 
 </para></refsect2>
@@ -434,12 +441,16 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>#define xmlSecTransformUriTypeEmpty		0x0001
 </programlisting>
 <para>
+The empty URI ("") type.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeSameDocument">xmlSecTransformUriTypeSameDocument</title>
 <programlisting>#define xmlSecTransformUriTypeSameDocument	0x0002		
 </programlisting>
+<para>
+The smae document ("#...") but not empty ("") URI type.</para>
 <para>
 
 </para></refsect2>
@@ -448,6 +459,8 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>#define xmlSecTransformUriTypeLocal		0x0004
 </programlisting>
 <para>
+The local URI ("file:///....") type.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -455,12 +468,16 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>#define xmlSecTransformUriTypeRemote		0x0008
 </programlisting>
 <para>
+The remote URI type.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUriTypeAny">xmlSecTransformUriTypeAny</title>
 <programlisting>#define xmlSecTransformUriTypeAny		0xFFFF
 </programlisting>
+<para>
+Any URI type.</para>
 <para>
 
 </para></refsect2>
@@ -491,12 +508,16 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>typedef unsigned char				xmlSecTransformDataType;
 </programlisting>
 <para>
+Transform data type bit mask.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataTypeUnknown">xmlSecTransformDataTypeUnknown</title>
 <programlisting>#define xmlSecTransformDataTypeUnknown		0x0000
 </programlisting>
+<para>
+The transform data type is unknown or nor data expected.</para>
 <para>
 
 </para></refsect2>
@@ -505,12 +526,16 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>#define xmlSecTransformDataTypeBin		0x0001
 </programlisting>
 <para>
+The binary transform data.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformDataTypeXml">xmlSecTransformDataTypeXml</title>
 <programlisting>#define xmlSecTransformDataTypeXml		0x0002
 </programlisting>
+<para>
+The xml transform data.</para>
 <para>
 
 </para></refsect2>
@@ -519,12 +544,16 @@ int         <link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPoint
 <programlisting>typedef unsigned int				xmlSecTransformUsage;
 </programlisting>
 <para>
+The transform usage bit mask.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformUsageUnknown">xmlSecTransformUsageUnknown</title>
 <programlisting>#define xmlSecTransformUsageUnknown		0x0000
 </programlisting>
+<para>
+Transforms usage is unknown or undefined.</para>
 <para>
 
 </para></refsect2>
@@ -560,6 +589,8 @@ Transform could be used in &lt;dsig:DigestMethod&gt;.</para>
 <programlisting>#define xmlSecTransformUsageSignatureMethod	0x0008
 </programlisting>
 <para>
+Transform could be used in &lt;dsig:SignatureMethod&gt;.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -585,6 +616,11 @@ Transform could be used for operation.</para>
 <programlisting>int         (*xmlSecTransformCtxPreExecuteCallback)
                                             (<link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The callback called after creating transforms chain but before
+starting data processing. Application can use this callback to
+do additional transforms chain verification or modification and
+aborting transforms execution (if necessary).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -592,11 +628,10 @@ Transform could be used for operation.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the pointer to transform's context. 
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negative value otherwise (in this case,
+transforms chain will not be executed and xmlsec processing stops).
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1209,47 +1244,47 @@ The transform structure.</para>
 <tbody>
 <row>
 <entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>id</structfield></entry>
-<entry> the transform id (pointer to <link linkend="xmlSecTransformId">xmlSecTransformId</link>).
+<entry> 		the transform id (pointer to <link linkend="xmlSecTransformId">xmlSecTransformId</link>).
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
-<entry>
+<entry>		the transform's opertaion.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></entry>
-<entry> the transform status (ok/fail/unknown).
+<entry> 		the current status.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>hereNode</structfield></entry>
-<entry>
+<entry>		the pointer to transform's &lt;dsig:Transform /&gt; node.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>next</structfield></entry>
-<entry>
+<entry>		the pointer to next transform in the chain.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>prev</structfield></entry>
-<entry>
+<entry>		the pointer to previous transform in the chain.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecBuffer">xmlSecBuffer</link> <structfield>inBuf</structfield></entry>
-<entry>
+<entry>		the input binary data buffer.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecBuffer">xmlSecBuffer</link> <structfield>outBuf</structfield></entry>
-<entry>
+<entry>		the output binary data buffer.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>inNodes</structfield></entry>
-<entry>
+<entry>		the input XML nodes.
 </entry>
 </row>
 <row>
@@ -1259,13 +1294,12 @@ The transform structure.</para>
 </row>
 <row>
 <entry>void *<structfield>reserved0</structfield></entry>
-<entry>
+<entry>		reserved for the future.
 </entry>
 </row>
 <row>
 <entry>void *<structfield>reserved1</structfield></entry>
-<entry>
-
+<entry>		reserved for the future.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -1680,6 +1714,8 @@ Sets the key for binary transform (wrapper for transform specific
 <title><anchor id="xmlSecTransformGetName">xmlSecTransformGetName()</title>
 <programlisting>#define     xmlSecTransformGetName(transform)</programlisting>
 <para>
+Macro. Returns transform name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -1705,7 +1741,7 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid or 0 otherwise
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to transform.
+<entry> 		the pointer to transform.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1722,10 +1758,10 @@ or 0 otherwise.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to transform.
+<entry> 		the pointer to transform.
 </entry></row>
 <row><entry align="right"><parameter>t</parameter>&nbsp;:</entry>
-<entry> the transform type.
+<entry> 			the transform type.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1742,10 +1778,12 @@ or 0 otherwise.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to transform.
+<entry>		the pointer to transform.
 </entry></row>
 <row><entry align="right"><parameter>i</parameter>&nbsp;:</entry>
-<entry> the transform id.
+<entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -1762,10 +1800,10 @@ bytes or 0 otherwise.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to transform.
+<entry> 		the pointer to transform.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the transform object size.
+<entry> 		the transform object size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2079,7 +2117,7 @@ bin transform id destructor.</para>
 <programlisting>int         (*xmlSecTransformInitializeMethod)
                                             (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
-The transform specific creation method.</para>
+The transform specific initialization method.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2088,11 +2126,9 @@ The transform specific creation method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the transform.
+<entry>			the pointer to transform object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2109,7 +2145,7 @@ The transform specific destroy method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecTransform">xmlSecTransform</link> structure.
+<entry>			the pointer to transform object.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2119,6 +2155,9 @@ The transform specific destroy method.</para>
                                              <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The transform specific method to query information about transform
+data type in specified mode <link linkend="mode">mode</link>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2126,17 +2165,15 @@ The transform specific destroy method.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>mode</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the mode.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>transform data type.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2146,8 +2183,8 @@ The transform specific destroy method.</para>
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-The transfomr specific method to read the transform data from 
-the <parameter>node</parameter>.</para>
+The transform specific method to read the transform data from 
+the <link linkend="node">node</link>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2156,13 +2193,13 @@ the <parameter>node</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecTransform">xmlSecTransform</link> structure.
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the pointer to the &lt;dsig:Transform&gt; node.
+<entry>			the pointer to &lt;dsig:Transform/&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -2174,6 +2211,8 @@ the <parameter>node</parameter>.</para>
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The transform specific method to write transform information to an XML node <link linkend="node">node</link>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2181,17 +2220,15 @@ the <parameter>node</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to &lt;dsig:Transform/&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2200,7 +2237,7 @@ the <parameter>node</parameter>.</para>
                                             (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
-</para>
+Transform specific method to set transform's key requirements.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2209,14 +2246,12 @@ the <parameter>node</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecTransform">xmlSecTransform</link> structure.
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to key requirements structure.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2224,7 +2259,7 @@ the <parameter>node</parameter>.</para>
 <programlisting>int         (*xmlSecTransformSetKeyMethod)  (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-The transform specific method to set key for use.</para>
+The transform specific method to set the key for use.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2233,10 +2268,10 @@ The transform specific method to set key for use.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to binary transform.
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to key.
+<entry> 			the pointer to key.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -2248,6 +2283,11 @@ The transform specific method to set key for use.</para>
                                              <link linkend="size-t">size_t</link> dataSize,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The transform specific method to verify transform processing results
+(used by digest and signature transforms). This method sets <link linkend="status">status</link>
+member of the <link linkend="xmlSecTransform">xmlSecTransform</link> structure to either <link linkend="xmlSecTransformStatusOk">xmlSecTransformStatusOk</link>
+if verification succeeded or <link linkend="xmlSecTransformStatusFail">xmlSecTransformStatusFail</link> otherwise.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2255,20 +2295,18 @@ The transform specific method to set key for use.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the input buffer.
 </entry></row>
 <row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the size of input buffer <link linkend="data">data</link>.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2279,6 +2317,9 @@ The transform specific method to set key for use.</para>
                                              int final,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The transform specific method to process data from <link linkend="data">data</link> and push
+result to the next transform in the chain.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2286,23 +2327,22 @@ The transform specific method to set key for use.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the input binary data,
 </entry></row>
 <row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the input data size.
 </entry></row>
 <row><entry align="right"><parameter>final</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the flag: if set to 1 then it's the last
+			data chunk.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2313,6 +2353,10 @@ The transform specific method to set key for use.</para>
                                              <link linkend="size-t">size_t</link> *dataSize,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The transform specific method to pop data from previous transform 
+in the chain and return result in the <link linkend="data">data</link> buffer. The size of returned
+data is placed in the <link linkend="dataSize">dataSize</link>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2320,23 +2364,21 @@ The transform specific method to set key for use.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the buffer to store result data.
 </entry></row>
 <row><entry align="right"><parameter>maxDataSize</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the size of the buffer <link linkend="data">data</link>.
 </entry></row>
 <row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to returned data size.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2345,6 +2387,9 @@ The transform specific method to set key for use.</para>
                                              <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
+The transform specific method to process <link linkend="nodes">nodes</link> and push result to the next 
+transform in the chain.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2352,17 +2397,15 @@ The transform specific method to set key for use.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
 <row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the input nodes.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2371,31 +2414,8 @@ The transform specific method to set key for use.</para>
                                              <link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> *nodes,
                                              <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod ()</title>
-<programlisting>int         (*xmlSecTransformExecuteMethod) (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
-                                             int last,
-                                             <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
+The transform specific method to pop data from previous transform in the chain,
+process the data and return result in <link linkend="nodes">nodes</link>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -2404,17 +2424,41 @@ The transform specific method to set key for use.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to transform object.
 </entry></row>
-<row><entry align="right"><parameter>last</parameter>&nbsp;:</entry>
-<entry>
+<row><entry align="right"><parameter>nodes</parameter>&nbsp;:</entry>
+<entry>			the pointer to store popinter to result nodes.
 </entry></row>
 <row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to transform context object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod ()</title>
+<programlisting>int         (*xmlSecTransformExecuteMethod) (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             int last,
+                                             <link linkend="xmlSecTransformCtxPtr">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
+<para>
+Transform specific method to process a chunk of data.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry>			the pointer to transform object.
+</entry></row>
+<row><entry align="right"><parameter>last</parameter>&nbsp;:</entry>
+<entry>			the flag: if set to 1 then it's the last data chunk.
+</entry></row>
+<row><entry align="right"><parameter>transformCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to transform context object.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -2453,7 +2497,7 @@ The transform specific method to set key for use.</para>
 };
 </programlisting>
 <para>
-The transform id structure.</para>
+The transform klass desccription structure.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="struct">
@@ -2463,37 +2507,38 @@ The transform id structure.</para>
 <tbody>
 <row>
 <entry><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></entry>
-<entry>
+<entry>			the transform klass structure size.
 </entry>
 </row>
 <row>
 <entry><link linkend="size-t">size_t</link> <structfield>objSize</structfield></entry>
-<entry>
+<entry>			the transform object size.
 </entry>
 </row>
 <row>
 <entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
-<entry>
+<entry>			the transform's name.
 </entry>
 </row>
 <row>
 <entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>href</structfield></entry>
-<entry> the algorithm href.
+<entry>			the transform's identification string (href).
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> <structfield>usage</structfield></entry>
-<entry> the usage.
+<entry>			the allowed transforms usages.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformInitializeMethod">xmlSecTransformInitializeMethod</link> <structfield>initialize</structfield></entry>
-<entry>
+<entry>			the initialization method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformFinalizeMethod">xmlSecTransformFinalizeMethod</link> <structfield>finalize</structfield></entry>
-<entry>
+<entry>			the finmalization (destroy) function.
+readNode:			the XML node read method.
 </entry>
 </row>
 <row>
@@ -2503,27 +2548,28 @@ The transform id structure.</para>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformNodeWriteMethod">xmlSecTransformNodeWriteMethod</link> <structfield>writeNode</structfield></entry>
-<entry>
+<entry>			the XML node write method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements</link> <structfield>setKeyReq</structfield></entry>
-<entry>
+<entry>			the set key requirements method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod</link> <structfield>setKey</structfield></entry>
-<entry>
+<entry>			the set key method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod</link> <structfield>verify</structfield></entry>
-<entry>
+<entry>			the verify method (for digest and signature transforms).
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformGetDataTypeMethod">xmlSecTransformGetDataTypeMethod</link> <structfield>getDataType</structfield></entry>
-<entry>
+<entry>		the input/output data type query method.
+<parameter>pushBin</parameter>;			the binary data "push thru chain" processing method.
 </entry>
 </row>
 <row>
@@ -2533,22 +2579,23 @@ The transform id structure.</para>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod</link> <structfield>popBin</structfield></entry>
-<entry>
+<entry>			the binary data "pop from chain" procesing method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformPushXmlMethod">xmlSecTransformPushXmlMethod</link> <structfield>pushXml</structfield></entry>
-<entry>
+<entry>			the XML data "push thru chain" processing method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformPopXmlMethod">xmlSecTransformPopXmlMethod</link> <structfield>popXml</structfield></entry>
-<entry>
+<entry>			the XML data "pop from chain" procesing method.
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod</link> <structfield>execute</structfield></entry>
-<entry>
+<entry>			the low level data processing method used  by default
+			implementations of <parameter>pushBin</parameter>, <parameter>popBin</parameter>, <parameter>pushXml</parameter> and <parameter>popXml</parameter>.
 </entry>
 </row>
 <row>
@@ -2567,6 +2614,8 @@ The transform id structure.</para>
 <title><anchor id="xmlSecTransformKlassGetName">xmlSecTransformKlassGetName()</title>
 <programlisting>#define     xmlSecTransformKlassGetName(klass)</programlisting>
 <para>
+Macro. Returns transform klass name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -2583,6 +2632,8 @@ The transform id structure.</para>
 <title><anchor id="xmlSecTransformIdListId">xmlSecTransformIdListId</title>
 <programlisting>#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()
 </programlisting>
+<para>
+Transform klasses list klass.</para>
 <para>
 
 </para></refsect2>
@@ -2732,6 +2783,8 @@ The "unknown" transform id (NULL).</para>
 <title><anchor id="xmlSecTransformBase64Id">xmlSecTransformBase64Id</title>
 <programlisting>#define     xmlSecTransformBase64Id</programlisting>
 <para>
+The base64 encode transform klass.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -2775,7 +2828,7 @@ Sets the max line size to <parameter>lineSize</parameter>.</para>
 <title><anchor id="xmlSecTransformInclC14NId">xmlSecTransformInclC14NId</title>
 <programlisting>#define     xmlSecTransformInclC14NId</programlisting>
 <para>
-The regular (inclusive) C14N without comments transform id.</para>
+The regular (inclusive) C14N without comments transform klass.</para>
 <para>
 
 </para></refsect2>
@@ -2799,7 +2852,7 @@ The regular (inclusive) C14N without comments transform id.</para>
 <title><anchor id="xmlSecTransformInclC14NWithCommentsId">xmlSecTransformInclC14NWithCommentsId</title>
 <programlisting>#define     xmlSecTransformInclC14NWithCommentsId</programlisting>
 <para>
-The regular (inclusive) C14N with comments transform id.</para>
+The regular (inclusive) C14N with comments transform klass.</para>
 <para>
 
 </para></refsect2>
@@ -2823,7 +2876,7 @@ The regular (inclusive) C14N with comments transform id.</para>
 <title><anchor id="xmlSecTransformExclC14NId">xmlSecTransformExclC14NId</title>
 <programlisting>#define     xmlSecTransformExclC14NId</programlisting>
 <para>
-The exclusive C14N without comments transform id.</para>
+The exclusive C14N without comments transform klass.</para>
 <para>
 
 </para></refsect2>
@@ -2847,7 +2900,7 @@ The exclusive C14N without comments transform id.</para>
 <title><anchor id="xmlSecTransformExclC14NWithCommentsId">xmlSecTransformExclC14NWithCommentsId</title>
 <programlisting>#define     xmlSecTransformExclC14NWithCommentsId</programlisting>
 <para>
-The exclusive C14N with comments transform id.</para>
+The exclusive C14N with comments transform klass.</para>
 <para>
 
 </para></refsect2>
@@ -3015,7 +3068,7 @@ http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for
 <title><anchor id="xmlSecTransformXsltId">xmlSecTransformXsltId</title>
 <programlisting>#define     xmlSecTransformXsltId</programlisting>
 <para>
-The XSLT transform id.</para>
+The XSLT transform klass.</para>
 <para>
 
 </para></refsect2>
@@ -3039,7 +3092,7 @@ The XSLT transform id.</para>
 <title><anchor id="xmlSecTransformRemoveXmlTagsC14NId">xmlSecTransformRemoveXmlTagsC14NId</title>
 <programlisting>#define     xmlSecTransformRemoveXmlTagsC14NId</programlisting>
 <para>
-The "remove all xml tags" transform id (used before base64 transforms).</para>
+The "remove all xml tags" transform klass (used before base64 transforms).</para>
 <para>
 
 </para></refsect2>

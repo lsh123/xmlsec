@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-xmlsec.h
+xmlsec
 
 <!-- ##### SECTION Short_Description ##### -->
-The library initialization/cleanup functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

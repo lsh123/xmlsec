@@ -1,12 +1,12 @@
 <refentry id="xmlsec-xmlsec">
 <refmeta>
-<refentrytitle>xmlsec.h</refentrytitle>
+<refentrytitle>xmlsec</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>xmlsec.h</refname><refpurpose>The library initialization/cleanup functions.</refpurpose>
+<refname>xmlsec</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

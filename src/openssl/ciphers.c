@@ -825,6 +825,10 @@ static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/** 
+ * xmlSecOpenSSLTransformDes3CbcGetKlass:
+ *
+ */
 xmlSecTransformId 
 xmlSecOpenSSLTransformDes3CbcGetKlass(void) {
     return(&xmlSecOpenSSLDes3CbcKlass);

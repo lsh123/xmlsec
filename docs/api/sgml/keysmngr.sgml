@@ -1,12 +1,12 @@
 <refentry id="xmlsec-keysmngr">
 <refmeta>
-<refentrytitle>keysmngr.h</refentrytitle>
+<refentrytitle>keysmngr</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>keysmngr.h</refname><refpurpose>The simple keys manager implementation.</refpurpose>
+<refname>keysmngr</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

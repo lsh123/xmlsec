@@ -1,12 +1,12 @@
 <refentry id="xmlsec-xmltree">
 <refmeta>
-<refentrytitle>xmltree.h</refentrytitle>
+<refentrytitle>xmltree</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>xmltree.h</refname><refpurpose>The XML tree helper functions.</refpurpose>
+<refname>xmltree</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -70,6 +70,8 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
 <title><anchor id="xmlSecNodeGetName">xmlSecNodeGetName()</title>
 <programlisting>#define     xmlSecNodeGetName(node)</programlisting>
 <para>
+Macro. Returns node's name.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -77,9 +79,7 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to node.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -414,7 +414,7 @@ Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.</pa
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry> the character.
+<entry> 			the character.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -430,7 +430,7 @@ Macro. Returns the hex value of the <parameter>c</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry> the character,
+<entry> 			the character,
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

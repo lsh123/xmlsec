@@ -1,0 +1,426 @@
+<refentry id="xmlsec-openssl-crypto">
+<refmeta>
+<refentrytitle>crypto</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-OPENSSL Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>crypto</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+int         <link linkend="xmlSecOpenSSLInit">xmlSecOpenSSLInit</link>               (void);
+int         <link linkend="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown</link>           (void);
+int         <link linkend="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom</link>     (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
+                                             <link linkend="size-t">size_t</link> sizeBytes);
+#define     <link linkend="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataAesGetKlass">xmlSecOpenSSLKeyDataAesGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecOpenSSLKeyDataAesSet">xmlSecOpenSSLKeyDataAesSet</link>      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecOpenSSLTransformAes128CbcId">xmlSecOpenSSLTransformAes128CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformAes128CbcGetKlass">xmlSecOpenSSLTransformAes128CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformAes192CbcId">xmlSecOpenSSLTransformAes192CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformAes192CbcGetKlass">xmlSecOpenSSLTransformAes192CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformAes256CbcId">xmlSecOpenSSLTransformAes256CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformAes256CbcGetKlass">xmlSecOpenSSLTransformAes256CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformKWAes128Id">xmlSecOpenSSLTransformKWAes128Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformKWAes128GetKlass">xmlSecOpenSSLTransformKWAes128GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformKWAes192Id">xmlSecOpenSSLTransformKWAes192Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformKWAes192GetKlass">xmlSecOpenSSLTransformKWAes192GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformKWAes256Id">xmlSecOpenSSLTransformKWAes256Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformKWAes256GetKlass">xmlSecOpenSSLTransformKWAes256GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLKeyDataDesId">xmlSecOpenSSLKeyDataDesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataDesGetKlass">xmlSecOpenSSLKeyDataDesGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecOpenSSLKeyDataDesSet">xmlSecOpenSSLKeyDataDesSet</link>      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecOpenSSLTransformDes3CbcId">xmlSecOpenSSLTransformDes3CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformDes3CbcGetKlass">xmlSecOpenSSLTransformDes3CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformKWDes3Id">xmlSecOpenSSLTransformKWDes3Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformKWDes3GetKlass">xmlSecOpenSSLTransformKWDes3GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLKeyDataDsaId">xmlSecOpenSSLKeyDataDsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataDsaGetKlass">xmlSecOpenSSLKeyDataDsaGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecOpenSSLKeyDataDsaAdoptDsa">xmlSecOpenSSLKeyDataDsaAdoptDsa</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="DSA-CAPS">DSA</link> *dsa);
+<link linkend="DSA-CAPS">DSA</link>*        <link linkend="xmlSecOpenSSLKeyDataDsaGetDsa">xmlSecOpenSSLKeyDataDsaGetDsa</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecOpenSSLKeyDataDsaAdoptEvp">xmlSecOpenSSLKeyDataDsaAdoptEvp</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);
+<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLKeyDataDsaGetEvp">xmlSecOpenSSLKeyDataDsaGetEvp</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+#define     <link linkend="xmlSecOpenSSLTransformDsaSha1Id">xmlSecOpenSSLTransformDsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformDsaSha1GetKlass">xmlSecOpenSSLTransformDsaSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLKeyDataHmacId">xmlSecOpenSSLKeyDataHmacId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataHmacGetKlass">xmlSecOpenSSLKeyDataHmacGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecOpenSSLKeyDataHmacSet">xmlSecOpenSSLKeyDataHmacSet</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecOpenSSLTransformHmacSha1Id">xmlSecOpenSSLTransformHmacSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformHmacSha1GetKlass">xmlSecOpenSSLTransformHmacSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformHmacRipemd160Id">xmlSecOpenSSLTransformHmacRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformHmacRipemd160GetKlass">xmlSecOpenSSLTransformHmacRipemd160GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformHmacMd5Id">xmlSecOpenSSLTransformHmacMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformHmacMd5GetKlass">xmlSecOpenSSLTransformHmacMd5GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformRipemd160Id">xmlSecOpenSSLTransformRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformRipemd160GetKlass">xmlSecOpenSSLTransformRipemd160GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLKeyDataRsaId">xmlSecOpenSSLKeyDataRsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataRsaGetKlass">xmlSecOpenSSLKeyDataRsaGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecOpenSSLKeyDataRsaAdoptRsa">xmlSecOpenSSLKeyDataRsaAdoptRsa</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="RSA-CAPS">RSA</link> *rsa);
+<link linkend="RSA-CAPS">RSA</link>*        <link linkend="xmlSecOpenSSLKeyDataRsaGetRsa">xmlSecOpenSSLKeyDataRsaGetRsa</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecOpenSSLKeyDataRsaAdoptEvp">xmlSecOpenSSLKeyDataRsaAdoptEvp</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);
+<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLKeyDataRsaGetEvp">xmlSecOpenSSLKeyDataRsaGetEvp</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+#define     <link linkend="xmlSecOpenSSLTransformRsaSha1Id">xmlSecOpenSSLTransformRsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformRsaSha1GetKlass">xmlSecOpenSSLTransformRsaSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformRsaPkcs1Id">xmlSecOpenSSLTransformRsaPkcs1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformRsaPkcs1GetKlass">xmlSecOpenSSLTransformRsaPkcs1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformRsaOaepId">xmlSecOpenSSLTransformRsaOaepId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformRsaOaepGetKlass">xmlSecOpenSSLTransformRsaOaepGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecOpenSSLTransformSha1Id">xmlSecOpenSSLTransformSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecOpenSSLTransformSha1GetKlass">xmlSecOpenSSLTransformSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="XMLSEC-OPENSSL-ERRORS-LIB-CAPS">XMLSEC_OPENSSL_ERRORS_LIB</link>
+#define     <link linkend="XMLSEC-OPENSSL-ERRORS-FUNCTION-CAPS">XMLSEC_OPENSSL_ERRORS_FUNCTION</link>
+void        <link linkend="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErrorsDefaultCallback</link>
+                                            (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLInit">xmlSecOpenSSLInit ()</title>
+<programlisting>int         xmlSecOpenSSLInit               (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown ()</title>
+<programlisting>int         xmlSecOpenSSLShutdown           (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLGenerateRandom">xmlSecOpenSSLGenerateRandom ()</title>
+<programlisting>int         xmlSecOpenSSLGenerateRandom     (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buffer,
+                                             <link linkend="size-t">size_t</link> sizeBytes);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataAesId">xmlSecOpenSSLKeyDataAesId</title>
+<programlisting>#define     xmlSecOpenSSLKeyDataAesId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataAesGetKlass">xmlSecOpenSSLKeyDataAesGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataAesGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataAesSet">xmlSecOpenSSLKeyDataAesSet ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataAesSet      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformAes128CbcId">xmlSecOpenSSLTransformAes128CbcId</title>
+<programlisting>#define     xmlSecOpenSSLTransformAes128CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformAes128CbcGetKlass">xmlSecOpenSSLTransformAes128CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformAes128CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformAes192CbcId">xmlSecOpenSSLTransformAes192CbcId</title>
+<programlisting>#define     xmlSecOpenSSLTransformAes192CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformAes192CbcGetKlass">xmlSecOpenSSLTransformAes192CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformAes192CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformAes256CbcId">xmlSecOpenSSLTransformAes256CbcId</title>
+<programlisting>#define     xmlSecOpenSSLTransformAes256CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformAes256CbcGetKlass">xmlSecOpenSSLTransformAes256CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformAes256CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWAes128Id">xmlSecOpenSSLTransformKWAes128Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformKWAes128Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWAes128GetKlass">xmlSecOpenSSLTransformKWAes128GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWAes128GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWAes192Id">xmlSecOpenSSLTransformKWAes192Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformKWAes192Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWAes192GetKlass">xmlSecOpenSSLTransformKWAes192GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWAes192GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWAes256Id">xmlSecOpenSSLTransformKWAes256Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformKWAes256Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWAes256GetKlass">xmlSecOpenSSLTransformKWAes256GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWAes256GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDesId">xmlSecOpenSSLKeyDataDesId</title>
+<programlisting>#define     xmlSecOpenSSLKeyDataDesId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDesGetKlass">xmlSecOpenSSLKeyDataDesGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataDesGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDesSet">xmlSecOpenSSLKeyDataDesSet ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataDesSet      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformDes3CbcId">xmlSecOpenSSLTransformDes3CbcId</title>
+<programlisting>#define     xmlSecOpenSSLTransformDes3CbcId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformDes3CbcGetKlass">xmlSecOpenSSLTransformDes3CbcGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformDes3CbcGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWDes3Id">xmlSecOpenSSLTransformKWDes3Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformKWDes3Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformKWDes3GetKlass">xmlSecOpenSSLTransformKWDes3GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformKWDes3GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDsaId">xmlSecOpenSSLKeyDataDsaId</title>
+<programlisting>#define     xmlSecOpenSSLKeyDataDsaId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDsaGetKlass">xmlSecOpenSSLKeyDataDsaGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataDsaGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDsaAdoptDsa">xmlSecOpenSSLKeyDataDsaAdoptDsa ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataDsaAdoptDsa (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="DSA-CAPS">DSA</link> *dsa);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDsaGetDsa">xmlSecOpenSSLKeyDataDsaGetDsa ()</title>
+<programlisting><link linkend="DSA-CAPS">DSA</link>*        xmlSecOpenSSLKeyDataDsaGetDsa   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDsaAdoptEvp">xmlSecOpenSSLKeyDataDsaAdoptEvp ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataDsaAdoptEvp (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataDsaGetEvp">xmlSecOpenSSLKeyDataDsaGetEvp ()</title>
+<programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLKeyDataDsaGetEvp   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformDsaSha1Id">xmlSecOpenSSLTransformDsaSha1Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformDsaSha1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformDsaSha1GetKlass">xmlSecOpenSSLTransformDsaSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformDsaSha1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataHmacId">xmlSecOpenSSLKeyDataHmacId</title>
+<programlisting>#define     xmlSecOpenSSLKeyDataHmacId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataHmacGetKlass">xmlSecOpenSSLKeyDataHmacGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataHmacGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataHmacSet">xmlSecOpenSSLKeyDataHmacSet ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataHmacSet     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformHmacSha1Id">xmlSecOpenSSLTransformHmacSha1Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformHmacSha1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformHmacSha1GetKlass">xmlSecOpenSSLTransformHmacSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformHmacSha1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformHmacRipemd160Id">xmlSecOpenSSLTransformHmacRipemd160Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformHmacRipemd160Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformHmacRipemd160GetKlass">xmlSecOpenSSLTransformHmacRipemd160GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformHmacRipemd160GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformHmacMd5Id">xmlSecOpenSSLTransformHmacMd5Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformHmacMd5Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformHmacMd5GetKlass">xmlSecOpenSSLTransformHmacMd5GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformHmacMd5GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRipemd160Id">xmlSecOpenSSLTransformRipemd160Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformRipemd160Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRipemd160GetKlass">xmlSecOpenSSLTransformRipemd160GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRipemd160GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataRsaId">xmlSecOpenSSLKeyDataRsaId</title>
+<programlisting>#define     xmlSecOpenSSLKeyDataRsaId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataRsaGetKlass">xmlSecOpenSSLKeyDataRsaGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecOpenSSLKeyDataRsaGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataRsaAdoptRsa">xmlSecOpenSSLKeyDataRsaAdoptRsa ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataRsaAdoptRsa (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="RSA-CAPS">RSA</link> *rsa);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataRsaGetRsa">xmlSecOpenSSLKeyDataRsaGetRsa ()</title>
+<programlisting><link linkend="RSA-CAPS">RSA</link>*        xmlSecOpenSSLKeyDataRsaGetRsa   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataRsaAdoptEvp">xmlSecOpenSSLKeyDataRsaAdoptEvp ()</title>
+<programlisting>int         xmlSecOpenSSLKeyDataRsaAdoptEvp (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLKeyDataRsaGetEvp">xmlSecOpenSSLKeyDataRsaGetEvp ()</title>
+<programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLKeyDataRsaGetEvp   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRsaSha1Id">xmlSecOpenSSLTransformRsaSha1Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformRsaSha1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRsaSha1GetKlass">xmlSecOpenSSLTransformRsaSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRsaSha1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRsaPkcs1Id">xmlSecOpenSSLTransformRsaPkcs1Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformRsaPkcs1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRsaPkcs1GetKlass">xmlSecOpenSSLTransformRsaPkcs1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRsaPkcs1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRsaOaepId">xmlSecOpenSSLTransformRsaOaepId</title>
+<programlisting>#define     xmlSecOpenSSLTransformRsaOaepId</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformRsaOaepGetKlass">xmlSecOpenSSLTransformRsaOaepGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformRsaOaepGetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformSha1Id">xmlSecOpenSSLTransformSha1Id</title>
+<programlisting>#define     xmlSecOpenSSLTransformSha1Id</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLTransformSha1GetKlass">xmlSecOpenSSLTransformSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecOpenSSLTransformSha1GetKlass
+                                            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-OPENSSL-ERRORS-LIB-CAPS">XMLSEC_OPENSSL_ERRORS_LIB</title>
+<programlisting>#define XMLSEC_OPENSSL_ERRORS_LIB			(ERR_LIB_USER + 57)
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-OPENSSL-ERRORS-FUNCTION-CAPS">XMLSEC_OPENSSL_ERRORS_FUNCTION</title>
+<programlisting>#define XMLSEC_OPENSSL_ERRORS_FUNCTION			0
+</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErrorsDefaultCallback ()</title>
+<programlisting>void        xmlSecOpenSSLErrorsDefaultCallback
+                                            (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);</programlisting>
+</refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,12 +1,12 @@
 <refentry id="xmlsec-keys">
 <refmeta>
-<refentrytitle>keys.h</refentrytitle>
+<refentrytitle>keys</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>keys.h</refname><refpurpose>The keys helper functions.</refpurpose>
+<refname>keys</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

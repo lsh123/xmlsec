@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-transforms.h
+transforms
 
 <!-- ##### SECTION Short_Description ##### -->
-The transforms functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -481,9 +481,6 @@ The transforms functions.
 
 @id: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@dontDestroy: 
-@usage: 
 
 
 <!-- ##### FUNCTION xmlSecTransformDestroy ##### -->
@@ -492,8 +489,6 @@ The transforms functions.
 </para>
 
 @transform: 
-<!-- # Unused Parameters # -->
-@forceDestroy: 
 
 
 <!-- ##### FUNCTION xmlSecTransformNodeRead ##### -->

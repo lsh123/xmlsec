@@ -43,6 +43,28 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
  */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 
+/**
+ * xmlSecXPathNs:
+ * 
+ * The XPath transform namespace 
+ */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
+
+/**
+ * xmlSecXPath2Ns:
+ * 
+ * The XPath2 transform namespace 
+ */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
+
+/**
+ * xmlSecXPointerNs
+ *
+ * XPointer transform namespace 
+ */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
+
+
 /*************************************************************************
  *
  * DSig Nodes
@@ -313,7 +335,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Store[];
  * XPath/XPointer strings
  *
  ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXPath[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPath[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXPath2[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPath2[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterIntersect[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterSubtract[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2FilterUnion[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXPointer[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPointer[];
 
 /*************************************************************************
@@ -334,22 +364,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecStringCR[];
 
 
 
-/**
- * xmlSecXPathNs:
- * 
- * The XPath transform namespace 
- */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
-
-/**
- * xmlSecXPath2Ns:
- * 
- * The XPath2 transform namespace 
- */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
-
-/* XPointer transform namespace */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 
 #ifdef __cplusplus
 }

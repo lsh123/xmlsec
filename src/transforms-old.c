@@ -91,31 +91,33 @@ xmlSecTransformsInit(void) {
 	return(-1);
     }
 
-    if(xmlSecTransformRegister(xmlSecTransformXPath) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformXPathId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPath)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPathId)));
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecTransformXPath2) < 0) {
+
+    if(xmlSecTransformRegister(xmlSecTransformXPath2Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPath2)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPath2Id)));
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecTransformXPointer) < 0) {
+
+    if(xmlSecTransformRegister(xmlSecTransformXPointerId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointer)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
 	return(-1);
     }
 

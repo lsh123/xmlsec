@@ -1715,11 +1715,12 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
  * Returns 0 for success or a negative value otherwise.
  */
 int
-xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType type,
+xmlSecTransformXPath2Add(xmlNodePtr transformNode, const xmlChar* type,
 			const xmlChar *expression, const xmlChar **namespaces) {
     xmlNodePtr xpathNode;
 
     xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(type != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
 
     xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
@@ -1732,25 +1733,7 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
 		    xmlSecErrorsSafeString(xmlSecNodeXPath));
 	return(-1);    
     }
-    
-    switch(type) {
-    case xmlSecXPathTransformIntersect:
-	xmlSetProp(xpathNode, BAD_CAST "Filter", BAD_CAST "intersect");
-	break;
-    case xmlSecXPathTransformSubtract:
-	xmlSetProp(xpathNode, BAD_CAST "Filter", BAD_CAST "subtract");
-	break;
-    case xmlSecXPathTransformUnion:
-	xmlSetProp(xpathNode, BAD_CAST "Filter", BAD_CAST "union");
-	break;
-    default:
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "type=%d", type);
-	return(-1);    	
-    }
+    xmlSetProp(xpathNode, xmlSecAttrFilter, type);
     
     xmlNodeSetContent(xpathNode, expression);
     if(namespaces != NULL) {	

@@ -98,6 +98,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformEnvelopedId), -1);
     xmlSecAssert2(transform->hereNode != NULL, -1);
+    xmlSecAssert2(transform->outNodes == NULL, -1);
     xmlSecAssert2(last != 0, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     

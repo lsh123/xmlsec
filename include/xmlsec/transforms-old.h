@@ -50,24 +50,6 @@ typedef enum {
     xmlSecXPathTransformUnion
 } xmlSecXPath2TransformType;
  
-/**
- * xmlSecTransformXPath:
- * 
- * The XPath transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPath;
-/**
- * xmlSecTransformXPath2:
- * 
- * The XPath2 transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPath2;
-/**
- * xmlSecTransformXPointer:
- * 
- * The XPointer transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPointer;
 
 
 

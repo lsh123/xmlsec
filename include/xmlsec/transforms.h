@@ -619,6 +619,32 @@ XMLSEC_EXPORT int 	xmlSecTransformInputURIOpen			(xmlSecTransformPtr transform,
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
 #endif /* XMLSEC_NO_XSLT */
 
+/**
+ * xmlSecTransformXPath:
+ * 
+ * The XPath transform id.
+ */
+#define xmlSecTransformXPathId \
+	xmlSecTransformXPathGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPathGetKlass		(void);
+
+/**
+ * xmlSecTransformXPath2:
+ * 
+ * The XPath2 transform id.
+ */
+#define xmlSecTransformXPath2Id \
+	xmlSecTransformXPath2GetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPath2GetKlass		(void);
+
+/**
+ * xmlSecTransformXPointer:
+ * 
+ * The XPointer transform id.
+ */
+#define xmlSecTransformXPointerId \
+	xmlSecTransformXPointerGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPointerGetKlass		(void);
 
 
 

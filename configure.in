@@ -271,7 +271,7 @@ if test "z$with_openssl" = "zno" ; then
     AC_MSG_RESULT(no)
 elif test "z$with_openssl" != "z" ; then
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$with_openssl/include"
-    if test -f "$with_openssl/lib/libcrypto.so" ; then
+    if test -f "$with_openssl/lib/libcrypto$shrext" ; then
 	OPENSSL_LIBS="-L$with_openssl/lib -lcrypto"
     else
 	OPENSSL_LIBS="$with_openssl/lib/libcrypto.a"
@@ -556,7 +556,7 @@ if test "z$NSS_FOUND" = "zno" ; then
 	done
 	
 	for dir in $ac_nss_lib_dir ; do
-    	    if test -f $dir/libnspr4.so ; then
+    	    if test -f $dir/libnspr4$shrext ; then
 		dnl do not add -L/usr/lib because compiler does it anyway
         	if test "z$dir" = "z/usr/lib" ; then
             	    NSPR_LIBS="$NSPR_LIBS_LIST"
@@ -627,7 +627,7 @@ if test "z$NSS_FOUND" = "zno" ; then
         done
        
         for dir in $ac_nss_lib_dir ; do
-    	    if test -f $dir/libnss3.so ; then
+    	    if test -f $dir/libnss3$shrext ; then
         	dnl do not add -L/usr/lib because compiler does it anyway
     		if test "z$dir" = "z/usr/lib" ; then
         	    NSS_LIBS="$NSS_LIBS_LIST"

@@ -1,3 +1,7 @@
+2004-06-21 Aleksey Sanin <aleksey@aleksey.com>
+	
+	* src/bn.c: keep a '0' character when we remove '0' from the beggining		
+
 2004-06-17  Aleksey Sanin <aleksey@aleksey.com>
 
 	* src/xmlenc.c: added NULL check

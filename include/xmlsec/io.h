@@ -29,6 +29,24 @@ XMLSEC_EXPORT int     	xmlSecIORegisterCallbacks		(xmlInputMatchCallback matchFu
 								 xmlInputReadCallback readFunc,
 								 xmlInputCloseCallback closeFunc);
 
+/********************************************************************
+ *
+ * Input URI transform 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformInputURIId:
+ * 
+ * The Input URI transform id.
+ */
+#define xmlSecTransformInputURIId \
+	xmlSecTransformInputURIGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInputURIGetKlass		(void);
+XMLSEC_EXPORT int 	xmlSecTransformInputURIOpen			(xmlSecTransformPtr transform,
+									 const char *uri);
+
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -1,7 +1,6 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/membuf.h>
 
-static xmlSecTransformId xmlSecAllTransformIds[100];
 
 /* internal functions */
 static int  xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri);
@@ -12,160 +11,6 @@ static int  xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state);
 static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet, 
 					  xmlOutputBufferPtr output);
-
-/**********************************************************************
- *
- * Hi-level functions
- *
- *********************************************************************/
-/**
- * xmlSecTransformsInit:
- *
- * Trnasforms engine initialization (called from xmlSecInit() function).
- * The applications should not call this function directly.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int 
-xmlSecTransformsInit(void) {
-    memset(xmlSecAllTransformIds, 0, sizeof(xmlSecAllTransformIds));
-    xmlSecAllTransformIds[0] = xmlSecTransformIdUnknown;
-    
-    if(xmlSecTransformRegister(xmlSecTransformBase64Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformBase64Id)));
-	return(-1);
-    }
-
-    if(xmlSecTransformRegister(xmlSecTransformEnvelopedId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformEnvelopedId)));
-	return(-1);
-    }
-
-
-
-    /* c14n methods */
-    if(xmlSecTransformRegister(xmlSecTransformInclC14NId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NId)));
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecTransformInclC14NWithCommentsId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NWithCommentsId)));
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecTransformExclC14NId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformExclC14NId)));
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecTransformExclC14NWithCommentsId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformExclC14NWithCommentsId)));
-	return(-1);
-    }
-
-    if(xmlSecTransformRegister(xmlSecTransformXPathId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPathId)));
-	return(-1);
-    }
-
-    if(xmlSecTransformRegister(xmlSecTransformXPath2Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPath2Id)));
-	return(-1);
-    }
-
-    if(xmlSecTransformRegister(xmlSecTransformXPointerId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
-	return(-1);
-    }
-
-#ifndef XMLSEC_NO_XSLT
-    if(xmlSecTransformRegister(xmlSecTransformXsltId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXsltId)));
-	return(-1);
-    }
-#endif /* XMLSEC_NO_XSLT */    
-    
-    return(0);
-}
-
-/**
- * xmlSecTransformRegister:
- * @transformId: the transform id to register.
- *
- * Adds the @transformId to the internal table of known transforms.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int
-xmlSecTransformRegister(xmlSecTransformId keyId) {
-    unsigned int i;
-    
-    xmlSecAssert2(keyId != NULL, -1);
-    
-    for(i = 0; i < sizeof(xmlSecAllTransformIds) / sizeof(xmlSecAllTransformIds[0]) - 1; ++i) {
-	if(xmlSecAllTransformIds[i] == xmlSecTransformIdUnknown) {
-	    xmlSecAllTransformIds[i++] = keyId;
-	    xmlSecAllTransformIds[i++] = xmlSecTransformIdUnknown;
-	    
-	    return(0);
-	}
-    }
-    
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		NULL,
-		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		"no more key slots available; increase xmlSecAllTransformIds table size");
-    return(-1);
-}
 
 
 /**
@@ -260,11 +105,11 @@ xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
 	return(NULL);		
     }
     
-    id = xmlSecTransformFind(href, usage);    
+    id = xmlSecTransformsFind(href, usage);    
     if(id == xmlSecTransformIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformFind",
+		    "xmlSecTransformsFind",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "href=\"%s\"", 
 		    xmlSecErrorsSafeString(href));
@@ -336,39 +181,6 @@ xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
  * Transform Info
  *
  **************************************************************************/ 
-/**
- * xmlSecTransformFind:
- * @href: the transform href.
- *
- * Searches the list of known transforms for transform with given href
- *
- * Returns the id of the found transform or NULL if an error occurs 
- * or transform is not found.
- */ 
-xmlSecTransformId
-xmlSecTransformFind(const xmlChar* href, xmlSecTransformUsage usage) {
-    xmlSecTransformId *ptr;
-
-    xmlSecAssert2(href != NULL, NULL);
-    
-    ptr = xmlSecAllTransformIds;
-    while((*ptr) != xmlSecTransformIdUnknown) {
-	if(((usage & (*ptr)->usage) != 0) && xmlStrEqual((*ptr)->href, href)) {
-	    return(*ptr);
-	}
-	++ptr;
-    }
-    
-    /* not found */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		NULL,
-		XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		"href=%s", 
-		xmlSecErrorsSafeString(href));
-    return(xmlSecTransformIdUnknown);
-}
-
 /**********************************************************************
  *
  * Transform 
@@ -1327,4 +1139,307 @@ xmlSecTransformStateFinalVerifyNode(xmlSecTransformStatePtr state,
     xmlFree(nodeContent);
     return(0);
 }
+
+/**
+ * xmlSecTransformExecuteXml:
+ * @transform: the pointer to XML transform.
+ * @ctxDoc: the pointer to the document containing the transform's 
+ *		<dsig:Transform> node.
+ * @doc: the pointer to the pointer to current document.
+ * @nodes: the pointer to the pointer to current and result nodes set.
+ *
+ * Executes the XML @transform and returns result nodes set in @nodes
+ * (wrapper for transform specific executeXml() method).
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecTransformExecuteXml(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
+			  xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2((*doc) != NULL, -1);
+
+    if(transform->id->executeXml != NULL) {
+	return((transform->id->executeXml)(transform, ctxDoc, doc, nodes));
+    }
+    return(0);
+}
+
+/**
+ * xmlSecTransformExecuteC14N:
+ * @transform: the pointer to C14N transform.
+ * @doc: the pointer to current document.
+ * @nodes: the pointer to current nodes set.
+ * @buffer: the result buffer.
+ *
+ * Executes the C14N @transform and returns result in the @buffer
+ * (wrapper for transform specific executeC14n() method). If the 
+ * @trnaform is NULL then the default #xmlSecTransformInclC14NId
+ * transform is executed.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int	
+xmlSecTransformExecuteC14N(xmlSecTransformPtr transform,
+			   xmlDocPtr doc, xmlSecNodeSetPtr nodes,
+			   xmlOutputBufferPtr buffer) {
+    xmlSecTransformId id;  
+
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+    
+    /* todo */
+    if(transform != NULL) {
+	xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+	id = transform->id;
+    } else {
+	id = xmlSecTransformInclC14NId; /* the default c14n transform */
+    }
+    
+    if(id->executeC14N != NULL) {
+	return((id->executeC14N)(transform, doc, nodes, buffer));
+    }
+    return(0);
+}
+
+/**
+ * xmlSecTransformAddAfter:
+ * @curTransform: the pointer to current transform (may be NULL).
+ * @newTransform: the pointer to new transform.
+ * 
+ * Adds @newTransform after the @curTransform.
+ *
+ * Returns pointer to the new transforms chain or NULL if an error occurs.
+ */
+xmlSecTransformPtr	
+xmlSecTransformAddAfter(xmlSecTransformPtr curTransform, 
+			xmlSecTransformPtr newTransform) {
+    xmlSecAssert2(xmlSecTransformIsValid(newTransform), NULL);
+
+    if(curTransform != NULL) {
+	xmlSecAssert2(xmlSecTransformIsValid(curTransform), NULL);
+
+	newTransform->prev = curTransform;
+	newTransform->next = curTransform->next;
+	curTransform->next = newTransform;
+	if(newTransform->next != NULL) {
+	    newTransform->next->prev = newTransform;
+	}
+    } else {
+ 	newTransform->next = newTransform->prev = NULL;
+    }
+    return(newTransform);
+}
+
+/**
+ * xmlSecTransformAddBefore
+ * @curTransform: the pointer to current transform (may be NULL).
+ * @newTransform: the pointer to new transform.
+ * 
+ * Adds @newTransform before the @curTransform.
+ *
+ * Returns pointer to the new transforms chain or NULL if an error occurs.
+ */
+xmlSecTransformPtr	
+xmlSecTransformAddBefore(xmlSecTransformPtr curTransform, 
+			    xmlSecTransformPtr newTransform) {
+    xmlSecAssert2(xmlSecTransformIsValid(newTransform), NULL);
+
+    if(curTransform != NULL) {
+	xmlSecAssert2(xmlSecTransformIsValid(curTransform), NULL);
+
+	newTransform->next = curTransform;
+	newTransform->prev = curTransform->prev;
+	curTransform->prev = newTransform;
+	if(newTransform->prev != NULL) {
+	    newTransform->prev->next = newTransform;
+	}
+    } else {
+	newTransform->next = newTransform->prev = NULL;
+    }
+    return(newTransform);
+    
+}
+
+/**
+ * xmlSecTransformRemove:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * Removes @transform from the chain. This method MUST be called by any 
+ * bin transform id destructor.
+ */
+void
+xmlSecTransformRemove(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+
+    if(transform->next != NULL) {
+	transform->next->prev = transform->prev;
+    }
+    if(transform->prev != NULL) {
+	transform->prev->next = transform->next;
+    }
+    transform->next = transform->prev = NULL;
+}
+
+/**
+ * xmlSecTransformDestroyAll:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * Destroys all transforms in the chain.
+ */
+void
+xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+
+    while(transform->next != NULL) {
+	xmlSecTransformDestroy(transform->next, 0);
+    }
+    while(transform->prev != NULL) {
+	xmlSecTransformDestroy(transform->prev, 0);
+    }	
+    xmlSecTransformDestroy(transform, 0);
+}
+
+/**
+ * xmlSecTransformReadBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
+ *
+ * Reads chunk of data from the transform (wrapper transform specific
+ * readBin() function).
+ *
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
+ */
+int
+xmlSecTransformReadBin(xmlSecTransformPtr transform, 
+		       unsigned char *buf, size_t size) {
+    xmlSecTransformCtx ctx; /* todo */
+    int ret;
+        
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    ret = xmlSecTransformPopBin(transform, buf, &size, &ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformPopBin",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    return(size);
+}
+
+/**
+ * xmlSecTransformWriteBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the input data buffer.
+ * @size: the input data size.
+ *
+ * Writes data to the transform (wrapper to the transform specific
+ * writeBin() function).
+ * 
+ * Returns the number of bytes consumed or a negative value otherwise.
+ */
+int
+xmlSecTransformWriteBin(xmlSecTransformPtr transform, 
+			const unsigned char *buf, size_t size) {
+    xmlSecTransformCtx ctx; /* todo */
+    int ret;
+        
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    ret = xmlSecTransformPushBin(transform, buf, size, 0, &ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformPushBin",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    return(size);
+}
+
+/**
+ * xmlSecTransformFlushBin:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * Finalizes writing (wrapper for transform specific flushBin() method). 
+ *
+ * Returns 0 if success or negative value otherwise.
+ */
+int
+xmlSecTransformFlushBin(xmlSecTransformPtr transform) {
+    xmlSecTransformCtx ctx; /* todo */
+    int ret;
+        
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    
+    ret = xmlSecTransformPushBin(transform, NULL, 0, 1, &ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformPushBin",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    return(0);
+}
+
+int  
+xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
+			    xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
+    xmlSecTransformCtx ctx;
+    int ret;
+    			    
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctxDoc != NULL, -1);
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2((*doc) != NULL, -1);
+    xmlSecAssert2(nodes != NULL, -1);
+    
+    memset(&ctx, 0, sizeof(ctx));
+
+    ctx.ctxDoc = ctxDoc;
+
+    /* execute our transform */
+    transform->inNodes = (*nodes);
+    ret = xmlSecTransformExecute(transform, 1, &ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    if(transform->outNodes != NULL) {
+	(*nodes)= transform->outNodes;
+	(*doc) 	= transform->outNodes->doc;
+	/* we don;t want to destroy the nodes set in transform */
+	transform->outNodes = NULL;
+    } else {
+	(*nodes)= NULL;
+	(*doc) 	= NULL;
+    }
+
+    return(0);    
+}
+
+
+
+
+
+
+
+
+
 

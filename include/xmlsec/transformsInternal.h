@@ -101,13 +101,9 @@ int			xmlSecTransformStateFinalVerifyNode(xmlSecTransformStatePtr state,
 
 
 
-XMLSEC_EXPORT int	xmlSecTransformRegister		(xmlSecTransformId keyId);
-int 			xmlSecTransformsInit		(void);
 
 int			xmlSecTransformsNodeRead	(xmlSecTransformStatePtr state, 
 							 xmlNodePtr transformsNode);
-xmlSecTransformId	xmlSecTransformFind		(const xmlChar *href,
-							 xmlSecTransformUsage usage);
 xmlSecTransformPtr	xmlSecTransformNodeRead		(xmlNodePtr transformNode, 
 							 xmlSecTransformUsage usage,
 							 int dontDestroy);

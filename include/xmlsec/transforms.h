@@ -24,13 +24,22 @@ extern "C" {
 
 
 #define XMLSEC_TRANSFORM_BINARY_CHUNK			64
-#define XMLSEC_TRANSFORM_BUFFER_SIZE			64	/* should be greater than XMLSEC_TRANSFORM_MIN_BLOCK_SIZE */
 
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
 typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
 typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
 
+#include <xmlsec/transforms-old.h>
 
+/**********************************************************************
+ *
+ * Hi-level functions
+ *
+ *********************************************************************/
+int 			xmlSecTransformsInit		(void);
+XMLSEC_EXPORT int	xmlSecTransformsRegister	(xmlSecTransformId keyId);
+xmlSecTransformId	xmlSecTransformsFind		(const xmlChar *href,
+							 xmlSecTransformUsage usage);
 
 
 /**************************************************************************
@@ -53,10 +62,6 @@ typedef enum  {
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
 } xmlSecTransformStatus;
-
-#define xmlSecTransformStatusIsDone(status) \
-    (((status) != xmlSecTransformStatusNone) && \
-     ((status) != xmlSecTransformStatusWorking))
 
 /**************************************************************************
  *
@@ -132,8 +137,6 @@ struct _xmlSecTransform {
     /* reserved for the future */    
     void*				reserved0;
     void*				reserved1;
-    void*				reserved2;
-    void*				reserved3;
 };
 
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCreate	(xmlSecTransformId id,
@@ -193,39 +196,6 @@ XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 
-XMLSEC_EXPORT int 			xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform,
-								  xmlDocPtr ctxDoc,
-								  xmlDocPtr *doc,
-								  xmlSecNodeSetPtr *nodes);
-
-
-XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
-								 unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformWriteBin	(xmlSecTransformPtr transform,
-								 const unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformFlushBin	(xmlSecTransformPtr transform);
-XMLSEC_EXPORT int 			xmlSecTransformExecuteXml(xmlSecTransformPtr transform,
-								  xmlDocPtr ctxDoc,
-								  xmlDocPtr *doc,
-								  xmlSecNodeSetPtr *nodes);
-XMLSEC_EXPORT int 			xmlSecTransformExecuteC14N(xmlSecTransformPtr transform,
-								 xmlDocPtr doc,
-								 xmlSecNodeSetPtr nodes,
-								 xmlOutputBufferPtr buffer);
-
-
-
-XMLSEC_EXPORT void			xmlSecTransformDestroyAll(xmlSecTransformPtr transform);	
-XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddAfter	(xmlSecTransformPtr curTransform,
-								 xmlSecTransformPtr newTransform);
-XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr curTransform,
-								 xmlSecTransformPtr newTransform);
-XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
-
-
-
 #define xmlSecTransformGetName(transform) \
 	((xmlSecTransformIsValid((transform))) ? \
 	  xmlSecTransformKlassGetName((transform)->id) : NULL)
@@ -279,69 +249,6 @@ XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
 #define xmlSecTransformCheckSize(transform, size) \
  	(xmlSecTransformIsValid(( transform )) && \
 	((( transform )->id->objSize) >= ( size )))
-
-/**************************************************************************
- *
- * xmlSecTransformType
- *
- *************************************************************************/
-/**
- * xmlSecTransformType:
- * @xmlSecTransformTypeBinary: input - binary; output - binary.
- * @xmlSecTransformTypeXml: input - XML; output - XML.
- * @xmlSecTransformTypeC14N: input - XML; output - binary.
- *
- * The transform input/output types.
- */
-typedef enum  {
-    xmlSecTransformTypeBinary,
-    xmlSecTransformTypeXml,
-    xmlSecTransformTypeC14N
-} xmlSecTransformType;
-
-/**************************************************************************
- *
- * xmlSecTransformUsage
- *
- *************************************************************************/
-typedef unsigned int					xmlSecTransformUsage;
-#define xmlSecTransformUsageUnknown			0x0000
-/**
- * xmlSecTransformUsageDSigTransform:
- *
- * Transform could be used in <dsig:Transform>.
- */
-#define xmlSecTransformUsageDSigTransform		0x0001
-/**
- * xmlSecTransformUsageC14NMethod:
- *
- * Transform could be used in <dsig:CanonicalizationMethod>.
- */
-#define xmlSecTransformUsageC14NMethod			0x0002
-/**
- * xmlSecTransformUsageDigestMethod:
- *
- * Transform could be used in <dsig:DigestMethod>.
- */
-#define xmlSecTransformUsageDigestMethod		0x0004
-/**
- * xmlSecTransformUsageSignatureMethod:
- *
- * Transform could be used in <dsig:SignatureMethod>.
- */
-#define xmlSecTransformUsageSignatureMethod		0x0008
-/**
- * xmlSecTransformUsageEncryptionMethod:
- *
- * Transform could be used in <enc:EncryptionMethod>.
- */
-#define xmlSecTransformUsageEncryptionMethod		0x0010
-/**
- * xmlSecTransformUsageAny:
- *
- * Transform could be used for operation.
- */
-#define xmlSecTransformUsageAny				0xFFFF
 
 
 /************************************************************************
@@ -436,76 +343,6 @@ typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 /**
- * xmlSecTransformReadMethod:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the output buffer.
- * @size: the output buffer size.
- * 
- * The transform specific method to read next chunk of binary data into @buf.
- *
- * Returns the number of bytes in the buffer or negative value
- * if an error occurs.
- */
-typedef int  		(*xmlSecTransformReadMethod)		(xmlSecTransformPtr transform, 
-								 unsigned char *buf, 
-								 size_t size);
-/**
- * xmlSecTransformWriteMethod:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the input data buffer.
- * @size: the input data size.
- *
- * The transform specific method to write next chunk of binary data from @buf.
- * 
- * Returns 0 if success or a negative value otherwise.
- */
-typedef int  		(*xmlSecTransformWriteMethod)		(xmlSecTransformPtr transform, 
-                                        			 const unsigned char *buf, 
-								 size_t size);
-/**
- * xmlSecTransformFlushMethod:
- * @transform: the pointer to #xmlSecTransform structure.
- *
- * The transform specific method to finalize writing. 
- *
- * Returns 0 if success or negative value otherwise.
- */
-typedef int  		(*xmlSecTransformFlushMethod)		(xmlSecTransformPtr transform);
-
-/**
- * xmlSecTransformExecuteMethod:
- * @transform: the pointer to XML transform.
- * @ctxDoc: the pointer to the document containing the transform's 
- *		<dsig:Transform> node.
- * @doc: the pointer to the pointer to current document.
- * @nodes: the pointer to the pointer to current and result nodes set.
- *
- * Transform specific execute method. Returns result nodes set in @nodes.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-typedef int 		(*xmlSecTransformExecuteXmlMethod)	(xmlSecTransformPtr transform,
-								 xmlDocPtr ctxDoc,
-								 xmlDocPtr *doc,
-								 xmlSecNodeSetPtr *nodes);
-
-/**
- * xmlSecTransformExecuteMethod:
- * @transform: the pointer to C14N transform.
- * @doc: the pointer to current document.
- * @nodes: the pointer to current nodes set.
- * @buffer: the result buffer.
- *
- * Transform specific execute method. returns result in the @buffer.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-typedef int 		(*xmlSecTransformExecuteC14NMethod)	(xmlSecTransformPtr transform,
-								 xmlDocPtr doc,
-								 xmlSecNodeSetPtr nodes,
-								 xmlOutputBufferPtr buffer);
-
-/**
  * xmlSecTransformKlass:
  * @type: the type.
  * @usage: the usage.
@@ -550,12 +387,6 @@ struct _xmlSecTransformKlass {
 #define xmlSecTransformKlassGetName(klass) \
 	(((klass)) ? ((klass)->name) : NULL)
 
-
-
-
-
-
-
 /******************************************************************** 
  *
  * Base64 Transform
@@ -570,8 +401,49 @@ struct _xmlSecTransformKlass {
 #define xmlSecTransformBase64Id \
 	xmlSecTransformBase64GetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
-XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr transform,
+XMLSEC_EXPORT void 		xmlSecTransformBase64SetLineSize	(xmlSecTransformPtr transform,
 									 size_t lineSize);
+
+/********************************************************************
+ *
+ * C14N transforms 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformInclC14NId:
+ * 
+ * The regular (inclusive) C14N without comments transform id.
+ */
+#define xmlSecTransformInclC14NId \
+	xmlSecTransformInclC14NGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NGetKlass		(void);
+
+/**
+ * xmlSecTransformInclC14NWithCommentsId:
+ * 
+ * The regular (inclusive) C14N with comments transform id.
+ */
+#define xmlSecTransformInclC14NWithCommentsId \
+	xmlSecTransformInclC14NWithCommentsGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NWithCommentsGetKlass(void);
+
+/**
+ * xmlSecTransformExclC14NId
+ * 
+ * The exclusive C14N without comments transform id.
+ */
+#define xmlSecTransformExclC14NId \
+	xmlSecTransformExclC14NGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NGetKlass		(void);
+
+/**
+ * xmlSecTransformExclC14NWithCommentsId:
+ * 
+ * The exclusive C14N with comments transform id.
+ */
+#define xmlSecTransformExclC14NWithCommentsId \
+	xmlSecTransformExclC14NWithCommentsGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NWithCommentsGetKlass(void);
 
 /********************************************************************
  *
@@ -586,38 +458,6 @@ XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr tr
 #define xmlSecTransformEnvelopedId \
 	xmlSecTransformEnvelopedGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformEnvelopedGetKlass	(void);
-
-/********************************************************************
- *
- * Input URI transform 
- *
- *******************************************************************/
-/**
- * xmlSecTransformInputURIId:
- * 
- * The Input URI transform id.
- */
-#define xmlSecTransformInputURIId \
-	xmlSecTransformInputURIGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInputURIGetKlass		(void);
-XMLSEC_EXPORT int 	xmlSecTransformInputURIOpen			(xmlSecTransformPtr transform,
-									 const char *uri);
-
-/********************************************************************
- *
- * XSLT transform 
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_XSLT
-/**
- * xmlSecTransformXsltId:
- * 
- * The XSLT transform id.
- */
-#define xmlSecTransformXsltId \
-	xmlSecTransformXsltGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
-#endif /* XMLSEC_NO_XSLT */
 
 /**
  * xmlSecTransformXPath:
@@ -646,47 +486,22 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPath2GetKlass		(void);
 	xmlSecTransformXPointerGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPointerGetKlass		(void);
 
-
 /********************************************************************
  *
- * C14N transforms 
+ * XSLT transform 
  *
  *******************************************************************/
+#ifndef XMLSEC_NO_XSLT
 /**
- * xmlSecTransformInclC14NId:
+ * xmlSecTransformXsltId:
  * 
- * The regular (inclusive) C14N without comments transform id.
+ * The XSLT transform id.
  */
-#define xmlSecTransformInclC14NId \
-	xmlSecTransformInclC14NGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NGetKlass		(void);
+#define xmlSecTransformXsltId \
+	xmlSecTransformXsltGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
+#endif /* XMLSEC_NO_XSLT */
 
-/**
- * xmlSecTransformInclC14NWithCommentsId:
- * 
- * The regular (inclusive) C14N with comments transform id.
- */
-#define xmlSecTransformInclC14NWithCommentsId \
-	xmlSecTransformInclC14NWithCommentsGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NWithCommentsGetKlass		(void);
-
-/**
- * xmlSecTransformExclC14NId
- * 
- * The exclusive C14N without comments transform id.
- */
-#define xmlSecTransformExclC14NId \
-	xmlSecTransformExclC14NGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NGetKlass		(void);
-
-/**
- * xmlSecTransformExclC14NWithCommentsId:
- * 
- * The exclusive C14N with comments transform id.
- */
-#define xmlSecTransformExclC14NWithCommentsId \
-	xmlSecTransformExclC14NWithCommentsGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformExclC14NWithCommentsGetKlass		(void);
 
 #ifdef __cplusplus
 }

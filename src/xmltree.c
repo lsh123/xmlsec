@@ -609,6 +609,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 	    
     xmlNodeSetContent(node, NULL);
     xmlAddChild(node, ptr);
+    xmlSetTreeDoc(ptr, node->doc);
     return(0);
 }
 

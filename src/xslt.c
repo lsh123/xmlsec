@@ -355,10 +355,30 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
  */
 int
 xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
+    xmlDocPtr xslt_doc;
+    int ret;
+        
     xmlSecAssert2(transformNode != NULL, -1);    
     xmlSecAssert2(xslt != NULL, -1);    
     
-    xmlNodeSetContent(transformNode, xslt);
+    xslt_doc = xmlParseMemory(xslt, xmlStrlen(xslt));
+    if(xslt_doc == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlParseMemory");
+	return(-1);
+    }
+    
+    ret = xmlSecReplaceContent(transformNode, xmlDocGetRootElement(xslt_doc));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecReplaceContent");
+	xmlFreeDoc(xslt_doc);
+	return(-1);
+    }
+    
+    xmlFreeDoc(xslt_doc);
     return(0);
 }
 

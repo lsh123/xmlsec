@@ -144,51 +144,6 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass	(void);
 
 /********************************************************************
  *
- * HMAC transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_HMAC
-/** * xmlSecNssKeyDataHmac:
- * 
- * The DHMAC key id.
- */
-#define xmlSecNssKeyDataHmacId \
-	xmlSecNssKeyDataHmacGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId	xmlSecNssKeyDataHmacGetKlass	(void);
-XMLSEC_EXPORT int		xmlSecNssKeyDataHmacSet		(xmlSecKeyDataPtr data,
-									 const unsigned char* buf,
-									 size_t bufSize);
-/**
- * xmlSecNssTransformHmacSha1Id:
- * 
- * The HMAC with SHA1 signature transform id.
- */
-#define xmlSecNssTransformHmacSha1Id \
-	xmlSecNssTransformHmacSha1GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass	(void);
-
-/**
- * xmlSecNssTransformHmacRipeMd160Id:
- * 
- * The HMAC with RipeMD160 signature transform id.
- */
-#define xmlSecNssTransformHmacRipemd160Id \
-	xmlSecNssTransformHmacRipemd160GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(void);
-
-/**
- * xmlSecNssTransformHmacMd5Id:
- * 
- * The HMAC with MD5 signature transform id.
- */
-#define xmlSecNssTransformHmacMd5Id \
-	xmlSecNssTransformHmacMd5GetKlass()
-XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass	(void);
-
-#endif /* XMLSEC_NO_HMAC */
-
-/********************************************************************
- *
  * RipeMD160 transforms
  *
  *******************************************************************/

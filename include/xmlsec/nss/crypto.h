@@ -50,6 +50,25 @@ XMLSEC_EXPORT int		xmlSecNssKeyDataHmacSet		(xmlSecKeyDataPtr data,
 	xmlSecNssTransformHmacSha1GetKlass()
 XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass	(void);
 
+/**
+ * xmlSecNssTransformHmacRipeMd160Id:
+ * 
+ * The HMAC with RipeMD160 signature transform id.
+ */
+#define xmlSecNssTransformHmacRipemd160Id \
+	xmlSecNssTransformHmacRipemd160GetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(void);
+
+/**
+ * xmlSecNssTransformHmacMd5Id:
+ * 
+ * The HMAC with MD5 signature transform id.
+ */
+#define xmlSecNssTransformHmacMd5Id \
+	xmlSecNssTransformHmacMd5GetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass	(void);
+
+
 #endif /* XMLSEC_NO_HMAC */
 
 

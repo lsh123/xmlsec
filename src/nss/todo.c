@@ -158,32 +158,6 @@ xmlSecNssTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-#ifndef XMLSEC_NO_HMAC
-    if(xmlSecTransformRegister(xmlSecNssTransformHmacSha1Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformHmacSha1Id)),
-		    "xmlSecTransformRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecNssTransformHmacRipemd160Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformHmacRipemd160Id)),
-		    "xmlSecTransformRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(xmlSecTransformRegister(xmlSecNssTransformHmacMd5Id) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformHmacMd5Id)),
-		    "xmlSecTransformRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_DSA
     if(xmlSecTransformRegister(xmlSecNssTransformDsaSha1Id) < 0) {

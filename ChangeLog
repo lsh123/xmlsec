@@ -1,3 +1,7 @@
+2005-03-04  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/mscrypto/x509vfy.c: fixed cert search (based on the OO.org patch)
+
 2005-03-01  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/mscrypto/app.c: added stubs for adding keys to mscrypto

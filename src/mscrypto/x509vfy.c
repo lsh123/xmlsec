@@ -772,9 +772,9 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
     if((pCert == NULL) && (NULL != issuerName) && (NULL != issuerSerial)) {
 	xmlSecBn issuerSerialBn;	
     xmlChar * p;
+    CERT_INFO certInfo;
 	CERT_NAME_BLOB cnb;
-    CRYPT_INTEGER_BLOB cib;
-        BYTE *cName = NULL; 
+    BYTE *cName = NULL; 
 	DWORD cNameLen = 0;	
     
     /* aleksey: for some unknown to me reasons, mscrypto wants Email
@@ -845,29 +845,21 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
         return(NULL);
 	}
 
-    cib.pbData = xmlSecBufferGetData(&issuerSerialBn);
-    cib.cbData = xmlSecBufferGetSize(&issuerSerialBn);
+    certInfo.Issuer.cbData = cnb.cbData ;
+	certInfo.Issuer.pbData = cnb.pbData ;
+	certInfo.SerialNumber.cbData = xmlSecBnGetSize( &issuerSerialBn ) ;
+    certInfo.SerialNumber.pbData = xmlSecBnGetData( &issuerSerialBn ) ;
 
-    while((pCert = CertFindCertificateInStore(store, 
-						  PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-						  0,
-						  CERT_FIND_ISSUER_NAME,
-						  &cnb,
-						  pCert)) != NULL) {
-	    
-	    /* I have no clue why at a sudden a swap is needed to 
-	     * convert from lsb... This code is purely based upon 
-	     * trial and error :( WK
-	     */
-	    if((pCert->pCertInfo != NULL) && 
-	       (pCert->pCertInfo->SerialNumber.pbData != NULL) && 
-	       (pCert->pCertInfo->SerialNumber.cbData > 0) && 
-           (CertCompareIntegerBlob(&(pCert->pCertInfo->SerialNumber), &cib) == TRUE)
-           ) {		
-		    break;
-	    }
-	}
-	xmlFree(cName);
+    pCert = CertFindCertificateInStore(
+                    store,
+                    X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                    0,
+                    CERT_FIND_SUBJECT_CERT,
+                    &certInfo,
+                    NULL
+            ) ;
+
+    xmlFree(cName);
 	xmlSecBnFinalize(&issuerSerialBn);
     }
 

@@ -4,7 +4,7 @@ version=$1
 module=xmlsec1
 build_root=/tmp
 rpm_root=/usr/src/redhat
-remote_root=aleksey@ftp.aleksey.com:/var/ftp/pub/$module/releases
+remote_root=aleksey@ftp.aleksey.com:/var/ftp/pub/xmlsec/releases
 build_target=i386
 
 echo "Uploading to aleksey.com"

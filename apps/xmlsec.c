@@ -652,11 +652,8 @@ static int			xmlSecAppPrepareKeyInfoReadCtx	(xmlSecKeyInfoCtxPtr ctx);
 #ifndef XMLSEC_NO_XMLDSIG
 static int			xmlSecAppSignFile		(const char* filename);
 static int			xmlSecAppVerifyFile		(const char* filename);
-static xmlSecDSigOldCtxPtr		xmlSecAppCreateDSigCtx		(void);
-static void			xmlSecAppPrintDSigResult	(xmlSecDSigResultPtr result, 
-								 const char* filename); 
-static void			xmlSecAppPrintDSigXmlResult	(xmlSecDSigResultPtr result, 
-								 const char* filename);
+static xmlSecDSigCtxPtr		xmlSecAppCreateDSigCtx		(void);
+static void			xmlSecAppPrintDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
@@ -825,11 +822,11 @@ fail:
 #ifndef XMLSEC_NO_XMLDSIG
 static int 
 xmlSecAppSignFile(const char* filename) {
-    xmlSecAppXmlDataPtr data;
-    xmlSecDSigOldCtxPtr dsigCtx;
-    xmlSecDSigResultPtr result;
+    xmlSecAppXmlDataPtr data = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
     clock_t start_time;
-
+    int res = -1;
+    
     if(filename == NULL) {
 	return(-1);
     }
@@ -838,91 +835,150 @@ xmlSecAppSignFile(const char* filename) {
     data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
     if(data == NULL) {
 	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
-	return(-1);
+	goto done;
     }
 
     dsigCtx = xmlSecAppCreateDSigCtx();
     if(dsigCtx == NULL) {
 	fprintf(stderr, "Error: failed create signature context\n");
-	xmlSecAppXmlDataDestroy(data);
-	return(-1);
+	goto done;
     }
     
     /* sign */
     start_time = clock();
     /* TODO: session key */
-    if(xmlSecDSigGenerate(dsigCtx, NULL, NULL, data->startNode, &result) < 0) {
-        fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
-	xmlSecDSigOldCtxDestroy(dsigCtx);
-	xmlSecAppXmlDataDestroy(data);
-	return(-1);
+    if(xmlSecDSigCtxSign(dsigCtx, data->startNode) < 0) {
+        fprintf(stderr,"Error: signature failed \n");
+	goto done;
     }
     total_time += clock() - start_time;    
-
 
     if(repeats <= 1) { 
 	FILE* f;
         
 	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-	if( f != NULL) {
-	    xmlDocDump(f, data->doc);
-	    xmlSecAppCloseFile(f);
+	if(f == NULL) {
+	    fprintf(stderr,"Error: failed to open output file \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&outputParam));
+	    goto done;
 	}
-	
-	/* print debug info if requested */
-	if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
-	   xmlSecAppPrintDSigResult(result, xmlSecAppCmdLineParamGetString(&printDebugParam));
-	}
-	if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
-	   xmlSecAppPrintDSigXmlResult(result, xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
-	}
+	xmlDocDump(f, data->doc);
+	xmlSecAppCloseFile(f);
     }
 
-    if(result != NULL) {
-	xmlSecDSigResultDestroy(result);
+    res = 0;
+done:
+    if(dsigCtx != NULL) {
+	/* print debug info if requested */
+	if(repeats <= 1) {
+    	    xmlSecAppPrintDSigCtx(dsigCtx);
+	}
+        xmlSecDSigCtxDestroy(dsigCtx);
     }
-    xmlSecDSigOldCtxDestroy(dsigCtx);
-    xmlSecAppXmlDataDestroy(data);
-    return(0);
+    if(data != NULL) {
+	xmlSecAppXmlDataDestroy(data);
+    }
+    return(res);
 }
 
 static int 
 xmlSecAppVerifyFile(const char* filename) {
-    xmlSecDSigOldCtxPtr dsigCtx;
+    xmlSecAppXmlDataPtr data = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    clock_t start_time;
     int res = -1;
     
     if(filename == NULL) {
 	return(-1);
     }
+    
+    /* parse template and select start node */
+    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+	goto done;
+    }
 
     dsigCtx = xmlSecAppCreateDSigCtx();
     if(dsigCtx == NULL) {
-	fprintf(stderr, "Error: failed create verification context\n");
-	return(-1);
+	fprintf(stderr, "Error: failed create signature context\n");
+	goto done;
     }
     
-    /* TODO */
-    fprintf(stdout, "verify >> %s\n", filename);
+    /* sign */
+    start_time = clock();
+    /* TODO: session key */
+    if(xmlSecDSigCtxVerify(dsigCtx, data->startNode) < 0) {
+        fprintf(stderr,"Error: signature failed \n");
+	goto done;
+    }
+    total_time += clock() - start_time;    
 
-    xmlSecDSigOldCtxDestroy(dsigCtx);
+    if(repeats <= 1) { 
+	FILE* f;
+        
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
+	if(f == NULL) {
+	    fprintf(stderr,"Error: failed to open output file \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&outputParam));
+	    goto done;
+	}
+	switch(dsigCtx->status) {
+	    case xmlDSigStatusSucceeded:
+		fprintf(f, "OK\n");
+		break;
+	    case xmlDSigStatusInvalid:
+		fprintf(f, "FAIL\n");
+		break;
+	    default:
+		fprintf(f, "ERROR\n");
+		break;
+	}    
+	/* TODO: print stats about # of good/bad references */
+	xmlSecAppCloseFile(f);
+    }
+
+    res = 0;
+done:
+    if(dsigCtx != NULL) {
+	/* print debug info if requested */
+	if(repeats <= 1) {
+    	    xmlSecAppPrintDSigCtx(dsigCtx);
+	}
+        xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    if(data != NULL) {
+	xmlSecAppXmlDataDestroy(data);
+    }
     return(res);
 }
 
-static xmlSecDSigOldCtxPtr	
+static xmlSecDSigCtxPtr	
 xmlSecAppCreateDSigCtx(void) {
-    xmlSecDSigOldCtxPtr dsigCtx;
+    xmlSecDSigCtxPtr dsigCtx;
     
-    dsigCtx = xmlSecDSigOldCtxCreate(gKeysMngr);
+    dsigCtx = xmlSecDSigCtxCreate(gKeysMngr);
     if(dsigCtx == NULL) {
 	fprintf(stderr, "Error: failed to create dsig context\n");
 	return(NULL);
     }
 
     /* set key info params */
-    if(xmlSecAppPrepareKeyInfoReadCtx(&(dsigCtx->keyInfoCtx)) < 0) {
+    if(xmlSecAppPrepareKeyInfoReadCtx(&(dsigCtx->keyInfoReadCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
-	xmlSecDSigOldCtxDestroy(dsigCtx);
+	xmlSecDSigCtxDestroy(dsigCtx);
 	return(NULL);
+    }
+
+    if(xmlSecAppCmdLineParamGetString(&sessionKeyParam) != NULL) {
+	dsigCtx->signKey = xmlSecAppCryptoKeyGenerate(xmlSecAppCmdLineParamGetString(&sessionKeyParam),
+				NULL, xmlSecKeyDataTypeSession);
+	if(dsigCtx->signKey == NULL) {
+	    fprintf(stderr, "Error: failed to generate a session key \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&sessionKeyParam));
+	    xmlSecDSigCtxDestroy(dsigCtx);
+	    return(NULL);
+	}
     }
 
     /* set dsig params */
@@ -955,13 +1011,37 @@ xmlSecAppCreateDSigCtx(void) {
 }
 
 static void
-xmlSecAppPrintDSigResult(xmlSecDSigResultPtr result, const char* filename) { 
-    /* TODO */
-}
-
-static void
-xmlSecAppPrintDSigXmlResult(xmlSecDSigResultPtr result, const char* filename) { 
-    /* TODO */
+xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) { 
+    if(dsigCtx == NULL) {
+	return;
+    }
+    
+    /* print debug info if requested */
+    if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
+	FILE* f;
+	
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printDebugParam));
+	if(f != NULL) {
+	    xmlSecDSigCtxDebugDump(dsigCtx, f);
+	    xmlSecAppCloseFile(f);
+	} else {
+	    fprintf(stderr,"Error: failed to open file \"%s\" to print debug info\n",
+		    xmlSecAppCmdLineParamGetString(&printDebugParam));
+	}
+    }
+    
+    if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
+	FILE* f;
+	
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
+	if(f != NULL) {
+	    xmlSecDSigCtxDebugXmlDump(dsigCtx, f);
+	    xmlSecAppCloseFile(f);
+	} else {
+	    fprintf(stderr,"Error: failed to open file \"%s\" to print xml debug info\n",
+		    xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
+	}
+    }
 }
 
 #endif /* XMLSEC_NO_XMLDSIG */
@@ -1048,7 +1128,9 @@ xmlSecAppEncryptFile(const char* filename) {
 done:
     if(encCtx != NULL) {
 	/* print debug info if requested */
-        xmlSecAppPrintEncCtx(encCtx);
+	if(repeats <= 1) {
+    	    xmlSecAppPrintEncCtx(encCtx);
+	}
         xmlSecEncCtxDestroy(encCtx);
     }
     if(data != NULL) {
@@ -1148,7 +1230,6 @@ xmlSecAppCreateEncCtx(void) {
 	}
     }
     
-
     return(encCtx);
 }
 
@@ -1166,6 +1247,9 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 	if(f != NULL) {
 	    xmlSecEncCtxDebugDump(encCtx, f);
 	    xmlSecAppCloseFile(f);
+	} else {
+	    fprintf(stderr,"Error: failed to open file \"%s\" to print debug info\n",
+		    xmlSecAppCmdLineParamGetString(&printDebugParam));
 	}
     }
     
@@ -1176,6 +1260,9 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 	if(f != NULL) {
 	    xmlSecEncCtxDebugXmlDump(encCtx, f);
 	    xmlSecAppCloseFile(f);
+	} else {
+	    fprintf(stderr,"Error: failed to open file \"%s\" to print xml debug info\n",
+		    xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
 	}
     }
 }

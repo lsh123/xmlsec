@@ -915,6 +915,8 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr ctx, FILE* output) {
     fprintf(output, "== Key Info Write Ctx:\n");
     xmlSecKeyInfoCtxDebugDump(&(ctx->keyInfoWriteCtx), output);
 
+    /* todo: encKey */
+
     xmlSecTransformCtxDebugDump(&(ctx->encTransformCtx), output);
     
     if((ctx->result != NULL) && 
@@ -981,6 +983,8 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
     xmlSecKeyInfoCtxDebugXmlDump(&(ctx->keyInfoWriteCtx), output);
     fprintf(output, "</KeyInfoWriteCtx>\n");
     xmlSecTransformCtxDebugXmlDump(&(ctx->encTransformCtx), output);
+
+    /* todo: encKey */
 
     if((ctx->result != NULL) && 
        (xmlSecBufferGetData(ctx->result) != NULL) && 

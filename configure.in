@@ -88,6 +88,25 @@ case "${host}" in
 	;;
 esac
 
+dnl Check for __FUNCTION__ or __FUNCTION__
+AC_MSG_CHECKING(for __FUNCTION__ or __func__)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],
+	[[char *foo = __FUNCTION__;]])],
+	[ac_function_exists=yes],
+	[ac_function_exists=no])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],
+	[[char *foo = __func__;]])],
+	[ac_func_exists=yes],
+	[ac_func_exists=no])
+if test "$ac_function_exists" = "yes" ; then
+	AC_MSG_RESULT(__FUNCTION__)
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -D__XMLSEC_FUNCTION__=__FUNCTION__"
+elif test "$ac_func_exists" = "yes" ; then 
+	AC_MSG_RESULT(__func__)
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -D__XMLSEC_FUNCTION__=__func__"
+else 
+	AC_MSG_RESULT("no")
+fi
 
 dnl ==========================================================================
 dnl check do we have size_t and its size, 

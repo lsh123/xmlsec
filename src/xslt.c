@@ -61,6 +61,7 @@
 typedef struct _xmlSecXsltCtx			xmlSecXsltCtx, *xmlSecXsltCtxPtr;
 struct _xmlSecXsltCtx {
     xsltStylesheetPtr	xslt;
+    xmlParserCtxtPtr 	parserCtx;
 };	    
 
 /****************************************************************************
@@ -80,6 +81,11 @@ static void		xmlSecXsltFinalize			(xmlSecTransformPtr transform);
 static int 		xmlSecXsltReadNode			(xmlSecTransformPtr transform,
 								 xmlNodePtr node,
 								 xmlSecTransformCtxPtr transformCtx);
+static int 		xmlSecXsltPushBin			(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 int final,
+							         xmlSecTransformCtxPtr transformCtx);
 static int  		xmlSecXsltExecute			(xmlSecTransformPtr transform, 
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -103,7 +109,7 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecXsltPushBin,				/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
@@ -145,6 +151,9 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
     
     if(ctx->xslt != NULL) {
 	xsltFreeStylesheet(ctx->xslt);
+    }
+    if(ctx->parserCtx != NULL) {
+	xmlFreeParserCtxt(ctx->parserCtx);
     }
     memset(ctx, 0, sizeof(xmlSecXsltCtx));
 }
@@ -213,6 +222,142 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
     }
     
     xmlBufferFree(buffer);
+    return(0);
+}
+
+static int 
+xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+				size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecXsltCtxPtr ctx;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecXsltGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xslt != NULL, -1);
+
+    /* check/update current transform status */
+    if(transform->status == xmlSecTransformStatusNone) {
+	xmlSecAssert2(ctx->parserCtx == NULL, -1);
+	
+	ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+	if(ctx->parserCtx == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlCreatePushParserCtxt",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+
+        /* required for c14n! */
+	ctx->parserCtx->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+	ctx->parserCtx->replaceEntities = 1;
+
+	transform->status = xmlSecTransformStatusWorking;
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+	return(0);
+    } else if(transform->status != xmlSecTransformStatusWorking) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "status=%d", transform->status);
+	return(-1);
+    }
+    xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
+    xmlSecAssert2(ctx->parserCtx != NULL, -1);
+    
+    /* push data to the input buffer */
+    if((data != NULL) && (dataSize > 0)) {
+	ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
+	if(ret != 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlParseChunk",
+			XMLSEC_ERRORS_R_XML_FAILED,
+			"size=%d", dataSize);
+	    return(-1);
+	}	
+    }    
+    
+    /* finish parsing, apply xslt transforms and push to next in the chain */
+    if(final != 0) {
+        xmlDocPtr docIn;
+        xmlDocPtr docOut;
+        xmlOutputBufferPtr output;
+
+	/* finalize */
+	ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
+	if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlParseChunk",
+			XMLSEC_ERRORS_R_XML_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}	
+
+	/* todo: check that document is well formed? */
+	docIn = ctx->parserCtx->myDoc;
+	ctx->parserCtx->myDoc = NULL;
+
+	docOut = xsltApplyStylesheet(ctx->xslt, docIn, NULL);
+	if(docOut == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xsltApplyStylesheet",
+			XMLSEC_ERRORS_R_XSLT_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlFreeDoc(docIn);
+	    return(-1);
+	}
+	xmlFreeDoc(docIn);
+    
+	if(transform->next != NULL) {
+	    output = xmlSecTransformCreateOutputBuffer(transform->next, transformCtx);
+	    if(output == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecTransformCreateOutputBuffer",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlFreeDoc(docOut);
+		return(-1);
+	    }
+	} else {
+	    output = xmlSecBufferCreateOutputBuffer(&(transform->outBuf));
+	    if(output == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecBufferCreateOutputBuffer",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlFreeDoc(docOut);
+		return(-1);
+	    }
+	}	
+
+	ret = xsltSaveResultTo(output, docOut, ctx->xslt);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xsltSaveResultTo",
+			XMLSEC_ERRORS_R_XSLT_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlOutputBufferClose(output);
+	    xmlFreeDoc(docOut);
+	    return(-1);
+	}
+	xmlOutputBufferClose(output);
+	xmlFreeDoc(docOut);
+
+	transform->status = xmlSecTransformStatusFinished;
+    }
+
     return(0);
 }
 
@@ -313,13 +458,13 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
-    
-    output = xmlAllocOutputBuffer(NULL);
+
+    output = xmlSecBufferCreateOutputBuffer(out);
     if(output == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlAllocOutputBuffer",
-		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlSecBufferCreateOutputBuffer",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
@@ -333,18 +478,6 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
-
-    ret = xmlSecBufferSetData(out, xmlBufferContent(output->buffer), 
-			      xmlBufferLength(output->buffer));
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBufferSetData",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;	
-    }
-    
     res = 0;
 
 done:   

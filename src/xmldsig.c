@@ -351,7 +351,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
  */
 static int
 xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
-    xmlSecNodeSetPtr nodeset = NULL;
+    xmlSecTransformDataType firstType;
     xmlNodePtr signedInfoNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
     xmlNodePtr cur;
@@ -490,32 +490,45 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 	base64Encode->operation = xmlSecTransformOperationEncode;
     }
 
-    /* TODO: this should be done in different way if C14N is binary! */
-    xmlSecAssert2(signedInfoNode != NULL, -1);
-    nodeset = xmlSecNodeSetGetChildren(signedInfoNode->doc, signedInfoNode, 1, 0);
-    if(nodeset == NULL) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecNodeSetGetChildren",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(signedInfoNode)));
-	return(-1);
-    }
+    firstType = xmlSecTransformGetDataType(dsigCtx->signTransformCtx.first, 
+					   xmlSecTransformModePush, 
+					   &(dsigCtx->signTransformCtx));
+    if((firstType & xmlSecTransformDataTypeXml) != 0) {
+	xmlSecNodeSetPtr nodeset = NULL;
 
-    /* calculate the signature */
-    ret = xmlSecTransformCtxXmlExecute(&(dsigCtx->signTransformCtx), nodeset);
-    if(ret < 0) {
+	xmlSecAssert2(signedInfoNode != NULL, -1);
+        nodeset = xmlSecNodeSetGetChildren(signedInfoNode->doc, signedInfoNode, 1, 0);
+	if(nodeset == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecNodeSetGetChildren",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+		        xmlSecErrorsSafeString(xmlSecNodeGetName(signedInfoNode)));
+	    return(-1);
+	}
+
+	/* calculate the signature */
+	ret = xmlSecTransformCtxXmlExecute(&(dsigCtx->signTransformCtx), nodeset);
+	if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecTransformCtxXmlExecute",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecNodeSetDestroy(nodeset);
+	    return(-1);
+	}
+	xmlSecNodeSetDestroy(nodeset);
+    } else {
+	/* TODO */
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformCtxXmlExecute",
+		    "the binary c14n transforms are not supported yet",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecNodeSetDestroy(nodeset);
 	return(-1);
     }
-    xmlSecNodeSetDestroy(nodeset);
-
     return(0);
 }
 

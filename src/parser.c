@@ -25,39 +25,61 @@
 
 /**************************************************************************
  *
+ * Internal parser
+ *
+ *****************************************************************************/
+typedef struct _xmlSecParserCtx					xmlSecParserCtx, 
+								*xmlSecParserCtxPtr;
+struct _xmlSecParserCtx {
+    xmlParserCtxtPtr 	parserCtx;
+};	    
+
+/**************************************************************************
+ *
  * XML Parser transform 
  *
- *************************************************************************/
-static int xmlSecTransformXmlParserPushBin			(xmlSecTransformPtr transform, 
+ * xmlSecParserCtx is located after xmlSecTransform
+ * 
+ ***************************************************************************/
+#define xmlSecParserSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecParserCtx))	
+#define xmlSecParserGetCtx(transform) \
+    ((xmlSecTransformCheckSize((transform), xmlSecParserSize)) ? \
+	((xmlSecParserCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform))) : \
+	(xmlSecParserCtxPtr)NULL)	    
+
+static int		xmlSecParserInitialize			(xmlSecTransformPtr transform);
+static void		xmlSecParserFinalize			(xmlSecTransformPtr transform);
+static int 		xmlSecParserPushBin			(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
 								 int final,
 							         xmlSecTransformCtxPtr transformCtx);
-static int xmlSecTransformXmlParserPopXml			(xmlSecTransformPtr transform, 
+static int 		xmlSecParserPopXml			(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr* nodes,
 								 xmlSecTransformCtxPtr transformCtx);
 
-static xmlSecTransformKlass xmlSecTransformXmlParserKlass = {
+static xmlSecTransformKlass xmlSecParserKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    sizeof(xmlSecTransform),			/* size_t objSize */
+    xmlSecParserSize,				/* size_t objSize */
 
     BAD_CAST "xml-parser",			/* const xmlChar* name; */
     NULL,					/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
     
-    NULL,					/* xmlSecTransformInitializeMethod initialize; */
-    NULL,					/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecParserInitialize,			/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecParserFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformNodeReadMethod readNode; */
     NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformXmlParserPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecParserPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     NULL,					/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformXmlParserPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecParserPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     NULL,					/* xmlSecTransformExecuteMethod execute; */
 
     NULL,					/* void* reserved0; */
@@ -70,27 +92,72 @@ static xmlSecTransformKlass xmlSecTransformXmlParserKlass = {
  */
 xmlSecTransformId 
 xmlSecTransformXmlParserGetKlass(void) {
-    return(&xmlSecTransformXmlParserKlass);
+    return(&xmlSecParserKlass);
 }
 
+static int 
+xmlSecParserInitialize(xmlSecTransformPtr transform) {    
+    xmlSecParserCtxPtr ctx;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecParserSize), -1);
+
+    ctx = xmlSecParserGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    /* initialize context */
+    memset(ctx, 0, sizeof(xmlSecParserCtx));
+    return(0);
+}
+
+static void
+xmlSecParserFinalize(xmlSecTransformPtr transform) {
+    xmlSecParserCtxPtr ctx;
+
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecParserSize));
+
+    ctx = xmlSecParserGetCtx(transform);
+    xmlSecAssert(ctx != NULL);
+    
+    if(ctx->parserCtx != NULL) {
+	xmlFreeParserCtxt(ctx->parserCtx);
+    }
+    memset(ctx, 0, sizeof(xmlSecParserCtx));
+}
 
 static int 
-xmlSecTransformXmlParserPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+xmlSecParserPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 				size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecBufferPtr in;
+    xmlSecParserCtxPtr ctx;
     int ret;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    in = &(transform->inBuf);
-    
+    ctx = xmlSecParserGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
     /* check/update current transform status */
     if(transform->status == xmlSecTransformStatusNone) {
+	xmlSecAssert2(ctx->parserCtx == NULL, -1);
+	
+	ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+	if(ctx->parserCtx == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlCreatePushParserCtxt",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+
+        /* required for c14n! */
+	ctx->parserCtx->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+	ctx->parserCtx->replaceEntities = 1;
+
 	transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {
-	/* the only way we can get here is if there is no input */
-	xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
 	return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -101,58 +168,47 @@ xmlSecTransformXmlParserPushBin(xmlSecTransformPtr transform, const unsigned cha
 	return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
+    xmlSecAssert2(ctx->parserCtx != NULL, -1);
     
     /* push data to the input buffer */
-    in = &(transform->inBuf);
     if((data != NULL) && (dataSize > 0)) {
-	ret = xmlSecBufferAppend(in, data, dataSize);
-	if(ret < 0) {
+	ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
+	if(ret != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferAppend",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlParseChunk",
+			XMLSEC_ERRORS_R_XML_FAILED,
 			"size=%d", dataSize);
 	    return(-1);
 	}	
     }    
     
-    /* time to parse the input and push to next in the chain */
+    /* finish parsing and push to next in the chain */
     if(final != 0) {
-	xmlDocPtr doc;
-	
-	if(xmlSecBufferGetSize(in) == 0) {
+	ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
+	if((ret != 0) || (ctx->parserCtx->myDoc == NULL)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			NULL,
-			XMLSEC_ERRORS_R_INVALID_DATA,
-			"size=0");
+			"xmlParseChunk",
+			XMLSEC_ERRORS_R_XML_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
-	}
-	xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
-	xmlSecAssert2(transform->outNodes == NULL, -1);
-	    
-	doc = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 1);
-	if(doc == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecParseMemory",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"size=%d", xmlSecBufferGetSize(in));
-	    return(-1);
-	} 	
-	xmlSecBufferEmpty(in); /* cleanup memory asap */
-	
-	transform->outNodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetTree);
+	}	
+	/* todo: check that document is well formed? */
+	transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc, 
+						  NULL, xmlSecNodeSetTree);
 	if(transform->outNodes == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecNodeSetCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFreeDoc(doc);
+	    xmlFreeDoc(ctx->parserCtx->myDoc);
+	    ctx->parserCtx->myDoc = NULL;
 	    return(-1);
-	}	
+	}
 	xmlSecNodeSetDocDestroy(transform->outNodes); /* this node set "owns" the doc pointer */
+	ctx->parserCtx->myDoc = NULL;
 	
 	/* push result to the next transform (if exist) */
 	if(transform->next != NULL) {
@@ -174,8 +230,9 @@ xmlSecTransformXmlParserPushBin(xmlSecTransformPtr transform, const unsigned cha
 }
 
 static int 
-xmlSecTransformXmlParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
+xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 			       xmlSecTransformCtxPtr transformCtx) {
+    xmlSecParserCtxPtr ctx;
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
     xmlParserCtxtPtr ctxt;
@@ -185,6 +242,9 @@ xmlSecTransformXmlParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* n
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
     xmlSecAssert2(nodes != NULL, -1);    
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecParserGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
 
     /* check/update current transform status */
     switch(transform->status) {

@@ -1218,6 +1218,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }
+f
 */        
     return(0);
 }

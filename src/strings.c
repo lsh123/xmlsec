@@ -44,8 +44,11 @@ const xmlChar xmlSecNodeManifest[]		= "Manifest";
  * Encryption Nodes
  *
  ************************************************************************/
-const xmlChar xmlSecNodeCipherValue[]		= "CipherValue";
+const xmlChar xmlSecNodeEncryptedData[]		= "EncryptedData";
+const xmlChar xmlSecNodeEncryptionMethod[]	= "EncryptionMethod";
+const xmlChar xmlSecNodeEncryptionProperties[]	= "EncryptionProperties";
 const xmlChar xmlSecNodeCipherData[]		= "CipherData";
+const xmlChar xmlSecNodeCipherValue[]		= "CipherValue";
 const xmlChar xmlSecNodeCipherReference[]	= "CipherReference";
 
 /*************************************************************************
@@ -66,6 +69,8 @@ const xmlChar xmlSecNodeTransform[]		= "Transform";
 const xmlChar xmlSecAttrId[]			= "Id";
 const xmlChar xmlSecAttrURI[]			= "URI";
 const xmlChar xmlSecAttrType[]			= "Type";
+const xmlChar xmlSecAttrMimeType[]		= "MimeType";
+const xmlChar xmlSecAttrEncoding[]		= "Encoding";
 const xmlChar xmlSecAttrAlgorithm[]		= "Algorithm";
 const xmlChar xmlSecAttrFilter[]		= "Filter";
 

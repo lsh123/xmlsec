@@ -52,19 +52,23 @@ struct _xmlSecEncCtx {
     void*			userCtx;
     xmlSecKeyInfoCtx		keyInfoCtx;
     xmlSecTransformCtx		transformCtx;
-    xmlSecTransformPtr		encryptionMethod;
-    xmlSecKeyPtr		encryptionKey;
+    xmlSecTransformPtr		encMethod;
+    xmlSecKeyPtr		encKey;
 
     /* these data are returned */
-    xmlNodePtr			self;
     xmlChar			*id;
     xmlChar			*type;
     xmlChar			*mimeType;
     xmlChar			*encoding;
-
     int				encrypt;
-    xmlSecBufferPtr		encryptionResult;
+    xmlSecBufferPtr		encResult;
     int				replaced;
+
+    /* these are internal data, nobody cares about that */
+    xmlNodePtr			encDataNode;
+    xmlNodePtr			encMethodNode;
+    xmlNodePtr			keyInfoNode;
+    xmlNodePtr			cipherValueNode;
 };
 
 XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate		(xmlSecKeysMngrPtr keysMngr);

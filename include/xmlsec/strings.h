@@ -85,8 +85,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDigestValue[];
  * Encryption Nodes
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptedData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptionMethod[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptionProperties[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherData[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherReference[];
 
 /*************************************************************************
@@ -107,6 +110,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeTransform[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrId[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrURI[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrType[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrMimeType[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrEncoding[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrAlgorithm[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrFilter[];
 

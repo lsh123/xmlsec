@@ -144,7 +144,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     
         /* the list of namespaces is space separated */
 	for(p = n = list; ((p != NULL) && ((*p) != '\0')); p = n) {
-	    n = (xmlChar*)strchr(p, ' ');
+	    n = (xmlChar*)xmlStrchr(p, ' ');
 	    if(n != NULL) {
 	        *(n++) = '\0';
 	    }	

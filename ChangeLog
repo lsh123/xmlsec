@@ -1,3 +1,12 @@
+Fri Aug 22 09:54:04 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in include/xmlsec/errors.h: determine if __FUNCTION__ or 
+	__func__ are defined from ./configure script. This should fix bug #120469
+	and prevent this problem from happening in the future.
+	* src/c14n.c src/openssl/kt_rsa.c src/transforms.c: fixed minor
+	warnings because of using strcmp, strchr, etc. functions with xmlChar* 
+	variables by switching to xmlStrcmp, xmlStrchr, etc. (also bug #120469)
+
 Wed Aug 20 21:26:00 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/api/sgml/version.sgml docs/api/xmlsec-version.html

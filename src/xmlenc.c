@@ -135,7 +135,7 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr encCtx) {
     xmlSecKeyInfoCtxFinalize(&(encCtx->keyInfoWriteCtx));
 
     if((encCtx->dontDestroyEncMethod == 0) && (encCtx->encMethod != NULL)) {
-	xmlSecTransformDestroy(encCtx->encMethod, 1);
+	xmlSecTransformDestroy(encCtx->encMethod);
     }    
     if(encCtx->encKey != NULL) {
 	xmlSecKeyDestroy(encCtx->encKey);

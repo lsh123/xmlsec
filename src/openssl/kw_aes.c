@@ -74,14 +74,14 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLKWAesSize,			/* size_t objSize */
 
-    xmlSecNameKWAes128,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameKWAes128,				/* const xmlChar* name; */
+    xmlSecHrefKWAes128,				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefKWAes128,				/* const xmlChar href; */
 
     xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -101,14 +101,14 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLKWAesSize,			/* size_t objSize */
 
-    xmlSecNameKWAes192,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameKWAes192,				/* const xmlChar* name; */
+    xmlSecHrefKWAes192,				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefKWAes192,				/* const xmlChar href; */
 
     xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -128,14 +128,14 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLKWAesSize,			/* size_t objSize */
 
-    xmlSecNameKWAes256,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameKWAes256,				/* const xmlChar* name; */
+    xmlSecHrefKWAes256,				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefKWAes256,				/* const xmlChar href; */
 
     xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

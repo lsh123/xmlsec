@@ -67,11 +67,6 @@ static int		xmlSecTransformC14NExecute	(xmlSecTransformId id,
 							 xmlSecNodeSetPtr nodes, 
 							 xmlChar** nsList,
 							 xmlOutputBufferPtr buf);
-
-static int 		xmlSecTransformC14NOldExec	(xmlSecTransformPtr transform,
-							 xmlDocPtr doc,
-							 xmlSecNodeSetPtr nodes,
-							 xmlOutputBufferPtr buffer);
 static int
 xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
     xmlSecPtrListPtr nsList;
@@ -446,26 +441,27 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
 
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    xmlSecTransformC14NSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecTransformC14NSize,			/* size_t objSize */
 
-    xmlSecNameC14N,
-    xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefC14N, 			/* const xmlChar href; */
+    xmlSecNameC14N,				/* const xmlChar* name; */
+    xmlSecHrefC14N, 				/* const xmlChar* href; */
+    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	
+						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformC14NInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformC14NFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformC14NPopBin,			/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,			/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */
@@ -478,27 +474,28 @@ xmlSecTransformInclC14NGetKlass(void) {
  
 static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    xmlSecTransformC14NSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecTransformC14NSize,			/* size_t objSize */
 
     /* same as xmlSecTransformId */    
-    xmlSecNameC14NWithComments,
-    xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefC14NWithComments, 	/* const xmlChar href; */
+    xmlSecNameC14NWithComments,			/* const xmlChar* name; */
+    xmlSecHrefC14NWithComments, 		/* const xmlChar* href; */
+    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	
+						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformC14NInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformC14NFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformC14NPopBin,			/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,			/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */
@@ -511,26 +508,27 @@ xmlSecTransformInclC14NWithCommentsGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    xmlSecTransformC14NSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecTransformC14NSize,			/* size_t objSize */
 
-    xmlSecNameExcC14N,			/* const xmlChar* name; */
-    xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefExcC14N,			/* const xmlChar href; */
+    xmlSecNameExcC14N,				/* const xmlChar* name; */
+    xmlSecHrefExcC14N,				/* const xmlChar* href; */
+    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	
+						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformC14NNodeRead,	/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformC14NInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformC14NFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformC14NNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformC14NPopBin,			/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,			/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
     
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */
@@ -543,26 +541,27 @@ xmlSecTransformExclC14NGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    xmlSecTransformC14NSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecTransformC14NSize,			/* size_t objSize */
 
-    xmlSecNameExcC14NWithComments,
-    xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefExcC14NWithComments,	/* const xmlChar href; */
+    xmlSecNameExcC14NWithComments,		/* const xmlChar* name; */
+    xmlSecHrefExcC14NWithComments,		/* const xmlChar* href; */
+    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		
+						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformC14NNodeRead,	/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformC14NInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformC14NFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformC14NNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformC14NPopBin,			/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,			/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */
@@ -575,26 +574,27 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    xmlSecTransformC14NSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecTransformC14NSize,			/* size_t objSize */
 
-    BAD_CAST "remove-xml-tags-c14n-transform",
-    xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    NULL, 				/* const xmlChar href; */
+    BAD_CAST "remove-xml-tags-transform",	/* const xmlChar* name; */
+    NULL, 					/* const xmlChar* href; */
+    xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		
+						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformC14NInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformC14NFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformC14NPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformC14NPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformC14NInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformC14NFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformC14NPopBin,			/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformC14NPushXml,			/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */
@@ -615,55 +615,9 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
  * automatically strips away the start and end tags of the identified element 
  * and any of its descendant elements as well as any descendant comments and 
  * processing instructions. The output of this transform is an octet stream.
- *
  */
 xmlSecTransformId 
 xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {
     return(&xmlSecTransformRemoveXmlTagsC14NKlass);
-}
-
-
-/*************************** delete this asap :) ************************/
-static int
-xmlSecTransformC14NOldExec(xmlSecTransformPtr transform, xmlDocPtr doc,
-			xmlSecNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
-    xmlSecPtrListPtr nsList;
-    xmlSecNodeSetPtr myNodes = NULL;
-    int ret;
-
-
-    xmlSecAssert2(doc!= NULL, -1);
-    xmlSecAssert2(buffer != NULL, -1);
-
-    /* we are using a semi-hack here: we know that xmlSecPtrList keeps
-     * all pointers in the big array */
-    if(transform != NULL) {
-	nsList = xmlSecTransformC14NGetNsList(transform);
-    	xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
-    } else {
-	nsList = NULL;
-    }
-    
-    if(nodes == NULL) {
-	nodes = myNodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetTree);
-    }
-    
-    /* the default c14n transform */
-    ret = xmlSecTransformC14NExecute((transform != NULL) ? transform->id : xmlSecTransformInclC14NId, 
-				     nodes, 
-				     (nsList != NULL) ? (xmlChar**)(nsList->data) : NULL, 
-				     buffer);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecTransformC14NExecute",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    if(myNodes) {
-	xmlSecNodeSetDestroy(myNodes);
-    }
-    return(0);
 }
 

@@ -269,15 +269,15 @@ static xmlSecTransformKlass xmlSecGnuTLSSha1Klass = {
     xmlSecGnuTLSDigestSize,			/* size_t objSize */
 
     /* data */
-    xmlSecNameSha1,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameSha1,				/* const xmlChar* name; */
+    xmlSecHrefSha1, 				/* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
-    xmlSecHrefSha1, 				/* xmlChar *href; */
     
     /* methods */
     xmlSecGnuTLSDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSDigestFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGnuTLSDigestVerify,			/* xmlSecTransformVerifyMethod verify; */

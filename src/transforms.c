@@ -60,10 +60,6 @@
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
-/*
-#define XMLSEC_BUFFER_DEBUG 1
-*/
-
 /**************************************************************************
  *
  * Global xmlSecTransformIds list functions
@@ -280,7 +276,7 @@ xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
     /* destroy transforms chain */
     for(transform = ctx->first; transform != NULL; transform = tmp) {
 	tmp = transform->next;
-	xmlSecTransformDestroy(transform, 1);
+	xmlSecTransformDestroy(transform);
     }
     memset(ctx, 0, sizeof(xmlSecTransformCtx));
 }
@@ -388,7 +384,7 @@ xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId i
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, NULL);
     xmlSecAssert2(id != xmlSecTransformIdUnknown, NULL);
 
-    transform = xmlSecTransformCreate(id, 0);
+    transform = xmlSecTransformCreate(id);
     if(!xmlSecTransformIsValid(transform)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -407,7 +403,7 @@ xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId i
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
-	xmlSecTransformDestroy(transform, 1);
+	xmlSecTransformDestroy(transform);
 	return(NULL);
     }
 
@@ -423,7 +419,7 @@ xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformId 
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, NULL);
     xmlSecAssert2(id != xmlSecTransformIdUnknown, NULL);
 
-    transform = xmlSecTransformCreate(id, 0);
+    transform = xmlSecTransformCreate(id);
     if(!xmlSecTransformIsValid(transform)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -442,7 +438,7 @@ xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformId 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
-	xmlSecTransformDestroy(transform, 1);
+	xmlSecTransformDestroy(transform);
 	return(NULL);
     }
 
@@ -479,7 +475,7 @@ xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
-	xmlSecTransformDestroy(transform, 1);
+	xmlSecTransformDestroy(transform);
 	return(NULL);
     }
     
@@ -517,7 +513,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"node=%s",
 			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-	    xmlSecTransformDestroy(transform, 1);
+	    xmlSecTransformDestroy(transform);
 	    return(-1);
 	}	
 	cur = xmlSecGetNextElementNode(cur->next);
@@ -1002,8 +998,6 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
 /**
  * xmlSecTransformCreate:
  * @id: the transform id to create.
- * @dontDestroy: the flag that controls wherther the transforms
- *		can destroy the transforms automatically
  *
  * Creates new transform from the transform id object.
  *
@@ -1011,7 +1005,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
  * or NULL if an error occurs.
  */ 
 xmlSecTransformPtr	
-xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
+xmlSecTransformCreate(xmlSecTransformId id) {
     xmlSecTransformPtr transform;
     int ret;
     
@@ -1032,7 +1026,6 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
     }
     memset(transform, 0, id->objSize);    
     transform->id = id;
-    transform->dontDestroy = dontDestroy;
     
     if(id->initialize != NULL) {
 	ret = (id->initialize)(transform);
@@ -1042,7 +1035,7 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 			"id->initialize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecTransformDestroy(transform, 1);
+	    xmlSecTransformDestroy(transform);
 	    return(NULL);
 	}
     }
@@ -1054,7 +1047,7 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", 0);
-	xmlSecTransformDestroy(transform, 1);
+	xmlSecTransformDestroy(transform);
 	return(NULL);	
     }
 
@@ -1065,7 +1058,7 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", 0);
-	xmlSecTransformDestroy(transform, 1);
+	xmlSecTransformDestroy(transform);
 	return(NULL);	
     }
     
@@ -1075,32 +1068,17 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 /**
  * xmlSecTransformDestroy:
  * @transform: the pointer to #xmlSecTransform structure.
- * @forceDestroy: the flag whether the transform destruction will be
- *   forced.
  *
  * Destroys transform by calling appropriate transform specific function.
  */
 void
-xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
+xmlSecTransformDestroy(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
     xmlSecAssert(transform->id->objSize > 0);
     
     /* first need to remove ourselves from chain */
     xmlSecTransformRemove(transform);
 
-    if((transform->dontDestroy) && (!forceDestroy)){
-	/* requested do not destroy transform */
-	return;
-    }    
-    
-#ifdef XMLSEC_BUFFER_DEBUG
-    fprintf(stderr, "-- buffer debug: %s, in: %d\n", 
-	    transform->id->name, 
-	    xmlSecBufferGetMaxSize(&(transform->inBuf)));
-    fprintf(stderr, "-- buffer debug: %s, out: %d\n", 
-	    transform->id->name, 
-	    xmlSecBufferGetMaxSize(&(transform->outBuf)));
-#endif /* XMLSEC_BUFFER_DEBUG */
     xmlSecBufferFinalize(&(transform->inBuf));
     xmlSecBufferFinalize(&(transform->outBuf));
 
@@ -1165,7 +1143,7 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 	return(NULL);		
     }
     
-    transform = xmlSecTransformCreate(id, 0);
+    transform = xmlSecTransformCreate(id);
     if(!xmlSecTransformIsValid(transform)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1186,7 +1164,7 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"transform=%s",
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
-	    xmlSecTransformDestroy(transform, 1);
+	    xmlSecTransformDestroy(transform);
 	    xmlFree(href);
 	    return(NULL);		
 	}
@@ -1537,7 +1515,7 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
     }
     
     /* insert transform */
-    middle = xmlSecTransformCreate(middleId, 0);
+    middle = xmlSecTransformCreate(middleId);
     if(middle == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),

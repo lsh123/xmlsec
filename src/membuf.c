@@ -41,26 +41,26 @@ static int  		xmlSecTransformMemBufExecute		(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
-    xmlSecNameMemBuf,			/* const xmlChar* name; */
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    0,					/* xmlSecAlgorithmUsage usage; */
-    NULL,				/* const xmlChar href; */
+    xmlSecNameMemBuf,				/* const xmlChar* name; */
+    NULL,					/* const xmlChar* href; */
+    0,						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformMemBufInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformMemBufFinalize,	/* xmlSecTransformFianlizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,	/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,	/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformMemBufExecute,	/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformMemBufInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformMemBufFinalize,		/* xmlSecTransformFianlizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformMemBufExecute,		/* xmlSecTransformExecuteMethod execute; */
 
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */

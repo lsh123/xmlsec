@@ -424,14 +424,14 @@ static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLEvpSignatureSize,		/* size_t objSize */
 
-    xmlSecNameDsaSha1,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameDsaSha1,				/* const xmlChar* name; */
+    xmlSecHrefDsaSha1, 				/* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    xmlSecHrefDsaSha1, 				/* xmlChar *href; */
     
     xmlSecOpenSSLEvpSignatureInitialize,	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpSignatureFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLEvpSignatureSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLEvpSignatureSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpSignatureVerify,		/* xmlSecTransformVerifyMethod verify; */
@@ -616,14 +616,14 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLEvpSignatureSize,		/* size_t objSize */
 
-    xmlSecNameRsaSha1,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameRsaSha1,				/* const xmlChar* name; */
+    xmlSecHrefRsaSha1, 				/* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    xmlSecHrefRsaSha1, 				/* xmlChar *href; */
     
     xmlSecOpenSSLEvpSignatureInitialize,	/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpSignatureFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLEvpSignatureSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLEvpSignatureSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpSignatureVerify,		/* xmlSecTransformVerifyMethod verify; */

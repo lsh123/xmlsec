@@ -80,14 +80,14 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLKWDes3Size,			/* size_t objSize */
 
-    xmlSecNameKWDes3,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameKWDes3,				/* const xmlChar* name; */
+    xmlSecHrefKWDes3, 				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefKWDes3, 				/* const xmlChar href; */
 
     xmlSecOpenSSLKWDes3Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLKWDes3Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLKWDes3SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWDes3SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

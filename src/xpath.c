@@ -460,14 +460,14 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecXPathTransformSize,			/* size_t objSize */
 
-    xmlSecNameXPath,			
-    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    xmlSecNameXPath,				/* const xmlChar* name; */
+    xmlSecXPathNs, 				/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPathNs, 				/* const xmlChar *href; */
 
     xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPathNodeRead,		/* xmlSecTransformNodeReadMethod read; */
+    xmlSecTransformXPathNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -606,14 +606,14 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecXPathTransformSize,			/* size_t objSize */
 
-    xmlSecNameXPath2,			
-    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    xmlSecNameXPath2,				/* const xmlChar* name; */
+    xmlSecXPath2Ns, 				/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPath2Ns, 				/* const xmlChar *href; */
 
     xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPath2NodeRead,		/* xmlSecTransformNodeReadMethod read; */
+    xmlSecTransformXPath2NodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -747,14 +747,14 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecXPathTransformSize,			/* size_t objSize */
 
-    xmlSecNameXPointer,			
-    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    xmlSecNameXPointer,				/* const xmlChar* name; */
+    xmlSecXPointerNs, 				/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPointerNs, 				/* const xmlChar *href; */
 
     xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPointerNodeRead,		/* xmlSecTransformNodeReadMethod read; */
+    xmlSecTransformXPointerNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

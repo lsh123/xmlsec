@@ -420,16 +420,16 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
 static xmlSecTransformKlass xmlSecGnuTLSHmacSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSHmacSize,				/* size_t objSize */
+    xmlSecGnuTLSHmacSize,			/* size_t objSize */
 
-    xmlSecNameHmacSha1,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameHmacSha1,				/* const xmlChar* name; */
+    xmlSecHrefHmacSha1, 			/* const xmlChar *href; */
     xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    xmlSecHrefHmacSha1, 			/* xmlChar *href; */
     
     xmlSecGnuTLSHmacInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecGnuTLSHmacNodeRead,			/* xmlSecTransformNodeReadMethod read; */
+    xmlSecGnuTLSHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGnuTLSHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGnuTLSHmacVerify,			/* xmlSecTransformValidateMethod validate; */
@@ -455,16 +455,16 @@ xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
 static xmlSecTransformKlass xmlSecGnuTLSHmacRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecGnuTLSHmacSize,				/* size_t objSize */
+    xmlSecGnuTLSHmacSize,			/* size_t objSize */
 
-    xmlSecNameHmacRipemd160,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameHmacRipemd160,			/* const xmlChar* name; */
+    xmlSecHrefHmacRipemd160, 			/* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    xmlSecHrefHmacRipemd160, 			/* xmlChar *href; */
     
     xmlSecGnuTLSHmacInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecGnuTLSHmacNodeRead,			/* xmlSecTransformNodeReadMethod read; */
+    xmlSecGnuTLSHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGnuTLSHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGnuTLSHmacVerify,			/* xmlSecTransformValidateMethod validate; */
@@ -492,14 +492,14 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacMd5Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecGnuTLSHmacSize,			/* size_t objSize */
 
-    xmlSecNameHmacMd5,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameHmacMd5,				/* const xmlChar* name; */
+    xmlSecHrefHmacMd5, 				/* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    xmlSecHrefHmacMd5, 				/* xmlChar *href; */
     
     xmlSecGnuTLSHmacInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecGnuTLSHmacNodeRead,			/* xmlSecTransformNodeReadMethod read; */
+    xmlSecGnuTLSHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecGnuTLSHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecGnuTLSHmacVerify,			/* xmlSecTransformValidateMethod validate; */

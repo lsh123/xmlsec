@@ -203,26 +203,26 @@ static int		xmlSecTransformInputURIPopBin		(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
-    BAD_CAST "input-uri",
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    0,					/* xmlSecAlgorithmUsage usage; */
-    NULL,				/* const xmlChar href; */
+    BAD_CAST "input-uri",			/* const xmlChar* name; */
+    NULL,					/* const xmlChar* href; */
+    0,						/* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformInputURIInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformInputURIFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformInputURIPopBin,	/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformInputURIInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformInputURIFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformInputURIPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
     
     NULL,					/* void* reserved0; */
     NULL,					/* void* reserved1; */

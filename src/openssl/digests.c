@@ -298,14 +298,14 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLEvpDigestSize,			/* size_t objSize */
 
-    xmlSecNameRipemd160,			/* xmlChar* name; */
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameRipemd160,			/* const xmlChar* name; */
+    xmlSecHrefRipemd160, 			/* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
-    xmlSecHrefRipemd160, 			/* xmlChar *href; */
     
     xmlSecOpenSSLEvpDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpDigestVerify,		/* xmlSecTransformVerifyMethod verify; */
@@ -338,14 +338,14 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLEvpDigestSize,			/* size_t objSize */
 
-    xmlSecNameSha1,				/* xmlChar* name; */
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameSha1,				/* const xmlChar* name; */
+    xmlSecHrefSha1, 				/* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
-    xmlSecHrefSha1, 				/* xmlChar* href; */
     
     xmlSecOpenSSLEvpDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLEvpDigestVerify,		/* xmlSecTransformVerifyMethod verify; */

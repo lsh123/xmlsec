@@ -21,7 +21,6 @@ parser.h \
 strings.h \
 templates.h \
 transforms.h \
-transforms-old.h \
 version.h \
 xmldsig.h \
 xmlenc.h \

@@ -288,15 +288,15 @@ static xmlSecTransformKlass xmlSecNssSha1Klass = {
     xmlSecNssDigestSize,			/* size_t objSize */
 
     /* data */
-    xmlSecNameSha1,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameSha1,				/* const xmlChar* name; */
+    xmlSecHrefSha1, 				/* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
-    xmlSecHrefSha1, 				/* xmlChar *href; */
     
     /* methods */
     xmlSecNssDigestInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssDigestFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssDigestVerify,			/* xmlSecTransformVerifyMethod verify; */

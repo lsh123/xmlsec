@@ -92,13 +92,13 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     xmlSecXsltSize,				/* size_t objSize */
 
     xmlSecNameXslt,				/* const xmlChar* name; */
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecHrefXslt, 				/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefXslt, 				/* const xmlChar href; */
 
     xmlSecXsltInitialize,			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecXsltFinalize,				/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecXsltReadNode,				/* xmlSecTransformNodeReadMethod read; */
+    xmlSecXsltReadNode,				/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

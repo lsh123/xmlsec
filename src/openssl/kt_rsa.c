@@ -75,14 +75,14 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLRsaPkcs1Size,			/* size_t objSize */
 
-    xmlSecNameRsaPkcs1,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameRsaPkcs1,				/* const xmlChar* name; */
+    xmlSecHrefRsaPkcs1, 			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefRsaPkcs1, 			/* const xmlChar href; */
 
     xmlSecOpenSSLRsaPkcs1Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLRsaPkcs1Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLRsaPkcs1SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaPkcs1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -389,14 +389,14 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecOpenSSLRsaOaepSize,			/* size_t objSize */
 
-    xmlSecNameRsaOaep,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameRsaOaep,				/* const xmlChar* name; */
+    xmlSecHrefRsaOaep, 				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefRsaOaep, 				/* const xmlChar href; */
 
     xmlSecOpenSSLRsaOaepInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLRsaOaepFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLRsaOaepNodeRead,		/* xmlSecTransformNodeReadMethod read; */
+    xmlSecOpenSSLRsaOaepNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLRsaOaepSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaOaepSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

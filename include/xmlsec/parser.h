@@ -32,11 +32,6 @@ XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix,
 							 size_t postfixSize);
 
 
-/********************************************************************
- *
- * XML parser transform 
- *
- *******************************************************************/
 /**
  * xmlSecTransformXmlParserId:
  * 
@@ -45,7 +40,6 @@ XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix,
 #define xmlSecTransformXmlParserId \
 	xmlSecTransformXmlParserGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXmlParserGetKlass	(void);
-
 
 
 #ifdef __cplusplus

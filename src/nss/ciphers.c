@@ -681,14 +681,14 @@ static xmlSecTransformKlass xmlSecNssAes128CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameAes128Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameAes128Cbc,			/* const xmlChar* name; */
+    xmlSecHrefAes128Cbc,			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefAes128Cbc,			/* const xmlChar href; */
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -713,14 +713,14 @@ static xmlSecTransformKlass xmlSecNssAes192CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameAes192Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameAes192Cbc,			/* const xmlChar* name; */
+    xmlSecHrefAes192Cbc,			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefAes192Cbc,			/* const xmlChar href; */
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -745,14 +745,14 @@ static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameAes256Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameAes256Cbc,			/* const xmlChar* name; */
+    xmlSecHrefAes256Cbc,			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefAes256Cbc,			/* const xmlChar href; */
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -780,14 +780,14 @@ static xmlSecTransformKlass xmlSecNssDes3CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameDes3Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameDes3Cbc,				/* const xmlChar* name; */
+    xmlSecHrefDes3Cbc, 				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefDes3Cbc, 				/* const xmlChar href; */
 
     xmlSecNssEvpBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssEvpBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecNssEvpBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

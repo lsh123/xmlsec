@@ -689,14 +689,14 @@ static xmlSecTransformKlass xmlSecGnuTLSAes128CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameAes128Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameAes128Cbc,			/* const xmlChar* name; */
+    xmlSecHrefAes128Cbc,			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefAes128Cbc,			/* const xmlChar href; */
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -721,14 +721,14 @@ static xmlSecTransformKlass xmlSecGnuTLSAes192CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameAes192Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameAes192Cbc,			/* const xmlChar* name; */
+    xmlSecHrefAes192Cbc,			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefAes192Cbc,			/* const xmlChar href; */
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -753,14 +753,14 @@ static xmlSecTransformKlass xmlSecGnuTLSAes256CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameAes256Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameAes256Cbc,			/* const xmlChar* name; */
+    xmlSecHrefAes256Cbc,			/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefAes256Cbc,			/* const xmlChar href; */
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
@@ -788,14 +788,14 @@ static xmlSecTransformKlass xmlSecGnuTLSDes3CbcKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     xmlSecGnuTLSBlockCipherSize,		/* size_t objSize */
 
-    xmlSecNameDes3Cbc,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameDes3Cbc,				/* const xmlChar* name; */
+    xmlSecHrefDes3Cbc, 				/* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefDes3Cbc, 				/* const xmlChar href; */
 
     xmlSecGnuTLSBlockCipherInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSBlockCipherFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecGnuTLSBlockCipherSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecGnuTLSBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

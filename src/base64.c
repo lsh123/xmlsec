@@ -110,14 +110,14 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     sizeof(xmlSecTransform),			/* size_t objSize */
 
-    xmlSecNameBase64,
-    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecNameBase64,				/* const xmlChar* name; */
+    xmlSecHrefBase64,				/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefBase64,				/* const xmlChar href; */
 
     xmlSecBase64Initialize, 			/* xmlSecTransformInitializeMethod initialize; */
     xmlSecBase64Finalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

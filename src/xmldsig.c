@@ -154,10 +154,10 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecPtrListFinalize(&(dsigCtx->manifests));
 
     if((dsigCtx->dontDestroyC14NMethod == 0) && (dsigCtx->c14nMethod != NULL)) {
-	xmlSecTransformDestroy(dsigCtx->c14nMethod, 1);
+	xmlSecTransformDestroy(dsigCtx->c14nMethod);
     }    
     if((dsigCtx->dontDestroySignMethod == 0) && (dsigCtx->signMethod != NULL)) {
-	xmlSecTransformDestroy(dsigCtx->signMethod, 1);
+	xmlSecTransformDestroy(dsigCtx->signMethod);
     }    
     if(dsigCtx->signKey != NULL) {
 	xmlSecKeyDestroy(dsigCtx->signKey);

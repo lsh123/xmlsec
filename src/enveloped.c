@@ -37,14 +37,14 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     sizeof(xmlSecTransform),			/* size_t objSize */
 
-    xmlSecNameEnveloped,
-    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    xmlSecNameEnveloped,			/* const xmlChar* name; */
+    xmlSecHrefEnveloped,			/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecHrefEnveloped,			/* const xmlChar *href; */
     
     NULL,					/* xmlSecTransformInitializeMethod initialize; */
     NULL,					/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */    
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

@@ -42,14 +42,14 @@ static xmlSecTransformKlass xmlSecTransformXmlParserKlass = {
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
     sizeof(xmlSecTransform),			/* size_t objSize */
 
-    BAD_CAST "xml-parser",
-    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    BAD_CAST "xml-parser",			/* const xmlChar* name; */
+    NULL,					/* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    NULL,					/* const xmlChar *href; */
     
     NULL,					/* xmlSecTransformInitializeMethod initialize; */
     NULL,					/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */

@@ -231,7 +231,7 @@ XMLSEC_NO_OPENSSL="1"
 OPENSSL_MIN_VERSION="0.9.6"
 OPENSSL_VERSION=""
 OPENSSL_PREFIX=""
-OPENSSL_CFLAGS="-DXMLSEC_CRYPTO=\\\"openssl\\\" -DXMLSEC_CRYPTO_OPENSSL=1"
+OPENSSL_CFLAGS="-DXMLSEC_CRYPTO_OPENSSL=1"
 OPENSSL_LIBS=""
 OPENSSL_LDADDS=""
 OPENSSL_CRYPTO_LIB="$PACKAGE-openssl"
@@ -342,7 +342,7 @@ XMLSEC_NO_GNUTLS="1"
 GNUTLS_MIN_VERSION="0.8.1"
 GNUTLS_VERSION=""
 GNUTLS_PREFIX=""
-GNUTLS_CFLAGS="-DXMLSEC_CRYPTO=\\\"gnutls\\\" -DXMLSEC_CRYPTO_GNUTLS=1"
+GNUTLS_CFLAGS="-DXMLSEC_CRYPTO_GNUTLS=1"
 GNUTLS_LIBS=""
 GNUTLS_LDADDS=""
 GNUTLS_CRYPTO_LIB="$PACKAGE-gnutls"
@@ -425,7 +425,7 @@ XMLSEC_NO_NSS="1"
 NSS_MIN_VERSION="3.2"
 MOZILLA_MIN_VERSION="1.4"
 NSS_VERSION=""
-NSS_CFLAGS="-DXMLSEC_CRYPTO=\\\"nss\\\" -DXMLSEC_CRYPTO_NSS=1"
+NSS_CFLAGS="-DXMLSEC_CRYPTO_NSS=1"
 NSS_LIBS=""
 NSS_LDADDS=""
 NSS_PREFIX=""
@@ -451,7 +451,6 @@ else
     NSS_NSS_H=""
 
     dnl process the mozilla options if any
-
     if test "z$with_mozilla_version" != "z" ; then
         MOZILLA_VERSION=$with_mozilla_version
     fi
@@ -592,6 +591,7 @@ else
              yes
           #endif
         ],[
+	  XMLSEC_NO_NSS="0"
     	  AC_MSG_RESULT(yes ('$NSS_VERSION'))
         ],[
           NSS_INCLUDES_FOUND="no"
@@ -606,13 +606,13 @@ else
        if test "z$NSPR_EXPLICIT" = "zyes" ; then 
           AC_MSG_ERROR(You need atleast version 4.0 of NSPR as a pre-requisite for NSS in this version of $PACKAGE)
        fi
-    elif test "z$NSS_INCLUDES_FOUND" != "zyes" -o "z$NSS_LIBS_FOUND" != "zyes" ; then
+    fi 
+    
+    if test "z$NSS_INCLUDES_FOUND" != "zyes" -o "z$NSS_LIBS_FOUND" != "zyes" ; then
        if test "z$NSS_EXPLICIT" = "zyes" ; then 
          AC_MSG_ERROR(You need atleast version 3.2 of NSS for this version of $PACKAGE)
        fi
-    else 
-       XMLSEC_NO_NSS="0"
-    fi
+    fi 
     
     if test "z$XMLSEC_NO_NSS" != "z1" ; then
        NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"

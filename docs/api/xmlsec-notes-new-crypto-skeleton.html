@@ -131,7 +131,7 @@ dnl See if we can find MyCrypto
 dnl ==========================================================================
 XMLSEC_MYCRYPTO_DEFINES=""
 MYCRYPTO_CONFIG="mycrypto-config" # TODO
-MYCRYPTO_WITHOUT="no"
+XMLSEC_NO_MYCRYPTO="1"
 MYCRYPTO_MIN_VERSION="0.0.0" # TODO 
 MYCRYPTO_VERSION=""
 MYCRYPTO_PREFIX=""
@@ -141,7 +141,6 @@ MYCRYPTO_LDADDS=""
 AC_MSG_CHECKING(for mycrypto libraries &gt;= $MYCRYPTO_MIN_VERSION) 
 AC_ARG_WITH(mycrypto, [  --with-mycrypto=[PFX]    mycrypto location])
 if test "$with_mycrypto" = "no" ; then
-    MYCRYPTO_WITHOUT="yes"
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mycrypto"
     AC_MSG_RESULT(no)
 else
@@ -149,31 +148,27 @@ else
 	MYCRYPTO_PREFIX=$with_mycrypto
 	MYCRYPTO_CONFIG=$MYCRYPTO_PREFIX/bin/$MYCRYPTO_CONFIG
     fi
-    if ! $MYCRYPTO_CONFIG --version &gt; /dev/null 2&gt;&amp;1
-    then
-	MYCRYPTO_WITHOUT="yes"
+    if ! $MYCRYPTO_CONFIG --version &gt; /dev/null 2&gt;&amp;1 ; then
 	if test "$with_mycrypto" != "" ; then
 	    AC_MSG_ERROR(Unable to find mycrypto at '$with_mycrypto')
 	fi
     else
         vers=`$MYCRYPTO_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
 	minvers=`echo $MYCRYPTO_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	if test "$vers" -ge "$minvers"
-	then
+	if test "$vers" -ge "$minvers" ; then
     	    MYCRYPTO_LIBS="`$MYCRYPTO_CONFIG --libs`"
 	    MYCRYPTO_CFLAGS="`$MYCRYPTO_CONFIG --cflags`"
 	    MYCRYPTO_VERSION="`$MYCRYPTO_CONFIG --version`"
+	    XMLSEC_NO_MYCRYPTO="0"
 	else
     	    AC_MSG_ERROR(You need at least mycrypto $MYCRYPTO_MIN_VERSION for this version of $PACKAGE)
 	fi	
     fi
 
     dnl update crypt libraries list
-    if test "$MYCRYPTO_WITHOUT" = "no" ;
-    then
+    if test "z$XMLSEC_NO_MYCRYPTO" = "z0" ; then
 	dnl first crypto library is default one
-	if test "z$XMLSEC_CRYPTO" = "z"
-	then
+	if test "z$XMLSEC_CRYPTO" = "z" ; then
 	    XMLSEC_CRYPTO="mycrypto"
     	    XMLSEC_CRYPTO_LIB="xmlsec1-mycrypto"
 	    XMLSEC_CRYPTO_CFLAGS="$MYCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MYCRYPTO=1"
@@ -187,7 +182,7 @@ else
 	AC_MSG_RESULT(no)
     fi
 fi
-AC_SUBST(MYCRYPTO_WITHOUT)
+AC_SUBST(XMLSEC_NO_MYCRYPTO)
 AC_SUBST(MYCRYPTO_MIN_VERSION)
 AC_SUBST(MYCRYPTO_VERSION)
 AC_SUBST(MYCRYPTO_CONFIG)	

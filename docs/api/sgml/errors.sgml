@@ -339,7 +339,7 @@ Max allowed retrievals level reached.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31
+<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 41
 </programlisting>
 <para>
 Certificate verification failed.</para>
@@ -348,7 +348,7 @@ Certificate verification failed.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 42
 </programlisting>
 <para>
 Requested certificate is not found.</para>
@@ -357,7 +357,7 @@ Requested certificate is not found.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 33
+<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 43
 </programlisting>
 <para>
 The certificate is revoked.</para>
@@ -366,7 +366,7 @@ The certificate is revoked.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
-<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34
+<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
 </programlisting>
 <para>
 The &lt;dsig:Reference&gt; validation failed.</para>

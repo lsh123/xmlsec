@@ -221,6 +221,7 @@ The keys helper functions.
 @keyId: 
 @type: 
 @usage: 
+@certsVerificationTime: 
 @Returns: 
 
 
@@ -275,6 +276,7 @@ The keys helper functions.
 @keyId: 
 @keyType: 
 @keyUsage: 
+@certsVerificationTime: 
 @Returns: 
 
 

@@ -49,7 +49,8 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
                                              void *context,
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage,
+                                             <link linkend="time-t">time_t</link> certsVerificationTime);
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecFindKeyCallback">*xmlSecFindKeyCallback</link>)       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
                                              void *context,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
@@ -71,7 +72,8 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
                                              void *context,
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage,
+                                             <link linkend="time-t">time_t</link> certsVerificationTime);
 </synopsis>
 </refsynopsisdiv>
 
@@ -487,7 +489,7 @@ to the key.</para>
     xmlSecFindKeyCallback		findKey;
     void 				*keysData;
 
-    /* x509 certs */
+    /* x509 certs */    
     int					failIfCertNotFound; 
     xmlSecX509FindCallback		findX509;
     xmlSecX509VerifyCallback		verifyX509;
@@ -561,7 +563,8 @@ The keys manager structure.</para>
                                              void *context,
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);</programlisting>
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage,
+                                             <link linkend="time-t">time_t</link> certsVerificationTime);</programlisting>
 <para>
 Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
@@ -588,6 +591,9 @@ Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extra
 </entry></row>
 <row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
 <entry> the required key usage.
+</entry></row>
+<row><entry align="right"><parameter>certsVerificationTime</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
 an error occurs.
@@ -709,7 +715,8 @@ and -1 if an error occurs.
                                              void *context,
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);</programlisting>
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage,
+                                             <link linkend="time-t">time_t</link> certsVerificationTime);</programlisting>
 <para>
 Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
@@ -736,6 +743,9 @@ Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extra
 </entry></row>
 <row><entry align="right"><parameter>keyUsage</parameter>&nbsp;:</entry>
 <entry> the required key usage.
+</entry></row>
+<row><entry align="right"><parameter>certsVerificationTime</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
 an error occurs.

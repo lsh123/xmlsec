@@ -329,6 +329,7 @@ struct xmlSecDigestTransform {
     int					pushModeEnabled;
     unsigned char			*digest;
     size_t				digestSize;
+    unsigned char			digestLastByteMask;
     void 				*digestData;
 };
 </STRUCT>
@@ -377,6 +378,209 @@ xmlSecBinTransformPtr transform,const unsigned char *buf,size_t size
 <RETURNS>int  </RETURNS>
 xmlSecBinTransformPtr transform
 </FUNCTION>
+<MACRO>
+<NAME>XMLSEC_ERRORS_LIB</NAME>
+#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_FUNCTION</NAME>
+#define XMLSEC_ERRORS_FUNCTION			0
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_MALLOC_FAILED</NAME>
+#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_XMLSEC_FAILED</NAME>
+#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CRYPTO_FAILED</NAME>
+#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_XML_FAILED</NAME>
+#define XMLSEC_ERRORS_R_XML_FAILED		 4
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_XSLT_FAILED</NAME>
+#define XMLSEC_ERRORS_R_XSLT_FAILED		 5
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_IO_FAILED</NAME>
+#define XMLSEC_ERRORS_R_IO_FAILED		 6
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY		 13
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY_DATA</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY_SIZE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</NAME>
+#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_KEY_NOT_FOUND</NAME>
+#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_SIZE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_SIZE		 18
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_DATA</NAME>
+#define XMLSEC_ERRORS_R_INVALID_DATA		 19
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_TYPE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_TYPE		 21
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_USAGE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_USAGE		 22
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODESET</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</NAME>
+#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</NAME>
+#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</NAME>
+#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_NODE_NOT_FOUND</NAME>
+#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</NAME>
+#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</NAME>
+#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 41
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_NOT_FOUND</NAME>
+#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 42
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_REVOKED</NAME>
+#define XMLSEC_ERRORS_R_CERT_REVOKED		 43
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</NAME>
+#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED	 44
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</NAME>
+#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID	 45
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</NAME>
+#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 46
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</NAME>
+#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_ASSERTION</NAME>
+#define XMLSEC_ERRORS_R_ASSERTION		 100
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_ERRORS_R_DISABLED</NAME>
+#define XMLSEC_ERRORS_R_DISABLED		 101
+</MACRO>
+<USER_FUNCTION>
+<NAME>xmlSecErrorsCallback</NAME>
+<RETURNS>void </RETURNS>
+const char* file, int line, 
+				    		 const char* func,
+						 int reason, const char* msg
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>xmlSecErrorsInit</NAME>
+<RETURNS>void  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecErrorsShutdown</NAME>
+<RETURNS>void  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecErrorsSetCallback</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecErrorsCallback callback
+</FUNCTION>
+<VARIABLE>
+<NAME>xmlSecPrintErrorMessages</NAME>
+extern int xmlSecPrintErrorMessages;
+</VARIABLE>
+<MACRO>
+<NAME>XMLSEC_ERRORS_HERE</NAME>
+#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
+</MACRO>
+<FUNCTION>
+<NAME>xmlSecError</NAME>
+<RETURNS>void  </RETURNS>
+const char* file, int line,const char* func,int reason, const char* msg,...
+</FUNCTION>
+<MACRO>
+<NAME>xmlSecAssert</NAME>
+#define xmlSecAssert( p ) \
+	if(!( p ) ) { \
+	    xmlSecError(XMLSEC_ERRORS_HERE, \
+			XMLSEC_ERRORS_R_ASSERTION, \
+			"%s", #p); \
+	    return; \
+	} 
+</MACRO>
+<MACRO>
+<NAME>xmlSecAssert2</NAME>
+#define xmlSecAssert2( p, ret ) \
+	if(!( p ) ) { \
+	    xmlSecError(XMLSEC_ERRORS_HERE, \
+			XMLSEC_ERRORS_R_ASSERTION, \
+			"%s", #p); \
+	    return(ret); \
+	} 
+</MACRO>
 <VARIABLE>
 <NAME>xmlSecInputUri</NAME>
 extern xmlSecTransformId xmlSecInputUri;
@@ -414,7 +618,7 @@ xmlInputMatchCallback matchFunc,xmlInputOpenCallback openFunc,xmlInputReadCallba
 <FUNCTION>
 <NAME>xmlSecKeyInfoNodeRead</NAME>
 <RETURNS>xmlSecKeyPtr  </RETURNS>
-xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr keysMngr,void *context,xmlSecKeyId keyId,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage
+xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr keysMngr,void *context,xmlSecKeyId keyId,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage,time_t certsVerificationTime
 </FUNCTION>
 <FUNCTION>
 <NAME>xmlSecKeyInfoNodeWrite</NAME>
@@ -562,6 +766,11 @@ xmlSecKeyPtr key,const xmlChar *name,xmlSecKeyId id,xmlSecKeyType type
 xmlSecKeyPtr key,FILE *output
 </FUNCTION>
 <FUNCTION>
+<NAME>xmlSecKeyDebugXmlDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecKeyPtr key,FILE *output
+</FUNCTION>
+<FUNCTION>
 <NAME>xmlSecKeyReadPemCert</NAME>
 <RETURNS>int 	</RETURNS>
 xmlSecKeyPtr key,const char *filename
@@ -574,7 +783,8 @@ xmlNodePtr keyInfoNode,
 							 void *context,
 							 xmlSecKeyId keyId,
 							 xmlSecKeyType type,
-							 xmlSecKeyUsage usage
+							 xmlSecKeyUsage usage,
+							 time_t certsVerificationTime
 </USER_FUNCTION>
 <USER_FUNCTION>
 <NAME>xmlSecFindKeyCallback</NAME>
@@ -616,7 +826,7 @@ struct xmlSecKeysMngr {
     xmlSecFindKeyCallback		findKey;
     void 				*keysData;
 
-    /* x509 certs */
+    /* x509 certs */    
     int					failIfCertNotFound; 
     xmlSecX509FindCallback		findX509;
     xmlSecX509VerifyCallback		verifyX509;
@@ -626,7 +836,7 @@ struct xmlSecKeysMngr {
 <FUNCTION>
 <NAME>xmlSecKeysMngrGetKey</NAME>
 <RETURNS>xmlSecKeyPtr  </RETURNS>
-xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr mngr,void *context,xmlSecKeyId keyId,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage
+xmlNodePtr keyInfoNode,xmlSecKeysMngrPtr mngr,void *context,xmlSecKeyId keyId,xmlSecKeyType keyType,xmlSecKeyUsage keyUsage,time_t certsVerificationTime
 </FUNCTION>
 <MACRO>
 <NAME>xmlSecKeyInifiteRetrivals</NAME>
@@ -794,6 +1004,16 @@ xmlSecKeysMngrPtr mngr,const char *path
 <RETURNS>int 	</RETURNS>
 xmlSecKeysMngrPtr mngr,const char* name,const char *filename,const char *pwd
 </FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrSetCertsFlags</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecKeysMngrPtr mngr,unsigned long flags
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecSimpleKeysMngrSetVerifyDepth</NAME>
+<RETURNS>void  </RETURNS>
+xmlSecKeysMngrPtr mngr,int depth
+</FUNCTION>
 <VARIABLE>
 <NAME>xmlSecMemBuf</NAME>
 extern xmlSecTransformId xmlSecMemBuf;
@@ -802,6 +1022,86 @@ extern xmlSecTransformId xmlSecMemBuf;
 <NAME>xmlSecMemBufTransformGetBuffer</NAME>
 <RETURNS>xmlBufferPtr 	</RETURNS>
 xmlSecTransformPtr transform,int removeBuffer
+</FUNCTION>
+<ENUM>
+<NAME>xmlSecNodeSetType</NAME>
+typedef enum {
+    xmlSecNodeSetNormal = 0,
+    xmlSecNodeSetInvert,
+    xmlSecNodeSetTree,
+    xmlSecNodeSetTreeWithoutComments, 
+    xmlSecNodeSetTreeInvert,
+    xmlSecNodeSetTreeWithoutCommentsInvert,
+    xmlSecNodeSetList
+} xmlSecNodeSetType;
+</ENUM>
+<ENUM>
+<NAME>xmlSecNodeSetOp</NAME>
+typedef enum {
+    xmlSecNodeSetIntersection = 0,
+    xmlSecNodeSetSubtraction,
+    xmlSecNodeSetUnion
+} xmlSecNodeSetOp;
+</ENUM>
+<STRUCT>
+<NAME>xmlSecNodeSet</NAME>
+struct xmlSecNodeSet {
+    xmlNodeSetPtr	nodes;
+    xmlDocPtr		doc;
+    xmlSecNodeSetType	type;
+    xmlSecNodeSetOp	op;
+    xmlSecNodeSetPtr	next;
+    xmlSecNodeSetPtr	prev;
+    xmlSecNodeSetPtr	children;
+};
+</STRUCT>
+<USER_FUNCTION>
+<NAME>xmlSecNodeSetWalkCallback</NAME>
+<RETURNS>int </RETURNS>
+xmlSecNodeSetPtr nset,
+							 xmlNodePtr cur,
+							 xmlNodePtr parent,
+							 void* data
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetCreate</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlDocPtr doc,xmlNodeSetPtr nodes,xmlSecNodeSetType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecNodeSetPtr nset
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetContains</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlNodePtr node,xmlNodePtr parent
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetAdd</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetAddList</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetGetChildren</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlDocPtr doc,const xmlNodePtr parent,int withComments,int invert
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetWalk</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlSecNodeSetWalkCallback walkFunc,void* data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecNodeSetPtr nset,FILE *output
 </FUNCTION>
 <TYPEDEF>
 <NAME>xmlSecTransformId</NAME>
@@ -1028,6 +1328,26 @@ extern xmlSecTransformId 		xmlSecTransformXslt;
 <RETURNS>int  </RETURNS>
 xmlNodePtr transformNode,const xmlChar *xslt
 </FUNCTION>
+<MACRO>
+<NAME>XMLSEC_VERSION</NAME>
+#define XMLSEC_VERSION			"0.0.12"
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_MAJOR</NAME>
+#define XMLSEC_VERSION_MAJOR		0
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_MINOR</NAME>
+#define XMLSEC_VERSION_MINOR		0
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_SUBMINOR</NAME>
+#define XMLSEC_VERSION_SUBMINOR		12
+</MACRO>
+<MACRO>
+<NAME>XMLSEC_VERSION_INFO</NAME>
+#define XMLSEC_VERSION_INFO		"0:12:0"
+</MACRO>
 <MACRO>
 <NAME>xmlSecUsageAny</NAME>
 #define xmlSecUsageAny				0
@@ -1471,26 +1791,24 @@ struct xmlSecC14NTransform {
 <RETURNS>int  </RETURNS>
 xmlSecTransformPtr transform,xmlDocPtr doc,xmlSecNodeSetPtr nodes,xmlOutputBufferPtr buffer
 </FUNCTION>
-<MACRO>
-<NAME>XMLSEC_VERSION</NAME>
-#define XMLSEC_VERSION			"0.0.8"
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_VERSION_MAJOR</NAME>
-#define XMLSEC_VERSION_MAJOR		0
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_VERSION_MINOR</NAME>
-#define XMLSEC_VERSION_MINOR		0
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_VERSION_SUBMINOR</NAME>
-#define XMLSEC_VERSION_SUBMINOR		8
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_VERSION_INFO</NAME>
-#define XMLSEC_VERSION_INFO		"0:8:0"
-</MACRO>
+<STRUCT>
+<NAME>xmlSecX509Data</NAME>
+struct xmlSecX509Data {
+    X509		*verified;
+    STACK_OF(X509) 	*certs;
+    STACK_OF(X509_CRL)  *crls;
+    time_t		certsVerificationTime;
+};
+</STRUCT>
+<STRUCT>
+<NAME>xmlSecX509Store</NAME>
+struct xmlSecX509Store {
+    unsigned long	x509_store_flags;
+    X509_STORE		*xst;
+    STACK_OF(X509)	*untrusted;
+    STACK_OF(X509_CRL)	*crls;
+};
+</STRUCT>
 <FUNCTION>
 <NAME>xmlSecX509DataCreate</NAME>
 <RETURNS>xmlSecX509DataPtr 	</RETURNS>
@@ -1552,6 +1870,11 @@ xmlSecX509DataPtr x509Data
 xmlSecX509DataPtr x509Data,FILE *output
 </FUNCTION>
 <FUNCTION>
+<NAME>xmlSecX509DataDebugXmlDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecX509DataPtr x509Data,FILE *output
+</FUNCTION>
+<FUNCTION>
 <NAME>xmlSecX509StoreCreate</NAME>
 <RETURNS>xmlSecX509StorePtr  </RETURNS>
 void
@@ -1603,6 +1926,7 @@ struct xmlSecDSigCtx {
     int				storeReferences;
     int				storeManifests;	
     int				fakeSignatures;
+    time_t			certsVerificationTime;
 };
 </STRUCT>
 <STRUCT>
@@ -1745,12 +2069,18 @@ xmlSecDSigResultPtr result
 <RETURNS>void 	</RETURNS>
 xmlSecDSigResultPtr result,FILE *output
 </FUNCTION>
+<FUNCTION>
+<NAME>xmlSecDSigResultDebugXmlDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecDSigResultPtr result,FILE *output
+</FUNCTION>
 <STRUCT>
 <NAME>xmlSecEncCtx</NAME>
 struct xmlSecEncCtx {
     xmlSecKeysMngrPtr		keysMngr;
     xmlSecTransformId		encryptionMethod;
     int				ignoreType;
+    time_t			certsVerificationTime;
 };
 </STRUCT>
 <STRUCT>
@@ -1816,6 +2146,11 @@ xmlSecEncResultPtr result
 xmlSecEncResultPtr result,FILE *output
 </FUNCTION>
 <FUNCTION>
+<NAME>xmlSecEncResultDebugXmlDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecEncResultPtr result,FILE *output
+</FUNCTION>
+<FUNCTION>
 <NAME>xmlSecEncDataCreate</NAME>
 <RETURNS>xmlNodePtr 	</RETURNS>
 const xmlChar *id,const xmlChar *type,const xmlChar *mimeType,const xmlChar *encoding
@@ -1862,19 +2197,27 @@ xmlNodePtr encNode,xmlSecTransformId transform
 </FUNCTION>
 <MACRO>
 <NAME>extern</NAME>
-#define extern extern
+#        define extern __declspec(dllexport) extern
 </MACRO>
 <MACRO>
 <NAME>extern</NAME>
-#define  extern
+#        define  extern
 </MACRO>
 <MACRO>
 <NAME>extern</NAME>
-#define extern __declspec(dllimport) extern
+#        define extern extern
 </MACRO>
 <MACRO>
 <NAME>extern</NAME>
-#define extern extern
+#        define extern __declspec(dllimport) extern
+</MACRO>
+<MACRO>
+<NAME>extern</NAME>
+#        define extern extern
+</MACRO>
+<MACRO>
+<NAME>extern</NAME>
+#    define extern extern
 </MACRO>
 <FUNCTION>
 <NAME>xmlSecInit</NAME>
@@ -1983,274 +2326,3 @@ xmlDocPtr doc,xmlNodePtr cur,const xmlChar** ids
     ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
     ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
 </MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_LIB</NAME>
-#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_FUNCTION</NAME>
-#define XMLSEC_ERRORS_FUNCTION			0
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_MALLOC_FAILED</NAME>
-#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_XMLSEC_FAILED</NAME>
-#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_CRYPTO_FAILED</NAME>
-#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_XML_FAILED</NAME>
-#define XMLSEC_ERRORS_R_XML_FAILED		 4
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_XSLT_FAILED</NAME>
-#define XMLSEC_ERRORS_R_XSLT_FAILED		 5
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_IO_FAILED</NAME>
-#define XMLSEC_ERRORS_R_IO_FAILED		 6
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM</NAME>
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</NAME>
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</NAME>
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_KEY</NAME>
-#define XMLSEC_ERRORS_R_INVALID_KEY		 13
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_KEY_DATA</NAME>
-#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_KEY_SIZE</NAME>
-#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</NAME>
-#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_KEY_NOT_FOUND</NAME>
-#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_SIZE</NAME>
-#define XMLSEC_ERRORS_R_INVALID_SIZE		 18
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_DATA</NAME>
-#define XMLSEC_ERRORS_R_INVALID_DATA		 19
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_TYPE</NAME>
-#define XMLSEC_ERRORS_R_INVALID_TYPE		 21
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_USAGE</NAME>
-#define XMLSEC_ERRORS_R_INVALID_USAGE		 22
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_NODE</NAME>
-#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_NODESET</NAME>
-#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</NAME>
-#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</NAME>
-#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</NAME>
-#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</NAME>
-#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_NODE_NOT_FOUND</NAME>
-#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</NAME>
-#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</NAME>
-#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_CERT_NOT_FOUND</NAME>
-#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_CERT_REVOKED</NAME>
-#define XMLSEC_ERRORS_R_CERT_REVOKED		 33
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</NAME>
-#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_ASSERTION</NAME>
-#define XMLSEC_ERRORS_R_ASSERTION		 100
-</MACRO>
-<MACRO>
-<NAME>XMLSEC_ERRORS_R_DISABLED</NAME>
-#define XMLSEC_ERRORS_R_DISABLED		 101
-</MACRO>
-<USER_FUNCTION>
-<NAME>xmlSecErrorsCallback</NAME>
-<RETURNS>void </RETURNS>
-const char* file, int line, 
-				    		 const char* func,
-						 int reason, const char* msg
-</USER_FUNCTION>
-<FUNCTION>
-<NAME>xmlSecErrorsInit</NAME>
-<RETURNS>void  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecErrorsShutdown</NAME>
-<RETURNS>void  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecErrorsSetCallback</NAME>
-<RETURNS>void  </RETURNS>
-xmlSecErrorsCallback callback
-</FUNCTION>
-<VARIABLE>
-<NAME>xmlSecPrintErrorMessages</NAME>
-extern int xmlSecPrintErrorMessages;
-</VARIABLE>
-<MACRO>
-<NAME>XMLSEC_ERRORS_HERE</NAME>
-#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
-</MACRO>
-<FUNCTION>
-<NAME>xmlSecError</NAME>
-<RETURNS>void  </RETURNS>
-const char* file, int line,const char* func,int reason, const char* msg,...
-</FUNCTION>
-<MACRO>
-<NAME>xmlSecAssert</NAME>
-#define xmlSecAssert( p ) \
-	if(!( p ) ) { \
-	    xmlSecError(XMLSEC_ERRORS_HERE, \
-			XMLSEC_ERRORS_R_ASSERTION, \
-			"%s", #p); \
-	    return; \
-	} 
-</MACRO>
-<MACRO>
-<NAME>xmlSecAssert2</NAME>
-#define xmlSecAssert2( p, ret ) \
-	if(!( p ) ) { \
-	    xmlSecError(XMLSEC_ERRORS_HERE, \
-			XMLSEC_ERRORS_R_ASSERTION, \
-			"%s", #p); \
-	    return(ret); \
-	} 
-</MACRO>
-<ENUM>
-<NAME>xmlSecNodeSetType</NAME>
-typedef enum {
-    xmlSecNodeSetNormal = 0,
-    xmlSecNodeSetInvert,
-    xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments, 
-    xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
-} xmlSecNodeSetType;
-</ENUM>
-<ENUM>
-<NAME>xmlSecNodeSetOp</NAME>
-typedef enum {
-    xmlSecNodeSetIntersection = 0,
-    xmlSecNodeSetSubtraction,
-    xmlSecNodeSetUnion
-} xmlSecNodeSetOp;
-</ENUM>
-<STRUCT>
-<NAME>xmlSecNodeSet</NAME>
-struct xmlSecNodeSet {
-    xmlNodeSetPtr	nodes;
-    xmlDocPtr		doc;
-    xmlSecNodeSetType	type;
-    xmlSecNodeSetOp	op;
-    xmlSecNodeSetPtr	next;
-    xmlSecNodeSetPtr	prev;
-    xmlSecNodeSetPtr	children;
-};
-</STRUCT>
-<USER_FUNCTION>
-<NAME>xmlSecNodeSetWalkCallback</NAME>
-<RETURNS>int </RETURNS>
-xmlSecNodeSetPtr nset,
-							 xmlNodePtr cur,
-							 xmlNodePtr parent,
-							 void* data
-</USER_FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetCreate</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlDocPtr doc,xmlNodeSetPtr nodes,xmlSecNodeSetType type
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetDestroy</NAME>
-<RETURNS>void 	</RETURNS>
-xmlSecNodeSetPtr nset
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetContains</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlNodePtr node,xmlNodePtr parent
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetAdd</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetAddList</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetGetChildren</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlDocPtr doc,const xmlNodePtr parent,int withComments,int invert
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetWalk</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlSecNodeSetWalkCallback walkFunc,void* data
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetDebugDump</NAME>
-<RETURNS>void 	</RETURNS>
-xmlSecNodeSetPtr nset,FILE *output
-</FUNCTION>

@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="XMLSEC-KEYINFO">keyinfo.h</H1
+NAME="XMLSEC-KEYINFO"
+></A
+>keyinfo.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN2159"
+NAME="AEN2169"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN2159"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN2162"><H2
+NAME="AEN2172"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -168,7 +172,11 @@ HREF="xmlsec-keys.html#XMLSECKEYTYPE"
                                              <A
 HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 >xmlSecKeyUsage</A
-> keyUsage);
+> keyUsage,
+                                             <GTKDOCLINK
+HREF="TIME-T"
+>time_t</GTKDOCLINK
+> certsVerificationTime);
 int         <A
 HREF="xmlsec-keyinfo.html#XMLSECKEYINFONODEWRITE"
 >xmlSecKeyInfoNodeWrite</A
@@ -281,7 +289,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2201"
+NAME="AEN2212"
 ></A
 ><H2
 >Description</H2
@@ -291,14 +299,14 @@ NAME="AEN2201"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2204"
+NAME="AEN2215"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2206"
+NAME="AEN2217"
 ></A
 ><H3
 ><A
@@ -337,7 +345,11 @@ HREF="xmlsec-keys.html#XMLSECKEYTYPE"
                                              <A
 HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 >xmlSecKeyUsage</A
-> keyUsage);</PRE
+> keyUsage,
+                                             <GTKDOCLINK
+HREF="TIME-T"
+>time_t</GTKDOCLINK
+> certsVerificationTime);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -349,7 +361,9 @@ id, type and usage).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2218"><P
+NAME="AEN2230"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -470,6 +484,23 @@ VALIGN="TOP"
 WIDTH="20%"
 ALIGN="RIGHT"
 VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>certsVerificationTime</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
 ><SPAN
 CLASS="emphasis"
 ><I
@@ -493,7 +524,7 @@ required key is not found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2252"
+NAME="AEN2268"
 ></A
 ><H3
 ><A
@@ -541,7 +572,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2263"><P
+NAME="AEN2279"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -670,7 +703,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2294"
+NAME="AEN2310"
 ></A
 ><H3
 ><A
@@ -708,7 +741,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2303"><P
+NAME="AEN2319"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -763,7 +798,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2316"
+NAME="AEN2332"
 ></A
 ><H3
 ><A
@@ -801,7 +836,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2325"><P
+NAME="AEN2341"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -856,7 +893,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2338"
+NAME="AEN2354"
 ></A
 ><H3
 ><A
@@ -894,7 +931,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2347"><P
+NAME="AEN2363"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -949,7 +988,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2360"
+NAME="AEN2376"
 ></A
 ><H3
 ><A
@@ -995,7 +1034,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2371"><P
+NAME="AEN2387"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1084,7 +1125,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2392"
+NAME="AEN2408"
 ></A
 ><H3
 ><A
@@ -1128,7 +1169,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2402"><P
+NAME="AEN2418"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1200,7 +1243,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2419"
+NAME="AEN2435"
 ></A
 ><H3
 ><A
@@ -1251,7 +1294,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2431"><P
+NAME="AEN2447"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"

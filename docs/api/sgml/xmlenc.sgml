@@ -91,6 +91,7 @@ void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>    
     xmlSecKeysMngrPtr		keysMngr;
     xmlSecTransformId		encryptionMethod;
     int				ignoreType;
+    time_t			certsVerificationTime;
 };
 </programlisting>
 <para>
@@ -116,6 +117,12 @@ XML Encrypiton context.</para>
 <entry>int <structfield>ignoreType</structfield></entry>
 <entry>	the flag to ignore Type attribute in the &lt;enc:EncryptedData&gt; 
 	node
+</entry>
+</row>
+<row>
+<entry><link linkend="time-t">time_t</link> <structfield>certsVerificationTime</structfield></entry>
+<entry>
+
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>

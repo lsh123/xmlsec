@@ -417,7 +417,7 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
  * @mngr: the pointer to the simple keys manager.
  * @keyfile: the PEM key file name.
  * @keyPwd: the key file password.
- * @keyPwdCallback: the "ask password" cllback.
+ * @keyPwdCallback: the "ask password" callback.
  * @privateKey: the private/public flag.
  *
  * Reads the key from a PEM file @keyfile.

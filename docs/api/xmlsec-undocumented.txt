@@ -1,5 +1,5 @@
-100% symbol docs coverage.
-371 symbols documented.
+100% function docs coverage.
+271 functions documented.
 0 not documented.
 
 

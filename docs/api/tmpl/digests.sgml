@@ -30,6 +30,7 @@ The digests transform.
 @pushModeEnabled: 
 @digest: 
 @digestSize: 
+@digestLastByteMask: 
 @digestData: 
 
 <!-- ##### TYPEDEF xmlSecDigestTransformId ##### -->

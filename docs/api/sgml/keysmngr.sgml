@@ -247,7 +247,7 @@ Reads the key from a PEM file <parameter>keyfile</parameter>.</para>
 <entry> the key file password.
 </entry></row>
 <row><entry align="right"><parameter>keyPwdCallback</parameter>&nbsp;:</entry>
-<entry> the "ask password" cllback.
+<entry> the "ask password" callback.
 </entry></row>
 <row><entry align="right"><parameter>privateKey</parameter>&nbsp;:</entry>
 <entry> the private/public flag.

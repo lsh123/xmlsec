@@ -25,6 +25,7 @@ standard implementation.
 @storeReferences: 
 @storeManifests: 
 @fakeSignatures: 
+@certsVerificationTime: 
 
 <!-- ##### FUNCTION xmlSecDSigCtxCreate ##### -->
 <para>

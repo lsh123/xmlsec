@@ -23,6 +23,7 @@ standard implementation.
 @keysMngr: 
 @encryptionMethod: 
 @ignoreType: 
+@certsVerificationTime: 
 
 <!-- ##### FUNCTION xmlSecEncCtxCreate ##### -->
 <para>

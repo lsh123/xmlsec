@@ -93,6 +93,7 @@ void        <link linkend="xmlSecSignatureDestroy">xmlSecSignatureDestroy</link>
     int				storeReferences;
     int				storeManifests;	
     int				fakeSignatures;
+    time_t			certsVerificationTime;
 };
 </programlisting>
 <para>
@@ -135,6 +136,12 @@ before applying signature.
 <row>
 <entry>int <structfield>fakeSignatures</structfield></entry>
 <entry> for performance testing only.
+</entry>
+</row>
+<row>
+<entry><link linkend="time-t">time_t</link> <structfield>certsVerificationTime</structfield></entry>
+<entry>
+
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -240,10 +247,10 @@ Signs the data according to the template in <parameter>signNode</parameter> node
     will be used).   
 </entry></row>
 <row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:Signature&gt; node that will be validated.
+<entry> the pointer to &lt;dsig:Signature&gt; node template.
 </entry></row>
 <row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
-<entry> the pointer where to store validation results.
+<entry> the pointer where to store signature results.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negative value otherwise.
 </entry></row>
@@ -333,7 +340,7 @@ XML DSig Result.</para>
 </row>
 <row>
 <entry><link linkend="xmlBufferPtr">xmlBufferPtr</link> <structfield>buffer</structfield></entry>
-<entry> the pointer to the signed content - the cannonicalization of 
+<entry> the pointer to the signed content - the canonicalization of 
    &lt;dsig:SignedInfo&gt; node  (valid only if the <link linkend="storeSignatures">storeSignatures</link> flag 
    in <link linkend="ctx">ctx</link> structure is set to 1).
 </entry>
@@ -371,7 +378,7 @@ The result of &lt;dsig:Reference&gt; processing.</para>
 </row>
 <row>
 <entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>self</structfield></entry>
-<entry> the pointer to &lt;dsig:Refernece&gt; node.
+<entry> the pointer to &lt;dsig:Reference&gt; node.
 </entry>
 </row>
 <row>
@@ -417,7 +424,7 @@ The result of &lt;dsig:Reference&gt; processing.</para>
 <row>
 <entry><link linkend="xmlBufferPtr">xmlBufferPtr</link> <structfield>buffer</structfield></entry>
 <entry> the pointer to digested content (valid only if 
-	the <link linkend="storeReferences">storeReferences</link> or <link linkend="storeManifests">storeManifests</link> flags in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>.
+	the <link linkend="storeReferences">storeReferences</link> or <link linkend="storeManifests">storeManifests</link> flags in <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>).
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -521,7 +528,7 @@ Prints the <link linkend="xmlSecDSigResult">xmlSecDSigResult</link> structure <p
 <title><anchor id="xmlSecSignatureCreate">xmlSecSignatureCreate ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureCreate           (const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
 <para>
-Creates new &lt;dsig:Signature&gt; node with the mantadory &lt;dsig:SignatureValue&gt; 
+Creates new &lt;dsig:Signature&gt; node with the mandatory &lt;dsig:SignatureValue&gt; 
 child. The application is responsible for inserting the returned node
 in the XML document.</para>
 <para>

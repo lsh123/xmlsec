@@ -67,7 +67,7 @@ struct _xmlSecDSigCtx {
  *    (valid only if the #processManifests flag in @ctx is set to 1).  
  * @lastManifestRef: the pointer to the last  <dsig:Manifest> reference result
  *    (valid only if the #processManifests flag in @ctx is set to 1).  
- * @buffer: the pointer to the signed content - the cannonicalization of 
+ * @buffer: the pointer to the signed content - the canonicalization of 
  *    <dsig:SignedInfo> node  (valid only if the #storeSignatures flag 
  *    in #ctx structure is set to 1).
  *
@@ -104,7 +104,7 @@ typedef enum  {
 /**
  * xmlSecReferenceResult:
  * @ctx: the pointer to DSig context.
- * @self: the pointer to <dsig:Refernece> node.
+ * @self: the pointer to <dsig:Reference> node.
  * @refType: the <dsig:Reference> node location.
  * @result: the verification/generation result.
  * @next: the next reference result.
@@ -114,7 +114,7 @@ typedef enum  {
  * @type: the <dsig:Reference> node Type attribute.
  * @digestMethod: the used digest algorithm id.
  * @buffer: the pointer to digested content (valid only if 
- * 	the #storeReferences or #storeManifests flags in #xmlSecDSigCtx.
+ * 	the #storeReferences or #storeManifests flags in #xmlSecDSigCtx).
  *
  * The result of <dsig:Reference> processing.
  */

@@ -19,7 +19,8 @@
                                              void *context,
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage,
+                                             <link linkend="time-t">time_t</link> certsVerificationTime);
 int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr,
                                              void *context,
@@ -61,7 +62,8 @@ int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>
                                              void *context,
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);</programlisting>
+                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage,
+                                             <link linkend="time-t">time_t</link> certsVerificationTime);</programlisting>
 <para>
 Parses the &lt;dsig:KeyInfo&gt; element and extracts the key (with required 
 id, type and usage).</para>
@@ -90,6 +92,9 @@ id, type and usage).</para>
 </entry></row>
 <row><entry align="right"><parameter>keyUsage</parameter>&nbsp;:</entry>
 <entry> the desired key usage. 
+</entry></row>
+<row><entry align="right"><parameter>certsVerificationTime</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to extracted key or NULL if an error occurs or
 required key is not found.

@@ -97,7 +97,7 @@ static const xmlChar*		xmlSecDSigIds[] = { BAD_CAST "Id", NULL };
  * xmlSecSignatureCreate:
  * @id: the node id (may be NULL).
  *
- * Creates new <dsig:Signature> node with the mantadory <dsig:SignatureValue> 
+ * Creates new <dsig:Signature> node with the mandatory <dsig:SignatureValue> 
  * child. The application is responsible for inserting the returned node
  * in the XML document. 
  *
@@ -749,8 +749,8 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
- * @signNode: the pointer to <dsig:Signature> node that will be validated.
- * @result: the pointer where to store validation results.
+ * @signNode: the pointer to <dsig:Signature> node template.
+ * @result: the pointer where to store signature results.
  *
  * Signs the data according to the template in @signNode node.
  *

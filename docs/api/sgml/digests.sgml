@@ -83,6 +83,7 @@ int         <link linkend="xmlSecDigestTransformFlush">xmlSecDigestTransformFlus
     int					pushModeEnabled;
     unsigned char			*digest;
     size_t				digestSize;
+    unsigned char			digestLastByteMask;
     void 				*digestData;
 };
 </programlisting>
@@ -149,6 +150,11 @@ The digests transform.</para>
 <row>
 <entry><link linkend="size-t">size_t</link> <structfield>digestSize</structfield></entry>
 <entry> the internal digest buffer size.
+</entry>
+</row>
+<row>
+<entry>unsigned char <structfield>digestLastByteMask</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>

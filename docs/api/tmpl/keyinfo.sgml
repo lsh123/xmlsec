@@ -25,6 +25,7 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 @keyId: 
 @keyType: 
 @keyUsage: 
+@certsVerificationTime: 
 @Returns: 
 
 

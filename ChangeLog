@@ -1,3 +1,8 @@
+2005-03-30  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html docs/news.html
+	include/xmlsec/version.h: preparing new release 1.2.8
+
 Tue 22 Mar 2005 20:10:19 CET Igor Zlatkovic <igor@zlatkovic.com>
 
 	* apps/xmlsec.c: changed the type of the --depth parameter to

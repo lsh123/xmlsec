@@ -27,6 +27,7 @@ extern "C" {
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
@@ -65,6 +66,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCarriedKeyName[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncContent[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncElement[];
+
+/*************************************************************************
+ *
+ * XKMS Nodes
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeLocateRequest[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeValidateRequest[];
 
 /*************************************************************************
  *

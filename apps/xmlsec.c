@@ -33,6 +33,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
+#include <xmlsec/xkms.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/errors.h>
@@ -71,6 +72,10 @@ static const char helpCommands2[] =
     "  --encrypt   "	"\tencrypt data and output XML document\n"
     "  --decrypt   "	"\tdecrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
+#ifndef XMLSEC_NO_XKMS
+    "  --xkms-locate "	"\tprocess data as XKMS locate key request\n"
+    "  --xkms-validate ""\tprocess data as XKMS validate key request\n"
+#endif /* XMLSEC_NO_XKMS */
     ;
 
 static const char helpVersion[] = 
@@ -106,6 +111,14 @@ static const char helpDecrypt[] =
     "Usage: xmlsec decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
 
+static const char helpXkmsLocate[] =  
+    "Usage: xmlsec xkms-locate [<options>] <file>\n"
+    "Processes the <file> as XKMS (XKISS) locate request and outputs the response\n";
+
+static const char helpXkmsValidate[] =  
+    "Usage: xmlsec xkms-validate [<options>] <file>\n"
+    "Processes the <file> as XKMS (XKISS) validate request and outputs the response\n";
+
 static const char helpListKeyData[] =     
     "Usage: xmlsec list-key-data\n"
     "Prints the list of known key data klasses\n";
@@ -121,9 +134,10 @@ static const char helpListTransforms[] =
 #define xmlSecAppCmdLineTopicEncCommon		0x0010
 #define xmlSecAppCmdLineTopicEncEncrypt		0x0020
 #define xmlSecAppCmdLineTopicEncDecrypt		0x0040
-#define xmlSecAppCmdLineTopicKeysMngr		0x0080
-#define xmlSecAppCmdLineTopicX509Certs		0x0100
-#define xmlSecAppCmdLineTopicVersion		0x0200
+#define xmlSecAppCmdLineTopicXkmsCommon		0x0080
+#define xmlSecAppCmdLineTopicKeysMngr		0x1000
+#define xmlSecAppCmdLineTopicX509Certs		0x2000
+#define xmlSecAppCmdLineTopicVersion		0x4000
 #define xmlSecAppCmdLineTopicAll		0xFFFF
 
 /****************************************************************
@@ -671,7 +685,9 @@ typedef enum {
     xmlSecAppCommandSignTmpl,
     xmlSecAppCommandEncrypt,
     xmlSecAppCommandDecrypt,
-    xmlSecAppCommandEncryptTmpl
+    xmlSecAppCommandEncryptTmpl,
+    xmlSecAppCommandXkmsLocate,
+    xmlSecAppCommandXkmsValidate
 } xmlSecAppCommand;
 
 typedef struct _xmlSecAppXmlData				xmlSecAppXmlData,
@@ -718,6 +734,13 @@ static int			xmlSecAppEncryptTmpl		(void);
 static int			xmlSecAppPrepareEncCtx		(xmlSecEncCtxPtr encCtx);
 static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
+
+#ifndef XMLSEC_NO_XKMS
+static int			xmlSecAppXkmsLocate		(const char* filename);
+static int			xmlSecAppXkmsValidate		(const char* filename);
+static int			xmlSecAppPrepareXkmsCtx		(xmlSecXkmsCtxPtr xkmsCtx);
+static void			xmlSecAppPrintXkmsCtx		(xmlSecXkmsCtxPtr xkmsCtx);
+#endif /* XMLSEC_NO_XKMS */
 
 static void			xmlSecAppListKeyData		(void);
 static void			xmlSecAppListTransforms		(void);
@@ -882,6 +905,25 @@ int main(int argc, const char **argv) {
 	    break;
 #endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
+
+#ifndef XMLSEC_NO_XKMS
+	case xmlSecAppCommandXkmsLocate:
+	    for(i = pos; i < argc; ++i) {
+    	        if(xmlSecAppXkmsLocate(argv[i]) < 0) {
+		    fprintf(stderr, "Error: failed to process xkms locate request from file \"%s\"\n", argv[i]);
+		    goto fail;
+		}
+	    }
+	    break;
+	case xmlSecAppCommandXkmsValidate:
+	    for(i = pos; i < argc; ++i) {
+    	        if(xmlSecAppXkmsValidate(argv[i]) < 0) {
+		    fprintf(stderr, "Error: failed to process xkms locate request from file \"%s\"\n", argv[i]);
+		    goto fail;
+		}
+	    }
+	    break;
+#endif /* XMLSEC_NO_XKMS */
 	default:
 	    fprintf(stderr, "Error: invalid command %d\n", command);
 	    xmlSecAppPrintUsage();
@@ -1565,6 +1607,175 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 
 #endif /* XMLSEC_NO_XMLENC */
 
+#ifndef XMLSEC_NO_XKMS
+static int 
+xmlSecAppXkmsLocate(const char* filename) {
+    xmlSecAppXmlDataPtr data = NULL;
+    xmlSecXkmsCtx xkmsCtx;
+    clock_t start_time;
+    int res = -1;
+
+    if(filename == NULL) {
+	return(-1);
+    }
+
+    if(xmlSecXkmsCtxInitialize(&xkmsCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: xkms context initialization failed\n");
+	return(-1);
+    }
+    if(xmlSecAppPrepareXkmsCtx(&xkmsCtx) < 0) {
+	fprintf(stderr, "Error: xkms context preparation failed\n");
+	goto done;
+    }
+
+    /* parse template and select start node */
+    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeLocateRequest, xmlSecXkmsNs);
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+	goto done;
+    }
+
+    start_time = clock();  
+        
+#ifdef TODO
+    if(xmlSecXkmsCtxLocate(&xkmsCtx, data->startNode) < 0) {
+	fprintf(stderr, "Error: failed to process locate request\n");
+	goto done;
+    }
+#endif /* TODO */    
+    total_time += clock() - start_time;    
+    
+    /* print out result only once per execution */
+#ifdef TODO
+    if(repeats <= 1) {
+	if(xkmsCtx.resultReplaced) {
+	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
+		goto done;
+	    }
+	} else {
+	    if(xmlSecAppWriteResult(NULL, xkmsCtx.result) < 0) {
+		goto done;
+	    }
+	}	
+    }
+#endif /* TODO */    
+
+    res = 0;    
+
+done:
+    /* print debug info if requested */
+    if(repeats <= 1) { 
+        xmlSecAppPrintXkmsCtx(&xkmsCtx);
+    }
+    xmlSecXkmsCtxFinalize(&xkmsCtx);
+
+    if(data != NULL) {
+	xmlSecAppXmlDataDestroy(data);
+    }
+    return(res);
+}
+
+static int 
+xmlSecAppXkmsValidate(const char* filename) {
+    xmlSecAppXmlDataPtr data = NULL;
+    xmlSecXkmsCtx xkmsCtx;
+    clock_t start_time;
+    int res = -1;
+
+    if(filename == NULL) {
+	return(-1);
+    }
+
+    if(xmlSecXkmsCtxInitialize(&xkmsCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: xkms context initialization failed\n");
+	return(-1);
+    }
+    if(xmlSecAppPrepareXkmsCtx(&xkmsCtx) < 0) {
+	fprintf(stderr, "Error: xkms context preparation failed\n");
+	goto done;
+    }
+
+    /* parse template and select start node */
+    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeValidateRequest, xmlSecXkmsNs);
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+	goto done;
+    }
+
+    start_time = clock();  
+        
+#ifdef TODO
+    if(xmlSecXkmsCtxValidate(&xkmsCtx, data->startNode) < 0) {
+	fprintf(stderr, "Error: failed to process validate request\n");
+	goto done;
+    }
+#endif /* TODO */    
+    total_time += clock() - start_time;    
+    
+    /* print out result only once per execution */
+#ifdef TODO
+    if(repeats <= 1) {
+	if(xkmsCtx.resultReplaced) {
+	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
+		goto done;
+	    }
+	} else {
+	    if(xmlSecAppWriteResult(NULL, xkmsCtx.result) < 0) {
+		goto done;
+	    }
+	}	
+    }
+#endif /* TODO */    
+
+    res = 0;    
+
+done:
+    /* print debug info if requested */
+    if(repeats <= 1) { 
+        xmlSecAppPrintXkmsCtx(&xkmsCtx);
+    }
+    xmlSecXkmsCtxFinalize(&xkmsCtx);
+
+    if(data != NULL) {
+	xmlSecAppXmlDataDestroy(data);
+    }
+    return(res);
+}
+
+static int
+xmlSecAppPrepareXkmsCtx(xmlSecXkmsCtxPtr xkmsCtx) {    
+    if(xkmsCtx == NULL) {
+	fprintf(stderr, "Error: xkms context is null\n");
+	return(-1);
+    }
+
+    /* set key info params */
+    if(xmlSecAppPrepareKeyInfoReadCtx(&(xkmsCtx->keyInfoReadCtx)) < 0) {
+	fprintf(stderr, "Error: failed to prepare key info context\n");
+	return(-1);
+    }
+
+    return(0);
+}
+
+static void 
+xmlSecAppPrintXkmsCtx(xmlSecXkmsCtxPtr xkmsCtx) {
+    if(xkmsCtx == NULL) {
+	return;
+    }
+    
+    /* print debug info if requested */
+    if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
+	xmlSecXkmsCtxDebugDump(xkmsCtx, stdout);
+    }
+    
+    if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
+	xmlSecXkmsCtxDebugXmlDump(xkmsCtx, stdout);
+    }
+}
+
+#endif /* XMLSEC_NO_XKMS */
+
 static void 
 xmlSecAppListKeyData(void) {
     fprintf(stdout, "Registered key data klasses:\n");
@@ -2155,6 +2366,23 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 #endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 
+#ifndef XMLSEC_NO_XKMS
+    if((strcmp(cmd, "xkms-locate") == 0) || (strcmp(cmd, "--xkms-locate") == 0)) {
+	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicXkmsCommon |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
+	return(xmlSecAppCommandXkmsLocate);
+    } else 
+    if((strcmp(cmd, "xkms-validate") == 0) || (strcmp(cmd, "--xkms-validate") == 0)) {
+	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicXkmsCommon |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
+	return(xmlSecAppCommandXkmsValidate);
+    } else
+#endif /* XMLSEC_NO_XKMS */
+
     if(1) {
 	(*cmdLineTopics) = 0;
 	return(xmlSecAppCommandUnknown);
@@ -2197,6 +2425,12 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandEncryptTmpl:
 	fprintf(stdout, "%s\n", helpEncryptTmpl);
+        break;
+    case xmlSecAppCommandXkmsLocate:
+	fprintf(stdout, "%s\n", helpXkmsLocate);
+        break;
+    case xmlSecAppCommandXkmsValidate:
+	fprintf(stdout, "%s\n", helpXkmsValidate);
         break;
     }
     if(topics != 0) {

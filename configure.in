@@ -61,22 +61,22 @@ XMLSEC_DEFINES=""
 
 dnl ==========================================================================
 dnl Specific setup for Aleksey's development environment: 
+dnl	- with xkms support (while in development)
 dnl	- with debug
 dnl 	- with pedantic compiler flags
 dnl	- with static binaries
 dnl ==========================================================================
-XMLSEC_STATIC_BINARIES=""
 AC_MSG_CHECKING(for development environment) 
-AC_ARG_ENABLE(development,   [  --enable-development       enable development environment (no)])
+AC_ARG_ENABLE(development,   [  --enable-development    enable development environment (no)])
 if test "$enable_development" = "yes" -o "${LOGNAME}" = "aleksey" ; then
-    dnl CFLAGS="$CFLAGS -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
-    CFLAGS="$CFLAGS -g -O -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
-    XMLSEC_STATIC_BINARIES="-static"
+    enable_xkms="yes"
+    enable_debuging="yes"
+    enable_pedantic="yes"
+    enable_static_linking="yes"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)
 fi    
-AC_SUBST(XMLSEC_STATIC_BINARIES)
 
 
 dnl ==========================================================================
@@ -99,8 +99,8 @@ LIBXML_PREFIX=""
 LIBXML_CFLAG=""
 LIBXML_LIBS=""
 AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
-AC_ARG_WITH(libxml, [  --with-libxml=[PFX]     libxml2 location])
-if test "$with_libxml" = "no" ; then
+AC_ARG_WITH(libxml, [  --with-libxml=[PFX]       libxml2 location])
+if test "$with_libxml" = "no" ; then 
     AC_MSG_ERROR(libxml2 is required for $PACKAGE)
 else
     if test "$with_libxml" != "" ; then
@@ -141,7 +141,7 @@ LIBXSLT_PREFIX=""
 LIBXSLT_CFLAGS=""
 LIBXSLT_LIBS=""
 AC_MSG_CHECKING(for libxslt libraries >= $LIBXSLT_MIN_VERSION) 
-AC_ARG_WITH(libxslt, [  --with-libxslt=[PFX]    libxslt location])
+AC_ARG_WITH(libxslt, [  --with-libxslt=[PFX]      libxslt location])
 if test "$with_libxslt" = "no" ; then
     LIBXSLT_WITHOUT="yes"
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XSLT=1"
@@ -207,7 +207,7 @@ OPENSSL_CFLAGS=""
 OPENSSL_LIBS=""
 OPENSSL_LDADDS=""
 AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
-AC_ARG_WITH(openssl, [  --with-openssl=[PFX]    openssl location])
+AC_ARG_WITH(openssl, [  --with-openssl=[PFX]      openssl location])
 if test "$with_openssl" = "no" ; then
     OPENSSL_WITHOUT="yes"
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
@@ -320,7 +320,7 @@ GNUTLS_CFLAGS=""
 GNUTLS_LIBS=""
 GNUTLS_LDADDS=""
 AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
-AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]    gnutls location])
+AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]       gnutls location])
 if test "$with_gnutls" = "no" ; then
     GNUTLS_WITHOUT="yes"
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
@@ -395,7 +395,7 @@ ac_mozilla_name=mozilla-$NSS_MIN_VERSION
 ac_nss_lib_dir="/usr/lib /usr/local/lib /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
 ac_nss_inc_dir="/usr/include /usr/local/include /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
 AC_MSG_CHECKING(for nss libraries >= $NSS_MIN_VERSION) 
-AC_ARG_WITH(nss, [  --with-nss=[PFX]    nss location])
+AC_ARG_WITH(nss, [  --with-nss=[PFX]          nss location])
 if test "$with_nss" = "no" ; then
     NSS_WITHOUT="yes"
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST nss"
@@ -636,6 +636,21 @@ fi
 AC_SUBST(XMLSEC_NO_XMLENC)
 
 dnl ==========================================================================
+dnl See do we need XKMS suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for XMKMS support) 
+AC_ARG_ENABLE(xkms,   [  --enable-xkms           enable XKMS support (no)])
+if test "$enable_xkms" = "yes" ; then
+    XMLSEC_NO_XKMS="0"
+    AC_MSG_RESULT(yes)
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XKMS=1"
+    XMLSEC_NO_XKMS="1"
+    AC_MSG_RESULT(no)
+fi    
+AC_SUBST(XMLSEC_NO_XKMS)
+
+dnl ==========================================================================
 dnl See do we need Simple Keys Manager 
 dnl ==========================================================================
 AC_MSG_CHECKING(for Simple Keys Manager testing) 
@@ -651,8 +666,8 @@ dnl ==========================================================================
 dnl See do we need templates tests
 dnl ==========================================================================
 AC_MSG_CHECKING(for templates testing) 
-AC_ARG_ENABLE(skm,   [  --enable-tmpl-tests           enable templates testing in xmlsec utility (yes)])
-if test "$enable_tmpl_tests" = "no" ; then
+AC_ARG_ENABLE(skm,   [  --enable-tmpl-tests     enable templates testing in xmlsec utility (yes)])
+if test "$enable_tmpl_tests" = "yes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
     AC_MSG_RESULT(no)
 else
@@ -660,16 +675,55 @@ else
 fi    
 
 dnl ==========================================================================
+dnl Debug 
+dnl ==========================================================================
+AC_MSG_CHECKING(for debuging) 
+AC_ARG_ENABLE(debuging,   [  --enable-debuging       enable debuging compilation flags (no)])
+if test "$enable_debuging" = "yes" ; then
+    CFLAGS="$CFLAGS -g"
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi    
+
+dnl ==========================================================================
 dnl Profiling 
 dnl ==========================================================================
 AC_MSG_CHECKING(for profiling) 
-AC_ARG_ENABLE(profiling,   [  --enable-profiling       enable profiling compilation flags (no)])
+AC_ARG_ENABLE(profiling,   [  --enable-profiling      enable profiling compilation flags (no)])
 if test "$enable_profiling" = "yes" ; then
     CFLAGS="$CFLAGS -pg"
     AC_MSG_RESULT(yes)
 else
     AC_MSG_RESULT(no)
+fi 
+
+dnl ==========================================================================
+dnl Pedantic compilation
+dnl ==========================================================================
+AC_MSG_CHECKING(for pedantic) 
+AC_ARG_ENABLE(pedantic,   [  --enable-pedantic       enable pedantic compilation flags (no)])
+if test "$enable_pedantic" = "yes" ; then
+    dnl CFLAGS="$CFLAGS -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    CFLAGS="$CFLAGS -O -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
 fi    
+
+dnl ==========================================================================
+dnl Static linking
+dnl ==========================================================================
+XMLSEC_STATIC_BINARIES=""
+AC_MSG_CHECKING(for static linking) 
+AC_ARG_ENABLE(static_linking,   [  --enable-static-linking enable static linking (no)])
+if test "$enable_static_linking" = "yes" ; then
+    XMLSEC_STATIC_BINARIES="-static"
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi    
+AC_SUBST(XMLSEC_STATIC_BINARIES)
 
 dnl ==========================================================================
 dnl Final steps: xmlsec config

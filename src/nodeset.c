@@ -95,9 +95,19 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 	if(tmp->children != NULL) {
 	    xmlSecNodeSetDestroy(tmp->children);
 	}
+	if((tmp->doc != NULL) && (tmp->destroyDoc != 0)) {
+	    xmlFreeDoc(nset->doc);
+	}
 	memset(tmp, 0,  sizeof(xmlSecNodeSet));
         xmlFree(tmp);
     }
+}
+
+void 
+xmlSecNodeSetDocDestroy(xmlSecNodeSetPtr nset) {
+    xmlSecAssert2(nset != NULL, 0);
+    
+    nset->destroyDoc = 1;
 }
 
 static int

@@ -160,7 +160,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
 	/* requested do not destroy transform */
 	return;
     }    
-
+    
 #ifdef XMLSEC_BUFFER_DEBUG
     fprintf(stderr, "-- buffer debug: %s, in: %d\n", 
 	    transform->id->name, 
@@ -172,6 +172,12 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
     xmlSecBufferFinalize(&(transform->inBuf));
     xmlSecBufferFinalize(&(transform->outBuf));
 
+    if(transform->inNodes != NULL) {
+	xmlSecNodeSetDestroy(transform->inNodes);
+    }
+    if(transform->outNodes != NULL) {
+	xmlSecNodeSetDestroy(transform->outNodes);
+    }
     if(transform->id->finalize != NULL) { 
 	(transform->id->finalize)(transform);
     }

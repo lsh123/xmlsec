@@ -75,6 +75,7 @@ typedef enum {
 struct _xmlSecNodeSet {
     xmlNodeSetPtr	nodes;
     xmlDocPtr		doc;
+    int			destroyDoc;
     xmlSecNodeSetType	type;
     xmlSecNodeSetOp	op;
     xmlSecNodeSetPtr	next;
@@ -98,11 +99,11 @@ typedef int (*xmlSecNodeSetWalkCallback)		(xmlSecNodeSetPtr nset,
 							 xmlNodePtr cur,
 							 xmlNodePtr parent,
 							 void* data);
-
 XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetCreate	(xmlDocPtr doc,
 							 xmlNodeSetPtr nodes,
 							 xmlSecNodeSetType type);
 XMLSEC_EXPORT void		xmlSecNodeSetDestroy	(xmlSecNodeSetPtr nset);
+XMLSEC_EXPORT void		xmlSecNodeSetDocDestroy	(xmlSecNodeSetPtr nset);
 XMLSEC_EXPORT int		xmlSecNodeSetContains	(xmlSecNodeSetPtr nset,
 							 xmlNodePtr node,
 							 xmlNodePtr parent);

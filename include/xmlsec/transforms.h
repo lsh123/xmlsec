@@ -112,28 +112,28 @@ struct _xmlSecTransform {
     xmlSecTransformId 			id; 
     xmlSecTransformStatus		status;
     int					dontDestroy;
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
 
     /* binary specific */
     int					encode;
-    xmlSecTransformPtr			next;
-    xmlSecTransformPtr			prev;
     
     /* xml specific */
     xmlNodePtr				hereNode;
 
+    /* binary data */
     xmlSecBuffer			inBuf;
     xmlSecBuffer			outBuf;
         
-    unsigned char			binBuf[XMLSEC_TRANSFORM_BUFFER_SIZE];
-    size_t				binBufSize;
-    size_t				processed;
-        
+    /* xml data */
+    xmlSecNodeSetPtr			inNodes;
+    xmlSecNodeSetPtr			outNodes;
+
+    /* reserved for the future */    
     void*				reserved0;
     void*				reserved1;
     void*				reserved2;
     void*				reserved3;
-    int					reserved4;
-    int					reserved5;
 };
 
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCreate	(xmlSecTransformId id,

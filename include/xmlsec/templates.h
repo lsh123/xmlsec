@@ -106,6 +106,10 @@ XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam	(xmlNodePtr transformNode,
 XMLSEC_EXPORT int	xmlSecXsltAddStylesheet		(xmlNodePtr node, 
 							 const xmlChar *xslt);
 
+XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces		
+						(xmlNodePtr transformNode,
+						 const xmlChar *prefixList);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

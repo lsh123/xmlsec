@@ -106,17 +106,20 @@ const xmlChar xmlSecHrefBase64[]	= "http://www.w3.org/2000/09/xmldsig#base64";
  * C14N strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameC14N[]		= "c14n";
-const xmlChar xmlSecHrefC14N[]		= "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+const xmlChar xmlSecNameC14N[]			= "c14n";
+const xmlChar xmlSecHrefC14N[]			= "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 
 const xmlChar xmlSecNameC14NWithComments[]	= "c14n-with-comments";
 const xmlChar xmlSecHrefC14NWithComments[]	= "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments";
 
-const xmlChar xmlSecNameExcC14N[]	= "exc-c14b";
-const xmlChar xmlSecHrefExcC14N[]	= "http://www.w3.org/2001/10/xml-exc-c14n#";
+const xmlChar xmlSecNameExcC14N[]		= "exc-c14b";
+const xmlChar xmlSecHrefExcC14N[]		= "http://www.w3.org/2001/10/xml-exc-c14n#";
 
 const xmlChar xmlSecNameExcC14NWithComments[]	= "exc-c14n-with-comments";
 const xmlChar xmlSecHrefExcC14NWithComments[]	= "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
+
+const xmlChar xmlSecNsExcC14N[]			= "http://www.w3.org/2001/10/xml-exc-c14n#";
+const xmlChar xmlSecNsExcC14NWithComments[]	= "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
 
 /*************************************************************************
  *

@@ -1579,4 +1579,44 @@ xmlSecXsltAddStylesheet(xmlNodePtr node, const xmlChar *xslt) {
     return(0);
 }
 
+/**
+ * xmlSecC14NExclAddInclNamespaces:
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @prefixList: the white space delimited  list of namespace prefixes, 
+ *		where "#default" indicates the default namespace
+ *
+ * Adds "inclusive" namespaces to the ExcC14N transform node @transformNode.
+ *
+ * Returns 0 if success or a negative value otherwise.
+ */
+int		
+xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
+    xmlNodePtr node;
+
+    xmlSecAssert2(transformNode != NULL, -1);    
+    xmlSecAssert2(prefixList != NULL, -1);
+
+    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
+    if(node != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecNodeGetName(transformNode),
+		    "xmlSecFindChild",
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "<dsig:InclusiveNamespaces>");
+	return(-1);
+    }
+    
+    node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
+    if(node == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecNodeGetName(transformNode),
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "<dsig:InclusiveNamespaces>");
+	return(-1);
+    }    
+    
+    xmlSetProp(node, BAD_CAST "PrefixList", prefixList);    
+    return(0);
+}
 

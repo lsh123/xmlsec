@@ -29,10 +29,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NExclusive;
  */
 XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NExclusiveWithComments;
 
-XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces		
-						(xmlNodePtr transformNode,
-						 const xmlChar *prefixList);
-
 
 /********************************************************************
  *

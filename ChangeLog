@@ -1,3 +1,8 @@
+Mon Mar 10 07:59:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c: fixed Reference URI evaluation for
+	the "xmlns()xpointer()" construction
+
 Wed Mar  5 19:43:43 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs/index.html docs/news.html: new 0.1.0 release

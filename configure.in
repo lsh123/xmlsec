@@ -2,12 +2,11 @@ AC_INIT(src/xmlsec.c)
 
 PACKAGE=xmlsec
 XMLSEC_VERSION_MAJOR=0
-XMLSEC_VERSION_MINOR=0
-XMLSEC_VERSION_SUBMINOR=12
+XMLSEC_VERSION_MINOR=1
+XMLSEC_VERSION_SUBMINOR=0
 XMLSEC_VERSION=$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR
 VERSION=$XMLSEC_VERSION
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
-
 
 AC_SUBST(XMLSEC_VERSION)
 AC_SUBST(XMLSEC_VERSION_MAJOR)
@@ -45,11 +44,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(stdio.h stdlib.h string.h ctype.h errno.h ansidecl.h time.h)
 AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf)
 
-
 XMLSEC_DEFINES=""
-XMLSEC_CRYPTO=""
-XMLSEC_CRYPTO_LIST=""
-
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
@@ -143,7 +138,17 @@ AC_SUBST(LIBXSLT_CFLAGS)
 AC_SUBST(LIBXSLT_LIBS)
 
 dnl ==========================================================================
-dnl See if we can find OpenSSL
+dnl See if we can find a crypto library
+dnl ==========================================================================
+XMLSEC_CRYPTO=""
+XMLSEC_CRYPTO_LIST=""
+XMLSEC_CRYPTO_LIB=""
+XMLSEC_CRYPTO_CFLAGS=""
+XMLSEC_CRYPTO_LIBS=""
+XMLSEC_CRYPTO_LDADDS=""
+
+dnl ==========================================================================
+dnl OpenSSL
 dnl ==========================================================================
 ac_openssl_lib_dir="/usr/lib /usr/local/lib /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
 ac_openssl_inc_dir="/usr/include /usr/local/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
@@ -228,13 +233,19 @@ else
 	    XMLSEC_OPENSSL_DEFINES="$XMLSEC_OPENSSL_DEFINES -DXMLSEC_OPENSSL_096=1"
 	])    
 	CPPFLAGS=$OLD_CPPFLAGS
+	OPENSSL_WITHOUT="no"
+	
+	dnl first crypto library is default one
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="openssl"
-	fi
-	
-	OPENSSL_WITHOUT="no"
+    	    XMLSEC_CRYPTO_LIB="xmlsec-openssl"
+	    XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
+	    XMLSEC_CRYPTO_LIBS="$OPENSSL_LIBS"
+	    XMLSEC_CRYPTO_LDADDS="$OPENSSL_LDADDS"
+	fi	
 	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"
+
         AC_MSG_RESULT(yes ('$OPENSSL_VERSION'))
     else
         AC_MSG_RESULT(no)
@@ -316,11 +327,17 @@ else
     then
 	dnl Check the NSS version    
 	dnl todo: check the version
+	NSS_WITHOUT="no"
     
+	dnl first crypto library is default one
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="nss"
-	fi
+    	    XMLSEC_CRYPTO_LIB="xmlsec-nss"
+	    XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS -DXMLSEC_CRYPTO_NSS=1"
+	    XMLSEC_CRYPTO_LIBS="$NSS_LIBS"
+	    XMLSEC_CRYPTO_LDADDS="$NSS_LDADDS"
+	fi	
 	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST nss"
 	AC_MSG_RESULT(yes ('$NSS_VERSION'))
     else
@@ -553,8 +570,8 @@ dnl ==========================================================================
 dnl Final steps: xmlsec config
 dnl ==========================================================================
 XMLSEC_LIBDIR='-L${libdir}'
-XMLSEC_INCLUDEDIR="-I${includedir}  $LIBXML_CFLAGS"
-XMLSEC_LIBS="-lxmlsec $LIBXML_LIBS"
+XMLSEC_CFLAGS="$XMLSEC_DEFINES -I${includedir} $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS"
+XMLSEC_LIBS="-l$XMLSEC_CRYPTO_LIB -lxmlsec $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
 AC_SUBST(XMLSEC_LIBDIR)
 AC_SUBST(XMLSEC_INCLUDEDIR)
 AC_SUBST(XMLSEC_LIBS)
@@ -565,10 +582,12 @@ AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_DEFINES)
 
-AM_CONDITIONAL(XMLSEC_CRYPTO_OPENSSL, test "$XMLSEC_CRYPTO" = "openssl" )
-AM_CONDITIONAL(XMLSEC_CRYPTO_NSS, test "$XMLSEC_CRYPTO" = "nss" )
 AC_SUBST(XMLSEC_CRYPTO)
 AC_SUBST(XMLSEC_CRYPTO_LIST)
+AC_SUBST(XMLSEC_CRYPTO_LIB)
+AC_SUBST(XMLSEC_CRYPTO_CFLAGS)
+AC_SUBST(XMLSEC_CRYPTO_LIBS)
+AC_SUBST(XMLSEC_CRYPTO_LDADDS)
 
 dnl ==========================================================================
 dnl Which files to process

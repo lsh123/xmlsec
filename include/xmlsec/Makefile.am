@@ -10,6 +10,7 @@ debug.h \
 errors.h \
 io.h \
 keyinfo.h \
+keysdata.h \
 keys.h \
 keysmngr.h \
 list.h \
@@ -19,6 +20,7 @@ strings.h \
 templates.h \
 transforms.h \
 transformsInternal.h \
+transforms-old.h \
 version.h \
 xmldsig.h \
 xmlenc.h \

@@ -20,7 +20,7 @@ extern "C" {
  * The library version string in the format
  * "<major-number>.<minor-number>.<sub-minor-number>".
  */
-#define XMLSEC_VERSION			"0.0.12"
+#define XMLSEC_VERSION			"0.1.0"
 /**
  * XMLSEC_VERSION_MAJOR:
  *
@@ -32,13 +32,13 @@ extern "C" {
  *
  * The library minor version number.
  */
-#define XMLSEC_VERSION_MINOR		0
+#define XMLSEC_VERSION_MINOR		1
 /**
  * XMLSEC_VERSION_SUBMINOR:
  *
  * The library sub-minor version number.
  */
-#define XMLSEC_VERSION_SUBMINOR		12
+#define XMLSEC_VERSION_SUBMINOR		0
 
 /**
  * XMLSEC_VERSION_INFO:
@@ -46,7 +46,7 @@ extern "C" {
  * The library version info string in the format
  * "<major-number>+<minor-number>:<sub-minor-number>:<minor-number>".
  */
-#define XMLSEC_VERSION_INFO		"0:12:0"
+#define XMLSEC_VERSION_INFO		"1:0:1"
 
 
 #ifdef __cplusplus

@@ -9,6 +9,10 @@ $(LIBXSLT_CFLAGS) \
 $(LIBXML_CFLAGS) \
 $(NULL)
 
+EXTRA_DIST = \
+transforms-old.c \
+$(NULL)
+
 lib_LTLIBRARIES = libxmlsec.la
 
 libxmlsec_la_SOURCES =\

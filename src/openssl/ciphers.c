@@ -22,6 +22,14 @@
 #include <xmlsec/openssl/evp.h>
 
 /* placeholders */
+#ifndef xmlSecOpenSSLKeyDataDesId
+#define xmlSecOpenSSLKeyDataDesId			xmlSecTransformIdUnknown
+#endif /* xmlSecOpenSSLKeyDataDesId */
+
+#ifndef xmlSecOpenSSLKeyDataAesId
+#define xmlSecOpenSSLKeyDataAesId			xmlSecTransformIdUnknown
+#endif /* xmlSecOpenSSLKeyDataAesId */
+
 #ifndef xmlSecOpenSSLTransformDes3CbcId
 #define xmlSecOpenSSLTransformDes3CbcId			xmlSecTransformIdUnknown
 #endif /* xmlSecOpenSSLTransformDes3CbcId */

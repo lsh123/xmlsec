@@ -21,7 +21,6 @@
 
 #include <xmlsec/nss/crypto.h>
 
-static int 		xmlSecNssErrorsInit			(void);
 static int		xmlSecNssKeysInit			(void);
 static int		xmlSecNssTransformsInit			(void);
 

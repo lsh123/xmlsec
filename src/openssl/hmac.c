@@ -235,8 +235,10 @@ xmlSecOpenSSLKeyDataHmacValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     ((const EVP_MD*)((transform)->reserved0))
 #define xmlSecOpenSSLHmacGetCtx(transform) \
     ((HMAC_CTX*)((transform)->reserved1))
-#define xmlSecOpenSSLHmacGetSize(transform) \
+#define xmlSecOpenSSLHmacBitsSize(transform) \
     ((transform)->reserved4)
+#define xmlSecOpenSSLHmacBytesSize(transform) \
+    (((xmlSecOpenSSLHmacBitsSize(transform)) + 7) / 8)
 
 
 static xmlSecTransformPtr xmlSecOpenSSLHmacCreate		(xmlSecTransformId id);
@@ -472,7 +474,7 @@ xmlSecOpenSSLHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode
 	
 	content = xmlNodeGetContent(cur);
 	if(content != NULL) {
-	    xmlSecOpenSSLHmacGetSize(transform) = atoi((char*)content);	    
+	    xmlSecOpenSSLHmacBitsSize(transform) = atoi((char*)content);	    
 	    xmlFree(content);
 	}
 	cur = xmlSecGetNextElementNode(cur->next);
@@ -538,8 +540,9 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
 			xmlSecTransformCtxPtr transformCtx) {
     HMAC_CTX* ctx;
     unsigned char dgst[EVP_MAX_MD_SIZE];
-    size_t dgstSize;
-    
+    size_t dgstSize = 0;
+    size_t bytesDgstSize;
+        
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
@@ -550,17 +553,41 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     
     HMAC_Final(ctx, dgst, &dgstSize);    
-
-    if(dataSize != dgstSize) {
+    xmlSecAssert2(dgstSize > 0, -1);
+    
+    bytesDgstSize = xmlSecOpenSSLHmacBytesSize(transform);
+    if(bytesDgstSize == 0) {
+	bytesDgstSize = dgstSize;
+    }
+    
+    if(dataSize != bytesDgstSize){
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "data and digest sizes are different (data=%d, dgst=%d)", 
-		    dataSize, dgstSize);
+		    dataSize, bytesDgstSize);
 	transform->status = xmlSecTransformStatusFail;
 	return(0);
     }
+
+    if(xmlSecOpenSSLHmacBitsSize(transform) > 0) {    
+	static unsigned char last_byte_masks[] = 	
+		{ 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+	unsigned char mask;
+
+        mask = last_byte_masks[xmlSecOpenSSLHmacBitsSize(transform) % 8];
+	xmlSecAssert2(dataSize > 0, -1);
+        
+	if((dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"data and digest do not match");
+	    transform->status = xmlSecTransformStatusFail;
+	    return(0);
+	}
+	--dataSize;
+    }
     
-    if(memcmp(dgst, data, dgstSize) != 0) {
+    if((dataSize > 0) && (memcmp(dgst, data, dataSize) != 0)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "data and digest do not match");
@@ -612,10 +639,22 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 	    if(transform->encode) {
 		unsigned char dgst[EVP_MAX_MD_SIZE];
 		size_t dgstSize;
-	    
+		size_t bytesDgstSize;
+		
 	        HMAC_Final(ctx, dgst, &dgstSize);
 		
-		ret = xmlSecBufferAppend(out, dgst, dgstSize);
+		bytesDgstSize = xmlSecOpenSSLHmacBytesSize(transform);
+		if(bytesDgstSize == 0) {
+		    bytesDgstSize = dgstSize;
+		} else if(bytesDgstSize > dgstSize) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"required digest size %d is less than we have %d)", 
+				bytesDgstSize, dgstSize);
+		    return(-1);
+		}
+		
+		ret = xmlSecBufferAppend(out, dgst, bytesDgstSize);
 		if(ret < 0) {
 		    xmlSecError(XMLSEC_ERRORS_HERE, 
 				XMLSEC_ERRORS_R_XMLSEC_FAILED,

@@ -89,6 +89,14 @@ int			xmlSecTransformStateUpdate	(xmlSecTransformStatePtr state,
 							 xmlSecTransformPtr transform);
 int			xmlSecTransformStateFinal	(xmlSecTransformStatePtr state,
 							 xmlSecTransformResult type);
+int			xmlSecTransformStateFinalToNode	(xmlSecTransformStatePtr state, 
+							 xmlNodePtr node, 
+							 int addBase64, 
+							 xmlSecTransformCtxPtr transformCtx);
+int			xmlSecTransformStateFinalVerifyNode(xmlSecTransformStatePtr state, 
+				    			xmlSecTransformPtr transform,
+							xmlNodePtr node, 
+						        xmlSecTransformCtxPtr transformCtx);
 
 
 

@@ -555,7 +555,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
 			xmlSecTransformCtxPtr transformCtx) {
     EVP_MD_CTX* ctx;
     unsigned char dgst[EVP_MAX_MD_SIZE];
-    size_t dgstSize;
+    size_t dgstSize = 0;
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
@@ -574,6 +574,7 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
 		    "EVP_DigestFinal");
 	return(-1);
     }
+    xmlSecAssert2(dgstSize > 0, -1);
     
     if(dataSize != dgstSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 

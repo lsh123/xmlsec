@@ -53,6 +53,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/io.h>
 #include <xmlsec/membuf.h>
+#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
 /* 
@@ -659,6 +660,7 @@ xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
 
     return(0);
 }
+
 
 
 #include "transforms-old.c"

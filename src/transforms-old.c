@@ -1066,3 +1066,105 @@ xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet,
     return(0);
 }
 
+int
+xmlSecTransformStateFinalToNode(xmlSecTransformStatePtr state, xmlNodePtr node, 
+				int addBase64, xmlSecTransformCtxPtr transformCtx) {
+    int ret;
+    
+    xmlSecAssert2(state != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+        
+    if(addBase64) {
+	xmlSecTransformPtr base64;
+	
+	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0);
+	if(base64 == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecEncBase64Encode)");
+	    return(-1);
+	}
+	ret = xmlSecTransformStateUpdate(state, base64);
+	if(ret < 0) {    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate(xmlSecEncBase64Encode) - %d", ret);
+	    xmlSecTransformDestroy(base64, 1); 
+	    return(-1);
+	}
+    }
+    
+    ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
+    if((ret < 0) || (state->curBuf == NULL)) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateFinal");
+	return(-1);
+    }
+
+    /* just in case */
+    xmlSecBufferAppend(state->curBuf, (unsigned char*)"\0", 1);
+
+    xmlNodeSetContent(node, xmlSecBufferGetData(state->curBuf));
+    return(0);
+}
+
+int
+xmlSecTransformStateFinalVerifyNode(xmlSecTransformStatePtr state, 
+				    xmlSecTransformPtr transform,
+				    xmlNodePtr node, 
+				    xmlSecTransformCtxPtr transformCtx) {
+    xmlChar* nodeContent;
+    size_t nodeContentSize;
+    int ret;
+    
+    xmlSecAssert2(state != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformStateFinal");
+	return(-1);
+    }
+
+    nodeContent = xmlNodeGetContent(node);
+    if(nodeContent == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "%s", node->name);
+	return(-1);
+    }
+    
+    /* 
+     * small trick: decode in the same buffer becasue base64 decode result 
+     * buffer size is always less than input buffer size
+     */
+    ret = xmlSecBase64Decode(nodeContent, (unsigned char *)nodeContent, 
+			     xmlStrlen(nodeContent) + 1);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode - %d", ret);
+	xmlFree(nodeContent);
+	return(-1);
+    }
+    nodeContentSize = ret;
+     
+    ret = xmlSecTransformVerify(transform, nodeContent, nodeContentSize, transformCtx);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformVerify - %d", ret);
+	xmlFree(nodeContent);
+	return(-1);
+    }
+    
+    xmlFree(nodeContent);
+    return(0);
+}
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CompoundRequest xmlns="http://www.w3.org/2002/03/xkms#" Id="Ie383fac377f1e54d2b26596c072b8b7a" Service="http://www.aleksey.com/xmlsec/examples/XKMS">
+  <LocateRequest Id="I97a5c09bff0fe094d27facf5e5adb206" Service="http://www.aleksey.com/xmlsec/examples/XKMS">
+    <RespondWith>KeyValue</RespondWith>
+    <QueryKeyBinding>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <X509Certificate>
+	    MIICAjCCAW+gAwIBAgIQlzQovIEbLLhMa8K5MR/juzAJB
+            gUrDgMCHQUAMBIxEDAOBgNVBAMTB1Rlc3QgQ0EwHhcNMD
+	    IwNjEzMjEzMzQxWhcNMzkxMjMxMjM1OTU5WjAsMSowKAY
+	    DVQQGEyFVUyBPPUFsaWNlIENvcnAgQ049QWxpY2UgQWFy
+	    ZHZhcmswgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBA
+	    Moy4c9+NoNJvJUnV8pqPByGb4FOJcU0VktbGJpO2imiQx
+	    +EJsCt27z/pVUDrexTyctCWbeqR5a40JCQmvNmRUfg2d8
+	    1HXyA+iYPl4L6nUlHbkLjrhPPtMDSd5YHjyvnCN454+Hr
+	    0paA1MJXKuw8ZMkjGYsr4fSYpPELOH5PDJEBAgMBAAGjR
+	    zBFMEMGA1UdAQQ8MDqAEEVr1g8cxzEkdMX4GAlD6TahFD
+	    ASMRAwDgYDVQQDEwdUZXN0IENBghBysVHEiNFiiE2lxWv
+	    mJYeSMAkGBSsOAwIdBQADgYEAKp+RKhDMIVIbooSNcoIe
+	    V/wVew1bPVkEDOUwmhAdRXUA94uRifiFfmp9GoN08Jkur
+	    x/gF18RFB/7oLrVY+cpzRoCipcnAnmh0hGY8FNFmhyKU1
+	    tFhVFdFXB5QUglkmkRntNkOmcb8O87xO0XktmvNzcJDes
+	    9PMNxrVtChzjaFAE=
+          </X509Certificate>
+        </X509Data>
+      </KeyInfo>
+      <KeyUsage>Signature</KeyUsage>
+    </QueryKeyBinding>
+  </LocateRequest>
+  <LocateRequest Id="Icf173d33d71c80c74589c6204f7aeb4f" Service="http://www.aleksey.com/xmlsec/examples/XKMS">
+    <RespondWith>KeyName</RespondWith>
+    <RespondWith>KeyValue</RespondWith>
+    <RespondWith>X509Cert</RespondWith>
+    <RespondWith>X509Chain</RespondWith>
+    <RespondWith>PGPWeb</RespondWith>
+    <RespondWith>PGP</RespondWith>
+    <QueryKeyBinding>
+      <KeyUsage>Encryption</KeyUsage>
+      <UseKeyWith Application="urn:ietf:rfc:2440" Identifier="bob@bobcorp.test"/>
+      <UseKeyWith Application="urn:ietf:rfc:2633" Identifier="bob@bobcorp.test"/>
+    </QueryKeyBinding>
+  </LocateRequest>
+</CompoundRequest>

@@ -267,7 +267,9 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
         }
     }
     
-    keyDst->usage = keySrc->usage;
+    keyDst->usage 	   = keySrc->usage;
+    keyDst->notValidBefore = keySrc->notValidBefore;
+    keyDst->notValidAfter  = keySrc->notValidAfter;
     return(0);
 }
 
@@ -600,7 +602,12 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     } 
 
     if(key->name != NULL) {
-	fprintf(output, "=== keys name: %s\n", key->name);
+	fprintf(output, "=== key name: %s\n", key->name);
+    }
+    fprintf(output, "=== key usage: %d\n", key->usage);
+    if(key->notValidBefore < key->notValidAfter) {
+        fprintf(output, "=== key not valid before: %ld\n", (unsigned long)key->notValidBefore);
+	fprintf(output, "=== key not valid after: %ld\n", (unsigned long)key->notValidAfter);
     }
     if(key->value != NULL) {
 	xmlSecKeyDataDebugDump(key->value, output);
@@ -642,6 +649,11 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
 
     if(key->name != NULL) {
 	fprintf(output, "<KeyName>%s</KeyName>\n", key->name);
+    }
+    if(key->notValidBefore < key->notValidAfter) {
+        fprintf(output, "<KeyValidity notValidBefore=\"%ld\" notValidAfter=\"%ld\"/>\n",
+		(unsigned long)key->notValidBefore, 
+		(unsigned long)key->notValidAfter);
     }
 
     if(key->value != NULL) {

@@ -18,12 +18,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
+#include <time.h>
 
 #include <libxml/tree.h>
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
+#include <openssl/asn1.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -78,7 +80,8 @@ static void		xmlSecOpenSSLX509CertDebugDump		(X509* cert,
 								 FILE* output);
 static void		xmlSecOpenSSLX509CertDebugXmlDump	(X509* cert, 
 								 FILE* output);
-
+static int		xmlSecOpenSSLX509CertGetTime		(ASN1_TIME* t,
+								 time_t* res);
 
 /*************************************************************************
  *
@@ -1366,6 +1369,29 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 		xmlSecKeyDataDestroy(keyValue);
 		return(-1);
 	    }	    
+	    
+	    if((X509_get_notBefore(ctx->keyCert) != NULL) && (X509_get_notAfter(ctx->keyCert) != NULL)) {
+		ret = xmlSecOpenSSLX509CertGetTime(X509_get_notBefore(ctx->keyCert), &(key->notValidBefore));
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+				"xmlSecOpenSSLX509CertGetTime",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"notValidBefore");
+		    return(-1);
+		}
+		ret = xmlSecOpenSSLX509CertGetTime(X509_get_notAfter(ctx->keyCert), &(key->notValidAfter));
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+				"xmlSecOpenSSLX509CertGetTime",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"notValidAfter");
+		    return(-1);
+		}
+	    } else {
+		key->notValidBefore = key->notValidAfter = 0;
+	    }
 	} else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1375,6 +1401,105 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 	    return(-1);
 	}
     }
+    return(0);
+}
+
+#ifndef HAVE_TIMEGM
+/* Absolutely not the best way but it's the only ANSI compatible way I know.
+ * If you system has a native struct tm --> GMT time_t conversion function
+ * (like timegm) use it instead.
+ */
+static time_t 
+my_timegm (struct tm *tm) { 
+    time_t ret;
+    char *tz;                   
+    
+    tz = getenv("TZ");
+    setenv("TZ", "", 1);
+    tzset();
+    ret = mktime(tm);
+    if (tz) {
+	setenv("TZ", tz, 1); 
+    } else {
+	unsetenv("TZ");
+	tzset(); 
+	return ret;
+    }
+}
+#define timegm(tm) my_timegm(tm)
+#else  /* HAVE_TIMEGM */
+extern time_t timegm (struct tm *tm);
+#endif /* HAVE_TIMEGM */
+
+static int
+xmlSecOpenSSLX509CertGetTime(ASN1_TIME* t, time_t* res) {
+    struct tm tm;
+    int offset;
+    
+    xmlSecAssert2(t != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    (*res) = 0;
+    if(!ASN1_TIME_check(t)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "ASN1_TIME_check",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+        
+    memset(&tm, 0, sizeof(tm));
+
+#define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
+    if(t->type == V_ASN1_UTCTIME) {
+	xmlSecAssert2(t->length > 12, -1);
+
+	
+	/* this code is copied from OpenSSL asn1/a_utctm.c file */	
+	tm.tm_year = g2(t->data);
+	if(tm.tm_year < 50) {
+	    tm.tm_year += 100;
+	}
+	tm.tm_mon  = g2(t->data + 2) - 1;
+	tm.tm_mday = g2(t->data + 4);
+	tm.tm_hour = g2(t->data + 6);
+	tm.tm_min  = g2(t->data + 8);
+	tm.tm_sec  = g2(t->data + 10);
+	if(t->data[12] == 'Z') {
+	    offset = 0;
+	} else {
+	    xmlSecAssert2(t->length > 16, -1);
+	    
+	    offset = g2(t->data + 13) * 60 + g2(t->data + 15);
+	    if(t->data[12] == '-') {
+		offset = -offset;
+	    }
+	}
+	tm.tm_isdst = -1;
+    } else {
+	xmlSecAssert2(t->length > 14, -1);
+	
+	tm.tm_year = g2(t->data) * 100 + g2(t->data + 2);
+	tm.tm_mon  = g2(t->data + 4) - 1;
+	tm.tm_mday = g2(t->data + 6);
+	tm.tm_hour = g2(t->data + 8);
+	tm.tm_min  = g2(t->data + 10);
+	tm.tm_sec  = g2(t->data + 12);
+	if(t->data[14] == 'Z') {
+	    offset = 0;
+	} else {
+	    xmlSecAssert2(t->length > 18, -1);
+	    
+	    offset = g2(t->data + 15) * 60 + g2(t->data + 17);
+	    if(t->data[14] == '-') {
+		offset = -offset;
+	    }
+	}
+	tm.tm_isdst = -1;
+    }
+#undef g2
+    (*res) = timegm(&tm) - offset * 60;
     return(0);
 }
 

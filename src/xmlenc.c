@@ -1078,6 +1078,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 void 
 xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     xmlSecAssert(encCtx != NULL);
+    xmlSecAssert(output != NULL);
 
     switch(encCtx->mode) {
 	case xmlEncCtxModeEncryptedData:
@@ -1161,6 +1162,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 void 
 xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     xmlSecAssert(encCtx != NULL);
+    xmlSecAssert(output != NULL);
 
     switch(encCtx->mode) {
 	case xmlEncCtxModeEncryptedData:

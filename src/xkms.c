@@ -163,6 +163,11 @@ xmlSecXkmsCtxReset(xmlSecXkmsCtxPtr xkmsCtx) {
     
     xmlSecKeyInfoCtxReset(&(xkmsCtx->keyInfoReadCtx));
     xmlSecKeyInfoCtxReset(&(xkmsCtx->keyInfoWriteCtx));
+    
+    if(xkmsCtx->result != NULL) {
+	xmlFreeDoc(xkmsCtx->result);
+	xkmsCtx->result = NULL;
+    }
 }
 
 /**
@@ -184,6 +189,7 @@ xmlSecXkmsCtxCopyUserPref(xmlSecXkmsCtxPtr dst, xmlSecXkmsCtxPtr src) {
     dst->userData 	= src->userData;
     dst->flags		= src->flags;
     dst->flags2		= src->flags2;
+    dst->mode 		= src->mode;
 
     ret = xmlSecKeyInfoCtxCopyUserPref(&(dst->keyInfoReadCtx), &(src->keyInfoReadCtx));
     if(ret < 0) {
@@ -209,6 +215,58 @@ xmlSecXkmsCtxCopyUserPref(xmlSecXkmsCtxPtr dst, xmlSecXkmsCtxPtr src) {
 } 
 
 /**
+ * xmlSecXkmsCtxLocate:
+ * @xkmsCtx:		the pointer to XKMS processing context.
+ * @node:		the pointer to <xkms:LocateRequest/> node.
+ *
+ * Process "locate key data" request from @node and returns key data 
+ * in the #result member of the @xkmsCtx structure.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecXkmsCtxLocate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
+    xmlSecAssert2(xkmsCtx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    
+    xkmsCtx->mode = xmlXkmsCtxModeLocateRequest;
+    
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecXkmsCtxLocate",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+}
+
+/**
+ * xmlSecXkmsCtxValidate:
+ * @xkmsCtx:		the pointer to XKMS processing context.
+ * @node:		the pointer to <xkms:ValidateRequest/> node.
+ *
+ * Process "locate and validate key data" request from @node and returns key data 
+ * in the #result member of the @xkmsCtx structure.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecXkmsCtxValidate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
+    xmlSecAssert2(xkmsCtx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    xkmsCtx->mode = xmlXkmsCtxModeValidateRequest;
+    
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecXkmsCtxLocate",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+}
+
+/**
  * xmlSecXkmsCtxDebugDump:
  * @xkmsCtx:		the pointer to XKMS processing context.
  * @output:		the pointer to output FILE.
@@ -218,14 +276,21 @@ xmlSecXkmsCtxCopyUserPref(xmlSecXkmsCtxPtr dst, xmlSecXkmsCtxPtr src) {
 void 
 xmlSecXkmsCtxDebugDump(xmlSecXkmsCtxPtr xkmsCtx, FILE* output) {
     xmlSecAssert(xkmsCtx != NULL);
-
-    fprintf(output, "= XKMS CONTEXT\n");
+    xmlSecAssert(output != NULL);
+    
+    switch(xkmsCtx->mode) {
+	case xmlXkmsCtxModeLocateRequest:
+	    fprintf(output, "= XKMS LOCATE REQUEST CONTEXT\n");
+	    break;
+	case xmlXkmsCtxModeValidateRequest:
+	    fprintf(output, "= XKMS VALIDATE REQUEST CONTEXT\n");
+	    break;
+    }
     fprintf(output, "== flags: 0x%08x\n", xkmsCtx->flags);
     fprintf(output, "== flags2: 0x%08x\n", xkmsCtx->flags2);
-
     fprintf(output, "== Key Info Read Ctx:\n");
     xmlSecKeyInfoCtxDebugDump(&(xkmsCtx->keyInfoReadCtx), output);
-
+    
     fprintf(output, "== Key Info Write Ctx:\n");
     xmlSecKeyInfoCtxDebugDump(&(xkmsCtx->keyInfoWriteCtx), output);
 }
@@ -240,8 +305,16 @@ xmlSecXkmsCtxDebugDump(xmlSecXkmsCtxPtr xkmsCtx, FILE* output) {
 void 
 xmlSecXkmsCtxDebugXmlDump(xmlSecXkmsCtxPtr xkmsCtx, FILE* output) {
     xmlSecAssert(xkmsCtx != NULL);
+    xmlSecAssert(output != NULL);
 
-    fprintf(output, "<DataEncryptionContext>\n");
+    switch(xkmsCtx->mode) {
+	case xmlXkmsCtxModeLocateRequest:
+	    fprintf(output, "<XkmsLocateRequestContext>\n");
+	    break;
+	case xmlXkmsCtxModeValidateRequest:
+	    fprintf(output, "<XkmsValidateRequestContext>\n");
+	    break;
+    }
     fprintf(output, "<Flags>%08x</Flags>\n", xkmsCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", xkmsCtx->flags2);
 
@@ -252,9 +325,15 @@ xmlSecXkmsCtxDebugXmlDump(xmlSecXkmsCtxPtr xkmsCtx, FILE* output) {
     fprintf(output, "<KeyInfoWriteCtx>\n");
     xmlSecKeyInfoCtxDebugXmlDump(&(xkmsCtx->keyInfoWriteCtx), output);
     fprintf(output, "</KeyInfoWriteCtx>\n");
-    
-    
-    fprintf(output, "</DataEncryptionContext>\n");
+
+    switch(xkmsCtx->mode) {
+	case xmlXkmsCtxModeLocateRequest:
+	    fprintf(output, "</XkmsLocateRequestContext>\n");
+	    break;
+	case xmlXkmsCtxModeValidateRequest:
+	    fprintf(output, "</XkmsValidateRequestContext>\n");
+	    break;
+    }
 }
 
 #endif /* XMLSEC_NO_XKMS */

@@ -804,6 +804,8 @@ int main(int argc, const char **argv) {
 	case xmlSecAppCommandVerify:
 	case xmlSecAppCommandEncrypt:
 	case xmlSecAppCommandDecrypt:
+	case xmlSecAppCommandXkmsLocate:
+	case xmlSecAppCommandXkmsValidate:
 	    if(pos >= argc) {
 		fprintf(stderr, "Error: <file> parameter is requried for this command\n");
 		xmlSecAppPrintUsage();
@@ -1635,30 +1637,19 @@ xmlSecAppXkmsLocate(const char* filename) {
 	goto done;
     }
 
-    start_time = clock();  
-        
-#ifdef TODO
-    if(xmlSecXkmsCtxLocate(&xkmsCtx, data->startNode) < 0) {
+    start_time = clock();          
+    if((xmlSecXkmsCtxLocate(&xkmsCtx, data->startNode) < 0) || (xkmsCtx.result == NULL)) {
 	fprintf(stderr, "Error: failed to process locate request\n");
 	goto done;
     }
-#endif /* TODO */    
     total_time += clock() - start_time;    
     
     /* print out result only once per execution */
-#ifdef TODO
     if(repeats <= 1) {
-	if(xkmsCtx.resultReplaced) {
-	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
-		goto done;
-	    }
-	} else {
-	    if(xmlSecAppWriteResult(NULL, xkmsCtx.result) < 0) {
-		goto done;
-	    }
-	}	
+	if(xmlSecAppWriteResult(xkmsCtx.result, NULL) < 0) {
+	    goto done;
+	}
     }
-#endif /* TODO */    
 
     res = 0;    
 
@@ -1702,30 +1693,19 @@ xmlSecAppXkmsValidate(const char* filename) {
 	goto done;
     }
 
-    start_time = clock();  
-        
-#ifdef TODO
-    if(xmlSecXkmsCtxValidate(&xkmsCtx, data->startNode) < 0) {
-	fprintf(stderr, "Error: failed to process validate request\n");
+    start_time = clock();          
+    if((xmlSecXkmsCtxValidate(&xkmsCtx, data->startNode) < 0) || (xkmsCtx.result == NULL)) {
+	fprintf(stderr, "Error: failed to process locate request\n");
 	goto done;
     }
-#endif /* TODO */    
     total_time += clock() - start_time;    
     
     /* print out result only once per execution */
-#ifdef TODO
     if(repeats <= 1) {
-	if(xkmsCtx.resultReplaced) {
-	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
-		goto done;
-	    }
-	} else {
-	    if(xmlSecAppWriteResult(NULL, xkmsCtx.result) < 0) {
-		goto done;
-	    }
-	}	
+	if(xmlSecAppWriteResult(xkmsCtx.result, NULL) < 0) {
+	    goto done;
+	}
     }
-#endif /* TODO */    
 
     res = 0;    
 

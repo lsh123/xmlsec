@@ -29,6 +29,18 @@ extern "C" {
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
+/**
+ * xmlXkmsCtxMode:
+ * @xmlXkmsCtxModeLocateRequest: 	the <xkms:LocateRequest/> node processing.
+ * @xmlXkmsCtxModeValidateRequest:	the <xkms:ValidateRequest/> node processing.
+ *
+ * XKMS request processing mode.
+ */
+typedef enum {
+    xmlXkmsCtxModeLocateRequest = 0,
+    xmlXkmsCtxModeValidateRequest
+} xmlXkmsCtxMode;
+
 /** 
  * xmlSecXkmsCtx:
  * @userData:			the pointer to user data (xmlsec and xmlsec-crypto libraries
@@ -47,8 +59,12 @@ struct _xmlSecXkmsCtx {
     void*			userData;
     unsigned int		flags;
     unsigned int		flags2;    
+    xmlXkmsCtxMode		mode;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
+    
+    /* these data are returned */
+    xmlDocPtr			result;
     
     /* reserved for future */
     void*			reserved0;
@@ -63,6 +79,10 @@ XMLSEC_EXPORT void		xmlSecXkmsCtxFinalize		(xmlSecXkmsCtxPtr xkmsCtx);
 XMLSEC_EXPORT int		xmlSecXkmsCtxCopyUserPref	(xmlSecXkmsCtxPtr dst,
 								 xmlSecXkmsCtxPtr src);
 XMLSEC_EXPORT void		xmlSecXkmsCtxReset		(xmlSecXkmsCtxPtr xkmsCtx);
+XMLSEC_EXPORT int		xmlSecXkmsCtxLocate		(xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecXkmsCtxValidate		(xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlNodePtr node);
 XMLSEC_EXPORT void		xmlSecXkmsCtxDebugDump		(xmlSecXkmsCtxPtr xkmsCtx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecXkmsCtxDebugXmlDump	(xmlSecXkmsCtxPtr xkmsCtx,

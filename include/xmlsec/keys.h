@@ -15,6 +15,7 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <time.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
@@ -103,8 +104,8 @@ XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
  * @value:		the key value.
  * @dataList:		the key data list.
  * @usage:		the key usage.
- * @reserved0:		reserved for future.
- * @reserved1:		reserved for future.
+ * @notValidBefore:	the start key validity interval.
+ * @notValidAfter:	the end key validity interval.
  *
  * The key.
  */
@@ -113,10 +114,8 @@ struct _xmlSecKey {
     xmlSecKeyDataPtr			value;
     xmlSecPtrListPtr			dataList;
     xmlSecKeyUsage			usage;
-    
-    /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    time_t				notValidBefore;
+    time_t				notValidAfter;    
 };
 
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(void);

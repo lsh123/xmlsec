@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LocateRequest xmlns="http://www.w3.org/2002/03/xkms#" Id="Icf173d33d71c80c74589c6204f7aeb4f" Service="http://www.aleksey.com/xmlsec/examples/XKMS">
+  <RespondWith>KeyName</RespondWith>
+  <RespondWith>KeyValue</RespondWith>
+  <RespondWith>X509Cert</RespondWith>
+  <RespondWith>X509Chain</RespondWith>
+  <RespondWith>PGPWeb</RespondWith>
+  <RespondWith>PGP</RespondWith>
+  <QueryKeyBinding>
+    <KeyUsage>Encryption</KeyUsage>
+    <UseKeyWith Application="urn:ietf:rfc:2440" Identifier="bob@bobcorp.test"/>
+    <UseKeyWith Application="urn:ietf:rfc:2633" Identifier="bob@bobcorp.test"/>
+  </QueryKeyBinding>
+</LocateRequest>

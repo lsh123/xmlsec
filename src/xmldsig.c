@@ -1064,6 +1064,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 void 
 xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(dsigCtx != NULL);
+    xmlSecAssert(output != NULL);
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {    
 	fprintf(output, "= SIGNATURE CONTEXT\n");
@@ -1143,6 +1144,7 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 void 
 xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(dsigCtx != NULL);
+    xmlSecAssert(output != NULL);
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {    
 	fprintf(output, "<SignatureContext \n");
@@ -1619,6 +1621,7 @@ void
 xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
     xmlSecAssert(dsigRefCtx != NULL);
     xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
+    xmlSecAssert(output != NULL);
 
     if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {    
 	fprintf(output, "= REFERENCE CALCULATION CONTEXT\n");
@@ -1686,6 +1689,7 @@ void
 xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
     xmlSecAssert(dsigRefCtx != NULL);
     xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
+    xmlSecAssert(output != NULL);
 
     if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {    
 	fprintf(output, "<ReferenceCalculationContext ");

@@ -1,3 +1,18 @@
+Wed Apr 30 01:01:06 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* config.h.in configure.in: added check for timegm function
+	* include/xmlsec/keys.h 
+	* include/xmlsec/xkms.h src/xkms.c apps/xmlsec.c: framework
+	for xmlSecXkmsLocate/Validate functions
+	* src/keys.c src/openssl/x509.c: added notValidBefore and
+	notValidAfter time frame to xmlSecKey
+	* src/xmldsig.c src/xmlenc.c: added "output" asserts to 
+	the *DebugDump() and *DebugXmlDump() functions
+	* tests/aleksey-xkms-01/locate-compound.xml 
+	  tests/aleksey-xkms-01/locate-key-from-usewith.xml
+	  tests/aleksey-xkms-01/locate-keyvalue-from-x509.xml
+	  tests/aleksey-xkms-01/readme.txt: XKMS test cases
+
 Tue Apr 29 16:37:18 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/Makefile.am include/xmlsec/strings.h

@@ -110,6 +110,19 @@ XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces
 						(xmlNodePtr transformNode,
 						 const xmlChar *prefixList);
 
+
+XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXPath2Add(xmlNodePtr transformNode, 
+						 xmlSecXPath2TransformType type,
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode, 
+						 const xmlChar *expression,
+						 const xmlChar **namespaces);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

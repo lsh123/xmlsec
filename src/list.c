@@ -21,10 +21,45 @@
 static int		xmlSecPtrListEnsureSize			(xmlSecPtrListPtr list,
 								 size_t size);
 								 
+int 
+xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
+    xmlSecAssert2(id != xmlSecPtrListIdUnknown, -1);
+    xmlSecAssert2(list != NULL, -1);
+
+    memset(list, 0, sizeof(xmlSecPtrList));    
+    list->id = id;
+    
+    return(0);
+}
+
+void
+xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
+    xmlSecAssert(xmlSecPtrListIsValid(list));
+
+    if(list->id->destroyItem != NULL) {
+	size_t pos;
+	
+	for(pos = 0; pos < list->use; ++pos) {
+	    xmlSecAssert(list->data != NULL);
+	    if(list->data[pos] != NULL) {
+		list->id->destroyItem(list->data[pos]);
+	    }
+	}
+    }
+    if(list->max > 0) {
+	xmlSecAssert(list->data != NULL);
+
+	memset(list->data, 0, sizeof(xmlSecPtrList) * list->use);
+	xmlFree(list->data);
+    }
+    memset(list, 0, sizeof(xmlSecPtrList));    
+}
+
 xmlSecPtrListPtr 
 xmlSecPtrListCreate(xmlSecPtrListId id) {
     xmlSecPtrListPtr list;
-
+    int ret;
+    
     xmlSecAssert2(id != xmlSecPtrListIdUnknown, NULL);
     
     /* Allocate a new xmlSecPtrList and fill the fields. */
@@ -38,11 +73,28 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
 		    sizeof(xmlSecPtrList));
 	return(NULL);
     }
-    memset(list, 0, sizeof(xmlSecPtrList));    
-    list->id = id;
+    
+    ret = xmlSecPtrListInitialize(list, id);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(id->name),
+		    "xmlSecPtrListInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlFree(list);
+	return(NULL);
+    }
     
     return(list);    
 }
+
+void 
+xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
+    xmlSecAssert(xmlSecPtrListIsValid(list));
+    xmlSecPtrListFinalize(list);
+    xmlFree(list);
+}
+
 
 xmlSecPtrListPtr 
 xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
@@ -92,30 +144,6 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
 	}
     }
     return(newList);
-}
-
-void 
-xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
-    xmlSecAssert(xmlSecPtrListIsValid(list));
-
-    if(list->id->destroyItem != NULL) {
-	size_t pos;
-	
-	for(pos = 0; pos < list->use; ++pos) {
-	    xmlSecAssert(list->data != NULL);
-	    if(list->data[pos] != NULL) {
-		list->id->destroyItem(list->data[pos]);
-	    }
-	}
-    }
-    if(list->max > 0) {
-	xmlSecAssert(list->data != NULL);
-
-	memset(list->data, 0, sizeof(xmlSecPtrList) * list->use);
-	xmlFree(list->data);
-    }
-    memset(list, 0, sizeof(xmlSecPtrList));    
-    xmlFree(list);
 }
 
 size_t	
@@ -249,5 +277,39 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
     return(0);
 }
 
+/***********************************************************************
+ *
+ * strings list
+ *
+ **********************************************************************/
+static xmlSecPtr 	xmlSecStringListDuplicateItem		(xmlSecPtr ptr);
+static void		xmlSecStringListDestroyItem		(xmlSecPtr ptr);
+
+static xmlSecPtrListKlass xmlSecStringListKlass = {
+    BAD_CAST "strings-list",
+    xmlSecStringListDuplicateItem,		/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecStringListDestroyItem,		/* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,					/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,					/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId 
+xmlSecStringListGetKlass(void) {
+    return(&xmlSecStringListKlass);
+}
+
+static xmlSecPtr 
+xmlSecStringListDuplicateItem(xmlSecPtr ptr) {
+    xmlSecAssert2(ptr != NULL, NULL);
+    
+    return(xmlStrdup((xmlChar*)ptr));
+}
+
+static void 
+xmlSecStringListDestroyItem(xmlSecPtr ptr) {
+    xmlSecAssert(ptr != NULL);
+    
+    xmlFree(ptr);
+}
 
 

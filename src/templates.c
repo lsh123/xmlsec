@@ -1620,3 +1620,258 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
     return(0);
 }
 
+/**
+ * xmlSecTransformXPathAdd:
+ * @transformNode: the pointer to the <dsig:Transform> node.
+ * @expression: the XPath expression.
+ * @namespaces: NULL terminated list of namespace prefix/href pairs.
+ *
+ * Writes XPath transform infromation to the <dsig:Transform> node 
+ * @transformNode.
+ *
+ * Returns 0 for success or a negative value otherwise.
+ */
+int 	
+xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
+			 const xmlChar **namespaces) {
+    xmlNodePtr xpathNode;
+    
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(expression != NULL, -1);
+    
+
+    xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
+    if(xpathNode != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeXPath),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);    
+    }
+
+    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
+    if(xpathNode == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPath));
+	return(-1);    
+    }
+    
+    
+    xmlNodeSetContent(xpathNode, expression);
+    if(namespaces != NULL) {	
+	xmlNsPtr ns;
+	const xmlChar *prefix;
+    	const xmlChar *href;
+	const xmlChar **ptr;
+	
+	ptr = namespaces;
+	while((*ptr) != NULL) {
+	    if(xmlStrEqual(BAD_CAST "#default", (*ptr))) {
+		prefix = NULL;
+	    } else {
+		prefix = (*ptr);
+	    }
+	    if((++ptr) == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    NULL,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "unexpected end of namespaces list");
+		return(-1);
+	    }
+	    href = *(ptr++);
+
+	    ns = xmlNewNs(xpathNode, href, prefix);
+	    if(ns == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlNewNs",
+			    XMLSEC_ERRORS_R_XML_FAILED,
+			    "href=%s;prefix=%s", 
+			    xmlSecErrorsSafeString(href),
+			    xmlSecErrorsSafeString(prefix));
+		return(-1);
+	    }
+	}
+    }
+    return(0);
+}
+
+/**
+ * xmlSecTransformXPath2Add:
+ * @transformNode: the pointer to the <dsig:Transform> node.
+ * @type: XPath2 transform type ("union", "intersect" or "subtract").
+ * @expression: the XPath expression.
+ * @namespaces: NULL terminated list of namespace prefix/href pairs.
+ *
+ * Writes XPath2 transform infromation to the <dsig:Transform> node 
+ * @transformNode.
+ *
+ * Returns 0 for success or a negative value otherwise.
+ */
+int
+xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType type,
+			const xmlChar *expression, const xmlChar **namespaces) {
+    xmlNodePtr xpathNode;
+
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(expression != NULL, -1);
+
+    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
+    if(xpathNode == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPath));
+	return(-1);    
+    }
+    
+    switch(type) {
+    case xmlSecXPathTransformIntersect:
+	xmlSetProp(xpathNode, BAD_CAST "Filter", BAD_CAST "intersect");
+	break;
+    case xmlSecXPathTransformSubtract:
+	xmlSetProp(xpathNode, BAD_CAST "Filter", BAD_CAST "subtract");
+	break;
+    case xmlSecXPathTransformUnion:
+	xmlSetProp(xpathNode, BAD_CAST "Filter", BAD_CAST "union");
+	break;
+    default:
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
+		    "type=%d", type);
+	return(-1);    	
+    }
+    
+    xmlNodeSetContent(xpathNode, expression);
+    if(namespaces != NULL) {	
+	xmlNsPtr ns;
+	const xmlChar *prefix;
+    	const xmlChar *href;
+	const xmlChar **ptr;
+	
+	ptr = namespaces;
+	while((*ptr) != NULL) {
+	    if(xmlStrEqual(BAD_CAST "#default", (*ptr))) {
+		prefix = NULL;
+	    } else {
+		prefix = (*ptr);
+	    }
+	    if((++ptr) == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    NULL,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "unexpected end of namespaces list");
+		return(-1);
+	    }
+	    href = *(ptr++);
+
+	    ns = xmlNewNs(xpathNode, href, prefix);
+	    if(ns == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlNewNs",
+			    XMLSEC_ERRORS_R_XML_FAILED,
+			    "href=%s;prefix=%s", 
+			    xmlSecErrorsSafeString(href),
+			    xmlSecErrorsSafeString(prefix));
+		return(-1);
+	    }
+	}
+    }
+    return(0);
+}
+
+/**
+ * xmlSecTransformXPointerAdd:
+ * @transformNode: the pointer to the <dsig:Transform> node.
+ * @expression: the XPath expression.
+ * @namespaces: NULL terminated list of namespace prefix/href pairs.
+ *
+ * Writes XPoniter transform infromation to the <dsig:Transform> node 
+ * @transformNode.
+ *
+ * Returns 0 for success or a negative value otherwise.
+ */
+int 	
+xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
+			 const xmlChar **namespaces) {
+    xmlNodePtr xpointerNode;
+
+    xmlSecAssert2(expression != NULL, -1);
+    xmlSecAssert2(transformNode != NULL, -1);
+
+    xpointerNode = xmlSecFindChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
+    if(xpointerNode != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeXPointer),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);    
+    }
+
+    xpointerNode = xmlSecAddChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
+    if(xpointerNode == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeXPointer));
+	return(-1);    
+    }
+    
+    
+    xmlNodeSetContent(xpointerNode, expression);
+    if(namespaces != NULL) {	
+	xmlNsPtr ns;
+	const xmlChar *prefix;
+    	const xmlChar *href;
+	const xmlChar **ptr;
+	
+	ptr = namespaces;
+	while((*ptr) != NULL) {
+	    if(xmlStrEqual(BAD_CAST "#default", (*ptr))) {
+		prefix = NULL;
+	    } else {
+		prefix = (*ptr);
+	    }
+	    if((++ptr) == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    NULL,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "unexpected end of namespaces list");
+		return(-1);
+	    }
+	    href = *(ptr++);
+
+	    ns = xmlNewNs(xpointerNode, href, prefix);
+	    if(ns == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlNewNs",
+			    XMLSEC_ERRORS_R_XML_FAILED,
+			    "href=%s;prefix=%s", 
+			    xmlSecErrorsSafeString(href),
+			    xmlSecErrorsSafeString(prefix));
+		return(-1);
+	    }
+	}
+    }
+    return(0);
+}
+
+
+

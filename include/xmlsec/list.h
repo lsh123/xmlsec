@@ -28,9 +28,13 @@ struct _xmlSecPtrList {
     size_t			max;
 };
 
+XMLSEC_EXPORT int		xmlSecPtrListInitialize	(xmlSecPtrListPtr list,
+							 xmlSecPtrListId id);
+XMLSEC_EXPORT void		xmlSecPtrListFinalize	(xmlSecPtrListPtr list);
 XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListCreate	(xmlSecPtrListId id);
-XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate	(xmlSecPtrListPtr list);
 XMLSEC_EXPORT void		xmlSecPtrListDestroy	(xmlSecPtrListPtr list);
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate	(xmlSecPtrListPtr list);
+
 XMLSEC_EXPORT size_t		xmlSecPtrListGetSize	(xmlSecPtrListPtr list);
 XMLSEC_EXPORT xmlSecPtr		xmlSecPtrListGetItem	(xmlSecPtrListPtr list,
 							 size_t pos);
@@ -42,7 +46,7 @@ XMLSEC_EXPORT int		xmlSecPtrListSet	(xmlSecPtrListPtr list,
 XMLSEC_EXPORT int		xmlSecPtrListRemove	(xmlSecPtrListPtr list,
 							 size_t pos);
 XMLSEC_EXPORT void		xmlSecPtrListDebugDump	(xmlSecPtrListPtr list,
-							 FILE* output);
+    							 FILE* output);
 XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list,
 							 FILE* output);
 #define xmlSecPtrListGetName(list) \
@@ -95,6 +99,16 @@ struct _xmlSecPtrListKlass {
 };
 #define xmlSecPtrListKlassGetName(klass) \
 	(((klass) != NULL) ? ((klass)->name) : NULL)
+
+
+/**************************************************************************
+ *
+ * xmlSecStringListKlass
+ *
+ *************************************************************************/
+#define xmlSecStringListId \
+	xmlSecStringListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecStringListGetKlass	(void);
 
 #ifdef __cplusplus
 }

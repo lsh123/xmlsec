@@ -1,5 +1,7 @@
 #!/bin/sh 
 
+OS_ARCH=`uname -o`
+
 crypto=$1
 topfolder=$2
 xmlsec_app=$3
@@ -61,10 +63,16 @@ execEncTest() {
     printf "    Decrypt existing document                            "
     rm -f $tmpfile
 
+    if [ "z$OS_ARCH" = "zCygwin" ] ; then
+	diff_param=-uw
+    else
+	diff_param=-u
+    fi
+
     echo "$xmlsec_app decrypt $xmlsec_params $2 $file.xml" >>  $logfile 
     $VALGRIND $xmlsec_app decrypt $xmlsec_params $2 $file.xml > $tmpfile 2>> $logfile
     if [ $? = 0 ]; then
-	diff $file.data $tmpfile >> $logfile 2>> $logfile
+	diff $diff_param $file.data $tmpfile >> $logfile 2>> $logfile
 	printRes $?
     else 
 	echo " Error"
@@ -83,7 +91,7 @@ execEncTest() {
 		echo "$xmlsec_app decrypt $xmlsec_params $4 --output $tmpfile.2 $tmpfile" >>  $logfile 
 	        $VALGRIND $xmlsec_app decrypt $xmlsec_params $4 --output $tmpfile.2 $tmpfile >> $logfile 2>> $logfile
 		if [ $? = 0 ]; then
-		    diff $file.data $tmpfile.2 >> $logfile 2>> $logfile
+		    diff $diff_param $file.data $tmpfile.2 >> $logfile 2>> $logfile
 		    printRes $?
     		else 
 		    echo " Error"

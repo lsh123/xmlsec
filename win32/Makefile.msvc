@@ -456,21 +456,21 @@ check : check-keys check-dsig check-enc
 check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
-	set TMPFOLDER=win32\tmp
+	set TMPFOLDER=win32/tmp
 	sh ./tests/testKeys.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 check-dsig : $(BINDIR)\$(APP_NAME)	
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
-	set TMPFOLDER=win32\tmp
+	set TMPFOLDER=win32/tmp
 	sh ./tests/testDSig.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
 check-enc : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist win32\tmp mkdir win32\tmp
-	set TMPFOLDER=win32\tmp
+	set TMPFOLDER=win32/tmp
 	sh ./tests/testEnc.sh default ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 

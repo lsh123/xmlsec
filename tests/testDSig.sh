@@ -1,8 +1,15 @@
 #!/bin/sh 
 
+OS_ARCH=`uname -o`
+
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+	topfolder=`cygpath -wa $2`
+	xmlsec_app=`cygpath -a $3`
+else
+	topfolder=$2
+	xmlsec_app=$3
+fi
 crypto=$1
-topfolder=$2
-xmlsec_app=$3
 file_format=$4
 
 pub_key_format=$file_format
@@ -13,10 +20,15 @@ priv_key_format="p12"
 if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
 fi
-
 timestamp=`date +%Y%m%d_%H%M%S` 
-tmpfile=$TMPFOLDER/testDSig.$timestamp-$$.tmp
-logfile=$TMPFOLDER/testDSig.$timestamp-$$.log
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+	tmpfile=`cygpath -wa $TMPFOLDER/testDSig.$timestamp-$$.tmp`
+	logfile=`cygpath -wa $TMPFOLDER/testDSig.$timestamp-$$.log`
+else
+	tmpfile=$TMPFOLDER/testDSig.$timestamp-$$.tmp
+	logfile=$TMPFOLDER/testDSig.$timestamp-$$.log
+fi
+
 script="$0"
 
 # prepate crypto config folder
@@ -103,7 +115,6 @@ echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "--- log file is $logfile"
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
-
 
 execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
@@ -238,6 +249,11 @@ execDSigTest "" "aleksey-xmldsig-01/x509data-test" \
     "$priv_key_option tests/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
+execDSigTest "" "aleksey-xmldsig-01/x509data-sn-test" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa2cert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option tests/keys/rsa2key.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa2cert.$cert_format --enabled-key-data x509"
+
 execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
     ""
     
@@ -249,6 +265,7 @@ execDSigTest "" "merlin-xpath-filter2-three/sign-xfdl" \
 
 execDSigTest "" "merlin-xpath-filter2-three/sign-spec" \
     ""
+
 execDSigTest "phaos-xmldsig-three" "signature-big" \
     "--pubkey-cert-$cert_format certs/rsa-cert.$cert_format" 
 

@@ -330,13 +330,15 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
 BYTE* 
 xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL; 
-    
+    LPCTSTR ppszError = NULL;
+
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
     if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, 
-			NULL, NULL, len, NULL)) {
+			NULL, NULL, len, &ppszError)) {
 	/* this might not be an error, string might just not exist */
+                DWORD dw = GetLastError();
 	return(NULL);
     }
 	

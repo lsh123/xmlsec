@@ -567,10 +567,41 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 
     if((pCert == NULL) && (NULL != issuerName) && (NULL != issuerSerial)) {
 	xmlSecBn issuerSerialBn;	
+    xmlChar * p;
 	CERT_NAME_BLOB cnb;
+    CRYPT_INTEGER_BLOB cib;
         BYTE *cName = NULL; 
 	DWORD cNameLen = 0;	
+    
+    /* aleksey: for some unknown to me reasons, mscrypto wants Email
+     * instead of emailAddress. This code is not bullet proof and may 
+     * produce incorrect results if someone has "emailAddress=" string
+     * in one of the fields, but it is best I can suggest to fix this problem.
+     * Also see xmlSecMSCryptoX509NameWrite function.
+     */
+    while( (p = (xmlChar*)xmlStrstr(issuerName, BAD_CAST "emailAddress=")) != NULL) {
+        memcpy(p, "       Email=", 13);
+    }
 
+
+
+    /* get issuer name */
+	cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+					   issuerName,
+					   CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+					   &cNameLen);
+	if(cName == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecMSCryptoCertStrToName",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return (NULL);
+	}
+	cnb.pbData = cName;
+	cnb.cbData = cNameLen;
+
+    /* get serial number */
 	ret = xmlSecBnInitialize(&issuerSerialBn, 0);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -578,6 +609,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 			"xmlSecBnInitialize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
+    	xmlFree(cName);
 	    return(NULL);
 	}
 
@@ -589,26 +621,30 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecBnFinalize(&issuerSerialBn);
-	    return(NULL);
+		xmlFree(cName);
+        return(NULL);
 	}
 
-	cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-					   issuerName,
-					   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-					   &cNameLen);
-	if(cName == NULL) {
+	/* I have no clue why at a sudden a swap is needed to 
+     * convert from lsb... This code is purely based upon 
+	 * trial and error :( WK
+	 */
+    ret = xmlSecBnReverse(&issuerSerialBn);
+	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecMSCryptoCertStrToName",
+			"xmlSecBnReverse",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecBnFinalize(&issuerSerialBn);
-	    return (NULL);
+		xmlFree(cName);
+        return(NULL);
 	}
 
-	cnb.pbData = cName;
-	cnb.cbData = cNameLen;
-	while((pCert = CertFindCertificateInStore(store, 
+    cib.pbData = xmlSecBufferGetData(&issuerSerialBn);
+    cib.cbData = xmlSecBufferGetSize(&issuerSerialBn);
+
+    while((pCert = CertFindCertificateInStore(store, 
 						  PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
 						  0,
 						  CERT_FIND_ISSUER_NAME,
@@ -622,10 +658,9 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 	    if((pCert->pCertInfo != NULL) && 
 	       (pCert->pCertInfo->SerialNumber.pbData != NULL) && 
 	       (pCert->pCertInfo->SerialNumber.cbData > 0) && 
-	       (0 == xmlSecBnCompareReverse(&issuerSerialBn, pCert->pCertInfo->SerialNumber.pbData, 
-				     pCert->pCertInfo->SerialNumber.cbData))) {
-		
-		break;
+           (CertCompareIntegerBlob(&(pCert->pCertInfo->SerialNumber), &cib) == TRUE)
+           ) {		
+		    break;
 	    }
 	}
 	xmlFree(cName);

@@ -17,6 +17,8 @@ README
  hmackey.bin	HMAC key ('secret')
  expired.key	key for expired cert 
  expired.crt	expired certificate 
+ rsa2key.pem	RSA private key
+ rsa2cert.pem 	Self signed RSA certificate with negative serial number
 
 2. How certificates were generated:
 
@@ -66,6 +68,9 @@ README
    
   Convert PEM cert file to DER file
     > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
+
+  Convert DER cert file to PEM file
+   > openssl x509 -inform DER -outform PEM -in ca2cert.der -out ca2cert.pem
 
 4. Converting an unencrypted PEM or DER file containing a private key
    to an encrypted PEM or DER file containing the same private key but

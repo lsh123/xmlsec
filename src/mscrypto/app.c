@@ -133,7 +133,7 @@ xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
             return(NULL);	
         }
         break;
-    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
         ret = xmlSecBufferInitialize(&buffer, 0);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -207,7 +207,7 @@ xmlSecMSCryptoAppKeyLoadMemory(const xmlSecByte* bdata, xmlSecSize dataSize, xml
 
     xmlSecAssert2(bdata != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
-    xmlSecAssert2(format == xmlSecKeyDataFormatDer, NULL);
+    xmlSecAssert2(format == xmlSecKeyDataFormatCertDer, NULL);
 
     pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, bdata, dataSize);
     if (NULL == pCert) {
@@ -413,6 +413,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     /* adjust cert format */
     switch(format) {
     case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
     case xmlSecKeyDataFormatPkcs8Der:
         pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dataSize);
         if (NULL == pCert) {
@@ -420,8 +421,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
                         NULL,
                         "CertCreateCertificateContext", 
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "format=%d", 
-                        xmlSecKeyDataFormatDer);
+                        "format=%d", format);
             return(-1);    
         }    	
 
@@ -848,6 +848,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
 
     switch (format) {
 	case xmlSecKeyDataFormatDer:
+	case xmlSecKeyDataFormatCertDer:
 	    pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
 						 bdata, dataSize);
 	    if (NULL == pCert) {

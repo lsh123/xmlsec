@@ -36,6 +36,7 @@ struct _xmlSecOpenSSLEvpBlockCipherCtx {
     const EVP_CIPHER*	cipher;
     xmlSecKeyDataId	keyId;
     EVP_CIPHER_CTX	cipherCtx;
+    int			keyInitialized;
     int			ctxInitialized;
     unsigned char	key[EVP_MAX_KEY_LENGTH];
     unsigned char	iv[EVP_MAX_IV_LENGTH];
@@ -67,7 +68,8 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
-    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -133,6 +135,8 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 	return(-1);
     }
 
+    ctx->ctxInitialized = 1;
+    
     /*
      * The padding used in XML Enc does not follow RFC 1423
      * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
@@ -156,6 +160,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -277,6 +282,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -556,7 +562,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != NULL, -1);
-    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
+    xmlSecAssert2(ctx->keyInitialized == 0, -1);
 
     cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
     xmlSecAssert2(cipherKeyLen > 0, -1);
@@ -578,8 +584,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
     memcpy(ctx->key, xmlSecBufferGetData(buffer), cipherKeyLen);
     
-    
-    ctx->ctxInitialized = 1;
+    ctx->keyInitialized = 1;
     return(0);
 }
 
@@ -600,34 +605,47 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-	ret = xmlSecOpenSSLEvpBlockCipherCtxInit(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecOpenSSLEvpBlockCipherCtxInit",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
 	transform->status = xmlSecTransformStatusWorking;
     }
 
-    if(transform->status == xmlSecTransformStatusWorking) {
-	ret = xmlSecOpenSSLEvpBlockCipherCtxUpdate(ctx, in, out,
+    if(transform->status == xmlSecTransformStatusWorking) {    
+	if(ctx->ctxInitialized == 0) {
+	    ret = xmlSecOpenSSLEvpBlockCipherCtxInit(ctx, in, out, transform->encode,
 					    xmlSecTransformGetName(transform), 
 					    transformCtx);
-	if(ret < 0) {
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecOpenSSLEvpBlockCipherCtxInit",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	}
+	if((ctx->ctxInitialized == 0) && (last != 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecOpenSSLEvpBlockCipherCtxUpdate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			NULL,
+			XMLSEC_ERRORS_R_INVALID_DATA,
+			"not enough data to initialize transform");
 	    return(-1);
 	}
-	
-	if(last) {
+
+	if(ctx->ctxInitialized != 0) {
+	    ret = xmlSecOpenSSLEvpBlockCipherCtxUpdate(ctx, in, out,
+						xmlSecTransformGetName(transform), 
+						transformCtx);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecOpenSSLEvpBlockCipherCtxUpdate",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	}
+
+	if(last != 0) {
 	    /* by now there should be no input */
 	    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
 	    ret = xmlSecOpenSSLEvpBlockCipherCtxFinal(ctx, out,

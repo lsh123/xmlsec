@@ -660,6 +660,8 @@ static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 
 static FILE* 			xmlSecAppOpenFile		(const char* filename);
 static void			xmlSecAppCloseFile		(FILE* file);
+static int			xmlSecAppWriteResult		(xmlDocPtr doc,
+								 xmlSecBufferPtr buffer);
 
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
@@ -960,16 +962,25 @@ static int
 xmlSecAppEncryptFile(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
+    xmlDocPtr doc = NULL;
+    xmlNodePtr startNode;
     int res = -1;
 
     if(filename == NULL) {
 	return(-1);
     }
 
-    /* parse file and select start node */
-    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeEncryptedData, xmlSecEncNs);
-    if(data == NULL) {
-	fprintf(stderr, "Error: failed to load file \"%s\"\n", filename);
+    /* parse doc and find template node */
+    doc = xmlSecParseFile(filename);
+    if(doc == NULL) {
+	fprintf(stderr, "Error: failed to parse xml file \"%s\"\n", 
+		filename);
+	goto done;
+    }
+    startNode = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(startNode == NULL) {
+	fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", 
+		xmlSecNodeEncryptedData);
 	goto done;
     }
 
@@ -978,9 +989,40 @@ xmlSecAppEncryptFile(const char* filename) {
 	fprintf(stderr, "Error: failed create decryption context\n");
 	goto done;
     }
+
+    if(xmlSecAppCmdLineParamGetString(&binaryParam) != NULL) {
+	if(xmlSecEncCtxEncryptUri(encCtx, startNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryParam)) < 0) {
+	    fprintf(stderr, "Error: failed to encrypt file \"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&binaryParam));
+	    goto done;
+	}
+    } else if(xmlSecAppCmdLineParamGetString(&xmlParam) != NULL) {
+	/* parse file and select node for encryption */
+        data = xmlSecAppXmlDataCreate(xmlSecAppCmdLineParamGetString(&xmlParam), NULL, NULL);
+	if(data == NULL) {
+	    fprintf(stderr, "Error: failed to load file \"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&xmlParam));
+	    goto done;
+	}
+	
+	/* TODO */
+    } else {
+	fprintf(stderr, "Error: encryption data not specified (use \"--xml\" or \"--binary\" options)\n");
+	goto done;
+    }
     
-    /* TODO */
-    fprintf(stdout, "decrypt >> %s\n", filename);
+    /* print out result only once per execution */
+    if(repeats <= 1) {
+	if(encCtx->replaced) {
+	    if(xmlSecAppWriteResult(doc, NULL) < 0) {
+		goto done;
+	    }
+	} else {
+	    if(xmlSecAppWriteResult(NULL, encCtx->encResult) < 0) {
+		goto done;
+	    }
+	}	
+    }
     res = 0;    
 
 done:
@@ -991,6 +1033,9 @@ done:
     }
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
+    }
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
     }
     return(res);
 }
@@ -1021,7 +1066,7 @@ xmlSecAppDecryptFile(const char* filename) {
     }
     
     start_time = clock();            
-    if((xmlSecEncCtxDecrypt(encCtx, data->startNode) < 0) || (encCtx->encResult == NULL)) {
+    if(xmlSecEncCtxDecrypt(encCtx, data->startNode) < 0) {
 	fprintf(stderr, "Error: failed to decrypt file\n");
 	goto done;
     }
@@ -1029,18 +1074,15 @@ xmlSecAppDecryptFile(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	FILE* f;
-
-	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-	if(f != NULL) {
-	    if(encCtx->replaced) {
-		xmlDocDump(f, data->doc);    
-    	    } else {
-    		fwrite(xmlSecBufferGetData(encCtx->encResult), 
-	    	    xmlSecBufferGetSize(encCtx->encResult), 1, f); 
+	if(encCtx->replaced) {
+	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
+		goto done;
 	    }
-	    xmlSecAppCloseFile(f);
-	}    
+	} else {
+	    if(xmlSecAppWriteResult(NULL, encCtx->encResult) < 0) {
+		goto done;
+	    }
+	}	
     }
     res = 0;    
 
@@ -1416,30 +1458,35 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 	}
 	data->startNode = attr->parent;
     } else if(xmlSecAppCmdLineParamGetString(&nodeNameParam) != NULL) {
+	xmlChar* buf;
 	xmlChar* name;
 	xmlChar* ns;
 	
-	name = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&nodeNameParam));
-	if(name == NULL) {
+	buf = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&nodeNameParam));
+	if(buf == NULL) {
 	    fprintf(stderr, "Error: failed to duplicate node \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&nodeNameParam));
 	    xmlSecAppXmlDataDestroy(data);
 	    return(NULL);    
 	}
-	ns = (xmlChar*)strrchr((char*)name, ':');
-	if(ns != NULL) {
-	    (*(ns++)) = '\0';
+	name = (xmlChar*)strrchr((char*)buf, ':');
+	if(name != NULL) {
+	    (*(name++)) = '\0';
+	    ns = buf;
+	} else {
+	    name = buf;
+	    ns = NULL;
 	}
 	
 	data->startNode = xmlSecFindNode(xmlDocGetRootElement(data->doc), name, ns);
 	if(data->startNode == NULL) {
 	    fprintf(stderr, "Error: failed to find node with name=\"%s\"\n", 
 		    name);
-	    xmlFree(name);
+	    xmlFree(buf);
 	    xmlSecAppXmlDataDestroy(data);
 	    return(NULL);    
 	}
-	xmlFree(name);
+	xmlFree(buf);
     } else if(xmlSecAppCmdLineParamGetString(&nodeXPathParam) != NULL) {
 	xmlXPathContextPtr ctx = NULL;
 	xmlXPathObjectPtr obj = NULL;
@@ -1648,5 +1695,26 @@ xmlSecAppCloseFile(FILE* file) {
     }
     
     fclose(file);
+}
+
+static int 
+xmlSecAppWriteResult(xmlDocPtr doc, xmlSecBufferPtr buffer) {
+    FILE* f;
+
+    f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
+    if(f == NULL) {
+	return(-1);
+    }
+    if(doc != NULL) {
+	xmlDocDump(f, doc);    
+    } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {
+    	fwrite(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), 1, f); 
+    } else {
+	fprintf(stderr, "Error: both result doc and result buffer are null\n");	
+	xmlSecAppCloseFile(f);
+	return(-1);
+    }    
+    xmlSecAppCloseFile(f);
+    return(0);
 }
 

@@ -36,6 +36,7 @@ struct _xmlSecNssEvpBlockCipherCtx {
     CK_MECHANISM_TYPE	cipher;
     PK11Context*	cipherCtx;
     xmlSecKeyDataId	keyId;
+    int			keyInitialized;
     int			ctxInitialized;
     unsigned char	key[XMLSEC_NSS_MAX_KEY_SIZE];
     size_t		keySize;
@@ -77,7 +78,8 @@ xmlSecNssEvpBlockCipherCtxInit(xmlSecNssEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->cipherCtx == NULL, -1);
-    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -180,6 +182,7 @@ xmlSecNssEvpBlockCipherCtxInit(xmlSecNssEvpBlockCipherCtxPtr ctx,
 	return(-1);
     }
 
+    ctx->ctxInitialized = 1;
     PK11_FreeSymKey(symKey);
     PK11_FreeSlot(slot);
     return(0);
@@ -201,6 +204,7 @@ xmlSecNssEvpBlockCipherCtxUpdate(xmlSecNssEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -289,6 +293,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->cipherCtx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
@@ -548,7 +553,7 @@ xmlSecNssEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecNssEvpBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
-    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
+    xmlSecAssert2(ctx->keyInitialized == 0, -1);
 
     xmlSecAssert2(ctx->keySize > 0, -1);
     xmlSecAssert2(ctx->keySize <= sizeof(ctx->key), -1);
@@ -569,7 +574,7 @@ xmlSecNssEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
     memcpy(ctx->key, xmlSecBufferGetData(buffer), ctx->keySize);
     
-    ctx->ctxInitialized = 1;
+    ctx->keyInitialized = 1;
     return(0);
 }
 
@@ -590,31 +595,44 @@ xmlSecNssEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
-	ret = xmlSecNssEvpBlockCipherCtxInit(ctx, in, out, transform->encode,
-					    xmlSecTransformGetName(transform), 
-					    transformCtx);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecNssEvpBlockCipherCtxInit",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
 	transform->status = xmlSecTransformStatusWorking;
     }
 
     if(transform->status == xmlSecTransformStatusWorking) {
-	ret = xmlSecNssEvpBlockCipherCtxUpdate(ctx, in, out, transform->encode,
+	if(ctx->ctxInitialized == 0) {
+	    ret = xmlSecNssEvpBlockCipherCtxInit(ctx, in, out, transform->encode,
 					    xmlSecTransformGetName(transform), 
 					    transformCtx);
-	if(ret < 0) {
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecNssEvpBlockCipherCtxInit",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	}
+	if((ctx->ctxInitialized == 0) && (last != 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecNssEvpBlockCipherCtxUpdate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			NULL,
+			XMLSEC_ERRORS_R_INVALID_DATA,
+			"not enough data to initialize transform");
 	    return(-1);
+	}
+
+	if(ctx->ctxInitialized != 0) {
+	    ret = xmlSecNssEvpBlockCipherCtxUpdate(ctx, in, out, transform->encode,
+					    xmlSecTransformGetName(transform), 
+					    transformCtx);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecNssEvpBlockCipherCtxUpdate",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
 	}
 	
 	if(last) {

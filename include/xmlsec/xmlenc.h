@@ -52,7 +52,7 @@ struct _xmlSecEncCtx {
     void*			userCtx;
     xmlSecKeyInfoCtx		keyInfoCtx;
     xmlSecTransformCtx		transformCtx;
-    xmlSecTransformPtr		encMethod;
+    xmlSecTransformPtr		defEncMethod;
     xmlSecKeyPtr		encKey;
 
     /* these data are returned */
@@ -61,6 +61,7 @@ struct _xmlSecEncCtx {
     xmlChar			*mimeType;
     xmlChar			*encoding;
     int				encrypt;
+    xmlSecTransformPtr		encMethod;
     xmlSecBufferPtr		encResult;
     int				replaced;
 
@@ -76,6 +77,9 @@ XMLSEC_EXPORT void 		xmlSecEncCtxDestroy		(xmlSecEncCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecEncCtxInitialize		(xmlSecEncCtxPtr ctx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecEncCtxFinalize		(xmlSecEncCtxPtr ctx);
+XMLSEC_EXPORT int		xmlSecEncCtxEncryptUri		(xmlSecEncCtxPtr ctx,
+								 xmlNodePtr node,
+								 const xmlChar *uri);
 XMLSEC_EXPORT int		xmlSecEncCtxDecrypt		(xmlSecEncCtxPtr ctx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT xmlSecBufferPtr	xmlSecEncCtxDecryptToBuffer	(xmlSecEncCtxPtr ctx,

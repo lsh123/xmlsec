@@ -478,7 +478,7 @@ xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node,
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformConnect",	    
+		    "xmlSecTransformCtxAppend",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
@@ -1382,7 +1382,8 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
        (((leftType & xmlSecTransformDataTypeXml) != 0) && 
         ((rightType & xmlSecTransformDataTypeXml) != 0))) {
 	
-	xmlSecTransformAddAfter(left, right);
+	left->next = right;
+	right->prev = left;
 	return(0);
     } 
     
@@ -1421,8 +1422,10 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(middleId)));
 	return(-1);
     }	
-    xmlSecTransformAddAfter(left, middle);
-    xmlSecTransformAddAfter(middle, right);
+    left->next = middle;
+    middle->prev = left;
+    middle->next = right;
+    right->prev = middle;
     return(0);
 }
 

@@ -422,7 +422,7 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 	int fixLength = 0;
 	
 	b = ctx->cipher->block_size;
-	xmlSecAssert2(b <= sizeof ctx->final, -1);
+	xmlSecAssert2(b <= (int)sizeof(ctx->final), -1);
 
 	if(ctx->final_used) {
 	    memcpy(buf, ctx->final, b);
@@ -520,8 +520,8 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 	    
 	    b = ctx->cipher->block_size;
 	    if(b > 1) {
-		xmlSecAssert2(b <= sizeof ctx->final, -1);
-		xmlSecAssert2(b <= cipher->id->bufOutSize, -1);
+		xmlSecAssert2(b <= (int)sizeof(ctx->final), -1);
+		xmlSecAssert2(b <= (int)cipher->id->bufOutSize, -1);
 		res = b - ctx->final[b - 1];
 		if(res > 0) {
 		    memcpy(cipher->bufOut, ctx->final, res);

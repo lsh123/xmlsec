@@ -242,7 +242,7 @@ int  initXmlsec(xmlsecCommand command);
 void shutdownXmlsec(void);
 int app_RAND_load_file(const char *file);
 int app_RAND_write_file(const char *file);
-int findIDnodes(xmlDtdPtr dtd, xmlDocPtr doc);
+int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc);
 
 
 xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlChar* defNodeNs);
@@ -1847,8 +1847,9 @@ int app_RAND_write_file(const char *file) {
 }
 
 int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc) {
-    xmlValidCtxt c = { 0 };
+    xmlValidCtxt c;
 
+    memset(&c, 0, sizeof(c));    
     xmlValidateDtd(&c, doc, dtd);
     return 0;
 }

@@ -1,3 +1,15 @@
+Sun Jan 26 21:39:56 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/digests.h src/hmac.c: fixed 91 bits HMAC
+	bug reported by Rich Salz and Jonathan Wenocur
+	* tests/aleksey-xmldsig-01/dtd-hmac-91.dtd
+	tests/aleksey-xmldsig-01/dtd-hmac-91.tmpl
+	tests/aleksey-xmldsig-01/dtd-hmac-91.xml
+	* tests/testDSig.sh: the test case for 91 bits HMAC bug
+	from Rich Salz and Jonathan Wenocur
+	* apps/xmlsec.c: fixing minor compile warnings for 
+	the external DTD patch
+	
 Sun Jan 26 18:19:49 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/aes.c src/ciphers.c src/des.c: fixed bug with 

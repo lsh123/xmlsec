@@ -153,6 +153,7 @@ struct _xmlSecDigestTransform {
     int					pushModeEnabled;
     unsigned char			*digest;
     size_t				digestSize;
+    unsigned char			digestLastByteMask;
     void 				*digestData;
 };
 

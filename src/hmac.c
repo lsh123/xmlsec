@@ -234,6 +234,7 @@ xmlSecMacHmacCreate(xmlSecTransformId id) {
     digest->digestData = ((unsigned char*)digest) + sizeof(xmlSecDigestTransform);
     digest->digest = ((unsigned char*)digest->digestData) + sizeof(HMAC_CTX);
     digest->digestSize = EVP_MAX_MD_SIZE;
+    digest->digestLastByteMask = 0xFF;
 
     return((xmlSecTransformPtr)digest);
 }
@@ -316,10 +317,16 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 	
 	content = xmlNodeGetContent(cur);
 	if(content != NULL) {
-	    res = atoi((char*)content) / 8;	    
+	    res = atoi((char*)content);	    
 	    xmlFree(content);
 	}
-	if(res > 0) digest->digestSize = res;
+	if(res > 0) {
+	    static unsigned char masks[] = 	
+		{ 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+		  
+	    digest->digestSize = (res + 7) / 8;
+	    digest->digestLastByteMask = masks[res % 8];
+	}
 	cur = xmlSecGetNextElementNode(cur->next);
     }
     
@@ -426,6 +433,9 @@ xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
     if(digestSize < digest->digestSize) {
 	digest->digestSize = digestSize;
     }
+    if(digest->digestSize > 0) {
+	digest->digest[digest->digestSize - 1] &= digest->digestLastByteMask;
+    }
     if(buffer != NULL) {
 	(*buffer) = digest->digest;
     }        
@@ -465,9 +475,15 @@ xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
 	digest->digestSize = digestSize;
     }
     
-    if((buffer == NULL) || (size != digest->digestSize) || (digest->digest == NULL)) {
+    if((buffer == NULL) || (size != digest->digestSize) || 
+    	    (digest->digest == NULL) || (digest->digestSize == 0)) {
 	digest->status = xmlSecTransformStatusFail;
-    } else if(memcmp(digest->digest, buffer, digest->digestSize) != 0){
+    } else if(memcmp(digest->digest, buffer, digest->digestSize - 1) != 0) {
+	digest->status = xmlSecTransformStatusFail;
+    } else if((digest->digest[digest->digestSize - 1] & 
+		digest->digestLastByteMask) != 
+	       (buffer[digest->digestSize - 1] & 
+		digest->digestLastByteMask)) {
 	digest->status = xmlSecTransformStatusFail;
     } else {
 	digest->status = xmlSecTransformStatusOk;

@@ -60,7 +60,6 @@ static int  	xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform,
 static int  	xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, 
 							 int last,
 							 xmlSecTransformCtxPtr transformCtx);
-static xmlSecSize  	xmlSecNssKeyTransportGetKeySize(xmlSecTransformPtr transform);
 
 static int
 xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
@@ -83,8 +82,6 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 static int 
 xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 	xmlSecNssKeyTransportCtxPtr context ;
-    int ret;
-    
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
     
@@ -149,7 +146,6 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
 static int  
 xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
 	xmlSecNssKeyTransportCtxPtr context ;
-	xmlSecSize cipherSize = 0 ;
     
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
@@ -242,7 +238,7 @@ xmlSecNssKeyTransportCtxInit(
 	int 						encrypt ,
 	xmlSecTransformCtxPtr 		transformCtx
 ) {
-	xmlSecSize			blockSize ;
+	int			blockSize ;
 
 	xmlSecAssert2( ctx != NULL , -1 ) ;
 	xmlSecAssert2( ctx->cipher != CKM_INVALID_MECHANISM , -1 ) ;
@@ -354,11 +350,10 @@ xmlSecNssKeyTransportCtxUpdate(
 static int 
 xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr in,  xmlSecBufferPtr out, 
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
-	SECKEYPublicKey*	targetKey ;
 	PK11SymKey*			symKey ;
 	PK11SlotInfo*		slot ;
 	SECItem				oriskv ;
-	xmlSecSize			blockSize ;
+	int			blockSize ;
 	xmlSecBufferPtr		result ;
 
 	xmlSecAssert2( ctx != NULL , -1 ) ;
@@ -497,7 +492,6 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
 		PK11_FreeSlot( slot ) ;
 	} else {
 		SECItem*			keyItem ;
-		CK_OBJECT_HANDLE 	id1 ;
 
 		/* pay attention to mechanism */
         symKey = PK11_PubUnwrapSymKey( ctx->prikey, &oriskv, ctx->cipher, CKA_UNWRAP, 0 );

@@ -493,7 +493,7 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
     xmlSecAssert2(node->parent != NULL, -1);
 
     /* parse buffer in the context of node's parent */
-    if(xmlParseInNodeContext(node->parent, buffer, size, XML_PARSE_NODICT, &results) != XML_ERR_OK) {
+    if(xmlParseInNodeContext(node->parent, BAD_CAST buffer, size, XML_PARSE_NODICT, &results) != XML_ERR_OK) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlParseInNodeContext",

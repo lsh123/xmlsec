@@ -28,6 +28,7 @@
 
 /**
  * xmlSecNssNodeGetBigNumValue:
+ * @arena: the arena from which to allocate memory
  * @cur: the poitner to an XML node.
  * @a: a SECItem object to hold the BigNum value
  *

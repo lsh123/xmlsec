@@ -88,8 +88,8 @@ xmlSecOpenSSLAppShutdown(void) {
  * xmlSecOpenSSLAppKeyLoad:
  * @filename:		the key filename.
  * @format:		the key file format.
- * @pwd:		the PEM key file password.
- * @pwdCallback:	the PEM key password callback.
+ * @pwd:		the key file password.
+ * @pwdCallback:	the key password callback.
  * @pwdCallbackCtx:	the user context for password callback.
  *
  * Reads key from the a file.
@@ -108,6 +108,11 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    if (format == xmlSecKeyDataFormatPkcs12) {
+	return (xmlSecOpenSSLAppPkcs12Load(filename, pwd, pwdCallback,
+			      		   pwdCallbackCtx));
+    }
 
     bio = BIO_new_file(filename, "rb");
     if(bio == NULL) {
@@ -315,6 +320,8 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
  * @pwdCallbackCtx:	the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
+ * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns pointer to the key or NULL if an error occurs.
  */

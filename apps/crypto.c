@@ -205,11 +205,12 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     } 
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 
-    key = xmlSecCryptoAppPkcs12Load(filename, pwd, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, 
+		    		 pwd, NULL, NULL);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecCryptoAppPkcs12Load",
+		    "xmlSecCryptoAppKeyLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "filename=%s",
 		    xmlSecErrorsSafeString(filename));

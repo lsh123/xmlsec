@@ -1,488 +1,551 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Library: XML Digital Signature</title>
+ 
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=ISO-8859-1">
+  <title>XML Security Library: XML Digital Signature</title>
 </head>
-<body><table witdh="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="index.html">Home</a></li>
-<li><a href="download.html">Download</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="documentation.html">Documentation</a></li>
-<ul>
-<li><a href="faq.html">FAQ</a></li>
-<li><a href="api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="api/xmlsec-reference.html">API reference</a></li>
-<li><a href="api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="xmlenc.html">XML Encryption</a></li>
-<li><a href="c14n.html">XML Canonicalization</a></li>
-<li><a href="bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="related.html">Related</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top">
-<tr><td valign="top" align="left" id="xmlsecContent">
-<div align="Center">              
-      <h2>XML Digital Signature</h2>
-</div>
-<p>
-<a href="http://www.w3.org/TR/xmldsig-core">XML Digital Signature</a>
-     provides 
-     <a href="http://www.w3.org/TR/xmldsig-core/#def-Integrity" class="link-def">integrity,</a> 
-     <a href="http://www.w3.org/TR/xmldsig-core/#def-AuthenticationMessage" class="link-def">message authentication,</a>
-     and/or 
-     <a href="http://www.w3.org/TR/xmldsig-core/#def-AuthenticationSigner" class="link-def">signer  authentication</a>
-      services for data of any type, whether located within the XML that includes the signature or elsewhere.
+ <body>
+<table witdh="100%" valign="top">
+  <tbody>
+    <tr valign="top">
+ <td valign="top" align="left" width="210"> <img src="images/logo.gif"
+ alt="XML Security Library" border="0">
+      <p></p>
+ 
+      <ul>
+ <li><a href="index.html">Home</a></li>
+ <li><a href="download.html">Download</a></li>
+ <li><a href="news.html">News</a></li>
+ <li><a href="documentation.html">Documentation</a></li>
+ 
+        <ul>
+ <li><a href="faq.html">FAQ</a></li>
+ <li><a href="api/xmlsec-notes.html">Tutorial</a></li>
+ <li><a href="api/xmlsec-reference.html">API reference</a></li>
+ <li><a href="api/xmlsec-examples.html">Examples</a></li>
+ 
+        </ul>
+ <li><a href="xmldsig.html">XML Digital Signature</a></li>
+ 
+        <ul>
+          <li><a
+ href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li>
+        </ul>
+ <li><a href="xmlenc.html">XML Encryption</a></li>
+ <li><a href="c14n.html">XML Canonicalization</a></li>
+ <li><a href="bugs.html">Reporting Bugs</a></li>
+ <li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+ <li><a href="related.html">Related</a></li>
+ 
+      </ul>
+ 
+      <table width="100%">
+ <tbody>
+          <tr>
+ <td width="15"><br>
+            </td>
+ <td><a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png"
+ alt="LibXML2" border="0">
+            </a></td>
+ </tr>
+ <tr>
+ <td width="15"><br>
+            </td>
+ <td><a href="http://xmlsoft.org/XSLT"><img
+ src="images/libxslt-logo.png" alt="LibXSLT" border="0">
+            </a></td>
+ </tr>
+ <tr>
+ <td width="15"><br>
+            </td>
+ <td><a href="http://www.openssl.org/"><img
+ src="images/openssl-logo.png" alt="OpenSSL" border="0">
+            </a></td>
+ </tr>
+ 
+        </tbody>
+      </table>
+ </td>
+ <td valign="top">
+      <table width="100%" valign="top">
+ <tbody>
+          <tr>
+            <td valign="top" align="left" id="xmlsecContent"> 
+            <div align="center">                     
+            <h2>XML Digital Signature</h2>
+ </div>
+ 
+            <p> <a href="http://www.w3.org/TR/xmldsig-core">XML Digital Signature</a> 
+     provides       <a
+ href="http://www.w3.org/TR/xmldsig-core/#def-Integrity"
+ class="link-def">integrity,</a>       <a
+ href="http://www.w3.org/TR/xmldsig-core/#def-AuthenticationMessage"
+ class="link-def">message authentication,</a>      and/or       <a
+ href="http://www.w3.org/TR/xmldsig-core/#def-AuthenticationSigner"
+ class="link-def">signer  authentication</a>       services for data of any
+type, whether located within the XML that includes the signature or elsewhere. 
      </p>
-<p>
-     XML Security Library supports <a href="xmldsig-interop.html">all</a> MUST/SHOULD/MAY
-     features and algorithms described in the W3C standard and provides API to sign prepared document
-templates, add signature(s)   to a document &quot;on-the-fly&quot; or verify the signature(s) 
-in the document.
-     
-      </p>
-<p>
-      <a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">XML Digital Signature Online Verifier</a>
-      is an example of a real application based on XML Security Library. 
-      Using this tool you can verify any XML Signature and get 
-      detailed report on what and how was signed. 
-      </p>
-<div align="Center">              
-      <h3>XML Security Library XML Signature  Interoperability Report</h3>
-</div>
-<br><div align="center">
-      <table cellpadding="2" cellspacing="2" border="1" width="85%"><tbody>
-<tr>
-<td valign="top" align="left"><b>Features and algorithms<br></b></td>
-            <td valign="top" align="left"><b>Key Word<br></b></td>
-            <td valign="top" align="left">
-<b>XMLSec with OpenSSL </b> </td>
-            <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
-            <td style="vertical-align: top;">
-<b>XMLSec with NSS</b><b><a href="#new-version"></a></b>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a class="link-def" href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureDetac%20hed">
+ 
+            <p>      XML Security Library supports <a
+ href="xmldsig-interop.html">all</a> MUST/SHOULD/MAY      features and algorithms
+described in the W3C standard and provides API to sign prepared document templates,
+add signature(s)   to a document "on-the-fly" or verify the signature(s)
+ in the document.             </p>
+ 
+            <p>       <a
+ href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">XML Digital Signature
+Online Verifier</a>       is an example of a real application based on XML
+Security Library.        Using this tool you can verify any XML Signature
+and get        detailed report on what and how was signed.        </p>
+ 
+            <div align="center">                     
+            <h3>XML Security Library XML Signature  Interoperability Report</h3>
+ </div>
+ <br>
+            <div align="center">       
+            <table cellpadding="2" cellspacing="2" border="1"
+ width="85%">
+              <tbody>
+ <tr>
+ <td valign="top" align="left"><b>Features and algorithms<br>
+                  </b></td>
+             <td valign="top" align="left"><b>Key Word<br>
+                  </b></td>
+             <td valign="top" align="left"> <b>XMLSec with OpenSSL </b> </td>
+             <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
+             <td style="vertical-align: top;"> <b>XMLSec with NSS</b><b><a
+ href="#new-version"></a></b> </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a class="link-def"
+ href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureDetac%20hed"> 
 Detached</a> Signature<br>
-</td>
-            <td valign="top" align="left">MUST <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a class="link-def" href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureEnvel%20oping">
-Enveloping</a> Signature: same document reference with fragment
-(URI=&quot;#Object1&quot;)<br>
-</td>
-            <td valign="top" align="left">MUST <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a class="link-def" href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureEnvel%20oped">
-Enveloped</a> Signature: same document reference (URI=&quot;&quot;) with <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature">
+ </td>
+             <td valign="top" align="left">MUST <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a class="link-def"
+ href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureEnvel%20oping"> 
+Enveloping</a> Signature: same document reference with fragment (URI="#Object1")<br>
+ </td>
+             <td valign="top" align="left">MUST <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a class="link-def"
+ href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureEnvel%20oped"> 
+Enveloped</a> Signature: same document reference (URI="") with <a
+ href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature"> 
 Enveloped Signature Transform</a> .<br>
-</td>
-            <td valign="top" align="left">MUST <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#sec-SignatureValue%20">
+ </td>
+             <td valign="top" align="left">MUST <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#sec-SignatureValue%20"> 
 SignatureValue</a> generation/validation<br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"> Manifest</a>
-DigestValue generation/valdiation<br>
-</td>
-            <td valign="top" align="left">MAY</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left"> Feature: <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature"> laxly
-schema valid Signature element</a> generation<br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel">
-XPointers</a> '#xpointer(/)'<br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel">
-XPointers</a> '#xpointer(id(&quot;<em>ID</em>&quot;))'<br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel">
-XPointers</a>: full suppport </td>
-            <td valign="top" align="left">MAY <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-XPath"> XPath</a> <br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left"> the dsig <a href="http://www.w3.org/TR/xmldsig-core/#sec-XPath"> XPath
-'here()'</a> function (can be used to implement enveloped signature)<br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left"> XSLT (note, the child <code>
-XSLT</code> element of Transform has been   deprecated.)<br>
-</td>
-            <td valign="top" align="left">MAY<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left"> RetrievalMethod (e.g.,
-X509Data)<br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/2000/09/xmldsig#sha1"> SHA1</a> <br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/2000/09/xmldsig#base64"> Base64</a> <br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/2000/09/xmldsig#hmac-sha1"> HMAC-SHA1</a> <br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/2000/09/xmldsig#dsa"> DSAwithSHA1<br>
-(DSS)</a> <br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<a href="#dsa-sha1"><sup>(1)</sup></a> <br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/2000/09/xmldsig#rsa-sha1"> RSAwithSHA1</a> <br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-          </tr>
-<tr>
-<td valign="top">X509 support<br>
-</td>
-            <td valign="top">SHOULD<br>
-</td>
-            <td valign="top">Y<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/2000/09/xmldsig#minimal"> minimal</a>
-(deprecated)<br>
-</td>
-            <td valign="top" align="left">n/a<br>
-</td>
-            <td valign="top" align="left">N<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-            <td style="vertical-align: top;">N<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/2000/WD-xml-c14n-20001011"> Canonical XML</a>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"> Manifest</a> DigestValue
+generation/valdiation<br>
+ </td>
+             <td valign="top" align="left">MAY</td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> Feature: <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-Signature"> laxly schema valid
+Signature element</a> generation<br>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel"> XPointers</a>
+'#xpointer(/)'<br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel"> XPointers</a>
+'#xpointer(id("<em>ID</em>"))'<br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel"> XPointers</a>:
+full suppport </td>
+             <td valign="top" align="left">MAY <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-XPath"> XPath</a> <br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> the dsig <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-XPath"> XPath 'here()'</a>
+function (can be used to implement enveloped signature)<br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> XSLT (note, the child <code> XSLT</code>
+element of Transform has been   deprecated.)<br>
+ </td>
+             <td valign="top" align="left">MAY<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> RetrievalMethod (e.g., X509Data)<br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/2000/09/xmldsig#sha1"> SHA1</a> <br>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/2000/09/xmldsig#base64"> Base64</a> <br>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/2000/09/xmldsig#hmac-sha1"> HMAC-SHA1</a> <br>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/2000/09/xmldsig#dsa"> DSAwithSHA1<br>
+ (DSS)</a> <br>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<a href="#dsa-sha1"><sup>(1)</sup></a>
+                  <br>
+ </td>
+             <td style="vertical-align: top;">N<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/2000/09/xmldsig#rsa-sha1"> RSAwithSHA1</a> <br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">N<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top">X509 support<br>
+ </td>
+             <td valign="top">SHOULD<br>
+ </td>
+             <td valign="top">Y<br>
+ </td>
+             <td style="vertical-align: top;">N<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/2000/09/xmldsig#minimal"> minimal</a> (deprecated)<br>
+ </td>
+             <td valign="top" align="left">n/a<br>
+ </td>
+             <td valign="top" align="left">N<br>
+ </td>
+             <td style="vertical-align: top;">N<br>
+ </td>
+             <td style="vertical-align: top;">N<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/2000/WD-xml-c14n-20001011"> Canonical XML</a> 
 (20010315)<br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/2000/WD-xml-c14n-20001011"> Canonical XML</a>
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/2000/WD-xml-c14n-20001011"> Canonical XML</a> 
 with comments<br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/2002/CR-xml-exc-c14n-20020212"> Exlusive
-Canonical XML</a> <br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/TR/2002/CR-xml-exc-c14n-20020212"> Exlusive
-Canonical XML</a> with comments<br>
-</td>
-            <td valign="top" align="left">SHOULD <br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">
-<a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature">
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/2002/CR-xml-exc-c14n-20020212"> Exlusive Canonical
+XML</a> <br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/TR/2002/CR-xml-exc-c14n-20020212"> Exlusive Canonical
+XML</a> with comments<br>
+ </td>
+             <td valign="top" align="left">SHOULD <br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left"> <a
+ href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature"> 
 Enveloped Signature</a> <br>
-</td>
-            <td valign="top" align="left">MUST<br>
-</td>
-            <td valign="top" align="left">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top">
-<b>Additional algorithms</b> 	    (<a href="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt">
+ </td>
+             <td valign="top" align="left">MUST<br>
+ </td>
+             <td valign="top" align="left">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top"> <b>Additional algorithms</b> 	    (<a
+ href="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"> 
 *</a> )<br>
-</td>
-            <td valign="top"><br></td>
-            <td valign="top"><br></td>
-            <td style="vertical-align: top;"><br></td>
-            <td style="vertical-align: top;"><br></td>
-          </tr>
-<tr>
-<td valign="top" align="left">HMAC-MD5<br>
-</td>
-            <td valign="top" align="left">  <br>
-</td>
-            <td valign="top" align="left">Y <br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top">HMAC-RIPEMD160<br>
-</td>
-            <td valign="top"> <br>
-</td>
-            <td valign="top">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-<tr>
-<td valign="top" align="left">XPointer transform<br>
-</td>
-            <td valign="top" align="left">  <br>
-</td>
-            <td valign="top" align="left">Y <br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-            <td style="vertical-align: top;">Y<br>
-</td>
-          </tr>
-</tbody></table>
-<div align="left">
-<br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a>
-with Seed and PgenCounter is not supported.<br><p>Test vectors (from <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C XML 
-Signature WG: XML Signature Interoperability page</a>):
-<br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/att-0016/01-merlin-xmldsig-twenty-three.tar.gz">
-merlin-xmldsig-twenty-three.tar.gz</a> <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001AprJun/att-00%2033/01-merlin-xmldsig-sixteen.tar.gz">
-merlin-xmldsig-sixteen.tar.gz</a> (features, deprecated)<br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JanMar/att-0155/04-merlin-xmldsig-fifteen.tar.gz">
+ </td>
+             <td valign="top"><br>
+                  </td>
+             <td valign="top"><br>
+                  </td>
+             <td style="vertical-align: top;"><br>
+                  </td>
+             <td style="vertical-align: top;"><br>
+                  </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left">HMAC-MD5<br>
+ </td>
+             <td valign="top" align="left">&nbsp; <br>
+ </td>
+             <td valign="top" align="left">Y <br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top">HMAC-RIPEMD160<br>
+ </td>
+             <td valign="top">&nbsp;<br>
+ </td>
+             <td valign="top">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">N<br>
+ </td>
+           </tr>
+ <tr>
+ <td valign="top" align="left">XPointer transform<br>
+ </td>
+             <td valign="top" align="left">&nbsp; <br>
+ </td>
+             <td valign="top" align="left">Y <br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+             <td style="vertical-align: top;">Y<br>
+ </td>
+           </tr>
+ 
+              </tbody>
+            </table>
+ 
+            <div align="left"> <br>
+            <a name="dsa-sha1"></a><sup>(1)</sup> Defining <a
+ href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a> with
+Seed and PgenCounter is not supported.<br>
+            <p>Test vectors (from <a
+ href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C
+XML  Signature WG: XML Signature Interoperability page</a>): <br>
+            <a
+ href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/att-0016/01-merlin-xmldsig-twenty-three.tar.gz"> 
+merlin-xmldsig-twenty-three.tar.gz</a> <br>
+            <a
+ href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001AprJun/att-00%2033/01-merlin-xmldsig-sixteen.tar.gz"> 
+merlin-xmldsig-sixteen.tar.gz</a> (features, deprecated)<br>
+            <a
+ href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JanMar/att-0155/04-merlin-xmldsig-fifteen.tar.gz"> 
 merlin-xmldsig-fifteen.tar.gz</a> (algorithms, deprecated)<br>
-</p>
-      </div>
-      </div>
-</td></tr>
-<tr><td>
-<br><br><p><a href="bugs.html">Aleksey Sanin</a></p>
-</td></tr>
-</table></td>
-</tr></table></body>
+ </p>
+       </div>
+       </div>
+ </td>
+          </tr>
+ <tr>
+            <td> <br>
+            <br>
+            <p><a href="bugs.html">Aleksey Sanin</a></p>
+ </td>
+          </tr>
+ 
+        </tbody>
+      </table>
+      </td>
+ </tr>
+  </tbody>
+</table>
+<br>
+</body>
 </html>

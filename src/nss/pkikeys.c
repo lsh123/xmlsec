@@ -167,6 +167,16 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
     return(0);
 }
 
+/**
+ * xmlSecNssPKIAdoptKey:
+ * @privkey:        the NSS Private Key handle
+ * @pubkey:         the NSS Public Key handle
+ *
+ * Build a KeyData object from the given Private Key and Public
+ * Key handles.
+ *
+ * Returns pointer to KeyData object or NULL if an error occurs.
+ */
 xmlSecKeyDataPtr
 xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,                        
                      SECKEYPublicKey  *pubkey)

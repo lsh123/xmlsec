@@ -35,10 +35,10 @@
 
 /* workaround - NSS exports this but doesn't declare it */
 extern CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
-								 SECItem *derCert,
-								 char *nickname,
-								 PRBool isperm,
-								 PRBool copyDER);
+						   SECItem *derCert,
+						   char *nickname,
+						   PRBool isperm,
+						   PRBool copyDER);
 
 
 static int xmlSecNssAppReadSECItem(const char *fn, SECItem *contents);
@@ -153,9 +153,9 @@ xmlSecNssAppShutdown(void) {
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-		    const char *pwd ATTRIBUTE_UNUSED,
-		    void* pwdCallback ATTRIBUTE_UNUSED, 
-		    void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+		    const char *pwd,
+		    void* pwdCallback,
+		    void* pwdCallbackCtx) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr retval = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -171,6 +171,11 @@ xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    if (format == xmlSecKeyDataFormatPkcs12) {
+	return (xmlSecNssAppPkcs12Load(filename, pwd, pwdCallback,
+				       pwdCallbackCtx));
+    }
     
     /* read the file contents */
     memset(&filecontent, 0, sizeof(filecontent));
@@ -458,7 +463,9 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
  * @pwdCallback:	the password callback.
  * @pwdCallbackCtx:	the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file
+ * Reads key and all associated certificates from the PKCS12 file.
+ * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns pointer to the key or NULL if an error occurs.
  */

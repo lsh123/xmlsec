@@ -34,6 +34,13 @@
 #define XMLSEC_NSS_AES_IV_SIZE			16
 #define XMLSEC_NSS_AES_BLOCK_SIZE		16
 
+#ifndef NSS_AES_KEYWRAP_BUG_FIXED
+static PK11SymKey*	xmlSecNssMakeAesKey(const xmlSecByte *key, 
+				    	    xmlSecSize keySize, int enc);
+static void     	xmlSecNssAesOp(PK11SymKey *aeskey, 
+				       const xmlSecByte *in, xmlSecByte *out,
+				       int enc);
+#endif /* NSS_AES_KEYWRAP_BUG_FIXED */
 
 /*********************************************************************
  *
@@ -178,6 +185,7 @@ xmlSecNssTransformKWAes192GetKlass(void) {
 }
 
 /** 
+ * xmlSecNssTransformKWAes256GetKlass:
  *
  * The AES-256 key wrapper transform klass.
  *
@@ -484,7 +492,255 @@ xmlSecNssKWAesGetKeySize(xmlSecTransformPtr transform) {
  *            an integrity check failure error.
  */
 
-/* NSS does all of the above */
+#ifndef NSS_AES_KEYWRAP_BUG_FIXED
+static const xmlSecByte xmlSecNssKWAesMagicBlock[XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE] = { 
+    0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
+};
+					    	
+static int  	
+xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
+		 const xmlSecByte *in, xmlSecSize inSize,
+		 xmlSecByte *out, xmlSecSize outSize, int enc) {
+    xmlSecByte block[XMLSEC_NSS_AES_BLOCK_SIZE];
+    xmlSecByte *p;
+    int N, i, j, t;
+    int result = -1;
+    PK11SymKey *aeskey = NULL;
+    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= inSize + 8, -1);
+
+    if (enc == 1) {
+        aeskey = xmlSecNssMakeAesKey(key, keySize, enc);
+        if(aeskey == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE, 
+    	    	        NULL,
+    		        "xmlSecNssMakeAesKey",
+    		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+    		        "error code = %d", PORT_GetError());
+	    goto done;
+        }
+    
+        /* prepend magic block */
+        if(in != out) {
+            memcpy(out + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE, in, inSize);
+        } else {
+            memmove(out + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE, out, inSize);
+        }
+        memcpy(out, xmlSecNssKWAesMagicBlock, XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE);
+        
+        N = (inSize / 8);
+        if(N == 1) {
+            xmlSecNssAesOp(aeskey, out, out, enc);
+        } else {
+    	    for(j = 0; j <= 5; ++j) {
+    	        for(i = 1; i <= N; ++i) {
+    		    t = i + (j * N);
+    		    p = out + i * 8;
+    
+    		    memcpy(block, out, 8);
+    		    memcpy(block + 8, p, 8);
+    		
+                    xmlSecNssAesOp(aeskey, block, block, enc);
+    		    block[7] ^=  t;
+    		    memcpy(out, block, 8);
+    		    memcpy(p, block + 8, 8);
+    	        }
+    	    }
+        }
+        
+        result = inSize + 8;
+    } else {
+        aeskey = xmlSecNssMakeAesKey(key, keySize, enc);
+        if(aeskey == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE, 
+    		        NULL,
+    		        "xmlSecNssMakeAesKey",
+    		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+    		        "error code = %d", PORT_GetError());
+	    goto done;
+        }
+        
+        /* copy input */
+        if(in != out) {
+            memcpy(out, in, inSize);
+        }
+            
+        N = (inSize / 8) - 1;
+        if(N == 1) {
+            xmlSecNssAesOp(aeskey, out, out, enc);
+        } else {
+    	    for(j = 5; j >= 0; --j) {
+    	        for(i = N; i > 0; --i) {
+    		    t = i + (j * N);
+    		    p = out + i * 8;
+    
+    		    memcpy(block, out, 8);
+    		    memcpy(block + 8, p, 8);
+    		    block[7] ^= t;
+    		
+                    xmlSecNssAesOp(aeskey, block, block, enc);
+    		    memcpy(out, block, 8);
+    		    memcpy(p, block + 8, 8);
+    	        }
+    	    }
+        }
+        /* do not left data in memory */
+        memset(block, 0, sizeof(block));
+        
+        if(memcmp(xmlSecNssKWAesMagicBlock, out, XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE) != 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE, 
+    		        NULL,
+    		        NULL,
+    		        XMLSEC_ERRORS_R_INVALID_DATA,
+    		        "bad magic block");
+    	    goto done;
+        }
+    	
+        memmove(out, out + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE, inSize - XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE);
+        result = (inSize - XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE);
+    }
+
+done:
+    if (aeskey != NULL) {
+	PK11_FreeSymKey(aeskey);
+    }
+
+    return (result);
+}
+
+static PK11SymKey *
+xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
+    CK_MECHANISM_TYPE  cipherMech;
+    PK11SlotInfo*      slot = NULL;
+    PK11SymKey*        aeskey = NULL;
+    SECItem            keyItem;
+    
+    xmlSecAssert2(key != NULL, NULL);
+    xmlSecAssert2(keySize > 0, NULL);
+
+    cipherMech = CKM_AES_ECB;
+    slot = PK11_GetBestSlot(cipherMech, NULL);
+    if (slot == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PK11_GetBestSlot",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "Error code = %d", PORT_GetError());
+	goto done;
+    }
+
+    keyItem.data = (unsigned char *)key;
+    keyItem.len = keySize;
+    aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap, 
+		    	       enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
+    if (aeskey == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PK11_ImportSymKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "Error code = %d", PORT_GetError());
+	goto done;
+    }
+
+done:
+    if (slot) {
+	PK11_FreeSlot(slot);
+    }
+
+    return(aeskey);
+}
+
+/* encrypt a block (XMLSEC_NSS_AES_BLOCK_SIZE), in and out can overlap */
+static void
+xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
+	       int enc) {
+
+    CK_MECHANISM_TYPE  cipherMech;
+    SECItem*           SecParam = NULL;
+    PK11Context*       EncContext = NULL;
+    SECStatus          rv;
+    int                tmp1_outlen;
+    unsigned int       tmp2_outlen;
+
+    xmlSecAssert(in != NULL);
+    xmlSecAssert(out != NULL);
+
+    cipherMech = CKM_AES_ECB;
+    SecParam = PK11_ParamFromIV(cipherMech, NULL);
+    if (SecParam == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PK11_ParamFromIV",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "Error code = %d", PORT_GetError());
+	goto done;
+    }
+
+    EncContext = PK11_CreateContextBySymKey(cipherMech, 
+		    			    enc ? CKA_ENCRYPT : CKA_DECRYPT, 
+					    aeskey, SecParam);
+    if (EncContext == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PK11_CreateContextBySymKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "Error code = %d", PORT_GetError());
+	goto done;
+    }
+
+    tmp1_outlen = tmp2_outlen = 0;
+    rv = PK11_CipherOp(EncContext, out, &tmp1_outlen, 
+		       XMLSEC_NSS_AES_BLOCK_SIZE, (unsigned char *)in, 
+		       XMLSEC_NSS_AES_BLOCK_SIZE);
+    if (rv != SECSuccess) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PK11_CipherOp",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "Error code = %d", PORT_GetError());
+	goto done;
+    }
+
+    rv = PK11_DigestFinal(EncContext, out+tmp1_outlen, 
+		    	  &tmp2_outlen, XMLSEC_NSS_AES_BLOCK_SIZE-tmp1_outlen);
+    if (rv != SECSuccess) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PK11_DigestFinal",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "Error code = %d", PORT_GetError());
+	goto done;
+    }
+
+done:
+    if (SecParam) {
+	SECITEM_FreeItem(SecParam, PR_TRUE);
+    }
+    if (EncContext) {
+	PK11_DestroyContext(EncContext, PR_TRUE);
+    }
+
+}
+
+#else /* NSS_AES_KEYWRAP_BUG_FIXED */
+
+/* Note: When the bug gets fixed, it is not enough to just remove
+ * the #ifdef (NSS_AES_KEYWRAP_BUG_FIXED). The code also has
+ * to change from doing the Init/Update/Final to just a straight
+ * encrypt or decrypt. PK11 wrappers have to be exposed by
+ * NSS, and these should be used.
+ * Follow the NSS bug system for more details on the fix
+ * http://bugzilla.mozilla.org/show_bug.cgi?id=213795
+ */
+
+/* NSS implements the AES Key Wrap algorithm described at
+ * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap
+ */ 
 
 static int  	
 xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
@@ -493,10 +749,10 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 
     CK_MECHANISM_TYPE  cipherMech;
     PK11SlotInfo*      slot = NULL;
-    PK11SymKey*        SymKey = NULL;
+    PK11SymKey*        aeskey = NULL;
     SECItem*           SecParam = NULL;
     PK11Context*       EncContext = NULL;
-    SECItem            keyItem, ivItem;
+    SECItem            keyItem;
     SECStatus          rv;
     int                result_len = -1;
     int                tmp1_outlen;
@@ -522,9 +778,9 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 
     keyItem.data = (unsigned char *)key;
     keyItem.len = keySize;
-    SymKey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap, 
+    aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap, 
 		    	       enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
-    if (SymKey == NULL) {
+    if (aeskey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "PK11_ImportSymKey",
@@ -533,9 +789,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 	goto done;
     }
 
-    memset(&ivItem, 0, sizeof(ivItem));
-
-    SecParam = PK11_ParamFromIV(cipherMech, &ivItem);
+    SecParam = PK11_ParamFromIV(cipherMech, NULL);
     if (SecParam == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -547,7 +801,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 
     EncContext = PK11_CreateContextBySymKey(cipherMech, 
 		    			    enc ? CKA_ENCRYPT : CKA_DECRYPT, 
-					    SymKey, SecParam);
+					    aeskey, SecParam);
     if (EncContext == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -586,8 +840,8 @@ done:
     if (slot) {
 	PK11_FreeSlot(slot);
     }
-    if (SymKey) {
-	PK11_FreeSymKey(SymKey);
+    if (aeskey) {
+	PK11_FreeSymKey(aeskey);
     }
     if (SecParam) {
 	SECITEM_FreeItem(SecParam, PR_TRUE);
@@ -598,5 +852,6 @@ done:
 
     return(result_len);
 }
+#endif /* NSS_AES_KEYWRAP_BUG_FIXED */
 
 #endif /* XMLSEC_NO_AES */

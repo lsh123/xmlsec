@@ -43,11 +43,11 @@
 
 
 /* workaround - NSS exports this but doesn't declare it */
-XMLSEC_CRYPTO_EXPORT CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
-								 SECItem *derCert,
-								 char *nickname,
-								 PRBool isperm,
-								 PRBool copyDER);
+extern CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
+						   SECItem *derCert,
+						   char *nickname,
+						   PRBool isperm,
+						   PRBool copyDER);
 
 /*************************************************************************
  *

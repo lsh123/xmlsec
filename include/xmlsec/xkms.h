@@ -34,20 +34,26 @@ typedef struct _xmlSecXkmsRespondWithKlass	xmlSecXkmsRespondWithKlass,
 						*xmlSecXkmsRespondWithId;
 
 
+
+/************************************************************************
+ *
+ * XKMS/XKISS requests server side processing klass
+ *
+ ************************************************************************/ 
 /**
- * xmlXkmsCtxMode:
- * @xmlXkmsCtxModeLocateRequest: 	the <xkms:LocateRequest/> node processing.
- * @xmlXkmsCtxModeValidateRequest:	the <xkms:ValidateRequest/> node processing.
+ * xmlXkissServerCtxMode:
+ * @xmlXkissServerCtxModeLocateRequest: 	the <xkms:LocateRequest/> node processing.
+ * @xmlXkissServerCtxModeValidateRequest:	the <xkms:ValidateRequest/> node processing.
  *
  * XKMS request processing mode.
  */
 typedef enum {
-    xmlXkmsCtxModeLocateRequest = 0,
-    xmlXkmsCtxModeValidateRequest
-} xmlXkmsCtxMode;
+    xmlXkissServerCtxModeLocateRequest = 0,
+    xmlXkissServerCtxModeValidateRequest
+} xmlXkissServerCtxMode;
 
 /** 
- * xmlSecXkmsCtx:
+ * xmlSecXkissServerCtx:
  * @userData:			the pointer to user data (xmlsec and xmlsec-crypto libraries
  *				never touches this).
  * @flags:			the XML Encryption processing flags.
@@ -59,7 +65,7 @@ typedef enum {
  * 
  * XKMS context.
  */
-struct _xmlSecXkmsCtx {
+struct _xmlSecXkissServerCtx {
     /* these data user can set before performing the operation */
     void*			userData;
     unsigned int		flags;
@@ -73,7 +79,7 @@ struct _xmlSecXkmsCtx {
     xmlSecPtrList		keys;
 
     /* these are internal data, nobody should change that except us */
-    xmlXkmsCtxMode		mode;
+    xmlXkissServerCtxMode	mode;
     xmlNodePtr			opaqueClientDataNode;
     xmlNodePtr 			firtsMsgExtNode;
     xmlNodePtr 			firtsRespMechNode;
@@ -85,21 +91,21 @@ struct _xmlSecXkmsCtx {
     void*			reserved1;
 };
 
-XMLSEC_EXPORT xmlSecXkmsCtxPtr	xmlSecXkmsCtxCreate		(xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void 		xmlSecXkmsCtxDestroy		(xmlSecXkmsCtxPtr xkmsCtx);
-XMLSEC_EXPORT int		xmlSecXkmsCtxInitialize		(xmlSecXkmsCtxPtr xkmsCtx,
+XMLSEC_EXPORT xmlSecXkissServerCtxPtr	xmlSecXkissServerCtxCreate(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT void 		xmlSecXkissServerCtxDestroy	(xmlSecXkissServerCtxPtr xkissServerCtx);
+XMLSEC_EXPORT int		xmlSecXkissServerCtxInitialize	(xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void		xmlSecXkmsCtxFinalize		(xmlSecXkmsCtxPtr xkmsCtx);
-XMLSEC_EXPORT int		xmlSecXkmsCtxCopyUserPref	(xmlSecXkmsCtxPtr dst,
-								 xmlSecXkmsCtxPtr src);
-XMLSEC_EXPORT void		xmlSecXkmsCtxReset		(xmlSecXkmsCtxPtr xkmsCtx);
-XMLSEC_EXPORT int		xmlSecXkmsCtxLocate		(xmlSecXkmsCtxPtr xkmsCtx,
+XMLSEC_EXPORT void		xmlSecXkissServerCtxFinalize	(xmlSecXkissServerCtxPtr xkissServerCtx);
+XMLSEC_EXPORT int		xmlSecXkissServerCtxCopyUserPref(xmlSecXkissServerCtxPtr dst,
+								 xmlSecXkissServerCtxPtr src);
+XMLSEC_EXPORT void		xmlSecXkissServerCtxReset	(xmlSecXkissServerCtxPtr xkissServerCtx);
+XMLSEC_EXPORT int		xmlSecXkissServerCtxLocate	(xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecXkmsCtxValidate		(xmlSecXkmsCtxPtr xkmsCtx,
+XMLSEC_EXPORT int		xmlSecXkissServerCtxValidate	(xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
-XMLSEC_EXPORT void		xmlSecXkmsCtxDebugDump		(xmlSecXkmsCtxPtr xkmsCtx,
+XMLSEC_EXPORT void		xmlSecXkissServerCtxDebugDump	(xmlSecXkissServerCtxPtr xkissServerCtx,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecXkmsCtxDebugXmlDump	(xmlSecXkmsCtxPtr xkmsCtx,
+XMLSEC_EXPORT void		xmlSecXkissServerCtxDebugXmlDump(xmlSecXkissServerCtxPtr xkissServerCtx,
 								 FILE* output);
 
 
@@ -120,27 +126,27 @@ XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
  *
  ************************************************************************/ 
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithReadNode	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithWriteNode	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugDump	(xmlSecXkmsRespondWithId id,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugXmlDump(xmlSecXkmsRespondWithId id,
 								 FILE* output);
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultReadNode(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultWriteNode(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 
 typedef int  		(*xmlSecXkmsRespondWithReadNodeMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 typedef int  		(*xmlSecXkmsRespondWithWriteNodeMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 struct _xmlSecXkmsRespondWithKlass {
     const xmlChar*				name;
@@ -172,7 +178,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithIdListFindByName
 								(xmlSecPtrListPtr list,
 								 const xmlChar* name);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPtr list,
-								 xmlSecXkmsCtxPtr xkmsCtx,
+								 xmlSecXkissServerCtxPtr xkissServerCtx,
 								 xmlNodePtr node);
 
 /******************************************************************** 

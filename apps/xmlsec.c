@@ -73,8 +73,8 @@ static const char helpCommands2[] =
     "  --decrypt   "	"\tdecrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
 #ifndef XMLSEC_NO_XKMS
-    "  --xkms-locate "	"\tprocess data as XKMS locate key request\n"
-    "  --xkms-validate ""\tprocess data as XKMS validate key request\n"
+    "  --xkis-server-locate  " "\tprocess data as XKMS/XKISS Locate request\n"
+    "  --xkis-server-validate" "\tprocess data as XKMS/XKISS Validate request\n"
 #endif /* XMLSEC_NO_XKMS */
     ;
 
@@ -111,13 +111,13 @@ static const char helpDecrypt[] =
     "Usage: xmlsec decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
 
-static const char helpXkmsLocate[] =  
-    "Usage: xmlsec xkms-locate [<options>] <file>\n"
-    "Processes the <file> as XKMS (XKISS) locate request and outputs the response\n";
+static const char helpXkissServerLocate[] =  
+    "Usage: xmlsec xkiss-server-locate [<options>] <file>\n"
+    "Processes the <file> as XKMS/XKISS Locate request and outputs the response\n";
 
-static const char helpXkmsValidate[] =  
-    "Usage: xmlsec xkms-validate [<options>] <file>\n"
-    "Processes the <file> as XKMS (XKISS) validate request and outputs the response\n";
+static const char helpXkissServerValidate[] =  
+    "Usage: xmlsec xkms-server-validate [<options>] <file>\n"
+    "Processes the <file> as XKMS/XKISS Validate request and outputs the response\n";
 
 static const char helpListKeyData[] =     
     "Usage: xmlsec list-key-data\n"
@@ -700,8 +700,8 @@ typedef enum {
     xmlSecAppCommandEncrypt,
     xmlSecAppCommandDecrypt,
     xmlSecAppCommandEncryptTmpl,
-    xmlSecAppCommandXkmsLocate,
-    xmlSecAppCommandXkmsValidate
+    xmlSecAppCommandXkissServerLocate,
+    xmlSecAppCommandXkissServerValidate
 } xmlSecAppCommand;
 
 typedef struct _xmlSecAppXmlData				xmlSecAppXmlData,
@@ -750,10 +750,10 @@ static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_XKMS
-static int			xmlSecAppXkmsLocate		(const char* filename);
-static int			xmlSecAppXkmsValidate		(const char* filename);
-static int			xmlSecAppPrepareXkmsCtx		(xmlSecXkmsCtxPtr xkmsCtx);
-static void			xmlSecAppPrintXkmsCtx		(xmlSecXkmsCtxPtr xkmsCtx);
+static int			xmlSecAppXkissServerLocate	(const char* filename);
+static int			xmlSecAppXkissServerValidate	(const char* filename);
+static int			xmlSecAppPrepareXkissServerCtx	(xmlSecXkissServerCtxPtr xkissServerCtx);
+static void			xmlSecAppPrintXkissServerCtx	(xmlSecXkissServerCtxPtr xkissServerCtx);
 #endif /* XMLSEC_NO_XKMS */
 
 static void			xmlSecAppListKeyData		(void);
@@ -818,8 +818,8 @@ int main(int argc, const char **argv) {
 	case xmlSecAppCommandVerify:
 	case xmlSecAppCommandEncrypt:
 	case xmlSecAppCommandDecrypt:
-	case xmlSecAppCommandXkmsLocate:
-	case xmlSecAppCommandXkmsValidate:
+	case xmlSecAppCommandXkissServerLocate:
+	case xmlSecAppCommandXkissServerValidate:
 	    if(pos >= argc) {
 		fprintf(stderr, "Error: <file> parameter is requried for this command\n");
 		xmlSecAppPrintUsage();
@@ -923,18 +923,18 @@ int main(int argc, const char **argv) {
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_XKMS
-	case xmlSecAppCommandXkmsLocate:
+	case xmlSecAppCommandXkissServerLocate:
 	    for(i = pos; i < argc; ++i) {
-    	        if(xmlSecAppXkmsLocate(argv[i]) < 0) {
-		    fprintf(stderr, "Error: failed to process xkms locate request from file \"%s\"\n", argv[i]);
+    	        if(xmlSecAppXkissServerLocate(argv[i]) < 0) {
+		    fprintf(stderr, "Error: failed to process XKISS Locate request from file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 	    }
 	    break;
-	case xmlSecAppCommandXkmsValidate:
+	case xmlSecAppCommandXkissServerValidate:
 	    for(i = pos; i < argc; ++i) {
-    	        if(xmlSecAppXkmsValidate(argv[i]) < 0) {
-		    fprintf(stderr, "Error: failed to process xkms locate request from file \"%s\"\n", argv[i]);
+    	        if(xmlSecAppXkissServerValidate(argv[i]) < 0) {
+		    fprintf(stderr, "Error: failed to process XKISS Validate request from file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 	    }
@@ -1625,9 +1625,9 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 
 #ifndef XMLSEC_NO_XKMS
 static int 
-xmlSecAppXkmsLocate(const char* filename) {
+xmlSecAppXkissServerLocate(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlSecXkmsCtx xkmsCtx;
+    xmlSecXkissServerCtx xkissServerCtx;
     clock_t start_time;
     int res = -1;
 
@@ -1635,12 +1635,12 @@ xmlSecAppXkmsLocate(const char* filename) {
 	return(-1);
     }
 
-    if(xmlSecXkmsCtxInitialize(&xkmsCtx, gKeysMngr) < 0) {
-	fprintf(stderr, "Error: xkms context initialization failed\n");
+    if(xmlSecXkissServerCtxInitialize(&xkissServerCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: XKISS server context initialization failed\n");
 	return(-1);
     }
-    if(xmlSecAppPrepareXkmsCtx(&xkmsCtx) < 0) {
-	fprintf(stderr, "Error: xkms context preparation failed\n");
+    if(xmlSecAppPrepareXkissServerCtx(&xkissServerCtx) < 0) {
+	fprintf(stderr, "Error: XKISS server context preparation failed\n");
 	goto done;
     }
 
@@ -1652,7 +1652,7 @@ xmlSecAppXkmsLocate(const char* filename) {
     }
 
     start_time = clock();          
-    if((xmlSecXkmsCtxLocate(&xkmsCtx, data->startNode) < 0) || (xkmsCtx.result == NULL)) {
+    if((xmlSecXkissServerCtxLocate(&xkissServerCtx, data->startNode) < 0) || (xkissServerCtx.result == NULL)) {
 	fprintf(stderr, "Error: failed to process locate request\n");
 	goto done;
     }
@@ -1660,7 +1660,7 @@ xmlSecAppXkmsLocate(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	if(xmlSecAppWriteResult(xkmsCtx.result, NULL) < 0) {
+	if(xmlSecAppWriteResult(xkissServerCtx.result, NULL) < 0) {
 	    goto done;
 	}
     }
@@ -1670,9 +1670,9 @@ xmlSecAppXkmsLocate(const char* filename) {
 done:
     /* print debug info if requested */
     if(repeats <= 1) { 
-        xmlSecAppPrintXkmsCtx(&xkmsCtx);
+        xmlSecAppPrintXkissServerCtx(&xkissServerCtx);
     }
-    xmlSecXkmsCtxFinalize(&xkmsCtx);
+    xmlSecXkissServerCtxFinalize(&xkissServerCtx);
 
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
@@ -1681,9 +1681,9 @@ done:
 }
 
 static int 
-xmlSecAppXkmsValidate(const char* filename) {
+xmlSecAppXkissServerValidate(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlSecXkmsCtx xkmsCtx;
+    xmlSecXkissServerCtx xkissServerCtx;
     clock_t start_time;
     int res = -1;
 
@@ -1691,12 +1691,12 @@ xmlSecAppXkmsValidate(const char* filename) {
 	return(-1);
     }
 
-    if(xmlSecXkmsCtxInitialize(&xkmsCtx, gKeysMngr) < 0) {
-	fprintf(stderr, "Error: xkms context initialization failed\n");
+    if(xmlSecXkissServerCtxInitialize(&xkissServerCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: XKISS server context initialization failed\n");
 	return(-1);
     }
-    if(xmlSecAppPrepareXkmsCtx(&xkmsCtx) < 0) {
-	fprintf(stderr, "Error: xkms context preparation failed\n");
+    if(xmlSecAppPrepareXkissServerCtx(&xkissServerCtx) < 0) {
+	fprintf(stderr, "Error: XKISS server context preparation failed\n");
 	goto done;
     }
 
@@ -1708,7 +1708,7 @@ xmlSecAppXkmsValidate(const char* filename) {
     }
 
     start_time = clock();          
-    if((xmlSecXkmsCtxValidate(&xkmsCtx, data->startNode) < 0) || (xkmsCtx.result == NULL)) {
+    if((xmlSecXkissServerCtxValidate(&xkissServerCtx, data->startNode) < 0) || (xkissServerCtx.result == NULL)) {
 	fprintf(stderr, "Error: failed to process locate request\n");
 	goto done;
     }
@@ -1716,7 +1716,7 @@ xmlSecAppXkmsValidate(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	if(xmlSecAppWriteResult(xkmsCtx.result, NULL) < 0) {
+	if(xmlSecAppWriteResult(xkissServerCtx.result, NULL) < 0) {
 	    goto done;
 	}
     }
@@ -1726,9 +1726,9 @@ xmlSecAppXkmsValidate(const char* filename) {
 done:
     /* print debug info if requested */
     if(repeats <= 1) { 
-        xmlSecAppPrintXkmsCtx(&xkmsCtx);
+        xmlSecAppPrintXkissServerCtx(&xkissServerCtx);
     }
-    xmlSecXkmsCtxFinalize(&xkmsCtx);
+    xmlSecXkissServerCtxFinalize(&xkissServerCtx);
 
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
@@ -1737,14 +1737,14 @@ done:
 }
 
 static int
-xmlSecAppPrepareXkmsCtx(xmlSecXkmsCtxPtr xkmsCtx) {    
-    if(xkmsCtx == NULL) {
-	fprintf(stderr, "Error: xkms context is null\n");
+xmlSecAppPrepareXkissServerCtx(xmlSecXkissServerCtxPtr xkissServerCtx) {    
+    if(xkissServerCtx == NULL) {
+	fprintf(stderr, "Error: XKISS  context is null\n");
 	return(-1);
     }
 
     /* set key info params */
-    if(xmlSecAppPrepareKeyInfoReadCtx(&(xkmsCtx->keyInfoReadCtx)) < 0) {
+    if(xmlSecAppPrepareKeyInfoReadCtx(&(xkissServerCtx->keyInfoReadCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
 	return(-1);
     }
@@ -1753,18 +1753,18 @@ xmlSecAppPrepareXkmsCtx(xmlSecXkmsCtxPtr xkmsCtx) {
 }
 
 static void 
-xmlSecAppPrintXkmsCtx(xmlSecXkmsCtxPtr xkmsCtx) {
-    if(xkmsCtx == NULL) {
+xmlSecAppPrintXkissServerCtx(xmlSecXkissServerCtxPtr xkissServerCtx) {
+    if(xkissServerCtx == NULL) {
 	return;
     }
     
     /* print debug info if requested */
     if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
-	xmlSecXkmsCtxDebugDump(xkmsCtx, stdout);
+	xmlSecXkissServerCtxDebugDump(xkissServerCtx, stdout);
     }
     
     if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
-	xmlSecXkmsCtxDebugXmlDump(xkmsCtx, stdout);
+	xmlSecXkissServerCtxDebugXmlDump(xkissServerCtx, stdout);
     }
 }
 
@@ -2361,19 +2361,19 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_XKMS
-    if((strcmp(cmd, "xkms-locate") == 0) || (strcmp(cmd, "--xkms-locate") == 0)) {
+    if((strcmp(cmd, "xkiss-server-locate") == 0) || (strcmp(cmd, "--xkiss-server-locate") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
 			xmlSecAppCmdLineTopicXkmsCommon |
 			xmlSecAppCmdLineTopicKeysMngr |
 			xmlSecAppCmdLineTopicX509Certs;
-	return(xmlSecAppCommandXkmsLocate);
+	return(xmlSecAppCommandXkissServerLocate);
     } else 
-    if((strcmp(cmd, "xkms-validate") == 0) || (strcmp(cmd, "--xkms-validate") == 0)) {
+    if((strcmp(cmd, "xkiss-server-validate") == 0) || (strcmp(cmd, "--xkiss-server-validate") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
 			xmlSecAppCmdLineTopicXkmsCommon |
 			xmlSecAppCmdLineTopicKeysMngr |
 			xmlSecAppCmdLineTopicX509Certs;
-	return(xmlSecAppCommandXkmsValidate);
+	return(xmlSecAppCommandXkissServerValidate);
     } else
 #endif /* XMLSEC_NO_XKMS */
 
@@ -2420,11 +2420,11 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     case xmlSecAppCommandEncryptTmpl:
 	fprintf(stdout, "%s\n", helpEncryptTmpl);
         break;
-    case xmlSecAppCommandXkmsLocate:
-	fprintf(stdout, "%s\n", helpXkmsLocate);
+    case xmlSecAppCommandXkissServerLocate:
+	fprintf(stdout, "%s\n", helpXkissServerLocate);
         break;
-    case xmlSecAppCommandXkmsValidate:
-	fprintf(stdout, "%s\n", helpXkmsValidate);
+    case xmlSecAppCommandXkissServerValidate:
+	fprintf(stdout, "%s\n", helpXkissServerValidate);
         break;
     }
     if(topics != 0) {

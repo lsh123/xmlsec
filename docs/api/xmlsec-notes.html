@@ -1,295 +1,89 @@
-<HTML
-><HEAD
-><TITLE
->XML Security Library Programming Notes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="PREVIOUS"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="NEXT"
-TITLE="XML Security Library Structure."
-HREF="xmlsec-notes-structure.html"></HEAD
-><BODY
-CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&nbsp;</B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-notes-structure.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="XMLSEC-NOTES"
-></A
->XML Security Library Programming Notes</H1
-><DIV
-CLASS="TOC"
-><DL
-><DT
-><B
->Table of Contents</B
-></DT
-><DT
-><A
-HREF="xmlsec-notes.html#XMLSEC-NOTES-OVERVIEW"
->Overview.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-structure.html"
->XML Security Library Structure.</A
-></DT
-><DT
-><A
-HREF="xmlsec-compiling.html"
->Compiling and linking</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-init-shutdown.html"
->Initialization and shutdown.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-sign-encrypt.html"
->Signing and encrypting documents.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-verify-decrypt.html"
->Verifing and decrypting documents.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-templates.html"
->Creating dynamic templates.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-keysmngr.html"
->Keys and keys manager.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-transforms.html"
->Transforms and transforms chain.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-cusomize-signature.html"
->Customizing signature and verification process.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-customize-encryption.html"
->Customizing encryption and decryption process.</A
-></DT
-><DT
-><A
-HREF="xmlsec-notes-new-crypto-library.html"
->Supporting new cryptographic library.</A
-></DT
-></DL
-></DIV
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-NOTES-OVERVIEW"
-></A
->Overview.</H1
-><P
->XML Security Library provides support for XML Digital Signature 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>XML Security Library Programming Notes</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="PREVIOUS" title="XML Security Library Reference Manual" href="index.html">
+<link rel="NEXT" title="XML Security Library Structure." href="xmlsec-notes-structure.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="index.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-structure.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<div class="CHAPTER">
+<h1>
+<a name="XMLSEC-NOTES"></a>XML Security Library Programming Notes</h1>
+<div class="TOC"><dl>
+<dt><b>Table of Contents</b></dt>
+<dt><a href="xmlsec-notes.html#XMLSEC-NOTES-OVERVIEW">Overview.</a></dt>
+<dt><a href="xmlsec-notes-structure.html">XML Security Library Structure.</a></dt>
+<dt><a href="xmlsec-compiling.html">Building the application with XML Security Library.</a></dt>
+<dt><a href="xmlsec-notes-init-shutdown.html">Initialization and shutdown.</a></dt>
+<dt><a href="xmlsec-notes-sign-encrypt.html">Signing and encrypting documents.</a></dt>
+<dt><a href="xmlsec-notes-verify-decrypt.html">Verifing and decrypting documents.</a></dt>
+<dt><a href="xmlsec-notes-templates.html">Creating dynamic templates.</a></dt>
+<dt><a href="xmlsec-notes-keysmngr.html">Keys and keys manager.</a></dt>
+<dt><a href="xmlsec-notes-transforms.html">Transforms and transforms chain.</a></dt>
+<dt><a href="xmlsec-notes-cusomize-signature.html">Customizing signature and verification process.</a></dt>
+<dt><a href="xmlsec-notes-customize-encryption.html">Customizing encryption and decryption process.</a></dt>
+<dt><a href="xmlsec-notes-new-crypto-library.html">Supporting new cryptographic library.</a></dt>
+</dl></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-OVERVIEW"></a>Overview.</h1>
+<p>XML Security Library provides support for XML Digital Signature 
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
-	practicaly any crypto library (currently there is "out of the box" 
+	practicaly any crypto library (currently there is &quot;out of the box&quot; 
 	support for OpenSSL, GnuTLS and NSS).
-	</P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&nbsp;</B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-notes-structure.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->XML Security Library Reference Manual</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->XML Security Library Structure.</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+	</p>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="index.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-structure.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library Reference Manual</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>XML Security Library Structure.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

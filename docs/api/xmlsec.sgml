@@ -1,9 +1,12 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!ENTITY chapter-compiling-and-linking 	SYSTEM "chapters/compiling-and-linking.sgml">
 <!ENTITY chapter-init-and-shutdown 	SYSTEM "chapters/init-and-shutdown.sgml">
 <!ENTITY chapter-sign-and-encrypt 	SYSTEM "chapters/sign-and-encrypt.sgml">
 <!ENTITY chapter-verify-and-decrypt 	SYSTEM "chapters/verify-and-decrypt.sgml">
 <!ENTITY chapter-creating-templates 	SYSTEM "chapters/creating-templates.sgml">
 <!ENTITY chapter-using-keysmngr 	SYSTEM "chapters/using-keysmngr.sgml">
+
+<!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
 
 <!ENTITY xmlsec-base64 			SYSTEM "sgml/base64.sgml">
 <!ENTITY xmlsec-buffer 			SYSTEM "sgml/buffer.sgml">
@@ -119,10 +122,7 @@
 	code might be general enough so switching crypto engine would be 
 	a matter of changing several #include directives.</para>
     </sect1>
-    <sect1 id="xmlsec-compiling">
-	<title>Compiling and linking</title>
-	<para>TODO</para>
-    </sect1>
+    &chapter-compiling-and-linking;
     &chapter-init-and-shutdown;
     &chapter-sign-and-encrypt;
     &chapter-verify-and-decrypt;
@@ -307,4 +307,12 @@ TODO
     &xmlsec-example-enc1;
     &xmlsec-example-enc2;
   </chapter>
+  
+  <chapter id="xmlsec-index">
+    <title>XML Security Library Refernce Index</title>
+    <para>
+	<itemizedlist>
+	&xmlsec-index;
+	</itemizedlist>
+    </para>	
 </book>

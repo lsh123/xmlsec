@@ -1,336 +1,127 @@
-<HTML
-><HEAD
-><TITLE
->Keys and keys manager.</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Programming Notes"
-HREF="xmlsec-notes.html"><LINK
-REL="PREVIOUS"
-TITLE="Creating dynamic templates."
-HREF="xmlsec-notes-templates.html"><LINK
-REL="NEXT"
-TITLE="Transforms and transforms chain."
-HREF="xmlsec-notes-transforms.html"></HEAD
-><BODY
-CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-notes-templates.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-notes.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-notes-transforms.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-NOTES-KEYSMNGR"
-></A
->Keys and keys manager.</H1
-><P
->A key in XML Security Library is a representation of the 
-	&lt;dsig:KeyInfo/&gt; element and consist of several key data objects. 
-	The "value" key data usually contains raw key material (or handlers to 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Keys and keys manager.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
+<link rel="PREVIOUS" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
+<link rel="NEXT" title="Transforms and transforms chain." href="xmlsec-notes-transforms.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-KEYSMNGR"></a>Keys and keys manager.</h1>
+<p>A key in XML Security Library is a representation of the 
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
+	element and consist of several key data objects. 
+	The &quot;value&quot; key data usually contains raw key material (or handlers to 
 	key material) required to execute particular crypto transform. Other 
 	key data objects may contain any additional information about the key. 
 	All the key data objects in the key are associated with the same key 
 	material. For example, if a DSA key material has both an X509 
 	certificate and a PGP data associated with it then such a key can 
-	have a DSA key "value" and two key data objects for X509 certificate 
+	have a DSA key &quot;value&quot; and two key data objects for X509 certificate 
 	and PGP key data.
-	</P
-><DIV
-CLASS="FIGURE"
-><A
-NAME="AEN214"
-></A
-><P
-><B
->Figure 6. The key structure.</B
-></P
-><P
-><IMG
-SRC="images/key.png"
-ALIGN="CENTER"></P
-></DIV
-><P
->XML Security Library has several "invisible" key data classes. 
-	These classes never show up in the keys data list of a key but are used 
-	for &lt;dsig:KeyInfo/&gt; children processing (&lt;dsig:KeyName/&gt;, 
-	&lt;dsig:EncryptedKey/&gt;, ...). As with transforms, application might 
+	</p>
+<div class="FIGURE">
+<a name="AEN262"></a><p><b>Figure 6. The key structure.</b></p>
+<p><img src="images/key.png" align="CENTER"></p>
+</div>
+<p>XML Security Library has several &quot;invisible&quot; key data classes. 
+	These classes never show up in the keys data list of a key but are used for 
+	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a>
+	children processing (<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>, 
+	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might 
 	add any new key data objects or replace the default ones.
-	</P
-><P
->Processing some of the key data objects require additional 
+	</p>
+<p>Processing some of the key data objects require additional 
 	information which is global across the application (or in the 
 	particular area of the application). For example, X509 certificates 
 	processing require a common list of trusted certificates to be 
 	available. XML Security Library keeps all the common information 
 	for key data processing in a a collection of key data stores called 
-	"keys manager".
-	</P
-><DIV
-CLASS="FIGURE"
-><A
-NAME="AEN219"
-></A
-><P
-><B
->Figure 7. The keys manager structure.</B
-></P
-><P
-><IMG
-SRC="images/keysmngr.png"
-ALIGN="CENTER"></P
-></DIV
-><P
->Keys manager has a special "keys store" which lists the keys 
-	known to the application. This "keys store" is used by XML Security 
+	&quot;keys manager&quot;.
+	</p>
+<div class="FIGURE">
+<a name="AEN269"></a><p><b>Figure 7. The keys manager structure.</b></p>
+<p><img src="images/keysmngr.png" align="CENTER"></p>
+</div>
+<p>Keys manager has a special &quot;keys store&quot; which lists the keys 
+	known to the application. This &quot;keys store&quot; is used by XML Security 
 	Library to lookup keys by name, type and crypto algorithm (for example,
-	during &lt;dsig:KeyName/&gt; processing). The XML Security Library 
-	provides default "flat list" based implementation of a simple keys 
+	during 
+    	<a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" target="_top">&lt;dsig:KeyName/&gt;</a>
+	processing). The XML Security Library 
+	provides default &quot;flat list&quot; based implementation of a simple keys 
 	store. The application can replace it with any other keys store 
 	(for example, based on an SQL database).
-	</P
-><P
->Keys manager is the only object in XML Security Library which 
+	</p>
+<p>Keys manager is the only object in XML Security Library which 
 	is supposed to be shared by many different operations. Usually keys 
 	manager is initialized once at the application startup and later is 
-	used by XML Security library routines in "read-only" mode. If 
+	used by XML Security library routines in &quot;read-only&quot; mode. If 
 	application or crypto function need to modify any of the key data 
 	stores inside keys manager then proper synchronization must be 
 	implemented. In the same time, application can create a new keys 
 	manager each time it needs to perform XML signature, verification, 
 	encryption or decryption.
-	</P
-><P
->	     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN225"
-></A
-><P
-><B
->Example 9. Initializing keys manager and loading keys.</B
-></P
-><TABLE
-BORDER="0"
-BGCOLOR="#D8F8D8"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->TODO
-		</PRE
-></TD
-></TR
-></TABLE
-></DIV
->
-	</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-notes-templates.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-notes.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-notes-transforms.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Creating dynamic templates.</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Transforms and transforms chain.</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+	</p>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN276"></a><p><b>Example 10. Initializing keys manager and loading keys.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
+		</pre></td></tr></table>
+</div>
+	</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Creating dynamic templates.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Transforms and transforms chain.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

@@ -14,6 +14,8 @@
 	    <graphic fileref="images/verif-dec-model.png" align="center" />
 	  </figure>	 
 	</para>
+	<sect2>
+	<title>Verifying a signed document</title>
 	<para>The typical siganture verification process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -119,6 +121,10 @@ done:
 	    <para><link linkend="xmlsec-example-dsig4">Full Program Listing</link></para>
 	    </example>
 	</para>
+	</sect2>
+
+	<sect2>
+	<title>Decrypting an encrypted document</title>
 	<para>The typical decryption process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -156,4 +162,5 @@ TODO
 		]]></programlisting>
 	    </example>
 	</para>
+	</sect2>
     </sect1>

@@ -20,7 +20,7 @@ EXAMPLES_SOURCE_FILES=\
 
 all: sgml html clean-sources
 
-html: sgml xmlsec.sgml
+html: sgml xmlsec.sgml xmlsec-index
 	gtkdoc-mkhtml xmlsec xmlsec.sgml
 	
 sgml: templates
@@ -75,6 +75,12 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@mv -f $(DOC_SOURCE_DIR)/src/*.c $(DOC_SOURCE_DIR)/src/base
 	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
 	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
+
+xmlsec-index: scan 
+	@grep -h '<NAME>.*</NAME>' xmlsec-*decl.txt | sort -u | \
+		sed -e 's#<NAME>\(.*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#gp' > \
+		xmlsec-index.sgml
+
 
 #
 # The following code converts C example file to sgml RefEntry files.

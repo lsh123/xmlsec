@@ -1,2855 +1,751 @@
-<HTML
-><HEAD
-><TITLE
->list</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library API Reference."
-HREF="xmlsec-ref.html"><LINK
-REL="PREVIOUS"
-TITLE="keysmngr"
-HREF="xmlsec-keysmngr.html"><LINK
-REL="NEXT"
-TITLE="membuf"
-HREF="xmlsec-membuf.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-keysmngr.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-membuf.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-LIST"
-></A
->list</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN6017"
-></A
-><H2
->Name</H2
->list&nbsp;--&nbsp;</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN6020"
-></A
-><H2
->Synopsis</H2
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="SYNOPSIS"
->&#13;
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>list</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library API Reference." href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="keysmngr" href="xmlsec-keysmngr.html">
+<link rel="NEXT" title="membuf" href="xmlsec-membuf.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-membuf.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-LIST"></a>list</h1>
+<div class="REFNAMEDIV">
+<a name="AEN6082"></a><h2>Name</h2>list -- </div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN6085"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-typedef     <A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
->;
-struct      <A
-HREF="xmlsec-list.html#XMLSECPTRLIST"
->xmlSecPtrList</A
->;
-void        <A
-HREF="xmlsec-list.html#XMLSECPTRLISTSETDEFAULTALLOCMODE"
->xmlSecPtrListSetDefaultAllocMode</A
->
-                                            (<A
-HREF="xmlsec-buffer.html#XMLSECALLOCMODE"
->xmlSecAllocMode</A
-> defAllocMode,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> defInitialSize);
-int         <A
-HREF="xmlsec-list.html#XMLSECPTRLISTINITIALIZE"
->xmlSecPtrListInitialize</A
->         (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> id);
-void        <A
-HREF="xmlsec-list.html#XMLSECPTRLISTFINALIZE"
->xmlSecPtrListFinalize</A
->           (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);
-<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-list.html#XMLSECPTRLISTCREATE"
->xmlSecPtrListCreate</A
->        (<GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> id);
-void        <A
-HREF="xmlsec-list.html#XMLSECPTRLISTDESTROY"
->xmlSecPtrListDestroy</A
->            (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);
-int         <A
-HREF="xmlsec-list.html#XMLSECPTRLISTCOPY"
->xmlSecPtrListCopy</A
->               (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> dst,
-                                             <GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> src);
-<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-list.html#XMLSECPTRLISTDUPLICATE"
->xmlSecPtrListDuplicate</A
->     (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);
-<GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      <A
-HREF="xmlsec-list.html#XMLSECPTRLISTGETSIZE"
->xmlSecPtrListGetSize</A
->            (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);
-<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
->   <A
-HREF="xmlsec-list.html#XMLSECPTRLISTGETITEM"
->xmlSecPtrListGetItem</A
->            (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> pos);
-int         <A
-HREF="xmlsec-list.html#XMLSECPTRLISTADD"
->xmlSecPtrListAdd</A
->                (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> item);
-int         <A
-HREF="xmlsec-list.html#XMLSECPTRLISTSET"
->xmlSecPtrListSet</A
->                (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> item,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> pos);
-int         <A
-HREF="xmlsec-list.html#XMLSECPTRLISTREMOVE"
->xmlSecPtrListRemove</A
->             (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> pos);
-void        <A
-HREF="xmlsec-list.html#XMLSECPTRLISTDEBUGDUMP"
->xmlSecPtrListDebugDump</A
->          (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
-void        <A
-HREF="xmlsec-list.html#XMLSECPTRLISTDEBUGXMLDUMP"
->xmlSecPtrListDebugXmlDump</A
->       (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
-#define     <A
-HREF="xmlsec-list.html#XMLSECPTRLISTGETNAME"
->xmlSecPtrListGetName</A
->            (list)
-#define     <A
-HREF="xmlsec-list.html#XMLSECPTRLISTISVALID"
->xmlSecPtrListIsValid</A
->            (list)
-#define     <A
-HREF="xmlsec-list.html#XMLSECPTRLISTCHECKID"
->xmlSecPtrListCheckId</A
->            (list, dataId)
-#define     <A
-HREF="xmlsec-list.html#XMLSECPTRLISTIDUNKNOWN"
->xmlSecPtrListIdUnknown</A
->
-<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
->   (<A
-HREF="xmlsec-list.html#XMLSECPTRDUPLICATEITEMMETHOD"
->*xmlSecPtrDuplicateItemMethod</A
->) (<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> ptr);
-void        (<A
-HREF="xmlsec-list.html#XMLSECPTRDESTROYITEMMETHOD"
->*xmlSecPtrDestroyItemMethod</A
->)   (<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> ptr);
-void        (<A
-HREF="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD"
->*xmlSecPtrDebugDumpItemMethod</A
->) (<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> ptr,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
-struct      <A
-HREF="xmlsec-list.html#XMLSECPTRLISTKLASS"
->xmlSecPtrListKlass</A
->;
-#define     <A
-HREF="xmlsec-list.html#XMLSECPTRLISTKLASSGETNAME"
->xmlSecPtrListKlassGetName</A
->       (klass)
-#define     <A
-HREF="xmlsec-list.html#XMLSECSTATICOBJECTLISTID"
->xmlSecStaticObjectListId</A
->
-<GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> <A
-HREF="xmlsec-list.html#XMLSECSTATICOBJECTLISTGETKLASS"
->xmlSecStaticObjectListGetKlass</A
->
+typedef     <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>;
+struct      <a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a>;
+void        <a href="xmlsec-list.html#XMLSECPTRLISTSETDEFAULTALLOCMODE">xmlSecPtrListSetDefaultAllocMode</a>
+                                            (<a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> defAllocMode,
+                                             <font>size_t</font> defInitialSize);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTINITIALIZE">xmlSecPtrListInitialize</a>         (<font>xmlSecPtrListPtr</font> list,
+                                             <font>xmlSecPtrListId</font> id);
+void        <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE">xmlSecPtrListFinalize</a>           (<font>xmlSecPtrListPtr</font> list);
+<font>xmlSecPtrListPtr</font> <a href="xmlsec-list.html#XMLSECPTRLISTCREATE">xmlSecPtrListCreate</a>        (<font>xmlSecPtrListId</font> id);
+void        <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy</a>            (<font>xmlSecPtrListPtr</font> list);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTCOPY">xmlSecPtrListCopy</a>               (<font>xmlSecPtrListPtr</font> dst,
+                                             <font>xmlSecPtrListPtr</font> src);
+<font>xmlSecPtrListPtr</font> <a href="xmlsec-list.html#XMLSECPTRLISTDUPLICATE">xmlSecPtrListDuplicate</a>     (<font>xmlSecPtrListPtr</font> list);
+<font>size_t</font>      <a href="xmlsec-list.html#XMLSECPTRLISTGETSIZE">xmlSecPtrListGetSize</a>            (<font>xmlSecPtrListPtr</font> list);
+<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   <a href="xmlsec-list.html#XMLSECPTRLISTGETITEM">xmlSecPtrListGetItem</a>            (<font>xmlSecPtrListPtr</font> list,
+                                             <font>size_t</font> pos);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTADD">xmlSecPtrListAdd</a>                (<font>xmlSecPtrListPtr</font> list,
+                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTSET">xmlSecPtrListSet</a>                (<font>xmlSecPtrListPtr</font> list,
+                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item,
+                                             <font>size_t</font> pos);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTREMOVE">xmlSecPtrListRemove</a>             (<font>xmlSecPtrListPtr</font> list,
+                                             <font>size_t</font> pos);
+void        <a href="xmlsec-list.html#XMLSECPTRLISTDEBUGDUMP">xmlSecPtrListDebugDump</a>          (<font>xmlSecPtrListPtr</font> list,
+                                             <font>FILE</font> *output);
+void        <a href="xmlsec-list.html#XMLSECPTRLISTDEBUGXMLDUMP">xmlSecPtrListDebugXmlDump</a>       (<font>xmlSecPtrListPtr</font> list,
+                                             <font>FILE</font> *output);
+#define     <a href="xmlsec-list.html#XMLSECPTRLISTGETNAME">xmlSecPtrListGetName</a>            (list)
+#define     <a href="xmlsec-list.html#XMLSECPTRLISTISVALID">xmlSecPtrListIsValid</a>            (list)
+#define     <a href="xmlsec-list.html#XMLSECPTRLISTCHECKID">xmlSecPtrListCheckId</a>            (list, dataId)
+#define     <a href="xmlsec-list.html#XMLSECPTRLISTIDUNKNOWN">xmlSecPtrListIdUnknown</a>
+<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   (<a href="xmlsec-list.html#XMLSECPTRDUPLICATEITEMMETHOD">*xmlSecPtrDuplicateItemMethod</a>) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);
+void        (<a href="xmlsec-list.html#XMLSECPTRDESTROYITEMMETHOD">*xmlSecPtrDestroyItemMethod</a>)   (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);
+void        (<a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD">*xmlSecPtrDebugDumpItemMethod</a>) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr,
+                                             <font>FILE</font> *output);
+struct      <a href="xmlsec-list.html#XMLSECPTRLISTKLASS">xmlSecPtrListKlass</a>;
+#define     <a href="xmlsec-list.html#XMLSECPTRLISTKLASSGETNAME">xmlSecPtrListKlassGetName</a>       (klass)
+#define     <a href="xmlsec-list.html#XMLSECSTATICOBJECTLISTID">xmlSecStaticObjectListId</a>
+<font>xmlSecPtrListId</font> <a href="xmlsec-list.html#XMLSECSTATICOBJECTLISTGETKLASS">xmlSecStaticObjectListGetKlass</a>
                                             (void);
-#define     <A
-HREF="xmlsec-list.html#XMLSECSTRINGLISTID"
->xmlSecStringListId</A
->
-<GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> <A
-HREF="xmlsec-list.html#XMLSECSTRINGLISTGETKLASS"
->xmlSecStringListGetKlass</A
->    (void);</PRE
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN6087"
-></A
-><H2
->Description</H2
-><P
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN6090"
-></A
-><H2
->Details</H2
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6092"
-></A
-><H3
-><A
-NAME="XMLSECPTR"
-></A
->xmlSecPtr</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef void*	xmlSecPtr;</PRE
-></TD
-></TR
-></TABLE
-><P
->Void pointer.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6098"
-></A
-><H3
-><A
-NAME="XMLSECPTRLIST"
-></A
->struct xmlSecPtrList</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecPtrList {
+#define     <a href="xmlsec-list.html#XMLSECSTRINGLISTID">xmlSecStringListId</a>
+<font>xmlSecPtrListId</font> <a href="xmlsec-list.html#XMLSECSTRINGLISTGETKLASS">xmlSecStringListGetKlass</a>    (void);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN6152"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN6155"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN6157"></a><h3>
+<a name="XMLSECPTR"></a>xmlSecPtr</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef void*	xmlSecPtr;</pre></td></tr></table>
+<p>Void pointer.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6163"></a><h3>
+<a name="XMLSECPTRLIST"></a>struct xmlSecPtrList</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecPtrList {
     xmlSecPtrListId		id;        
 
     xmlSecPtr*			data;
     size_t			use;
     size_t			max;
     xmlSecAllocMode 		allocMode;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
->The pointers list.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6104"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFF0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->id</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->				the list items description.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> *<TT
-CLASS="STRUCTFIELD"
-><I
->data</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->			the list data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->use</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->			the current list size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> <TT
-CLASS="STRUCTFIELD"
-><I
->max</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->			the max (allocated) list size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="LEFT"
-VALIGN="TOP"
-><A
-HREF="xmlsec-buffer.html#XMLSECALLOCMODE"
->xmlSecAllocMode</A
-> <TT
-CLASS="STRUCTFIELD"
-><I
->allocMode</I
-></TT
-></TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->			the memory allocation mode.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6134"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTSETDEFAULTALLOCMODE"
-></A
->xmlSecPtrListSetDefaultAllocMode ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecPtrListSetDefaultAllocMode
-                                            (<A
-HREF="xmlsec-buffer.html#XMLSECALLOCMODE"
->xmlSecAllocMode</A
-> defAllocMode,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> defInitialSize);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6141"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->defAllocMode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->defInitialSize</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6154"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTINITIALIZE"
-></A
->xmlSecPtrListInitialize ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecPtrListInitialize         (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> id);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6161"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6178"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTFINALIZE"
-></A
->xmlSecPtrListFinalize ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecPtrListFinalize           (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6184"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6193"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTCREATE"
-></A
->xmlSecPtrListCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> xmlSecPtrListCreate        (<GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> id);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6200"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->id</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6213"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTDESTROY"
-></A
->xmlSecPtrListDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecPtrListDestroy            (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6219"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6228"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTCOPY"
-></A
->xmlSecPtrListCopy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecPtrListCopy               (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> dst,
-                                             <GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> src);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6235"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->dst</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->src</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6252"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTDUPLICATE"
-></A
->xmlSecPtrListDuplicate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> xmlSecPtrListDuplicate     (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6259"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6272"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTGETSIZE"
-></A
->xmlSecPtrListGetSize ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      xmlSecPtrListGetSize            (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6279"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6292"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTGETITEM"
-></A
->xmlSecPtrListGetItem ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
->   xmlSecPtrListGetItem            (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> pos);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6300"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6317"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTADD"
-></A
->xmlSecPtrListAdd ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecPtrListAdd                (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> item);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6324"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->item</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6341"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTSET"
-></A
->xmlSecPtrListSet ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecPtrListSet                (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> item,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> pos);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6349"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->item</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6370"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTREMOVE"
-></A
->xmlSecPtrListRemove ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecPtrListRemove             (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> pos);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6377"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6394"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTDEBUGDUMP"
-></A
->xmlSecPtrListDebugDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecPtrListDebugDump          (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6401"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6414"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTDEBUGXMLDUMP"
-></A
->xmlSecPtrListDebugXmlDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecPtrListDebugXmlDump       (<GTKDOCLINK
-HREF="XMLSECPTRLISTPTR"
->xmlSecPtrListPtr</GTKDOCLINK
-> list,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6421"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6434"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTGETNAME"
-></A
->xmlSecPtrListGetName()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecPtrListGetName(list)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro. Returns lists's name.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6440"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> 		the ponter to list.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6449"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTISVALID"
-></A
->xmlSecPtrListIsValid()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecPtrListIsValid(list)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro. Returns 1 if <TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
-> is not NULL and <TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->-&gt;id is not NULL
-or 0 otherwise.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6457"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> 		the pointer to list.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6466"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTCHECKID"
-></A
->xmlSecPtrListCheckId()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecPtrListCheckId(list, dataId)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro. Returns 1 if <TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
-> is valid and <TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->'s id is equal to <TT
-CLASS="PARAMETER"
-><I
->dataId</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6475"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->list</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> 		the pointer to list.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->dataId</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> 		the list Id.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6488"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTIDUNKNOWN"
-></A
->xmlSecPtrListIdUnknown</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define xmlSecPtrListIdUnknown 			NULL</PRE
-></TD
-></TR
-></TABLE
-><P
->The "unknown" id.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6494"
-></A
-><H3
-><A
-NAME="XMLSECPTRDUPLICATEITEMMETHOD"
-></A
->xmlSecPtrDuplicateItemMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
->   (*xmlSecPtrDuplicateItemMethod) (<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> ptr);</PRE
-></TD
-></TR
-></TABLE
-><P
->Duplicates item <TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6503"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->		the poinetr to list item.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->pointer to new item copy or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6516"
-></A
-><H3
-><A
-NAME="XMLSECPTRDESTROYITEMMETHOD"
-></A
->xmlSecPtrDestroyItemMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSecPtrDestroyItemMethod)   (<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> ptr);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys list item <TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6524"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->		the poinetr to list item.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6533"
-></A
-><H3
-><A
-NAME="XMLSECPTRDEBUGDUMPITEMMETHOD"
-></A
->xmlSecPtrDebugDumpItemMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSecPtrDebugDumpItemMethod) (<A
-HREF="xmlsec-list.html#XMLSECPTR"
->xmlSecPtr</A
-> ptr,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
-><P
->Prints debug information about <TT
-CLASS="PARAMETER"
-><I
->item</I
-></TT
-> to <TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6543"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ptr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->		the poinetr to list item.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->		the output FILE.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6556"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTKLASS"
-></A
->struct xmlSecPtrListKlass</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecPtrListKlass {
+};</pre></td></tr></table>
+<p>The pointers list.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6169"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<font>xmlSecPtrListId</font> <tt class="STRUCTFIELD"><i>id</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">				the list items description.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> *<tt class="STRUCTFIELD"><i>data</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">			the list data.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<font>size_t</font> <tt class="STRUCTFIELD"><i>use</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">			the current list size.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<font>size_t</font> <tt class="STRUCTFIELD"><i>max</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">			the max (allocated) list size.</td>
+</tr>
+<tr>
+<td width="20%" align="LEFT" valign="TOP">
+<a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> <tt class="STRUCTFIELD"><i>allocMode</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP">			the memory allocation mode.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6199"></a><h3>
+<a name="XMLSECPTRLISTSETDEFAULTALLOCMODE"></a>xmlSecPtrListSetDefaultAllocMode ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListSetDefaultAllocMode
+                                            (<a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> defAllocMode,
+                                             <font>size_t</font> defInitialSize);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6206"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>defAllocMode</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>defInitialSize</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6219"></a><h3>
+<a name="XMLSECPTRLISTINITIALIZE"></a>xmlSecPtrListInitialize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListInitialize         (<font>xmlSecPtrListPtr</font> list,
+                                             <font>xmlSecPtrListId</font> id);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6226"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6243"></a><h3>
+<a name="XMLSECPTRLISTFINALIZE"></a>xmlSecPtrListFinalize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListFinalize           (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6249"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6258"></a><h3>
+<a name="XMLSECPTRLISTCREATE"></a>xmlSecPtrListCreate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecPtrListCreate        (<font>xmlSecPtrListId</font> id);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6265"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>id</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6278"></a><h3>
+<a name="XMLSECPTRLISTDESTROY"></a>xmlSecPtrListDestroy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDestroy            (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6284"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6293"></a><h3>
+<a name="XMLSECPTRLISTCOPY"></a>xmlSecPtrListCopy ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListCopy               (<font>xmlSecPtrListPtr</font> dst,
+                                             <font>xmlSecPtrListPtr</font> src);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6300"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dst</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>src</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6317"></a><h3>
+<a name="XMLSECPTRLISTDUPLICATE"></a>xmlSecPtrListDuplicate ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecPtrListDuplicate     (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6324"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6337"></a><h3>
+<a name="XMLSECPTRLISTGETSIZE"></a>xmlSecPtrListGetSize ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecPtrListGetSize            (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6344"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6357"></a><h3>
+<a name="XMLSECPTRLISTGETITEM"></a>xmlSecPtrListGetItem ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   xmlSecPtrListGetItem            (<font>xmlSecPtrListPtr</font> list,
+                                             <font>size_t</font> pos);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6365"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>pos</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6382"></a><h3>
+<a name="XMLSECPTRLISTADD"></a>xmlSecPtrListAdd ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListAdd                (<font>xmlSecPtrListPtr</font> list,
+                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6389"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>item</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6406"></a><h3>
+<a name="XMLSECPTRLISTSET"></a>xmlSecPtrListSet ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListSet                (<font>xmlSecPtrListPtr</font> list,
+                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item,
+                                             <font>size_t</font> pos);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6414"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>item</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>pos</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6435"></a><h3>
+<a name="XMLSECPTRLISTREMOVE"></a>xmlSecPtrListRemove ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListRemove             (<font>xmlSecPtrListPtr</font> list,
+                                             <font>size_t</font> pos);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6442"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>pos</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6459"></a><h3>
+<a name="XMLSECPTRLISTDEBUGDUMP"></a>xmlSecPtrListDebugDump ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDebugDump          (<font>xmlSecPtrListPtr</font> list,
+                                             <font>FILE</font> *output);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6466"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>output</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6479"></a><h3>
+<a name="XMLSECPTRLISTDEBUGXMLDUMP"></a>xmlSecPtrListDebugXmlDump ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDebugXmlDump       (<font>xmlSecPtrListPtr</font> list,
+                                             <font>FILE</font> *output);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6486"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>output</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6499"></a><h3>
+<a name="XMLSECPTRLISTGETNAME"></a>xmlSecPtrListGetName()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecPtrListGetName(list)</pre></td></tr></table>
+<p>Macro. Returns lists's name.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6505"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the ponter to list.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6514"></a><h3>
+<a name="XMLSECPTRLISTISVALID"></a>xmlSecPtrListIsValid()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecPtrListIsValid(list)</pre></td></tr></table>
+<p>Macro. Returns 1 if <tt class="PARAMETER"><i>list</i></tt> is not NULL and <tt class="PARAMETER"><i>list</i></tt>-&gt;id is not NULL
+or 0 otherwise.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6522"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to list.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6531"></a><h3>
+<a name="XMLSECPTRLISTCHECKID"></a>xmlSecPtrListCheckId()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecPtrListCheckId(list, dataId)</pre></td></tr></table>
+<p>Macro. Returns 1 if <tt class="PARAMETER"><i>list</i></tt> is valid and <tt class="PARAMETER"><i>list</i></tt>'s id is equal to <tt class="PARAMETER"><i>dataId</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6540"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>list</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to list.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>dataId</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the list Id.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6553"></a><h3>
+<a name="XMLSECPTRLISTIDUNKNOWN"></a>xmlSecPtrListIdUnknown</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecPtrListIdUnknown 			NULL</pre></td></tr></table>
+<p>The &quot;unknown&quot; id.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6559"></a><h3>
+<a name="XMLSECPTRDUPLICATEITEMMETHOD"></a>xmlSecPtrDuplicateItemMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   (*xmlSecPtrDuplicateItemMethod) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);</pre></td></tr></table>
+<p>Duplicates item <tt class="PARAMETER"><i>ptr</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6568"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ptr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the poinetr to list item.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to new item copy or NULL if an error occurs.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6581"></a><h3>
+<a name="XMLSECPTRDESTROYITEMMETHOD"></a>xmlSecPtrDestroyItemMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecPtrDestroyItemMethod)   (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);</pre></td></tr></table>
+<p>Destroys list item <tt class="PARAMETER"><i>ptr</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6589"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ptr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the poinetr to list item.</td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6598"></a><h3>
+<a name="XMLSECPTRDEBUGDUMPITEMMETHOD"></a>xmlSecPtrDebugDumpItemMethod ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecPtrDebugDumpItemMethod) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr,
+                                             <font>FILE</font> *output);</pre></td></tr></table>
+<p>Prints debug information about <tt class="PARAMETER"><i>item</i></tt> to <tt class="PARAMETER"><i>output</i></tt>.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6608"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>ptr</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the poinetr to list item.</td>
+</tr>
+<tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>output</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP">		the output FILE.</td>
+</tr>
+</tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6621"></a><h3>
+<a name="XMLSECPTRLISTKLASS"></a>struct xmlSecPtrListKlass</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecPtrListKlass {
     const xmlChar*			name;
     xmlSecPtrDuplicateItemMethod	duplicateItem;
     xmlSecPtrDestroyItemMethod		destroyItem;
     xmlSecPtrDebugDumpItemMethod	debugDumpItem;
     xmlSecPtrDebugDumpItemMethod	debugXmlDumpItem;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->:		the list klass name.
-<TT
-CLASS="PARAMETER"
-><I
->duplicateItem</I
-></TT
->:	the duplciate item method.
-<TT
-CLASS="PARAMETER"
-><I
->destroyItem</I
-></TT
->:	the destroy item method.
-<TT
-CLASS="PARAMETER"
-><I
->debugDumpItem</I
-></TT
->:	the debug dump item method.
-<TT
-CLASS="PARAMETER"
-><I
->debugXmlDumpItem</I
-></TT
->:	the debug dump item in xml format method.</P
-><P
->List klass.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6568"
-></A
-><H3
-><A
-NAME="XMLSECPTRLISTKLASSGETNAME"
-></A
->xmlSecPtrListKlassGetName()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecPtrListKlassGetName(klass)</PRE
-></TD
-></TR
-></TABLE
-><P
->Macro. Returns the list klass name.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6574"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->klass</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6583"
-></A
-><H3
-><A
-NAME="XMLSECSTATICOBJECTLISTID"
-></A
->xmlSecStaticObjectListId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecStaticObjectListId</PRE
-></TD
-></TR
-></TABLE
-><P
->Static objects klass (no destroy or duplicate methods).</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6589"
-></A
-><H3
-><A
-NAME="XMLSECSTATICOBJECTLISTGETKLASS"
-></A
->xmlSecStaticObjectListGetKlass ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> xmlSecStaticObjectListGetKlass
-                                            (void);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6595"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6604"
-></A
-><H3
-><A
-NAME="XMLSECSTRINGLISTID"
-></A
->xmlSecStringListId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->#define     xmlSecStringListId</PRE
-></TD
-></TR
-></TABLE
-><P
->Strings list klass.</P
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6610"
-></A
-><H3
-><A
-NAME="XMLSECSTRINGLISTGETKLASS"
-></A
->xmlSecStringListGetKlass ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECPTRLISTID"
->xmlSecPtrListId</GTKDOCLINK
-> xmlSecStringListGetKlass    (void);</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6616"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->&nbsp;</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-keysmngr.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-ref.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-membuf.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->keysmngr</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->membuf</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+};</pre></td></tr></table>
+<p>
+<tt class="PARAMETER"><i>name</i></tt>:		the list klass name.
+<tt class="PARAMETER"><i>duplicateItem</i></tt>:	the duplciate item method.
+<tt class="PARAMETER"><i>destroyItem</i></tt>:	the destroy item method.
+<tt class="PARAMETER"><i>debugDumpItem</i></tt>:	the debug dump item method.
+<tt class="PARAMETER"><i>debugXmlDumpItem</i></tt>:	the debug dump item in xml format method.</p>
+<p>List klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6633"></a><h3>
+<a name="XMLSECPTRLISTKLASSGETNAME"></a>xmlSecPtrListKlassGetName()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecPtrListKlassGetName(klass)</pre></td></tr></table>
+<p>Macro. Returns the list klass name.</p>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6639"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<tt class="PARAMETER"><i>klass</i></tt> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6648"></a><h3>
+<a name="XMLSECSTATICOBJECTLISTID"></a>xmlSecStaticObjectListId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecStaticObjectListId</pre></td></tr></table>
+<p>Static objects klass (no destroy or duplicate methods).</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6654"></a><h3>
+<a name="XMLSECSTATICOBJECTLISTGETKLASS"></a>xmlSecStaticObjectListGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecStaticObjectListGetKlass
+                                            (void);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6660"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6669"></a><h3>
+<a name="XMLSECSTRINGLISTID"></a>xmlSecStringListId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecStringListId</pre></td></tr></table>
+<p>Strings list klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN6675"></a><h3>
+<a name="XMLSECSTRINGLISTGETKLASS"></a>xmlSecStringListGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecStringListGetKlass    (void);</pre></td></tr></table>
+<p></p>
+<div class="INFORMALTABLE">
+<a name="AEN6681"></a><p></p>
+<table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
+<td width="20%" align="RIGHT" valign="TOP">
+<span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr></tbody></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-membuf.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>keysmngr</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>membuf</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

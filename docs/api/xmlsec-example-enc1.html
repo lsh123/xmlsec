@@ -1,595 +1,244 @@
-<HTML
-><HEAD
-><TITLE
->enc1.c</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Examples."
-HREF="xmlsec-examples.html"><LINK
-REL="PREVIOUS"
-TITLE="dsig4.c"
-HREF="xmlsec-example-dsig4.html"><LINK
-REL="NEXT"
-TITLE="enc2.c"
-HREF="xmlsec-example-enc2.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-example-dsig4.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-examples.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-example-enc2.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><H1
-><A
-NAME="XMLSEC-EXAMPLE-ENC1"
-></A
->enc1.c</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN14636"
-></A
-><H2
->Name</H2
->enc1.c&nbsp;--&nbsp;Encrypting a template file.</DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN14639"
-></A
-><H2
->Example: Encrypting a template file.</H2
-><P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><A
-NAME="AEN14642"
-></A
-><P
-></P
-><TABLE
-BORDER="0"
-BGCOLOR="#D8F8D8"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->/** 
- * XML Security Library example: Encrypting a template file.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>enc1.c</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Examples." href="xmlsec-examples.html">
+<link rel="PREVIOUS" title="dsig4.c" href="xmlsec-example-dsig4.html">
+<link rel="NEXT" title="enc2.c" href="xmlsec-example-enc2.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-dsig4.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-enc2.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-EXAMPLE-ENC1"></a>enc1.c</h1>
+<div class="REFNAMEDIV">
+<a name="AEN14701"></a><h2>Name</h2>enc1.c -- Encrypting data using a template file.</div>
+<div class="REFSECT1">
+<a name="AEN14704"></a><h2>Example: Encrypting data using a template file.</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN14707"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
+ * XML Security Library example: Encrypting data using a template file.
  * 
+ * Encrypts binary data using a template file and a key from PEM file
+ * 
+ * Usage: 
+ *	enc1 &lt;xml-tmpl&gt; &lt;pem-key&gt; 
+ * Example:
+ *	./enc1 ./enc1-tmpl.xml rsakey.pem &gt; enc1-res.xml
+ *
  * See Copyright for the status of this software.
  * 
  * Author: Aleksey Sanin &lt;aleksey@aleksey.com&gt;
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
-
-#include &lt;openssl/err.h&gt;
-#include &lt;openssl/rand.h&gt;
+#include &lt;assert.h&gt;
 
 #include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
 #include &lt;libxml/parser.h&gt;
+
+#ifndef XMLSEC_NO_XSLT
 #include &lt;libxslt/xslt.h&gt;
+#endif /* XMLSEC_NO_XSLT */
 
-#include &lt;xmlsec/xmlenc.h&gt; 
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/keys.h&gt;
 #include &lt;xmlsec/keysmngr.h&gt;
-#include &lt;xmlsec/transforms.h&gt;
+#include &lt;xmlsec/xmlenc.h&gt;
 
+#ifdef XMLSEC_CRYPTO_OPENSSL
+#include &lt;xmlsec/openssl/app.h&gt;
+#include &lt;xmlsec/openssl/symbols.h&gt;
+#else /* XMLSEC_CRYPTO_OPENSSL */
+#ifdef XMLSEC_CRYPTO_GNUTLS
+#include &lt;xmlsec/gnutls/app.h&gt;
+#include &lt;xmlsec/gnutls/symbols.h&gt;
+#else /* XMLSEC_CRYPTO_GNUTLS */
+#ifdef XMLSEC_CRYPTO_NSS
+#include &lt;xmlsec/nss/app.h&gt;
+#include &lt;xmlsec/nss/symbols.h&gt;
+#else /* XMLSEC_CRYPTO_NSS */
+#error No Crypto library defined
+#endif /* XMLSEC_CRYPTO_GNUTLS */
+#endif /* XMLSEC_CRYPTO_NSS */
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 
-int		initEverything				(void);
-void		shutdownEverything			(void);
-int 		encrypt					(void);
-int		generateDesKey				(void);
-
-xmlSecKeysMngrPtr keysMngr = NULL; 
-xmlSecEncCtxPtr ctx = NULL;
-
-int main(int argc, char **argv) {
-    int ret = -1;
-    xmlSecKeyPtr key;
-            
-    /** 
-     * Init OpenSSL, libxml and xmlsec
-     */
-    ret = initEverything();
-    if(ret &lt; 0) {
-	fprintf(stderr, "Error: initialization failed\n");
-	return(1);
-    }
-    
-    if(argc &lt; 2) {
-	fprintf(stderr, "Error: missed required parameter. Usage: %s &lt;public-key-file&gt;\n", argv[0]);
-	goto done;
-    }
-
-    /** 
-     * load key
-     */
-    key = xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 0);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
-	goto done;
-    }
-    key-&gt;name = xmlStrdup(BAD_CAST "test-rsa-key");
-
-    ret = generateDesKey();
-    if(ret &lt; 0) {
-	 fprintf(stderr, "Error: failed to generate random des key\n");
-	 goto done;
-    }
-    
-    /** 
-     * Encrypt file
-     */    
-    ret = encrypt();
-    if(ret &lt; 0) {
-	fprintf(stderr, "Error: failed to encrypt data\n");
-	goto done;	
-    }
-        
-done:
-    /*
-     * Cleanup: shutdown xmlsec, libxml, openssl
-     */
-    shutdownEverything();    
-    return((ret &gt;= 0) ? 0 : 1);
-}
+static int encrypt_file(const char* tmpl_file, const char* key_file);
 
 int 
-encrypt(void) {
-    static const char buf[] = "big secret";
-    xmlNodePtr encKey = NULL;
-    xmlNodePtr encData = NULL;
-    xmlSecEncResultPtr result = NULL;
-    xmlNodePtr cur;
-    xmlDocPtr doc = NULL;
-    int ret;
-    
-    /**
-     * Create the EncryptedData node
-     */
-    encData = xmlSecEncDataCreate(NULL, NULL, NULL, NULL);
-    if(encData == NULL) {
-	fprintf(stderr, "Error: template creation failed\n");
-	goto done;    
+main(int argc, char **argv) {
+    assert(argv);
+
+    if(argc != 3) {
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;tmpl-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
+	return(1);
     }
 
-    /**
-     * Set the encryption method
-     */
-    cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncDes3Cbc);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add Enc Method\n");
-	goto done;    
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	return(-1);
     }
 
-    /**
-     * Add EncryptionProperties node just for fun
-     */
-    cur = xmlSecEncDataAddEncProperty(encData, BAD_CAST "Classified", NULL);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add KeyInfo\n");
-	goto done;    
-    }
-    xmlSetProp(cur, BAD_CAST "Level", BAD_CAST "Top secret: destroy before reading");
-
-    /** 
-     * The encrypted data should be saved in CipherValue node 
-     */
-    cur = xmlSecEncDataAddCipherValue(encData);    
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add CipherValue\n");
-	goto done;    
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) &lt; 0) {
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	return(-1);
     }
 
-    /**
-     * Add key info node 
-     */
-    cur = xmlSecEncDataAddKeyInfo(encData);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add KeyInfo\n");
-	goto done;    
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	return(-1);
     }
 
-    /**
-     * The session DES key will be RSA encrypted and included
-     * in the message
-     */
-    encKey = xmlSecKeyInfoAddEncryptedKey(cur, NULL, NULL, NULL);
-    if(encKey == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey\n");
-	goto done;    
-    }
-    
-    /**
-     * Set the encryption method for encrypting the key
-     */
-    cur = xmlSecEncDataAddEncMethod(encKey, xmlSecEncRsaOaep);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey Enc Method\n");
-	goto done;    
-    }
-    
-    /**
-     * The encrypted key should be stored in XML document
-     */
-    cur = xmlSecEncDataAddCipherValue(encKey);    
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey CipherValue\n");
-	goto done;    
-    }
-
-    /**
-     * Now specify the key used to encrypt session key
-     */
-    cur = xmlSecEncDataAddKeyInfo(encKey);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey KeyInfo\n");
-	goto done;    
-    }
-
-    cur = xmlSecKeyInfoAddKeyName(cur);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey KeyName\n");
-	goto done;    
-    }
-
-    /**
-     * Create doc
-     */
-    doc = xmlNewDoc(NULL);
-    if(doc == NULL) {
-	fprintf(stderr, "Error: failed to create document\n");
-	goto done;    
-    }
-    xmlSetTreeDoc(encData, doc);
-    xmlDocSetRootElement(doc, encData);
-     
-    /**
-     * Finally encrypt everything
-     */
-    ret = xmlSecEncryptMemory(ctx, NULL, NULL, encData, (const unsigned char*)buf,
-			     strlen(buf), &amp;result);
-    if(ret &lt; 0) {
-	fprintf(stderr, "Error: memory encryption failed\n");
-	goto done;    
-    }
-    
-    /**
-     * And print result to stdout
-     */			     
-    xmlDocDump(stdout, doc);
-    
-done:        
-    if(result != NULL) {
-	xmlSecEncResultDestroy(result);
+    if(encrypt_file(argv[1], argv[2]) &lt; 0) {
+	return(-1);
     }    
     
-    if(encData != NULL) {
-	xmlSecEncDataDestroy(encData);
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+static int 
+encrypt_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    encCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
+    if(encCtx-&gt;signKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecEncCtxEncrypt(encCtx, node) &lt; 0) {
+        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
     }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
-    return(0);
-}
-
-int
-generateDesKey(void) {
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* DES3 */    
-    key = xmlSecKeyCreate(xmlSecDesKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create des3 key\n"); 
-	return(-1);
-    }        
-    ret = xmlSecDesKeyGenerate(key, NULL, 24);
-    if(ret &lt; 0) {
-	xmlSecKeyDestroy(key);  
-	fprintf(stderr, "Error: failed to create des3 key\n"); 
-	return(-1);
-    }    
-    key-&gt;name = xmlStrdup(BAD_CAST "test-des3");
-    ret = xmlSecSimpleKeysMngrAddKey(keysMngr, key);
-    if(ret &lt; 0) {
-	xmlSecKeyDestroy(key);
-	fprintf(stderr, "Error: failed to add des3 key\n"); 
-	return(-1);
-    }
-    return(0);
-}
-
-int initEverything(void) {
-    int rnd_seed = 0;
-            
-    /** 
-     * Init OpenSSL
-     */    
-    while (RAND_status() != 1) {
-	RAND_seed(&amp;rnd_seed, sizeof(rnd_seed));
-    }
-    
-    /*
-     * Init libxml
-     */     
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-
-    /*
-     * Init xmlsec
-     */
-    xmlSecInit();    
-
-    /** 
-     * Create Keys managers
-     */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager\n");
-	return(-1);	
-    }
-    /**
-     * We encrypt using our keys only
-     */
-    keysMngr-&gt;allowedOrigins = xmlSecKeyOriginKeyManager | xmlSecKeyOriginKeyName;
-      
-    /**
-     * Create enc context
-     */
-    ctx = xmlSecEncCtxCreate(keysMngr);
-    if(ctx == NULL) {
-	fprintf(stderr, "Error: template failed to create context\n");
-	return(-1);
-    }
-    
-    return(0);
-}
-
-void shutdownEverything(void) {
-
-    /* destroy context and key manager */
-    if(ctx != NULL) {
-	xmlSecEncCtxDestroy(ctx);
-    }
-    
-    
-    if(keysMngr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keysMngr);
-    }
-    
-    /**
-     * Shutdown xmlsec
-     */
-    xmlSecShutdown();
-
-    /**
-     * Shutdown libxslt
-     */    
-    xsltCleanupGlobals();            
-    
-    /* 
-     * Shutdown libxml
-     */
-    xmlCleanupParser();
-    
-    /* 
-     * Shutdown OpenSSL
-     */
-    RAND_cleanup();
-    ERR_clear_error();
-}&#13;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-></P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-example-dsig4.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-examples.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-example-enc2.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->dsig4.c</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->enc2.c</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+    return(res);
+}</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-example-dsig4.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-enc2.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>dsig4.c</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>enc2.c</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

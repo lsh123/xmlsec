@@ -8,7 +8,7 @@ EXTRA_DIST = \
 	win32 \
 	docs/*.html \
 	docs/api/*.html \
-	docs/api/xmlsec.sgml \
+	docs/api/*.sgml \
 	docs/api/chapters/*.sgml \
 	docs/api/images \
 	docs/images \

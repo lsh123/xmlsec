@@ -1,328 +1,171 @@
 /** 
- * XML Security Library example: Encrypting a template file.
+ * XML Security Library example: Encrypting data using a template file.
  * 
+ * Encrypts binary data using a template file and a key from PEM file
+ * 
+ * Usage: 
+ *	enc1 <xml-tmpl> <pem-key> 
+ * Example:
+ *	./enc1 ./enc1-tmpl.xml rsakey.pem > enc1-res.xml
+ *
  * See Copyright for the status of this software.
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
 #include <string.h>
-
-#include <openssl/err.h>
-#include <openssl/rand.h>
+#include <assert.h>
 
 #include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+
+#ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
+#endif /* XMLSEC_NO_XSLT */
 
-#include <xmlsec/xmlenc.h> 
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/transforms.h>
+#include <xmlsec/xmlenc.h>
 
+#ifdef XMLSEC_CRYPTO_OPENSSL
+#include <xmlsec/openssl/app.h>
+#include <xmlsec/openssl/symbols.h>
+#else /* XMLSEC_CRYPTO_OPENSSL */
+#ifdef XMLSEC_CRYPTO_GNUTLS
+#include <xmlsec/gnutls/app.h>
+#include <xmlsec/gnutls/symbols.h>
+#else /* XMLSEC_CRYPTO_GNUTLS */
+#ifdef XMLSEC_CRYPTO_NSS
+#include <xmlsec/nss/app.h>
+#include <xmlsec/nss/symbols.h>
+#else /* XMLSEC_CRYPTO_NSS */
+#error No Crypto library defined
+#endif /* XMLSEC_CRYPTO_GNUTLS */
+#endif /* XMLSEC_CRYPTO_NSS */
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 
-int		initEverything				(void);
-void		shutdownEverything			(void);
-int 		encrypt					(void);
-int		generateDesKey				(void);
-
-xmlSecKeysMngrPtr keysMngr = NULL; 
-xmlSecEncCtxPtr ctx = NULL;
-
-int main(int argc, char **argv) {
-    int ret = -1;
-    xmlSecKeyPtr key;
-            
-    /** 
-     * Init OpenSSL, libxml and xmlsec
-     */
-    ret = initEverything();
-    if(ret < 0) {
-	fprintf(stderr, "Error: initialization failed\n");
-	return(1);
-    }
-    
-    if(argc < 2) {
-	fprintf(stderr, "Error: missed required parameter. Usage: %s <public-key-file>\n", argv[0]);
-	goto done;
-    }
-
-    /** 
-     * load key
-     */
-    key = xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 0);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to load key from \"%s\"\n", argv[1]);
-	goto done;
-    }
-    key->name = xmlStrdup(BAD_CAST "test-rsa-key");
-
-    ret = generateDesKey();
-    if(ret < 0) {
-	 fprintf(stderr, "Error: failed to generate random des key\n");
-	 goto done;
-    }
-    
-    /** 
-     * Encrypt file
-     */    
-    ret = encrypt();
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to encrypt data\n");
-	goto done;	
-    }
-        
-done:
-    /*
-     * Cleanup: shutdown xmlsec, libxml, openssl
-     */
-    shutdownEverything();    
-    return((ret >= 0) ? 0 : 1);
-}
+static int encrypt_file(const char* tmpl_file, const char* key_file);
 
 int 
-encrypt(void) {
-    static const char buf[] = "big secret";
-    xmlNodePtr encKey = NULL;
-    xmlNodePtr encData = NULL;
-    xmlSecEncResultPtr result = NULL;
-    xmlNodePtr cur;
-    xmlDocPtr doc = NULL;
-    int ret;
-    
-    /**
-     * Create the EncryptedData node
-     */
-    encData = xmlSecEncDataCreate(NULL, NULL, NULL, NULL);
-    if(encData == NULL) {
-	fprintf(stderr, "Error: template creation failed\n");
-	goto done;    
+main(int argc, char **argv) {
+    assert(argv);
+
+    if(argc != 3) {
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s <tmpl-file> <key-file>\n", argv[0]);
+	return(1);
     }
 
-    /**
-     * Set the encryption method
-     */
-    cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncDes3Cbc);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add Enc Method\n");
-	goto done;    
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() < 0) {
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
+	return(-1);
     }
 
-    /**
-     * Add EncryptionProperties node just for fun
-     */
-    cur = xmlSecEncDataAddEncProperty(encData, BAD_CAST "Classified", NULL);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add KeyInfo\n");
-	goto done;    
-    }
-    xmlSetProp(cur, BAD_CAST "Level", BAD_CAST "Top secret: destroy before reading");
-
-    /** 
-     * The encrypted data should be saved in CipherValue node 
-     */
-    cur = xmlSecEncDataAddCipherValue(encData);    
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add CipherValue\n");
-	goto done;    
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) < 0) {
+	fprintf(stderr, "Error: crypto initialization failed.\n");
+	return(-1);
     }
 
-    /**
-     * Add key info node 
-     */
-    cur = xmlSecEncDataAddKeyInfo(encData);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add KeyInfo\n");
-	goto done;    
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() < 0) {
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+	return(-1);
     }
 
-    /**
-     * The session DES key will be RSA encrypted and included
-     * in the message
-     */
-    encKey = xmlSecKeyInfoAddEncryptedKey(cur, NULL, NULL, NULL);
-    if(encKey == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey\n");
-	goto done;    
-    }
-    
-    /**
-     * Set the encryption method for encrypting the key
-     */
-    cur = xmlSecEncDataAddEncMethod(encKey, xmlSecEncRsaOaep);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey Enc Method\n");
-	goto done;    
-    }
-    
-    /**
-     * The encrypted key should be stored in XML document
-     */
-    cur = xmlSecEncDataAddCipherValue(encKey);    
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey CipherValue\n");
-	goto done;    
-    }
-
-    /**
-     * Now specify the key used to encrypt session key
-     */
-    cur = xmlSecEncDataAddKeyInfo(encKey);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey KeyInfo\n");
-	goto done;    
-    }
-
-    cur = xmlSecKeyInfoAddKeyName(cur);
-    if(cur == NULL) {
-	fprintf(stderr, "Error: failed to add EncryptedKey KeyName\n");
-	goto done;    
-    }
-
-    /**
-     * Create doc
-     */
-    doc = xmlNewDoc(NULL);
-    if(doc == NULL) {
-	fprintf(stderr, "Error: failed to create document\n");
-	goto done;    
-    }
-    xmlSetTreeDoc(encData, doc);
-    xmlDocSetRootElement(doc, encData);
-     
-    /**
-     * Finally encrypt everything
-     */
-    ret = xmlSecEncryptMemory(ctx, NULL, NULL, encData, (const unsigned char*)buf,
-			     strlen(buf), &result);
-    if(ret < 0) {
-	fprintf(stderr, "Error: memory encryption failed\n");
-	goto done;    
-    }
-    
-    /**
-     * And print result to stdout
-     */			     
-    xmlDocDump(stdout, doc);
-    
-done:        
-    if(result != NULL) {
-	xmlSecEncResultDestroy(result);
+    if(encrypt_file(argv[1], argv[2]) < 0) {
+	return(-1);
     }    
     
-    if(encData != NULL) {
-	xmlSecEncDataDestroy(encData);
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+static int 
+encrypt_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+	goto done;	
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    encCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
+    if(encCtx->signKey == NULL) {
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecEncCtxEncrypt(encCtx, node) < 0) {
+        fprintf(stderr,"Error: encryption failed\n");
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
     }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
-    return(0);
-}
-
-int
-generateDesKey(void) {
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* DES3 */    
-    key = xmlSecKeyCreate(xmlSecDesKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create des3 key\n"); 
-	return(-1);
-    }        
-    ret = xmlSecDesKeyGenerate(key, NULL, 24);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);  
-	fprintf(stderr, "Error: failed to create des3 key\n"); 
-	return(-1);
-    }    
-    key->name = xmlStrdup(BAD_CAST "test-des3");
-    ret = xmlSecSimpleKeysMngrAddKey(keysMngr, key);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);
-	fprintf(stderr, "Error: failed to add des3 key\n"); 
-	return(-1);
-    }
-    return(0);
-}
-
-int initEverything(void) {
-    int rnd_seed = 0;
-            
-    /** 
-     * Init OpenSSL
-     */    
-    while (RAND_status() != 1) {
-	RAND_seed(&rnd_seed, sizeof(rnd_seed));
-    }
-    
-    /*
-     * Init libxml
-     */     
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-
-    /*
-     * Init xmlsec
-     */
-    xmlSecInit();    
-
-    /** 
-     * Create Keys managers
-     */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager\n");
-	return(-1);	
-    }
-    /**
-     * We encrypt using our keys only
-     */
-    keysMngr->allowedOrigins = xmlSecKeyOriginKeyManager | xmlSecKeyOriginKeyName;
-      
-    /**
-     * Create enc context
-     */
-    ctx = xmlSecEncCtxCreate(keysMngr);
-    if(ctx == NULL) {
-	fprintf(stderr, "Error: template failed to create context\n");
-	return(-1);
-    }
-    
-    return(0);
-}
-
-void shutdownEverything(void) {
-
-    /* destroy context and key manager */
-    if(ctx != NULL) {
-	xmlSecEncCtxDestroy(ctx);
-    }
-    
-    
-    if(keysMngr != NULL) {
-	xmlSecSimpleKeysMngrDestroy(keysMngr);
-    }
-    
-    /**
-     * Shutdown xmlsec
-     */
-    xmlSecShutdown();
-
-    /**
-     * Shutdown libxslt
-     */    
-    xsltCleanupGlobals();            
-    
-    /* 
-     * Shutdown libxml
-     */
-    xmlCleanupParser();
-    
-    /* 
-     * Shutdown OpenSSL
-     */
-    RAND_cleanup();
-    ERR_clear_error();
+    return(res);
 }
 

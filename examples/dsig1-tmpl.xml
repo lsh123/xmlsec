@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-XML Security Library example: Signature template file. 
+XML Security Library example: Simple signature template file. 
 -->
 <Envelope xmlns="urn:envelope">
   <Data>

@@ -1,131 +1,48 @@
-<HTML
-><HEAD
-><TITLE
->Signing and encrypting documents.</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
-"><LINK
-REL="HOME"
-TITLE="XML Security Library Reference Manual"
-HREF="index.html"><LINK
-REL="UP"
-TITLE="XML Security Library Programming Notes"
-HREF="xmlsec-notes.html"><LINK
-REL="PREVIOUS"
-TITLE="Initialization and shutdown."
-HREF="xmlsec-notes-init-shutdown.html"><LINK
-REL="NEXT"
-TITLE="Verifing and decrypting documents."
-HREF="xmlsec-notes-verify-decrypt.html"></HEAD
-><BODY
-CLASS="SECT1"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="4"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="5"
->XML Security Library Reference Manual</FONT
-></TH
-></TR
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-notes-init-shutdown.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-notes.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-notes-verify-decrypt.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-></TABLE
-></DIV
-><BR
-CLEAR="all"><DIV
-CLASS="SECT1"
-><H1
-CLASS="SECT1"
-><A
-NAME="XMLSEC-NOTES-SIGN-ENCRYPT"
-></A
->Signing and encrypting documents.</H1
-><P
->XML Security Library performs signature or encryption by processing 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Signing and encrypting documents.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
+<link rel="PREVIOUS" title="Initialization and shutdown." href="xmlsec-notes-init-shutdown.html">
+<link rel="NEXT" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-init-shutdown.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-SIGN-ENCRYPT"></a>Signing and encrypting documents.</h1>
+<p>XML Security Library performs signature or encryption by processing 
 	input xml or binary data and a template that specifies a signature or 
 	encryption skeleton: the transforms, algorithms, the key selection 
 	process. A template has the same structure as the desired result but 
@@ -134,137 +51,49 @@ NAME="XMLSEC-NOTES-SIGN-ENCRYPT"
 	the template, does necessary computations and puts the results in 
 	the template. Signature or encryption context controls the whole 
 	process and stores the required temporary data.
-	  <DIV
-CLASS="FIGURE"
-><A
-NAME="AEN49"
-></A
-><P
-><B
->Figure 2. The signature or encryption processing model.</B
-></P
-><P
-><IMG
-SRC="images/sign-enc-model.png"
-ALIGN="CENTER"></P
-></DIV
->
-	</P
-><BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN52"
-></A
->Signing a document.</H2
-><P
->The typical siganture process includes following steps:
-	  <P
-></P
-><UL
-><LI
-><P
->		Prepare data for signature.
-	    </P
-></LI
-><LI
-><P
->		Create or load signature template and select start
-		&lt;dsig:Signature/&gt; node.
-	    </P
-></LI
-><LI
-><P
->		Create signature context <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->xmlSecDSigCtx</A
->
-		using <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE"
->xmlSecDSigCtxCreate</A
-> or
-		<A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE"
->xmlSecDSigCtxInitialize</A
->
+	  </p>
+<div class="FIGURE">
+<a name="AEN90"></a><p><b>Figure 2. The signature or encryption processing model.</b></p>
+<p><img src="images/sign-enc-model.png" align="CENTER"></p>
+</div>
+	<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="AEN93"></a>Signing a document.</h2>
+<p>The typical siganture process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Prepare data for signature.
+	    </p></li>
+<li><p>		Create or load signature template and select start
+    		<a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a>
+		node.
+	    </p></li>
+<li><p>		Create signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>
 		functions.
-	    </P
-></LI
-><LI
-><P
->		Load signature key in <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
->keys manager</A
-> 
+	    </p></li>
+<li><p>		Load signature key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
 		or generate a sesison key and set it in the signature context 
-		(<TT
-CLASS="STRUCTFIELD"
-><I
->signKey</I
-></TT
-> member of 
-		<A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->xmlSecDSigCtx</A
-> structure).
-	    </P
-></LI
-><LI
-><P
->		Sign data by calling <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN"
->xmlSecDSigCtxSign</A
-> 
+		(<tt class="STRUCTFIELD"><i>signKey</i></tt> member of 
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure).
+	    </p></li>
+<li><p>		Sign data by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a> 
 		function.
-	    </P
-></LI
-><LI
-><P
->		Check returned value and consume signed data.
-	    </P
-></LI
-><LI
-><P
->		Destroy signature context <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
->xmlSecDSigCtx</A
->
-		using <A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY"
->xmlSecDSigCtxDestroy</A
-> or
-		<A
-HREF="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE"
->xmlSecDSigCtxFinalize</A
->
+	    </p></li>
+<li><p>		Check returned value and consume signed data.
+	    </p></li>
+<li><p>		Destroy signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>
 		functions.
-	    </P
-></LI
-></UL
->
-	</P
-><P
->	     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN81"
-></A
-><P
-><B
->Example 3. Signing a template</B
-></P
-><TABLE
-BORDER="0"
-BGCOLOR="#D8F8D8"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int 
+	    </p></li>
+</ul>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN123"></a><p><b>Example 4. Signing a template</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int 
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
@@ -277,34 +106,34 @@ sign_file(const char* tmpl_file, const char* key_file) {
     /* load template */
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
 	goto done;	
     }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
 	goto done;
     }
 
     /* load private key, assuming that there is not password */
-    dsigCtx-&#62;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
-    if(dsigCtx-&#62;signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 1);
+    if(dsigCtx-&gt;signKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
 
     /* sign the template */
-    if(xmlSecDSigCtxSign(dsigCtx, node) &#60; 0) {
-        fprintf(stderr,"Error: signature failed\n");
+    if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,&quot;Error: signature failed\n&quot;);
 	goto done;
     }
         
@@ -324,276 +153,80 @@ done:
     }
     return(res);
 }
-		</PRE
-></TD
-></TR
-></TABLE
-><P
-><A
-HREF="xmlsec-example-dsig1.html"
->Full program listing</A
-></P
-><P
-><A
-HREF="xmlsec-example-dsig1-tmpl.html"
->Simple signature template file</A
-></P
-></DIV
->
-	</P
-></DIV
-><BR
-CLEAR="all"><DIV
-CLASS="SECT2"
-><H2
-CLASS="SECT2"
-><A
-NAME="AEN88"
-></A
->Encrypting a document</H2
-><P
->The typical encryption process includes following steps:
-	  <P
-></P
-><UL
-><LI
-><P
->		Prepare data for encryption.
-	    </P
-></LI
-><LI
-><P
->		Create or load encryption template and select start
+		</pre></td></tr></table>
+<p><a href="xmlsec-example-dsig1.html">Full program listing</a></p>
+<p><a href="xmlsec-example-dsig1-tmpl.html">Simple signature template file</a></p>
+</div>
+	</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="AEN130"></a>Encrypting a document</h2>
+<p>The typical encryption process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Prepare data for encryption.
+	    </p></li>
+<li><p>		Create or load encryption template and select start
 		&lt;enc:EncryptedData/&gt; node.
-	    </P
-></LI
-><LI
-><P
->		Create encryption context <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
->
-		using <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXCREATE"
->xmlSecEncCtxCreate</A
-> or
-		<A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE"
->xmlSecEncCtxInitialize</A
->
+	    </p></li>
+<li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
+		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>
 		functions.
-	    </P
-></LI
-><LI
-><P
->		Load encryption key in <A
-HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
->keys manager</A
-> 
+	    </p></li>
+<li><p>		Load encryption key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
 		or generate a sesison key and set it in the encryption context
-		(<TT
-CLASS="STRUCTFIELD"
-><I
->encKey</I
-></TT
-> member of 
-		<A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
-> structure).
-	    </P
-></LI
-><LI
-><P
->		Encrypt data by calling one of the following functions:
-		<P
-></P
-><UL
-><LI
-><P
->			<A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT"
->xmlSecEncCtxBinaryEncrypt</A
->
-		    </P
-></LI
-><LI
-><P
->			<A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT"
->xmlSecEncCtxXmlEncrypt</A
->
-		    </P
-></LI
-><LI
-><P
->			<A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT"
->xmlSecEncCtxUriEncrypt</A
->
-		    </P
-></LI
-></UL
->
-	    </P
-></LI
-><LI
-><P
->		Check returned value and if necessary consume encrypted data.
-	    </P
-></LI
-><LI
-><P
->		Destroy encryption context <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
->xmlSecEncCtx</A
->
-		using <A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY"
->xmlSecEncCtxDestroy</A
-> or
-		<A
-HREF="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE"
->xmlSecEncCtxFinalize</A
->
+		(<tt class="STRUCTFIELD"><i>encKey</i></tt> member of 
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure).
+	    </p></li>
+<li>
+<p>		Encrypt data by calling one of the following functions:
+		</p>
+<p></p>
+<ul>
+<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT">xmlSecEncCtxBinaryEncrypt</a>
+		    </p></li>
+<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a>
+		    </p></li>
+<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>
+		    </p></li>
+</ul>
+</li>
+<li><p>		Check returned value and if necessary consume encrypted data.
+	    </p></li>
+<li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
+		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> or
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>
 		functions.
-	    </P
-></LI
-></UL
->
-	</P
-><P
->	     <DIV
-CLASS="EXAMPLE"
-><A
-NAME="AEN126"
-></A
-><P
-><B
->Example 4. Encrypting a document.</B
-></P
-><TABLE
-BORDER="0"
-BGCOLOR="#D8F8D8"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->TODO
-		</PRE
-></TD
-></TR
-></TABLE
-></DIV
->
-	</P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><BR
-CLEAR="all"><BR><TABLE
-WIDTH="100%"
-BORDER="0"
-BGCOLOR="#000000"
-CELLPADDING="1"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="left"
-><A
-HREF="xmlsec-notes-init-shutdown.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->&#60;&#60;&#60; Previous Page</B
-></FONT
-></A
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#0000C0"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="index.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Home</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#00C000"
-ALIGN="center"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
-><A
-HREF="xmlsec-notes.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Up</B
-></FONT
-></A
-></B
-></FONT
-></TD
-><TD
-WIDTH="25%"
-BGCOLOR="#C00000"
-ALIGN="right"
-><A
-HREF="xmlsec-notes-verify-decrypt.html"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Next Page &#62;&#62;&#62;</B
-></FONT
-></A
-></TD
-></TR
-><TR
-><TD
-COLSPAN="2"
-ALIGN="left"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Initialization and shutdown.</B
-></FONT
-></TD
-><TD
-COLSPAN="2"
-ALIGN="right"
-><FONT
-COLOR="#FFFFFF"
-SIZE="3"
-><B
->Verifing and decrypting documents.</B
-></FONT
-></TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+	    </p></li>
+</ul>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN168"></a><p><b>Example 5. Encrypting a document.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
+		</pre></td></tr></table>
+</div>
+	</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-init-shutdown.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Initialization and shutdown.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Verifing and decrypting documents.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

@@ -1,0 +1,67 @@
+<sect1 id="xmlsec-compiling">
+    <title>Building the application with XML Security Library.</title>
+    <para>As usual, compiling and linking application with XML Security
+    Library requires specifing correct compilation flags, library files 
+    and paths to include and library files.
+    </para>
+    <sect2>
+	<title>Compiling and linking on Unix.</title>
+	<para>On Unix-like systems the <filename>xmlsec-config</filename> 
+	script is the simplest way to get all necessary information.
+	<example>
+	    <title>Using xmlsec-config script in a Makefile.</title>
+	    <programlisting><![CDATA[
+PROGRAM	 	 = test
+PROGRAM_FILES	 = test.c
+cc	 	 = gcc
+CC	 	 = gcc
+LD	 	 = gcc
+
+CFLAGS		+= -g $(shell xmlsec-config --cflags)
+LDFLAGS		+= -g
+LIBS 		+= $(shell xmlsec-config --libs) 
+
+all: $(PROGRAM)
+
+%: %.c 
+	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
+
+clean:
+	@rm -rf $(PROGRAM)
+	    ]]></programlisting>
+	</example>
+	</para>
+    </sect2>
+    <sect2>
+	<title>Compiling and linking on Windows.</title>
+	<para>On Windows there is no such simple and elegant solution.
+	Please check <filename>README</filename> file in <filename>win32</filename>
+	folder of the library package for latest instructions.
+	However, there are a couple general things, that you need to remember:
+	<itemizedlist>
+	    <listitem><para>	
+	     <emphasis>All libraries linked to your application must be compiled
+	    with the same Microsoft Runtime Libraries.</emphasis>
+	    </para></listitem>
+	    <listitem><para>	
+	     <emphasis>Static linking with XML Security Library requires 
+	     additional global defines:</emphasis>
+	      <informalexample><programlisting>
+#define LIBXML_STATIC
+#define LIBXSLT_STATIC
+#define XMLSEC_STATIC	    
+	     </programlisting></informalexample>
+	    </para></listitem>
+	</itemizedlist>
+	</para>
+    </sect2>
+    <sect2>
+	<title>Compiling and linking on other systems.</title>
+	<para>Well, nothing is impossible, it's only software (you managed to 
+	compile the library itself, do you?). 
+	I'll be happy to include in this manual your expirience with
+	compiling and linking applications with XML Security Library
+	on other platforms (if you would like to share it).
+	</para>
+    </sect2>
+</sect1>

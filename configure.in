@@ -682,8 +682,8 @@ src/openssl/Makefile
 src/gnutls/Makefile
 src/nss/Makefile
 apps/Makefile
-tests/Makefile
-man/Makefile
 docs/api/Makefile
+man/Makefile
+tests/Makefile
 ])
 

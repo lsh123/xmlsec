@@ -1,9 +1,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Manpage of xmlsec utility</title>
+<title>Manpage of XMLSEC</title>
 </head>
-<body><table witdh="100%"><tr>
+<body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
 <img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
 <ul>
@@ -22,786 +22,220 @@
 </ul>
 <a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a>
 </td>
-<td><table width="100%">
+<td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<h1>xmlsec</h1>
-<a href="#index">Index</a><hr>
+<h1>XMLSEC</h1>
+<p> Section:  User Commands  ( 1 )<br>Updated: March 2003<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a>
+</p>
+<hr>
 <a name="lbAB"> </a><h2>NAME</h2>
-<p>
-
-xmlsec - command line tool to sign and encrypt XML documents
-<a name="lbAC"> </a>
-</p>
+<p>  xmlsec - manual page for xmlsec 0.2.0-openssl <a name="lbAC"> </a> </p>
 <h2>SYNOPSIS</h2>
-<p>
-</p>
-<pre>
-<b>xmlsec</b> [<b>COMMAND</b>] [<b>OPTIONS</b>] [<i>FILE1</i>] [<i>FILE2</i>] [<i>....</i>]
-      
-</pre>
-<p>
-<a name="lbAD"> </a>
-</p>
-<h2>INTRODUCTION</h2>
-<p>
-</p>
-<p>
-
-The xmlsec program signs or encrypts XML files, specified on the command line as <i>FILE1</i>, <i>FILE2</i>, ... according to &quot;XML Digital Signature&quot; and &quot;XML Encryption&quot; specifications.
-</p>
-<p>
-</p>
-<p>
-
-The xmlsec program is included in XML Security Library.
-</p>
-<p>
-<a name="lbAE"> </a>
-</p>
-<h2>COMMANDS</h2>
-<p>
-</p>
+<b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;file&gt;</i>] <a name="lbAD"> </a> </p>
+<h2>DESCRIPTION</h2>
+<p>  xmlsec is a command line tool for singining, verifying, encrypting and decrypting XML documents. The allowed &lt;command&gt; values are: </p>
 <dl compact>
-<dt><b>version</b></dt>
-<dd>
-Prints version information for the xmlsec program.
-<p>
-</p>
+<dt><b>--help</b></dt>
+<dd> display this help information and exit </dd>
+<dt><b>--help-all</b></dt>
+<dd> display help information for all commands/options and exit </dd>
+<dt>
+<b>--help-</b>&lt;cmd&gt;</dt>
+<dd> display help information for command &lt;cmd&gt; and exit </dd>
+<dt><b>--version</b></dt>
+<dd> print version information and exit </dd>
+<dt><b>--keys</b></dt>
+<dd> keys XML file manipulation </dd>
+<dt><b>--sign</b></dt>
+<dd> sign data and output XML document </dd>
+<dt><b>--verify</b></dt>
+<dd> verify signed document </dd>
+<dt><b>--sign-tmpl</b></dt>
+<dd> create and sign dynamicaly generated signature template </dd>
+<dt><b>--encrypt</b></dt>
+<dd> encrypt data and output XML document </dd>
+<dt><b>--decrypt</b></dt>
+<dd> decrypt data from XML document </dd>
+</dl>
+<a name="lbAE"> </a><h2>OPTIONS</h2>
+<dl compact>
+<dt> <b>--ignore-manifests</b> <dt></dt>
+</dt>
+<dd> <dd>do not process &lt;dsig:Manifest&gt; elements </dd>
 </dd>
-<dt><b>help</b></dt>
-<dd>
-Prints general help information.
-<p>
-</p>
+<dt> <b>--store-references</b> <dt></dt>
+</dt>
+<dd> <dd>store and print the result of &lt;dsig:Reference/&gt; element processing just before calculating digest </dd>
 </dd>
-<dt><b>help-command</b></dt>
-<dd>
-Prints help information for <i>command</i>.
-<p>
-</p>
+<dt> <b>--store-signatures</b> <dt></dt>
+</dt>
+<dd> <dd>store and print the result of &lt;dsig:Signature&gt; processing just before calculating signature </dd>
 </dd>
-<dt><b>keys</b></dt>
-<dd>
-Manages keys in XML keys file. The result keys file is written to the <i>FILE1</i>, <i>FILE2</i>, <i>...</i> files.
-<p>
-</p>
+<dt> <b>--enabled-reference-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;dsig:Reference&gt; element </dd>
 </dd>
-<dt><b>sign</b></dt>
-<dd>
-Signs XML documents <i>FILE1</i>, <i>FILE2</i>, <i>...</i>
-<p>
-</p>
+<dt> <b>--binary-data</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>binary &lt;file&gt; to encrypt </dd>
 </dd>
-<dt><b>verify</b></dt>
-<dd>
-Verifies XML signature in the XML documents <i>FILE1</i>, <i>FILE2</i>, <i>...</i>
-<p>
-</p>
+<dt> <b>--xml-data</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>XML &lt;file&gt; to encrypt </dd>
 </dd>
-<dt><b>encrypt</b></dt>
-<dd>
-Encrypts data using templates from <i>FILE1</i>, <i>FILE2</i>, <i>...</i> files.
-<p>
-</p>
+<dt> <b>--enabled-cipher-reference-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;enc:CipherReference&gt; element </dd>
 </dd>
-<dt><b>decrypt</b></dt>
-<dd>
-Decrypts encrypted XML documents <i>FILE1</i>, <i>FILE2</i>, <i>...</i>
-<p>
-</p>
+<dt> <b>--session-key</b> &lt;keyKlass&gt;-&lt;keySize&gt; <dt></dt>
+</dt>
+<dd> <dd>generate new session &lt;keyKlass&gt; key of &lt;keySize&gt; bits size (for example, &quot;--session des-192&quot; generates a new 192 bits DES key for DES3 encryption) </dd>
+</dd>
+<dt> <b>--output</b> &lt;filename&gt; <dt></dt>
+</dt>
+<dd> <dd>write result document to file &lt;filename&gt; </dd>
+</dd>
+<dt> <b>--print-debug</b> <dt></dt>
+</dt>
+<dd> <dd>print debug information to stdout </dd>
+</dd>
+<dt> <b>--print-xml-debug</b> <dt></dt>
+</dt>
+<dd> <dd>print debug information to stdout in xml format </dd>
+</dd>
+<dt> <b>--dtd-file</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load the specified file as the DTD </dd>
+</dd>
+<dt> <b>--node-id</b> &lt;id&gt; <dt></dt>
+</dt>
+<dd> <dd>set the operation start point to the node with given &lt;id&gt; </dd>
+</dd>
+<dt> <b>--node-name</b> [&lt;namespace-uri&gt;:]&lt;name&gt; <dt></dt>
+</dt>
+<dd> <dd>set the operation start point to the first node with given &lt;name&gt; and &lt;namespace&gt; URI </dd>
+</dd>
+<dt> <b>--node-xpath</b> &lt;expr&gt; <dt></dt>
+</dt>
+<dd> <dd>set the operation start point to the first node selected by the specified XPath expression </dd>
+</dd>
+<dt> <b>--enabled-key-data</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of enabled key data (list of registered key data klasses is available with &quot;--list-key-data&quot; command); by default, all registered key data are enabled </dd>
+</dd>
+<dt> <b>--enabled-retrieval-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: &quot;empty&quot;, &quot;same-doc&quot;, &quot;local&quot;,&quot;remote&quot; to restrict possible URI attribute values for the &lt;dsig:RetrievalMethod&gt; element. </dd>
+</dd>
+<dt> <b>--gen-key[</b>:&lt;name&gt;] &lt;keyKlass&gt;-&lt;keySize&gt; <dt></dt>
+</dt>
+<dd> <dd>generate new &lt;keyKlass&gt; key of &lt;keySize&gt; bits size, set the key name to &lt;name&gt; and add the result to keys manager (for example, &quot;--gen:mykey rsa-1024&quot; generates a new 1024 bits RSA key and sets it's name to &quot;mykey&quot;) </dd>
+</dd>
+<dt> <b>--keys-file</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load keys from XML file </dd>
+</dd>
+<dt> <b>--privkey[</b>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <dt></dt>
+</dt>
+<dd> <dd>load private key from PEM file and certificates that verify this key </dd>
+</dd>
+<dt> <b>--pubkey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load public key from PEM file </dd>
+</dd>
+<dt> <b>--aeskey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load AES key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--deskey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load DES key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--hmackey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load HMAC key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--pwd</b> &lt;password&gt; <dt></dt>
+</dt>
+<dd> <dd>the password to use for reading keys and certs </dd>
+</dd>
+<dt> <b>--pkcs12[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load load private key from pkcs12 file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--trusted</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load trusted (root) certificate from PEM file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--untrusted</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load untrusted certificate from PEM file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--verification-time</b> &lt;time&gt; <dt></dt>
+</dt>
+<dd> <dd>the local time in &quot;YYYY-MM-DD HH:MM:SS&quot; format used certificates verification </dd>
+</dd>
+<dt> <b>--depth</b> &lt;number&gt; <dt></dt>
+</dt>
+<dd> <dd>maximum certificates chain depth </dd>
+</dd>
+<dt> <b>--crypto-config</b> <dt></dt>
+</dt>
+<dd> <dd>path to crypto engine configuration </dd>
+</dd>
+<dt> <b>--repeat</b> &lt;number&gt; <dt></dt>
+</dt>
+<dd> <dd>repeat the operation &lt;number&gt; times </dd>
+</dd>
+<dt> <b>--disable-error-msgs</b> <dt></dt>
+</dt>
+<dd> <dd>do not print xmlsec error messages </dd>
+</dd>
+<dt> <b>--print-crypto-error-msgs</b> <dt></dt>
+</dt>
+<dd> <dd>print openssl errors stack at the end </dd>
+</dd>
+<dt> <b>--help</b> <dt></dt>
+</dt>
+<dd> <dd>print help information about the command </dd>
 </dd>
 </dl>
-<a name="lbAF"> </a><h2>KEYS COMMAND OPTIONS</h2>
-<p>
-</p>
-<dl compact>
-<dt>
-<b>--gen-hmac</b> <i>name</i>
-</dt>
-<dd>
-Generates 24 bytes HMAC key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--gen-rsa</b> <i>name</i>
-</dt>
-<dd>
-Generates RSA key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--gen-dsa</b> <i>name</i>
-</dt>
-<dd>
-Generates DSA key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--gen-des3</b> <i>name</i>
-</dt>
-<dd>
-Generates Tripple DES key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--gen-aes128</b> <i>name</i>
-</dt>
-<dd>
-Generates AES 128 key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--gen-aes192</b> <i>name</i>
-</dt>
-<dd>
-Generates AES 192 key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--gen-aes256</b> <i>name</i>
-</dt>
-<dd>
-Generates AES 256 key and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--keys</b> <i>file</i>
-</dt>
-<dd>
-Loads keys from XML keys <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pubkey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads public key from PEM <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--privkey</b>[:<i>name</i>] <i>file</i>[,<i>cafile1</i>[,<i>cafile2</i>[,<i>...</i>]]]</dt>
-<dd>
-Loads private key from PEM <i>file</i> along with certificates chain in PEM files <i>cafile1</i>, <i>cafile2</i>,<i>...</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pkcs12</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads private key and certificates chain from pkcs12 <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pwd</b> <i>password</i>
-</dt>
-<dd>
-Sets the <i>password</i> to use for reading keys and certificates from PEM files.
-<p>
-</p>
-</dd>
-<dt>
-<b>--hmackey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads HMAC key from binary file and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-</dl>
-<a name="lbAG"> </a><h2>SIGN COMMAND OPTIONS</h2>
-<p>
-</p>
-<dl compact>
-<dt><b>--ignore-manifests</b></dt>
-<dd>
-Instructs the xmlsec program to ignore &lt;dsig:Manifest&gt; elements.
-<p>
-</p>
-</dd>
-<dt>
-<b>--node-id</b> <i>id</i>
-</dt>
-<dd>
-Instructs the xmlsec program to sign only &lt;dsig:Signature&gt; element with given <i>id</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--keys</b> <i>file</i>
-</dt>
-<dd>
-Loads keys from XML keys <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pubkey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads public key from PEM <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--privkey</b>[:<i>name</i>] <i>file</i>[,<i>cafile1</i>[,<i>cafile2</i>[,<i>...</i>]]]</dt>
-<dd>
-Loads private key from PEM <i>file</i> along with certificates chain in PEM files <i>cafile1</i>, <i>cafile2</i>,<i>...</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pkcs12</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads private key and certificates chain from pkcs12 <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--hmackey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads HMAC key from binary file and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pwd</b> <i>password</i>
-</dt>
-<dd>
-Sets the <i>password</i> to use for reading keys and certificates from PEM files.
-<p>
-</p>
-</dd>
-<dt>
-<b>--allowed</b> <i>list</i>
-</dt>
-<dd>
-Specifies the set of the allowed key origins as a comma separated <i>list</i> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-hmac</b></dt>
-<dd>
-Generates and uses for signature 24 bytes HMAC key.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-rsa</b></dt>
-<dd>
-Generates and uses for signature RSA key.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-dsa</b></dt>
-<dd>
-Generates and uses for signature DSA key.
-<p>
-</p>
-</dd>
-<dt>
-<b>--repeat</b> <i>number</i>
-</dt>
-<dd>
-Repeats the operation <i>number</i> times.
-<p>
-</p>
-</dd>
-<dt><b>--fake-signatures</b></dt>
-<dd>
-Disables actual signature calculation for performance testing.
-<p>
-</p>
-</dd>
-</dl>
-<a name="lbAH"> </a><h2>VERIFY COMMAND OPTIONS</h2>
-<p>
-</p>
-<dl compact>
-<dt>
-<b>--output</b> <i>file</i>
-</dt>
-<dd>
-Writes the signed XML document to <i>file</i>.
-<p>
-</p>
-</dd>
-<dt><b>--ignore-manifests</b></dt>
-<dd>
-Instructs the xmlsec program to ignore &lt;dsig:Manifest&gt; elements.
-<p>
-</p>
-</dd>
-<dt>
-<b>--node-id</b> <i>id</i>
-</dt>
-<dd>
-Instructs the xmlsec program to sign only &lt;dsig:Signature&gt; element with given <i>id</i>.
-<p>
-</p>
-</dd>
-<dt><b>--print-result</b></dt>
-<dd>
-Prints additional result information.
-<p>
-</p>
-</dd>
-<dt><b>--print-references</b></dt>
-<dd>
-Prints the pre-digested signature references.
-<p>
-</p>
-</dd>
-<dt><b>--print-manifests</b></dt>
-<dd>
-Prints the pre-digested manifests references.
-<p>
-</p>
-</dd>
-<dt><b>--print-siganture</b></dt>
-<dd>
-Prints the pre-signated data (&lt;dsig:SignedInfo&gt; element).
-<p>
-</p>
-</dd>
-<dt><b>--print-all</b></dt>
-<dd>
-Prints all available data.
-<p>
-</p>
-</dd>
-<dt>
-<b>--keys</b> <i>file</i>
-</dt>
-<dd>
-Loads keys from XML keys <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pubkey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads public key from PEM <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--privkey</b>[:<i>name</i>] <i>file</i>[,<i>cafile1</i>[,<i>cafile2</i>[,<i>...</i>]]]</dt>
-<dd>
-Loads private key from PEM <i>file</i> along with certificates chain in PEM files <i>cafile1</i>, <i>cafile2</i>,<i>...</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pkcs12</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads private key and certificates chain from pkcs12 <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--hmackey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads HMAC key from binary file and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pwd</b> <i>password</i>
-</dt>
-<dd>
-Sets the <i>password</i> to use for reading keys and certificates from PEM files.
-<p>
-</p>
-</dd>
-<dt>
-<b>--allowed</b> <i>list</i>
-</dt>
-<dd>
-Specifies the set of the allowed key origins as a comma separated <i>list</i> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
-<p>
-</p>
-</dd>
-<dt>
-<b>--trusted</b> <i>file</i>
-</dt>
-<dd>
-Loads trusted certificate from PEM <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--untrusted</b> <i>file</i>
-</dt>
-<dd>
-Loads un-trusted certificate from PEM <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--repeat</b> <i>number</i>
-</dt>
-<dd>
-Repeats the operation <i>number</i> times.
-<p>
-</p>
-</dd>
-<dt><b>--fake-signatures</b></dt>
-<dd>
-Disables actual signature calculation for performance testing.
-<p>
-</p>
-</dd>
-</dl>
-<a name="lbAI"> </a><h2>ENCRYPT COMMAND OPTIONS</h2>
-<p>
-</p>
-<dl compact>
-<dt>
-<b>--output</b> <i>file</i>
-</dt>
-<dd>
-Writes the encrypted XML document to <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--binary</b> <i>file</i>
-</dt>
-<dd>
-Encrypts binary <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--xml</b> <i>file</i>
-</dt>
-<dd>
-Encrypts XML <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--node-id</b> <i>id</i>
-</dt>
-<dd>
-Instructs the xmlsec program to encrypt only element with given <i>id</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--node-name</b> [<i>namespace-uri</i>:]<i>name</i>
-</dt>
-<dd>
-Instructs the xmlsec program to encrypt only element with given <i>namespace-uri</i> and <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--keys</b> <i>file</i>
-</dt>
-<dd>
-Loads keys from XML keys <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pubkey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads public key from PEM <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--privkey</b>[:<i>name</i>] <i>file</i>[,<i>cafile1</i>[,<i>cafile2</i>[,<i>...</i>]]]</dt>
-<dd>
-Loads private key from PEM <i>file</i> along with certificates chain in PEM files <i>cafile1</i>, <i>cafile2</i>,<i>...</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pkcs12</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads private key and certificates chain from pkcs12 <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--hmackey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads HMAC key from binary file and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pwd</b> <i>password</i>
-</dt>
-<dd>
-Sets the <i>password</i> to use for reading keys and certificates from PEM files.
-<p>
-</p>
-</dd>
-<dt>
-<b>--allowed</b> <i>list</i>
-</dt>
-<dd>
-Specifies the set of the allowed key origins as a comma separated <i>list</i> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-rsa</b></dt>
-<dd>
-Generates and uses for encryption RSA key.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-des3</b></dt>
-<dd>
-Generates and uses for encryption Tripple DES key.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-aes128</b></dt>
-<dd>
-Generates and uses for encryption AES 128 key.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-aes192</b></dt>
-<dd>
-Generates and uses for encryption AES 192 key.
-<p>
-</p>
-</dd>
-<dt><b>--session-key-256</b></dt>
-<dd>
-Generates and uses for encryption AES 256 key.
-<p>
-</p>
-</dd>
-<dt>
-<b>--repeat</b> <i>number</i>
-</dt>
-<dd>
-Repeats the operation <i>number</i> times.
-<p>
-</p>
-</dd>
-</dl>
-<a name="lbAJ"> </a><h2>DECRYPT COMMAND OPTIONS</h2>
-<p>
-</p>
-<dl compact>
-<dt>
-<b>--output</b> <i>file</i>
-</dt>
-<dd>
-Writes the decrypted XML document to <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--node-id</b> <i>id</i>
-</dt>
-<dd>
-Instructs the xmlsec program to decrypt only element with given <i>id</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--keys</b> <i>file</i>
-</dt>
-<dd>
-Loads keys from XML keys <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pubkey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads public key from PEM <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--privkey</b>[:<i>name</i>] <i>file</i>[,<i>cafile1</i>[,<i>cafile2</i>[,<i>...</i>]]]</dt>
-<dd>
-Loads private key from PEM <i>file</i> along with certificates chain in PEM files <i>cafile1</i>, <i>cafile2</i>,<i>...</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pkcs12</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads private key and certificates chain from pkcs12 <i>file</i> and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--hmackey</b>[:<i>name</i>] <i>file</i>
-</dt>
-<dd>
-Loads HMAC key from binary file and sets the key name to <i>name</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--pwd</b> <i>password</i>
-</dt>
-<dd>
-Sets the <i>password</i> to use for reading keys and certificates from PEM files.
-<p>
-</p>
-</dd>
-<dt>
-<b>--allowed</b> <i>list</i>
-</dt>
-<dd>
-Specifies the set of the allowed key origins as a comma separated <i>list</i> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
-<p>
-</p>
-</dd>
-<dt>
-<b>--trusted</b> <i>file</i>
-</dt>
-<dd>
-Loads trusted certificate from PEM <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--untrusted</b> <i>file</i>
-</dt>
-<dd>
-Loads un-trusted certificate from PEM <i>file</i>.
-<p>
-</p>
-</dd>
-<dt>
-<b>--repeat</b> <i>number</i>
-</dt>
-<dd>
-Repeats the operation <i>number</i> times.
-<p>
-</p>
-</dd>
-</dl>
-<a name="lbAK"> </a><h2>REPORTING BUGS</h2>
-<p>
-</p>
-<p>
-
-Report bugs to &lt;<a href="mailto:xmlsec@aleksey.com">xmlsec@aleksey.com</a>&gt;
-</p>
-<p>
-<a name="lbAL"> </a>
-</p>
-<h2>MORE INFORMATION</h2>
-<p>
-</p>
-<p>
-XML Security Library: <a href="http://www.aleksey.com/xmlsec/">http://www.aleksey.com/xmlsec/</a>
-</p>
-<p>
-</p>
-<p>
-XML Digital Signature: <a href="http://www.w3.org/Signature/">http://www.w3.org/Signature/</a>
-</p>
-<p>
-</p>
-<p>
-XML Encrytpion: <a href="http://www.w3.org/Encryption/">http://www.w3.org/Encryption/</a>
-</p>
-<p>
-<a name="lbAM"> </a>
-</p>
-<h2>AUTHOR</h2>
-<p>
-
-Aleksey Sanin  &lt;<a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a>&gt;.
-<a name="lbAN"> </a>
-</p>
+<a name="lbAF"> </a><h2>AUTHOR</h2>
+<p>  Written by Aleksey Sanin &lt;<a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a>&gt;. <a name="lbAG"> </a> </p>
+<h2>REPORTING BUGS</h2>
+<p>  Report bugs to <a href="http://www.aleksey.com/xmlsec/bugs.html">http://www.aleksey.com/xmlsec/bugs.html</a> <a name="lbAH"> </a> </p>
 <h2>COPYRIGHT</h2>
-<p>
-
-Copyright 2002 Aleksey Sanin  &lt;<a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a>&gt;
-
-
-</p>
-<p>
-
-
-</p>
-<p>
-
-</p>
+<p>  Copyright © 2002-2003 Aleksey Sanin. <br>  This is free software: see the source for copying information. <a name="lbAI"> </a> </p>
+<h2>SEE ALSO</h2>
+<p>  The full documentation for <b>xmlsec</b>  is maintained as a Texinfo manual.  If the <b>info</b>  and <b>xmlsec</b>  programs are properly installed at your site, the command </p>
+<dl compact>
+<dt></dt>
+<dd> <b>info xmlsec</b>  </dd>
+</dl>
+<p>  should give you access to the complete manual. </p>
+<p>  </p>
 <hr>
 <a name="index"> </a><h2>Index</h2>
 <dl>
 <dt><a href="#lbAB">NAME</a></dt>
-<dd>
-</dd>
+<dd> </dd>
 <dt><a href="#lbAC">SYNOPSIS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAD">INTRODUCTION</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAE">COMMANDS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAF">KEYS COMMAND OPTIONS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAG">SIGN COMMAND OPTIONS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAH">VERIFY COMMAND OPTIONS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAI">ENCRYPT COMMAND OPTIONS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAJ">DECRYPT COMMAND OPTIONS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAK">REPORTING BUGS</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAL">MORE INFORMATION</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAM">AUTHOR</a></dt>
-<dd>
-</dd>
-<dt><a href="#lbAN">COPYRIGHT</a></dt>
-<dd>
-</dd>
+<dd> </dd>
+<dt><a href="#lbAD">DESCRIPTION</a></dt>
+<dd> </dd>
+<dt><a href="#lbAE">OPTIONS</a></dt>
+<dd> </dd>
+<dt><a href="#lbAF">AUTHOR</a></dt>
+<dd> </dd>
+<dt><a href="#lbAG">REPORTING BUGS</a></dt>
+<dd> </dd>
+<dt><a href="#lbAH">COPYRIGHT</a></dt>
+<dd> </dd>
+<dt><a href="#lbAI">SEE ALSO</a></dt>
+<dd> </dd>
 </dl>
 <hr>
-<p>
-This document was created by man2html, using the manual pages.<br>
-Time: 02:31:41 GMT, August 15, 2002
-</p>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 08:20:36 GMT, March 26, 2003 </p>
 </td></tr>
 <tr><td>
 <br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>

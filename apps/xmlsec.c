@@ -41,17 +41,18 @@
 #include "cmdline.h"
 
 static const char copyright[] =
-    "Written by Aleksey Sanin <aleksey@aleksey.com>.\n"
+    "Written by Aleksey Sanin <aleksey@aleksey.com>.\n\n"
     "Copyright (C) 2002-2003 Aleksey Sanin.\n"
     "This is free software: see the source for copying information.\n";
 
 static const char bugs[] = 
-    "To report bugs or get some help check XML Security Library home page:\n"
-    "  http://www.aleksey.com/xmlsec\n";
+    "Report bugs to http://www.aleksey.com/xmlsec/bugs.html\n";
 
 static const char helpCommands1[] =     
     "Usage: xmlsec <command> [<options>] [<file>]\n"
-    "where <command> is one of the following:\n"
+    "\n"
+    "xmlsec is a command line tool for singining, verifying, encrypting and\n"
+    "decrypting XML documents. The allowed <command> values are:\n"
     "  --help      "	"\tdisplay this help information and exit\n"
     "  --help-all  "	"\tdisplay help information for all commands/options and exit\n"
     "  --help-<cmd>"	"\tdisplay help information for command <cmd> and exit\n"
@@ -305,8 +306,8 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     "--enabled-retrieval-method-uris",
     NULL,
     "--enabled-retrieval-uris <list>"
-    "\n\tcomma separated list of of the following values:\n"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI\n"
+    "\n\tcomma separated list of of the following values:"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:RetrievalMethod> element.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -455,8 +456,8 @@ static xmlSecAppCmdLineParam enabledRefUrisParam = {
     "--enabled-reference-uris",
     NULL,
     "--enabled-reference-uris <list>"
-    "\n\tcomma separated list of of the following values:\n"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI\n"
+    "\n\tcomma separated list of of the following values:"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:Reference> element",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -476,8 +477,8 @@ static xmlSecAppCmdLineParam enabledCipherRefUrisParam = {
     "--enabled-cipher-reference-uris",
     NULL,
     "--enabled-cipher-reference-uris <list>"
-    "\n\tcomma separated list of of the following values:\n"
-    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI\n"
+    "\n\tcomma separated list of of the following values:"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <enc:CipherReference> element",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
@@ -627,8 +628,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &disableErrorMsgsParam,
     &printCryptoErrorMsgsParam,
     &helpParam,
-    
-    
+        
     /* MUST be the last one */
     NULL
 };
@@ -725,11 +725,8 @@ int main(int argc, const char **argv) {
     if(command == xmlSecAppCommandHelp) {
 	xmlSecAppPrintHelp(subCommand, cmdLineTopics);
 	goto success;
-    } else if(command == xmlSecAppCommandHelp) {
+    } else if(command == xmlSecAppCommandVersion) {
 	fprintf(stdout, "xmlsec %s-%s\n", XMLSEC_VERSION, XMLSEC_CRYPTO);
-	fprintf(stderr, "\n");
-	fprintf(stderr, "%s\n", bugs);
-	fprintf(stderr, "%s\n", copyright);    
 	goto success;
     }
     
@@ -2136,7 +2133,7 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
 	xmlSecAppCmdLineParamsListPrint(parameters, topics, stdout);
 	fprintf(stdout, "\n");
     }
-    fprintf(stdout, "%s\n", bugs);
+    fprintf(stdout, "\n%s\n", bugs);
     fprintf(stdout, "%s\n", copyright);
 }
 

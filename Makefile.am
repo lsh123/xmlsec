@@ -9,6 +9,7 @@ EXTRA_DIST = \
 	docs/*.html \
 	docs/api/*.html \
 	docs/api/*.sgml \
+	docs/api/Makefile* \
 	docs/api/chapters/*.sgml \
 	docs/api/images \
 	docs/images \
@@ -31,7 +32,7 @@ EXTRA_CLEAN = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = xmlsec.pc
 
-docs: api-docs docs-format
+docs: docs-man api-docs docs-format
 
 docs-clean: api-docs-clean
 
@@ -63,6 +64,9 @@ docs-format:
 	    fi; \
 	    mv $$i.tmp $$i; \
 	done)
+
+docs-man:
+	@cd man;make
 
 check-km: $(TEST_APP)
 	@cd tests;make check-km

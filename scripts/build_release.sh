@@ -12,10 +12,10 @@ cd $build_root
 
 if test "z$branch" != "z"; then 
     echo "Cheking out module $module from branch $branch"
-    cvs -z3 co -r $branch $module
+    cvs -z3 co -P -r $branch $module
 else
     echo "Cheking out module $module from tip"
-    cvs -z3 co $module
+    cvs -z3 co -P $module
 fi
 
 cd $module

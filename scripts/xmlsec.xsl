@@ -32,7 +32,8 @@
 <xsl:copy-of select="//head/*" />
 </head>
 <body>
-<table witdh="100%"><tr>
+<table witdh="100%" valign="top">
+<tr valign="top">
     <!-- top navigation menu start -->     
     <td valign="top" align="left" width="210">
 	<xsl:call-template name="myimg"> 
@@ -135,9 +136,9 @@
      </td>
      <!-- top navigation menu end -->
 
-     <td> 
-        <table width="100%">
-	    <tr><td valign="top" align="left" id="xmlsecContent" > 
+     <td valign="top" > 
+        <table width="100%" valign="top">
+	    <tr><td valign="top" align="left" id="xmlsecContent"> 
 	    <xsl:choose> 
 		<xsl:when test="//td[@id='xmlsecContent']">
 		    <xsl:copy-of select="//td[@id='xmlsecContent']/*" />

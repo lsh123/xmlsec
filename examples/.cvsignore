@@ -21,3 +21,4 @@ config.status
 configure
 stamp-h1
 xmldsigverify
+xkms-server

@@ -23,7 +23,8 @@ XMLSEC_EXAMPLES = \
 	$(XMLSEC_OBJS_DIR)\encrypt3.exe \
 	$(XMLSEC_OBJS_DIR)\decrypt1.exe \
 	$(XMLSEC_OBJS_DIR)\decrypt2.exe \
-	$(XMLSEC_OBJS_DIR)\decrypt3.exe 
+	$(XMLSEC_OBJS_DIR)\decrypt3.exe \
+	$(XMLSEC_OBJS_DIR)\xkms-server.exe \
 
 # 
 !IF "$(XMLSEC_CRYPTO)" == "openssl"
@@ -59,11 +60,11 @@ CPPFLAGS = /nologo
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD $(XMLSEC_CFLAGS) 
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /DWIN32_SOCKETS /W1 /MD $(XMLSEC_CFLAGS)  
 
 # The linker and its options.
 LD = link.exe
-LDFLAGS = /nologo $(XMLSEC_LIBS)
+LDFLAGS = /nologo $(XMLSEC_LIBS) winsock32.lib
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"

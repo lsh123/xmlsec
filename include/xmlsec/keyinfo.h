@@ -44,7 +44,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddRetrievalMethod
 							 const xmlChar *type);
 XMLSEC_EXPORT xmlNodePtr xmlSecRetrievalMethodAddTransform	
 							(xmlNodePtr retrMethod,
-							 xmlSecTransformId id);						 							 
+							 xmlSecTransformId transform);						 							 
 XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
 							 const xmlChar *id,
 							 const xmlChar *type,

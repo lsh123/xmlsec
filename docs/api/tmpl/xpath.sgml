@@ -2,7 +2,7 @@
 xpath.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The XPath, XPath2 and XPointer transforms.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

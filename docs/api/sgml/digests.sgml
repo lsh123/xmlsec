@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>digests.h</refname><refpurpose></refpurpose>
+<refname>digests.h</refname><refpurpose>The digests transform.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xpath.h</refname><refpurpose></refpurpose>
+<refname>xpath.h</refname><refpurpose>The XPath, XPath2 and XPointer transforms.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

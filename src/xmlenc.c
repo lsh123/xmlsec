@@ -588,7 +588,7 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
 /**
  * xmlSecEncryptMemory:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
@@ -684,7 +684,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecEncryptUri:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
@@ -807,7 +807,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecEncryptXmlNode:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
@@ -977,7 +977,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecDecrypt:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
@@ -1251,7 +1251,7 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
 /**
  * xmlSecEncResultCreate:
  * @ctx: the pointer to #xmlSecEncCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @encrypt: the encrypt/decrypt flag.
  * @node: the pointer to <enc:EncryptedData> node.

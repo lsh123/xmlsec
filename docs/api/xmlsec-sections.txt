@@ -320,13 +320,16 @@ xmlSecX509StorePtr
 
 <SECTION>
 <FILE>xmldsig</FILE>
+xmlSecDSigCtx
 xmlSecDSigCtxCreate
 xmlSecDSigCtxDestroy
-xmlSecReferenceType
 
 xmlSecDSigValidate
 xmlSecDSigGenerate
 
+xmlSecDSigResult
+xmlSecReferenceResult
+xmlSecReferenceType
 xmlSecDSigResultCreate
 xmlSecDSigResultDestroy
 xmlSecDSigResultDebugDump
@@ -348,6 +351,7 @@ xmlSecManifestAddReference
 
 <SECTION>
 <FILE>xmlenc</FILE>
+xmlSecEncCtx
 xmlSecEncCtxCreate
 xmlSecEncCtxDestroy
 
@@ -356,10 +360,13 @@ xmlSecEncryptUri
 xmlSecEncryptXmlNode
 xmlSecDecrypt
 
+xmlSecEncResult
 xmlSecEncResultCreate
 xmlSecEncResultDestroy
 xmlSecEncResultDebugDump
 
+xmlSecEncTypeElement
+xmlSecEncTypeContent
 xmlSecEncDataCreate
 xmlSecEncDataDestroy
 xmlSecEncDataAddEncMethod

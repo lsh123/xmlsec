@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>nodeset.h</refname><refpurpose></refpurpose>
+<refname>nodeset.h</refname><refpurpose>The enchanced nodes set imlmentation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

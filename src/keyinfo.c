@@ -150,10 +150,12 @@ static const xmlChar xmlSecRawX509Cert[] = "http://www.w3.org/2000/09/xmldsig#ra
 
 /**
  * xmlSecKeyInfoAddKeyName:
- * @keyInfoNode: the key info node
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
  *
+ * Adds <dsig:KeyName> node to the <dsig:KeyInfo> node @keyInfoNode.
  *
- *
+ * Returns the pointer to the newly created <dsig:KeyName> node or
+ * NULL if an error occurs.
  */
 xmlNodePtr	
 xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
@@ -181,11 +183,13 @@ xmlSecKeyInfoAddKeyName(xmlNodePtr keyInfoNode) {
 }
 
 /**
- * xmlSecKeyInfoAddKeyValue
- * @keyInfoNode: the key info node
+ * xmlSecKeyInfoAddKeyValue:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
  *
+ * Adds <dsig:KeyValue> node to the <dsig:KeyInfo> node @keyInfoNode.
  *
- *
+ * Returns the pointer to the newly created <dsig:KeyValue> node or
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
@@ -214,10 +218,12 @@ xmlSecKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
 
 /**
  * xmlSecKeyInfoAddX509Data:
- * @keyInfoNode: the key info node
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
  *
+ * Adds <dsig:X509Data> node to the <dsig:KeyInfo> node @keyInfoNode.
  *
- *
+ * Returns the pointer to the newly created <dsig:X509Data> node or
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
@@ -246,10 +252,14 @@ xmlSecKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
 
 /**
  * xmlSecKeyInfoAddRetrievalMethod
- * @keyInfoNode: the key info node
- * @uri: the reference uri
- * @type:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @uri: the URI attribute (optional).
+ * @type: the Type attribute(optional).
  *
+ * Adds <dsig:RetrievalMethod> node to the <dsig:KeyInfo> node @keyInfoNode.
+ *
+ * Returns the pointer to the newly created <dsig:RetrievalMethod> node or
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
@@ -286,10 +296,14 @@ xmlSecKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
 
 /**
  * xmlSecRetrievalMethodAddTransform:
- * @keyInfoNode: the key info node
+ * @retrMethod: the pointer to <dsig:RetrievalMethod> node.
+ * @transform: the transform id.
+ * 
+ * Adds <dsig:Transform> node (and the parent <dsig:Transforms> node
+ * if required) to the <dsig:RetrievalMethod> node @retrMethod.
  *
- *
- *
+ * Returns the pointer to the newly created <dsig:dsig:Transforms> node or
+ * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
@@ -335,11 +349,16 @@ xmlSecRetrievalMethodAddTransform(xmlNodePtr retrMethod,
 
 /**
  * xmlSecKeyInfoAddEncryptedKey:
- * @keyInfoNode:
- * @id:
- * @type:
- * @recipient:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @id: the Id attribute (optional).
+ * @type: the Type attribute (optional). 
+ * @recipient: the Recipient attribute (optional). 
  *
+ * Adds <enc:EncryptedKey> node with given attributes to 
+ * the <dsig:KeyInfo> node @keyInfoNode.
+ *
+ * Returns the pointer to the newly created <enc:EncryptedKey> node or
+ * NULL if an error occurs.
  */
 xmlNodePtr		
 xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
@@ -385,13 +404,19 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 
 /**
  * xmlSecKeyInfoNodeRead:
- * @keyInfoNode:
- * @keysMngr:
- * @context:
- * @keyId:
- * @keyType:
- * @keyUsage:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @keysMngr: the pointer to #xmlSecKeysMngr struvture.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
+ * @keyId: the required key id or NULL.
+ * @keyType: the required key type (may be "any").
+ * @keyUsage: the desired key usage. 
  *
+ * Parses the <dsig:KeyInfo> element and extracts the key (with required 
+ * id, type and usage).
+ *
+ * Returns the pointer to extracted key or NULL if an error occurs or
+ * required key is not found.
  */
 xmlSecKeyPtr	
 xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context, 
@@ -417,16 +442,20 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *
 
 /**
  * xmlSecKeyInfoNodeWrite
- * @keyInfoNode:
- * @keysMngr:
- * @context:
- * @key:
- * @type:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @keysMngr: the pointer to #xmlSecKeysMngr struvture.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
+ * @key: the pointer to the #xmlSecKey structure.
+ * @type: the key type (public/private).
  *
+ * Writes the key into the <dsig:KeyInfo> template @keyInfoNode.
+ *
+ * Returns 0 on success or -1 if an error occurs.
  */
 int
-xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void *context,
-		xmlSecKeyPtr key, xmlSecKeyType type) {
+xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, 
+		void *context, xmlSecKeyPtr key, xmlSecKeyType type) {
     xmlNodePtr cur;
     int ret;
 
@@ -472,12 +501,6 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr keysMngr, void 
 
 /**
  * xmlSecKeyNodesListRead:
- * @cur:
- * @id:			the trasnform we need key for
- * @type:		the type of the key we are looking for
- * @level:
- * @ctx:
- *
  */
 static xmlSecKeyPtr
 xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
@@ -536,9 +559,6 @@ xmlSecKeyInfoNodesListRead(xmlNodePtr cur, xmlSecKeyInfoNodeStatusPtr status) {
 
 /**
  * xmlSecKeyNameNodeRead:
- * @keyNameNode:
- *
- *
  */
 static xmlSecKeyPtr
 xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
@@ -584,10 +604,6 @@ xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeyInfoNodeStatusPtr status,
 
 /** 
  * xmlSecKeyNameNodeWrite:
- * @keyNameNode:
- * @key:
- *
- *
  */
 static int 
 xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
@@ -611,10 +627,7 @@ xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecKeyValueNodeRead
- * @keyValueNode:
- * @id:
- * @type:
+ * xmlSecKeyValueNodeRead:
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-KeyValue
  *
@@ -688,11 +701,6 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr statu
 
 /**
  * xmlSecKeyValueNodeWrite:
- * @keyValueNode:
- * @key:
- * @type:
- *
- *
  */
 static int 
 xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyType type) {

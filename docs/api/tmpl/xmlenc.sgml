@@ -15,6 +15,15 @@ standard implementation.
 
 </para>
 
+<!-- ##### STRUCT xmlSecEncCtx ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@encryptionMethod: 
+@ignoreType: 
+
 <!-- ##### FUNCTION xmlSecEncCtxCreate ##### -->
 <para>
 
@@ -89,6 +98,24 @@ standard implementation.
 <!-- # Unused Parameters # -->
 @encDataNode: 
 
+
+<!-- ##### STRUCT xmlSecEncResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@self: 
+@encrypt: 
+@id: 
+@type: 
+@mimeType: 
+@encoding: 
+@encryptionMethod: 
+@key: 
+@buffer: 
+@replaced: 
 
 <!-- ##### FUNCTION xmlSecEncResultCreate ##### -->
 <para>

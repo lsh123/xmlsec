@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>buffered.h</refname><refpurpose></refpurpose>
+<refname>buffered.h</refname><refpurpose>The buffered transform.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

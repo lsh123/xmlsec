@@ -43,10 +43,12 @@ static xmlSecSimpleKeysDataPtr	xmlSecSimpleKeysDataCreate	(void);
 static void			xmlSecSimpleKeysDataDestroy	(xmlSecSimpleKeysDataPtr keysData);
 
 /**
- * xmlSecSimpleKeysMngrCreate
+ * xmlSecSimpleKeysMngrCreate:
+ * 
+ * Creates new simple keys manager.
  *
- *
- *
+ * Returns a pointer to newly allocated #xmlSecKeysMngr structure or
+ * NULL if an error occurs.
  */
 xmlSecKeysMngrPtr	
 xmlSecSimpleKeysMngrCreate(void) {
@@ -95,10 +97,10 @@ xmlSecSimpleKeysMngrCreate(void) {
 }
 
 /**
- * xmlSecSimpleKeysMngrDestroy
+ * xmlSecSimpleKeysMngrDestroy:
+ * @mngr: the pointer to a simple keys manager.
  *
- *
- *
+ * Destroys the simple keys manager.
  */
 void
 xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
@@ -118,12 +120,19 @@ xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
 
 /**
  * xmlSecSimpleKeysMngrFindKey
- * @context:
- * @id:
- * @type:
- * @name:
+ * @mngr: the keys manager.
+ * @context: the pointer to application specific data.
+ * @name: the required key name (or NULL for "any").
+ * @id: the required key Id (or NULL for "any").
+ * @type: the required key (may be "any").
+ * @usage: the required key usage.
  *
- * Lookups the first key that does match the given criteria
+ * Searches the simple keys manager for specified key. This is an 
+ * implementation of the #xmlSecFindKeyCallback for the simple keys
+ * manager.
+ *
+ * Returns the pointer to key or NULL if the key is not found or 
+ * an error occurs.
  */
 xmlSecKeyPtr 		
 xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
@@ -156,10 +165,12 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUS
 
 /**
  * xmlSecSimpleKeysMngrAddKey:
- * @mngr:
- * @key:
+ * @mngr: the pointer to the simple keys manager.
+ * @key: the pointer to the #xmlSecKey structure.
  *
  * Adds new key to the key manager
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int	
 xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -204,10 +215,14 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecSimpleKeysMngrLoad
- * @mngr:
- * @uri:
+ * xmlSecSimpleKeysMngrLoad:
+ * @mngr: the pointer to the simple keys manager.
+ * @uri: the keys file uri.
+ * @strict: the flag which determines whether we stop after first error or not.
  *
+ * Reads the XML keys files into simple keys manager.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
@@ -279,10 +294,15 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 }
 
 /**
- * xmlSecSimpleKeysMngrSave
- * @mngr:
- * @filename:
- * @type:
+ * xmlSecSimpleKeysMngrSave:
+ * @mngr: the pointer to the simple keys manager.
+ * @filename: the destination filename.
+ * @type: the keys type (private/public).
+ *
+ * Writes all the keys from the simple keys manager to 
+ * an XML file @filename.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr, 
@@ -393,13 +413,17 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 
 
 /**
- * xmlSecSimpleKeysMngrLoadPemKey
- * @mngr:
- * @keyfile:
- * @keyPwd:
- * @keyPwdCallback:
- * @certfile:
+ * xmlSecSimpleKeysMngrLoadPemKey:
+ * @mngr: the pointer to the simple keys manager.
+ * @keyfile: the PEM key file name.
+ * @keyPwd: the key file password.
+ * @keyPwdCallback: the "ask password" cllback.
+ * @privateKey: the private/public flag.
  *
+ * Reads the key from a PEM file @keyfile.
+ * 
+ * Returns the pointer to a newly allocated #xmlSecKey structure or NULL
+ * if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr, 
@@ -501,9 +525,11 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
     return(key);
 }
 
-/**
- * Keys Data
- */
+/***********************************************************************
+ *
+ * Simple keys manager keys data
+ *
+ ***********************************************************************/
 static xmlSecSimpleKeysDataPtr	
 xmlSecSimpleKeysDataCreate(void) {
     xmlSecSimpleKeysDataPtr keysData;
@@ -541,6 +567,23 @@ xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
 
 
 #ifndef XMLSEC_NO_X509						 
+/**
+ * xmlSecSimpleKeysMngrX509Find:
+ * @mngr: the keys manager.
+ * @context: the pointer application specific data.
+ * @subjectName: the subject name string.
+ * @issuerName: the issuer name string.
+ * @issuerSerial: the issuer serial.
+ * @ski: the SKI string.
+ * @cert: the current X509 certs data (may be NULL). 
+ *
+ * Searches for matching certificate in the keys manager. This is 
+ * the implementation of the #xmlSecX509FindCallback for the 
+ * simple keys manager.
+ *
+ * Returns the pointer to certificate that matches given criteria or NULL 
+ * if an error occurs or certificate not found.
+ */
 xmlSecX509DataPtr
 xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
 			    xmlChar *subjectName, xmlChar *issuerName, 
@@ -557,6 +600,18 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNU
     return(NULL);
 }
 
+/**
+ * xmlSecSimpleKeysMngrX509Verify:
+ * @mngr: the keys manager.
+ * @context: the pointer to application specific data.
+ * @cert: the cert to verify.
+ *
+ * Validates certificate. This is the implementation of the 
+ * #xmlSecX509VerifyCallback callback for the simple keys manager.
+ *
+ * Returns 1 if the cert is trusted, 0 if it is not trusted
+ * and -1 if an error occurs.
+ */
 int	
 xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED, 
 			       xmlSecX509DataPtr cert) {
@@ -569,6 +624,17 @@ xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_U
     return(0);
 }
 
+/**
+ * xmlSecSimpleKeysMngrLoadPemCert:
+ * @mngr: the simple keys manager.
+ * @filename: the PEM cert file name.
+ * @trusted: the trusted/not-trusted cert flag.
+ * 
+ * Reads PEM certificate from the file @filename and adds to the keys manager
+ * @mngr.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecSimpleKeysMngrLoadPemCert(xmlSecKeysMngrPtr mngr, const char *filename,
 				int trusted) {
@@ -579,6 +645,16 @@ xmlSecSimpleKeysMngrLoadPemCert(xmlSecKeysMngrPtr mngr, const char *filename,
     return(xmlSecX509StoreLoadPemCert((xmlSecX509StorePtr)mngr->x509Data, filename, trusted));
 }
 
+/**
+ * xmlSecSimpleKeysMngrAddCertsDir:
+ * @mngr: the simple keys manager.
+ * @path: the certs dir path.
+ *
+ * Adds the certificates from the folder @path to the list of 
+ * trusted certificates.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int	
 xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
     xmlSecAssert2(mngr != NULL, -1);
@@ -588,6 +664,18 @@ xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
     return(xmlSecX509StoreAddCertsDir((xmlSecX509StorePtr)mngr->x509Data, path));
 }
 
+/**
+ * xmlSecSimpleKeysMngrLoadPkcs12: 
+ * @mngr: the simple keys manager.
+ * @name: the key name (may by NULL).
+ * @filename: the pkcs12 file name.
+ * @pwd: the pkcs12 password.
+ *
+ * Reads the key from pkcs12 file @filename (along with all certs)
+ * and adds to the simple keys manager @mngr.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int	
 xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
 			    const char *filename, const char *pwd) {

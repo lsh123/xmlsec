@@ -26,42 +26,54 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-typedef struct _xmlSecEncCtx *xmlSecEncCtxPtr; 
-typedef struct _xmlSecEncResult *xmlSecEncResultPtr; 
+typedef struct _xmlSecEncCtx xmlSecEncCtx, *xmlSecEncCtxPtr; 
+typedef struct _xmlSecEncResult xmlSecEncResult, *xmlSecEncResultPtr; 
 
+/**
+ * xmlSecEncTypeElement:
+ *
+ * The element node is encrypted.
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeElement[]; /* "http://www.w3.org/2001/04/xmlenc#Element"; */
+/**
+ * xmlSecEncTypeContent:
+ *
+ * The element node content is encrypted.
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeContent[]; /* "http://www.w3.org/2001/04/xmlenc#Content"; */
 
 /** 
- * XML Encrypiton context
+ * struct _xmlSecEncCtx:
+ *
+ * XML Encrypiton context.
  */
-typedef struct _xmlSecEncCtx {
-    /* keys */
-    xmlSecKeysMngrPtr		keysMngr;
-
-    xmlSecTransformId		encryptionMethod;  
-    
-    /* flags */
-    int				ignoreType;
-} xmlSecEncCtx;
+struct _xmlSecEncCtx {
+    xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
+    xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
+    int				ignoreType;	/* the flag to ignore Type attribute 
+						 in the <enc:EncryptedData> node */
+};
 
 /**
- * XML Encrypiton results
+ * struct _xmlSecEncResult:
+ *
+ * The XML Encrypiton results.
  */
-typedef struct _xmlSecEncResult {
-    xmlSecEncCtxPtr		ctx;
-    void			*context;
-    xmlNodePtr			self;
-    int				encrypt;
-    xmlChar			*id;
-    xmlChar			*type;
-    xmlChar			*mimeType;
-    xmlChar			*encoding;    
-    xmlSecTransformId		encryptionMethod;
-    xmlSecKeyPtr		key;            
-    xmlBufferPtr		buffer;
-    int				replaced;
-} xmlSecEncResult;
+struct _xmlSecEncResult {
+    xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
+    void			*context;	/* the pointer to application specific data */
+    xmlNodePtr			self;		/* the pointer to  <enc:EncryptedData> node */
+    int				encrypt;	/* the encrypt/decrypt flag */
+    xmlChar			*id;		/* the Id attribute of the  <enc:EncryptedData> node */
+    xmlChar			*type;		/* the Type attribute of the  <enc:EncryptedData> node */
+    xmlChar			*mimeType;	/* the MimeType attribute of the  <enc:EncryptedData> node */
+    xmlChar			*encoding;    	/* the Encoding attribute of the  <enc:EncryptedData> node */
+    xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
+    xmlSecKeyPtr		key;            /* the used encryption key */
+    xmlBufferPtr		buffer;		/* the decrypted data */
+    int				replaced;	/* if set then the decrypted data were put back 
+						   into the original document */
+};
 
 /**
  * XML Encrypiton context methods

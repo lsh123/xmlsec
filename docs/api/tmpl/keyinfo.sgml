@@ -2,7 +2,7 @@
 keyinfo.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The &lt;dsig:KeyInfo&gt; element manipulation functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -85,8 +85,10 @@ keyinfo.h
 </para>
 
 @retrMethod: 
-@id: 
+@transform: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@id: 
 
 
 <!-- ##### FUNCTION xmlSecKeyInfoAddEncryptedKey ##### -->

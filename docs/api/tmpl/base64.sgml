@@ -2,7 +2,7 @@
 base64.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The BASE64 encode/decode functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

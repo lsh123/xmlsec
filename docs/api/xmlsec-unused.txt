@@ -1,4 +1,5 @@
 xmlSecGetHex
 xmlSecIsHex
+xmlSecKeysMngr
 extern
 ATTRIBUTE_UNUSED

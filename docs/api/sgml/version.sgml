@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>version.h</refname><refpurpose></refpurpose>
+<refname>version.h</refname><refpurpose>The library version infromation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

@@ -2,7 +2,7 @@
 bn.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The big numbers helper functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

@@ -2,7 +2,7 @@
 keysmngr.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The simple keys manager implementation.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -39,9 +39,12 @@ keysmngr.h
 @context: 
 @name: 
 @id: 
+@type: 
+@usage: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @keyType: 
 @keyUsage: 
-@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecSimpleKeysMngrAddKey ##### -->

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>base64.h</refname><refpurpose></refpurpose>
+<refname>base64.h</refname><refpurpose>The BASE64 encode/decode functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

@@ -121,15 +121,15 @@ NAME="XMLSEC-KEYINFO">keyinfo.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN1847"
+NAME="AEN1874"
 ></A
 ><H2
 >Name</H2
->keyinfo.h&nbsp;--&nbsp;</DIV
+>keyinfo.h&nbsp;--&nbsp;The &lt;dsig:KeyInfo&gt; element manipulation functions.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN1850"><H2
+NAME="AEN1877"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -251,7 +251,7 @@ HREF="XMLNODEPTR"
                                              <A
 HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
 >xmlSecTransformId</A
-> id);
+> transform);
 <GTKDOCLINK
 HREF="XMLNODEPTR"
 >xmlNodePtr</GTKDOCLINK
@@ -281,7 +281,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1889"
+NAME="AEN1916"
 ></A
 ><H2
 >Description</H2
@@ -291,14 +291,14 @@ NAME="AEN1889"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1892"
+NAME="AEN1919"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1894"
+NAME="AEN1921"
 ></A
 ><H3
 ><A
@@ -342,13 +342,14 @@ HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 ></TR
 ></TABLE
 ><P
-></P
+>Parses the &lt;dsig:KeyInfo&gt; element and extracts the key (with required 
+id, type and usage).</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1906"><P
+NAME="AEN1933"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -373,7 +374,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -390,7 +391,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <GTKDOCLINK
+HREF="XMLSECKEYSMNGR"
+>xmlSecKeysMngr</GTKDOCLINK
+> struvture.</TD
 ></TR
 ><TR
 ><TD
@@ -407,7 +411,8 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data that will be 
+    passed to all callback functions.</TD
 ></TR
 ><TR
 ><TD
@@ -424,7 +429,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key id or NULL.</TD
 ></TR
 ><TR
 ><TD
@@ -441,7 +446,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key type (may be "any").</TD
 ></TR
 ><TR
 ><TD
@@ -458,7 +463,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the desired key usage. </TD
 ></TR
 ><TR
 ><TD
@@ -476,7 +481,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to extracted key or NULL if an error occurs or
+required key is not found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -487,7 +493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1939"
+NAME="AEN1967"
 ></A
 ><H3
 ><A
@@ -524,13 +530,18 @@ HREF="xmlsec-keys.html#XMLSECKEYTYPE"
 ></TR
 ></TABLE
 ><P
-></P
+>Writes the key into the &lt;dsig:KeyInfo&gt; template <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1949"><P
+NAME="AEN1978"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -555,7 +566,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -572,7 +583,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <GTKDOCLINK
+HREF="XMLSECKEYSMNGR"
+>xmlSecKeysMngr</GTKDOCLINK
+> struvture.</TD
 ></TR
 ><TR
 ><TD
@@ -589,7 +603,8 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data that will be 
+    passed to all callback functions.</TD
 ></TR
 ><TR
 ><TD
@@ -606,7 +621,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -623,7 +641,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key type (public/private).</TD
 ></TR
 ><TR
 ><TD
@@ -641,7 +659,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or -1 if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -652,7 +670,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1978"
+NAME="AEN2009"
 ></A
 ><H3
 ><A
@@ -679,13 +697,18 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Adds &lt;dsig:KeyName&gt; node to the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1986"><P
+NAME="AEN2018"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -710,7 +733,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the key info node</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -728,7 +751,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the newly created &lt;dsig:KeyName&gt; node or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -739,7 +763,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1999"
+NAME="AEN2031"
 ></A
 ><H3
 ><A
@@ -766,13 +790,18 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Adds &lt;dsig:KeyValue&gt; node to the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2007"><P
+NAME="AEN2040"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -797,7 +826,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the key info node</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -815,7 +844,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the newly created &lt;dsig:KeyValue&gt; node or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -826,7 +856,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2020"
+NAME="AEN2053"
 ></A
 ><H3
 ><A
@@ -853,13 +883,18 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Adds &lt;dsig:X509Data&gt; node to the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2028"><P
+NAME="AEN2062"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -884,7 +919,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the key info node</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -902,7 +937,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the newly created &lt;dsig:X509Data&gt; node or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -913,7 +949,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2041"
+NAME="AEN2075"
 ></A
 ><H3
 ><A
@@ -948,13 +984,18 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
-></P
+>Adds &lt;dsig:RetrievalMethod&gt; node to the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2051"><P
+NAME="AEN2086"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -979,7 +1020,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the key info node</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -996,7 +1037,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the reference uri</TD
+> the URI attribute (optional).</TD
 ></TR
 ><TR
 ><TD
@@ -1013,7 +1054,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the Type attribute(optional).</TD
 ></TR
 ><TR
 ><TD
@@ -1031,7 +1072,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the newly created &lt;dsig:RetrievalMethod&gt; node or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1042,7 +1084,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2072"
+NAME="AEN2107"
 ></A
 ><H3
 ><A
@@ -1069,18 +1111,24 @@ HREF="XMLNODEPTR"
                                              <A
 HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
 >xmlSecTransformId</A
-> id);</PRE
+> transform);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
-></P
+>Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node
+if required) to the &lt;dsig:RetrievalMethod&gt; node <TT
+CLASS="PARAMETER"
+><I
+>retrMethod</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2081"><P
+NAME="AEN2117"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1105,7 +1153,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to &lt;dsig:RetrievalMethod&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1115,14 +1163,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->id</I
+>transform</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the transform id.</TD
 ></TR
 ><TR
 ><TD
@@ -1140,7 +1188,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the newly created &lt;dsig:dsig:Transforms&gt; node or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1151,7 +1200,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2098"
+NAME="AEN2134"
 ></A
 ><H3
 ><A
@@ -1190,13 +1239,19 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
-></P
+>Adds &lt;enc:EncryptedKey&gt; node with given attributes to 
+the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2109"><P
+NAME="AEN2146"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1221,7 +1276,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1238,7 +1293,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the Id attribute (optional).</TD
 ></TR
 ><TR
 ><TD
@@ -1255,7 +1310,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the Type attribute (optional). </TD
 ></TR
 ><TR
 ><TD
@@ -1272,7 +1327,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the Recipient attribute (optional). </TD
 ></TR
 ><TR
 ><TD
@@ -1290,7 +1345,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the newly created &lt;enc:EncryptedKey&gt; node or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE

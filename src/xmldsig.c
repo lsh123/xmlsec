@@ -677,7 +677,7 @@ xmlNodePtr xmlSecManifestAddReference(xmlNodePtr manifestNode,
 /**
  * xmlSecDSigValidate:
  * @ctx: the pointer to #xmlSecDSigCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
@@ -741,7 +741,7 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecDSigGenerate
  * @ctx: the pointer to #xmlSecDSigCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
@@ -809,7 +809,7 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 /**
  * xmlSecDSigResultCreate:
  * @ctx: the pointer to #xmlSecDSigCtx structure.
- * @context: the pointer application specific data that will be 
+ * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @signNode: the pointer to <dsig:Signature> node that will be validated.
  * @sign: the sign or verify flag.

@@ -121,7 +121,7 @@ NAME="XMLSEC-XMLENC">xmlenc.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN757"
+NAME="AEN774"
 ></A
 ><H2
 >Name</H2
@@ -134,7 +134,7 @@ standard implementation.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN761"><H2
+NAME="AEN778"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -147,6 +147,10 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+struct      <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
+>;
 <GTKDOCLINK
 HREF="XMLSECENCCTXPTR"
 >xmlSecEncCtxPtr</GTKDOCLINK
@@ -254,6 +258,10 @@ HREF="XMLNODEPTR"
 HREF="XMLSECENCRESULTPTR"
 >xmlSecEncResultPtr</GTKDOCLINK
 > *result);
+struct      <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
+>;
 <GTKDOCLINK
 HREF="XMLSECENCRESULTPTR"
 >xmlSecEncResultPtr</GTKDOCLINK
@@ -419,7 +427,7 @@ HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN835"
+NAME="AEN854"
 ></A
 ><H2
 >Description</H2
@@ -429,14 +437,45 @@ NAME="AEN835"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN838"
+NAME="AEN857"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN840"
+NAME="AEN859"
+></A
+><H3
+><A
+NAME="XMLSECENCCTX"
+></A
+>struct xmlSecEncCtx</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecEncCtx {
+    xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
+    xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
+    int				ignoreType;	/* the flag to ignore Type attribute 
+						 in the &lt;enc:EncryptedData&gt; node */
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN864"
 ></A
 ><H3
 ><A
@@ -469,7 +508,7 @@ HREF="XMLSECKEYSMNGRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN848"><P
+NAME="AEN872"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -515,9 +554,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->newly allocated <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+>newly allocated <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure or NULL if an error occurs.</TD
 ></TR
 ></TBODY
@@ -529,7 +568,7 @@ HREF="XMLSECENCCTX"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN863"
+NAME="AEN887"
 ></A
 ><H3
 ><A
@@ -553,16 +592,16 @@ HREF="XMLSECENCCTXPTR"
 ></TR
 ></TABLE
 ><P
->Destroys the <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+>Destroys the <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN871"><P
+NAME="AEN895"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -587,9 +626,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</TD
 ></TR
 ></TBODY
@@ -601,7 +640,7 @@ HREF="XMLSECENCCTX"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN881"
+NAME="AEN905"
 ></A
 ><H3
 ><A
@@ -661,7 +700,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN894"><P
+NAME="AEN918"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -686,9 +725,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</TD
 ></TR
 ><TR
@@ -706,7 +745,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer application specific data that will be 
+> the pointer to application specific data that will be 
     passed to all callback functions.</TD
 ></TR
 ><TR
@@ -827,7 +866,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN933"
+NAME="AEN957"
 ></A
 ><H3
 ><A
@@ -883,7 +922,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN945"><P
+NAME="AEN969"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -908,9 +947,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</TD
 ></TR
 ><TR
@@ -928,7 +967,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer application specific data that will be 
+> the pointer to application specific data that will be 
     passed to all callback functions.</TD
 ></TR
 ><TR
@@ -1027,7 +1066,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN979"
+NAME="AEN1003"
 ></A
 ><H3
 ><A
@@ -1086,7 +1125,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN992"><P
+NAME="AEN1016"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1111,9 +1150,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</TD
 ></TR
 ><TR
@@ -1131,7 +1170,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer application specific data that will be 
+> the pointer to application specific data that will be 
     passed to all callback functions.</TD
 ></TR
 ><TR
@@ -1230,7 +1269,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1026"
+NAME="AEN1050"
 ></A
 ><H3
 ><A
@@ -1273,7 +1312,7 @@ HREF="XMLSECENCRESULTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1036"><P
+NAME="AEN1060"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1298,9 +1337,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</TD
 ></TR
 ><TR
@@ -1318,7 +1357,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer application specific data that will be 
+> the pointer to application specific data that will be 
     passed to all callback functions.</TD
 ></TR
 ><TR
@@ -1400,7 +1439,47 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1066"
+NAME="AEN1090"
+></A
+><H3
+><A
+NAME="XMLSECENCRESULT"
+></A
+>struct xmlSecEncResult</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecEncResult {
+    xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
+    void			*context;	/* the pointer to application specific data */
+    xmlNodePtr			self;		/* the pointer to  &lt;enc:EncryptedData&gt; node */
+    int				encrypt;	/* the encrypt/decrypt flag */
+    xmlChar			*id;		/* the Id attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlChar			*type;		/* the Type attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlChar			*mimeType;	/* the MimeType attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlChar			*encoding;    	/* the Encoding attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
+    xmlSecKeyPtr		key;            /* the used encryption key */
+    xmlBufferPtr		buffer;		/* the decrypted data */
+    int				replaced;	/* if set then the decrypted data were put back 
+						   into the original document */
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN1095"
 ></A
 ><H3
 ><A
@@ -1433,16 +1512,16 @@ HREF="XMLNODEPTR"
 ></TR
 ></TABLE
 ><P
->Creates new <GTKDOCLINK
-HREF="XMLSECENCRESULT"
->xmlSecEncResult</GTKDOCLINK
+>Creates new <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
 > structure.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1076"><P
+NAME="AEN1105"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1467,9 +1546,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCCTX"
->xmlSecEncCtx</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
 > structure.</TD
 ></TR
 ><TR
@@ -1487,7 +1566,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer application specific data that will be 
+> the pointer to application specific data that will be 
     passed to all callback functions.</TD
 ></TR
 ><TR
@@ -1540,9 +1619,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->newly created <GTKDOCLINK
-HREF="XMLSECENCRESULT"
->xmlSecEncResult</GTKDOCLINK
+>newly created <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
 > structure or NULL 
 if an error occurs.</TD
 ></TR
@@ -1555,7 +1634,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1103"
+NAME="AEN1132"
 ></A
 ><H3
 ><A
@@ -1583,7 +1662,7 @@ HREF="XMLSECENCRESULTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1109"><P
+NAME="AEN1138"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1619,7 +1698,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1118"
+NAME="AEN1147"
 ></A
 ><H3
 ><A
@@ -1647,9 +1726,9 @@ HREF="FILE-CAPS"
 ></TR
 ></TABLE
 ><P
->Prints the <GTKDOCLINK
-HREF="XMLSECENCRESULT"
->xmlSecEncResult</GTKDOCLINK
+>Prints the <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
 > structure <TT
 CLASS="PARAMETER"
 ><I
@@ -1666,7 +1745,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1129"><P
+NAME="AEN1158"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1691,9 +1770,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECENCRESULT"
->xmlSecEncResult</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
 > structure.</TD
 ></TR
 ><TR
@@ -1722,7 +1801,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1143"
+NAME="AEN1172"
 ></A
 ><H3
 ><A
@@ -1767,7 +1846,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1154"><P
+NAME="AEN1183"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1873,7 +1952,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1179"
+NAME="AEN1208"
 ></A
 ><H3
 ><A
@@ -1908,7 +1987,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1187"><P
+NAME="AEN1216"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1944,7 +2023,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1196"
+NAME="AEN1225"
 ></A
 ><H3
 ><A
@@ -1992,7 +2071,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1207"><P
+NAME="AEN1236"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2064,7 +2143,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1224"
+NAME="AEN1253"
 ></A
 ><H3
 ><A
@@ -2102,7 +2181,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1233"><P
+NAME="AEN1262"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2157,7 +2236,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1246"
+NAME="AEN1275"
 ></A
 ><H3
 ><A
@@ -2200,7 +2279,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1256"><P
+NAME="AEN1285"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2272,7 +2351,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1273"
+NAME="AEN1302"
 ></A
 ><H3
 ><A
@@ -2320,7 +2399,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1284"><P
+NAME="AEN1313"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2409,7 +2488,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1305"
+NAME="AEN1334"
 ></A
 ><H3
 ><A
@@ -2447,7 +2526,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1314"><P
+NAME="AEN1343"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2502,7 +2581,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1327"
+NAME="AEN1356"
 ></A
 ><H3
 ><A
@@ -2550,7 +2629,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1338"><P
+NAME="AEN1367"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2622,7 +2701,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1355"
+NAME="AEN1384"
 ></A
 ><H3
 ><A
@@ -2672,7 +2751,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1366"><P
+NAME="AEN1395"><P
 ></P
 ><TABLE
 BORDER="0"

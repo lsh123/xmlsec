@@ -14,6 +14,18 @@ standard implementation.
 
 </para>
 
+<!-- ##### STRUCT xmlSecDSigCtx ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@processManifests: 
+@storeSignatures: 
+@storeReferences: 
+@storeManifests: 
+@fakeSignatures: 
+
 <!-- ##### FUNCTION xmlSecDSigCtxCreate ##### -->
 <para>
 
@@ -30,14 +42,6 @@ standard implementation.
 
 @ctx: 
 
-
-<!-- ##### ENUM xmlSecReferenceType ##### -->
-<para>
-
-</para>
-
-@xmlSecSignedInfoReference: 
-@xmlSecManifestReference: 
 
 <!-- ##### FUNCTION xmlSecDSigValidate ##### -->
 <para>
@@ -64,6 +68,49 @@ standard implementation.
 @result: 
 @Returns: 
 
+
+<!-- ##### STRUCT xmlSecDSigResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@self: 
+@sign: 
+@result: 
+@signMethod: 
+@key: 
+@firstSignRef: 
+@lastSignRef: 
+@firstManifestRef: 
+@lastManifestRef: 
+@buffer: 
+
+<!-- ##### STRUCT xmlSecReferenceResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@self: 
+@refType: 
+@result: 
+@next: 
+@prev: 
+@uri: 
+@id: 
+@type: 
+@digestMethod: 
+@buffer: 
+
+<!-- ##### ENUM xmlSecReferenceType ##### -->
+<para>
+
+</para>
+
+@xmlSecSignedInfoReference: 
+@xmlSecManifestReference: 
 
 <!-- ##### FUNCTION xmlSecDSigResultCreate ##### -->
 <para>

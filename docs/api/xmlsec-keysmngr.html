@@ -121,15 +121,15 @@ NAME="XMLSEC-KEYSMNGR">keysmngr.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN2660"
+NAME="AEN2734"
 ></A
 ><H2
 >Name</H2
->keysmngr.h&nbsp;--&nbsp;</DIV
+>keysmngr.h&nbsp;--&nbsp;The simple keys manager implementation.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN2663"><H2
+NAME="AEN2737"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -179,11 +179,11 @@ HREF="xmlsec-keys.html#XMLSECKEYID"
                                              <A
 HREF="xmlsec-keys.html#XMLSECKEYTYPE"
 >xmlSecKeyType</A
-> keyType,
+> type,
                                              <A
 HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 >xmlSecKeyUsage</A
-> keyUsage);
+> usage);
 int         <A
 HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRADDKEY"
 >xmlSecSimpleKeysMngrAddKey</A
@@ -311,7 +311,7 @@ HREF="XMLSECKEYSMNGRPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2706"
+NAME="AEN2780"
 ></A
 ><H2
 >Description</H2
@@ -321,14 +321,14 @@ NAME="AEN2706"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2709"
+NAME="AEN2783"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2711"
+NAME="AEN2785"
 ></A
 ><H3
 ><A
@@ -353,13 +353,13 @@ HREF="XMLSECKEYSMNGRPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Creates new simple keys manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2718"><P
+NAME="AEN2792"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -385,7 +385,11 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>a pointer to newly allocated <GTKDOCLINK
+HREF="XMLSECKEYSMNGR"
+>xmlSecKeysMngr</GTKDOCLINK
+> structure or
+NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -396,7 +400,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2727"
+NAME="AEN2802"
 ></A
 ><H3
 ><A
@@ -420,13 +424,13 @@ HREF="XMLSECKEYSMNGRPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Destroys the simple keys manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2734"><P
+NAME="AEN2809"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -451,7 +455,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to a simple keys manager.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -462,7 +466,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2743"
+NAME="AEN2818"
 ></A
 ><H3
 ><A
@@ -497,22 +501,27 @@ HREF="xmlsec-keys.html#XMLSECKEYID"
                                              <A
 HREF="xmlsec-keys.html#XMLSECKEYTYPE"
 >xmlSecKeyType</A
-> keyType,
+> type,
                                              <A
 HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 >xmlSecKeyUsage</A
-> keyUsage);</PRE
+> usage);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Lookups the first key that does match the given criteria</P
+>Searches the simple keys manager for specified key. This is an 
+implementation of the <A
+HREF="xmlsec-keys.html#XMLSECFINDKEYCALLBACK"
+>xmlSecFindKeyCallback</A
+> for the simple keys
+manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2755"><P
+NAME="AEN2831"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -537,7 +546,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -554,7 +563,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -571,7 +580,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key name (or NULL for "any").</TD
 ></TR
 ><TR
 ><TD
@@ -588,7 +597,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key Id (or NULL for "any").</TD
 ></TR
 ><TR
 ><TD
@@ -598,14 +607,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->keyType</I
+>type</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key (may be "any").</TD
 ></TR
 ><TR
 ><TD
@@ -615,14 +624,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->keyUsage</I
+>usage</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key usage.</TD
 ></TR
 ><TR
 ><TD
@@ -640,7 +649,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to key or NULL if the key is not found or 
+an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -651,7 +661,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2788"
+NAME="AEN2864"
 ></A
 ><H3
 ><A
@@ -685,7 +695,7 @@ HREF="XMLSECKEYPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2796"><P
+NAME="AEN2872"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -710,7 +720,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -727,7 +737,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -745,7 +758,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -756,7 +769,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2813"
+NAME="AEN2890"
 ></A
 ><H3
 ><A
@@ -782,13 +795,13 @@ HREF="XMLSECKEYSMNGRPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Reads the XML keys files into simple keys manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2820"><P
+NAME="AEN2897"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -813,7 +826,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -830,7 +843,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys file uri.</TD
 ></TR
 ><TR
 ><TD
@@ -847,7 +860,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the flag which determines whether we stop after first error or not.</TD
 ></TR
 ><TR
 ><TD
@@ -865,7 +878,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -876,7 +889,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2841"
+NAME="AEN2918"
 ></A
 ><H3
 ><A
@@ -905,13 +918,19 @@ HREF="xmlsec-keys.html#XMLSECKEYTYPE"
 ></TR
 ></TABLE
 ><P
-></P
+>Writes all the keys from the simple keys manager to 
+an XML file <TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2849"><P
+NAME="AEN2927"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -936,7 +955,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -953,7 +972,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the destination filename.</TD
 ></TR
 ><TR
 ><TD
@@ -970,7 +989,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys type (private/public).</TD
 ></TR
 ><TR
 ><TD
@@ -988,7 +1007,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -999,7 +1018,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2870"
+NAME="AEN2948"
 ></A
 ><H3
 ><A
@@ -1033,13 +1052,18 @@ HREF="PEM-PASSWORD-CB"
 ></TR
 ></TABLE
 ><P
-></P
+>Reads the key from a PEM file <TT
+CLASS="PARAMETER"
+><I
+>keyfile</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2879"><P
+NAME="AEN2958"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1064,7 +1088,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1081,7 +1105,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the PEM key file name.</TD
 ></TR
 ><TR
 ><TD
@@ -1098,7 +1122,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key file password.</TD
 ></TR
 ><TR
 ><TD
@@ -1115,7 +1139,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the "ask password" cllback.</TD
 ></TR
 ><TR
 ><TD
@@ -1132,7 +1156,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the private/public flag.</TD
 ></TR
 ><TR
 ><TD
@@ -1150,7 +1174,11 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to a newly allocated <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure or NULL
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1161,7 +1189,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2908"
+NAME="AEN2988"
 ></A
 ><H3
 ><A
@@ -1210,11 +1238,18 @@ HREF="xmlsec-x509.html#XMLSECX509DATAPTR"
 ></TR
 ></TABLE
 ><P
+>Searches for matching certificate in the keys manager. This is 
+the implementation of the <A
+HREF="xmlsec-keys.html#XMLSECX509FINDCALLBACK"
+>xmlSecX509FindCallback</A
+> for the 
+simple keys manager.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2920"><P
+NAME="AEN3002"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1239,7 +1274,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1256,7 +1291,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -1273,7 +1308,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the subject name string.</TD
 ></TR
 ><TR
 ><TD
@@ -1290,7 +1325,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the issuer name string.</TD
 ></TR
 ><TR
 ><TD
@@ -1307,7 +1342,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the issuer serial.</TD
 ></TR
 ><TR
 ><TD
@@ -1324,7 +1359,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the SKI string.</TD
 ></TR
 ><TR
 ><TD
@@ -1341,7 +1376,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the current X509 certs data (may be NULL). </TD
 ></TR
 ><TR
 ><TD
@@ -1359,7 +1394,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to certificate that matches given criteria or NULL 
+if an error occurs or certificate not found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1370,7 +1406,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2957"
+NAME="AEN3039"
 ></A
 ><H3
 ><A
@@ -1399,11 +1435,17 @@ HREF="xmlsec-x509.html#XMLSECX509DATAPTR"
 ></TR
 ></TABLE
 ><P
+>Validates certificate. This is the implementation of the 
+<A
+HREF="xmlsec-keys.html#XMLSECX509VERIFYCALLBACK"
+>xmlSecX509VerifyCallback</A
+> callback for the simple keys manager.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2964"><P
+NAME="AEN3048"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1428,7 +1470,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1445,7 +1487,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -1462,7 +1504,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the cert to verify.</TD
 ></TR
 ><TR
 ><TD
@@ -1480,7 +1522,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if the cert is trusted, 0 if it is not trusted
+and -1 if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1491,7 +1534,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2985"
+NAME="AEN3069"
 ></A
 ><H3
 ><A
@@ -1517,11 +1560,24 @@ HREF="XMLSECKEYSMNGRPTR"
 ></TR
 ></TABLE
 ><P
+>Reads PEM certificate from the file <TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+> and adds to the keys manager
+<TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2991"><P
+NAME="AEN3078"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1546,7 +1602,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1563,7 +1619,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the PEM cert file name.</TD
 ></TR
 ><TR
 ><TD
@@ -1580,7 +1636,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the trusted/not-trusted cert flag.</TD
 ></TR
 ><TR
 ><TD
@@ -1598,7 +1654,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1609,7 +1665,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3012"
+NAME="AEN3099"
 ></A
 ><H3
 ><A
@@ -1634,11 +1690,19 @@ HREF="XMLSECKEYSMNGRPTR"
 ></TR
 ></TABLE
 ><P
+>Adds the certificates from the folder <TT
+CLASS="PARAMETER"
+><I
+>path</I
+></TT
+> to the list of 
+trusted certificates.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3018"><P
+NAME="AEN3107"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1663,7 +1727,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1680,7 +1744,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the certs dir path.</TD
 ></TR
 ><TR
 ><TD
@@ -1698,7 +1762,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1709,7 +1773,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3035"
+NAME="AEN3124"
 ></A
 ><H3
 ><A
@@ -1736,11 +1800,24 @@ HREF="XMLSECKEYSMNGRPTR"
 ></TR
 ></TABLE
 ><P
+>Reads the key from pkcs12 file <TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+> (along with all certs)
+and adds to the simple keys manager <TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3041"><P
+NAME="AEN3133"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1765,7 +1842,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the simple keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1782,7 +1859,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key name (may by NULL).</TD
 ></TR
 ><TR
 ><TD
@@ -1799,7 +1876,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pkcs12 file name.</TD
 ></TR
 ><TR
 ><TD
@@ -1816,7 +1893,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pkcs12 password.</TD
 ></TR
 ><TR
 ><TD
@@ -1834,7 +1911,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE

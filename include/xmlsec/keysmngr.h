@@ -35,8 +35,8 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 const xmlChar *name,
 							 xmlSecKeyId id, 
-							 xmlSecKeyType keyType,
-							 xmlSecKeyUsage keyUsage);
+							 xmlSecKeyType type,
+							 xmlSecKeyUsage usage);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddKey	(xmlSecKeysMngrPtr mngr, 
 							 xmlSecKeyPtr key);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoad 	(xmlSecKeysMngrPtr mngr,

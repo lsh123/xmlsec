@@ -56,7 +56,6 @@ void        (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>) 
 void        <link linkend="xmlSecErrorsInit">xmlSecErrorsInit</link>                (void);
 void        <link linkend="xmlSecErrorsShutdown">xmlSecErrorsShutdown</link>            (void);
 void        <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link>         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);
-extern      int <link linkend="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</link>;
 #define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
 void        <link linkend="xmlSecError">xmlSecError</link>                     (const char *file,
                                              int line,
@@ -460,17 +459,6 @@ every time an error occurs.</para>
 <entry> the errors callback function.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</title>
-<programlisting>extern int xmlSecPrintErrorMessages;
-</programlisting>
-<para>
-The flag that determines whether the error message will be printed
-out immidiatelly. For default errors reporting callback, this flag
-determines whether the error is reported to LibXML library or not.</para>
-<para>
-
-</para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</title>
 <programlisting>#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__

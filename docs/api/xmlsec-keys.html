@@ -121,15 +121,15 @@ NAME="XMLSEC-KEYS">keys.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN2139"
+NAME="AEN2176"
 ></A
 ><H2
 >Name</H2
->keys.h&nbsp;--&nbsp;</DIV
+>keys.h&nbsp;--&nbsp;The keys helper functions.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN2142"><H2
+NAME="AEN2179"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -410,7 +410,7 @@ HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2213"
+NAME="AEN2250"
 ></A
 ><H2
 >Description</H2
@@ -420,14 +420,14 @@ NAME="AEN2213"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN2216"
+NAME="AEN2253"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2218"
+NAME="AEN2255"
 ></A
 ><H3
 ><A
@@ -443,17 +443,19 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; </PRE
+>typedef const struct _xmlSecKeyIdStruct	xmlSecKeyIdStruct, *xmlSecKeyId; </PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The key id (key type information).</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2223"
+NAME="AEN2261"
 ></A
 ><H3
 ><A
@@ -470,9 +472,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum  {
-    xmlSecKeyTypePublic = 0,
-    xmlSecKeyTypePrivate,
-    xmlSecKeyTypeAny
+    xmlSecKeyTypePublic = 0, 	/* the public key */
+    xmlSecKeyTypePrivate,	/* the private key */
+    xmlSecKeyTypeAny 		/* any key */
 } xmlSecKeyType;</PRE
 ></TD
 ></TR
@@ -483,7 +485,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2228"
+NAME="AEN2266"
 ></A
 ><H3
 ><A
@@ -500,11 +502,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum  {
-    xmlSecKeyUsageAny = 0,
-    xmlSecKeyUsageSign,
-    xmlSecKeyUsageVerify,
-    xmlSecKeyUsageEncrypt,
-    xmlSecKeyUsageDecrypt
+    xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
+    xmlSecKeyUsageSign,		/* the key for signing */
+    xmlSecKeyUsageVerify,	/* the key for signature verification */
+    xmlSecKeyUsageEncrypt,	/* the encryption key */
+    xmlSecKeyUsageDecrypt	/* the decryption key */
 } xmlSecKeyUsage;</PRE
 ></TD
 ></TR
@@ -515,7 +517,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2233"
+NAME="AEN2271"
 ></A
 ><H3
 ><A
@@ -536,12 +538,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key origin (keys manager, remote document, cert, etc.).</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2238"
+NAME="AEN2277"
 ></A
 ><H3
 ><A
@@ -562,12 +566,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Default origin (unknown).</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2243"
+NAME="AEN2283"
 ></A
 ><H3
 ><A
@@ -588,12 +594,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key was found in the keys manager.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2248"
+NAME="AEN2289"
 ></A
 ><H3
 ><A
@@ -609,17 +617,24 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define xmlSecKeyOriginKeyName			2 /* useless w/o xmlSecKeyOriginKeyManager */</PRE
+>#define xmlSecKeyOriginKeyName			2 </PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The key was found in the keys manager via key name
+specified in the &lt;dsig:KeyName&gt; node. (useless w/o 
+<A
+HREF="xmlsec-keys.html#XMLSECKEYORIGINKEYMANAGER"
+>xmlSecKeyOriginKeyManager</A
+>).</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2253"
+NAME="AEN2296"
 ></A
 ><H3
 ><A
@@ -640,12 +655,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key was extracted from &lt;dsig:KeyValue&gt; node.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2258"
+NAME="AEN2302"
 ></A
 ><H3
 ><A
@@ -666,12 +683,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
+pointing in the same document.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2263"
+NAME="AEN2308"
 ></A
 ><H3
 ><A
@@ -692,12 +712,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
+pointing to another document.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2268"
+NAME="AEN2314"
 ></A
 ><H3
 ><A
@@ -718,12 +741,15 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key was extracted from X509 certificate
+in the &lt;dsig:X509Data&gt; node.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2273"
+NAME="AEN2320"
 ></A
 ><H3
 ><A
@@ -744,12 +770,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The PGP key from &lt;dsig:PGPData&gt; node. Not used.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2278"
+NAME="AEN2326"
 ></A
 ><H3
 ><A
@@ -770,12 +798,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The key was extracted from &lt;enc:EncryptedKey&gt; node.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2283"
+NAME="AEN2332"
 ></A
 ><H3
 ><A
@@ -796,12 +826,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>All of the above.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2288"
+NAME="AEN2338"
 ></A
 ><H3
 ><A
@@ -822,12 +854,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The "unknown" id.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2293"
+NAME="AEN2344"
 ></A
 ><H3
 ><A
@@ -844,15 +878,13 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecKey {
-    xmlSecKeyId				id;
-    xmlSecKeyType			type;
-    xmlChar				*name;
-    xmlSecKeyOrigin			origin;
-
-    xmlSecX509DataPtr			x509Data;
-    
-    /* key specific data */
-    void				*keyData;
+    xmlSecKeyId				id;	/* the key id (key algorithm info) */
+    xmlSecKeyType			type;	/* the key type (private/public) */
+    xmlChar				*name;	/* the key name (may be NULL) */
+    xmlSecKeyOrigin			origin;	/* the key origin */
+    xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
+						   (if key was extracted from a cert) */
+    void				*keyData; /* key specific data */
 };</PRE
 ></TD
 ></TR
@@ -863,7 +895,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2298"
+NAME="AEN2349"
 ></A
 ><H3
 ><A
@@ -894,13 +926,18 @@ HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
 ></TR
 ></TABLE
 ><P
->Creates new key (wrapper for xmlSecKey::create method)</P
+>Creates new key of the specified type <TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2307"><P
+NAME="AEN2359"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -925,7 +962,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key id.</TD
 ></TR
 ><TR
 ><TD
@@ -942,7 +979,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key origins.</TD
 ></TR
 ><TR
 ><TD
@@ -960,7 +997,11 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to newly allocated <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure
+or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -971,7 +1012,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2324"
+NAME="AEN2377"
 ></A
 ><H3
 ><A
@@ -995,19 +1036,13 @@ HREF="XMLSECKEYPTR"
 ></TR
 ></TABLE
 ><P
->Destroys the key. If the key origin has a KeyManager marker 
-the key is *not* destroyed unless <TT
-CLASS="PARAMETER"
-><I
->forceDestroy</I
-></TT
-> is not zero</P
+>Destroys the key and frees all allocated memory.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2332"><P
+NAME="AEN2384"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1032,7 +1067,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1043,7 +1081,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2341"
+NAME="AEN2394"
 ></A
 ><H3
 ><A
@@ -1074,11 +1112,18 @@ HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
 ></TR
 ></TABLE
 ><P
+>Creates a duplicate of the given <TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2349"><P
+NAME="AEN2404"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1103,7 +1148,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -1120,7 +1168,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key origins.</TD
 ></TR
 ><TR
 ><TD
@@ -1138,7 +1186,11 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to newly allocated <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure
+or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1149,7 +1201,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2366"
+NAME="AEN2423"
 ></A
 ><H3
 ><A
@@ -1185,11 +1237,35 @@ HREF="xmlsec-keys.html#XMLSECKEYTYPE"
 ></TR
 ></TABLE
 ><P
+>Checks whether the <TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+> matches the given criteria
+(key name is equal to <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>, key id is equal to <TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>,
+key type is <TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>).</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2375"><P
+NAME="AEN2437"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1214,7 +1290,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -1231,7 +1310,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to key name (may be NULL).</TD
 ></TR
 ><TR
 ><TD
@@ -1248,7 +1327,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key id (may be "any").</TD
 ></TR
 ><TR
 ><TD
@@ -1265,7 +1344,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the key type to write (public/private).</TD
 ></TR
 ><TR
 ><TD
@@ -1283,7 +1362,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 if the key satisfies the given criteria or 0 otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1294,7 +1373,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2400"
+NAME="AEN2463"
 ></A
 ><H3
 ><A
@@ -1322,13 +1401,23 @@ HREF="FILE-CAPS"
 ></TR
 ></TABLE
 ><P
-></P
+>Prints the information about the <TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+> to the <TT
+CLASS="PARAMETER"
+><I
+>output</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2408"><P
+NAME="AEN2473"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1353,7 +1442,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -1370,7 +1462,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the destination <GTKDOCLINK
+HREF="FILE-CAPS"
+>FILE</GTKDOCLINK
+> pointer.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1381,7 +1476,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2421"
+NAME="AEN2488"
 ></A
 ><H3
 ><A
@@ -1406,11 +1501,14 @@ HREF="XMLSECKEYPTR"
 ></TR
 ></TABLE
 ><P
+>Reads the cert from a PEM file and assigns the cert
+to the key.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2427"><P
+NAME="AEN2495"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1435,7 +1533,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the <A
+HREF="xmlsec-keys.html#XMLSECKEY"
+>xmlSecKey</A
+> structure.</TD
 ></TR
 ><TR
 ><TD
@@ -1452,7 +1553,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the PEM cert file name.</TD
 ></TR
 ><TR
 ><TD
@@ -1470,7 +1571,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1481,7 +1582,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2444"
+NAME="AEN2513"
 ></A
 ><H3
 ><A
@@ -1525,11 +1626,18 @@ HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 ></TR
 ></TABLE
 ><P
+>Reads the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+> and extracts the key.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2455"><P
+NAME="AEN2526"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1554,7 +1662,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1571,7 +1679,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1588,7 +1696,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -1605,7 +1713,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key Id (or NULL for "any").</TD
 ></TR
 ><TR
 ><TD
@@ -1622,7 +1730,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key (may be "any").</TD
 ></TR
 ><TR
 ><TD
@@ -1639,7 +1747,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key usage.</TD
 ></TR
 ><TR
 ><TD
@@ -1657,7 +1765,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to key or NULL if the key is not found or 
+an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1668,7 +1777,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2488"
+NAME="AEN2559"
 ></A
 ><H3
 ><A
@@ -1712,11 +1821,13 @@ HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 ></TR
 ></TABLE
 ><P
+>Searches the keys manager for specified key.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2499"><P
+NAME="AEN2571"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1741,7 +1852,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1758,7 +1869,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -1775,7 +1886,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key name (or NULL for "any").</TD
 ></TR
 ><TR
 ><TD
@@ -1792,7 +1903,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key Id (or NULL for "any").</TD
 ></TR
 ><TR
 ><TD
@@ -1809,7 +1920,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key (may be "any").</TD
 ></TR
 ><TR
 ><TD
@@ -1826,7 +1937,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key usage.</TD
 ></TR
 ><TR
 ><TD
@@ -1844,7 +1955,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to key or NULL if the key is not found or 
+an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1855,7 +1967,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2532"
+NAME="AEN2604"
 ></A
 ><H3
 ><A
@@ -1903,13 +2015,13 @@ HREF="xmlsec-x509.html#XMLSECX509DATAPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Searches for matching certificate in the keys manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2545"><P
+NAME="AEN2617"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1934,7 +2046,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the keys manager</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -1951,7 +2063,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the application specific context</TD
+> the pointer application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -1968,7 +2080,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> subject name string</TD
+> the subject name string.</TD
 ></TR
 ><TR
 ><TD
@@ -1985,7 +2097,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> issuer name string</TD
+> the issuer name string.</TD
 ></TR
 ><TR
 ><TD
@@ -2002,7 +2114,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> issuer serial</TD
+> the issuer serial.</TD
 ></TR
 ><TR
 ><TD
@@ -2019,7 +2131,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> ski</TD
+> the SKI string.</TD
 ></TR
 ><TR
 ><TD
@@ -2036,7 +2148,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the current X509 certs data (may be NULL). </TD
 ></TR
 ><TR
 ><TD
@@ -2054,7 +2166,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the certificate that matches given criteria</TD
+>the pointer to certificate that matches given criteria or NULL 
+if an error occurs or certificate not found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2065,7 +2178,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2582"
+NAME="AEN2654"
 ></A
 ><H3
 ><A
@@ -2094,13 +2207,13 @@ HREF="xmlsec-x509.html#XMLSECX509DATAPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Validates certificate.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2590"><P
+NAME="AEN2662"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2125,7 +2238,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the keys manager</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -2142,7 +2255,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the application specific context</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -2159,7 +2272,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the cert to verify</TD
+> the cert to verify.</TD
 ></TR
 ><TR
 ><TD
@@ -2178,7 +2291,7 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >1 if the cert is trusted, 0 if it is not trusted
-and -1 if an error occurs</TD
+and -1 if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2189,7 +2302,7 @@ and -1 if an error occurs</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN2611"
+NAME="AEN2683"
 ></A
 ><H3
 ><A
@@ -2233,11 +2346,18 @@ HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
 ></TR
 ></TABLE
 ><P
+>Reads the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+> and extracts the key.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN2622"><P
+NAME="AEN2696"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2262,7 +2382,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -2279,7 +2399,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the keys manager.</TD
 ></TR
 ><TR
 ><TD
@@ -2296,7 +2416,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to application specific data.</TD
 ></TR
 ><TR
 ><TD
@@ -2313,7 +2433,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key Id (or NULL for "any").</TD
 ></TR
 ><TR
 ><TD
@@ -2330,7 +2450,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key (may be "any").</TD
 ></TR
 ><TR
 ><TD
@@ -2347,7 +2467,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the required key usage.</TD
 ></TR
 ><TR
 ><TD
@@ -2365,7 +2485,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to key or NULL if the key is not found or 
+an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE

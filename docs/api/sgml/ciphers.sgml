@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>ciphers.h</refname><refpurpose></refpurpose>
+<refname>ciphers.h</refname><refpurpose>The ciphers transform.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

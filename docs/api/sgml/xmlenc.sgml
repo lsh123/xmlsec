@@ -15,6 +15,7 @@ standard implementation.</refpurpose>
 
 
 
+struct      <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
 <link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link>          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
 void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx);
 int         <link linkend="xmlSecEncryptMemory">xmlSecEncryptMemory</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
@@ -41,6 +42,7 @@ int         <link linkend="xmlSecDecrypt">xmlSecDecrypt</link>                  
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
                                              <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
+struct      <link linkend="xmlSecEncResult">xmlSecEncResult</link>;
 <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> <link linkend="xmlSecEncResultCreate">xmlSecEncResultCreate</link>    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
                                              void *context,
                                              int encrypt,
@@ -83,6 +85,18 @@ void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>    
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
+<programlisting>struct xmlSecEncCtx {
+    xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
+    xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
+    int				ignoreType;	/* the flag to ignore Type attribute 
+						 in the &lt;enc:EncryptedData&gt; node */
+};
+</programlisting>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCreate">xmlSecEncCtxCreate ()</title>
 <programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
@@ -141,7 +155,7 @@ the <parameter>encNode</parameter> node.</para>
 <entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer application specific data that will be 
+<entry> the pointer to application specific data that will be 
     passed to all callback functions.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
@@ -186,7 +200,7 @@ the <parameter>encNode</parameter> node.</para>
 <entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer application specific data that will be 
+<entry> the pointer to application specific data that will be 
     passed to all callback functions.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
@@ -228,7 +242,7 @@ the <parameter>src</parameter> node.</para>
 <entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer application specific data that will be 
+<entry> the pointer to application specific data that will be 
     passed to all callback functions.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
@@ -267,7 +281,7 @@ Decrypts data from the &lt;enc:EncryptionData&gt; node.</para>
 <entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer application specific data that will be 
+<entry> the pointer to application specific data that will be 
     passed to all callback functions.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
@@ -283,6 +297,27 @@ Decrypts data from the &lt;enc:EncryptionData&gt; node.</para>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncResult">struct xmlSecEncResult</title>
+<programlisting>struct xmlSecEncResult {
+    xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
+    void			*context;	/* the pointer to application specific data */
+    xmlNodePtr			self;		/* the pointer to  &lt;enc:EncryptedData&gt; node */
+    int				encrypt;	/* the encrypt/decrypt flag */
+    xmlChar			*id;		/* the Id attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlChar			*type;		/* the Type attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlChar			*mimeType;	/* the MimeType attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlChar			*encoding;    	/* the Encoding attribute of the  &lt;enc:EncryptedData&gt; node */
+    xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
+    xmlSecKeyPtr		key;            /* the used encryption key */
+    xmlBufferPtr		buffer;		/* the decrypted data */
+    int				replaced;	/* if set then the decrypted data were put back 
+						   into the original document */
+};
+</programlisting>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncResultCreate">xmlSecEncResultCreate ()</title>
 <programlisting><link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> xmlSecEncResultCreate    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
@@ -302,7 +337,7 @@ Creates new <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure.</p
 <entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer application specific data that will be 
+<entry> the pointer to application specific data that will be 
     passed to all callback functions.
 </entry></row>
 <row><entry align="right"><parameter>encrypt</parameter>&nbsp;:</entry>

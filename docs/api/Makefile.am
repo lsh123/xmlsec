@@ -31,9 +31,11 @@ doc_sources: $(DOC_SOURCE_FILES)
 	    folder_name=`echo $$i | sed 's#$(TOP)/##' | sed 's#/[^/]*$$##'`; \
 	    file_name=`echo $$i | sed 's#.*/##'`; \
 	    test -d $(DOC_SOURCE_DIR)/$$folder_name || mkdir -p $(DOC_SOURCE_DIR)/$$folder_name; \
-	    cat $$i | sed 's/XMLSEC_EXPORT//' | \
-		      sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' \
-		       > $(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
+	    cat $$i | \
+		sed 's/XMLSEC_EXPORT_VAR//' | \
+		sed 's/XMLSEC_EXPORT//' | \
+		sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
+		$(DOC_SOURCE_DIR)/$$folder_name/$$file_name; \
 	done)
 
 clean:

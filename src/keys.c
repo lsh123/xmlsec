@@ -28,9 +28,10 @@
 xmlSecKeyId xmlSecAllKeyIds[100];
 
 /**
- * xmlSecKeyInit
+ * xmlSecKeyInit:
  * 
- * Initializes the keys list
+ * Initializes the key ids list (called from xmlSecInit() function). 
+ * This function should not be called directly by applications.
  */
 void		
 xmlSecKeysInit(void) {
@@ -61,12 +62,14 @@ xmlSecKeysInit(void) {
 }
 
 /**
- * xmlSecKeyCreate
- * @id:
- * @origin:
+ * xmlSecKeyCreate:
+ * @id: the key id.
+ * @origin: the key origins.
  *
- * Creates new key (wrapper for xmlSecKey::create method)
+ * Creates new key of the specified type @id.
  *
+ * Returns the pointer to newly allocated #xmlSecKey structure
+ * or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
@@ -87,12 +90,10 @@ xmlSecKeyCreate(xmlSecKeyId id, xmlSecKeyOrigin origin)  {
 }
 
 /**
- * xmlSecKeyDestroy
- * @key:
- * @forceDestroy:
+ * xmlSecKeyDestroy:
+ * @key: the pointer to the #xmlSecKey structure.
  *
- * Destroys the key. If the key origin has a KeyManager marker 
- * the key is *not* destroyed unless @forceDestroy is not zero
+ * Destroys the key and frees all allocated memory. 
  */
 void
 xmlSecKeyDestroy(xmlSecKeyPtr key) {
@@ -119,6 +120,16 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
     key->id->destroy(key);
 }
 
+/**
+ * xmlSecKeyDuplicate:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @origin: the key origins.
+ *
+ * Creates a duplicate of the given @key.
+ *
+ * Returns the pointer to newly allocated #xmlSecKey structure
+ * or NULL if an error occurs.
+ */
 xmlSecKeyPtr	
 xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
     xmlSecKeyPtr newKey;
@@ -157,10 +168,14 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
 }
 
 /**
- * xmlSecKeyReadXml
- * @node:
+ * xmlSecKeyReadXml:
+ * @id: the key id.
+ * @node: the pointer to key value node.
  * 
- * Reads the key form XML doc
+ * Reads the key from XML node.
+ *
+ * Returns the pointer to newly allocated #xmlSecKey structure
+ * or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
@@ -192,13 +207,14 @@ xmlSecKeyReadXml(xmlSecKeyId id, xmlNodePtr node) {
 }
 
 /**
- * xmlSecKeyWriteXml
- * @key:
- * @type:
- * @parent:
+ * xmlSecKeyWriteXml:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @type: the key type to write (public/private).
+ * @node: the parent XML node. 
  * 
- * Writes the key into XML node and adds it to the list of @parent children
- * (if parent is not null).
+ * Writes the key in the XML node.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
@@ -227,6 +243,17 @@ xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
     return(0);    
 }
 
+/**
+ * xmlSecKeyReadBin:
+ * @id: the key id.
+ * @buf: the pointer to key binary data buffer.
+ * @size: the size of the binary key data @buf.
+ * 
+ * Reads the key from binary data.
+ *
+ * Returns the pointer to newly allocated #xmlSecKey structure
+ * or NULL if an error occurs.
+ */
 xmlSecKeyPtr	
 xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
     xmlSecKeyPtr key;
@@ -257,6 +284,18 @@ xmlSecKeyReadBin(xmlSecKeyId id, const unsigned char *buf, size_t size) {
     return(key);
 }
 
+/**
+ * xmlSecKeyWriteBin:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @type: the key type to write (public/private).
+ * @buf: the pointer to pointer to the binary data buffer.
+ * @size: the pointer to the returned buffer size.
+ * 
+ * Writes the key in the binary buffer. The caller is responsible
+ * for freeing the returned buffer using xmlFree() function.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
 		 unsigned char **buf, size_t *size) {
@@ -286,8 +325,22 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
     return(0);    
 }
 
+/**
+ * xmlSecVerifyKey:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @name: the pointer to key name (may be NULL).
+ * @id: the key id (may be "any").
+ * @type: the key type to write (public/private).
+ * 
+ * Checks whether the @key matches the given criteria
+ * (key name is equal to @name, key id is equal to @id,
+ * key type is @type).
+ *
+ * Returns 1 if the key satisfies the given criteria or 0 otherwise.
+ */
 int
-xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, xmlSecKeyType type) {
+xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, 
+		xmlSecKeyType type) {
     xmlSecAssert2(key != NULL, -1);
 
     if((id != xmlSecKeyIdUnknown) && (id != key->id)) {
@@ -303,10 +356,11 @@ xmlSecVerifyKey(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyId id, xmlSecKey
 }
 
 /** 
- * xmlSecKeyDebugDump
+ * xmlSecKeyDebugDump:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @output: the destination #FILE pointer.
  *
- *
- *
+ * Prints the information about the @key to the @output.
  */
 void
 xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
@@ -362,7 +416,58 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 #endif /* XMLSEC_NO_X509 */    
 }
 
+/**
+ * xmlSecKeysMngrGetKey:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @mngr: the keys manager.
+ * @context: the pointer to application specific data.
+ * @keyId: the required key Id (or NULL for "any").
+ * @keyType: the required key (may be "any").
+ * @keyUsage: the required key usage.
+ * 
+ * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
+ *
+ * Returns the pointer to key or NULL if the key is not found or 
+ * an error occurs.
+ */
+xmlSecKeyPtr 		
+xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
+		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
+    xmlSecKeyPtr key = NULL;
+        
+    xmlSecAssert2(mngr != NULL, NULL);
+
+    if((key == NULL) && (keyInfoNode != NULL)) {
+	key = xmlSecKeyInfoNodeRead(keyInfoNode, mngr, context,
+			keyId, keyType, keyUsage);
+    }
+    
+    if((key == NULL) && (mngr->allowedOrigins & xmlSecKeyOriginKeyManager) && 
+			(mngr->findKey != NULL)) {
+	key = mngr->findKey(mngr, context, NULL, keyId, keyType, keyUsage);
+    }
+    
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+		    " ");
+	return(NULL);    
+    }
+    
+    return(key);
+}
+
 #ifndef XMLSEC_NO_X509
+/**
+ * xmlSecKeyReadPemCert:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @filename: the PEM cert file name.
+ *
+ * Reads the cert from a PEM file and assigns the cert
+ * to the key.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int		
 xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
     int ret;
@@ -391,33 +496,4 @@ xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
     return(0);
 }
 #endif /* XMLSEC_NO_X509 */
-
-
-xmlSecKeyPtr 		
-xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
-		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
-    xmlSecKeyPtr key = NULL;
-        
-    xmlSecAssert2(mngr != NULL, NULL);
-
-    if((key == NULL) && (keyInfoNode != NULL)) {
-	key = xmlSecKeyInfoNodeRead(keyInfoNode, mngr, context,
-			keyId, keyType, keyUsage);
-    }
-    
-    if((key == NULL) && (mngr->allowedOrigins & xmlSecKeyOriginKeyManager) && 
-			(mngr->findKey != NULL)) {
-	key = mngr->findKey(mngr, context, NULL, keyId, keyType, keyUsage);
-    }
-    
-    if(key == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-		    " ");
-	return(NULL);    
-    }
-    
-    return(key);
-}
-
 

@@ -121,15 +121,15 @@ NAME="XMLSEC-DEBUG">debug.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN1796"
+NAME="AEN1818"
 ></A
 ><H2
 >Name</H2
->debug.h&nbsp;--&nbsp;</DIV
+>debug.h&nbsp;--&nbsp;The usefull debugging functions.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN1799"><H2
+NAME="AEN1821"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -168,7 +168,7 @@ HREF="xmlsec-debug.html#XMLSECTIMERGET"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1807"
+NAME="AEN1829"
 ></A
 ><H2
 >Description</H2
@@ -178,14 +178,14 @@ NAME="AEN1807"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN1810"
+NAME="AEN1832"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1812"
+NAME="AEN1834"
 ></A
 ><H3
 ><A
@@ -206,12 +206,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Resets the total time counter.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1817"
+NAME="AEN1840"
 ></A
 ><H3
 ><A
@@ -232,12 +234,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Starts timer.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1822"
+NAME="AEN1846"
 ></A
 ><H3
 ><A
@@ -258,12 +262,18 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>Adds the time from the last <A
+HREF="xmlsec-debug.html#XMLSECTIMERSTART"
+>xmlSecTimerStart</A
+>() function call 
+to the total time counter.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1827"
+NAME="AEN1853"
 ></A
 ><H3
 ><A
@@ -287,11 +297,13 @@ HREF="DOUBLE"
 ></TR
 ></TABLE
 ><P
+>Gets the current total time counter value in msec.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1833"><P
+NAME="AEN1860"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -317,7 +329,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the current total time in msec.</TD
 ></TR
 ></TBODY
 ></TABLE

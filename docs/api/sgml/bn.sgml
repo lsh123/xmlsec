@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>bn.h</refname><refpurpose></refpurpose>
+<refname>bn.h</refname><refpurpose>The big numbers helper functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

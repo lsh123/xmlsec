@@ -2,7 +2,7 @@
 xmlsec.h
 
 <!-- ##### SECTION Short_Description ##### -->
-The XML Security Library initalization/cleanup functions.
+The library initialization/cleanup functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

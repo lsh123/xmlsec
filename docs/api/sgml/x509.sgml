@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>x509.h</refname><refpurpose></refpurpose>
+<refname>x509.h</refname><refpurpose>The X509 certificates functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

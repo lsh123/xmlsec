@@ -2,7 +2,7 @@
 membuf.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The memory buffer transform.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -13,12 +13,6 @@ membuf.h
 <para>
 
 </para>
-
-<!-- ##### VARIABLE xmlSecMemBuf ##### -->
-<para>
-
-</para>
-
 
 <!-- ##### FUNCTION xmlSecMemBufTransformGetBuffer ##### -->
 <para>

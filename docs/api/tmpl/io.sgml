@@ -2,7 +2,7 @@
 io.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The IO transforms.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -26,12 +26,6 @@ io.h
 
 </para>
 
-
-
-<!-- ##### VARIABLE xmlSecInputUri ##### -->
-<para>
-
-</para>
 
 
 <!-- ##### FUNCTION xmlSecInputUriTransformOpen ##### -->

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keysInternal.h</refname><refpurpose></refpurpose>
+<refname>keysInternal.h</refname><refpurpose>The internal keys functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -311,7 +311,7 @@ int         <link linkend="xmlSecKeyWriteBin">xmlSecKeyWriteBin</link>          
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadXml               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
 <para>
-Reads the key form XML doc</para>
+Reads the key from XML node.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -320,14 +320,13 @@ Reads the key form XML doc</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key id.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to key value node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -336,8 +335,7 @@ Reads the key form XML doc</para>
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
 <para>
-Writes the key into XML node and adds it to the list of <parameter>parent</parameter> children
-(if parent is not null).</para>
+Writes the key in the XML node.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -346,17 +344,15 @@ Writes the key into XML node and adds it to the list of <parameter>parent</param
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key type to write (public/private).
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the parent XML node. 
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -365,6 +361,8 @@ Writes the key into XML node and adds it to the list of <parameter>parent</param
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
+Reads the key from binary data.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -372,17 +370,16 @@ Writes the key into XML node and adds it to the list of <parameter>parent</param
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key id.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to key binary data buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the size of the binary key data <parameter>buf</parameter>.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -392,6 +389,9 @@ Writes the key into XML node and adds it to the list of <parameter>parent</param
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *size);</programlisting>
 <para>
+Writes the key in the binary buffer. The caller is responsible
+for freeing the returned buffer using <link linkend="xmlFree">xmlFree</link>() function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -399,20 +399,18 @@ Writes the key into XML node and adds it to the list of <parameter>parent</param
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key type to write (public/private).
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to pointer to the binary data buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the returned buffer size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

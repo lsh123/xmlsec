@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keys.h</refname><refpurpose></refpurpose>
+<refname>keys.h</refname><refpurpose>The keys helper functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -89,17 +89,19 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecKeyId">xmlSecKeyId</title>
-<programlisting>typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
+<programlisting>typedef const struct _xmlSecKeyIdStruct	xmlSecKeyIdStruct, *xmlSecKeyId; 
 </programlisting>
+<para>
+The key id (key type information).</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyType">enum xmlSecKeyType</title>
 <programlisting>typedef enum  {
-    xmlSecKeyTypePublic = 0,
-    xmlSecKeyTypePrivate,
-    xmlSecKeyTypeAny
+    xmlSecKeyTypePublic = 0, 	/* the public key */
+    xmlSecKeyTypePrivate,	/* the private key */
+    xmlSecKeyTypeAny 		/* any key */
 } xmlSecKeyType;
 </programlisting>
 <para>
@@ -108,11 +110,11 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <refsect2>
 <title><anchor id="xmlSecKeyUsage">enum xmlSecKeyUsage</title>
 <programlisting>typedef enum  {
-    xmlSecKeyUsageAny = 0,
-    xmlSecKeyUsageSign,
-    xmlSecKeyUsageVerify,
-    xmlSecKeyUsageEncrypt,
-    xmlSecKeyUsageDecrypt
+    xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
+    xmlSecKeyUsageSign,		/* the key for signing */
+    xmlSecKeyUsageVerify,	/* the key for signature verification */
+    xmlSecKeyUsageEncrypt,	/* the encryption key */
+    xmlSecKeyUsageDecrypt	/* the decryption key */
 } xmlSecKeyUsage;
 </programlisting>
 <para>
@@ -123,12 +125,16 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>typedef long				xmlSecKeyOrigin;
 </programlisting>
 <para>
+The key origin (keys manager, remote document, cert, etc.).</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyOriginDefault">xmlSecKeyOriginDefault</title>
 <programlisting>#define xmlSecKeyOriginDefault			0
 </programlisting>
+<para>
+Default origin (unknown).</para>
 <para>
 
 </para></refsect2>
@@ -137,12 +143,18 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>#define xmlSecKeyOriginKeyManager		1
 </programlisting>
 <para>
+The key was found in the keys manager.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyOriginKeyName">xmlSecKeyOriginKeyName</title>
-<programlisting>#define xmlSecKeyOriginKeyName			2 /* useless w/o xmlSecKeyOriginKeyManager */
+<programlisting>#define xmlSecKeyOriginKeyName			2 
 </programlisting>
+<para>
+The key was found in the keys manager via key name
+specified in the &lt;dsig:KeyName&gt; node. (useless w/o 
+<link linkend="xmlSecKeyOriginKeyManager">xmlSecKeyOriginKeyManager</link>).</para>
 <para>
 
 </para></refsect2>
@@ -151,12 +163,17 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>#define xmlSecKeyOriginKeyValue			4
 </programlisting>
 <para>
+The key was extracted from &lt;dsig:KeyValue&gt; node.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyOriginRetrievalDocument">xmlSecKeyOriginRetrievalDocument</title>
 <programlisting>#define xmlSecKeyOriginRetrievalDocument	8
 </programlisting>
+<para>
+The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
+pointing in the same document.</para>
 <para>
 
 </para></refsect2>
@@ -165,12 +182,18 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>#define xmlSecKeyOriginRetrievalRemote		16
 </programlisting>
 <para>
+The key was extracted thru &lt;dsig:RetrievalMethod&gt; 
+pointing to another document.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyOriginX509">xmlSecKeyOriginX509</title>
 <programlisting>#define xmlSecKeyOriginX509			32
 </programlisting>
+<para>
+The key was extracted from X509 certificate
+in the &lt;dsig:X509Data&gt; node.</para>
 <para>
 
 </para></refsect2>
@@ -179,6 +202,8 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>#define xmlSecKeyOriginPGP			64
 </programlisting>
 <para>
+The PGP key from &lt;dsig:PGPData&gt; node. Not used.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -186,11 +211,15 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>#define xmlSecKeyOriginEncryptedKey		128
 </programlisting>
 <para>
+The key was extracted from &lt;enc:EncryptedKey&gt; node.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyOriginAll">xmlSecKeyOriginAll</title>
 <programlisting>#define     xmlSecKeyOriginAll</programlisting>
+<para>
+All of the above.</para>
 <para>
 
 </para></refsect2>
@@ -199,20 +228,20 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting>#define xmlSecKeyIdUnknown 			NULL
 </programlisting>
 <para>
+The "unknown" id.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKey">struct xmlSecKey</title>
 <programlisting>struct xmlSecKey {
-    xmlSecKeyId				id;
-    xmlSecKeyType			type;
-    xmlChar				*name;
-    xmlSecKeyOrigin			origin;
-
-    xmlSecX509DataPtr			x509Data;
-    
-    /* key specific data */
-    void				*keyData;
+    xmlSecKeyId				id;	/* the key id (key algorithm info) */
+    xmlSecKeyType			type;	/* the key type (private/public) */
+    xmlChar				*name;	/* the key name (may be NULL) */
+    xmlSecKeyOrigin			origin;	/* the key origin */
+    xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
+						   (if key was extracted from a cert) */
+    void				*keyData; /* key specific data */
 };
 </programlisting>
 <para>
@@ -223,7 +252,7 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
                                              <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> origin);</programlisting>
 <para>
-Creates new key (wrapper for xmlSecKey::create method)</para>
+Creates new key of the specified type <parameter>id</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -232,22 +261,20 @@ Creates new key (wrapper for xmlSecKey::create method)</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key id.
 </entry></row>
 <row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key origins.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDestroy">xmlSecKeyDestroy ()</title>
 <programlisting>void        xmlSecKeyDestroy                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Destroys the key. If the key origin has a KeyManager marker 
-the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zero</para>
+Destroys the key and frees all allocated memory.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -256,7 +283,7 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -264,6 +291,8 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyDuplicate             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> origin);</programlisting>
 <para>
+Creates a duplicate of the given <parameter>key</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -271,14 +300,13 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key origins.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -288,6 +316,10 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
                                              <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);</programlisting>
 <para>
+Checks whether the <parameter>key</parameter> matches the given criteria
+(key name is equal to <parameter>name</parameter>, key id is equal to <parameter>id</parameter>,
+key type is <parameter>type</parameter>).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -295,20 +327,18 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to key name (may be NULL).
 </entry></row>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key id (may be "any").
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> the key type to write (public/private).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the key satisfies the given criteria or 0 otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -316,7 +346,7 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <programlisting>void        xmlSecKeyDebugDump              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-</para>
+Prints the information about the <parameter>key</parameter> to the <parameter>output</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -325,12 +355,10 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> the destination <link linkend="FILE-CAPS">FILE</link> pointer.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -338,6 +366,9 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <programlisting>int         xmlSecKeyReadPemCert            (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const char *filename);</programlisting>
 <para>
+Reads the cert from a PEM file and assigns the cert
+to the key.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -345,14 +376,12 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry>
+<entry> the PEM cert file name.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -364,6 +393,8 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
                                              <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);</programlisting>
 <para>
+Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -371,26 +402,25 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry> the keys manager.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to application specific data.
 </entry></row>
 <row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key Id (or NULL for "any").
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key (may be "any").
 </entry></row>
 <row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key usage.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
+an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -402,6 +432,8 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
                                              <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);</programlisting>
 <para>
+Searches the keys manager for specified key.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -409,26 +441,25 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry> the keys manager.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to application specific data.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key name (or NULL for "any").
 </entry></row>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key Id (or NULL for "any").
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key (may be "any").
 </entry></row>
 <row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key usage.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
+an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -441,7 +472,7 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
                                              <link linkend="xmlChar">xmlChar</link> *ski,
                                              <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
 <para>
-</para>
+Searches for matching certificate in the keys manager.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -450,27 +481,28 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the keys manager
+<entry> the keys manager.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the application specific context
+<entry> the pointer application specific data.
 </entry></row>
 <row><entry align="right"><parameter>subjectName</parameter>&nbsp;:</entry>
-<entry> subject name string
+<entry> the subject name string.
 </entry></row>
 <row><entry align="right"><parameter>issuerName</parameter>&nbsp;:</entry>
-<entry> issuer name string
+<entry> the issuer name string.
 </entry></row>
 <row><entry align="right"><parameter>issuerSerial</parameter>&nbsp;:</entry>
-<entry> issuer serial
+<entry> the issuer serial.
 </entry></row>
 <row><entry align="right"><parameter>ski</parameter>&nbsp;:</entry>
-<entry> ski
+<entry> the SKI string.
 </entry></row>
 <row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
-<entry> 
+<entry> the current X509 certs data (may be NULL). 
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the certificate that matches given criteria
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to certificate that matches given criteria or NULL 
+if an error occurs or certificate not found.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -479,7 +511,7 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
                                              void *context,
                                              <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
 <para>
-</para>
+Validates certificate.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -488,16 +520,16 @@ the key is *not* destroyed unless <parameter>forceDestroy</parameter> is not zer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the keys manager
+<entry> the keys manager.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the application specific context
+<entry> the pointer to application specific data.
 </entry></row>
 <row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
-<entry> the cert to verify
+<entry> the cert to verify.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the cert is trusted, 0 if it is not trusted
-and -1 if an error occurs
+and -1 if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -509,6 +541,8 @@ and -1 if an error occurs
                                              <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
                                              <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);</programlisting>
 <para>
+Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -516,26 +550,25 @@ and -1 if an error occurs
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry> the keys manager.
 </entry></row>
 <row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to application specific data.
 </entry></row>
 <row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key Id (or NULL for "any").
 </entry></row>
 <row><entry align="right"><parameter>keyType</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key (may be "any").
 </entry></row>
 <row><entry align="right"><parameter>keyUsage</parameter>&nbsp;:</entry>
-<entry>
+<entry> the required key usage.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
+an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

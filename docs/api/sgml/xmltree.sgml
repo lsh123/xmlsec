@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xmltree.h</refname><refpurpose></refpurpose>
+<refname>xmltree.h</refname><refpurpose>The XML tree helper functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

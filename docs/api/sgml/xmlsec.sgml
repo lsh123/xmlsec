@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xmlsec.h</refname><refpurpose>The XML Security Library initalization/cleanup functions.</refpurpose>
+<refname>xmlsec.h</refname><refpurpose>The library initialization/cleanup functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

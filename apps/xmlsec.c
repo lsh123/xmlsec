@@ -165,6 +165,8 @@ static const char helpNodeSelection[] =
     "  --node-name [<namespace-uri>:]<name>\n"
     "                        set the operation start point to the first node \n"
     "                        with given <name> and <namespace> URI\n"
+    "  --node-xpath <expr>   set the operation start point to the first node \n"
+    "                        selected by the specified XPath expression\n"
     "\n";
     
 static const char helpKeysMngmt[] = 
@@ -241,6 +243,8 @@ int app_RAND_load_file(const char *file);
 int app_RAND_write_file(const char *file);
 
 
+xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlChar* defNodeNs);
+
 /**
  * Read command line options
  */
@@ -304,6 +308,7 @@ char *output = NULL;
 char *nodeId = NULL;
 char *nodeName = NULL;
 char *nodeNs = NULL;
+char* nodeXPath = NULL;
 int repeats = 1;
 int printResult = 0;
 int printXml = 0;
@@ -374,14 +379,14 @@ int main(int argc, char **argv) {
 	 * Node selection options 
 	 */
 	if((strcmp(argv[pos], "--node-id") == 0) && (pos + 1 < argc)) {    
-	    if((nodeName != NULL) || (nodeId != NULL)){
+	    if((nodeName != NULL) || (nodeId != NULL) || (nodeXPath != NULL)){
 		fprintf(stderr, "Error: another node selection option present\n");
 		ret = -1;
 	    } else {
 		nodeId = argv[++pos];
 	    }
 	} else if((strcmp(argv[pos], "--node-name") == 0) && (pos + 1 < argc)) {    
-	    if((nodeName != NULL) || (nodeId != NULL)){
+	    if((nodeName != NULL) || (nodeId != NULL) || (nodeXPath != NULL)){
 		fprintf(stderr, "Error: another node selection option present\n");
 		ret = -1;
 	    } else {
@@ -393,6 +398,13 @@ int main(int argc, char **argv) {
 		    nodeName = argv[pos];
 		    nodeNs = NULL;
 		}
+	    }
+	} else if((strcmp(argv[pos], "--node-xpath") == 0) && (pos + 1 < argc)) {    
+	    if((nodeName != NULL) || (nodeId != NULL) || (nodeXPath != NULL)){
+		fprintf(stderr, "Error: another node selection option present\n");
+		ret = -1;
+	    } else {
+		nodeXPath = argv[++pos];
 	    }
 	} else 
 
@@ -1025,7 +1037,7 @@ int  readTime(const char* str, time_t* t) {
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
     
-    n = sscanf(str, "%4u-%2u-%2u%*c%2u:%2u:%2u", 
+    n = sscanf(str, "%4d-%2d-%2d%*c%2d:%2d:%2d", 
 			    &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
 			    &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
     if((n != 6) || (tm.tm_year < 1900) 
@@ -1216,6 +1228,41 @@ int readHmacKey(char *filename, char *name) {
 #endif /* XMLSEC_NO_HMAC */
 }
 
+xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlChar* defNodeNs) {
+    xmlNodePtr cur = NULL;
+    
+    if(doc == NULL) {
+	fprintf(stderr, "Error: document is null\n");
+	return(NULL);
+    }
+    
+    if(nodeId != NULL) {
+	xmlAttrPtr attr;
+	    
+	attr = xmlGetID(doc, BAD_CAST nodeId);
+	cur = (attr != NULL) ? attr->parent : NULL;
+    } else if(nodeName != NULL) {
+	cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST nodeName, BAD_CAST nodeNs);
+    } else if(nodeXPath != NULL) {
+	xmlXPathContextPtr ctx = NULL;
+	xmlXPathObjectPtr obj = NULL;
+	
+	ctx = xmlXPathNewContext(doc);
+	obj = xmlXPathEval(BAD_CAST nodeXPath, ctx);
+
+	if ((obj != NULL) && (obj->nodesetval != NULL) && (obj->nodesetval->nodeNr > 0)) {
+	    cur = obj->nodesetval->nodeTab[0];
+	}
+	
+	xmlXPathFreeContext(ctx);
+	xmlXPathFreeObject(obj);
+    } else if(defNodeName != NULL) {
+	cur = xmlSecFindNode(xmlDocGetRootElement(doc), defNodeName, defNodeNs);
+    } else {
+	cur = xmlDocGetRootElement(doc);
+    }
+    return(cur);
+}
 
 /**
  * XML Digital Signature
@@ -1266,8 +1313,7 @@ int generateDSig(xmlDocPtr doc) {
     int res = -1;
     clock_t start_time;
 
-    signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecDSigNs);
+    signNode = findStartNode(doc, BAD_CAST "Signature", xmlSecDSigNs);
     if(signNode == NULL) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
@@ -1325,8 +1371,7 @@ int validateDSig(xmlDocPtr doc) {
     clock_t start_time;
     int ret;
     	    
-    signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecDSigNs);
+    signNode = findStartNode(doc, BAD_CAST "Signature", xmlSecDSigNs);
     if(signNode == NULL) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
@@ -1425,20 +1470,7 @@ int encrypt(xmlDocPtr tmpl) {
 	/**
 	 * What do we want to replace?
 	 */    
-	if(nodeId != NULL) {
-	    xmlAttrPtr attr;
-	    
-	    attr = xmlGetID(doc, BAD_CAST nodeId);
-	    cur = (attr != NULL) ? attr->parent : NULL;
-	} else if(nodeName != NULL) {
-	    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST nodeName, BAD_CAST nodeNs);
-	} else {
-	    cur = xmlDocGetRootElement(doc);
-	}
-	
-	/*
-	 * Did we found node?
-	 */    
+	cur = findStartNode(doc, NULL, NULL);
 	if(cur == NULL) {
     	    fprintf(stderr,"Error: empty document for file \"%s\" or unable to find node\n", data);
 	    goto done;    
@@ -1509,7 +1541,7 @@ int decrypt(xmlDocPtr doc) {
     int ret;
     int res = -1;
 
-    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST "EncryptedData", xmlSecEncNs);
+    cur = findStartNode(doc, BAD_CAST "EncryptedData", xmlSecEncNs);
     if(cur == NULL) {
         fprintf(stderr,"Error: unable to find EncryptedData node\n");
 	goto done;    

@@ -640,7 +640,7 @@ xmlSecX509DataWriteDerCert(xmlSecX509DataPtr x509Data, int pos) {
 	goto done;
     }
     
-    res = xmlSecBase64Encode(p, size, 0);
+    res = xmlSecBase64Encode(p, size, 60);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

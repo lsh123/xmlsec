@@ -1156,13 +1156,14 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 		type = xmlSecNodeSetTree;
 		res = xmlXPtrEval(BAD_CAST (xptr + 1), ctxt);
 	    } else {
-		static xmlChar tmpl[] = "xpointer(id(\'%s\'))";
-		xmlChar* tmp;
+		static char tmpl[] = "xpointer(id(\'%s\'))";
+		char* tmp;
 		int size;
 		
 		/* we need to construct new expression */
-		size = xmlStrlen(tmpl) + xmlStrlen(xptr) + 2;
-		tmp = (xmlChar*)xmlMalloc(size);
+		size = xmlStrlen(BAD_CAST tmpl) + 
+		       xmlStrlen(BAD_CAST xptr) + 2;
+		tmp = (char*)xmlMalloc(size * sizeof(char));
 		if(tmp == NULL) {
 		    xmlSecError(XMLSEC_ERRORS_HERE,
 				XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -1173,7 +1174,7 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 		
 		sprintf(tmp, tmpl, xptr + 1);
 		type = xmlSecNodeSetTreeWithoutComments;
-		res = xmlXPtrEval(tmp, ctxt);
+		res = xmlXPtrEval(BAD_CAST tmp, ctxt);
 		xmlFree(tmp);
 	    }
 

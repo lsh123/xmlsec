@@ -1,3 +1,12 @@
+Sat Dec 21 22:47:33 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: added "--node-xpath" option for specifing
+	the operation "start node" (code based on patch from 
+	Ferrell Moultrie (ISSAtlanta)
+	* src/transforms.c: fixed minor compilation warnings
+	* src/x509.c: certs and crls are base64 encoded with 60 characters 
+	lines size (bug #101523)
+
 Mon Dec  2 23:38:34 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* config.h.in configure.in include/xmlsec/version.h

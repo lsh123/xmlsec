@@ -725,4 +725,48 @@ xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
     return(xmlSecX509StoreAddCertsDir((xmlSecX509StorePtr)mngr->x509Data, path));
 }
 
+int	
+xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
+			    const char *filename, const char *pwd) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoadPkcs12";
+    xmlSecKeyPtr key;
+    int ret;
+    
+    if((mngr == NULL) || (filename == NULL)) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: mngr or filename is null\n",
+	    func);	
+#endif 	    
+	return(-1);
+    }
+    
+    key = xmlSecPKCS12ReadKey(filename, pwd);
+    if(key == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to read key from file \"%s\"\n",
+	    func, filename);	
+#endif 	    
+	return(-1);
+    }
+    
+    if(name != NULL) {
+	key->name = xmlStrdup(BAD_CAST name); 
+    }
+    
+    ret = xmlSecSimpleKeysMngrAddKey(mngr, key);
+    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: unable to add key to the keymanager\n",
+	    func);	
+#endif 	    
+	xmlSecKeyDestroy(key);
+	return(-1);
+    }
+    
+    return(0);
+}
+
 #endif /* XMLSEC_NO_X509 */

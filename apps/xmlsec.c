@@ -166,6 +166,10 @@ static const char helpKeysMngmt[] =
     "                        that verify this key\n"
     "  --pubkey[:<name>] <file>\n"
     "                        load public key from PEM file\n"
+#ifndef XMLSEC_NO_X509
+    "  --pkcs12[:<name>] <file>\n"
+    "                        load private key from pkcs12 file\n"
+#endif /* XMLSEC_NO_X509 */    
 #ifndef XMLSEC_NO_HMAC    
     "  --hmackey[:<name>] <file>\n"
     "                        load hmac key from binary file\n"
@@ -228,6 +232,7 @@ int  readNumber(const char *str, int *number);
 int  readKeys(char *file);
 int  readPemKey(int privateKey, char *param, char *name);
 int  readHmacKey(char *filename, char *name);
+int  readPKCS12Key(char *filename, char *name);
 
 /**
  * Keys generation/manipulation
@@ -382,6 +387,12 @@ int main(int argc, char **argv) {
 	    name = strchr(argv[pos], ':');
 	    if(name != NULL) ++name;
 	    ret = readPemKey(0, argv[++pos], name); 
+	} else if((strncmp(argv[pos], "--pkcs12", 8) == 0) && (pos + 1 < argc)) {
+	    char *name;
+	    
+	    name = strchr(argv[pos], ':');
+	    if(name != NULL) ++name;	    
+	    ret = readPKCS12Key(argv[++pos], name); 
 	} else if((strncmp(argv[pos], "--hmackey", 9) == 0) && (pos + 1 < argc)) {
 	    char *name;
 	    
@@ -1017,6 +1028,32 @@ int readPemKey(int privateKey, char *param, char *name) {
     }
     return(0);
 #endif /* XMLSEC_NO_X509 */        
+}
+
+int readPKCS12Key(char *filename, char *name) {
+#ifndef XMLSEC_NO_X509     
+    char pwd[1024] = "";
+    char prompt[1024];
+    int ret;
+    
+    snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
+    ret = EVP_read_pw_string(pwd, sizeof(pwd), prompt, 0);
+    if(ret != 0) {
+	fprintf(stderr, "Error: password propmpt failed for file \"%s\"\n", filename); 
+	return(-1);
+    }
+    
+    ret = xmlSecSimpleKeysMngrLoadPkcs12(keyMgr, name, filename, pwd);
+    if(ret < 0) {
+	fprintf(stderr, "Error: failed to load pkcs12 file \"%s\"\n", filename); 
+	return(-1);
+    }
+    
+    return(0);
+#else /* XMLSEC_NO_X509 */
+    fprintf(stderr, "Error: x509 support disabled.\n");
+    return(-1);
+#endif /* XMLSEC_NO_X509 */       
 }
 
 int readHmacKey(char *filename, char *name) {

@@ -71,6 +71,10 @@ XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
 							 int trusted);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrAddCertsDir	(xmlSecKeysMngrPtr mngr,
 							 const char *path);
+XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPkcs12	(xmlSecKeysMngrPtr mngr,
+							 const char* name,
+							 const char *filename,
+							 const char *pwd);
 #endif /* XMLSEC_NO_X509 */
 
 

@@ -22,6 +22,7 @@
 #include <openssl/pem.h>
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
+#include <openssl/pkcs12.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -80,7 +81,7 @@ static int 		xmlSecX509_NAME_cmp		(const X509_NAME *a,
 static int 		xmlSecX509_NAME_ENTRY_cmp	(const X509_NAME_ENTRY **a, 
 							 const X509_NAME_ENTRY **b);
 
-
+static xmlSecKeyPtr	xmlSecParseEvpKey		(EVP_PKEY *pKey);
 
 xmlSecX509DataPtr	
 xmlSecX509DataCreate(void) {
@@ -321,7 +322,6 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecX509DataCreateKey";
     xmlSecKeyPtr key = NULL;
     EVP_PKEY *pKey = NULL;
-    int ret;
     
     if(x509Data == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -350,7 +350,134 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 #endif
 	return(NULL);
     }    
+
+    key = xmlSecParseEvpKey(pKey);
+    if(key == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+    	    "%s: failed to create RSA key\n",
+	    func);	
+#endif
+	EVP_PKEY_free(pKey);
+	return(NULL);	    
+    }    
+    EVP_PKEY_free(pKey);
     
+    key->x509Data = x509Data;
+    return(key);
+}
+
+xmlSecKeyPtr
+xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecPKCS12ReadKey";
+    xmlSecKeyPtr key = NULL;
+    FILE *f;
+    PKCS12 *p12;
+    EVP_PKEY *pKey = NULL;
+    X509 *cert = NULL;
+    STACK_OF(X509) *chain = NULL;
+    int ret;
+    
+    if(filename == NULL){
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: filename is null\n",
+	    func);	
+#endif 	    
+	return(NULL);
+    }
+        
+    f = fopen(filename, "r");
+    if(f == NULL) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext, 
+		"%s: failed to open file %s\n", 
+		func, filename);
+#endif 	    
+	return(NULL);
+    }
+    
+    p12 = d2i_PKCS12_fp(f, NULL);
+    if(p12 == NULL) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext, 
+		"%s: failed to read pkcs12 file %s\n", 
+		func, filename);
+#endif 	    
+	fclose(f);    
+	return(NULL);
+    }
+    fclose(f);    
+
+    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
+    if(ret != 1) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext, 
+	    "%s: failed password verification for pkcs12 file %s\n", 
+	    func, filename);
+#endif 	    
+        PKCS12_free(p12);
+	return(NULL);	
+    }    
+        
+    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
+    if(ret < 0) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext, 
+	    "%s: failed to parse pkcs12 file %s\n", 
+	    func, filename);
+#endif 	    
+        PKCS12_free(p12);
+	return(NULL);	
+    }    
+    PKCS12_free(p12);
+
+    /* todo: should we put the key cert into stack */
+    sk_X509_push(chain, cert);
+
+    key = xmlSecParseEvpKey(pKey);
+    if(key == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+    	    "%s: failed to create RSA key\n",
+	    func);	
+#endif
+	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
+	return(NULL);	    
+    }    
+    if(pKey != NULL) EVP_PKEY_free(pKey);
+
+    key->x509Data = xmlSecX509DataCreate();
+    if(key->x509Data == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to create x509 data\n", 
+	    func);	
+#endif
+	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
+	xmlSecKeyDestroy(key);
+	return(NULL);
+    }
+    key->x509Data->certs = chain;
+    return(key);
+}
+
+
+static xmlSecKeyPtr	
+xmlSecParseEvpKey(EVP_PKEY *pKey) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseEvpKey";
+    xmlSecKeyPtr key = NULL;
+    int ret;
+    
+    if(pKey == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: EVP_PKEY is null\n",
+	    func);	
+#endif 	    
+	return(NULL);
+    }
+
     switch(pKey->type) {	
 #ifndef XMLSEC_NO_RSA    
     case EVP_PKEY_RSA:
@@ -361,7 +488,6 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 		"%s: failed to create RSA key\n",
 		func);	
 #endif
-	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
 	}
 	
@@ -373,7 +499,6 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 		func);	
 #endif
 	    xmlSecKeyDestroy(key);
-	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
 	}
 	break;
@@ -387,7 +512,6 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 		"%s: failed to create DSA key\n",
 		func);	
 #endif
-	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
 	}
 	
@@ -399,7 +523,6 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 		func);	
 #endif
 	    xmlSecKeyDestroy(key);
-	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
 	}
 	break;
@@ -410,16 +533,12 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
 	    "%s: the key type %d is not supported\n",
 	    func, pKey->type);	
 #endif
-	EVP_PKEY_free(pKey);
 	return(NULL);
     }
-    EVP_PKEY_free(pKey);
     
-    if(key != NULL) {
-	key->x509Data = x509Data;
-    }
     return(key);
 }
+
 
 void
 xmlSecX509DataDebugDump(xmlSecX509DataPtr x509Data, FILE *output) {

@@ -64,9 +64,12 @@ XMLSEC_EXPORT int		xmlSecX509StoreVerify		(xmlSecX509StorePtr store,
 								 xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT int		xmlSecX509StoreLoadPemCert	(xmlSecX509StorePtr store,
 								 const char *filename,
-								int trusted);						
+								 int trusted);						
 XMLSEC_EXPORT int		xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store, 
-							 	const char *path);
+							 	 const char *path);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
+								 const char *pwd);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -96,11 +96,11 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlEncCtxModeEncryptedData</tt></td>
-<td width="80%" align="LEFT" valign="TOP">	the <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element procesing.</td>
+<td width="80%" align="LEFT" valign="TOP">	the <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element procesing.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlEncCtxModeEncryptedKey</tt></td>
-<td width="80%" align="LEFT" valign="TOP">	the <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing.</td>
+<td width="80%" align="LEFT" valign="TOP">	the <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing.</td>
 </tr>
 </tbody></table>
 <p></p>
@@ -197,7 +197,7 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <font>xmlSecTransformId</font> <tt class="STRUCTFIELD"><i>defEncMethodId</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the default encryption method (used if
-			<a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionMethod" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node is not present).</td>
+			<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node is not present).</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -226,8 +226,8 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <tr>
 <td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultReplaced</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the flag: if set then resulted <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
-			or <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node is added to the document.</td>
+<td width="80%" align="LEFT" valign="TOP">		the flag: if set then resulted <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
+			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node is added to the document.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -239,66 +239,66 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>id</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">				the ID attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
-			or <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">				the ID attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
+			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>type</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the Type attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
-			or <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">			the Type attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
+			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>mimeType</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the MimeType attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
-			or <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">			the MimeType attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
+			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>encoding</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the Encoding attributeof <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
-			or <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node. </td>
+<td width="80%" align="LEFT" valign="TOP">			the Encoding attributeof <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
+			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node. </td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>recipient</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">			the Recipient attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node..</td>
+<td width="80%" align="LEFT" valign="TOP">			the Recipient attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node..</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlChar</font> *<tt class="STRUCTFIELD"><i>carriedKeyName</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the CarriedKeyName attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the CarriedKeyName attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>encDataNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
-			or <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
+			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>encMethodNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptionMethod" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>keyInfoNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_KeyInfo" target="_top">&lt;enc:KeyInfo/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-KeyInfo" target="_top">&lt;enc:KeyInfo/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
 <font>xmlNodePtr</font> <tt class="STRUCTFIELD"><i>cipherValueNode</i></tt>
 </td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>reserved0</i></tt>
@@ -319,7 +319,7 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDe
 <a name="AEN13186"></a><h3>
 <a name="XMLSECENCCTXCREATE"></a>xmlSecEncCtxCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecEncCtxPtr</font> xmlSecEncCtxCreate          (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre></td></tr></table>
-<p>Creates <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
+<p>Creates <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
 The caller is responsible for destroying returend object by calling 
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> function.</p>
 <p></p>
@@ -353,7 +353,7 @@ occurs.</td>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr></tbody></table>
 <p></p>
 </div>
@@ -364,7 +364,7 @@ occurs.</td>
 <a name="XMLSECENCCTXINITIALIZE"></a>xmlSecEncCtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecEncCtxInitialize          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
                                              <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre></td></tr></table>
-<p>Initializes <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
+<p>Initializes <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
 The caller is responsible for cleaing up returend object by calling 
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a> function.</p>
 <p></p>
@@ -374,7 +374,7 @@ The caller is responsible for cleaing up returend object by calling
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -402,7 +402,7 @@ The caller is responsible for cleaing up returend object by calling
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr></tbody></table>
 <p></p>
 </div>
@@ -449,7 +449,7 @@ The caller is responsible for cleaing up returend object by calling
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr></tbody></table>
 <p></p>
 </div>
@@ -470,12 +470,12 @@ The caller is responsible for cleaing up returend object by calling
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>tmpl</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -504,7 +504,7 @@ The caller is responsible for cleaing up returend object by calling
                                              <font>xmlNodePtr</font> tmpl,
                                              <font>xmlNodePtr</font> node);</pre></td></tr></table>
 <p>Encrypts <tt class="PARAMETER"><i>node</i></tt> according to template <tt class="PARAMETER"><i>tmpl</i></tt>. If requested, <tt class="PARAMETER"><i>node</i></tt> is replaced
-with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p>
+with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN13370"></a><p></p>
@@ -512,12 +512,12 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>tmpl</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -548,12 +548,12 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>tmpl</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -583,12 +583,12 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -613,12 +613,12 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -643,7 +643,7 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -668,7 +668,7 @@ with result <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
+<td width="80%" align="LEFT" valign="TOP">		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

@@ -233,7 +233,7 @@ The key data usage is unknown.</para>
 <programlisting>#define xmlSecKeyDataUsageKeyInfoNodeRead		0x00001
 </programlisting>
 <para>
-The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> child.</para>
+The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -242,7 +242,7 @@ The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/
 <programlisting>#define xmlSecKeyDataUsageKeyInfoNodeWrite		0x00002
 </programlisting>
 <para>
-The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
+The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -251,7 +251,7 @@ The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core
 <programlisting>#define xmlSecKeyDataUsageKeyValueNodeRead		0x00004
 </programlisting>
 <para>
-The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
+The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -260,7 +260,7 @@ The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/
 <programlisting>#define xmlSecKeyDataUsageKeyValueNodeWrite		0x00008
 </programlisting>
 <para>
-The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
+The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -269,7 +269,7 @@ The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core
 <programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeXml	0x00010
 </programlisting>
 <para>
-The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
+The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
 in XML format.</para>
 <para>
 
@@ -279,7 +279,7 @@ in XML format.</para>
 <programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeBin	0x00020
 </programlisting>
 <para>
-The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
+The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
 in binary format.</para>
 <para>
 
@@ -297,7 +297,7 @@ Any key data usage.</para>
 <title><anchor id="xmlSecKeyDataUsageKeyInfoNode">xmlSecKeyDataUsageKeyInfoNode</title>
 <programlisting>#define     xmlSecKeyDataUsageKeyInfoNode</programlisting>
 <para>
-The key data could be read and written from/to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
+The key data could be read and written from/to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -305,7 +305,7 @@ The key data could be read and written from/to a <ulink URL="http://www.w3.org/T
 <title><anchor id="xmlSecKeyDataUsageKeyValueNode">xmlSecKeyDataUsageKeyValueNode</title>
 <programlisting>#define     xmlSecKeyDataUsageKeyValueNode</programlisting>
 <para>
-The key data could be read and written from/to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
+The key data could be read and written from/to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
 <para>
 
 </para></refsect2>
@@ -313,7 +313,7 @@ The key data could be read and written from/to a <ulink URL="http://www.w3.org/T
 <title><anchor id="xmlSecKeyDataUsageRetrievalMethodNode">xmlSecKeyDataUsageRetrievalMethodNode</title>
 <programlisting>#define     xmlSecKeyDataUsageRetrievalMethodNode</programlisting>
 <para>
-The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
+The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
 in any format.</para>
 <para>
 
@@ -444,8 +444,8 @@ Shuts down the keys data klasses. This function is called from the
 <programlisting>int         xmlSecKeyDataIdsRegisterDefault (void);</programlisting>
 <para>
 Registers default (implemented by XML Security Library)
-key data klasses: <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing klass, 
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing klass, ...</para>
+key data klasses: <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing klass, 
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing klass, ...</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -709,7 +709,7 @@ Reads the key data of klass <parameter>id</parameter> from XML <parameter>node</
 <entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -739,7 +739,7 @@ Writes the key data of klass <parameter>id</parameter> from <parameter>key</para
 <entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -773,7 +773,7 @@ Reads the key data of klass <parameter>id</parameter> from binary buffer <parame
 <entry> 		the input buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -807,7 +807,7 @@ Writes the key data of klass <parameter>id</parameter> from the <parameter>key</
 <entry> 		the output buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -993,7 +993,7 @@ Key data specific method for reading XML node.</para>
 <entry> 		the pointer to data's value XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1057,7 +1057,7 @@ Key data specific method for reading binary buffer.</para>
 <entry>		the buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1091,7 +1091,7 @@ Key data specific method for reading binary buffer.</para>
 <entry> 		the buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<entry> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -1663,7 +1663,7 @@ Reads binary key data from <parameter>node</parameter> to the key by base64 deco
 <entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -1695,7 +1695,7 @@ sets to the <parameter>node</parameter> content.</para>
 <entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -1729,7 +1729,7 @@ Reads binary key data of the klass <parameter>id</parameter> from <parameter>buf
 <entry>		the source binary buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
@@ -1764,7 +1764,7 @@ Writes binary key data of klass <parameter>id</parameter> from the <parameter>ke
 <entry>		the destination binary buffer size.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>

@@ -78,7 +78,7 @@ void        <link linkend="xmlSecKeyInfoCtxDebugXmlDump">xmlSecKeyInfoCtxDebugXm
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
+Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
 and stores into <parameter>key</parameter>.</para>
 <para>
 
@@ -88,13 +88,13 @@ and stores into <parameter>key</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
 <entry>		the pointer to result key object.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or -1 if an error occurs.
 </entry></row>
@@ -105,7 +105,7 @@ and stores into <parameter>key</parameter>.</para>
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <parameter>keyInfoNode</parameter>.</para>
+Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <parameter>keyInfoNode</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -114,13 +114,13 @@ Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
 <entry>		the pointer to key object.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or -1 if an error occurs.
 </entry></row>
@@ -143,12 +143,12 @@ The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).</par
 <tbody>
 <row>
 <entry><literal>xmlSecKeyInfoModeRead</literal></entry>
-<entry> read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
+<entry> read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
 </entry>
 </row>
 <row>
 <entry><literal>xmlSecKeyInfoModeWrite</literal></entry>
-<entry> write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
+<entry> write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -157,7 +157,7 @@ The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).</par
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND		0x00000001
 </programlisting>
 <para>
-If flag is set then we will continue reading <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
+If flag is set then we will continue reading <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
 element even when key is already found.</para>
 <para>
 
@@ -167,7 +167,7 @@ element even when key is already found.</para>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD		0x00000002
 </programlisting>
 <para>
-If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
+If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -178,7 +178,7 @@ child is found.</para>
 </programlisting>
 <para>
 If flags is set then we abort if an unknown key name 
-(content of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyName ">&lt;dsig:KeyName /&gt;</ulink> element) is found.</para>
+(content of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName ">&lt;dsig:KeyName /&gt;</ulink> element) is found.</para>
 <para>
 
 </para></refsect2>
@@ -187,7 +187,7 @@ If flags is set then we abort if an unknown key name
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD	0x00000008
 </programlisting>
 <para>
-If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> 
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -198,7 +198,7 @@ child is found.</para>
 </programlisting>
 <para>
 If flag is set then we abort if an unknown href attribute
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element is found.</para>
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element is found.</para>
 <para>
 
 </para></refsect2>
@@ -207,7 +207,7 @@ of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF	0x00000020
 </programlisting>
 <para>
-If flag is set then we abort if an href attribute <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> 
+If flag is set then we abort if an href attribute <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> 
 element does not match the real key data type.</para>
 <para>
 
@@ -217,7 +217,7 @@ element does not match the real key data type.</para>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD	0x00000100
 </programlisting>
 <para>
-If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509Data ">&lt;dsig:X509Data /&gt;</ulink> 
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -227,7 +227,7 @@ child is found.</para>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS		0x00000200
 </programlisting>
 <para>
-If flag is set then we'll load certificates from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509Data ">&lt;dsig:X509Data /&gt;</ulink>
+If flag is set then we'll load certificates from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink>
 element without verification.</para>
 <para>
 
@@ -238,8 +238,8 @@ element without verification.</para>
 </programlisting>
 <para>
 If flag is set then we'll stop when we could not resolve reference
-to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509IssuerSerial ">&lt;dsig:X509IssuerSerial /&gt;</ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509SKI ">&lt;dsig:X509SKI /&gt;</ulink> or 
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509SubjectName ">&lt;dsig:X509SubjectName /&gt;</ulink> elements.</para>
+to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial ">&lt;dsig:X509IssuerSerial /&gt;</ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI ">&lt;dsig:X509SKI /&gt;</ulink> or 
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName ">&lt;dsig:X509SubjectName /&gt;</ulink> elements.</para>
 <para>
 
 </para></refsect2>
@@ -248,7 +248,7 @@ to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509Issue
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT	0x00000800
 </programlisting>
 <para>
-If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509Data ">&lt;dsig:X509Data /&gt;</ulink> element
+If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink> element
 processing does not return a verified certificate.</para>
 <para>
 
@@ -258,7 +258,7 @@ processing does not return a verified certificate.</para>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
 </programlisting>
 <para>
-If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
+If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
 processing fails.</para>
 <para>
 
@@ -304,7 +304,7 @@ processing fails.</para>
 };
 </programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> reading or writing context.</para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> reading or writing context.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="struct">
@@ -335,7 +335,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInf
 </row>
 <row>
 <entry><link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link> <structfield>mode</structfield></entry>
-<entry> 		do we read or write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
+<entry> 		do we read or write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
 </entry>
 </row>
 <row>
@@ -351,27 +351,27 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInf
 </row>
 <row>
 <entry><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>retrievalMethodCtx</structfield></entry>
-<entry> the transforms context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink>
+<entry> the transforms context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink>
 			element processing.
 </entry>
 </row>
 <row>
 <entry>int <structfield>maxRetrievalMethodLevel</structfield></entry>
 <entry> the max recursion level when processing
-		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element; default level is 1 
+		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element; default level is 1 
 		(see also <parameter>curRetrievalMethodLevel</parameter>).
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> <structfield>encCtx</structfield></entry>
-<entry>		the encryption context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_EncryptedKey ">&lt;dsig:EncryptedKey /&gt;</ulink> element
+<entry>		the encryption context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey ">&lt;dsig:EncryptedKey /&gt;</ulink> element
 		processing.
 </entry>
 </row>
 <row>
 <entry>int <structfield>maxEncryptedKeyLevel</structfield></entry>
 <entry> the max recursion level when processing 
-		<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element; default level is 1 
+		<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element; default level is 1 
 		(see <parameter>curEncryptedKeyLevel</parameter>).
 </entry>
 </row>
@@ -396,13 +396,13 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInf
 </row>
 <row>
 <entry>int <structfield>curRetrievalMethodLevel</structfield></entry>
-<entry> the current <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element 
+<entry> the current <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element 
 		processing level (see <parameter>maxRetrievalMethodLevel</parameter>).
 </entry>
 </row>
 <row>
 <entry>int <structfield>curEncryptedKeyLevel</structfield></entry>
-<entry> the current <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
+<entry> the current <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
 		processing level (see <parameter>maxEncryptedKeyLevel</parameter>).
 </entry>
 </row>
@@ -426,7 +426,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInf
 <title><anchor id="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate ()</title>
 <programlisting><link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> xmlSecKeyInfoCtxCreate  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Allocates and initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+Allocates and initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 Caller is responsible for freeing it by calling <link linkend="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy</link> 
 function.</para>
 <para>
@@ -455,7 +455,7 @@ Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xm
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -463,7 +463,7 @@ Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xm
 <programlisting>int         xmlSecKeyInfoCtxInitialize      (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context. Caller is 
+Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context. Caller is 
 responsible for cleaning it up by <link linkend="xmlSecKeyInfoCtxFinalize">xmlSecKeyInfoCtxFinalize</link> function.</para>
 <para>
 
@@ -473,7 +473,7 @@ responsible for cleaning it up by <link linkend="xmlSecKeyInfoCtxFinalize">xmlSe
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
 <entry> 		the pointer to keys manager (may be NULL).
@@ -495,7 +495,7 @@ function.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -511,7 +511,7 @@ Resets the <parameter>keyInfoCtx</parameter> state. User settings are not change
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -540,8 +540,8 @@ Copies user preferences from <parameter>src</parameter> context to <parameter>ds
 <title><anchor id="xmlSecKeyInfoCtxCreateEncCtx">xmlSecKeyInfoCtxCreateEncCtx ()</title>
 <programlisting>int         xmlSecKeyInfoCtxCreateEncCtx    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Creates encryption context form processing <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element.</para>
+Creates encryption context form processing <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> child
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -550,7 +550,7 @@ of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negative value if an error occurs.
 </entry></row>
@@ -569,7 +569,7 @@ Prints user settings and current context state to <parameter>output</parameter>.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
 <entry>		the output file pointer.
@@ -589,7 +589,7 @@ Prints user settings and current context state in XML format to <parameter>outpu
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
 <entry>		the output file pointer.
@@ -608,7 +608,7 @@ The &lt;dsig:KeyName&gt; processing class.</para>
 <title><anchor id="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataNameGetKlass   (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyName">&lt;dsig:KeyName/&gt;</ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyName">sec-KeyName</link>):
 </para>
 <para>
@@ -626,7 +626,7 @@ a distinguished name (DN), an email address, etc.)</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing key data klass.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing key data klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -642,7 +642,7 @@ The &lt;dsig:KeyValue&gt; processing class.</para>
 <title><anchor id="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyValue">sec-KeyValue</link>):
 </para>
 <para>
@@ -655,7 +655,7 @@ validating the signature.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing key data klass.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing key data klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -672,7 +672,7 @@ The &lt;dsig:RetrievalMethod&gt; processing class.</para>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
                                             (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-RetrievalMethod">sec-RetrievalMethod</link>):
 A RetrievalMethod element within KeyInfo is used to convey a reference to 
 KeyInfo information that is stored at another location. For example, 
@@ -692,7 +692,7 @@ Reference's URI and The Reference Processing Model.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element processing key data klass.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element processing key data klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -709,7 +709,7 @@ The &lt;enc:EncryptedKey&gt; processing class.</para>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass
                                             (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmlenc-core/<link linkend="sec-EncryptedKey">sec-EncryptedKey</link>):
 </para>
 <para>
@@ -727,7 +727,7 @@ without any additional processing.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing key data klass.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing key data klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

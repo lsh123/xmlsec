@@ -48,8 +48,8 @@ sgml: templates
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
 	@(for i in `find sgml -name "*.sgml" -print` ; do \
 	    cat $$i | \
-		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec_\2\">\1\2\3</ulink>!g' | \
-		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec_\2\">\1\2\3</ulink>!g' | \
+		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
+		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
 		sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' > \
 		$$i.tmp; \
 		mv -f $$i.tmp $$i; \

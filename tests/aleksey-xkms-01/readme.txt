@@ -33,3 +33,9 @@ Tests:
 ./apps/xmlsec1 xkms-locate --untrusted ./tests/keys/ca2cert.pem --trusted  ./tests/keys/cacert.pem 
                            ./tests/aleksey-xkms-01/locate-keyvalue-from-x509.xml
 
+
+
+<MessageExtension> - do nothing
+<OpaqueClientData> - return "as-is"
+<RequestSignatureValue> - the value of <dsig:SignatureValue/>
+

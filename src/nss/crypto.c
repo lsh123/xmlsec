@@ -10,9 +10,9 @@
 
 #include <string.h>
 
-#include <nss/nss.h>
-#include <nss/pk11func.h>
-#include <nspr/prinit.h>
+#include <nss.h>
+#include <pk11func.h>
+#include <prinit.h>
 
 
 #include <xmlsec/xmlsec.h>

@@ -8,7 +8,7 @@ exec_prefix_set=no
 usage()
 {
     cat <<EOF
-Usage: xmlsec-config [OPTION]...
+Usage: $package-config [OPTION]...
 
 Known values for OPTION are:
 

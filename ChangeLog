@@ -1,3 +1,8 @@
+Wed Jun  9 16:35:01 CEST 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+	* win32/configure.js win32/Makefile.* minor changes for the new
+	  layout of the Windows binary package
+
 2004-05-13  Aleksey Sanin <aleksey@aleksey.com>
 
 	* examples/xmldsigverify.c: disable extended debug output

@@ -16,14 +16,15 @@ libxmlsec_openssl_la_SOURCES =\
 aes.c \
 app.c \
 bn.c \
+ciphers.c \
 crypto.c \
+digests.c \
 des.c \
 dsa.c \
 evp.c \
 hmac.c \
-ripemd160.c \
 rsa.c \
-sha1.c \
+symkeys.c \
 x509.c \
 x509vfy.c \
 $(NULL)

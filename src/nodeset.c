@@ -323,22 +323,19 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
  */
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
+    xmlNodePtr cur;
+    int ret = 0;
+    
     xmlSecAssert2(nset != NULL, -1);
+    xmlSecAssert2(nset->doc != NULL, -1);
     xmlSecAssert2(walkFunc != NULL, -1);
 
     /* special cases */
     if(nset->nodes != NULL) {
-        int ret = 0;
 	int i;
 
 	switch(nset->type) {
 	case xmlSecNodeSetNormal:
-	    for(i = 0; (ret >= 0) && (i < nset->nodes->nodeNr); ++i) {
-		ret = walkFunc(nset, nset->nodes->nodeTab[i], 
-			       xmlSecGetParent(nset->nodes->nodeTab[i]), 
-			       data);
-	    }
-	    return(ret);
 	case xmlSecNodeSetTree:
 	case xmlSecNodeSetTreeWithoutComments:
 	    for(i = 0; (ret >= 0) && (i < nset->nodes->nodeNr); ++i) {
@@ -351,18 +348,11 @@ xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, voi
 	    break;
 	}
     }
-
-    /* other cases */	
-    if(nset->doc == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "nset->doc=null");
-	return(-1);
-    }
     
-    return(xmlSecNodeSetWalkRecursive(nset, walkFunc, data, (xmlNodePtr)nset->doc, NULL));
+    for(cur = nset->doc->children; (cur != NULL) && (ret >= 0); cur = cur->next) {
+	ret = xmlSecNodeSetWalkRecursive(nset, walkFunc, data, cur, xmlSecGetParent(cur));
+    }
+    return(ret);
 }
 
 static int

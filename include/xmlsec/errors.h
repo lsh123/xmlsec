@@ -125,7 +125,14 @@ extern "C" {
  *
  * Invalid status.
  */
-#define XMLSEC_ERRORS_R_INVALID_STATUS 52
+#define XMLSEC_ERRORS_R_INVALID_STATUS 			52
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_FORMAT:
+ *
+ * Invalid format.
+ */
+#define XMLSEC_ERRORS_R_INVALID_FORMAT 			52
 
 /**
  * XMLSEC_ERRORS_R_INVALID_NODE:

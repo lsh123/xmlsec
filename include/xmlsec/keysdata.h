@@ -209,45 +209,19 @@ typedef unsigned int				xmlSecKeyDataType;
  *************************************************************************/
 /**
  * xmlSecKeyDataFormat:
+ * @xmlSecKeyDataFormatUnknown:		the key data format is unknown.
+ * @xmlSecKeyDataFormatBinary:		the binary key data.
+ * @xmlSecKeyDataFormatPem:		the PEM key data (cert or public/private key).
+ * @xmlSecKeyDataFormatDer:		the DER key data (cert or public/private key).
  *
  * The key data format (binary, der, pem, etc.).
  */
-typedef unsigned int				xmlSecKeyDataFormat;
-
-/**
- * xmlSecKeyDataFormatUnknown:
- *
- * The key data format is unknown.
- */
-#define xmlSecKeyDataFormatUnknown			0x0000
-
-/**
- * xmlSecKeyDataFormatBinary:
- *
- * The key data format is binary.
- */
-#define xmlSecKeyDataFormatBinary			0x0001
-
-/**
- * xmlSecKeyDataFormatPem:
- *
- * The key data format is PEM (certificates and public/private keys).
- */
-#define xmlSecKeyDataFormatPem				0x0002
-
-/**
- * xmlSecKeyDataFormatDer:
- *
- * The key data format is DER (certificates and public/private keys).
- */
-#define xmlSecKeyDataFormatDer				0x0004
-
-/**
- * xmlSecKeyDataFormatAny:
- *
- * Any key data format.
- */
-#define xmlSecKeyDataFormatAny				0xFFFF
+typedef enum {
+    xmlSecKeyDataFormatUnknown = 0,
+    xmlSecKeyDataFormatBinary,
+    xmlSecKeyDataFormatPem,
+    xmlSecKeyDataFormatDer
+} xmlSecKeyDataFormat;
 
 /**************************************************************************
  *

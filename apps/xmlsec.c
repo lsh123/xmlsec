@@ -547,6 +547,28 @@ static xmlSecAppCmdLineParam untrustedParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam trustedDerParam = { 
+    xmlSecAppCmdLineTopicX509Certs,
+    "--trusted-der",
+    NULL,
+    "--trusted-der <file>"
+    "\n\tload trusted (root) certificate from DER file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam untrustedDerParam = { 
+    xmlSecAppCmdLineTopicX509Certs,
+    "--untrusted-der",
+    NULL,
+    "--untrusted-der <file>"
+    "\n\tload untrusted certificate from DER file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 static xmlSecAppCmdLineParam verificationTimeParam = { 
     xmlSecAppCmdLineTopicX509Certs,
     "--verification-time",
@@ -618,6 +640,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &pkcs12Param,
     &trustedParam,
     &untrustedParam,
+    &trustedDerParam,
+    &untrustedDerParam,
     &verificationTimeParam,
     &depthParam,    
 #endif /* XMLSEC_NO_X509 */    
@@ -1748,6 +1772,19 @@ xmlSecAppLoadKeys(void) {
 	    return(-1);
 	}
     }
+    for(value = trustedDerParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedDerParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr, 
+		    value->strValue, xmlSecKeyDataFormatDer,
+		    xmlSecKeyDataTypeTrusted) < 0) {
+	    fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
+		    value->strValue);
+	    return(-1);
+	}
+    }
+
 
     /* read all untrusted certs */
     for(value = untrustedParam.value; value != NULL; value = value->next) {
@@ -1756,6 +1793,18 @@ xmlSecAppLoadKeys(void) {
 	    return(-1);
 	} else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr, 
 		    value->strValue, xmlSecKeyDataFormatPem,
+		    xmlSecKeyDataTypeNone) < 0) {
+	    fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
+		    value->strValue);
+	    return(-1);
+	}
+    }
+    for(value = untrustedDerParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedDerParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr, 
+		    value->strValue, xmlSecKeyDataFormatDer,
 		    xmlSecKeyDataTypeNone) < 0) {
 	    fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
 		    value->strValue);

@@ -536,33 +536,61 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
 static X509*	
 xmlSecOpenSSLAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
     X509 *cert;
-    FILE *f;
+    BIO* bio;
     
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    f = fopen(filename, "r");
-    if(f == NULL) {
+    bio = BIO_new_file(filename, "rb");
+    if(bio == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "fopen",
-		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "BIO_new_file",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "filename=%s;errno=%d", 
-		    xmlSecErrorsSafeString(filename), errno);
+		    xmlSecErrorsSafeString(filename), 
+		    errno);
 	return(NULL);    
     }
     
-    cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
-    if(cert == NULL) {
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+	cert = PEM_read_bio_X509_AUX(bio, NULL, NULL, NULL);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"PEM_read_bio_X509_AUX",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"filename=%s", 
+			xmlSecErrorsSafeString(filename));
+	    BIO_free(bio);
+	    return(NULL);    
+	}
+	break;
+    case xmlSecKeyDataFormatDer:
+	cert = d2i_X509_bio(bio, NULL);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"d2i_X509_bio",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"filename=%s", 
+			xmlSecErrorsSafeString(filename));
+	    BIO_free(bio);
+	    return(NULL);    
+	}
+	break;
+    default:
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "PEM_read_X509_AUX",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "filename=%s", xmlSecErrorsSafeString(filename));
-	fclose(f);
-	return(NULL);    
-    }    	
-    fclose(f);
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_FORMAT,
+		    "format=%d", format); 
+	BIO_free(bio);
+	return(NULL);
+    }
+        	
+    BIO_free(bio);
     return(cert);
 }
 

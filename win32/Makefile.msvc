@@ -67,7 +67,7 @@ CPPFLAGS = /nologo
 CC = cl.exe
 CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD 
 CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include /I$(XMLSEC_SRCDIR)
-CFLGAS = $(CFLAGS) /DXMLSEC_NO_XPATHAL=1
+CFLAGS = $(CFLAGS) /DXMLSEC_NO_XPATHAL=1
 
 
 # The linker and its options.
@@ -76,7 +76,8 @@ LDFLAGS = /nologo
 LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR)
 LIBS =
 !if "$(STATIC)" == "1"
-LIBS = libeay32.lib libxml2_a.lib wsock32.lib user32.lib gdi32.lib
+CFLAGS = $(CFLAGS) /DLIBXML_STATIC
+LIBS = libeay32.lib libxml2_a.lib iconv_a.lib wsock32.lib user32.lib gdi32.lib
 !else
 LIBS = libeay32.lib libxml2.lib user32.lib gdi32.lib
 !endif
@@ -97,7 +98,7 @@ LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 
 # configurable options
 !if "$(WITH_OPENSSL096)" == "1"
-CFLGAS = $(CFLAGS) /DXMLSEC_NO_AES=1
+CFLAGS = $(CFLAGS) /DXMLSEC_NO_AES=1
 !else
 CFLAGS = $(CFLAGS) /DXMLSEC_OPENSSL097=1
 !endif
@@ -175,7 +176,7 @@ install : all
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)
-BDVERSION = $(xmlsec_MAJOR_VERSION).$(xmlsec_MINOR_VERSION).$(xmlsec_MICRO_VERSION)
+BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
 BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
 bindist : all
 	$(MAKE) /nologo PREFIX=$(BDPREFIX) BINPREFIX=$(BDPREFIX)\util install

@@ -42,6 +42,32 @@ XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataAesGetKlass		(void);
 XMLSEC_EXPORT int		xmlSecNssKeyDataAesSet			(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
+/**
+ * xmlSecNssTransformAes128CbcId:
+ * 
+ * The AES128 CBC cipher transform id.
+ */
+#define xmlSecNssTransformAes128CbcId \
+	xmlSecNssTransformAes128CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformAes128CbcGetKlass	(void);
+
+/**
+ * xmlSecNssTransformAes192CbcId:
+ * 
+ * The AES192 CBC cipher transform id.
+ */
+#define xmlSecNssTransformAes192CbcId \
+	xmlSecNssTransformAes192CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformAes192CbcGetKlass	(void);
+
+/**
+ * xmlSecNssTransformAes256CbcId:
+ * 
+ * The AES256 CBC cipher transform id.
+ */
+#define xmlSecNssTransformAes256CbcId \
+	xmlSecNssTransformAes256CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecNssTransformAes256CbcGetKlass	(void);
 
 #endif /* XMLSEC_NO_AES */
 
@@ -62,6 +88,15 @@ XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataDesGetKlass		(void);
 XMLSEC_EXPORT int		xmlSecNssKeyDataDesSet			(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
+
+/**
+ * xmlSecNssTransformDes3CbcId:
+ * 
+ * The DES3 CBC cipher transform id.
+ */
+#define xmlSecNssTransformDes3CbcId \
+	xmlSecNssTransformDes3CbcGetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecNssTransformDes3CbcGetKlass	(void);
 
 #endif /* XMLSEC_NO_DES */
 

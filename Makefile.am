@@ -1,7 +1,7 @@
 NULL =
 
 SUBDIRS = include src apps tests man
-
+TEST_APP = apps/xmlsec
 bin_SCRIPTS = xmlsec-config
 
 EXTRA_DIST = \
@@ -28,17 +28,17 @@ api-doc:
 api-doc-clean:
 	@cd docs/api;make clean
 
-check-km:
+check-km: $(TEST_APP)
 	@cd tests;make check-km
 
-check-dsig:
+check-dsig: $(TEST_APP)
 	@cd tests;make check-dsig
 
-check-enc:
+check-enc: $(TEST_APP)
 	@cd tests;make check-enc
 
-memcheck:
+memcheck: $(TEST_APP)
 	@export DEBUG_MEMORY=1;make check
 
-perfcheck:
+perfcheck: $(TEST_APP)
 	@export PERF_TEST=10;make check

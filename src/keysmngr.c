@@ -378,16 +378,21 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	    return(-1);
 	}
 	
-	ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-			"xmlSecSimpleKeysStoreAdoptKey",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+	if(xmlSecKeyIsValid(key)) {
+    	    ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			    "xmlSecSimpleKeysStoreAdoptKey",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecKeyDestroy(key);
+		xmlFreeDoc(doc);
+		return(-1);
+	    }
+	} else {
+	    /* we have an unknown key in our file, just ignore it */
 	    xmlSecKeyDestroy(key);
-	    xmlFreeDoc(doc);
-	    return(-1);
 	}
         cur = xmlSecGetNextElementNode(cur->next);
     }

@@ -1,3 +1,8 @@
+Fri Aug  8 09:06:53 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keys.h src/keys.c: added xmlsec-core functions to 
+	read keys from memory  (patch from Joachim)
+
 Thu Aug  7 11:38:43 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/openssl/app.h src/openssl/app.c:  added functions 

@@ -158,8 +158,13 @@ XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key,
 							 const xmlChar *name,
 							 xmlSecKeyReqPtr keyReq);
 
+XMLSEC_EXPORT xmlSecKeyPtr  	xmlSecKeyReadBuffer	(xmlSecKeyDataId dataId,
+                            				 xmlSecBuffer* buffer);
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadBinaryFile	(xmlSecKeyDataId dataId,
 							 const char* filename);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadMemory	(xmlSecKeyDataId dataId,
+							 const xmlSecByte* data,
+							 xmlSecSize dataSize);
 
 							 
 /**

@@ -761,6 +761,66 @@ xmlSecKeyGenerateByName(const xmlChar* name, xmlSecSize sizeBits, xmlSecKeyDataT
 }
 
 /**
+ * xmlSecKeyReadBuffer:
+ * @dataId:		the key value data klass.
+ * @buffer:		the buffer that contains the binary data.
+ *
+ * Reads the key value of klass @dataId from a buffer.
+ *
+ * Returns pointer to newly created key or NULL if an error occurs.
+ */
+xmlSecKeyPtr 
+xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
+    xmlSecKeyInfoCtx keyInfoCtx;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+    xmlSecAssert2(buffer != NULL, NULL);
+
+    /* create key data */
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
+		    "xmlSecKeyCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);    
+    }
+
+    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);    
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
+		    "xmlSecKeyInfoCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	return(NULL);    
+    }
+    
+    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
+    ret = xmlSecKeyDataBinRead(dataId, key, 
+			xmlSecBufferGetData(buffer),
+			xmlSecBufferGetSize(buffer),
+			&keyInfoCtx);	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
+		    "xmlSecKeyDataBinRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+	xmlSecKeyDestroy(key);
+	return(NULL);    
+    }
+    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+    
+    return(key);
+}
+
+/**
  * xmlSecKeyReadBinaryFile:
  * @dataId:		the key value data klass.
  * @filename:		the key binary filename.
@@ -771,10 +831,9 @@ xmlSecKeyGenerateByName(const xmlChar* name, xmlSecSize sizeBits, xmlSecKeyDataT
  */
 xmlSecKeyPtr 
 xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
-    xmlSecKeyInfoCtx keyInfoCtx;
+    xmlSecKeyPtr key;
     xmlSecBuffer buffer;
     xmlSecByte buf[1024];
-    xmlSecKeyPtr key;
     FILE *f;
     int ret;
     
@@ -823,51 +882,77 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 	}
     }
     fclose(f);    
-    
-    /* create key data */
-    key = xmlSecKeyCreate();
+
+    key = xmlSecKeyReadBuffer(dataId, &buffer);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-		    "xmlSecKeyCreate",
+		    "xmlSecKeyReadBuffer",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "filename=%s", 
+		    xmlSecErrorsSafeString(filename));
 	xmlSecBufferFinalize(&buffer);
-	return(NULL);    
+	return(NULL);	
     }
 
-    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);    
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-		    "xmlSecKeyInfoCtxInitialize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecBufferFinalize(&buffer);
-	xmlSecKeyDestroy(key);
-	return(NULL);    
-    }
-    
-    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
-    ret = xmlSecKeyDataBinRead(dataId, key, 
-			xmlSecBufferGetData(&buffer),
-			xmlSecBufferGetSize(&buffer),
-			&keyInfoCtx);	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-		    "xmlSecKeyDataBinRead",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
-	xmlSecBufferFinalize(&buffer);
-	xmlSecKeyDestroy(key);
-	return(NULL);    
-    }
-    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
     xmlSecBufferFinalize(&buffer);
-    
-    return(key);
+    return (key);
+}
+
+/**
+ * xmlSecKeyReadMemory:
+ * @dataId:		the key value data klass.
+ * @data:		the memory containing the key
+ * @dataSize: 		the size of the memory block
+ *
+ * Reads the key value of klass @dataId from a memory block @data.
+ *
+ * Returns pointer to newly created key or NULL if an error occurs.
+ */
+xmlSecKeyPtr 
+xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize dataSize) {
+    xmlSecBuffer buffer;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+
+    /* read file to buffer */
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
+		    "xmlSecBufferInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);	
+    }
+
+    if (xmlSecBufferAppend(&buffer, data, dataSize) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
+		    "xmlSecBufferAppend",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBufferFinalize(&buffer);
+	return(NULL);	
+    }
+
+    key = xmlSecKeyReadBuffer(dataId, &buffer);
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
+		    "xmlSecKeyReadBuffer",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBufferFinalize(&buffer);
+	return(NULL);	
+    }
+
+    xmlSecBufferFinalize(&buffer);
+    return (key);
 }
 
 /**
@@ -882,7 +967,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
  */
 xmlSecKeyPtr 		
 xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyPtr key = NULL;
+    xmlSecKeyPtr key;
     int ret;
     
     xmlSecAssert2(keyInfoCtx != NULL, NULL);

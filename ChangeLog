@@ -1,3 +1,8 @@
+Fri Aug 23 10:54:39 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html docs/news.html:
+	New 0.0.8 release.
+
 Thu Aug 15 21:08:41 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs/api/* include/xmlsec/Makefile.am  include/xmlsec/xpath.h

@@ -49,7 +49,7 @@ dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
 LIBXML_WITHOUT="no"
-LIBXML_MIN_VERSION=2.4.23
+LIBXML_MIN_VERSION=2.4.24
 LIBXML_CONFIG="xml2-config"
 LIBXML_PREFIX=""
 LIBXML_CFLAG=""
@@ -90,7 +90,7 @@ dnl ==========================================================================
 dnl find libxslt
 dnl ==========================================================================
 LIBXSLT_WITHOUT="no"
-LIBXSLT_MIN_VERSION=1.0.19
+LIBXSLT_MIN_VERSION=1.0.20
 LIBXSLT_CONFIG="xslt-config"
 LIBXSLT_PREFIX=""
 LIBXSLT_CFLAGS=""

@@ -17,12 +17,13 @@
 
 #include <xmlsec/xmlenc.h> 
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/transforms.h>
 
 
 int		initEverything				(void);
 void		shutdownEverything			(void);
 int 		encrypt					(void);
-int		generateAesKey				(void);
+int		generateDesKey				(void);
 
 xmlSecKeysMngrPtr keysMngr = NULL; 
 xmlSecEncCtxPtr ctx = NULL;
@@ -55,9 +56,9 @@ int main(int argc, char **argv) {
     }
     key->name = xmlStrdup(BAD_CAST "test-rsa-key");
 
-    ret = generateAesKey();
+    ret = generateDesKey();
     if(ret < 0) {
-	 fprintf(stderr, "Error: failed to generate random aes key\n");
+	 fprintf(stderr, "Error: failed to generate random des key\n");
 	 goto done;
     }
     
@@ -100,7 +101,7 @@ encrypt(void) {
     /**
      * Set the encryption method
      */
-    cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncAes128Cbc);
+    cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncDes3Cbc);
     if(cur == NULL) {
 	fprintf(stderr, "Error: failed to add Enc Method\n");
 	goto done;    
@@ -135,7 +136,7 @@ encrypt(void) {
     }
 
     /**
-     * The session AES key will be RSA encrypted and included
+     * The session DES key will be RSA encrypted and included
      * in the message
      */
     encKey = xmlSecKeyInfoAddEncryptedKey(cur, NULL, NULL, NULL);
@@ -218,27 +219,27 @@ done:
 }
 
 int
-generateAesKey(void) {
+generateDesKey(void) {
     xmlSecKeyPtr key;    
     int ret;
 
-    /* AES 128 */    
-    key = xmlSecKeyCreate(xmlSecAesKey, xmlSecKeyOriginDefault);
+    /* DES3 */    
+    key = xmlSecKeyCreate(xmlSecDesKey, xmlSecKeyOriginDefault);
     if(key == NULL) {
-	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
+	fprintf(stderr, "Error: failed to create des3 key\n"); 
 	return(-1);
     }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 128);
+    ret = xmlSecDesKeyGenerate(key, NULL, 24);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);  
-	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
+	fprintf(stderr, "Error: failed to create des3 key\n"); 
 	return(-1);
     }    
-    key->name = xmlStrdup(BAD_CAST "test-aes128");
+    key->name = xmlStrdup(BAD_CAST "test-des3");
     ret = xmlSecSimpleKeysMngrAddKey(keysMngr, key);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);
-	fprintf(stderr, "Error: failed to add aes 128 key\n"); 
+	fprintf(stderr, "Error: failed to add des3 key\n"); 
 	return(-1);
     }
     return(0);

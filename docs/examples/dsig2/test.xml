@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Letter>
     Hello, World!    
-    <Info Id="SomeData">
-	<!-- Commentary -->
 	<Data1> Some data </Data1>
 	<Data2> More data </Data2>
-    </Info>
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
 <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
-<Reference Id="reference-1" URI="#xpointer(id('SomeData'))">
+<Reference>
 <Transforms>
-<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/>
+<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
 </Transforms>
 <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-<DigestValue>x/tL8hKZQyExW6ba0pi5h8eWRCc=</DigestValue>
+<DigestValue>DsQ4qAHIXQ85utT3sABRndFNwdM=</DigestValue>
 </Reference>
 </SignedInfo>
-<SignatureValue>sSXCVpcCRydyUIebOFA1xw2Yfgy+YP0Dd41jIz/57iGbowwqyODPfA==</SignatureValue>
-<KeyInfo Id="">
+<SignatureValue>OVxx7JWZRKbSN0WVcMuH2HDU+CRkZoqLRG8UquxsA/USqWBBREiPlQ==</SignatureValue>
+<KeyInfo>
 <KeyValue>
 <DSAKeyValue>
 <P>

@@ -76,28 +76,28 @@ int         <link linkend="xmlSecBufferedProcess">xmlSecBufferedProcess</link>  
 <refsect2>
 <title><anchor id="xmlSecBufferedTransformIdStruct">struct xmlSecBufferedTransformIdStruct</title>
 <programlisting>struct xmlSecBufferedTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
-    /* xmlSecBufferedTransform data/methods */
-    xmlSecBufferedProcessMethod		bufferedProcess;
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
+
+/* xmlSecBufferedTransform data/methods */
+xmlSecBufferedProcessMethod		bufferedProcess;
 };
 </programlisting>
 <para>

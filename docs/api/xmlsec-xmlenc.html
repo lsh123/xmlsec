@@ -461,9 +461,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecEncCtx {
-    xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
-    xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
-    int				ignoreType;	/* the flag to ignore Type attribute 
+xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
+xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
+int				ignoreType;	/* the flag to ignore Type attribute 
 						 in the &lt;enc:EncryptedData&gt; node */
 };</PRE
 ></TD
@@ -1456,18 +1456,18 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecEncResult {
-    xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
-    void			*context;	/* the pointer to application specific data */
-    xmlNodePtr			self;		/* the pointer to  &lt;enc:EncryptedData&gt; node */
-    int				encrypt;	/* the encrypt/decrypt flag */
-    xmlChar			*id;		/* the Id attribute of the  &lt;enc:EncryptedData&gt; node */
-    xmlChar			*type;		/* the Type attribute of the  &lt;enc:EncryptedData&gt; node */
-    xmlChar			*mimeType;	/* the MimeType attribute of the  &lt;enc:EncryptedData&gt; node */
-    xmlChar			*encoding;    	/* the Encoding attribute of the  &lt;enc:EncryptedData&gt; node */
-    xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
-    xmlSecKeyPtr		key;            /* the used encryption key */
-    xmlBufferPtr		buffer;		/* the decrypted data */
-    int				replaced;	/* if set then the decrypted data were put back 
+xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
+void			*context;	/* the pointer to application specific data */
+xmlNodePtr			self;		/* the pointer to  &lt;enc:EncryptedData&gt; node */
+int				encrypt;	/* the encrypt/decrypt flag */
+xmlChar			*id;		/* the Id attribute of the  &lt;enc:EncryptedData&gt; node */
+xmlChar			*type;		/* the Type attribute of the  &lt;enc:EncryptedData&gt; node */
+xmlChar			*mimeType;	/* the MimeType attribute of the  &lt;enc:EncryptedData&gt; node */
+xmlChar			*encoding;    	/* the Encoding attribute of the  &lt;enc:EncryptedData&gt; node */
+xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
+xmlSecKeyPtr		key;            /* the used encryption key */
+xmlBufferPtr		buffer;		/* the decrypted data */
+int				replaced;	/* if set then the decrypted data were put back 
 						   into the original document */
 };</PRE
 ></TD

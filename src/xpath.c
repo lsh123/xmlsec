@@ -134,19 +134,20 @@ static const xmlChar xpathPattern[] = "(//. | //@* | //namespace::*)[%s]";
 
 /** 
  * xmlSecXPathHereFunction:
- * @ctxt:
- * @nargs:
+ * @ctxt: the pointer to XPath parser context.
+ * @nargs: the args number.
  *
- * see xmlXPtrHereFunction() in xpointer.c. the only change is that 
- * we return NodeSet instead of NodeInterval
+ * The implementation of XPath "here()" function.
+ * See xmlXPtrHereFunction() in xpointer.c. the only change is that 
+ * we return NodeSet instead of NodeInterval.
  */
 void 
 xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
 
-    if (ctxt->context->here == NULL)
+    if((ctxt == NULL) || (ctxt->context == NULL) || (ctxt->context->here == NULL)) {
 	XP_ERROR(XPTR_SYNTAX_ERROR);
-    
+    }
     valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->here));
 }
 
@@ -159,9 +160,6 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  **************************************************************************/
 /**
  * xmlSecTransformXPathCreate
- * @id:
- *
- *
  */
 static xmlSecTransformPtr 
 xmlSecTransformXPathCreate(xmlSecTransformId id) {
@@ -193,10 +191,7 @@ xmlSecTransformXPathCreate(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecTransformXPathDestroy
- * @transform:
- *
- *
+ * xmlSecTransformXPathDestroy:
  */
 static void
 xmlSecTransformXPathDestroy(xmlSecTransformPtr transform) {
@@ -231,10 +226,14 @@ xmlSecTransformXPathDestroy(xmlSecTransformPtr transform) {
  **************************************************************************/
 /**
  * xmlSecTransformXPathAdd:
- * @transformNode: the transform node
- * @expression: the XPath expression
- * @namespaces: NULL terminated list of namespace prefix/href pairs
+ * @transformNode: the pointer to the <dsig:Transform> node.
+ * @expression: the XPath expression.
+ * @namespaces: NULL terminated list of namespace prefix/href pairs.
  *
+ * Writes XPath transform infromation to the <dsig:Transform> node 
+ * @transformNode.
+ *
+ * Returns 0 for success or a negative value otherwise.
  */
 int 	
 xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
@@ -301,8 +300,6 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 
 /**
  * xmlSecTransformXPathReadNode
- * @transform:
- * @transformNode:
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-XPath
  */
@@ -358,12 +355,7 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
 }
 
 /**
- * xmlSecTransformXPathExecute
- * @transform:
- * @ctxDoc:
- * @doc:
- * @nodes:
- *
+ * xmlSecTransformXPathExecute:
  */
 static int
 xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
@@ -420,6 +412,18 @@ xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
  *         XPath2 transform 
  *
  **************************************************************************/
+/**
+ * xmlSecTransformXPath2Add:
+ * @transformNode: the pointer to the <dsig:Transform> node.
+ * @type: XPath2 transform type ("union", "intersect" or "subtract").
+ * @expression: the XPath expression.
+ * @namespaces: NULL terminated list of namespace prefix/href pairs.
+ *
+ * Writes XPath2 transform infromation to the <dsig:Transform> node 
+ * @transformNode.
+ *
+ * Returns 0 for success or a negative value otherwise.
+ */
 int
 xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType type,
 			const xmlChar *expression, const xmlChar **namespaces) {
@@ -490,11 +494,7 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
 }
 
 /**
- * xmlSecTransformXPath2ReadNode
- * @transform:
- * @transformNode:
- *
- * http://www.w3.org/TR/xmldsig-core/#sec-XPath
+ * xmlSecTransformXPath2ReadNode:
  */
 static int 
 xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
@@ -556,12 +556,7 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
 }
 
 /**
- * xmlSecTransformXPath2Execute
- * @transform:
- * @ctxDoc:
- * @doc:
- * @nodes:
- *
+ * xmlSecTransformXPath2Execute:
  */
 static int
 xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
@@ -617,10 +612,14 @@ xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
  **************************************************************************/
 /**
  * xmlSecTransformXPointerAdd:
- * @transformNode: the transform node
- * @expression: the XPointer expression
- * @namespaces: NULL terminated list of namespace prefix/href pairs
+ * @transformNode: the pointer to the <dsig:Transform> node.
+ * @expression: the XPath expression.
+ * @namespaces: NULL terminated list of namespace prefix/href pairs.
  *
+ * Writes XPoniter transform infromation to the <dsig:Transform> node 
+ * @transformNode.
+ *
+ * Returns 0 for success or a negative value otherwise.
  */
 int 	
 xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
@@ -685,9 +684,7 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
 
 
 /**
- * xmlSecTransformXPointerReadNode
- * @transform:
- * @transformNode:
+ * xmlSecTransformXPointerReadNode:
  *
  * http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt
  */
@@ -743,12 +740,7 @@ xmlSecTransformXPointerReadNode(xmlSecTransformPtr transform, xmlNodePtr transfo
 }
 
 /**
- * xmlSecTransformXPointerExecute
- * @transform:
- * @ctxDoc:
- * @doc:
- * @nodes:
- *
+ * xmlSecTransformXPointerExecute:
  */
 static int
 xmlSecTransformXPointerExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
@@ -807,9 +799,8 @@ xmlSecTransformXPointerExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc
  ***************************************************************************/ 
 /**
  * xmlSecXPathDataCreate:
- *
  */
-xmlSecXPathDataPtr	
+static xmlSecXPathDataPtr	
 xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, xmlSecXPathType xpathType) {
     xmlSecXPathDataPtr data;
     
@@ -839,11 +830,9 @@ xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, xmlSecXPat
 }
 
 /**
- * xmlSecXPathDataDestroy
- * @data:
- *
+ * xmlSecXPathDataDestroy:
  */
-void				
+static void				
 xmlSecXPathDataDestroy(xmlSecXPathDataPtr data) {
     xmlSecXPathDataPtr 	tmp;
     
@@ -958,8 +947,6 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     }    
     return(0);
 }
-
-
 
 static int		  
 xmlSecXPathDataReadNsList(xmlSecXPathDataPtr data, const xmlNodePtr node) {

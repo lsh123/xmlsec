@@ -14,6 +14,7 @@
 
 
 
+extern      xmlSecTransformId <link linkend="xmlSecMemBuf">xmlSecMemBuf</link>;
 <link linkend="xmlBufferPtr">xmlBufferPtr</link> <link linkend="xmlSecMemBufTransformGetBuffer">xmlSecMemBufTransformGetBuffer</link> (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              int removeBuffer);
 </synopsis>
@@ -32,6 +33,13 @@
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecMemBuf">xmlSecMemBuf</title>
+<programlisting>extern xmlSecTransformId xmlSecMemBuf;
+</programlisting>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMemBufTransformGetBuffer">xmlSecMemBufTransformGetBuffer ()</title>
 <programlisting><link linkend="xmlBufferPtr">xmlBufferPtr</link> xmlSecMemBufTransformGetBuffer (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,

@@ -121,7 +121,7 @@ NAME="XMLSEC-CIPHERS">ciphers.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4761"
+NAME="AEN5014"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN4761"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4764"><H2
+NAME="AEN5017"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -245,7 +245,7 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4792"
+NAME="AEN5045"
 ></A
 ><H2
 >Description</H2
@@ -255,14 +255,14 @@ NAME="AEN4792"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4795"
+NAME="AEN5048"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4797"
+NAME="AEN5050"
 ></A
 ><H3
 ><A
@@ -288,7 +288,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4802"
+NAME="AEN5055"
 ></A
 ><H3
 ><A
@@ -321,7 +321,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4809"><P
+NAME="AEN5062"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -409,7 +409,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4830"
+NAME="AEN5083"
 ></A
 ><H3
 ><A
@@ -437,7 +437,7 @@ HREF="XMLSECCIPHERTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4836"><P
+NAME="AEN5089"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -491,7 +491,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4849"
+NAME="AEN5102"
 ></A
 ><H3
 ><A
@@ -508,33 +508,33 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecCipherTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
-    /* xmlSecCipherTransform data/methods */
-    xmlSecCipherUpdateMethod		cipherUpdate;
-    xmlSecCipherFinalMethod		cipherFinal;
-    size_t				keySize;
-    size_t				ivSize;
-    size_t				bufInSize;
-    size_t				bufOutSize;
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
+
+/* xmlSecCipherTransform data/methods */
+xmlSecCipherUpdateMethod		cipherUpdate;
+xmlSecCipherFinalMethod		cipherFinal;
+size_t				keySize;
+size_t				ivSize;
+size_t				bufInSize;
+size_t				bufOutSize;
 };</PRE
 ></TD
 ></TR
@@ -545,7 +545,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4854"
+NAME="AEN5107"
 ></A
 ><H3
 ><A
@@ -580,7 +580,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4862"><P
+NAME="AEN5115"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -668,7 +668,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4883"
+NAME="AEN5136"
 ></A
 ><H3
 ><A
@@ -703,7 +703,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4891"><P
+NAME="AEN5144"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -791,7 +791,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4912"
+NAME="AEN5165"
 ></A
 ><H3
 ><A
@@ -821,7 +821,7 @@ HREF="XMLSECBINTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4919"><P
+NAME="AEN5172"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -875,7 +875,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4932"
+NAME="AEN5185"
 ></A
 ><H3
 ><A
@@ -910,7 +910,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4940"><P
+NAME="AEN5193"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -998,7 +998,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4961"
+NAME="AEN5214"
 ></A
 ><H3
 ><A
@@ -1028,7 +1028,7 @@ HREF="XMLSECCIPHERTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4968"><P
+NAME="AEN5221"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1082,7 +1082,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4981"
+NAME="AEN5234"
 ></A
 ><H3
 ><A
@@ -1117,7 +1117,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4989"><P
+NAME="AEN5242"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1205,7 +1205,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5010"
+NAME="AEN5263"
 ></A
 ><H3
 ><A
@@ -1235,7 +1235,7 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5017"><P
+NAME="AEN5270"><P
 ></P
 ><TABLE
 BORDER="0"

@@ -1,14 +1,8 @@
-53% symbol docs coverage.
-180 symbols documented.
-157 not documented.
+61% symbol docs coverage.
+226 symbols documented.
+147 not documented.
 
 
-XMLSEC_BASE64_LINESIZE
-XMLSEC_VERSION
-XMLSEC_VERSION_INFO
-XMLSEC_VERSION_MAJOR
-XMLSEC_VERSION_MINOR
-XMLSEC_VERSION_SUBMINOR
 xmlSecAddChild
 xmlSecAddIDs
 xmlSecAddNextSibling
@@ -68,6 +62,7 @@ xmlSecHmacAddOutputLength
 xmlSecHmacKeyGenerate
 xmlSecIOInit
 xmlSecIOShutdown
+xmlSecInputUri
 xmlSecInputUriTransformOpen
 xmlSecKey
 xmlSecKeyCheckId
@@ -85,6 +80,7 @@ xmlSecKeyUsage
 xmlSecKeyWriteBinaryMethod
 xmlSecKeyWriteXmlMethod
 xmlSecKeysInit
+xmlSecMemBuf
 xmlSecMemBufTransformGetBuffer
 xmlSecNodeSet
 xmlSecNodeSetAdd
@@ -119,13 +115,8 @@ xmlSecTransformIsValid
 xmlSecTransformReadNodeMethod
 xmlSecTransformResult
 xmlSecTransformStateCreate
-xmlSecTransformStatus
 xmlSecTransformType
-xmlSecTransformUnknown
 xmlSecTransformUsage
-xmlSecTransformXPath2Add
-xmlSecTransformXPathAdd
-xmlSecTransformXPointerAdd
 xmlSecTransformXsltAdd
 xmlSecTransformsInit
 xmlSecUsageAny
@@ -154,7 +145,6 @@ xmlSecX509StoreFind
 xmlSecX509StoreLoadPemCert
 xmlSecX509StorePtr
 xmlSecX509StoreVerify
-xmlSecXPath2TransformType
 xmlSecXmlTransformExecute
 xmlSecXmlTransformExecuteMethod
 xmlSecXmlTransformId

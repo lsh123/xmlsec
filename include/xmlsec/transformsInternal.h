@@ -79,12 +79,12 @@ struct _xmlSecTransformIdStruct {
     xmlSecTransformReadNodeMethod	read;
 };
 
-typedef struct _xmlSecTransform {
+struct _xmlSecTransform {
     xmlSecTransformId 			id;    
     xmlSecTransformStatus		status;
     int					dontDestroy;
     void				*data;
-} xmlSecTransform;
+};
 
 /**
  * Binary transform

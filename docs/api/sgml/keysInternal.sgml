@@ -229,18 +229,18 @@ int         <link linkend="xmlSecKeyWriteBin">xmlSecKeyWriteBin</link>          
 <refsect2>
 <title><anchor id="xmlSecKeyIdStruct">struct xmlSecKeyIdStruct</title>
 <programlisting>struct xmlSecKeyIdStruct {
-    /* xlmlSecKeyId data */
-    const xmlChar 			*keyValueNodeName;
-    const xmlChar			*keyValueNodeNs;
-    
-    /* xmlSecKeyId methods */
-    xmlSecKeyCreateMethod		create;
-    xmlSecKeyDestroyMethod		destroy;
-    xmlSecKeyDuplicateMethod		duplicate;
-    xmlSecKeyReadXmlMethod		read;
-    xmlSecKeyWriteXmlMethod		write;
-    xmlSecKeyReadBinaryMethod		readBin;
-    xmlSecKeyWriteBinaryMethod		writeBin;
+/* xlmlSecKeyId data */
+const xmlChar 			*keyValueNodeName;
+const xmlChar			*keyValueNodeNs;
+
+/* xmlSecKeyId methods */
+xmlSecKeyCreateMethod		create;
+xmlSecKeyDestroyMethod		destroy;
+xmlSecKeyDuplicateMethod		duplicate;
+xmlSecKeyReadXmlMethod		read;
+xmlSecKeyWriteXmlMethod		write;
+xmlSecKeyReadBinaryMethod		readBin;
+xmlSecKeyWriteBinaryMethod		writeBin;
 };
 </programlisting>
 <para>

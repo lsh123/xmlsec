@@ -87,20 +87,20 @@ void        <link linkend="xmlSecSignatureDestroy">xmlSecSignatureDestroy</link>
 <refsect2>
 <title><anchor id="xmlSecDSigCtx">struct xmlSecDSigCtx</title>
 <programlisting>struct xmlSecDSigCtx {
-    xmlSecKeysMngrPtr		keysMngr; /* the keys manager */
-    int				processManifests;/* if 0 then Manifests are
+xmlSecKeysMngrPtr		keysMngr; /* the keys manager */
+int				processManifests;/* if 0 then Manifests are
 						  * not processed */
-    int				storeSignatures; /* store the signed content 
+int				storeSignatures; /* store the signed content 
 						  * just (SignedInfo element)
 						  * before applying signature */						  
-    int				storeReferences; /* store the result of processing
+int				storeReferences; /* store the result of processing
 						  * Reference node in SignedInfo
 						  *just before digesting */
-    int				storeManifests;	 /* store the result of processing
+int				storeManifests;	 /* store the result of processing
 						  * Reference node in Manifest
 						  * just before digesting 
 						  * (ignored if processManifest is 0) */
-    int				fakeSignatures;  /* for performance testing only! */
+int				fakeSignatures;  /* for performance testing only! */
 };
 </programlisting>
 <para>
@@ -219,26 +219,26 @@ Signs the data according to the template in <parameter>signNode</parameter> node
 <refsect2>
 <title><anchor id="xmlSecDSigResult">struct xmlSecDSigResult</title>
 <programlisting>struct xmlSecDSigResult {
-    xmlSecDSigCtxPtr		ctx;		/* the DSig context */
-    void			*context;	/* the pointer to application specific data */
-    xmlNodePtr			self;		/* the pointer to &lt;dsig:Signature&gt; node */
-    int				sign;		/* the sign/verify flag */
-    xmlSecTransformStatus	result;		/* the signature verification/generation status */
-    xmlSecTransformId		signMethod;	/* the signature algorithm */
-    xmlSecKeyPtr		key;		/* the pointer to signature key */
-    xmlSecReferenceResultPtr	firstSignRef;	/* the pointer to the first 
+xmlSecDSigCtxPtr		ctx;		/* the DSig context */
+void			*context;	/* the pointer to application specific data */
+xmlNodePtr			self;		/* the pointer to &lt;dsig:Signature&gt; node */
+int				sign;		/* the sign/verify flag */
+xmlSecTransformStatus	result;		/* the signature verification/generation status */
+xmlSecTransformId		signMethod;	/* the signature algorithm */
+xmlSecKeyPtr		key;		/* the pointer to signature key */
+xmlSecReferenceResultPtr	firstSignRef;	/* the pointer to the first 
 						   &lt;dsig:SignedInfo&gt; reference result */
-    xmlSecReferenceResultPtr	lastSignRef;	/* the pointer to the last 
+xmlSecReferenceResultPtr	lastSignRef;	/* the pointer to the last 
 						   &lt;dsig:SignedInfo&gt; reference result */
-    xmlSecReferenceResultPtr	firstManifestRef; /* the pointer to the first 
+xmlSecReferenceResultPtr	firstManifestRef; /* the pointer to the first 
 						   &lt;dsig:Manifest&gt; reference result
 						   (valid only if the #processManifests flag
 						   in #xmlSecDSigCtx structure is set) */						   
-    xmlSecReferenceResultPtr	lastManifestRef;  /* the pointer to the last 
+xmlSecReferenceResultPtr	lastManifestRef;  /* the pointer to the last 
 						   &lt;dsig:Manifest&gt; reference result
 						   (valid only if the #processManifests flag
 						   in #xmlSecDSigCtx structure is set) */
-    xmlBufferPtr		buffer;		  /* the pointer to the signed content -
+xmlBufferPtr		buffer;		  /* the pointer to the signed content -
 						   the cannonicalization of &lt;dsig:SignedInfo&gt; node
 						   (valid only if the #storeSignatures flag
 						   in #xmlSecDSigCtx structure is set) */						   						
@@ -250,17 +250,17 @@ Signs the data according to the template in <parameter>signNode</parameter> node
 <refsect2>
 <title><anchor id="xmlSecReferenceResult">struct xmlSecReferenceResult</title>
 <programlisting>struct xmlSecReferenceResult {
-    xmlSecDSigCtxPtr		ctx;		/* the pointer to DSig context */
-    xmlNodePtr			self;		/* the pointer to &lt;dsig:Refernece&gt; node */
-    xmlSecReferenceType		refType;	/* the &lt;dsig:Reference&gt; node location */
-    xmlSecTransformStatus	result;		/* the verification/generation result */
-    xmlSecReferenceResultPtr	next;		/* the next reference result */
-    xmlSecReferenceResultPtr	prev;		/* the prev reference result */
-    xmlChar			*uri;		/* the &lt;dsig:Reference&gt; node URI attribute */
-    xmlChar			*id;		/* the &lt;dsig:Reference&gt; node Id attribute */
-    xmlChar			*type;		/* the &lt;dsig:Reference&gt; node Type attribute */
-    xmlSecTransformId		digestMethod;	/* the used digest algorithm id */
-    xmlBufferPtr		buffer;		/* the pointer to digested content		    
+xmlSecDSigCtxPtr		ctx;		/* the pointer to DSig context */
+xmlNodePtr			self;		/* the pointer to &lt;dsig:Refernece&gt; node */
+xmlSecReferenceType		refType;	/* the &lt;dsig:Reference&gt; node location */
+xmlSecTransformStatus	result;		/* the verification/generation result */
+xmlSecReferenceResultPtr	next;		/* the next reference result */
+xmlSecReferenceResultPtr	prev;		/* the prev reference result */
+xmlChar			*uri;		/* the &lt;dsig:Reference&gt; node URI attribute */
+xmlChar			*id;		/* the &lt;dsig:Reference&gt; node Id attribute */
+xmlChar			*type;		/* the &lt;dsig:Reference&gt; node Type attribute */
+xmlSecTransformId		digestMethod;	/* the used digest algorithm id */
+xmlBufferPtr		buffer;		/* the pointer to digested content		    
 						(valid only if the #storeReferences or
 						#storeManifests flags in #xmlSecDSigCtx */
 }; 
@@ -271,8 +271,8 @@ Signs the data according to the template in <parameter>signNode</parameter> node
 <refsect2>
 <title><anchor id="xmlSecReferenceType">enum xmlSecReferenceType</title>
 <programlisting>typedef enum  {
-    xmlSecSignedInfoReference,			/* &lt;dsig:SignedInfo&gt; node reference */
-    xmlSecManifestReference			/* &lt;dsig:Manifest&gt; node reference */
+xmlSecSignedInfoReference,			/* &lt;dsig:SignedInfo&gt; node reference */
+xmlSecManifestReference			/* &lt;dsig:Manifest&gt; node reference */
 } xmlSecReferenceType;
 </programlisting>
 <para>

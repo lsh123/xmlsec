@@ -66,28 +66,28 @@ xmlSecBufferedTransformPtr transform,
 <STRUCT>
 <NAME>xmlSecBufferedTransformIdStruct</NAME>
 struct xmlSecBufferedTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
-    /* xmlSecBufferedTransform data/methods */
-    xmlSecBufferedProcessMethod		bufferedProcess;
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
+
+/* xmlSecBufferedTransform data/methods */
+xmlSecBufferedProcessMethod		bufferedProcess;
 };
 </STRUCT>
 <FUNCTION>
@@ -134,33 +134,33 @@ xmlSecCipherTransformPtr transform
 <STRUCT>
 <NAME>xmlSecCipherTransformIdStruct</NAME>
 struct xmlSecCipherTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
-    /* xmlSecCipherTransform data/methods */
-    xmlSecCipherUpdateMethod		cipherUpdate;
-    xmlSecCipherFinalMethod		cipherFinal;
-    size_t				keySize;
-    size_t				ivSize;
-    size_t				bufInSize;
-    size_t				bufOutSize;
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
+
+/* xmlSecCipherTransform data/methods */
+xmlSecCipherUpdateMethod		cipherUpdate;
+xmlSecCipherFinalMethod		cipherFinal;
+size_t				keySize;
+size_t				ivSize;
+size_t				bufInSize;
+size_t				bufOutSize;
 };
 </STRUCT>
 <FUNCTION>
@@ -246,30 +246,30 @@ xmlSecDigestTransformPtr transform,
 <STRUCT>
 <NAME>xmlSecDigestTransformIdStruct</NAME>
 struct xmlSecDigestTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
-    /* xmlSecDigestTransform data/methods */
-    xmlSecDigestUpdateMethod		digestUpdate;
-    xmlSecDigestSignMethod		digestSign;
-    xmlSecDigestVerifyMethod		digestVerify;
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
+
+/* xmlSecDigestTransform data/methods */
+xmlSecDigestUpdateMethod		digestUpdate;
+xmlSecDigestSignMethod		digestSign;
+xmlSecDigestVerifyMethod		digestVerify;
 };
 </STRUCT>
 <FUNCTION>
@@ -327,6 +327,10 @@ void
 <RETURNS>void 	</RETURNS>
 void
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecInputUri</NAME>
+extern xmlSecTransformId xmlSecInputUri;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecInputUriTransformOpen</NAME>
 <RETURNS>int  </RETURNS>
@@ -394,19 +398,19 @@ typedef const struct _xmlSecKeyIdStruct	xmlSecKeyIdStruct, *xmlSecKeyId;
 <ENUM>
 <NAME>xmlSecKeyType</NAME>
 typedef enum  {
-    xmlSecKeyTypePublic = 0, 	/* the public key */
-    xmlSecKeyTypePrivate,	/* the private key */
-    xmlSecKeyTypeAny 		/* any key */
+xmlSecKeyTypePublic = 0, 	/* the public key */
+xmlSecKeyTypePrivate,	/* the private key */
+xmlSecKeyTypeAny 		/* any key */
 } xmlSecKeyType;
 </ENUM>
 <ENUM>
 <NAME>xmlSecKeyUsage</NAME>
 typedef enum  {
-    xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
-    xmlSecKeyUsageSign,		/* the key for signing */
-    xmlSecKeyUsageVerify,	/* the key for signature verification */
-    xmlSecKeyUsageEncrypt,	/* the encryption key */
-    xmlSecKeyUsageDecrypt	/* the decryption key */
+xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
+xmlSecKeyUsageSign,		/* the key for signing */
+xmlSecKeyUsageVerify,	/* the key for signature verification */
+xmlSecKeyUsageEncrypt,	/* the encryption key */
+xmlSecKeyUsageDecrypt	/* the decryption key */
 } xmlSecKeyUsage;
 </ENUM>
 <TYPEDEF>
@@ -464,13 +468,13 @@ typedef long				xmlSecKeyOrigin;
 <STRUCT>
 <NAME>xmlSecKey</NAME>
 struct xmlSecKey {
-    xmlSecKeyId				id;	/* the key id (key algorithm info) */
-    xmlSecKeyType			type;	/* the key type (private/public) */
-    xmlChar				*name;	/* the key name (may be NULL) */
-    xmlSecKeyOrigin			origin;	/* the key origin */
-    xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
+xmlSecKeyId				id;	/* the key id (key algorithm info) */
+xmlSecKeyType			type;	/* the key type (private/public) */
+xmlChar				*name;	/* the key name (may be NULL) */
+xmlSecKeyOrigin			origin;	/* the key origin */
+xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
 						   (if key was extracted from a cert) */
-    void				*keyData; /* key specific data */
+void				*keyData; /* key specific data */
 };
 </STRUCT>
 <FUNCTION>
@@ -539,27 +543,27 @@ xmlSecKeysMngrPtr mngr,
 <RETURNS>int </RETURNS>
 xmlSecKeysMngrPtr mngr,
 							 void *context,
-    							 xmlSecX509DataPtr cert
+							 xmlSecX509DataPtr cert
 </USER_FUNCTION>
 <STRUCT>
 <NAME>xmlSecKeysMngr</NAME>
 struct xmlSecKeysMngr {
-    xmlSecGetKeyCallback		getKey;		/* the callback used to read <dsig:KeyInfo> node */
-    xmlSecKeyOrigin 			allowedOrigins;	/* the allowed origins bits mask */
-    int 				maxRetrievalsLevel; /* the max allowed <dsig:RetrievalMethod> 
+xmlSecGetKeyCallback		getKey;		/* the callback used to read <dsig:KeyInfo> node */
+xmlSecKeyOrigin 			allowedOrigins;	/* the allowed origins bits mask */
+int 				maxRetrievalsLevel; /* the max allowed <dsig:RetrievalMethod> 
 							    level to prevent DOS attack */
-    int					maxEncKeysLevel;    /* the max allowed <enc:EncryptedKey> 
+int					maxEncKeysLevel;    /* the max allowed <enc:EncryptedKey> 
 							    level to prevent DOS attack */
-    /* low level keys */             
-    xmlSecFindKeyCallback		findKey;	/* the callback used to serach for key in 
+/* low level keys */             
+xmlSecFindKeyCallback		findKey;	/* the callback used to serach for key in 
 							   the keys manager */
-    void 				*keysData;	/* the keys manager data */
+void 				*keysData;	/* the keys manager data */
 
-    /* x509 certs */
-    int					failIfCertNotFound; /* the flag */
-    xmlSecX509FindCallback		findX509;	/* the callback used to search for a cert */
-    xmlSecX509VerifyCallback		verifyX509;   	/* the callback used to verify a cert */
-    void				*x509Data;     	/* the X509 certificates manager specific data */
+/* x509 certs */
+int					failIfCertNotFound; /* the flag */
+xmlSecX509FindCallback		findX509;	/* the callback used to search for a cert */
+xmlSecX509VerifyCallback		verifyX509;   	/* the callback used to verify a cert */
+void				*x509Data;     	/* the X509 certificates manager specific data */
 };
 </STRUCT>
 <FUNCTION>
@@ -617,18 +621,18 @@ xmlSecKeyPtr key,
 <STRUCT>
 <NAME>xmlSecKeyIdStruct</NAME>
 struct xmlSecKeyIdStruct {
-    /* xlmlSecKeyId data */
-    const xmlChar 			*keyValueNodeName;
-    const xmlChar			*keyValueNodeNs;
-    
-    /* xmlSecKeyId methods */
-    xmlSecKeyCreateMethod		create;
-    xmlSecKeyDestroyMethod		destroy;
-    xmlSecKeyDuplicateMethod		duplicate;
-    xmlSecKeyReadXmlMethod		read;
-    xmlSecKeyWriteXmlMethod		write;
-    xmlSecKeyReadBinaryMethod		readBin;
-    xmlSecKeyWriteBinaryMethod		writeBin;
+/* xlmlSecKeyId data */
+const xmlChar 			*keyValueNodeName;
+const xmlChar			*keyValueNodeNs;
+
+/* xmlSecKeyId methods */
+xmlSecKeyCreateMethod		create;
+xmlSecKeyDestroyMethod		destroy;
+xmlSecKeyDuplicateMethod		duplicate;
+xmlSecKeyReadXmlMethod		read;
+xmlSecKeyWriteXmlMethod		write;
+xmlSecKeyReadBinaryMethod		readBin;
+xmlSecKeyWriteBinaryMethod		writeBin;
 };
 </STRUCT>
 <FUNCTION>
@@ -644,13 +648,13 @@ void
 <MACRO>
 <NAME>xmlSecKeyCheckId</NAME>
 #define xmlSecKeyCheckId(key, keyId) \
- 	(xmlSecKeyIsValid(( key )) && \
+	(xmlSecKeyIsValid(( key )) && \
 	((( key )->id) == ( keyId )))
 </MACRO>
 <MACRO>
 <NAME>xmlSecKeyCheckTransform</NAME>
 #define xmlSecKeyCheckTransform(key, tr) \
- 	(xmlSecKeyIsValid(( key )) && \
+	(xmlSecKeyIsValid(( key )) && \
 	((((const xmlSecKeyId) (( key )->id->transformId))) == ( tr )))
 </MACRO>
 <FUNCTION>
@@ -733,6 +737,10 @@ xmlSecKeysMngrPtr mngr,const char *path
 <RETURNS>int 	</RETURNS>
 xmlSecKeysMngrPtr mngr,const char* name,const char *filename,const char *pwd
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecMemBuf</NAME>
+extern xmlSecTransformId xmlSecMemBuf;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecMemBufTransformGetBuffer</NAME>
 <RETURNS>xmlBufferPtr 	</RETURNS>
@@ -740,7 +748,7 @@ xmlSecTransformPtr transform,int removeBuffer
 </FUNCTION>
 <TYPEDEF>
 <NAME>xmlSecTransformId</NAME>
-typedef const struct _xmlSecTransformIdStruct *xmlSecTransformId;
+typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;
 </TYPEDEF>
 <MACRO>
 <NAME>xmlSecTransformUnknown</NAME>
@@ -749,11 +757,39 @@ typedef const struct _xmlSecTransformIdStruct *xmlSecTransformId;
 <ENUM>
 <NAME>xmlSecTransformStatus</NAME>
 typedef enum  {
-    xmlSecTransformStatusNone = 0,
-    xmlSecTransformStatusOk,
-    xmlSecTransformStatusFail
+xmlSecTransformStatusNone = 0,	/* the status unknown */
+xmlSecTransformStatusOk,		/* success */
+xmlSecTransformStatusFail		/* an error occur */
 } xmlSecTransformStatus;
 </ENUM>
+<VARIABLE>
+<NAME>xmlSecEncAes128Cbc</NAME>
+extern xmlSecTransformId 		xmlSecEncAes128Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncAes192Cbc</NAME>
+extern xmlSecTransformId 		xmlSecEncAes192Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncAes256Cbc</NAME>
+extern xmlSecTransformId 		xmlSecEncAes256Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWAes128</NAME>
+extern xmlSecTransformId 		xmlSecKWAes128;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWAes192</NAME>
+extern xmlSecTransformId 		xmlSecKWAes192;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWAes256</NAME>
+extern xmlSecTransformId 		xmlSecKWAes256;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecAesKey</NAME>
+extern xmlSecKeyId 	 		xmlSecAesKey;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecAesKeyGenerate</NAME>
 <RETURNS>int 	</RETURNS>
@@ -761,28 +797,92 @@ xmlSecKeyPtr key,const unsigned char *buf,size_t size
 </FUNCTION>
 <MACRO>
 <NAME>XMLSEC_BASE64_LINESIZE</NAME>
-#define XMLSEC_BASE64_LINESIZE		64
+#define XMLSEC_BASE64_LINESIZE			64
 </MACRO>
+<VARIABLE>
+<NAME>xmlSecEncBase64Encode</NAME>
+extern xmlSecTransformId 		xmlSecEncBase64Encode;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncBase64Decode</NAME>
+extern xmlSecTransformId 		xmlSecEncBase64Decode;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecBase64EncodeSetLineSize</NAME>
 <RETURNS>void  </RETURNS>
 xmlSecTransformPtr transform,size_t lineSize
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecC14NInclusive</NAME>
+extern xmlSecTransformId 		xmlSecC14NInclusive;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecC14NInclusiveWithComments</NAME>
+extern xmlSecTransformId 		xmlSecC14NInclusiveWithComments;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecC14NExclusive</NAME>
+extern xmlSecTransformId 		xmlSecC14NExclusive;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecC14NExclusiveWithComments</NAME>
+extern xmlSecTransformId 		xmlSecC14NExclusiveWithComments;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecC14NExclAddInclNamespaces</NAME>
 <RETURNS>int 	</RETURNS>
 xmlNodePtr transformNode,const xmlChar *prefixList
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecEncDes3Cbc</NAME>
+extern xmlSecTransformId 		xmlSecEncDes3Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecKWDes3Cbc</NAME>
+extern xmlSecTransformId 		xmlSecKWDes3Cbc;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecDesKey</NAME>
+extern xmlSecKeyId 			xmlSecDesKey;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecDesKeyGenerate</NAME>
 <RETURNS>int 	</RETURNS>
 xmlSecKeyPtr key,const unsigned char *buf,size_t size
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecSignDsaSha1</NAME>
+extern xmlSecTransformId 		xmlSecSignDsaSha1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecDsaKey</NAME>
+extern xmlSecKeyId 			xmlSecDsaKey;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecDsaKeyGenerate</NAME>
 <RETURNS>int 	</RETURNS>
 xmlSecKeyPtr key,DSA *dsa
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecTransformEnveloped</NAME>
+extern xmlSecTransformId 		xmlSecTransformEnveloped;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecMacHmacSha1</NAME>
+extern xmlSecTransformId 		xmlSecMacHmacSha1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecMacHmacRipeMd160</NAME>
+extern xmlSecTransformId 		xmlSecMacHmacRipeMd160;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecMacHmacMd5</NAME>
+extern xmlSecTransformId 		xmlSecMacHmacMd5;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecHmacKey</NAME>
+extern xmlSecKeyId 			xmlSecHmacKey;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecHmacKeyGenerate</NAME>
 <RETURNS>int 	</RETURNS>
@@ -793,6 +893,26 @@ xmlSecKeyPtr key,const unsigned char *buf,size_t size
 <RETURNS>int 	</RETURNS>
 xmlNodePtr transformNode,size_t bitsLen
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecDigestRipemd160</NAME>
+extern xmlSecTransformId 		xmlSecDigestRipemd160;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecSignRsaSha1</NAME>
+extern xmlSecTransformId 		xmlSecSignRsaSha1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncRsaPkcs1</NAME>
+extern xmlSecTransformId 		xmlSecEncRsaPkcs1;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecEncRsaOaep</NAME>
+extern xmlSecTransformId 		xmlSecEncRsaOaep;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecRsaKey</NAME>
+extern xmlSecKeyId 			xmlSecRsaKey;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecRsaKeyGenerate</NAME>
 <RETURNS>int 	</RETURNS>
@@ -803,14 +923,30 @@ xmlSecKeyPtr key,RSA *rsa
 <RETURNS>int  </RETURNS>
 xmlNodePtr transformNode,const unsigned char *buf,size_t size
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecDigestSha1</NAME>
+extern xmlSecTransformId 		xmlSecDigestSha1;
+</VARIABLE>
 <ENUM>
 <NAME>xmlSecXPath2TransformType</NAME>
 typedef enum {
-    xmlSecXPathTransformIntersect = 0,
-    xmlSecXPathTransformSubtract,
-    xmlSecXPathTransformUnion
+xmlSecXPathTransformIntersect = 0,		/* intersect */
+xmlSecXPathTransformSubtract,		/* subtract */
+xmlSecXPathTransformUnion			/* union */
 } xmlSecXPath2TransformType;
 </ENUM>
+<VARIABLE>
+<NAME>xmlSecTransformXPath</NAME>
+extern xmlSecTransformId 		xmlSecTransformXPath;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecTransformXPath2</NAME>
+extern xmlSecTransformId 		xmlSecTransformXPath2;
+</VARIABLE>
+<VARIABLE>
+<NAME>xmlSecTransformXPointer</NAME>
+extern xmlSecTransformId 		xmlSecTransformXPointer;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecTransformXPathAdd</NAME>
 <RETURNS>int  </RETURNS>
@@ -826,6 +962,10 @@ xmlNodePtr transformNode,xmlSecXPath2TransformType type,const xmlChar *expressio
 <RETURNS>int  </RETURNS>
 xmlNodePtr transformNode,const xmlChar *expression,const xmlChar **namespaces
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecTransformXslt</NAME>
+extern xmlSecTransformId 		xmlSecTransformXslt;
+</VARIABLE>
 <FUNCTION>
 <NAME>xmlSecTransformXsltAdd</NAME>
 <RETURNS>int  </RETURNS>
@@ -862,25 +1002,25 @@ typedef unsigned long 			xmlSecTransformUsage;
 <ENUM>
 <NAME>xmlSecTransformType</NAME>
 typedef enum  {
-    xmlSecTransformTypeBinary,
-    xmlSecTransformTypeXml,
-    xmlSecTransformTypeC14N
+xmlSecTransformTypeBinary,
+xmlSecTransformTypeXml,
+xmlSecTransformTypeC14N
 } xmlSecTransformType;
 </ENUM>
 <ENUM>
 <NAME>xmlSecBinTransformSubType</NAME>
 typedef enum  {
-    xmlSecBinTransformSubTypeNone = 0,
-    xmlSecBinTransformSubTypeDigest,
-    xmlSecBinTransformSubTypeCipher,
-    xmlSecBinTransformSubTypeBuffered
+xmlSecBinTransformSubTypeNone = 0,
+xmlSecBinTransformSubTypeDigest,
+xmlSecBinTransformSubTypeCipher,
+xmlSecBinTransformSubTypeBuffered
 } xmlSecBinTransformSubType;
 </ENUM>
 <ENUM>
 <NAME>xmlSecTransformResult</NAME>
 typedef enum  {
-    xmlSecTransformResultBinary,
-    xmlSecTransformResultXml
+xmlSecTransformResultBinary,
+xmlSecTransformResultXml
 } xmlSecTransformResult;
 </ENUM>
 <USER_FUNCTION>
@@ -902,15 +1042,24 @@ xmlSecTransformPtr transform,
 <STRUCT>
 <NAME>xmlSecTransformIdStruct</NAME>
 struct xmlSecTransformIdStruct {
-    /* data */
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
+/* data */
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
 
-    /* methods */
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
+/* methods */
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+};
+</STRUCT>
+<STRUCT>
+<NAME>xmlSecTransform</NAME>
+struct xmlSecTransform {
+xmlSecTransformId 			id;    
+xmlSecTransformStatus		status;
+int					dontDestroy;
+void				*data;
 };
 </STRUCT>
 <USER_FUNCTION>
@@ -930,7 +1079,7 @@ xmlSecBinTransformPtr transform,
 <NAME>xmlSecBinTransformWriteMethod</NAME>
 <RETURNS>int </RETURNS>
 xmlSecBinTransformPtr transform, 
-                                        		 const unsigned char *buf, 
+		 const unsigned char *buf, 
 							 size_t size
 </USER_FUNCTION>
 <USER_FUNCTION>
@@ -945,25 +1094,25 @@ typedef const struct _xmlSecBinTransformIdStruct *xmlSecBinTransformId;
 <STRUCT>
 <NAME>xmlSecBinTransformIdStruct</NAME>
 struct xmlSecBinTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
 };
 </STRUCT>
 <USER_FUNCTION>
@@ -981,17 +1130,17 @@ typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;
 <STRUCT>
 <NAME>xmlSecXmlTransformIdStruct</NAME>
 struct xmlSecXmlTransformIdStruct {
-    /* same as xmlSecTransformId */ 
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
+/* same as xmlSecTransformId */ 
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
 
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlTransform info */
-    xmlSecXmlTransformExecuteMethod	executeXml;
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlTransform info */
+xmlSecXmlTransformExecuteMethod	executeXml;
 };
 </STRUCT>
 <USER_FUNCTION>
@@ -1009,17 +1158,17 @@ typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;
 <STRUCT>
 <NAME>xmlSecC14NTransformIdStruct</NAME>
 struct xmlSecC14NTransformIdStruct {
-    /* same as xmlSecTransformId */ 
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
+/* same as xmlSecTransformId */ 
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
 
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlC14nTransform specific */
-    xmlSecC14NTransformExecuteMethod	executeC14N;
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlC14nTransform specific */
+xmlSecC14NTransformExecuteMethod	executeC14N;
 };
 </STRUCT>
 <FUNCTION>
@@ -1055,13 +1204,13 @@ xmlNodePtr transformNode,xmlSecTransformId id
 <MACRO>
 <NAME>xmlSecTransformCheckType</NAME>
 #define xmlSecTransformCheckType(transform, t) \
- 	(xmlSecTransformIsValid(( transform )) && \
+	(xmlSecTransformIsValid(( transform )) && \
 	((( transform )->id->type) == ( t )))
 </MACRO>
 <MACRO>
 <NAME>xmlSecTransformCheckId</NAME>
 #define xmlSecTransformCheckId(transform, i) \
- 	(xmlSecTransformIsValid(( transform )) && \
+	(xmlSecTransformIsValid(( transform )) && \
 	((((const xmlSecTransformId) (( transform )->id))) == ( i )))
 </MACRO>
 <FUNCTION>
@@ -1322,45 +1471,45 @@ typedef void* 	xmlSecX509StorePtr;
 <STRUCT>
 <NAME>xmlSecDSigCtx</NAME>
 struct xmlSecDSigCtx {
-    xmlSecKeysMngrPtr		keysMngr; /* the keys manager */
-    int				processManifests;/* if 0 then Manifests are
+xmlSecKeysMngrPtr		keysMngr; /* the keys manager */
+int				processManifests;/* if 0 then Manifests are
 						  * not processed */
-    int				storeSignatures; /* store the signed content 
+int				storeSignatures; /* store the signed content 
 						  * just (SignedInfo element)
 						  * before applying signature */						  
-    int				storeReferences; /* store the result of processing
+int				storeReferences; /* store the result of processing
 						  * Reference node in SignedInfo
 						  *just before digesting */
-    int				storeManifests;	 /* store the result of processing
+int				storeManifests;	 /* store the result of processing
 						  * Reference node in Manifest
 						  * just before digesting 
 						  * (ignored if processManifest is 0) */
-    int				fakeSignatures;  /* for performance testing only! */
+int				fakeSignatures;  /* for performance testing only! */
 };
 </STRUCT>
 <STRUCT>
 <NAME>xmlSecDSigResult</NAME>
 struct xmlSecDSigResult {
-    xmlSecDSigCtxPtr		ctx;		/* the DSig context */
-    void			*context;	/* the pointer to application specific data */
-    xmlNodePtr			self;		/* the pointer to <dsig:Signature> node */
-    int				sign;		/* the sign/verify flag */
-    xmlSecTransformStatus	result;		/* the signature verification/generation status */
-    xmlSecTransformId		signMethod;	/* the signature algorithm */
-    xmlSecKeyPtr		key;		/* the pointer to signature key */
-    xmlSecReferenceResultPtr	firstSignRef;	/* the pointer to the first 
+xmlSecDSigCtxPtr		ctx;		/* the DSig context */
+void			*context;	/* the pointer to application specific data */
+xmlNodePtr			self;		/* the pointer to <dsig:Signature> node */
+int				sign;		/* the sign/verify flag */
+xmlSecTransformStatus	result;		/* the signature verification/generation status */
+xmlSecTransformId		signMethod;	/* the signature algorithm */
+xmlSecKeyPtr		key;		/* the pointer to signature key */
+xmlSecReferenceResultPtr	firstSignRef;	/* the pointer to the first 
 						   <dsig:SignedInfo> reference result */
-    xmlSecReferenceResultPtr	lastSignRef;	/* the pointer to the last 
+xmlSecReferenceResultPtr	lastSignRef;	/* the pointer to the last 
 						   <dsig:SignedInfo> reference result */
-    xmlSecReferenceResultPtr	firstManifestRef; /* the pointer to the first 
+xmlSecReferenceResultPtr	firstManifestRef; /* the pointer to the first 
 						   <dsig:Manifest> reference result
 						   (valid only if the #processManifests flag
 						   in #xmlSecDSigCtx structure is set) */						   
-    xmlSecReferenceResultPtr	lastManifestRef;  /* the pointer to the last 
+xmlSecReferenceResultPtr	lastManifestRef;  /* the pointer to the last 
 						   <dsig:Manifest> reference result
 						   (valid only if the #processManifests flag
 						   in #xmlSecDSigCtx structure is set) */
-    xmlBufferPtr		buffer;		  /* the pointer to the signed content -
+xmlBufferPtr		buffer;		  /* the pointer to the signed content -
 						   the cannonicalization of <dsig:SignedInfo> node
 						   (valid only if the #storeSignatures flag
 						   in #xmlSecDSigCtx structure is set) */						   						
@@ -1369,24 +1518,24 @@ struct xmlSecDSigResult {
 <ENUM>
 <NAME>xmlSecReferenceType</NAME>
 typedef enum  {
-    xmlSecSignedInfoReference,			/* <dsig:SignedInfo> node reference */
-    xmlSecManifestReference			/* <dsig:Manifest> node reference */
+xmlSecSignedInfoReference,			/* <dsig:SignedInfo> node reference */
+xmlSecManifestReference			/* <dsig:Manifest> node reference */
 } xmlSecReferenceType;
 </ENUM>
 <STRUCT>
 <NAME>xmlSecReferenceResult</NAME>
 struct xmlSecReferenceResult {
-    xmlSecDSigCtxPtr		ctx;		/* the pointer to DSig context */
-    xmlNodePtr			self;		/* the pointer to <dsig:Refernece> node */
-    xmlSecReferenceType		refType;	/* the <dsig:Reference> node location */
-    xmlSecTransformStatus	result;		/* the verification/generation result */
-    xmlSecReferenceResultPtr	next;		/* the next reference result */
-    xmlSecReferenceResultPtr	prev;		/* the prev reference result */
-    xmlChar			*uri;		/* the <dsig:Reference> node URI attribute */
-    xmlChar			*id;		/* the <dsig:Reference> node Id attribute */
-    xmlChar			*type;		/* the <dsig:Reference> node Type attribute */
-    xmlSecTransformId		digestMethod;	/* the used digest algorithm id */
-    xmlBufferPtr		buffer;		/* the pointer to digested content		    
+xmlSecDSigCtxPtr		ctx;		/* the pointer to DSig context */
+xmlNodePtr			self;		/* the pointer to <dsig:Refernece> node */
+xmlSecReferenceType		refType;	/* the <dsig:Reference> node location */
+xmlSecTransformStatus	result;		/* the verification/generation result */
+xmlSecReferenceResultPtr	next;		/* the next reference result */
+xmlSecReferenceResultPtr	prev;		/* the prev reference result */
+xmlChar			*uri;		/* the <dsig:Reference> node URI attribute */
+xmlChar			*id;		/* the <dsig:Reference> node Id attribute */
+xmlChar			*type;		/* the <dsig:Reference> node Type attribute */
+xmlSecTransformId		digestMethod;	/* the used digest algorithm id */
+xmlBufferPtr		buffer;		/* the pointer to digested content		    
 						(valid only if the #storeReferences or
 						#storeManifests flags in #xmlSecDSigCtx */
 }; 
@@ -1494,27 +1643,27 @@ xmlSecDSigResultPtr result,FILE *output
 <STRUCT>
 <NAME>xmlSecEncCtx</NAME>
 struct xmlSecEncCtx {
-    xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
-    xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
-    int				ignoreType;	/* the flag to ignore Type attribute 
+xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
+xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
+int				ignoreType;	/* the flag to ignore Type attribute 
 						 in the <enc:EncryptedData> node */
 };
 </STRUCT>
 <STRUCT>
 <NAME>xmlSecEncResult</NAME>
 struct xmlSecEncResult {
-    xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
-    void			*context;	/* the pointer to application specific data */
-    xmlNodePtr			self;		/* the pointer to  <enc:EncryptedData> node */
-    int				encrypt;	/* the encrypt/decrypt flag */
-    xmlChar			*id;		/* the Id attribute of the  <enc:EncryptedData> node */
-    xmlChar			*type;		/* the Type attribute of the  <enc:EncryptedData> node */
-    xmlChar			*mimeType;	/* the MimeType attribute of the  <enc:EncryptedData> node */
-    xmlChar			*encoding;    	/* the Encoding attribute of the  <enc:EncryptedData> node */
-    xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
-    xmlSecKeyPtr		key;            /* the used encryption key */
-    xmlBufferPtr		buffer;		/* the decrypted data */
-    int				replaced;	/* if set then the decrypted data were put back 
+xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
+void			*context;	/* the pointer to application specific data */
+xmlNodePtr			self;		/* the pointer to  <enc:EncryptedData> node */
+int				encrypt;	/* the encrypt/decrypt flag */
+xmlChar			*id;		/* the Id attribute of the  <enc:EncryptedData> node */
+xmlChar			*type;		/* the Type attribute of the  <enc:EncryptedData> node */
+xmlChar			*mimeType;	/* the MimeType attribute of the  <enc:EncryptedData> node */
+xmlChar			*encoding;    	/* the Encoding attribute of the  <enc:EncryptedData> node */
+xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
+xmlSecKeyPtr		key;            /* the used encryption key */
+xmlBufferPtr		buffer;		/* the decrypted data */
+int				replaced;	/* if set then the decrypted data were put back 
 						   into the original document */
 };
 </STRUCT>
@@ -1610,7 +1759,7 @@ xmlNodePtr encNode,xmlSecTransformId transform
 </FUNCTION>
 <MACRO>
 <NAME>extern</NAME>
-#define  extern
+#define extern extern
 </MACRO>
 <MACRO>
 <NAME>extern</NAME>
@@ -1618,7 +1767,11 @@ xmlNodePtr encNode,xmlSecTransformId transform
 </MACRO>
 <MACRO>
 <NAME>extern</NAME>
-#define  extern
+#define extern __declspec(dllimport) extern
+</MACRO>
+<MACRO>
+<NAME>extern</NAME>
+#define extern extern
 </MACRO>
 <FUNCTION>
 <NAME>xmlSecInit</NAME>
@@ -1633,16 +1786,16 @@ void
 <MACRO>
 <NAME>xmlSecIsHex</NAME>
 #define xmlSecIsHex(c) \
-    (( (('0' <= (c)) && ((c) <= '9')) || \
-       (('a' <= (c)) && ((c) <= 'f')) || \
-       (('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
+(( (('0' <= (c)) && ((c) <= '9')) || \
+(('a' <= (c)) && ((c) <= 'f')) || \
+(('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
 </MACRO>
 <MACRO>
 <NAME>xmlSecGetHex</NAME>
 #define xmlSecGetHex(c) \
-    ( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
-    ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
-    ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
+( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
+( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
+( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
 </MACRO>
 <MACRO>
 <NAME>ATTRIBUTE_UNUSED</NAME>
@@ -1735,34 +1888,34 @@ xmlXPathParserContextPtr ctxt,int nargs
 <ENUM>
 <NAME>xmlSecNodeSetType</NAME>
 typedef enum {
-    xmlSecNodeSetNormal = 0,
-    xmlSecNodeSetInvert,
-    xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments,
-    xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
+xmlSecNodeSetNormal = 0,
+xmlSecNodeSetInvert,
+xmlSecNodeSetTree,
+xmlSecNodeSetTreeWithoutComments,
+xmlSecNodeSetTreeInvert,
+xmlSecNodeSetTreeWithoutCommentsInvert,
+xmlSecNodeSetList
 } xmlSecNodeSetType;
 </ENUM>
 <ENUM>
 <NAME>xmlSecNodeSetOp</NAME>
 typedef enum {
-    xmlSecNodeSetIntersection = 0,
-    xmlSecNodeSetSubtraction,
-    xmlSecNodeSetUnion
+xmlSecNodeSetIntersection = 0,
+xmlSecNodeSetSubtraction,
+xmlSecNodeSetUnion
 } xmlSecNodeSetOp;
 </ENUM>
 <STRUCT>
 <NAME>xmlSecNodeSet</NAME>
 struct xmlSecNodeSet {
-    xmlNodeSetPtr	nodes;
-    xmlDocPtr		doc;
-    xmlSecNodeSetType	type;
-    xmlSecNodeSetOp	op;
-    
-    xmlSecNodeSetPtr	next;
-    xmlSecNodeSetPtr	prev;
-    xmlSecNodeSetPtr	children;
+xmlNodeSetPtr	nodes;
+xmlDocPtr		doc;
+xmlSecNodeSetType	type;
+xmlSecNodeSetOp	op;
+
+xmlSecNodeSetPtr	next;
+xmlSecNodeSetPtr	prev;
+xmlSecNodeSetPtr	children;
 };
 </STRUCT>
 <USER_FUNCTION>
@@ -1971,6 +2124,10 @@ void
 <RETURNS>void  </RETURNS>
 xmlSecErrorsCallback callback
 </FUNCTION>
+<VARIABLE>
+<NAME>xmlSecPrintErrorMessages</NAME>
+extern int xmlSecPrintErrorMessages;
+</VARIABLE>
 <MACRO>
 <NAME>XMLSEC_ERRORS_HERE</NAME>
 #define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__

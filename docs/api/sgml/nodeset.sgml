@@ -62,13 +62,13 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 <refsect2>
 <title><anchor id="xmlSecNodeSetType">enum xmlSecNodeSetType</title>
 <programlisting>typedef enum {
-    xmlSecNodeSetNormal = 0,
-    xmlSecNodeSetInvert,
-    xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments,
-    xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
+xmlSecNodeSetNormal = 0,
+xmlSecNodeSetInvert,
+xmlSecNodeSetTree,
+xmlSecNodeSetTreeWithoutComments,
+xmlSecNodeSetTreeInvert,
+xmlSecNodeSetTreeWithoutCommentsInvert,
+xmlSecNodeSetList
 } xmlSecNodeSetType;
 </programlisting>
 <para>
@@ -77,9 +77,9 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 <refsect2>
 <title><anchor id="xmlSecNodeSetOp">enum xmlSecNodeSetOp</title>
 <programlisting>typedef enum {
-    xmlSecNodeSetIntersection = 0,
-    xmlSecNodeSetSubtraction,
-    xmlSecNodeSetUnion
+xmlSecNodeSetIntersection = 0,
+xmlSecNodeSetSubtraction,
+xmlSecNodeSetUnion
 } xmlSecNodeSetOp;
 </programlisting>
 <para>
@@ -88,14 +88,14 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 <refsect2>
 <title><anchor id="xmlSecNodeSet">struct xmlSecNodeSet</title>
 <programlisting>struct xmlSecNodeSet {
-    xmlNodeSetPtr	nodes;
-    xmlDocPtr		doc;
-    xmlSecNodeSetType	type;
-    xmlSecNodeSetOp	op;
-    
-    xmlSecNodeSetPtr	next;
-    xmlSecNodeSetPtr	prev;
-    xmlSecNodeSetPtr	children;
+xmlNodeSetPtr	nodes;
+xmlDocPtr		doc;
+xmlSecNodeSetType	type;
+xmlSecNodeSetOp	op;
+
+xmlSecNodeSetPtr	next;
+xmlSecNodeSetPtr	prev;
+xmlSecNodeSetPtr	children;
 };
 </programlisting>
 <para>

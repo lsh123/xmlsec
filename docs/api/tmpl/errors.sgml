@@ -289,6 +289,12 @@ function.
 @callback: 
 
 
+<!-- ##### VARIABLE xmlSecPrintErrorMessages ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO XMLSEC_ERRORS_HERE ##### -->
 <para>
 

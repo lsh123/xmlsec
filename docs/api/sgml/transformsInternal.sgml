@@ -189,9 +189,9 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecTransformType">enum xmlSecTransformType</title>
 <programlisting>typedef enum  {
-    xmlSecTransformTypeBinary,
-    xmlSecTransformTypeXml,
-    xmlSecTransformTypeC14N
+xmlSecTransformTypeBinary,
+xmlSecTransformTypeXml,
+xmlSecTransformTypeC14N
 } xmlSecTransformType;
 </programlisting>
 <para>
@@ -200,10 +200,10 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecBinTransformSubType">enum xmlSecBinTransformSubType</title>
 <programlisting>typedef enum  {
-    xmlSecBinTransformSubTypeNone = 0,
-    xmlSecBinTransformSubTypeDigest,
-    xmlSecBinTransformSubTypeCipher,
-    xmlSecBinTransformSubTypeBuffered
+xmlSecBinTransformSubTypeNone = 0,
+xmlSecBinTransformSubTypeDigest,
+xmlSecBinTransformSubTypeCipher,
+xmlSecBinTransformSubTypeBuffered
 } xmlSecBinTransformSubType;
 </programlisting>
 <para>
@@ -212,8 +212,8 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecTransformResult">enum xmlSecTransformResult</title>
 <programlisting>typedef enum  {
-    xmlSecTransformResultBinary,
-    xmlSecTransformResultXml
+xmlSecTransformResultBinary,
+xmlSecTransformResultXml
 } xmlSecTransformResult;
 </programlisting>
 <para>
@@ -280,15 +280,15 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecTransformIdStruct">struct xmlSecTransformIdStruct</title>
 <programlisting>struct xmlSecTransformIdStruct {
-    /* data */
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
+/* data */
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
 
-    /* methods */
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
+/* methods */
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
 };
 </programlisting>
 <para>
@@ -399,25 +399,25 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecBinTransformIdStruct">struct xmlSecBinTransformIdStruct</title>
 <programlisting>struct xmlSecBinTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
 };
 </programlisting>
 <para>
@@ -464,17 +464,17 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecXmlTransformIdStruct">struct xmlSecXmlTransformIdStruct</title>
 <programlisting>struct xmlSecXmlTransformIdStruct {
-    /* same as xmlSecTransformId */ 
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
+/* same as xmlSecTransformId */ 
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
 
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlTransform info */
-    xmlSecXmlTransformExecuteMethod	executeXml;
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlTransform info */
+xmlSecXmlTransformExecuteMethod	executeXml;
 };
 </programlisting>
 <para>
@@ -521,17 +521,17 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect2>
 <title><anchor id="xmlSecC14NTransformIdStruct">struct xmlSecC14NTransformIdStruct</title>
 <programlisting>struct xmlSecC14NTransformIdStruct {
-    /* same as xmlSecTransformId */ 
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
+/* same as xmlSecTransformId */ 
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
 
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlC14nTransform specific */
-    xmlSecC14NTransformExecuteMethod	executeC14N;
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlC14nTransform specific */
+xmlSecC14NTransformExecuteMethod	executeC14N;
 };
 </programlisting>
 <para>

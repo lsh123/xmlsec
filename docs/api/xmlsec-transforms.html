@@ -121,7 +121,7 @@ NAME="XMLSEC-TRANSFORMS">transforms.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3163"
+NAME="AEN3171"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN3163"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3166"><H2
+NAME="AEN3174"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -154,6 +154,34 @@ enum        <A
 HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
 >xmlSecTransformStatus</A
 >;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCAES128CBC"
+>xmlSecEncAes128Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCAES192CBC"
+>xmlSecEncAes192Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCAES256CBC"
+>xmlSecEncAes256Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWAES128"
+>xmlSecKWAes128</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWAES192"
+>xmlSecKWAes192</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWAES256"
+>xmlSecKWAes256</A
+>;
+extern      xmlSecKeyId 	 		<A
+HREF="xmlsec-transforms.html#XMLSECAESKEY"
+>xmlSecAesKey</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECAESKEYGENERATE"
 >xmlSecAesKeyGenerate</A
@@ -170,6 +198,14 @@ HREF="SIZE-T"
 HREF="xmlsec-transforms.html#XMLSEC-BASE64-LINESIZE-CAPS"
 >XMLSEC_BASE64_LINESIZE</A
 >
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCBASE64ENCODE"
+>xmlSecEncBase64Encode</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCBASE64DECODE"
+>xmlSecEncBase64Decode</A
+>;
 void        <A
 HREF="xmlsec-transforms.html#XMLSECBASE64ENCODESETLINESIZE"
 >xmlSecBase64EncodeSetLineSize</A
@@ -181,6 +217,22 @@ HREF="XMLSECTRANSFORMPTR"
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > lineSize);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NINCLUSIVE"
+>xmlSecC14NInclusive</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NINCLUSIVEWITHCOMMENTS"
+>xmlSecC14NInclusiveWithComments</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NEXCLUSIVE"
+>xmlSecC14NExclusive</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NEXCLUSIVEWITHCOMMENTS"
+>xmlSecC14NExclusiveWithComments</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECC14NEXCLADDINCLNAMESPACES"
 >xmlSecC14NExclAddInclNamespaces</A
@@ -192,6 +244,18 @@ HREF="XMLNODEPTR"
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
 > *prefixList);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCDES3CBC"
+>xmlSecEncDes3Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWDES3CBC"
+>xmlSecKWDes3Cbc</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECDESKEY"
+>xmlSecDesKey</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECDESKEYGENERATE"
 >xmlSecDesKeyGenerate</A
@@ -204,6 +268,14 @@ HREF="XMLSECKEYPTR"
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > size);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECSIGNDSASHA1"
+>xmlSecSignDsaSha1</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECDSAKEY"
+>xmlSecDsaKey</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECDSAKEYGENERATE"
 >xmlSecDsaKeyGenerate</A
@@ -215,6 +287,26 @@ HREF="XMLSECKEYPTR"
 HREF="DSA-CAPS"
 >DSA</GTKDOCLINK
 > *dsa);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMENVELOPED"
+>xmlSecTransformEnveloped</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECMACHMACSHA1"
+>xmlSecMacHmacSha1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECMACHMACRIPEMD160"
+>xmlSecMacHmacRipeMd160</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECMACHMACMD5"
+>xmlSecMacHmacMd5</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECHMACKEY"
+>xmlSecHmacKey</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECHMACKEYGENERATE"
 >xmlSecHmacKeyGenerate</A
@@ -238,6 +330,26 @@ HREF="XMLNODEPTR"
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > bitsLen);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECDIGESTRIPEMD160"
+>xmlSecDigestRipemd160</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECSIGNRSASHA1"
+>xmlSecSignRsaSha1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCRSAPKCS1"
+>xmlSecEncRsaPkcs1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCRSAOAEP"
+>xmlSecEncRsaOaep</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECRSAKEY"
+>xmlSecRsaKey</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECRSAKEYGENERATE"
 >xmlSecRsaKeyGenerate</A
@@ -261,9 +373,25 @@ HREF="XMLNODEPTR"
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > size);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECDIGESTSHA1"
+>xmlSecDigestSha1</A
+>;
 enum        <A
 HREF="xmlsec-transforms.html#XMLSECXPATH2TRANSFORMTYPE"
 >xmlSecXPath2TransformType</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATH"
+>xmlSecTransformXPath</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATH2"
+>xmlSecTransformXPath2</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTER"
+>xmlSecTransformXPointer</A
 >;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATHADD"
@@ -314,6 +442,10 @@ HREF="XMLCHAR"
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
 > **namespaces);
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXSLT"
+>xmlSecTransformXslt</A
+>;
 int         <A
 HREF="xmlsec-transforms.html#XMLSECTRANSFORMXSLTADD"
 >xmlSecTransformXsltAdd</A
@@ -332,7 +464,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3217"
+NAME="AEN3258"
 ></A
 ><H2
 >Description</H2
@@ -342,14 +474,14 @@ NAME="AEN3217"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3220"
+NAME="AEN3261"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3222"
+NAME="AEN3263"
 ></A
 ><H3
 ><A
@@ -365,7 +497,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecTransformIdStruct *xmlSecTransformId;</PRE
+>typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;</PRE
 ></TD
 ></TR
 ></TABLE
@@ -375,7 +507,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3227"
+NAME="AEN3268"
 ></A
 ><H3
 ><A
@@ -396,12 +528,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The "unknown" transform id (NULL).</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3232"
+NAME="AEN3274"
 ></A
 ><H3
 ><A
@@ -418,20 +552,218 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum  {
-    xmlSecTransformStatusNone = 0,
-    xmlSecTransformStatusOk,
-    xmlSecTransformStatusFail
+xmlSecTransformStatusNone = 0,	/* the status unknown */
+xmlSecTransformStatusOk,		/* success */
+xmlSecTransformStatusFail		/* an error occur */
 } xmlSecTransformStatus;</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The transform execution result.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3237"
+NAME="AEN3280"
+></A
+><H3
+><A
+NAME="XMLSECENCAES128CBC"
+></A
+>xmlSecEncAes128Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncAes128Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES-CBC with 128 bits key encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3286"
+></A
+><H3
+><A
+NAME="XMLSECENCAES192CBC"
+></A
+>xmlSecEncAes192Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncAes192Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES-CBC with 192 bits key encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3292"
+></A
+><H3
+><A
+NAME="XMLSECENCAES256CBC"
+></A
+>xmlSecEncAes256Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncAes256Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES-CBC with 256 bits key encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3298"
+></A
+><H3
+><A
+NAME="XMLSECKWAES128"
+></A
+>xmlSecKWAes128</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWAes128;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES with 128 bits key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3304"
+></A
+><H3
+><A
+NAME="XMLSECKWAES192"
+></A
+>xmlSecKWAes192</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWAes192;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES with 192 bits key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3310"
+></A
+><H3
+><A
+NAME="XMLSECKWAES256"
+></A
+>xmlSecKWAes256</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWAes256;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES with 256 bits key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3316"
+></A
+><H3
+><A
+NAME="XMLSECAESKEY"
+></A
+>xmlSecAesKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 	 		xmlSecAesKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3322"
 ></A
 ><H3
 ><A
@@ -466,7 +798,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3245"><P
+NAME="AEN3330"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -554,7 +886,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3266"
+NAME="AEN3351"
 ></A
 ><H3
 ><A
@@ -570,17 +902,75 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->#define XMLSEC_BASE64_LINESIZE		64</PRE
+>#define XMLSEC_BASE64_LINESIZE			64</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The default max line size for base64 encoding</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3271"
+NAME="AEN3357"
+></A
+><H3
+><A
+NAME="XMLSECENCBASE64ENCODE"
+></A
+>xmlSecEncBase64Encode</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncBase64Encode;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The base64 encode transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3363"
+></A
+><H3
+><A
+NAME="XMLSECENCBASE64DECODE"
+></A
+>xmlSecEncBase64Decode</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncBase64Decode;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The base64 decode transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3369"
 ></A
 ><H3
 ><A
@@ -612,7 +1002,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3278"><P
+NAME="AEN3376"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -665,7 +1055,119 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3291"
+NAME="AEN3389"
+></A
+><H3
+><A
+NAME="XMLSECC14NINCLUSIVE"
+></A
+>xmlSecC14NInclusive</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NInclusive;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The regular (inclusive) C14N without comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3395"
+></A
+><H3
+><A
+NAME="XMLSECC14NINCLUSIVEWITHCOMMENTS"
+></A
+>xmlSecC14NInclusiveWithComments</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NInclusiveWithComments;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The regular (inclusive) C14N with comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3401"
+></A
+><H3
+><A
+NAME="XMLSECC14NEXCLUSIVE"
+></A
+>xmlSecC14NExclusive</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NExclusive;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The exclusive C14N without comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3407"
+></A
+><H3
+><A
+NAME="XMLSECC14NEXCLUSIVEWITHCOMMENTS"
+></A
+>xmlSecC14NExclusiveWithComments</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NExclusiveWithComments;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The exclusive C14N with comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3413"
 ></A
 ><H3
 ><A
@@ -699,7 +1201,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3299"><P
+NAME="AEN3421"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -774,7 +1276,91 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3317"
+NAME="AEN3439"
+></A
+><H3
+><A
+NAME="XMLSECENCDES3CBC"
+></A
+>xmlSecEncDes3Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncDes3Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DES3-CBC encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3445"
+></A
+><H3
+><A
+NAME="XMLSECKWDES3CBC"
+></A
+>xmlSecKWDes3Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWDes3Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DES3-CBC key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3451"
+></A
+><H3
+><A
+NAME="XMLSECDESKEY"
+></A
+>xmlSecDesKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecDesKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DES key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3457"
 ></A
 ><H3
 ><A
@@ -809,7 +1395,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3325"><P
+NAME="AEN3465"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -897,7 +1483,63 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3346"
+NAME="AEN3486"
+></A
+><H3
+><A
+NAME="XMLSECSIGNDSASHA1"
+></A
+>xmlSecSignDsaSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecSignDsaSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DSA with SHA1 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3492"
+></A
+><H3
+><A
+NAME="XMLSECDSAKEY"
+></A
+>xmlSecDsaKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecDsaKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DSA signature key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3498"
 ></A
 ><H3
 ><A
@@ -931,7 +1573,7 @@ HREF="DSA-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3354"><P
+NAME="AEN3506"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1002,7 +1644,147 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3371"
+NAME="AEN3523"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMENVELOPED"
+></A
+>xmlSecTransformEnveloped</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformEnveloped;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The "enveloped" transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3529"
+></A
+><H3
+><A
+NAME="XMLSECMACHMACSHA1"
+></A
+>xmlSecMacHmacSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecMacHmacSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC with SHA1 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3535"
+></A
+><H3
+><A
+NAME="XMLSECMACHMACRIPEMD160"
+></A
+>xmlSecMacHmacRipeMd160</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecMacHmacRipeMd160;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC with RipeMD160 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3541"
+></A
+><H3
+><A
+NAME="XMLSECMACHMACMD5"
+></A
+>xmlSecMacHmacMd5</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecMacHmacMd5;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC with MD5 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3547"
+></A
+><H3
+><A
+NAME="XMLSECHMACKEY"
+></A
+>xmlSecHmacKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecHmacKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3553"
 ></A
 ><H3
 ><A
@@ -1037,7 +1819,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3379"><P
+NAME="AEN3561"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1125,7 +1907,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3400"
+NAME="AEN3582"
 ></A
 ><H3
 ><A
@@ -1159,7 +1941,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3408"><P
+NAME="AEN3590"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1230,7 +2012,147 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3425"
+NAME="AEN3607"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTRIPEMD160"
+></A
+>xmlSecDigestRipemd160</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecDigestRipemd160;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RIPEMD160 digest transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3613"
+></A
+><H3
+><A
+NAME="XMLSECSIGNRSASHA1"
+></A
+>xmlSecSignRsaSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecSignRsaSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA with SHA1 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3619"
+></A
+><H3
+><A
+NAME="XMLSECENCRSAPKCS1"
+></A
+>xmlSecEncRsaPkcs1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncRsaPkcs1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA-PKCS1 key transport transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3625"
+></A
+><H3
+><A
+NAME="XMLSECENCRSAOAEP"
+></A
+>xmlSecEncRsaOaep</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncRsaOaep;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA-OAEP key transport transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3631"
+></A
+><H3
+><A
+NAME="XMLSECRSAKEY"
+></A
+>xmlSecRsaKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecRsaKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3637"
 ></A
 ><H3
 ><A
@@ -1264,7 +2186,7 @@ HREF="RSA-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3433"><P
+NAME="AEN3645"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1335,7 +2257,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3450"
+NAME="AEN3662"
 ></A
 ><H3
 ><A
@@ -1370,7 +2292,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3458"><P
+NAME="AEN3670"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1458,7 +2380,35 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3479"
+NAME="AEN3691"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTSHA1"
+></A
+>xmlSecDigestSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecDigestSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The SHA1 digest transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3697"
 ></A
 ><H3
 ><A
@@ -1475,20 +2425,106 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-    xmlSecXPathTransformIntersect = 0,
-    xmlSecXPathTransformSubtract,
-    xmlSecXPathTransformUnion
+xmlSecXPathTransformIntersect = 0,		/* intersect */
+xmlSecXPathTransformSubtract,		/* subtract */
+xmlSecXPathTransformUnion			/* union */
 } xmlSecXPath2TransformType;</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>The XPath2 transform types: "union", "intersect", "subtract".</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3484"
+NAME="AEN3703"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPATH"
+></A
+>xmlSecTransformXPath</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXPath;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPath transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3709"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPATH2"
+></A
+>xmlSecTransformXPath2</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXPath2;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPath2 transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3715"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPOINTER"
+></A
+>xmlSecTransformXPointer</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXPointer;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPointer transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3721"
 ></A
 ><H3
 ><A
@@ -1520,13 +2556,19 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
-></P
+>Writes XPath transform infromation to the &lt;dsig:Transform&gt; node 
+<TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3493"><P
+NAME="AEN3731"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1551,7 +2593,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the transform node</TD
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1568,7 +2610,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the XPath expression</TD
+> the XPath expression.</TD
 ></TR
 ><TR
 ><TD
@@ -1585,7 +2627,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> NULL terminated list of namespace prefix/href pairs</TD
+> NULL terminated list of namespace prefix/href pairs.</TD
 ></TR
 ><TR
 ><TD
@@ -1603,7 +2645,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 for success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1614,7 +2656,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3514"
+NAME="AEN3752"
 ></A
 ><H3
 ><A
@@ -1650,11 +2692,19 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Writes XPath2 transform infromation to the &lt;dsig:Transform&gt; node 
+<TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3523"><P
+NAME="AEN3763"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1679,7 +2729,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1696,7 +2746,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> XPath2 transform type ("union", "intersect" or "subtract").</TD
 ></TR
 ><TR
 ><TD
@@ -1713,7 +2763,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the XPath expression.</TD
 ></TR
 ><TR
 ><TD
@@ -1730,7 +2780,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> NULL terminated list of namespace prefix/href pairs.</TD
 ></TR
 ><TR
 ><TD
@@ -1748,7 +2798,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 for success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1759,7 +2809,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3548"
+NAME="AEN3788"
 ></A
 ><H3
 ><A
@@ -1791,13 +2841,19 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
-></P
+>Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node 
+<TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3557"><P
+NAME="AEN3798"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1822,7 +2878,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the transform node</TD
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1839,7 +2895,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the XPointer expression</TD
+> the XPath expression.</TD
 ></TR
 ><TR
 ><TD
@@ -1856,7 +2912,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> NULL terminated list of namespace prefix/href pairs</TD
+> NULL terminated list of namespace prefix/href pairs.</TD
 ></TR
 ><TR
 ><TD
@@ -1874,7 +2930,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 for success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1885,7 +2941,35 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3578"
+NAME="AEN3819"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXSLT"
+></A
+>xmlSecTransformXslt</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXslt;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XSLT transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3825"
 ></A
 ><H3
 ><A
@@ -1919,7 +3003,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3586"><P
+NAME="AEN3833"><P
 ></P
 ><TABLE
 BORDER="0"

@@ -99,9 +99,9 @@ The key id (key type information).</para>
 <refsect2>
 <title><anchor id="xmlSecKeyType">enum xmlSecKeyType</title>
 <programlisting>typedef enum  {
-    xmlSecKeyTypePublic = 0, 	/* the public key */
-    xmlSecKeyTypePrivate,	/* the private key */
-    xmlSecKeyTypeAny 		/* any key */
+xmlSecKeyTypePublic = 0, 	/* the public key */
+xmlSecKeyTypePrivate,	/* the private key */
+xmlSecKeyTypeAny 		/* any key */
 } xmlSecKeyType;
 </programlisting>
 <para>
@@ -110,11 +110,11 @@ The key id (key type information).</para>
 <refsect2>
 <title><anchor id="xmlSecKeyUsage">enum xmlSecKeyUsage</title>
 <programlisting>typedef enum  {
-    xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
-    xmlSecKeyUsageSign,		/* the key for signing */
-    xmlSecKeyUsageVerify,	/* the key for signature verification */
-    xmlSecKeyUsageEncrypt,	/* the encryption key */
-    xmlSecKeyUsageDecrypt	/* the decryption key */
+xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
+xmlSecKeyUsageSign,		/* the key for signing */
+xmlSecKeyUsageVerify,	/* the key for signature verification */
+xmlSecKeyUsageEncrypt,	/* the encryption key */
+xmlSecKeyUsageDecrypt	/* the decryption key */
 } xmlSecKeyUsage;
 </programlisting>
 <para>
@@ -235,13 +235,13 @@ The "unknown" id.</para>
 <refsect2>
 <title><anchor id="xmlSecKey">struct xmlSecKey</title>
 <programlisting>struct xmlSecKey {
-    xmlSecKeyId				id;	/* the key id (key algorithm info) */
-    xmlSecKeyType			type;	/* the key type (private/public) */
-    xmlChar				*name;	/* the key name (may be NULL) */
-    xmlSecKeyOrigin			origin;	/* the key origin */
-    xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
+xmlSecKeyId				id;	/* the key id (key algorithm info) */
+xmlSecKeyType			type;	/* the key type (private/public) */
+xmlChar				*name;	/* the key name (may be NULL) */
+xmlSecKeyOrigin			origin;	/* the key origin */
+xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
 						   (if key was extracted from a cert) */
-    void				*keyData; /* key specific data */
+void				*keyData; /* key specific data */
 };
 </programlisting>
 <para>

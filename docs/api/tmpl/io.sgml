@@ -28,6 +28,12 @@ The IO transforms.
 
 
 
+<!-- ##### VARIABLE xmlSecInputUri ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION xmlSecInputUriTransformOpen ##### -->
 <para>
 

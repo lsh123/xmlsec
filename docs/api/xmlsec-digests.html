@@ -121,7 +121,7 @@ NAME="XMLSEC-DIGESTS">digests.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN5035"
+NAME="AEN5288"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN5035"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN5038"><H2
+NAME="AEN5291"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -291,7 +291,7 @@ HREF="XMLSECBINTRANSFORMPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5077"
+NAME="AEN5330"
 ></A
 ><H2
 >Description</H2
@@ -301,14 +301,14 @@ NAME="AEN5077"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5080"
+NAME="AEN5333"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5082"
+NAME="AEN5335"
 ></A
 ><H3
 ><A
@@ -334,7 +334,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5087"
+NAME="AEN5340"
 ></A
 ><H3
 ><A
@@ -367,7 +367,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5094"><P
+NAME="AEN5347"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -455,7 +455,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5115"
+NAME="AEN5368"
 ></A
 ><H3
 ><A
@@ -488,7 +488,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5122"><P
+NAME="AEN5375"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -576,7 +576,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5143"
+NAME="AEN5396"
 ></A
 ><H3
 ><A
@@ -609,7 +609,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5150"><P
+NAME="AEN5403"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -697,7 +697,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5171"
+NAME="AEN5424"
 ></A
 ><H3
 ><A
@@ -714,30 +714,30 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecDigestTransformIdStruct {
-    /* same as xmlSecTransformId */    
-    xmlSecTransformType			type;
-    xmlSecTransformUsage		usage;
-    const xmlChar			*href;
-    
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
-    
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyId				keyId;
-    xmlSecKeyType			encryption;
-    xmlSecKeyType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
-    /* xmlSecDigestTransform data/methods */
-    xmlSecDigestUpdateMethod		digestUpdate;
-    xmlSecDigestSignMethod		digestSign;
-    xmlSecDigestVerifyMethod		digestVerify;
+/* same as xmlSecTransformId */    
+xmlSecTransformType			type;
+xmlSecTransformUsage		usage;
+const xmlChar			*href;
+
+xmlSecTransformCreateMethod		create;
+xmlSecTransformDestroyMethod	destroy;
+xmlSecTransformReadNodeMethod	read;
+
+/* xmlSecBinTransform data/methods */
+xmlSecKeyId				keyId;
+xmlSecKeyType			encryption;
+xmlSecKeyType			decryption;
+xmlSecBinTransformSubType		binSubType;
+
+xmlSecBinTransformAddKeyMethod	addBinKey;
+xmlSecBinTransformReadMethod	readBin;
+xmlSecBinTransformWriteMethod	writeBin;
+xmlSecBinTransformFlushMethod	flushBin;    
+
+/* xmlSecDigestTransform data/methods */
+xmlSecDigestUpdateMethod		digestUpdate;
+xmlSecDigestSignMethod		digestSign;
+xmlSecDigestVerifyMethod		digestVerify;
 };</PRE
 ></TD
 ></TR
@@ -748,7 +748,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5176"
+NAME="AEN5429"
 ></A
 ><H3
 ><A
@@ -784,7 +784,7 @@ puts in the node content</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5184"><P
+NAME="AEN5437"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -872,7 +872,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5205"
+NAME="AEN5458"
 ></A
 ><H3
 ><A
@@ -909,7 +909,7 @@ status is stored in xmlSecTransform::state variable</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5213"><P
+NAME="AEN5466"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -980,7 +980,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5230"
+NAME="AEN5483"
 ></A
 ><H3
 ><A
@@ -1014,7 +1014,7 @@ finalized and send to next transform when
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5237"><P
+NAME="AEN5490"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1067,7 +1067,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5250"
+NAME="AEN5503"
 ></A
 ><H3
 ><A
@@ -1102,7 +1102,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5258"><P
+NAME="AEN5511"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1190,7 +1190,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5279"
+NAME="AEN5532"
 ></A
 ><H3
 ><A
@@ -1225,7 +1225,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5287"><P
+NAME="AEN5540"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1313,7 +1313,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5308"
+NAME="AEN5561"
 ></A
 ><H3
 ><A
@@ -1350,7 +1350,7 @@ status is stored in xmlSecTransform::state variable</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5316"><P
+NAME="AEN5569"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1438,7 +1438,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5337"
+NAME="AEN5590"
 ></A
 ><H3
 ><A
@@ -1475,7 +1475,7 @@ otherwise we return 0</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5345"><P
+NAME="AEN5598"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1563,7 +1563,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5366"
+NAME="AEN5619"
 ></A
 ><H3
 ><A
@@ -1598,7 +1598,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5374"><P
+NAME="AEN5627"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1686,7 +1686,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5395"
+NAME="AEN5648"
 ></A
 ><H3
 ><A
@@ -1718,7 +1718,7 @@ it just calls flush for next trasnform</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5402"><P
+NAME="AEN5655"><P
 ></P
 ><TABLE
 BORDER="0"

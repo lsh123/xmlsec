@@ -18,109 +18,7 @@
 @id: 
 @Returns: 
 
-<!-- ##### VARIABLE xmlSecAesKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NExclusive ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NExclusiveWithComments ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NInclusive ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecC14NInclusiveWithComments ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### FUNCTION xmlSecClearIdAttributeNames ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecDesKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecDigestRipemd160 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecDigestSha1 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecDsaKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncAes128Cbc ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncAes192Cbc ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncAes256Cbc ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncBase64Decode ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncBase64Encode ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncDes3Cbc ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncRsaOaep ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecEncRsaPkcs1 ##### -->
 <para>
 
 </para>
@@ -152,72 +50,12 @@
 
 @c: 
 
-<!-- ##### VARIABLE xmlSecHmacKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecInputUri ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO xmlSecIsHex ##### -->
 <para>
 
 </para>
 
 @c: 
-
-<!-- ##### VARIABLE xmlSecKWAes128 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecKWAes192 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecKWAes256 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecKWDes3Cbc ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecMacHmacMd5 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecMacHmacRipeMd160 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecMacHmacSha1 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecMemBuf ##### -->
-<para>
-
-</para>
-
 
 <!-- ##### FUNCTION xmlSecNodeSetContain ##### -->
 <para>
@@ -228,60 +66,6 @@
 @node: 
 @parent: 
 @Returns: 
-
-<!-- ##### VARIABLE xmlSecPrintErrorMessages ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecRsaKey ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecSignDsaSha1 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecSignRsaSha1 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformEnveloped ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformXPath ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformXPath2 ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformXPointer ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### VARIABLE xmlSecTransformXslt ##### -->
-<para>
-
-</para>
-
 
 <!-- ##### VARIABLE xmlSecXPathAlt ##### -->
 <para>

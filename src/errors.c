@@ -106,6 +106,7 @@ xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
  * @func: the error origin function (__FUNCTIION__).
  * @reason: the error code.
  * @msg: the error message in printf format.
+ * @...: the parameters for the @msg.
  *
  * Reports an error.
  */

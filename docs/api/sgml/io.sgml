@@ -16,6 +16,7 @@
 
 void        <link linkend="xmlSecIOInit">xmlSecIOInit</link>                    (void);
 void        <link linkend="xmlSecIOShutdown">xmlSecIOShutdown</link>                (void);
+extern      xmlSecTransformId <link linkend="xmlSecInputUri">xmlSecInputUri</link>;
 int         <link linkend="xmlSecInputUriTransformOpen">xmlSecInputUriTransformOpen</link>     (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              const char *uri);
 void        <link linkend="xmlSecCleanupInputCallbacks">xmlSecCleanupInputCallbacks</link>     (void);
@@ -50,6 +51,13 @@ int         <link linkend="xmlSecRegisterInputCallbacks">xmlSecRegisterInputCall
 <refsect2>
 <title><anchor id="xmlSecIOShutdown">xmlSecIOShutdown ()</title>
 <programlisting>void        xmlSecIOShutdown                (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecInputUri">xmlSecInputUri</title>
+<programlisting>extern xmlSecTransformId xmlSecInputUri;
+</programlisting>
 <para>
 
 </para></refsect2>

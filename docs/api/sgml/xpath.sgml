@@ -37,8 +37,9 @@ void        <link linkend="xmlSecXPathHereFunction">xmlSecXPathHereFunction</lin
 <programlisting>void        xmlSecXPathHereFunction         (<link linkend="xmlXPathParserContextPtr">xmlXPathParserContextPtr</link> ctxt,
                                              int nargs);</programlisting>
 <para>
-see <link linkend="xmlXPtrHereFunction">xmlXPtrHereFunction</link>() in xpointer.c. the only change is that 
-we return NodeSet instead of NodeInterval</para>
+The implementation of XPath "<link linkend="here">here</link>()" function.
+See <link linkend="xmlXPtrHereFunction">xmlXPtrHereFunction</link>() in xpointer.c. the only change is that 
+we return NodeSet instead of NodeInterval.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -47,10 +48,10 @@ we return NodeSet instead of NodeInterval</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>ctxt</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to XPath parser context.
 </entry></row>
 <row><entry align="right"><parameter>nargs</parameter>&nbsp;:</entry>
-<entry>
+<entry> the args number.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

@@ -74,6 +74,7 @@ xmlSecDigestTransformFlush
 <FILE>io</FILE>
 xmlSecIOInit
 xmlSecIOShutdown
+xmlSecInputUri
 xmlSecInputUriTransformOpen
 xmlSecCleanupInputCallbacks
 xmlSecRegisterDefaultInputCallbacks
@@ -163,6 +164,7 @@ xmlSecSimpleKeysMngrLoadPkcs12
 
 <SECTION>
 <FILE>membuf</FILE>
+xmlSecMemBuf
 xmlSecMemBufTransformGetBuffer
 </SECTION>
 
@@ -171,20 +173,53 @@ xmlSecMemBufTransformGetBuffer
 xmlSecTransformId
 xmlSecTransformUnknown
 xmlSecTransformStatus
+xmlSecEncAes128Cbc
+xmlSecEncAes192Cbc
+xmlSecEncAes256Cbc
+xmlSecKWAes128
+xmlSecKWAes192
+xmlSecKWAes256
+xmlSecAesKey
 xmlSecAesKeyGenerate
 XMLSEC_BASE64_LINESIZE
+xmlSecEncBase64Encode
+xmlSecEncBase64Decode
 xmlSecBase64EncodeSetLineSize
+xmlSecC14NInclusive
+xmlSecC14NInclusiveWithComments
+xmlSecC14NExclusive
+xmlSecC14NExclusiveWithComments
 xmlSecC14NExclAddInclNamespaces
+xmlSecEncDes3Cbc
+xmlSecKWDes3Cbc
+xmlSecDesKey
 xmlSecDesKeyGenerate
+xmlSecSignDsaSha1
+xmlSecDsaKey
 xmlSecDsaKeyGenerate
+xmlSecTransformEnveloped
+xmlSecMacHmacSha1
+xmlSecMacHmacRipeMd160
+xmlSecMacHmacMd5
+xmlSecHmacKey
 xmlSecHmacKeyGenerate
 xmlSecHmacAddOutputLength
+xmlSecDigestRipemd160
+xmlSecSignRsaSha1
+xmlSecEncRsaPkcs1
+xmlSecEncRsaOaep
+xmlSecRsaKey
 xmlSecRsaKeyGenerate
 xmlSecEncRsaOaepAddParam
+xmlSecDigestSha1
 xmlSecXPath2TransformType
+xmlSecTransformXPath
+xmlSecTransformXPath2
+xmlSecTransformXPointer
 xmlSecTransformXPathAdd
 xmlSecTransformXPath2Add
 xmlSecTransformXPointerAdd
+xmlSecTransformXslt
 xmlSecTransformXsltAdd
 </SECTION>
 
@@ -204,6 +239,7 @@ xmlSecTransformCreateMethod
 xmlSecTransformDestroyMethod
 xmlSecTransformReadNodeMethod
 xmlSecTransformIdStruct
+xmlSecTransform
 xmlSecBinTransformAddKeyMethod
 xmlSecBinTransformReadMethod
 xmlSecBinTransformWriteMethod
@@ -426,6 +462,7 @@ xmlSecErrorsCallback
 xmlSecErrorsInit
 xmlSecErrorsShutdown
 xmlSecErrorsSetCallback
+xmlSecPrintErrorMessages
 XMLSEC_ERRORS_HERE
 xmlSecError
 xmlSecAssert

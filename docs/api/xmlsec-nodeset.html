@@ -121,7 +121,7 @@ NAME="XMLSEC-NODESET">nodeset.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN5993"
+NAME="AEN6258"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN5993"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN5996"><H2
+NAME="AEN6261"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -292,7 +292,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6037"
+NAME="AEN6302"
 ></A
 ><H2
 >Description</H2
@@ -302,14 +302,14 @@ NAME="AEN6037"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6040"
+NAME="AEN6305"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6042"
+NAME="AEN6307"
 ></A
 ><H3
 ><A
@@ -326,13 +326,13 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-    xmlSecNodeSetNormal = 0,
-    xmlSecNodeSetInvert,
-    xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments,
-    xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
+xmlSecNodeSetNormal = 0,
+xmlSecNodeSetInvert,
+xmlSecNodeSetTree,
+xmlSecNodeSetTreeWithoutComments,
+xmlSecNodeSetTreeInvert,
+xmlSecNodeSetTreeWithoutCommentsInvert,
+xmlSecNodeSetList
 } xmlSecNodeSetType;</PRE
 ></TD
 ></TR
@@ -343,7 +343,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6047"
+NAME="AEN6312"
 ></A
 ><H3
 ><A
@@ -360,9 +360,9 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-    xmlSecNodeSetIntersection = 0,
-    xmlSecNodeSetSubtraction,
-    xmlSecNodeSetUnion
+xmlSecNodeSetIntersection = 0,
+xmlSecNodeSetSubtraction,
+xmlSecNodeSetUnion
 } xmlSecNodeSetOp;</PRE
 ></TD
 ></TR
@@ -373,7 +373,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6052"
+NAME="AEN6317"
 ></A
 ><H3
 ><A
@@ -390,14 +390,14 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecNodeSet {
-    xmlNodeSetPtr	nodes;
-    xmlDocPtr		doc;
-    xmlSecNodeSetType	type;
-    xmlSecNodeSetOp	op;
-    
-    xmlSecNodeSetPtr	next;
-    xmlSecNodeSetPtr	prev;
-    xmlSecNodeSetPtr	children;
+xmlNodeSetPtr	nodes;
+xmlDocPtr		doc;
+xmlSecNodeSetType	type;
+xmlSecNodeSetOp	op;
+
+xmlSecNodeSetPtr	next;
+xmlSecNodeSetPtr	prev;
+xmlSecNodeSetPtr	children;
 };</PRE
 ></TD
 ></TR
@@ -408,7 +408,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6057"
+NAME="AEN6322"
 ></A
 ><H3
 ><A
@@ -445,7 +445,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6065"><P
+NAME="AEN6330"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -550,7 +550,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6090"
+NAME="AEN6355"
 ></A
 ><H3
 ><A
@@ -589,7 +589,7 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6099"><P
+NAME="AEN6364"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -677,7 +677,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6120"
+NAME="AEN6385"
 ></A
 ><H3
 ><A
@@ -705,7 +705,7 @@ HREF="XMLSECNODESETPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6126"><P
+NAME="AEN6391"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -741,7 +741,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6135"
+NAME="AEN6400"
 ></A
 ><H3
 ><A
@@ -777,7 +777,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6143"><P
+NAME="AEN6408"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -865,7 +865,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6164"
+NAME="AEN6429"
 ></A
 ><H3
 ><A
@@ -904,7 +904,7 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6173"><P
+NAME="AEN6438"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -992,7 +992,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6194"
+NAME="AEN6459"
 ></A
 ><H3
 ><A
@@ -1031,7 +1031,7 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6203"><P
+NAME="AEN6468"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1119,7 +1119,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6224"
+NAME="AEN6489"
 ></A
 ><H3
 ><A
@@ -1156,7 +1156,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6232"><P
+NAME="AEN6497"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1261,7 +1261,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6257"
+NAME="AEN6522"
 ></A
 ><H3
 ><A
@@ -1294,7 +1294,7 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6264"><P
+NAME="AEN6529"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1382,7 +1382,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6285"
+NAME="AEN6550"
 ></A
 ><H3
 ><A
@@ -1414,7 +1414,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6292"><P
+NAME="AEN6557"><P
 ></P
 ><TABLE
 BORDER="0"

@@ -20,7 +20,6 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
-
 /******************************************************************************
  *
  * EVP Block Cipher transforms
@@ -868,13 +867,19 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	if(transform->encode) {
-	    xmlSecAssert2(EVP_PKEY_size(pKey) > 0, -1);
+	    /* this is a hack: for rsa signatures 
+	     * we get size from EVP_PKEY_size(),
+	     * for dsa signature we use a fixed constant */
+	    outSize = EVP_PKEY_size(pKey);
+	    if(outSize < XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
+		outSize = XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE;
+	    }
 
-	    ret = xmlSecBufferSetMaxSize(out, EVP_PKEY_size(pKey));
+	    ret = xmlSecBufferSetMaxSize(out, outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBufferSetMaxSize(%d)", EVP_PKEY_size(pKey));
+			    "xmlSecBufferSetMaxSize(%d)", outSize);
 		return(-1);
 	    }
 	

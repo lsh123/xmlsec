@@ -59,6 +59,8 @@ XMLSEC_EXPORT int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform,
  * EVP Signature transforms
  *
  *****************************************************************************/
+#define XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE			40
+
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureInitialize	(xmlSecTransformPtr transform,
 								 const EVP_MD* digest);
 XMLSEC_EXPORT void	xmlSecOpenSSLEvpSignatureFinalize	(xmlSecTransformPtr transform);

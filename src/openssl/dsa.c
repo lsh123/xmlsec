@@ -17,6 +17,7 @@
 
 #include <openssl/dsa.h>
 #include <openssl/sha.h>
+#include <openssl/objects.h>
 
 #include <libxml/tree.h>
 
@@ -26,7 +27,6 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/digests.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
@@ -128,7 +128,7 @@ static void		xmlSecOpenSSLKeyDataDsaValueDebugDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
 static void		xmlSecOpenSSLKeyDataDsaValueDebugXmlDump(xmlSecKeyDataPtr data,
 								 FILE* output);
-static DSA*		xmlSecOpenSSLDsaDup			(DSA* dsa);
+
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaValueKlass = {
     sizeof(xmlSecKeyDataKlass),
     sizeof(xmlSecKeyData),
@@ -679,6 +679,8 @@ static int  	xmlSecOpenSSLDsaSha1Execute			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 
+static const EVP_MD *xmlSecOpenSSLDsaEvp			(void);
+
 static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     xmlSecNameDsaSha1,
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
@@ -713,7 +715,7 @@ static int
 xmlSecOpenSSLDsaSha1Initialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
     
-    return(xmlSecOpenSSLEvpSignatureInitialize(transform, EVP_dss1()));
+    return(xmlSecOpenSSLEvpSignatureInitialize(transform, xmlSecOpenSSLDsaEvp()));
 }
 
 static void 
@@ -829,6 +831,143 @@ xmlSecOpenSSLDsaSha1Destroy(xmlSecTransformPtr transform) {
 
     memset(transform, 0, sizeof(xmlSecTransform));
     xmlFree(transform);
+}
+
+
+/****************************************************************************
+ *
+ * DSA-SHA1 EVP
+ *
+ * XMLDSig specifies dsa signature packing not supported by OpenSSL so 
+ * we created our own EVP_MD.
+ *
+ * http://www.w3.org/TR/xmldsig-core/#sec-SignatureAlg:
+ * 
+ * The output of the DSA algorithm consists of a pair of integers 
+ * usually referred by the pair (r, s). The signature value consists of 
+ * the base64 encoding of the concatenation of two octet-streams that 
+ * respectively result from the octet-encoding of the values r and s in 
+ * that order. Integer to octet-stream conversion must be done according 
+ * to the I2OSP operation defined in the RFC 2437 [PKCS1] specification 
+ * with a l parameter equal to 20. For example, the SignatureValue element 
+ * for a DSA signature (r, s) with values specified in hexadecimal:
+ *
+ *  r = 8BAC1AB6 6410435C B7181F95 B16AB97C 92B341C0 
+ *  s = 41E2345F 1F56DF24 58F426D1 55B4BA2D B6DCD8C8
+ *       
+ * from the example in Appendix 5 of the DSS standard would be
+ *        
+ * <SignatureValue>i6watmQQQ1y3GB+VsWq5fJKzQcBB4jRfH1bfJFj0JtFVtLotttzYyA==</SignatureValue>
+ *
+ ***************************************************************************/
+static int 
+xmlSecOpenSSLDsaEvpInit(EVP_MD_CTX *ctx)
+{ 
+    return SHA1_Init(ctx->md_data); 
+}
+
+static int 
+xmlSecOpenSSLDsaEvpUpdate(EVP_MD_CTX *ctx,const void *data,unsigned long count)
+{ 
+    return SHA1_Update(ctx->md_data,data,count); 
+}
+
+static int 
+xmlSecOpenSSLDsaEvpFinal(EVP_MD_CTX *ctx,unsigned char *md)
+{ 
+    return SHA1_Final(md,ctx->md_data); 
+}
+
+static int 	
+xmlSecOpenSSLDsaEvpSign(int type, const unsigned char *dgst, int dlen,
+			unsigned char *sig, unsigned int *siglen, DSA *dsa) {
+    DSA_SIG *s;
+    int rSize, sSize;
+
+    s = DSA_do_sign(dgst, dlen, dsa);
+    if(s == NULL) {
+	*siglen=0;
+	return(0);
+    }
+
+    rSize = BN_num_bytes(s->r);
+    sSize = BN_num_bytes(s->s);
+    if((rSize > (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2)) ||
+       (sSize > (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2))) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "size(r)=%d or size(s)=%d > %d", 
+		    rSize, sSize, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2);
+	DSA_SIG_free(s);
+	return(0);
+    }	
+
+    memset(sig, 0, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE);
+    BN_bn2bin(s->r, sig + (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2) - rSize);
+    BN_bn2bin(s->s, sig + XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE - sSize);
+    *siglen = XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE;
+
+    DSA_SIG_free(s);
+    return(1);    
+}
+
+static int 
+xmlSecOpenSSLDsaEvpVerify(int type, const unsigned char *dgst, int dgst_len,
+			const unsigned char *sigbuf, int siglen, DSA *dsa) {
+    DSA_SIG *s;    
+    int ret = -1;
+
+    s = DSA_SIG_new();
+    if (s == NULL) {
+	return(ret);
+    }
+
+    if(siglen != XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "invalid length %d (%d expected)",
+		    siglen, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE);
+	goto err;
+    }
+
+    s->r = BN_bin2bn(sigbuf, XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2, NULL);
+    s->s = BN_bin2bn(sigbuf + (XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2), 
+		       XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE / 2, NULL);
+    if((s->r == NULL) || (s->s == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BN_bin2bn");
+	goto err;
+    }
+
+    ret = DSA_do_verify(dgst, dgst_len, s, dsa);
+
+err:
+    DSA_SIG_free(s);
+    return(ret);
+}
+
+static const EVP_MD xmlSecOpenSSLDsaMdEvp = {
+    NID_dsaWithSHA,
+    NID_dsaWithSHA,
+    SHA_DIGEST_LENGTH,
+    0,
+    xmlSecOpenSSLDsaEvpInit,
+    xmlSecOpenSSLDsaEvpUpdate,
+    xmlSecOpenSSLDsaEvpFinal,
+    NULL,
+    NULL,
+    xmlSecOpenSSLDsaEvpSign,
+    xmlSecOpenSSLDsaEvpVerify, 
+    {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
+    SHA_CBLOCK,
+    sizeof(EVP_MD *)+sizeof(SHA_CTX),
+};
+
+static const EVP_MD *xmlSecOpenSSLDsaEvp(void)
+{
+    return(&xmlSecOpenSSLDsaMdEvp);
 }
 
 #endif /* XMLSEC_NO_DSA */

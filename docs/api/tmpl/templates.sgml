@@ -1,0 +1,336 @@
+<!-- ##### SECTION Title ##### -->
+templates
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecSignatureCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureDestroy ##### -->
+<para>
+
+</para>
+
+@signNode: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddSignedInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddKeyInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddObject ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddC14NMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@c14nMethod: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@encMethod: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddSignMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@signMethod: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@encMethod: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddReference ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@digestMethod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecObjectAddSignProperties ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@target: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecObjectAddManifest ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecManifestAddReference ##### -->
+<para>
+
+</para>
+
+@manifestNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@type: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataDestroy ##### -->
+<para>
+
+</para>
+
+@encNode: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataAddEncMethod ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@encMethod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataAddKeyInfo ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataAddEncProperties ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataAddEncProperty ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@target: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataAddCipherValue ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncDataAddCipherReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCipherReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddKeyName ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddKeyValue ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddX509Data ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddRetrievalMethod ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecRetrievalMethodAddTransform ##### -->
+<para>
+
+</para>
+
+@retrMethod: 
+@transform: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@id: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddEncryptedKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@id: 
+@type: 
+@recipient: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@bitsLen: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecXsltAddStylesheet ##### -->
+<para>
+
+</para>
+
+@node: 
+@xslt: 
+@Returns: 
+
+

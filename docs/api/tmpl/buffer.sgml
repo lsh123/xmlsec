@@ -1,0 +1,189 @@
+<!-- ##### SECTION Title ##### -->
+buffer
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT xmlSecBuffer ##### -->
+<para>
+
+</para>
+
+@data: 
+@size: 
+@maxSize: 
+
+<!-- ##### FUNCTION xmlSecBufferCreate ##### -->
+<para>
+
+</para>
+
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferDestroy ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION xmlSecBufferInitialize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferFinalize ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION xmlSecBufferGetData ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferSetData ##### -->
+<para>
+
+</para>
+
+@buf: 
+@data: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferGetSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferSetSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferGetMaxSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferSetMaxSize ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferEmpty ##### -->
+<para>
+
+</para>
+
+@buf: 
+
+
+<!-- ##### FUNCTION xmlSecBufferAppend ##### -->
+<para>
+
+</para>
+
+@buf: 
+@data: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferPrepend ##### -->
+<para>
+
+</para>
+
+@buf: 
+@data: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferRemoveHead ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferRemoveTail ##### -->
+<para>
+
+</para>
+
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferBase64NodeContentRead ##### -->
+<para>
+
+</para>
+
+@buf: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferBase64NodeContentWrite ##### -->
+<para>
+
+</para>
+
+@buf: 
+@node: 
+@columns: 
+@Returns: 
+
+

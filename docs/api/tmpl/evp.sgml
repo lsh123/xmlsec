@@ -1,0 +1,53 @@
+<!-- ##### SECTION Title ##### -->
+evp
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDataAdoptEvp ##### -->
+<para>
+
+</para>
+
+@data: 
+@pKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDataGetEvp ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyDup ##### -->
+<para>
+
+</para>
+
+@pKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLEvpKeyAdopt ##### -->
+<para>
+
+</para>
+
+@pKey: 
+@Returns: 
+
+

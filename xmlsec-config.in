@@ -168,7 +168,7 @@ gnutls)
     ;;
 
 nss)
-    if test "@XMLSEC_NO_NSS@" = "no"; then
+    if test "@XMLSEC_NO_NSS@" = "0"; then
         the_crypto_flags="@NSS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"nss\\\""
 	the_crypto_libs="@NSS_LIBS@"
         the_xmlsec_crypto_lib="-l@NSS_CRYPTO_LIB@"

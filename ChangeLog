@@ -1,3 +1,7 @@
+Tue Sep 16 02:28:41 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/Makefile.am: link xmlsec lib with dl librarias
+
 Sun 14 Sep 2003 02:13:51 AM PDT  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* tests/testEnc.sh: added "--session-key <key>" paramater

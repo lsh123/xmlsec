@@ -433,7 +433,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
 /**
  * xmlSecNodeSetGetChildren:
  * @doc: 		the pointer to an XML document.
- * @parent:	 	the pointer to parent XML node.
+ * @parent:	 	the pointer to parent XML node or NULL if we want to include all document nodes.
  * @withComments: 	the flag include  comments or not.
  * @invert: 		the "invert" flag.
  *
@@ -457,7 +457,6 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     xmlSecNodeSetType type;
 
     xmlSecAssert2(doc != NULL, NULL);
-    xmlSecAssert2(parent != NULL, NULL);
         
     nodes = xmlXPathNodeSetCreate(parent);
     if(nodes == NULL) {
@@ -468,6 +467,16 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }	
+    
+    /* if parent is NULL then we add all the doc children */
+    if(parent == NULL) {
+	xmlNodePtr cur;
+	for(cur = doc->children; cur != NULL; cur = cur->next) {
+	    if(withComments || (cur->type != XML_COMMENT_NODE)) {
+	        xmlXPathNodeSetAdd(nodes, cur);
+	    }
+	}
+    }
 
     if(withComments && invert) {
 	type = xmlSecNodeSetTreeInvert;

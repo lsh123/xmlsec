@@ -1252,7 +1252,7 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
 	
 	} else {
 	    /* we do not want to have comments for empty URI */
-	    nodes = xmlSecNodeSetGetChildren(doc, xmlDocGetRootElement(doc), 0, 0);
+	    nodes = xmlSecNodeSetGetChildren(doc, NULL, 0, 0);
 	    if(nodes == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,

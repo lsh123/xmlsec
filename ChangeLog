@@ -1,3 +1,8 @@
+Thu 09 Oct 2003 03:59:02 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/nodeset.c src/transforms.c: don't ignore nodes on the document
+	root element level (bug #124245)
+
 Sun Oct  5 01:05:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/transforms.h include/xmlsec/xmldsig.h 

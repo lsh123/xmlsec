@@ -50,7 +50,7 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api/images
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/images/*.gif $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
-	-@INSTALL@ -m 0644 $(srcdir)/api/*.html $(srcdir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
+	-@INSTALL@ -m 0644 $(srcdir)/api/*.html $(srcdir)/api/*.png $(srcdir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
 	-@INSTALL@ -m 0644 $(srcdir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
 
 uninstall:

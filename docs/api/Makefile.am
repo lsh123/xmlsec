@@ -169,7 +169,7 @@ example_sources:
 	done);
 
 dist-hook:
-	@cp -p $(srcdir)/*.html $(srcdir)/*.sgml $(distdir)
+	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(srcdir)/*.sgml $(distdir)
 
 clean: clean-sources
 	-@rm -rf $(DOC_SOURCE_DIR)

@@ -317,19 +317,29 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     ss = xmlSecMSCryptoKeysStoreGetSS(store);
     xmlSecAssert2(((ss != NULL) && (*ss != NULL)), NULL);
 
+    /* first try to find key in the simple keys store */
     key = xmlSecKeyStoreFindKey(*ss, name, keyInfoCtx);
     if (key != NULL) {
 	return (key);
     }
 
-    /* Try to find the key in the MS Certificate store, and construct an xmlSecKey.
-    * we must have a name to lookup keys in the certificate store.
+    /* Next try to find the key in the MS Certificate store, and construct an xmlSecKey.
+    *  we must have a name to lookup keys in the certificate store.
     */
     if (name == NULL) {
 	goto done;
     }
 
-    lpCertID = (wchar_t *)malloc((sizeof(wchar_t)) * (strlen(name) + 1));
+    /* aleksey todo: shouldn't we call MultiByteToWideChar first to get the buffer size? */
+    lpCertID = (wchar_t *)xmlMalloc((sizeof(wchar_t)) * (strlen(name) + 1));
+    if(lpCertID == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+		    NULL,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
+    }
     MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, name, -1, lpCertID, strlen(name) + 1);
 
     /* what type of key are we looking for? 
@@ -340,13 +350,12 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     */
     keyReq = &(keyInfoCtx->keyReq);
     if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
-
 	if (NULL == (hStoreHandle = CertOpenSystemStore(0, "MY"))) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"CertOpenSystemStore",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 	if(NULL == (pCertContext = CertFindCertificateInStore(
@@ -357,34 +366,10 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	    lpCertID,
 	    NULL))) {
 
-	    /*xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertFindCertificateInStore",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());*/
 	    goto done;
 	}
 
-	data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
-	if(data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecMSCryptoCertAdopt",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    goto done;
-	}
-
-	key = xmlSecKeyCreate();
-	if (key == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecKeyCreate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return (NULL);
-	}
-
+	/* set cert in x509 data */
 	x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
 	if(x509Data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -402,28 +387,8 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			NULL,
 			"CertDuplicateCertificateContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"data=%s, error code=%d",
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), GetLastError());
-	    goto done;
-	}
-	ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, pDupCert);
-	if (ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecMSCryptoKeyDataX509AdoptKeyCert",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"data=%s",
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-	    goto done;
-	}
-	pDupCert = CertDuplicateCertificateContext(pCertContext);
-	if (pDupCert == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"CertDuplicateCertificateContext",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"data=%s, error code=%d",
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), GetLastError());
 	    goto done;
 	}
 
@@ -435,6 +400,28 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"data=%s",
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+	    goto done;
+	}
+	pDupCert = NULL;
+
+	data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
+	if(data == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecMSCryptoCertAdopt",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
+	}
+	pCertContext = NULL;
+
+	key = xmlSecKeyCreate();
+	if (key == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecKeyCreate",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 
@@ -462,8 +449,47 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	}
 	x509Data = NULL;
 
-	retval = key;
-	key = NULL;
+        /* now that we have a key, make sure it is valid and let the simple
+	* store adopt it */
+    	if (xmlSecKeyIsValid(key)) {
+    	    /* Set the name of the key to the given name */
+	    ret = xmlSecKeySetName(key, name);
+	    if (ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			    "xmlSecKeySetName",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		goto done;
+	    }
+
+	    retval = xmlSecKeyDuplicate(key);
+	    if (retval == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			    "xmlSecKeyDuplicate",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		goto done;
+	    }
+
+	    /* aleksey todo: do we need to adopt this key ???
+	     * if this would be removed then instead of duplicating 
+	     * key few lines above just do 
+	     *	retval = key;
+	     *  key = NULL;
+	     */
+	    ret = xmlSecSimpleKeysStoreAdoptKey(*ss, key);
+	    if (ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			    "xmlSecSimpleKeysStoreAdoptKey",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		goto done;
+	    }
+	    key = NULL;
+	}
     }
 
 done:
@@ -471,7 +497,7 @@ done:
 	CertCloseStore(hStoreHandle, 0);
     }
     if (NULL != lpCertID) {
-	free(lpCertID);
+	xmlFree(lpCertID);
     }
     if (NULL != pCertContext) {
 	CertFreeCertificateContext(pCertContext);
@@ -484,39 +510,6 @@ done:
     }
     if (key != NULL) {
 	xmlSecKeyDestroy(key);
-    }
-
-    /* now that we have a key, make sure it is valid and let the simple
-    * store adopt it */
-    if (retval) {
-	if (xmlSecKeyIsValid(retval)) {
-    	    /* Set the name of the key to the given name */
-	    ret = xmlSecKeySetName(retval, name);
-	    if (ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-			    "xmlSecKeySetName",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecKeyDestroy(retval);
-		retval = NULL;
-	    }
-
-	    ret = xmlSecSimpleKeysStoreAdoptKey(*ss, retval);
-	    if (ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-			    "xmlSecSimpleKeysStoreAdoptKey",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecKeyDestroy(retval);
-		retval = NULL;
-	    }
-	    retval = xmlSecKeyStoreFindKey(*ss, name, keyInfoCtx);
-	} else {
-	    xmlSecKeyDestroy(retval);
-	    retval = NULL;
-	}
     }
 
     return (retval);

@@ -9,8 +9,6 @@
 #include "globals.h"
 
 #include <string.h>
-
-// include ms cryptoapi includes
 #include <windows.h>
 #include <wincrypt.h>
 
@@ -25,11 +23,11 @@
 
 typedef struct _xmlSecMSCryptoDigestCtx	xmlSecMSCryptoDigestCtx, *xmlSecMSCryptoDigestCtxPtr;
 struct _xmlSecMSCryptoDigestCtx {
-    HCRYPTPROV provider;
-    ALG_ID alg_id;
-    HCRYPTHASH mscHash;
-    unsigned char dgst[MSCRYPTO_MAX_HASH_SIZE];
-    size_t dgstSize;	/* dgst size in bytes */
+    HCRYPTPROV	    provider;
+    ALG_ID	    alg_id;
+    HCRYPTHASH	    mscHash;
+    unsigned char   dgst[MSCRYPTO_MAX_HASH_SIZE];
+    size_t	    dgstSize;	/* dgst size in bytes */
 };	    
 
 /******************************************************************************
@@ -87,7 +85,6 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     } else 
 #endif /* XMLSEC_NO_SHA1 */    
 
-
     {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -97,30 +94,13 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
 
-    // TODO: Check what provider is best suited here....
+    /* TODO: Check what provider is best suited here.... */
     if (!CryptAcquireContext(&ctx->provider, NULL, MS_STRONG_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-	CHAR szBuf[255]; 
-	LPVOID lpMsgBuf;
-	DWORD dwError = GetLastError();
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		      FORMAT_MESSAGE_FROM_SYSTEM |
-		      FORMAT_MESSAGE_IGNORE_INSERTS,
-		      NULL,
-		      dwError,
-		      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		      (LPTSTR) &lpMsgBuf,
-		      0,
-		      NULL);
-
-	sprintf(szBuf, "CryptAcquireContext failed: GetLastError returned: %s\n", (LPCSTR)lpMsgBuf); 
-
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    lpMsgBuf,
+		    NULL,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	LocalFree( lpMsgBuf );
-
 	return(-1);
     }
 
@@ -213,10 +193,10 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 	    0,
 	    &(ctx->mscHash));
 
-	if (ret == 0 || ctx->mscHash == 0) {
+	if((ret == 0) || (ctx->mscHash == 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"WinCAPI:Hash - Error creating hash object",
+			"CryptHashData",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);			
@@ -256,8 +236,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 	}
 	if(last) {
 	    /* TODO: make a MSCrypto compatible assert here */
-	    //xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
-
+	    /* xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1); */
 	    DWORD retLen;
 	    retLen = MSCRYPTO_MAX_HASH_SIZE;
 
@@ -270,7 +249,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 	    if (ret == 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "WinCAPI:Hash - Error getting hash value",
+			    "CryptGetHashParam",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "size=%d", inSize);
 		return(-1);

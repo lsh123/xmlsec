@@ -20,10 +20,18 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 
-static BOOL xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateKey);
-static BOOL xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
-						 ALG_ID dwAlgId, LPBYTE pbKeyMaterial,
-						 DWORD dwKeyMaterial, HCRYPTKEY *hSessionKey);
+#ifndef MS_ENH_RSA_AES_PROV_PROTO
+#define MS_ENH_RSA_AES_PROV_PROTO "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+#endif /* MS_ENH_RSA_AES_PROV_PROTO */
+
+static BOOL xmlSecMSCryptoCreatePrivateExponentOneKey	(HCRYPTPROV hProv, 
+							 HCRYPTKEY *hPrivateKey);
+static BOOL xmlSecMSCryptoImportPlainSessionBlob	(HCRYPTPROV hProv, 
+							 HCRYPTKEY hPrivateKey,
+							 ALG_ID dwAlgId, 
+							 LPBYTE pbKeyMaterial,
+							 DWORD dwKeyMaterial, 
+							 HCRYPTKEY *hSessionKey);
 
 /**************************************************************************
  *
@@ -53,27 +61,6 @@ static int 	xmlSecMSCryptoBlockCipherCtxUpdate	(xmlSecMSCryptoBlockCipherCtxPtr 
 							 const xmlChar* cipherName,
 							 xmlSecTransformCtxPtr transformCtx);
 
-/* function implementations */
-static int 
-xmlSecMSError(DWORD errorCode) {
-	CHAR szBuf[500]; 
-	LPVOID lpMsgBuf;
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-		      FORMAT_MESSAGE_FROM_SYSTEM | 
-		      FORMAT_MESSAGE_IGNORE_INSERTS,
-		      NULL,
-		      errorCode,
-		      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-		      (LPTSTR) &lpMsgBuf,
-		      0,
-		      NULL);
-			
-	sprintf(szBuf, "CryptEncrypt failed: GetLastError returned: %s\n", lpMsgBuf);
-	printf("crypto error: %s\n", szBuf);
-	
-	LocalFree(lpMsgBuf);
-	return(-1);	
-}
 
 static int 
 xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
@@ -95,12 +82,17 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     /* iv len == block len */
     dwBlockLenLen = sizeof(DWORD);
-    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0))
-	return xmlSecMSError(GetLastError());
-	
+    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(cipherName),
+		    "CryptGetKeyParam",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
     blockLen = dwBlockLen / 8;
     xmlSecAssert2(blockLen > 0, -1);
-    
     if(encrypt) {
 	unsigned char* iv;
 	size_t outSize;
@@ -119,9 +111,23 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 	iv = xmlSecBufferGetData(out) + outSize;
 
 	/* generate and use random iv */
-	if (!CryptGenRandom(ctx->cryptProvider, blockLen, iv) ||
-	    !CryptSetKeyParam(ctx->cryptKey, KP_IV, iv, 0))
-	    return xmlSecMSError(GetLastError());
+	if(!CryptGenRandom(ctx->cryptProvider, blockLen, iv)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+		        "CryptGenRandom",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        "len=%d", blockLen);
+	    return(-1);
+	}
+	    
+	if(!CryptSetKeyParam(ctx->cryptKey, KP_IV, iv, 0)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+			"CryptSetKeyParam",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
     } else {
 	/* if we don't have enough data, exit and hope that 
 	* we'll have iv next time */
@@ -131,8 +137,14 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 	xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
 
 	/* set iv */
-	if (!CryptSetKeyParam(ctx->cryptKey, KP_IV, xmlSecBufferGetData(in), 0))
-	    return xmlSecMSError(GetLastError());
+	if (!CryptSetKeyParam(ctx->cryptKey, KP_IV, xmlSecBufferGetData(in), 0)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+			"CryptSetKeyParam",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
 
 	/* and remove from input */
 	ret = xmlSecBufferRemoveHead(in, blockLen);
@@ -171,8 +183,14 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(transformCtx != NULL, -1);
 	
     dwBlockLenLen = sizeof(DWORD);
-    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0))
-	return xmlSecMSError(GetLastError());
+    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(cipherName),
+		    "CryptSetKeyParam",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
     blockLen = dwBlockLen / 8;
     xmlSecAssert2(blockLen > 0, -1);
 
@@ -204,16 +222,28 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
     inBuf = xmlSecBufferGetData(in);
+    xmlSecAssert2(inBuf != NULL, -1);
 
     memcpy(outBuf, inBuf, inSize);
-
     dwCLen = inSize;
     if(encrypt) {
-	if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen))
-	    return xmlSecMSError(GetLastError());
+	if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+			"CryptEncrypt",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
     } else {
-	if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen))
-	    return xmlSecMSError(GetLastError());
+	if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+			"CryptSetKeyDecrypt",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
     }
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
@@ -264,16 +294,20 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
     
     xmlSecAssert2(ctx != NULL, -1);
-    //xmlSecAssert2(ctx->cipher != 0, -1);
-    //xmlSecAssert2(ctx->cipherCtx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     dwBlockLenLen = sizeof(DWORD);
-    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0))
-	return xmlSecMSError(GetLastError());
+    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(cipherName),
+		    "CryptGetKeyParam",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
     blockLen = dwBlockLen / 8;
     xmlSecAssert2(blockLen > 0, -1);
 
@@ -297,8 +331,14 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
 	/* create random padding */
 	if((size_t)blockLen > (inSize + 1)) {
-	    if (!CryptGenRandom(ctx->cryptProvider, blockLen - inSize - 1, inBuf + inSize))
-		return xmlSecMSError(GetLastError());
+	    if (!CryptGenRandom(ctx->cryptProvider, blockLen - inSize - 1, inBuf + inSize)) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    xmlSecErrorsSafeString(cipherName),
+			    "CryptGenRandom",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
 	}
 	inBuf[blockLen - 1] = blockLen - inSize;
 	inSize = blockLen;
@@ -331,11 +371,23 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
 	/* Set process last block to false, since we handle padding ourselves, and MSCrypto padding 
 	 * can be skipped. I hope this will work .... */
-	if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen))
-	    return xmlSecMSError(GetLastError());
+	if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+			"CryptEncrypt",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
     } else {
-	if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen))
-	    return xmlSecMSError(GetLastError());
+	if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecErrorsSafeString(cipherName),
+			"CryptDecrypt",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
     }
 
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
@@ -446,59 +498,56 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecMSCryptoTransformDes3CbcId) {
-	ctx->algorithmIdentifier = CALG_3DES;
-	ctx->keyId 	= xmlSecMSCryptoKeyDataDesId;
-	ctx->providerName = MS_ENHANCED_PROV;
-	ctx->providerType = PROV_RSA_FULL;
-	ctx->keySize = 24;
+	ctx->algorithmIdentifier    = CALG_3DES;
+	ctx->keyId 		    = xmlSecMSCryptoKeyDataDesId;
+	ctx->providerName	    = MS_ENHANCED_PROV;
+	ctx->providerType	    = PROV_RSA_FULL;
+	ctx->keySize		    = 24;
     } else 
 #endif /* XMLSEC_NO_DES */
-#ifndef XMLSEC_NO_AES
-	if(transform->id == xmlSecMSCryptoTransformAes128CbcId) {
-	    ctx->algorithmIdentifier = CALG_AES_128;
-	    ctx->keyId 	= xmlSecMSCryptoKeyDataAesId;
-	    /*ctx->providerName = MS_ENH_RSA_AES_PROV;*/
-	    ctx->providerName = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)";
-	    ctx->providerType = PROV_RSA_AES;
-	    ctx->keySize = 16;
-	} else if(transform->id == xmlSecMSCryptoTransformAes192CbcId) {
-	    ctx->algorithmIdentifier = CALG_AES_192;
-	    ctx->keyId 	= xmlSecMSCryptoKeyDataAesId;
-	    /*ctx->providerName = MS_ENH_RSA_AES_PROV;*/
-	    ctx->providerName = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)";
-	    ctx->providerType = PROV_RSA_AES;
-	    ctx->keySize = 24;
-	} else if(transform->id == xmlSecMSCryptoTransformAes256CbcId) {
-	    ctx->algorithmIdentifier = CALG_AES_256;
-	    ctx->keyId 	= xmlSecMSCryptoKeyDataAesId;
-	    /*ctx->providerName = MS_ENH_RSA_AES_PROV;*/
-	    ctx->providerName = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)";
-	    ctx->providerType = PROV_RSA_AES;
-	    ctx->keySize = 32;
-	} else 
-#endif /* XMLSEC_NO_AES */
-	    if(1) {
-		xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
-	    }        
-	
 
-    if (!CryptAcquireContext(&ctx->cryptProvider, NULL /*"xmlSecMSCryptoTempContainer"*/, 
+#ifndef XMLSEC_NO_AES
+    if(transform->id == xmlSecMSCryptoTransformAes128CbcId) {
+	ctx->algorithmIdentifier    = CALG_AES_128;
+	ctx->keyId 		    = xmlSecMSCryptoKeyDataAesId;
+	ctx->providerName	    = MS_ENH_RSA_AES_PROV_PROTO;
+	ctx->providerType	    = PROV_RSA_AES;
+	ctx->keySize		    = 16;
+    } else if(transform->id == xmlSecMSCryptoTransformAes192CbcId) {
+	ctx->algorithmIdentifier    = CALG_AES_192;
+	ctx->keyId 		    = xmlSecMSCryptoKeyDataAesId;
+	ctx->providerName	    = MS_ENH_RSA_AES_PROV_PROTO;
+	ctx->providerType	    = PROV_RSA_AES;
+	ctx->keySize		    = 24;
+    } else if(transform->id == xmlSecMSCryptoTransformAes256CbcId) {
+	ctx->algorithmIdentifier    = CALG_AES_256;
+	ctx->keyId 		    = xmlSecMSCryptoKeyDataAesId;
+	ctx->providerName	    = MS_ENH_RSA_AES_PROV_PROTO;
+	ctx->providerType	    = PROV_RSA_AES;
+	ctx->keySize		    = 32;
+    } else 
+#endif /* XMLSEC_NO_AES */
+
+    if(1) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+	    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+	    NULL,
+	    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+	    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }        
+	
+    if(!CryptAcquireContext(&ctx->cryptProvider, NULL /*"xmlSecMSCryptoTempContainer"*/, 
 			     ctx->providerName, ctx->providerType, 0)) {
-        DWORD dwError;
-	dwError = GetLastError();
+        DWORD dwError = GetLastError();
 	if (dwError == NTE_EXISTS) {
-    if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer", 
+	    if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer", 
 				     ctx->providerName, ctx->providerType, 0)) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "CryptAcquireContext",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "Error code: %d", GetLastError());
+			    XMLSEC_ERRORS_NO_MESSAGE);
 
 		return(-1);
 	    }
@@ -507,8 +556,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"CryptAcquireContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"Error code: %d", dwError);
-
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -599,7 +647,6 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
     xmlSecAssert2(ctx->keySize > 0, -1);
-    //xmlSecAssert2(ctx->keySize <= sizeof(ctx->key), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
@@ -617,19 +664,23 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     bufData = xmlSecBufferGetData(buffer);
     xmlSecAssert2(bufData != NULL, -1);
 
-
-    // Import this key and get an HCRYPTKEY handle
+    /* Import this key and get an HCRYPTKEY handle */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
 	ctx->pubPrivKey,
 	ctx->algorithmIdentifier, 
 	bufData, 
-	/*xmlSecBufferGetSize(buffer)*/ ctx->keySize, 
+	ctx->keySize, 
 	&(ctx->cryptKey)))  {
-	return xmlSecMSError(GetLastError());
+
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+    		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecMSCryptoImportPlainSessionBlob",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
     }
 
     ctx->keyInitialized = 1;
-
     return(0);
 }
 
@@ -894,219 +945,389 @@ xmlSecMSCryptoTransformDes3CbcGetKlass(void) {
 }
 #endif /* XMLSEC_NO_DES */
 
-/**
+/*
  * Low level helper routines for importing plain text keys in MS HKEY handle, 
  * since MSCrypto API does not support import of plain text (session) keys
  * just like that.
  * These functions are based upon MS kb article: 228786
- *
+ * 
+ * aleksey: also check "Base Provider Key BLOBs" article for priv key blob format
  **/
-
-
 static BOOL 
 xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateKey)
 {
-    BOOL fReturn = FALSE;
-    BOOL fResult;
-    int n;
-    LPBYTE keyblob = NULL;
-    DWORD dwkeyblob;
-    DWORD dwBitLen;
+    HCRYPTKEY hKey = 0;
+    LPBYTE keyBlob = NULL;
+    DWORD keyBlobLen;
+    PUBLICKEYSTRUC* pubKeyStruc;
+    RSAPUBKEY* rsaPubKey;
+    DWORD bitLen;
     BYTE *ptr;
+    int n;
+    BOOL res = FALSE;
 
+    xmlSecAssert2(hProv != 0, FALSE);
+    xmlSecAssert2(hPrivateKey != NULL, FALSE);
+
+    /* just in case */
     *hPrivateKey = 0;
 
-    // Generate the private key
-    fResult = CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, hPrivateKey);
-    if (!fResult) goto done;
-
-    // Export the private key, we'll convert it to a private
-    // exponent of one key
-    fResult = CryptExportKey(*hPrivateKey, 0, PRIVATEKEYBLOB, 0, NULL, &dwkeyblob);
-    if (!fResult) goto done;
-
-    keyblob = (LPBYTE)LocalAlloc(LPTR, dwkeyblob);
-    if (!keyblob) goto done;
-
-    fResult = CryptExportKey(*hPrivateKey, 0, PRIVATEKEYBLOB, 0, keyblob, &dwkeyblob);
-    if (!fResult) goto done;
-
-    CryptDestroyKey(*hPrivateKey);
-    *hPrivateKey = 0;
-
-    // Get the bit length of the key
-    memcpy(&dwBitLen, &keyblob[12], 4);      
-
-    // Modify the Exponent in Key BLOB format
-    // Key BLOB format is documented in SDK
-
-    // Convert pubexp in rsapubkey to 1
-    ptr = &keyblob[16];
-    for (n = 0; n < 4; n++) {
-	if (n == 0) ptr[n] = 1;
-	else ptr[n] = 0;
-    }
-
-    // Skip pubexp
-    ptr += 4;
-    // Skip modulus, prime1, prime2
-    ptr += (dwBitLen/8);
-    ptr += (dwBitLen/16);
-    ptr += (dwBitLen/16);
-
-    // Convert exponent1 to 1
-    for (n = 0; n < (dwBitLen/16); n++) {
-	if (n == 0) ptr[n] = 1;
-	else ptr[n] = 0;
-    }
-
-    // Skip exponent1
-    ptr += (dwBitLen/16);
-
-    // Convert exponent2 to 1
-    for (n = 0; n < (dwBitLen/16); n++) {
-	if (n == 0) ptr[n] = 1;
-	else ptr[n] = 0;
-    }
-
-    // Skip exponent2, coefficient
-    ptr += (dwBitLen/16);
-    ptr += (dwBitLen/16);
-
-    // Convert privateExponent to 1
-    for (n = 0; n < (dwBitLen/8); n++) {
-	if (n == 0) ptr[n] = 1;
-	else ptr[n] = 0;
-    }
-
-    // Import the exponent-of-one private key.      
-    if (!CryptImportKey(hProv, keyblob, dwkeyblob, 0, 0, hPrivateKey)) {                 
+    /* Generate the private key */
+    if(!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &hKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGenKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
-    fReturn = TRUE;
-   
-done:
-    if (keyblob) LocalFree(keyblob);
-
-    if (!fReturn) {
-	if (*hPrivateKey) CryptDestroyKey(*hPrivateKey);
+    /* Export the private key, we'll convert it to a private exponent of one key */
+    if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, NULL, &keyBlobLen)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
     }
 
-    return fReturn;
-}
+    keyBlob = (LPBYTE)LocalAlloc(LPTR, keyBlobLen);
+    if(keyBlob == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "LocalAlloc",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
+    }
+ 
+    if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, keyBlob, &keyBlobLen)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
+    }
+    CryptDestroyKey(hKey);
+    hKey = 0;
 
+    /* Get the bit length of the key */
+    if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "len=%d", keyBlobLen);
+	goto done;
+    }
+    pubKeyStruc = (PUBLICKEYSTRUC*)keyBlob;
+    if(pubKeyStruc->bVersion != 0x02) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "pubKeyStruc->bVersion=%d", pubKeyStruc->bVersion);
+	goto done;
+    }
+    if(pubKeyStruc->bType != PRIVATEKEYBLOB) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "pubKeyStruc->bType=%d", (int)pubKeyStruc->bType);
+	goto done;
+    }
+
+    /* aleksey: don't ask me why it is RSAPUBKEY, just don't ask */
+    rsaPubKey = (RSAPUBKEY*)(keyBlob + sizeof(PUBLICKEYSTRUC)); 
+
+    /* check that we have RSA private key */
+    if(rsaPubKey->magic != 0x32415352) { 
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "rsaPubKey->magic=0x%08x", rsaPubKey->magic);
+	goto done;
+    }
+    bitLen = rsaPubKey->bitlen;
+
+    /*  Modify the Exponent in Key BLOB format Key BLOB format is documented in SDK */
+    rsaPubKey->pubexp = 1;
+
+    /* Private-key BLOBs, type PRIVATEKEYBLOB, are used to store private keys outside a CSP. 
+     * Base provider private-key BLOBs have the following format:
+     * 
+     * PUBLICKEYSTRUC  publickeystruc ;
+     * RSAPUBKEY rsapubkey;
+     * BYTE modulus[rsapubkey.bitlen/8];		1/8
+     * BYTE prime1[rsapubkey.bitlen/16];		1/16 
+     * BYTE prime2[rsapubkey.bitlen/16];		1/16 
+     * BYTE exponent1[rsapubkey.bitlen/16];		1/16 
+     * BYTE exponent2[rsapubkey.bitlen/16];		1/16 
+     * BYTE coefficient[rsapubkey.bitlen/16];		1/16
+     * BYTE privateExponent[rsapubkey.bitlen/8];	1/8
+     */
+    if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + bitLen / 2 + bitLen / 16) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptExportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "len=%d", keyBlobLen);
+	goto done;
+    }
+    ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)); 
+
+    /* Skip modulus, prime1, prime2 */
+    ptr += bitLen / 8;
+    ptr += bitLen / 16;
+    ptr += bitLen / 16;
+
+    /* Convert exponent1 to 1 */
+    for (n = 0; n < (bitLen / 16); n++) {
+	if (n == 0) ptr[n] = 1;
+	else ptr[n] = 0;
+    }
+    ptr += bitLen / 16;
+
+    /* Convert exponent2 to 1 */
+    for (n = 0; n < (bitLen / 16); n++) {
+	if (n == 0) ptr[n] = 1;
+	else ptr[n] = 0;
+    }
+    ptr += bitLen / 16;
+
+    /* Skip coefficient */
+    ptr += bitLen / 16;
+
+    /* Convert privateExponent to 1 */
+    for (n = 0; n < (bitLen / 16); n++) {
+	if (n == 0) ptr[n] = 1;
+	else ptr[n] = 0;
+    }
+
+    /* Import the exponent-of-one private key. */
+    if (!CryptImportKey(hProv, keyBlob, keyBlobLen, 0, 0, &hKey)) {                 
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptImportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
+    }
+    (*hPrivateKey) = hKey;
+    hKey = 0;
+    res = TRUE;
+   
+done:
+    if(keyBlob != NULL) { 
+	LocalFree(keyBlob);
+    }
+    if (hKey != 0) {
+	CryptDestroyKey(hKey);
+    }
+
+    return res;
+}
 
 static BOOL 
 xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 				     ALG_ID dwAlgId, LPBYTE pbKeyMaterial,
 				     DWORD dwKeyMaterial, HCRYPTKEY *hSessionKey) {
-    BOOL fResult;   
-    BOOL fReturn = FALSE;
-    BOOL fFound = FALSE;
-    LPBYTE pbSessionBlob = NULL;
-    DWORD dwSessionBlob, dwSize, n;
+    ALG_ID dwPrivKeyAlg;
+    LPBYTE keyBlob = NULL;
+    DWORD keyBlobLen, rndBlobSize, dwSize, n;
+    PUBLICKEYSTRUC* pubKeyStruc;
+    ALG_ID* algId;
     DWORD dwPublicKeySize;
     DWORD dwProvSessionKeySize;
-    ALG_ID dwPrivKeyAlg;
     LPBYTE pbPtr; 
-    DWORD dwFlags = CRYPT_FIRST;
+    DWORD dwFlags;
     PROV_ENUMALGS_EX ProvEnum;
     HCRYPTKEY hTempKey = 0;
+    BOOL fFound;
+    BOOL res = FALSE;
+    
+    xmlSecAssert2(hProv != 0, FALSE);
+    xmlSecAssert2(hPrivateKey != 0, FALSE);
+    xmlSecAssert2(pbKeyMaterial != NULL, FALSE);
+    xmlSecAssert2(dwKeyMaterial > 0, FALSE);
+    xmlSecAssert2(hSessionKey != NULL, FALSE);
 
-    // Double check to see if this provider supports this algorithm
-    // and key size
-    do {        
-	dwSize = sizeof(ProvEnum);
-	fResult = CryptGetProvParam(hProv, PP_ENUMALGS_EX, (LPBYTE)&ProvEnum,
-	    &dwSize, dwFlags);
-	if (!fResult) break;
-
+    /*  Double check to see if this provider supports this algorithm and key size */
+    fFound = FALSE;
+    dwFlags = CRYPT_FIRST;
+    dwSize = sizeof(ProvEnum);
+    while(CryptGetProvParam(hProv, PP_ENUMALGS_EX, (LPBYTE)&ProvEnum, &dwSize, dwFlags)) {
+	if (ProvEnum.aiAlgid == dwAlgId) {
+	    fFound = TRUE;
+	    break;
+	}
+        dwSize = sizeof(ProvEnum);
 	dwFlags = 0;
+    }
+    if(!fFound) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGetProvParam",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "algId=%d is not supported", dwAlgId);
+	goto done;
+    }
 
-	if (ProvEnum.aiAlgid == dwAlgId) fFound = TRUE;
-
-    } while (!fFound);
-
-    if (!fFound) goto done;
-
-    // We have to get the key size(including padding)
-    // from an HCRYPTKEY handle.  PP_ENUMALGS_EX contains
-    // the key size without the padding so we can't use it.
-    fResult = CryptGenKey(hProv, dwAlgId, 0, &hTempKey);
-    if (!fResult) goto done;
+    /* We have to get the key size(including padding) from an HCRYPTKEY handle.  
+     * PP_ENUMALGS_EX contains the key size without the padding so we can't use it.
+     */
+    if(!CryptGenKey(hProv, dwAlgId, 0, &hTempKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGenKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "algId=%d", dwAlgId);
+	goto done;
+    }
 
     dwSize = sizeof(DWORD);
-    fResult = CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize,
-	&dwSize, 0);
-    if (!fResult) goto done;
+    if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGetKeyParam(KP_KEYLEN)",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "algId=%d", dwAlgId);
+	goto done;
+    }
     CryptDestroyKey(hTempKey);
     hTempKey = 0;
 
-    // Our key is too big, leave
-    if ((dwKeyMaterial * 8) > dwProvSessionKeySize) goto done;
-
-    // Get private key's algorithm
-    dwSize = sizeof(ALG_ID);
-    fResult = CryptGetKeyParam(hPrivateKey, KP_ALGID, (LPBYTE)&dwPrivKeyAlg, &dwSize, 0);
-    if (!fResult) goto done;
-
-    // Get private key's length in bits
-    dwSize = sizeof(DWORD);
-    fResult = CryptGetKeyParam(hPrivateKey, KP_KEYLEN, (LPBYTE)&dwPublicKeySize, &dwSize, 0);
-    if (!fResult) goto done;
-
-    // calculate Simple blob's length
-    dwSessionBlob = (dwPublicKeySize/8) + sizeof(ALG_ID) + sizeof(BLOBHEADER);
-
-    // allocate simple blob buffer
-    pbSessionBlob = (LPBYTE)LocalAlloc(LPTR, dwSessionBlob);
-    if (!pbSessionBlob) goto done;
-
-    pbPtr = pbSessionBlob;
-
-    // SIMPLEBLOB Format is documented in SDK
-    // Copy header to buffer
-    ((BLOBHEADER *)pbPtr)->bType = SIMPLEBLOB;
-    ((BLOBHEADER *)pbPtr)->bVersion = 2;
-    ((BLOBHEADER *)pbPtr)->reserved = 0;
-    ((BLOBHEADER *)pbPtr)->aiKeyAlg = dwAlgId;
-    pbPtr += sizeof(BLOBHEADER);
-
-    // Copy private key algorithm to buffer
-    *((DWORD *)pbPtr) = dwPrivKeyAlg;
-    pbPtr += sizeof(ALG_ID);
-
-    // Place the key material in reverse order
-    for (n = 0; n < dwKeyMaterial; n++) {
-	pbPtr[n] = pbKeyMaterial[dwKeyMaterial-n-1];
+    /* Our key is too big, leave */
+    if ((dwKeyMaterial * 8) > dwProvSessionKeySize) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "dwKeyMaterial=%d;dwProvSessionKeySize=%d", 
+		    dwKeyMaterial, dwProvSessionKeySize);
+	goto done;
     }
 
-    // 3 is for the first reserved byte after the key material + the 2 reserved bytes at the end.
-    dwSize = dwSessionBlob - (sizeof(ALG_ID) + sizeof(BLOBHEADER) + dwKeyMaterial + 3);
-    pbPtr += (dwKeyMaterial+1);
+    /* Get private key's algorithm */
+    dwSize = sizeof(ALG_ID);
+    if(!CryptGetKeyParam(hPrivateKey, KP_ALGID, (LPBYTE)&dwPrivKeyAlg, &dwSize, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGetKeyParam(KP_ALGID)",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "algId=%d", dwAlgId);
+	goto done;
+    }
 
-    // Generate random data for the rest of the buffer
-    // (except that last two bytes)
-    fResult = CryptGenRandom(hProv, dwSize, pbPtr);
-    if (!fResult) goto done;
+    /* Get private key's length in bits */
+    dwSize = sizeof(DWORD);
+    if(!CryptGetKeyParam(hPrivateKey, KP_KEYLEN, (LPBYTE)&dwPublicKeySize, &dwSize, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGetKeyParam(KP_KEYLEN)",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "algId=%d", dwAlgId);
+	goto done;
+    }
+    
+    /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end. */
+    if(dwPublicKeySize / 8 < dwKeyMaterial + 3) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "dwKeyMaterial=%d;dwPublicKeySize=%d", 
+		    dwKeyMaterial, dwPublicKeySize);
+	goto done;
+    }
+    rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterial + 3);
 
-    for (n = 0; n < dwSize; n++) {
+    /** 
+     * Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP. 
+     * Base provider simple-key BLOBs are always encrypted with a key exchange public key. The pbData 
+     * member of the SIMPLEBLOB is a sequence of bytes in the following format:
+     * 
+     * PUBLICKEYSTRUC  publickeystruc ;
+     * ALG_ID algid;
+     * BYTE encryptedkey[rsapubkey.bitlen/8];
+     */
+
+    /* calculate Simple blob's length */
+    keyBlobLen = sizeof(PUBLICKEYSTRUC) + sizeof(ALG_ID) + (dwPublicKeySize / 8);
+
+    /* allocate simple blob buffer */
+    keyBlob = (LPBYTE)LocalAlloc(LPTR, keyBlobLen);
+    if(keyBlob == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "LocalAlloc",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	goto done;
+    }
+    memset(keyBlob, 0, keyBlobLen);
+
+    /* initialize PUBLICKEYSTRUC */
+    pubKeyStruc		    = (PUBLICKEYSTRUC*)(keyBlob);
+    pubKeyStruc->bType	    = SIMPLEBLOB;
+    pubKeyStruc->bVersion   = 0x02;
+    pubKeyStruc->reserved   = 0;
+    pubKeyStruc->aiKeyAlg   = dwAlgId;	
+
+    /* Copy private key algorithm to buffer */
+    algId		    = (ALG_ID*)(keyBlob + sizeof(PUBLICKEYSTRUC));
+    (*algId)		    = dwPrivKeyAlg;
+    
+    /* Place the key material in reverse order */
+    pbPtr		    = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(ALG_ID));
+    for (n = 0; n < dwKeyMaterial; n++) {
+	pbPtr[n] = pbKeyMaterial[dwKeyMaterial - n - 1];
+    }
+    pbPtr += dwKeyMaterial;
+
+    /* skip reserved byte */
+    pbPtr += 1;
+
+    /* Generate random data for the rest of the buffer */
+    if((rndBlobSize > 0) && !CryptGenRandom(hProv, rndBlobSize, pbPtr)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptGenRandom",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "rndBlobSize=%d", rndBlobSize);
+	goto done;
+    }
+    /* aleksey: why are we doing this? */
+    for (n = 0; n < rndBlobSize; n++) {
 	if (pbPtr[n] == 0) pbPtr[n] = 1;
     }
 
-    pbSessionBlob[dwSessionBlob - 2] = 2;
+    /* set magic number at the end */
+    keyBlob[keyBlobLen - 2] = 2;
 
-    fResult = CryptImportKey(hProv, pbSessionBlob , dwSessionBlob, 
-	hPrivateKey, CRYPT_EXPORTABLE, hSessionKey);
-    if (!fResult) goto done;
+    if(!CryptImportKey(hProv, keyBlob , keyBlobLen, hPrivateKey, CRYPT_EXPORTABLE, hSessionKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "CryptImportKey",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "algId=%d", dwAlgId);
+	goto done;
+    }
 
-    fReturn = TRUE;           
+    /* success */
+    res = TRUE;           
 
 done:
-    if (hTempKey) CryptDestroyKey(hTempKey);
-    if (pbSessionBlob) LocalFree(pbSessionBlob);
-
-    return fReturn;
+    if(hTempKey != 0) {
+	CryptDestroyKey(hTempKey);
+    }
+    if(keyBlob != NULL) {
+	LocalFree(keyBlob);
+    }
+    return(res);
 }
 

@@ -261,7 +261,6 @@ XMLSEC_MSCRYPTO_OBJS = \
 	$(XMLSEC_MSCRYPTO_INTDIR)\digests.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\symkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\kt_rsa.obj \
-	$(XMLSEC_MSCRYPTO_INTDIR)\hmac.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\strings.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\signatures.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\certkeys.obj \
@@ -275,7 +274,6 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\digests.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\symkeys.obj \
-	$(XMLSEC_MSCRYPTO_INTDIR_A)\hmac.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\strings.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\signatures.obj \
@@ -326,6 +324,8 @@ APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
 !else
 CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
 APP_CFLAGS		= $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS) 
+# this disables TEMPLATE tests and helps with missing algorithms (hmac) in mscrypto
+APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
 !endif
 
 !if "$(WITH_OPENSSL_096)" == "1"
@@ -454,15 +454,19 @@ apps : $(BINDIR)\$(APP_NAME)
 
 check : check-keys check-dsig check-enc
 
-check-keys : $(BINDIR)\$(APP_NAME)
+check-keys : check-tmp $(BINDIR)\$(APP_NAME)
 	sh ../tests/testKeys.sh default ../tests $(BINDIR)/$(APP_NAME) der
 
-check-dsig : $(BINDIR)\$(APP_NAME)
+check-dsig : check-tmp $(BINDIR)\$(APP_NAME)
 	sh ../tests/testDSig.sh default ../tests $(BINDIR)/$(APP_NAME) der
 
-check-enc : $(BINDIR)\$(APP_NAME)
+check-enc : check-tmp $(BINDIR)\$(APP_NAME)
 	sh ../tests/testEnc.sh default ../tests $(BINDIR)/$(APP_NAME) der
 
+check-tmp :
+	if not exist tmp mkdir tmp
+	set TMPFOLDER=.\tmp
+		
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)
 	if exist $(XMLSEC_INTDIR_A) rmdir /S /Q $(XMLSEC_INTDIR_A)

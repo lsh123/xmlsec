@@ -11,9 +11,13 @@ crypto_config=$topfolder
 priv_key_option="--pkcs12"
 priv_key_format="p12"
 
+if [ "z$TMPFOLDER" = "z" ] ; then
+    TMPFOLDER=/tmp
+fi
+
 timestamp=`date +%Y%m%d_%H%M%S` 
-tmpfile=/tmp/testDSig.$timestamp-$$.tmp
-logfile=/tmp/testDSig.$timestamp-$$.log
+tmpfile=$TMPFOLDER/testDSig.$timestamp-$$.tmp
+logfile=$TMPFOLDER/testDSig.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"

@@ -362,7 +362,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "CertDuplicateCertificateContext",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
@@ -377,7 +377,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 			"CertOpenStore",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -387,7 +387,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "CertAddCertificateContextToStore",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
     ctx->numCerts++;
@@ -472,7 +472,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 			"CertOpenStore",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -482,7 +482,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "CertAddCRLContextToStore",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
     ctx->numCrls++;
@@ -1775,7 +1775,7 @@ xmlSecMSCryptoX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 		    NULL,
 		    "CertCreateCertificateContext",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
 
@@ -1852,7 +1852,7 @@ xmlSecMSCryptoX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
 		    NULL,
 		    "CertCreateCRLContext",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
 
@@ -2015,7 +2015,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
 			    NULL,
 		    "CertGetCertificateContextProperty",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error Code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 		return (NULL);
 	    }
     bSKI = malloc(dwSize);
@@ -2024,7 +2024,7 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
 			    NULL,
 			    "CertGetCertificateContextProperty",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "Error Code=%d", GetLastError());
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		free(bSKI);
 		return (NULL);
 	    }

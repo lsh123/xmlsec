@@ -241,7 +241,7 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
 		    NULL,
 		    "MultiByteToWideChar",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "GetLastError=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -261,7 +261,7 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
 		    NULL,
 		    "MultiByteToWideChar",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "GetLastError=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -280,7 +280,7 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
 		    NULL,
 		    "PFXImportCertStore",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "GetLastError=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
     
@@ -317,9 +317,8 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
 			    NULL,
 			    "CertDuplicateCertificateContext",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "data=%s;GetLastError=%d",
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), 
-			    GetLastError());
+			    "data=%s",
+			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 		goto done;
 	    }
 
@@ -342,9 +341,8 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
 			NULL,
 			"CertDuplicateCertificateContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"data=%s;GetLastError=%d",
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), 
-			GetLastError());
+			"data=%s",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	    goto done;	
 	}
 
@@ -527,7 +525,7 @@ xmlSecMSCryptoAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
 			    NULL,
 			    "CertCreateCertificateContext",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-	    		    "error code=%d", GetLastError());
+	    		    XMLSEC_ERRORS_NO_MESSAGE);
 		xmlSecBufferFinalize(&buffer);
 		return (NULL);
 	    }

@@ -32,6 +32,15 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoShutdown		(void);
 XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoGenerateRandom	(xmlSecBufferPtr buffer,
 									 size_t size);
+
+XMLSEC_CRYPTO_EXPORT void		xmlSecMSCryptoErrorsDefaultCallback(const char* file, 
+									int line, 
+									const char* func,
+									const char* errorObject, 
+									const char* errorSubject,
+									int reason, 
+									const char* msg);
+
 /********************************************************************
  *
  * HMAC transforms

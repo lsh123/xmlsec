@@ -1,6 +1,10 @@
 #!/bin/sh 
 
-logfiles='/tmp/test*.log'
+if [ "z$TMPFOLDER" = "z" ] ; then
+    TMPFOLDER=/tmp
+fi
+
+logfiles='$TMPFOLDER/test*.log'
 
 echo "-------------------- MEMORY USAGE --------------------"
 grep 'in use' $logfiles | \

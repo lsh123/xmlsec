@@ -21,8 +21,19 @@
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 
+#if defined(_MSC_VER)
+#define snprintf _snprintf
+#endif
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 
+/**
+ * xmlSecCryptoGetFunctions_mscrypto:
+ *
+ * Gets MSCrypto specific functions table.
+ *
+ * Returns xmlsec-mscrypto functions table.
+ */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscrypto(void) {
     static xmlSecCryptoDLFunctions functions;
@@ -85,10 +96,6 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformDes3CbcGetKlass 		= xmlSecMSCryptoTransformDes3CbcGetKlass;
 #endif /* XMLSEC_NO_DES */
 
-#ifndef XMLSEC_NO_HMAC
-    gXmlSecMSCryptoFunctions->transformHmacSha1GetKlass 	= xmlSecMSCryptoTransformHmacSha1GetKlass;
-#endif /* XMLSEC_NO_HMAC */
-
 #ifndef XMLSEC_NO_RSA
     gXmlSecMSCryptoFunctions->transformRsaSha1GetKlass 		= xmlSecMSCryptoTransformRsaSha1GetKlass;
     gXmlSecMSCryptoFunctions->transformRsaPkcs1GetKlass 	= xmlSecMSCryptoTransformRsaPkcs1GetKlass;
@@ -141,6 +148,9 @@ xmlSecMSCryptoInit (void)  {
 	return(-1);
     }
 
+    /* set default errors callback for xmlsec to us */
+    xmlSecErrorsSetCallback(xmlSecMSCryptoErrorsDefaultCallback);
+
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_mscrypto()) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -182,7 +192,7 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
 #ifndef XMLSEC_NO_X509
     /* create x509 store if needed */
-    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId) == 0) {
+    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;
 
         x509Store = xmlSecKeyDataStoreCreate(xmlSecMSCryptoX509StoreId);
@@ -224,8 +234,8 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  */
 int
 xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
+    HCRYPTPROV hProv = 0;
     int ret;
-    HCRYPTPROV hProv;
     
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
@@ -244,24 +254,62 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "CryptAcquireContext",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "Error number: %d", GetLastError());
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     if (FALSE == CryptGenRandom(hProv, (DWORD)size, xmlSecBufferGetData(buffer))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "CryptGenRandom",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "Error number: %d", GetLastError());
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	CryptReleaseContext(hProv,0);
 	return(-1);
     }
 
-    if (0!= hProv) {
-	CryptReleaseContext(hProv,0);
-    }
-
+    CryptReleaseContext(hProv, 0);
     return(0);
 }
 
+/**
+ * xmlSecMSCryptoErrorsDefaultCallback:
+ * @file:		the error location file name (__FILE__ macro).
+ * @line:		the error location line number (__LINE__ macro).
+ * @func:		the error location function name (__FUNCTION__ macro).
+ * @errorObject:	the error specific error object 
+ * @errorSubject:	the error specific error subject.
+ * @reason:		the error code.
+ * @msg:		the additional error message.
+ *
+ * The default errors reporting callback function.
+ */
+void 
+xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func,
+				const char* errorObject, const char* errorSubject,
+				int reason, const char* msg) {
+    DWORD dwError;
+    LPVOID lpMsgBuf;
+    char buf[500];
 
+    dwError = GetLastError();
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+		  FORMAT_MESSAGE_FROM_SYSTEM | 
+		  FORMAT_MESSAGE_IGNORE_INSERTS,
+		  NULL,
+		  dwError,
+		  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), /* Default language */
+		  (LPTSTR) &lpMsgBuf,
+		  0,
+		  NULL);
+    if((msg != NULL) && ((*msg) != '\0')) {
+        snprintf(buf, sizeof(buf), "%s;last error=%d (0x%08x);last error msg=%s", msg, dwError, dwError, (LPTSTR)lpMsgBuf);
+    } else {
+        snprintf(buf, sizeof(buf), "last error=%d (0x%08x);last error msg=%s", dwError, dwError, (LPTSTR)lpMsgBuf);
+    }
+    xmlSecErrorsDefaultCallback(file, line, func, 
+		errorObject, errorSubject, 
+		reason, buf);
+
+    LocalFree(lpMsgBuf);
+}

@@ -11,9 +11,13 @@ crypto_config=$topfolder
 priv_key_option="--pkcs12"
 priv_key_format="p12"
 
+if [ "z$TMPFOLDER" = "z" ] ; then
+    TMPFOLDER=/tmp
+fi
+
 timestamp=`date +%Y%m%d_%H%M%S` 
-tmpfile=/tmp/testKeys.$timestamp-$$.tmp
-logfile=/tmp/testKeys.$timestamp-$$.log
+tmpfile=$TMPFOLDER/testKeys.$timestamp-$$.tmp
+logfile=$TMPFOLDER/testKeys.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 

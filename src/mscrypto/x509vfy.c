@@ -253,7 +253,7 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(store)),
 			"CertVerifySubjectCertificateContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	}
 	}
 
@@ -353,7 +353,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"CertOpenStore",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -367,7 +367,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "CertAddCertificateContextToStore",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 

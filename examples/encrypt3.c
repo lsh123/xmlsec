@@ -138,7 +138,7 @@ load_rsa_keys(char* key_file) {
 	fprintf(stderr, "Error: failed to create keys manager.\n");
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) < 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
 	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -163,7 +163,7 @@ load_rsa_keys(char* key_file) {
     /* add key to keys manager, from now on keys manager is responsible 
      * for destroying key 
      */
-    if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) < 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
         fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
         xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);

@@ -21,7 +21,7 @@ extern "C" {
  * The library version string in the format
  * "<major-number>.<minor-number>.<sub-minor-number>".
  */
-#define XMLSEC_VERSION			"1.0.0rc1"
+#define XMLSEC_VERSION			"1.0.0"
 
 /**
  * XMLSEC_PACKAGE:
@@ -49,7 +49,7 @@ extern "C" {
  *
  * The library sub-minor version number.
  */
-#define XMLSEC_VERSION_SUBMINOR		0rc1
+#define XMLSEC_VERSION_SUBMINOR		0
 
 /**
  * XMLSEC_VERSION_INFO:

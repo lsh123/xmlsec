@@ -68,7 +68,7 @@ int
 xmlSecAppCryptoSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
 
-    return(xmlSecCryptoAppSimpleKeysMngrInit(mngr));
+    return(xmlSecCryptoAppDefaultKeysMngrInit(mngr));
 }
 
 int
@@ -76,7 +76,7 @@ xmlSecAppCryptoSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *filename) 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     
-    return(xmlSecCryptoAppSimpleKeysMngrLoad(mngr, filename));
+    return(xmlSecCryptoAppDefaultKeysMngrLoad(mngr, filename));
 }
 
 int 
@@ -84,7 +84,7 @@ xmlSecAppCryptoSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char *filename, 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     
-    return(xmlSecCryptoAppSimpleKeysMngrSave(mngr, filename, type));
+    return(xmlSecCryptoAppDefaultKeysMngrSave(mngr, filename, type));
 }
 
 int 
@@ -163,11 +163,11 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     }
 #endif /* XMLSEC_NO_X509 */        
 
-    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey",
+		    "xmlSecCryptoAppDefaultKeysMngrAdoptKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);
@@ -230,11 +230,11 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	}
     }
     
-    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey",
+		    "xmlSecCryptoAppDefaultKeysMngrAdoptKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);
@@ -299,11 +299,11 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     }
 
     /* finally add it to keys manager */    
-    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey",
+		    "xmlSecCryptoAppDefaultKeysMngrAdoptKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);
@@ -333,11 +333,11 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
 	return(-1);    
     }    
 
-    ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
+    ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecCryptoAppSimpleKeysMngrAdoptKey",
+		    "xmlSecCryptoAppDefaultKeysMngrAdoptKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecKeyDestroy(key);

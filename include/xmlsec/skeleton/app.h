@@ -27,12 +27,12 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecSkeletonAppShutdown		(void);
 /** 
  * Keys Manager
  */
-XMLSEC_CRYPTO_EXPORT int	xmlSecSkeletonAppSimpleKeysMngrInit	(xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecSkeletonAppSimpleKeysMngrAdoptKey	(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int	xmlSecSkeletonAppDefaultKeysMngrInit	(xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int 	xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
 									 xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecSkeletonAppSimpleKeysMngrLoad	(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 	xmlSecSkeletonAppDefaultKeysMngrLoad	(xmlSecKeysMngrPtr mngr,
 									 const char* uri);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecSkeletonAppSimpleKeysMngrSave	(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 	xmlSecSkeletonAppDefaultKeysMngrSave	(xmlSecKeysMngrPtr mngr,
 									 const char* filename,
 									 xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509

@@ -29,12 +29,12 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppShutdown	(void);
 /** 
  * Keys Manager
  */
-XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
 									 xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr,
 									 const char* uri);
-XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr,
 									 const char* filename,
 									 xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509

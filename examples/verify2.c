@@ -137,7 +137,7 @@ load_keys(char** files, int files_size) {
 	fprintf(stderr, "Error: failed to create keys manager.\n");
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) < 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
 	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -165,7 +165,7 @@ load_keys(char** files, int files_size) {
 	/* add key to keys manager, from now on keys manager is responsible 
 	 * for destroying key 
 	 */
-	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) < 0) {
+	if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) < 0) {
     	    fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
 	    xmlSecKeyDestroy(key);
 	    xmlSecKeysMngrDestroy(mngr);

@@ -7,7 +7,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
 
@@ -265,7 +265,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, xmlSecKeyDataType type) {
+xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecNssX509StoreCtxPtr ctx;
     int ret;
 
@@ -344,12 +344,11 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
 		      xmlChar *issuerSerial, xmlChar *ski) {
     CERTCertificate *cert = NULL;
     xmlChar         *p = NULL;
+    CERTName *name = NULL;
+    SECItem *nameitem = NULL;
+    PRArenaPool *arena = NULL;
 
     if (subjectName != NULL) {
-	CERTName *name = NULL;
-	SECItem *nameitem = NULL;
-	PRArenaPool *arena = NULL;
-
 	p = xmlSecNssX509NameRead(subjectName, xmlStrlen(subjectName));
 	if (p == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -358,7 +357,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "subject=%s",
                         xmlSecErrorsSafeString(subjectName));
-	    goto done1;
+	    goto done;
 	}
 
 	arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
@@ -368,17 +367,17 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         "PORT_NewArena",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "error code=%d", PORT_GetError());
-	    goto done1;
+	    goto done;
 	}
 
-	name = CERT_AsciiToName(p);
+	name = CERT_AsciiToName((char*)p);
 	if (name == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "CERT_AsciiToName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "error code=%d", PORT_GetError());
-	    goto done1;
+	    goto done;
 	}
 
 	nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
@@ -389,31 +388,15 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         "SEC_ASN1EncodeItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "error code=%d", PORT_GetError());
-	    goto done1;
+	    goto done;
 	}
 
 	cert = CERT_FindCertByName(CERT_GetDefaultCertDB(), nameitem);
-
-      done1:
-	if (p != NULL) {
-	    PORT_Free(p);
-	}
-        if (arena != NULL) {
-	    PORT_FreeArena(arena, PR_FALSE);
-	}
-	if (name != NULL) {
-	    CERT_DestroyName(name);
-	}
-	if (cert != NULL) {
-	    return (cert);
-	}
+	goto done;
     }
 
     if((issuerName != NULL) && (issuerSerial != NULL)) {
 	CERTIssuerAndSN issuerAndSN;
-	CERTName *name = NULL;
-	SECItem *nameitem = NULL;
-	PRArenaPool *arena = NULL;
 
 	p = xmlSecNssX509NameRead(issuerName, xmlStrlen(issuerName));
 	if (p == NULL) {
@@ -423,7 +406,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "issuer=%s",
                         xmlSecErrorsSafeString(issuerName));
-	    goto done2;
+	    goto done;
 	}
 
 	arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
@@ -433,17 +416,17 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         "PORT_NewArena",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "error code=%d", PORT_GetError());
-	    goto done2;
+	    goto done;
 	}
 
-	name = CERT_AsciiToName(p);
+	name = CERT_AsciiToName((char*)p);
 	if (name == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "CERT_AsciiToName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "error code=%d", PORT_GetError());
-	    goto done2;
+	    goto done;
 	}
 
 	nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
@@ -454,34 +437,21 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         "SEC_ASN1EncodeItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "error code=%d", PORT_GetError());
-	    goto done2;
+	    goto done;
 	}
 
-	memset(&issuerAndSN, 0, sizeof(CERTIssuerAndSN));
+	memset(&issuerAndSN, 0, sizeof(issuerAndSN));
 
 	issuerAndSN.derIssuer.data = nameitem->data;
 	issuerAndSN.derIssuer.len = nameitem->len;
 
 	/* TBD: serial num can be arbitrarily long */
-	xmlSecNssNumToItem(&issuerAndSN.serialNumber, PORT_Atoi(issuerSerial));
+	xmlSecNssNumToItem(&issuerAndSN.serialNumber, PORT_Atoi((char *)issuerSerial));
 
 	cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(), 
 					  &issuerAndSN);
 	SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
-
-      done2:
-	if(p != NULL) { 
-	    PORT_Free(p);
-	}
-	if(arena != NULL) {
-	    PORT_FreeArena(arena, PR_FALSE);
-	}
-	if (name != NULL) {
-	    CERT_DestroyName(name);
-	}
-	if (cert != NULL) {
-	    return (cert);
-	}
+	goto done;
     }
 
     if(ski != NULL) {
@@ -496,20 +466,28 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "ski=%s",
                         xmlSecErrorsSafeString(ski));
-            return(NULL);
+	    goto done;
         }
 
-	memset(&subjKeyID, 0, sizeof(SECItem));
+	memset(&subjKeyID, 0, sizeof(subjKeyID));
 	subjKeyID.data = ski;
 	subjKeyID.len = xmlStrlen(ski);
         cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(), 
 					   &subjKeyID);
-	if (cert != NULL) {
-	    return (cert);
-	}
     }
 
-    return(NULL);
+done:
+    if (p != NULL) {
+	PORT_Free(p);
+    }
+    if (arena != NULL) {
+	PORT_FreeArena(arena, PR_FALSE);
+    }
+    if (name != NULL) {
+	CERT_DestroyName(name);
+    }
+
+    return(cert);
 }
 
 /**

@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for precise wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
 
@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include <nss.h> 
+#include <secitem.h> 
 
 #include <libxml/tree.h> 
 
@@ -39,12 +40,14 @@
  * or NULL if an error occurs.
  */
 SECItem *
-xmlSecNssNodeGetBigNumValue(const xmlNodePtr cur, SECItem *a) {
+xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur, 
+			    SECItem *a) {
     xmlSecBuffer buf;
     int ret;
     SECItem *rv;
     int len;
 
+    xmlSecAssert2(arena != NULL, NULL);
     xmlSecAssert2(cur != NULL, NULL);
 
     ret = xmlSecBufferInitialize(&buf, 128);
@@ -71,12 +74,12 @@ xmlSecNssNodeGetBigNumValue(const xmlNodePtr cur, SECItem *a) {
     len = xmlSecBufferGetSize(&buf);
 
     if (a == NULL) {
-	rv = SECITEM_AllocItem(NULL, NULL, len);
+	rv = SECITEM_AllocItem(arena, NULL, len);
     } else {
 	rv = a;
 	xmlSecAssert2(rv->data == NULL, NULL);
         rv->len = len;
-        rv->data = PORT_Alloc(len);
+        rv->data = PORT_ArenaZAlloc(arena, len);
     }
 	
     PORT_Memcpy(rv->data, xmlSecBufferGetData(&buf), len);

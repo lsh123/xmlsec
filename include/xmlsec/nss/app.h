@@ -5,6 +5,7 @@
  * distribution for preciese wording.
  * 
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_APP_H__
 #define __XMLSEC_NSS_APP_H__    
@@ -29,7 +30,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppShutdown		(void);
  */
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppDefaultKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int 		xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
-									 xmlSecKeyPtr key);
+									    xmlSecKeyPtr key);
 XMLSEC_CRYPTO_EXPORT int 		xmlSecNssAppDefaultKeysMngrLoad	(xmlSecKeysMngrPtr mngr,
 									 const char* uri);
 XMLSEC_CRYPTO_EXPORT int 		xmlSecNssAppDefaultKeysMngrSave	(xmlSecKeysMngrPtr mngr,

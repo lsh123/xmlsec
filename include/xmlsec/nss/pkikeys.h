@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_PKIKEYS_H__
 #define __XMLSEC_NSS_PKIKEYS_H__    
@@ -18,12 +18,18 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecNssAdoptKey              (SECKEYPrivateKey *privkey,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecNssPKIAdoptKey           (SECKEYPrivateKey *privkey,
 									SECKEYPublicKey  *pubkey);
 
-XMLSEC_CRYPTO_EXPORT SECKEYPublicKey*   xmlSecNssKeyDataGetPubKey	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT SECKEYPublicKey*   xmlSecNssPKIKeyDataGetPubKey	(xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT SECKEYPrivateKey*  xmlSecNssKeyDataGetPrivKey	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT SECKEYPrivateKey*  xmlSecNssPKIKeyDataGetPrivKey	(xmlSecKeyDataPtr data);
+
+XMLSEC_CRYPTO_EXPORT KeyType  		xmlSecNssPKIKeyDataGetKeyType	(xmlSecKeyDataPtr data);
+
+XMLSEC_CRYPTO_EXPORT int              	xmlSecNssPKIKeyDataDuplicate    (xmlSecKeyDataPtr dst,
+		                                                         xmlSecKeyDataPtr src);
+
 
 
 #ifdef __cplusplus

@@ -5,6 +5,7 @@
  * distribution for preciese wording.
  * 
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_CRYPTO_H__
 #define __XMLSEC_NSS_CRYPTO_H__    
@@ -204,6 +205,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataRsaGetKlass	(void);
 #define xmlSecNssTransformRsaSha1Id	\
 	xmlSecNssTransformRsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
+
+/**
+ * xmlSecNssTransformRsaPkcs1Id:
+ * 
+ * The RSA PKCS1 key transport transform klass.
+ */
+#define xmlSecNssTransformRsaPkcs1Id \
+        xmlSecNssTransformRsaPkcs1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -3,17 +3,12 @@
 topfolder=$1
 xmlsec_app=$2
 file_format=$3
-priv_format=$4
 
-if [ "z$priv_format" = "zpkcs8" ]
-then 
-    priv_key_format="p8-$file_format"
-else
-    priv_key_format=$file_format
-fi    
 pub_key_format=$file_format
 cert_format=$file_format
-
+crypto_config=$topfolder
+priv_key_option="--pkcs12"
+priv_key_format="p12"
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testKeys.$timestamp-$$.tmp
@@ -36,7 +31,7 @@ echo "--- testKeys started ($timestamp) ---"
 echo "--- testKeys started ($timestamp) ---" >> $logfile
 
 printf "    Creating new keys                                    "
-$xmlsec_app keys \
+$xmlsec_app keys --crypto-config $crypto_config \
     --gen-key:test-hmac-sha1 hmac-192 \
     --gen-key:test-rsa rsa-1024  \
     --gen-key:test-dsa dsa-1024 \
@@ -48,6 +43,8 @@ $xmlsec_app keys \
 printRes 
 
 rm -rf $tmpfile
+rm -rf $crypto_config/cert*.db $crypto_config/key*.db $crypto_config/secmod*.db
+
 echo "--- testKeys finished ---" >> $logfile
 echo "--- testKeys finished ---"
 echo "--- detailed log is written to  $logfile ---" 

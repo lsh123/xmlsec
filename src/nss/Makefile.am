@@ -29,6 +29,8 @@ libxmlsec1_nss_la_SOURCES =\
 	symkeys.c \
 	x509.c \
 	x509vfy.c \
+	keysstore.c \
+	kt_rsa.c \
 	$(NULL)
 
 libxmlsec1_nss_la_LIBADD = \

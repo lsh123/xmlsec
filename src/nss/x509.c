@@ -7,7 +7,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
 
@@ -20,7 +20,11 @@
 #include <errno.h>
 #include <time.h>
 
+#include <prmem.h>
+#include <pratom.h>
+#include <keyhi.h>
 #include <cert.h>
+#include <certdb.h>
 #include <pk11func.h>
 
 #include <libxml/tree.h>
@@ -35,6 +39,7 @@
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
+#include <xmlsec/nss/pkikeys.h>
 
 /*************************************************************************
  *
@@ -101,10 +106,10 @@ struct _xmlSecNssX509DataCtx {
     CERTCertificate*  keyCert;
 
     CERTCertList*    certsList;
-    int              numCerts;
+    unsigned int     numCerts;
 
     xmlSecNssX509CrlNodePtr crlsList; 
-    int              numCrls;
+    unsigned int     numCrls;
 };
 
 /**************************************************************************
@@ -386,7 +391,7 @@ xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
-    xmlSecAssert2((int)(pos < ctx->numCerts), NULL);
+    xmlSecAssert2(pos < ctx->numCerts, NULL);
 
     head = CERT_LIST_HEAD(ctx->certsList);
     while (pos > 0)
@@ -430,7 +435,6 @@ xmlSecNssKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 int 
 xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, CERTSignedCrl* crl) {
     xmlSecNssX509DataCtxPtr ctx;
-    int ret;
     xmlSecNssX509CrlNodePtr crlnode;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), -1);
@@ -479,7 +483,7 @@ xmlSecNssKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
 
     xmlSecAssert2(ctx->crlsList != NULL, NULL);
-    xmlSecAssert2((int)pos < ctx->numCrls, NULL);
+    xmlSecAssert2(pos < ctx->numCrls, NULL);
 
     head = ctx->crlsList;
     while (pos > 0)
@@ -1259,7 +1263,6 @@ static int
 xmlSecNssX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar *content;
     CERTSignedCrl* crl;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
@@ -1441,11 +1444,11 @@ xmlSecNssX509CertGetKey(CERTCertificate* cert) {
 	return(NULL);
     }    
 
-    data = xmlSecNssAdoptKey(NULL, pubkey);
+    data = xmlSecNssPKIAdoptKey(NULL, pubkey);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecNssAdoptKey",
+		    "xmlSecNssPKIAdoptKey",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	SECKEY_DestroyPublicKey(pubkey);
@@ -1480,12 +1483,11 @@ static CERTCertificate*
 xmlSecNssX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     CERTCertificate *cert;
     SECItem  derCert;
-    SECStatus status;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
     
-    derCert.data = buf;
+    derCert.data = (unsigned char *)buf;
     derCert.len = size;
 
     /* decode cert and import to temporary cert db */
@@ -1562,9 +1564,7 @@ static CERTSignedCrl*
 xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
 		        xmlSecKeyInfoCtxPtr keyInfoCtx) {
     CERTSignedCrl *crl = NULL;
-    int ret;
     SECItem derCrl;
-    PRArenaPool *arena;
     PK11SlotInfo *slot = NULL;
     PRInt32 importOptions = CRL_IMPORT_DEFAULT_OPTIONS;
 
@@ -1588,10 +1588,6 @@ xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
 	return NULL;
     }
 
-    /* TBD: The CA cert that signed the CRL in xmlsec test files is not
-     * to be used for CRL signing. NSS checks that, unless
-     * CRL_IMPORT_BYPASS_CHECKS flag is passed
-     */
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0)
 	importOptions |= CRL_IMPORT_BYPASS_CHECKS;
 
@@ -1647,7 +1643,7 @@ xmlSecNssX509CrlBase64DerWrite(CERTSignedCrl* crl, int base64LineWrap) {
 static void 
 xmlSecNssX509CertDebugDump(CERTCertificate* cert, FILE* output) {
     SECItem *sn;
-    int i;
+    unsigned int i;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
@@ -1670,7 +1666,7 @@ xmlSecNssX509CertDebugDump(CERTCertificate* cert, FILE* output) {
 static void 
 xmlSecNssX509CertDebugXmlDump(CERTCertificate* cert, FILE* output) {
     SECItem *sn;
-    int i;
+    unsigned int i;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
@@ -1678,6 +1674,7 @@ xmlSecNssX509CertDebugXmlDump(CERTCertificate* cert, FILE* output) {
     fprintf(output, "=== X509 Certificate\n");
     fprintf(output, "==== Subject Name: %s\n", cert->subjectName);
     fprintf(output, "==== Issuer Name: %s\n", cert->issuerName);
+    sn = &cert->serialNumber;
     for (i = 0; i < sn->len; i++) {
 	if (i != sn->len - 1) {
 	    fprintf(output, "%02x:", sn->data[i]);

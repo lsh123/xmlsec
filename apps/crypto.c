@@ -203,6 +203,7 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	}
 	pwd = buf;
     } 
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 
     key = xmlSecCryptoAppPkcs12Load(filename, pwd, NULL, NULL);
     if(key == NULL) {
@@ -241,7 +242,6 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 	xmlSecKeyDestroy(key);
 	return(-1);
     }
-#endif /* XMLSEC_CRYPTO_OPENSSL */
     
     return(0);
 #else /* XMLSEC_NO_X509 */

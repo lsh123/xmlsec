@@ -3,6 +3,7 @@ NULL =
 SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
 SUBDIRS 	= include src apps man docs
 TEST_APP 	= apps/xmlsec1
+DEFAULT_CRYPTO	= @XMLSEC_CRYPTO@
 
 bin_SCRIPTS 	= xmlsec1-config
 pkgconfig_DATA 	= xmlsec1.pc
@@ -63,17 +64,26 @@ check-info:
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
-check-km: $(TEST_APP)
+reset-nss-db:
+	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir);\
+	if [ "z$(DEFAULT_CRYPTO)" = "znss" ] ; \
+	then \
+	    echo "Removing old nss db and creating a new one"; \
+	    rm -rf ./tests/cert*.db ./tests/key*.db ./tests/secmod*.db; \
+	    certutil -N -d ./tests; \
+	fi)
+
+check-km: $(TEST_APP) reset-nss-db
 	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir); \
 	$(SHELL) ./tests/testKeys.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
-check-dsig: $(TEST_APP)
+check-dsig: $(TEST_APP) reset-nss-db
 	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir); \
-	$(SHELL) ./tests/testDSig.sh ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der pkcs8)
+	$(SHELL) ./tests/testDSig.sh ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
 
-check-enc: $(TEST_APP)
+check-enc: $(TEST_APP) reset-nss-db
 	@(ABS_BUILDDIR="`pwd`"; cd $(top_srcdir); \
-	$(SHELL) ./tests/testEnc.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der pkcs8)
+	$(SHELL) ./tests/testEnc.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

@@ -4,14 +4,16 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
 
 #include <string.h>
 
 #include <cryptohi.h>
+#include <keyhi.h>
 #include <secerr.h>
+#include <prmem.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -147,8 +149,14 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
     
     if (transform->operation == xmlSecTransformOperationSign) {
 	SGN_DestroyContext(ctx->u.sig.sigctx, PR_TRUE);
+	if (ctx->u.sig.privkey) {
+	    SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
+	}
     } else {
 	VFY_DestroyContext(ctx->u.vfy.vfyctx, PR_TRUE);
+	if (ctx->u.vfy.pubkey) {
+	    SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
+	}
     }
 
     memset(ctx, 0, sizeof(xmlSecNssSignatureCtx));    
@@ -175,11 +183,11 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if (transform->operation == xmlSecTransformOperationSign) {
 	if (ctx->u.sig.privkey)
 	    SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
-	ctx->u.sig.privkey = xmlSecNssKeyDataGetPrivKey(value);
+	ctx->u.sig.privkey = xmlSecNssPKIKeyDataGetPrivKey(value);
 	if(ctx->u.sig.privkey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecNssKeyDataGetPrivKey",
+			"xmlSecNssPKIKeyDataGetPrivKey",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
@@ -197,11 +205,11 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     } else {
 	if (ctx->u.vfy.pubkey)
 	    SECKEY_DestroyPublicKey(ctx->u.vfy.pubkey);
-	ctx->u.vfy.pubkey = xmlSecNssKeyDataGetPubKey(value);
+	ctx->u.vfy.pubkey = xmlSecNssPKIKeyDataGetPubKey(value);
 	if(ctx->u.vfy.pubkey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecNssKeyDataGetPubKey",
+			"xmlSecNssPKIKeyDataGetPubKey",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
@@ -265,7 +273,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecNssSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    signature.data = data;
+    signature.data = (unsigned char *)data;
     signature.len = dataSize;
     status = VFY_EndWithSignature(ctx->u.vfy.vfyctx, &signature);
 
@@ -389,7 +397,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	xmlSecAssert2(outSize == 0, -1);
 	if(transform->operation == xmlSecTransformOperationSign) {
-	    memset(&signature, 0, sizeof(SECItem));
+	    memset(&signature, 0, sizeof(signature));
 	    status = SGN_End(ctx->u.sig.sigctx, &signature);
 	    if(status != SECSuccess) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -412,6 +420,8 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 		return(-1);
 	    }
 	
+	    memcpy(xmlSecBufferGetData(out), signature.data, signature.len);
+
 	    ret = xmlSecBufferSetSize(out, outSize);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -422,6 +432,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 		PR_Free(signature.data);
 		return(-1);
 	    }
+	    PR_Free(signature.data);
 	}
 	transform->status = xmlSecTransformStatusFinished;
     }

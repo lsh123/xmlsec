@@ -418,7 +418,7 @@ NSS_LIBS=""
 NSS_LDADDS=""
 NSS_PREFIX=""
 NSPR_PREFIX=""
-NSS_LIBS_LIST="-lnss3"
+NSS_LIBS_LIST="-lnss3 -lsmime3"
 NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
 NSS_CRYPTO_LIB="xmlsec1-nss"
 

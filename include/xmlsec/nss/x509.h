@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_X509_H__
 #define __XMLSEC_NSS_X509_H__    
@@ -63,15 +63,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataRawX509CertGetKlass(void);
 	xmlSecNssX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecNssX509StoreGetKlass(void);
 XMLSEC_CRYPTO_EXPORT CERTCertificate* 		xmlSecNssX509StoreFindCert	(xmlSecKeyDataStorePtr store,
-									 xmlChar *subjectName,
-									 xmlChar *issuerName, 
-									 xmlChar *issuerSerial,
-									 xmlChar *ski,
-									 xmlSecKeyInfoCtx* keyInfoCtx);
+									 	 xmlChar *subjectName,
+									 	 xmlChar *issuerName, 
+									 	 xmlChar *issuerSerial,
+									 	 xmlChar *ski,
+									 	 xmlSecKeyInfoCtx* keyInfoCtx);
 
 XMLSEC_CRYPTO_EXPORT CERTCertificate* 		xmlSecNssX509StoreVerify	(xmlSecKeyDataStorePtr store,
-									 CERTCertList* certs,
-									 xmlSecKeyInfoCtx* keyInfoCtx);
+									 	 CERTCertList* certs,
+									 	 xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                	xmlSecNssX509StoreAdoptCert (xmlSecKeyDataStorePtr store,
 									     CERTCertificate* cert,
                                                                              xmlSecKeyDataType type);

@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for precise wording.
  * 
- * Copyright (C) 2002-2003 Tej Arora <tej@netscape.com>
+ * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_BIGNUM_H__
 #define __XMLSEC_NSS_BIGNUM_H__    
@@ -19,7 +19,8 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-XMLSEC_CRYPTO_EXPORT SECItem*	xmlSecNssNodeGetBigNumValue	(const xmlNodePtr cur, 
+XMLSEC_CRYPTO_EXPORT SECItem*	xmlSecNssNodeGetBigNumValue	(PRArenaPool *arena, 
+								 const xmlNodePtr cur, 
 								 SECItem *a);
 XMLSEC_CRYPTO_EXPORT int 	xmlSecNssNodeSetBigNumValue	(xmlNodePtr cur,
 								 const SECItem *a, 

@@ -71,7 +71,6 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\base64.obj\
 	$(XMLSEC_INTDIR)\buffer.obj \
 	$(XMLSEC_INTDIR)\c14n.obj \
-	$(XMLSEC_INTDIR)\debug.obj \
 	$(XMLSEC_INTDIR)\enveloped.obj \
 	$(XMLSEC_INTDIR)\errors.obj \
 	$(XMLSEC_INTDIR)\io.obj \
@@ -98,7 +97,6 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\base64.obj\
 	$(XMLSEC_INTDIR_A)\buffer.obj \
 	$(XMLSEC_INTDIR_A)\c14n.obj \
-	$(XMLSEC_INTDIR_A)\debug.obj \
 	$(XMLSEC_INTDIR_A)\enveloped.obj \
 	$(XMLSEC_INTDIR_A)\errors.obj \
 	$(XMLSEC_INTDIR_A)\io.obj \

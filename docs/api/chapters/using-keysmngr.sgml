@@ -327,10 +327,9 @@ files_keys_store_find_key(xmlSecKeyStorePtr store,  xmlSecKeyPtr key,
 	/* otherwise it's a binary key, if key is not found then it's an error (is it?) */
 	tmpKey = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
 	if(tmpKey == NULL) {
-    	    fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", name);
+    	    fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
 	    return(-1);
 	}
-
     }
 
     /* erase any current information in the key because we don't care

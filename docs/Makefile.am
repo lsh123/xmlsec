@@ -53,5 +53,5 @@ install-data-local:
 	-@INSTALL@ -m 0644 $(srcdir)/api/*.html $(srcdir)/api/*.png $(srcdir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
 	-@INSTALL@ -m 0644 $(srcdir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
 
-uninstall:
-	@rm -rf $(TARGET_DIR)
+uninstall-local:
+	@rm -rf $(DESTDIR)$(TARGET_DIR)

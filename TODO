@@ -1,10 +1,1 @@
-- Fix the shared library filename format in dl.c (extension at least)
-- Update docs
-- Write tutorial about dl
-- Add version check macros/functions. We need two modes: version
-  checks for xmlsec-cryto (exact match for major and minor versions
-  required, subminor version might be greater) and for application
-  (exact match for major version required, minor and subminor might be 
-  greater).
-- Unify password callback (one of parameters: filename)
-- Split RPMs
+see trunk

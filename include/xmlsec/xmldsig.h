@@ -123,12 +123,12 @@ typedef enum  {
 } xmlSecDSigReferenceOrigin;
 
 struct _xmlSecDSigReferenceCtx {
-    xmlSecDSigCtxPtr		signCtx;
+    xmlSecDSigCtxPtr		dsigCtx;
     xmlSecDSigReferenceOrigin	origin;
+    xmlSecTransformCtx		digestTransformCtx;
     xmlSecTransformPtr		digestMethod;
     xmlSecTransformPtr		c14nMethod;
 
-    int				sign;
     xmlSecBufferPtr		result;
     xmlDSigStatus		status;
     xmlSecTransformPtr		preDigestMemBufMethod;
@@ -136,14 +136,26 @@ struct _xmlSecDSigReferenceCtx {
     xmlChar*			uri;
     xmlChar*			type;
     
-    /* these are internal data, nobody should change that except us */
-    int				dontDestroyDigestMethod;
-    int				dontDestroyC14NMethod;
-    
-    /* reserved for future */
+     /* reserved for future */
     void*			reserved0;
     void*			reserved1;    
 };
+
+XMLSEC_EXPORT xmlSecDSigReferenceCtxPtr	xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx,
+								xmlSecDSigReferenceOrigin origin);
+XMLSEC_EXPORT void 		xmlSecDSigReferenceCtxDestroy	(xmlSecDSigReferenceCtxPtr ctx);
+XMLSEC_EXPORT int		xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr ctx,
+								xmlSecDSigCtxPtr dsigCtx,
+								xmlSecDSigReferenceOrigin origin); 
+XMLSEC_EXPORT void		xmlSecDSigReferenceCtxFinalize	(xmlSecDSigReferenceCtxPtr ctx);
+XMLSEC_EXPORT int		xmlSecDSigReferenceCtxCalculate	(xmlSecDSigReferenceCtxPtr ctx,
+								 xmlNodePtr tmpl);
+XMLSEC_EXPORT int		xmlSecDSigReferenceCtxVerify	(xmlSecDSigReferenceCtxPtr ctx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT void		xmlSecDSigReferenceCtxDebugDump	(xmlSecDSigReferenceCtxPtr ctx,
+								 FILE* output);
+XMLSEC_EXPORT void		xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr ctx,
+								 FILE* output);
 
 /**************************************************************************
  *

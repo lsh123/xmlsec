@@ -929,8 +929,7 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
     xmlSecBufferEmpty(state->curBuf);
     
     do {
-	bufSize = sizeof(buffer);
-	ret = xmlSecTransformPopBin(state->curLastBinTransform, buffer, &bufSize, &transformCtx);
+	ret = xmlSecTransformPopBin(state->curLastBinTransform, buffer, sizeof(buffer), &bufSize, &transformCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,

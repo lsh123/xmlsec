@@ -352,8 +352,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
          
     /* encrypt the data */
     do {
-	bufSize = sizeof(buf);
-	ret = xmlSecTransformPopBin(state->last, buf, &bufSize, &transformCtx);
+	ret = xmlSecTransformPopBin(state->last, buf, sizeof(buf), &bufSize, &transformCtx);
     } while((ret >= 0) && (bufSize > 0));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

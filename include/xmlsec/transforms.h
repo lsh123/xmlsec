@@ -163,6 +163,7 @@ XMLSEC_EXPORT int			xmlSecTransformPushBin	(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPopBin	(xmlSecTransformPtr transform, 
 								 unsigned char* data,
+								 size_t maxDataSize,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPushXml	(xmlSecTransformPtr transform, 
@@ -185,6 +186,7 @@ XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
 								 unsigned char* data,
+								 size_t maxDataSize,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
@@ -339,6 +341,7 @@ typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 typedef int		(*xmlSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
 								 unsigned char* data,
+								 size_t maxDataSize,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 typedef int		(*xmlSecTransformPushXmlMethod)		(xmlSecTransformPtr transform, 

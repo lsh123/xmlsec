@@ -474,14 +474,14 @@ xmlSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 
 int 
 xmlSecTransformPopBin(xmlSecTransformPtr transform, unsigned char* data,
-		    size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
+		    size_t maxDataSize, size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->popBin != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    return((transform->id->popBin)(transform, data, dataSize, transformCtx));    
+    return((transform->id->popBin)(transform, data, maxDataSize, dataSize, transformCtx));    
 }
 
 int 
@@ -649,7 +649,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char*
 
 int 
 xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
-			    size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
+			    size_t maxDataSize, size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
     size_t outSize;
     int final = 0;
     int ret;
@@ -681,7 +681,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
 	    /* get data from previous transform */
 	    ret = xmlSecTransformPopBin(transform->prev, 
 			    xmlSecBufferGetData(&(transform->inBuf)) + inSize,
-			    &chunkSize, transformCtx);
+			    chunkSize, &chunkSize, transformCtx);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform->prev)),
@@ -724,8 +724,8 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
     
     /* copy result (if any) */
     outSize = xmlSecBufferGetSize(&(transform->outBuf)); 
-    if(outSize > (*dataSize)) {
-	outSize = (*dataSize);
+    if(outSize > maxDataSize) {
+	outSize = maxDataSize;
     }
     
     /* we don't want to put too much */
@@ -736,7 +736,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
 	xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
 	
 	memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
-    	    
+
 	ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
     	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -748,7 +748,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
 	}	
     }
     
-    /* set the result */
+    /* set the result size */
     (*dataSize) = outSize;
     return(0);
 }
@@ -1001,7 +1001,7 @@ xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
     xmlSecAssert2(buffer->transformCtx != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
     
-    ret = xmlSecTransformPopBin(buffer->transform, buf, &size, buffer->transformCtx);
+    ret = xmlSecTransformPopBin(buffer->transform, buf, size, &size, buffer->transformCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(buffer->transform)),

@@ -198,6 +198,7 @@ static int		xmlSecTransformInputURIInitialize	(xmlSecTransformPtr transform);
 static void		xmlSecTransformInputURIFinalize		(xmlSecTransformPtr transform);
 static int		xmlSecTransformInputURIPopBin		(xmlSecTransformPtr transform, 
 								 unsigned char* data,
+								 size_t maxDataSize,
 								 size_t* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 
@@ -331,7 +332,8 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 
 static int 
 xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, unsigned char* data,
-			    size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
+			      size_t maxDataSize, size_t* dataSize, 
+			      xmlSecTransformCtxPtr transformCtx) {
     int ret;
     			    
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
@@ -344,7 +346,7 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, unsigned char* data,
     if(xmlSecTransformInputURIGetReadCallback(transform) != NULL) {
         ret = (xmlSecTransformInputURIGetReadCallback(transform))(
 		    xmlSecTransformInputURIGetCtx(transform), 
-		    (char*)data, (int)(*dataSize));
+		    (char*)data, (int)maxDataSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

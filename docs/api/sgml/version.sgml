@@ -40,7 +40,7 @@
 <title>Details</title>
 <refsect2>
 <title><anchor id="XMLSEC-VERSION-CAPS">XMLSEC_VERSION</title>
-<programlisting>#define XMLSEC_VERSION			"1.1.1"
+<programlisting>#define XMLSEC_VERSION			"1.1.2"
 </programlisting>
 <para>
 The library version string in the format
@@ -77,7 +77,7 @@ The library minor version number.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-VERSION-SUBMINOR-CAPS">XMLSEC_VERSION_SUBMINOR</title>
-<programlisting>#define XMLSEC_VERSION_SUBMINOR		1
+<programlisting>#define XMLSEC_VERSION_SUBMINOR		2
 </programlisting>
 <para>
 The library sub-minor version number.</para>
@@ -86,7 +86,7 @@ The library sub-minor version number.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-VERSION-INFO-CAPS">XMLSEC_VERSION_INFO</title>
-<programlisting>#define XMLSEC_VERSION_INFO		"2:1:1"
+<programlisting>#define XMLSEC_VERSION_INFO		"2:2:1"
 </programlisting>
 <para>
 The library version info string in the format

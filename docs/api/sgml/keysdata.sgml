@@ -878,7 +878,7 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</pa
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdUnknown">xmlSecKeyDataIdUnknown</title>
-<programlisting>#define xmlSecKeyDataIdUnknown 			NULL
+<programlisting>#define xmlSecKeyDataIdUnknown 			((xmlSecKeyDataId)NULL)
 </programlisting>
 <para>
 The "unknown" id.</para>

@@ -1,0 +1,1124 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>app</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
+<link rel="PREVIOUS" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
+<link rel="NEXT" title="base64" href="xmlsec-base64.html">
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+</table>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-APP"></a>app</h1>
+<div class="REFNAMEDIV">
+<a name="AEN836"></a><h2>Name</h2>app -- </div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN839"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+
+int         <a href="xmlsec-app.html#XMLSECCRYPTOINIT">xmlSecCryptoInit</a>                (void);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOSHUTDOWN">xmlSecCryptoShutdown</a>            (void);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOKEYSMNGRINIT">xmlSecCryptoKeysMngrInit</a>        (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATAAESID">xmlSecKeyDataAesId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATAAESGETKLASS">xmlSecKeyDataAesGetKlass</a>    (void);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATADESID">xmlSecKeyDataDesId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATADESGETKLASS">xmlSecKeyDataDesGetKlass</a>    (void);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATADSAID">xmlSecKeyDataDsaId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATADSAGETKLASS">xmlSecKeyDataDsaGetKlass</a>    (void);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATAHMACID">xmlSecKeyDataHmacId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATAHMACGETKLASS">xmlSecKeyDataHmacGetKlass</a>   (void);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATARSAID">xmlSecKeyDataRsaId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATARSAGETKLASS">xmlSecKeyDataRsaGetKlass</a>    (void);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATAX509ID">xmlSecKeyDataX509Id</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATAX509GETKLASS">xmlSecKeyDataX509GetKlass</a>   (void);
+#define     <a href="xmlsec-app.html#XMLSECKEYDATARAWX509CERTID">xmlSecKeyDataRawX509CertId</a>
+<font>xmlSecKeyDataId</font> <a href="xmlsec-app.html#XMLSECKEYDATARAWX509CERTGETKLASS">xmlSecKeyDataRawX509CertGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECX509STOREID">xmlSecX509StoreId</a>
+<font>xmlSecKeyDataStoreId</font> <a href="xmlsec-app.html#XMLSECX509STOREGETKLASS">xmlSecX509StoreGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMAES128CBCID">xmlSecTransformAes128CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMAES128CBCGETKLASS">xmlSecTransformAes128CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMAES192CBCID">xmlSecTransformAes192CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMAES192CBCGETKLASS">xmlSecTransformAes192CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMAES256CBCID">xmlSecTransformAes256CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMAES256CBCGETKLASS">xmlSecTransformAes256CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMKWAES128ID">xmlSecTransformKWAes128Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMKWAES128GETKLASS">xmlSecTransformKWAes128GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMKWAES192ID">xmlSecTransformKWAes192Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMKWAES192GETKLASS">xmlSecTransformKWAes192GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMKWAES256ID">xmlSecTransformKWAes256Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMKWAES256GETKLASS">xmlSecTransformKWAes256GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMDES3CBCID">xmlSecTransformDes3CbcId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMDES3CBCGETKLASS">xmlSecTransformDes3CbcGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMKWDES3ID">xmlSecTransformKWDes3Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMKWDES3GETKLASS">xmlSecTransformKWDes3GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMDSASHA1ID">xmlSecTransformDsaSha1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMDSASHA1GETKLASS">xmlSecTransformDsaSha1GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMHMACSHA1ID">xmlSecTransformHmacSha1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMHMACSHA1GETKLASS">xmlSecTransformHmacSha1GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMHMACRIPEMD160ID">xmlSecTransformHmacRipemd160Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMHMACRIPEMD160GETKLASS">xmlSecTransformHmacRipemd160GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMHMACMD5ID">xmlSecTransformHmacMd5Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMHMACMD5GETKLASS">xmlSecTransformHmacMd5GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMRIPEMD160ID">xmlSecTransformRipemd160Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMRIPEMD160GETKLASS">xmlSecTransformRipemd160GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMRSASHA1ID">xmlSecTransformRsaSha1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMRSASHA1GETKLASS">xmlSecTransformRsaSha1GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMRSAPKCS1ID">xmlSecTransformRsaPkcs1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMRSAPKCS1GETKLASS">xmlSecTransformRsaPkcs1GetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMRSAOAEPID">xmlSecTransformRsaOaepId</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMRSAOAEPGETKLASS">xmlSecTransformRsaOaepGetKlass</a>
+                                            (void);
+#define     <a href="xmlsec-app.html#XMLSECTRANSFORMSHA1ID">xmlSecTransformSha1Id</a>
+<font>xmlSecTransformId</font> <a href="xmlsec-app.html#XMLSECTRANSFORMSHA1GETKLASS">xmlSecTransformSha1GetKlass</a>
+                                            (void);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPINIT">xmlSecCryptoAppInit</a>             (const char *config);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPSHUTDOWN">xmlSecCryptoAppShutdown</a>         (void);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT">xmlSecCryptoAppDefaultKeysMngrInit</a>
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecCryptoAppDefaultKeysMngrAdoptKey</a>
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRLOAD">xmlSecCryptoAppDefaultKeysMngrLoad</a>
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *uri);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRSAVE">xmlSecCryptoAppDefaultKeysMngrSave</a>
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPKEYSMNGRCERTLOAD">xmlSecCryptoAppKeysMngrCertLoad</a> (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-app.html#XMLSECCRYPTOAPPKEYLOAD">xmlSecCryptoAppKeyLoad</a>         (const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-app.html#XMLSECCRYPTOAPPPKCS12LOAD">xmlSecCryptoAppPkcs12Load</a>      (const char *filename,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);
+int         <a href="xmlsec-app.html#XMLSECCRYPTOAPPKEYCERTLOAD">xmlSecCryptoAppKeyCertLoad</a>      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);
+void*       <a href="xmlsec-app.html#XMLSECCRYPTOAPPGETDEFAULTPWDCALLBACK">xmlSecCryptoAppGetDefaultPwdCallback</a>
+                                            (void);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN946"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN949"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN951"></a><h3>
+<a name="XMLSECCRYPTOINIT"></a>xmlSecCryptoInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoInit                (void);</pre></td></tr></table>
+<p>XMLSec library specific crypto engine initialization.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN958"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN963"></a><h3>
+<a name="XMLSECCRYPTOSHUTDOWN"></a>xmlSecCryptoShutdown ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoShutdown            (void);</pre></td></tr></table>
+<p>XMLSec library specific crypto engine shutdown.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN970"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN975"></a><h3>
+<a name="XMLSECCRYPTOKEYSMNGRINIT"></a>xmlSecCryptoKeysMngrInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoKeysMngrInit        (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
+<p>Adds crypto specific key data stores in keys manager.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN983"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN988"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN993"></a><h3>
+<a name="XMLSECKEYDATAAESID"></a>xmlSecKeyDataAesId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataAesId			xmlSecKeyDataAesGetKlass()</pre></td></tr></table>
+<p>The AES key klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN999"></a><h3>
+<a name="XMLSECKEYDATAAESGETKLASS"></a>xmlSecKeyDataAesGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataAesGetKlass    (void);</pre></td></tr></table>
+<p>The AES key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1007"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>AES key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the AES key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1012"></a><h3>
+<a name="XMLSECKEYDATADESID"></a>xmlSecKeyDataDesId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataDesId			xmlSecKeyDataDesGetKlass()</pre></td></tr></table>
+<p>The DES key klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1018"></a><h3>
+<a name="XMLSECKEYDATADESGETKLASS"></a>xmlSecKeyDataDesGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataDesGetKlass    (void);</pre></td></tr></table>
+<p>The DES key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1026"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>DES key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the DES key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1031"></a><h3>
+<a name="XMLSECKEYDATADSAID"></a>xmlSecKeyDataDsaId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataDsaId			xmlSecKeyDataDsaGetKlass()</pre></td></tr></table>
+<p>The DSA key klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1037"></a><h3>
+<a name="XMLSECKEYDATADSAGETKLASS"></a>xmlSecKeyDataDsaGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataDsaGetKlass    (void);</pre></td></tr></table>
+<p>The DSA key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1045"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>DSA key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the DSA key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1050"></a><h3>
+<a name="XMLSECKEYDATAHMACID"></a>xmlSecKeyDataHmacId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataHmacId			xmlSecKeyDataHmacGetKlass()</pre></td></tr></table>
+<p>The DHMAC key klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1056"></a><h3>
+<a name="XMLSECKEYDATAHMACGETKLASS"></a>xmlSecKeyDataHmacGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataHmacGetKlass   (void);</pre></td></tr></table>
+<p>The HMAC key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1064"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>HMAC key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the HMAC key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1069"></a><h3>
+<a name="XMLSECKEYDATARSAID"></a>xmlSecKeyDataRsaId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataRsaId			xmlSecKeyDataRsaGetKlass()</pre></td></tr></table>
+<p>The RSA key klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1075"></a><h3>
+<a name="XMLSECKEYDATARSAGETKLASS"></a>xmlSecKeyDataRsaGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataRsaGetKlass    (void);</pre></td></tr></table>
+<p>The RSA key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1083"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>RSA key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the RSA key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1088"></a><h3>
+<a name="XMLSECKEYDATAX509ID"></a>xmlSecKeyDataX509Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataX509Id			xmlSecKeyDataX509GetKlass()</pre></td></tr></table>
+<p>The X509 data klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1094"></a><h3>
+<a name="XMLSECKEYDATAX509GETKLASS"></a>xmlSecKeyDataX509GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataX509GetKlass   (void);</pre></td></tr></table>
+<p>The X509 key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1102"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>X509 key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the X509 key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1107"></a><h3>
+<a name="XMLSECKEYDATARAWX509CERTID"></a>xmlSecKeyDataRawX509CertId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataRawX509CertId		xmlSecKeyDataRawX509CertGetKlass()</pre></td></tr></table>
+<p>The  raw X509 certificate klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1113"></a><h3>
+<a name="XMLSECKEYDATARAWX509CERTGETKLASS"></a>xmlSecKeyDataRawX509CertGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataRawX509CertGetKlass
+                                            (void);</pre></td></tr></table>
+<p>The raw X509 cert key data klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1121"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>raw x509 cert key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the raw X509 cert key data
+klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1126"></a><h3>
+<a name="XMLSECX509STOREID"></a>xmlSecX509StoreId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecX509StoreId			xmlSecX509StoreGetKlass()</pre></td></tr></table>
+<p>The  X509 store klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1132"></a><h3>
+<a name="XMLSECX509STOREGETKLASS"></a>xmlSecX509StoreGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStoreId</font> xmlSecX509StoreGetKlass
+                                            (void);</pre></td></tr></table>
+<p>The X509 certificates key data store klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1140"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to X509 certificates key data store klass or NULL if 
+an error occurs (xmlsec-crypto library is not loaded or the raw X509 
+cert key data klass is not implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1145"></a><h3>
+<a name="XMLSECTRANSFORMAES128CBCID"></a>xmlSecTransformAes128CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformAes128CbcId		xmlSecTransformAes128CbcGetKlass()</pre></td></tr></table>
+<p>The AES128 CBC cipher transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1151"></a><h3>
+<a name="XMLSECTRANSFORMAES128CBCGETKLASS"></a>xmlSecTransformAes128CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformAes128CbcGetKlass
+                                            (void);</pre></td></tr></table>
+<p>AES 128 CBC encryption transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1159"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to AES 128 CBC encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1164"></a><h3>
+<a name="XMLSECTRANSFORMAES192CBCID"></a>xmlSecTransformAes192CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformAes192CbcId		xmlSecTransformAes192CbcGetKlass()</pre></td></tr></table>
+<p>The AES192 CBC cipher transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1170"></a><h3>
+<a name="XMLSECTRANSFORMAES192CBCGETKLASS"></a>xmlSecTransformAes192CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformAes192CbcGetKlass
+                                            (void);</pre></td></tr></table>
+<p>AES 192 CBC encryption transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1178"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to AES 192 CBC encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1183"></a><h3>
+<a name="XMLSECTRANSFORMAES256CBCID"></a>xmlSecTransformAes256CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformAes256CbcId		xmlSecTransformAes256CbcGetKlass()</pre></td></tr></table>
+<p>The AES256 CBC cipher transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1189"></a><h3>
+<a name="XMLSECTRANSFORMAES256CBCGETKLASS"></a>xmlSecTransformAes256CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformAes256CbcGetKlass
+                                            (void);</pre></td></tr></table>
+<p>AES 256 CBC encryption transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1197"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to AES 256 CBC encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1202"></a><h3>
+<a name="XMLSECTRANSFORMKWAES128ID"></a>xmlSecTransformKWAes128Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformKWAes128Id		xmlSecTransformKWAes128GetKlass()</pre></td></tr></table>
+<p>The AES 128 key wrap transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1208"></a><h3>
+<a name="XMLSECTRANSFORMKWAES128GETKLASS"></a>xmlSecTransformKWAes128GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformKWAes128GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The AES-128 kew wrapper transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1216"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>AES-128 kew wrapper transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1221"></a><h3>
+<a name="XMLSECTRANSFORMKWAES192ID"></a>xmlSecTransformKWAes192Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformKWAes192Id		xmlSecTransformKWAes192GetKlass()</pre></td></tr></table>
+<p>The AES 192 key wrap transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1227"></a><h3>
+<a name="XMLSECTRANSFORMKWAES192GETKLASS"></a>xmlSecTransformKWAes192GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformKWAes192GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The AES-192 kew wrapper transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1235"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>AES-192 kew wrapper transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1240"></a><h3>
+<a name="XMLSECTRANSFORMKWAES256ID"></a>xmlSecTransformKWAes256Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformKWAes256Id		xmlSecTransformKWAes256GetKlass()</pre></td></tr></table>
+<p>The AES 256 key wrap transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1246"></a><h3>
+<a name="XMLSECTRANSFORMKWAES256GETKLASS"></a>xmlSecTransformKWAes256GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformKWAes256GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The AES-256 kew wrapper transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1254"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>AES-256 kew wrapper transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1259"></a><h3>
+<a name="XMLSECTRANSFORMDES3CBCID"></a>xmlSecTransformDes3CbcId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDes3CbcId		xmlSecTransformDes3CbcGetKlass()</pre></td></tr></table>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1264"></a><h3>
+<a name="XMLSECTRANSFORMDES3CBCGETKLASS"></a>xmlSecTransformDes3CbcGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformDes3CbcGetKlass
+                                            (void);</pre></td></tr></table>
+<p>Triple DES CBC encryption transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1272"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to Triple DES encryption transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1277"></a><h3>
+<a name="XMLSECTRANSFORMKWDES3ID"></a>xmlSecTransformKWDes3Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformKWDes3Id			xmlSecTransformKWDes3GetKlass()</pre></td></tr></table>
+<p>The DES3 CBC cipher transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1283"></a><h3>
+<a name="XMLSECTRANSFORMKWDES3GETKLASS"></a>xmlSecTransformKWDes3GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformKWDes3GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The Triple DES key wrapper transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1291"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>Triple DES key wrapper transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1296"></a><h3>
+<a name="XMLSECTRANSFORMDSASHA1ID"></a>xmlSecTransformDsaSha1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()</pre></td></tr></table>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1301"></a><h3>
+<a name="XMLSECTRANSFORMDSASHA1GETKLASS"></a>xmlSecTransformDsaSha1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformDsaSha1GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The DSA-SHA1 signature transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1309"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>DSA-SHA1 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1314"></a><h3>
+<a name="XMLSECTRANSFORMHMACSHA1ID"></a>xmlSecTransformHmacSha1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformHmacSha1Id		xmlSecTransformHmacSha1GetKlass()</pre></td></tr></table>
+<p>The HMAC with SHA1 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1320"></a><h3>
+<a name="XMLSECTRANSFORMHMACSHA1GETKLASS"></a>xmlSecTransformHmacSha1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformHmacSha1GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The HMAC-SHA1 transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1328"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the HMAC-SHA1 transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1333"></a><h3>
+<a name="XMLSECTRANSFORMHMACRIPEMD160ID"></a>xmlSecTransformHmacRipemd160Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformHmacRipemd160Id		xmlSecTransformHmacRipemd160GetKlass()</pre></td></tr></table>
+<p>The HMAC with RipeMD160 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1339"></a><h3>
+<a name="XMLSECTRANSFORMHMACRIPEMD160GETKLASS"></a>xmlSecTransformHmacRipemd160GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformHmacRipemd160GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The HMAC-RIPEMD160 transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1347"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the HMAC-RIPEMD160 transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1352"></a><h3>
+<a name="XMLSECTRANSFORMHMACMD5ID"></a>xmlSecTransformHmacMd5Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformHmacMd5Id		xmlSecTransformHmacMd5GetKlass()</pre></td></tr></table>
+<p>The HMAC with MD5 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1358"></a><h3>
+<a name="XMLSECTRANSFORMHMACMD5GETKLASS"></a>xmlSecTransformHmacMd5GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformHmacMd5GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The HMAC-MD5 transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1366"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>the HMAC-MD5 transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1371"></a><h3>
+<a name="XMLSECTRANSFORMRIPEMD160ID"></a>xmlSecTransformRipemd160Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformRipemd160Id		xmlSecTransformRipemd160GetKlass()</pre></td></tr></table>
+<p>The RIPEMD160 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1377"></a><h3>
+<a name="XMLSECTRANSFORMRIPEMD160GETKLASS"></a>xmlSecTransformRipemd160GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformRipemd160GetKlass
+                                            (void);</pre></td></tr></table>
+<p>RIPEMD-160 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1385"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to RIPEMD-160 digest transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1390"></a><h3>
+<a name="XMLSECTRANSFORMRSASHA1ID"></a>xmlSecTransformRsaSha1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformRsaSha1Id		xmlSecTransformRsaSha1GetKlass()</pre></td></tr></table>
+<p>The RSA-SHA1 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1396"></a><h3>
+<a name="XMLSECTRANSFORMRSASHA1GETKLASS"></a>xmlSecTransformRsaSha1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformRsaSha1GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The RSA-SHA1 signature transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1404"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>RSA-SHA1 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1409"></a><h3>
+<a name="XMLSECTRANSFORMRSAPKCS1ID"></a>xmlSecTransformRsaPkcs1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformRsaPkcs1Id		xmlSecTransformRsaPkcs1GetKlass()</pre></td></tr></table>
+<p>The RSA PKCS1 key transport transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1415"></a><h3>
+<a name="XMLSECTRANSFORMRSAPKCS1GETKLASS"></a>xmlSecTransformRsaPkcs1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformRsaPkcs1GetKlass
+                                            (void);</pre></td></tr></table>
+<p>The RSA-PKCS1 key transport transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1423"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>RSA-PKCS1 key transport transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1428"></a><h3>
+<a name="XMLSECTRANSFORMRSAOAEPID"></a>xmlSecTransformRsaOaepId</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformRsaOaepId		xmlSecTransformRsaOaepGetKlass()</pre></td></tr></table>
+<p>The RSA PKCS1 key transport transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1434"></a><h3>
+<a name="XMLSECTRANSFORMRSAOAEPGETKLASS"></a>xmlSecTransformRsaOaepGetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformRsaOaepGetKlass
+                                            (void);</pre></td></tr></table>
+<p>The RSA-OAEP key transport transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1442"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>RSA-OAEP key transport transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1447"></a><h3>
+<a name="XMLSECTRANSFORMSHA1ID"></a>xmlSecTransformSha1Id</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecTransformSha1Id			xmlSecTransformSha1GetKlass()</pre></td></tr></table>
+<p>The SHA1 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1453"></a><h3>
+<a name="XMLSECTRANSFORMSHA1GETKLASS"></a>xmlSecTransformSha1GetKlass ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformSha1GetKlass
+                                            (void);</pre></td></tr></table>
+<p>SHA-1 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1461"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to SHA-1 digest transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1466"></a><h3>
+<a name="XMLSECCRYPTOAPPINIT"></a>xmlSecCryptoAppInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppInit             (const char *config);</pre></td></tr></table>
+<p>General crypto engine initialization. This function is used
+by XMLSec command line utility and called before 
+<tt class="PARAMETER"><i>xmlSecInit</i></tt> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1474"><span style="white-space: nowrap"><tt class="PARAMETER"><i>config</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the path to crypto library configuration.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1479"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1484"></a><h3>
+<a name="XMLSECCRYPTOAPPSHUTDOWN"></a>xmlSecCryptoAppShutdown ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppShutdown         (void);</pre></td></tr></table>
+<p>General crypto engine shutdown. This function is used
+by XMLSec command line utility and called after 
+<tt class="PARAMETER"><i>xmlSecShutdown</i></tt> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1492"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1497"></a><h3>
+<a name="XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT"></a>xmlSecCryptoAppDefaultKeysMngrInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppDefaultKeysMngrInit
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
+<p>Initializes <tt class="PARAMETER"><i>mngr</i></tt> with simple keys store <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
+and a default crypto key data stores.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1507"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1512"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1517"></a><h3>
+<a name="XMLSECCRYPTOAPPDEFAULTKEYSMNGRADOPTKEY"></a>xmlSecCryptoAppDefaultKeysMngrAdoptKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppDefaultKeysMngrAdoptKey
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
+<p>Adds <tt class="PARAMETER"><i>key</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created with <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT">xmlSecCryptoAppDefaultKeysMngrInit</a>
+function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1529"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1534"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1539"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1544"></a><h3>
+<a name="XMLSECCRYPTOAPPDEFAULTKEYSMNGRLOAD"></a>xmlSecCryptoAppDefaultKeysMngrLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppDefaultKeysMngrLoad
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *uri);</pre></td></tr></table>
+<p>Loads XML keys file from <tt class="PARAMETER"><i>uri</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created 
+with <a href="xmlsec-app.html#XMLSECCRYPTOAPPDEFAULTKEYSMNGRINIT">xmlSecCryptoAppDefaultKeysMngrInit</a> function.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1555"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1560"><span style="white-space: nowrap"><tt class="PARAMETER"><i>uri</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the uri.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1565"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1570"></a><h3>
+<a name="XMLSECCRYPTOAPPDEFAULTKEYSMNGRSAVE"></a>xmlSecCryptoAppDefaultKeysMngrSave ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppDefaultKeysMngrSave
+                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
+<p>Saves keys from <tt class="PARAMETER"><i>mngr</i></tt> to  XML keys file.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1580"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1585"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the destination filename.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1590"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the type of keys to save (public/private/symmetric).</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1595"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1600"></a><h3>
+<a name="XMLSECCRYPTOAPPKEYSMNGRCERTLOAD"></a>xmlSecCryptoAppKeysMngrCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppKeysMngrCertLoad (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
+<p>Reads cert from <tt class="PARAMETER"><i>filename</i></tt> and adds to the list of trusted or known
+untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1612"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the keys manager.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1617"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the certificate file.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1622"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the certificate file format.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1627"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p> 		the flag that indicates is the certificate in <tt class="PARAMETER"><i>filename</i></tt>
+   			trusted or not.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1633"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1638"></a><h3>
+<a name="XMLSECCRYPTOAPPKEYLOAD"></a>xmlSecCryptoAppKeyLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecCryptoAppKeyLoad         (const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</pre></td></tr></table>
+<p>Reads key from the a file.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1647"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key filename.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1652"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key file format.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1657"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the key file password.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1662"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the key password callback.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1667"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1672"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1677"></a><h3>
+<a name="XMLSECCRYPTOAPPPKCS12LOAD"></a>xmlSecCryptoAppPkcs12Load ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecCryptoAppPkcs12Load      (const char *filename,
+                                             const char *pwd,
+                                             void *pwdCallback,
+                                             void *pwdCallbackCtx);</pre></td></tr></table>
+<p>Reads key and all associated certificates from the PKCS12 file.
+For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1685"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 key filename.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1690"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 file password.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1695"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the password callback.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1700"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1705"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1710"></a><h3>
+<a name="XMLSECCRYPTOAPPKEYCERTLOAD"></a>xmlSecCryptoAppKeyCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCryptoAppKeyCertLoad      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
+<p>Reads the certificate from $<tt class="PARAMETER"><i>filename</i></tt> and adds it to key.</p>
+<p></p>
+<p></p>
+<table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1720"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1725"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the certificate filename.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1730"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>		the certificate file format.</p></td>
+</tr>
+<tr>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN1735"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN1740"></a><h3>
+<a name="XMLSECCRYPTOAPPGETDEFAULTPWDCALLBACK"></a>xmlSecCryptoAppGetDefaultPwdCallback ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void*       xmlSecCryptoAppGetDefaultPwdCallback
+                                            (void);</pre></td></tr></table>
+<p>Gets default password callback.</p>
+<p></p>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-base64.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Core Library API Reference.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>base64</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

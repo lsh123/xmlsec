@@ -38,7 +38,13 @@ fi
 
 cflags=false
 libs=false
-crypto="default"
+if [ "z@XMLSEC_NO_CRYPTO_DYNAMIC_LOADING@" = "z1" ] ;
+then
+    crypto="default"
+else
+    crypto="none"
+fi
+
 while [ $# -gt 0 ]
 do
     case "$1" in
@@ -127,6 +133,10 @@ case "$crypto" in
 none)
     # no crypto, just the core xmlsec engine (useful when more
     # than one crypto engine i sused by application)
+    if [ "z@XMLSEC_NO_CRYPTO_DYNAMIC_LOADING@" != "z1" ] ;
+    then
+	the_crypto_flags="-DXMLSEC_CRYPTO_DYNAMIC_LOADING=1 -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
+    fi
     ;;
 
 default) 

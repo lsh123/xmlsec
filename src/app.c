@@ -109,7 +109,9 @@ xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * 
  * The AES key data klass.
  *
- * Returns AES key data klass.
+ * Returns AES key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the AES key data
+ * klass is not implemented).
  */
 xmlSecKeyDataId 
 xmlSecKeyDataAesGetKlass(void) {
@@ -125,6 +127,15 @@ xmlSecKeyDataAesGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataAesGetKlass());
 }
 
+/** 
+ * xmlSecKeyDataDesGetKlass:
+ * 
+ * The DES key data klass.
+ *
+ * Returns DES key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the DES key data
+ * klass is not implemented).
+ */
 xmlSecKeyDataId 
 xmlSecKeyDataDesGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDesGetKlass == NULL)) {
@@ -139,6 +150,15 @@ xmlSecKeyDataDesGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataDesGetKlass());
 }
 
+/** 
+ * xmlSecKeyDataDsaGetKlass:
+ * 
+ * The DSA key data klass.
+ *
+ * Returns DSA key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the DSA key data
+ * klass is not implemented).
+ */
 xmlSecKeyDataId	
 xmlSecKeyDataDsaGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDsaGetKlass == NULL)) {
@@ -153,6 +173,15 @@ xmlSecKeyDataDsaGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataDsaGetKlass());
 }
 
+/** 
+ * xmlSecKeyDataHmacGetKlass:
+ * 
+ * The HMAC key data klass.
+ *
+ * Returns HMAC key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the HMAC key data
+ * klass is not implemented).
+ */
 xmlSecKeyDataId	
 xmlSecKeyDataHmacGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataHmacGetKlass == NULL)) {
@@ -167,6 +196,15 @@ xmlSecKeyDataHmacGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataHmacGetKlass());
 }
 
+/** 
+ * xmlSecKeyDataRsaGetKlass:
+ * 
+ * The RSA key data klass.
+ *
+ * Returns RSA key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the RSA key data
+ * klass is not implemented).
+ */
 xmlSecKeyDataId	
 xmlSecKeyDataRsaGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataRsaGetKlass == NULL)) {
@@ -181,6 +219,15 @@ xmlSecKeyDataRsaGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataRsaGetKlass());
 }
 
+/** 
+ * xmlSecKeyDataX509GetKlass:
+ * 
+ * The X509 key data klass.
+ *
+ * Returns X509 key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the X509 key data
+ * klass is not implemented).
+ */
 xmlSecKeyDataId	
 xmlSecKeyDataX509GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataX509GetKlass == NULL)) {
@@ -195,6 +242,15 @@ xmlSecKeyDataX509GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataX509GetKlass());
 }
 
+/** 
+ * xmlSecKeyDataRawX509CertGetKlass:
+ * 
+ * The raw X509 cert key data klass.
+ *
+ * Returns raw x509 cert key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the raw X509 cert key data
+ * klass is not implemented).
+ */
 xmlSecKeyDataId	
 xmlSecKeyDataRawX509CertGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataRawX509CertGetKlass == NULL)) {
@@ -214,6 +270,15 @@ xmlSecKeyDataRawX509CertGetKlass(void) {
  * Key data store ids
  *
  *****************************************************************************/
+/** 
+ * xmlSecX509StoreGetKlass:
+ * 
+ * The X509 certificates key data store klass.
+ *
+ * Returns pointer to X509 certificates key data store klass or NULL if 
+ * an error occurs (xmlsec-crypto library is not loaded or the raw X509 
+ * cert key data klass is not implemented).
+ */
 xmlSecKeyDataStoreId 
 xmlSecX509StoreGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->x509StoreGetKlass == NULL)) {
@@ -233,6 +298,15 @@ xmlSecX509StoreGetKlass(void) {
  * Crypto transforms ids
  *
  *****************************************************************************/
+/**
+ * xmlSecTransformAes128CbcGetKlass:
+ * 
+ * AES 128 CBC encryption transform klass.
+ * 
+ * Returns pointer to AES 128 CBC encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */ 
 xmlSecTransformId 
 xmlSecTransformAes128CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes128CbcGetKlass == NULL)) {
@@ -247,6 +321,15 @@ xmlSecTransformAes128CbcGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformAes128CbcGetKlass());
 }
 
+/**
+ * xmlSecTransformAes192CbcGetKlass:
+ * 
+ * AES 192 CBC encryption transform klass.
+ * 
+ * Returns pointer to AES 192 CBC encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */ 
 xmlSecTransformId 
 xmlSecTransformAes192CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes192CbcGetKlass == NULL)) {
@@ -261,6 +344,15 @@ xmlSecTransformAes192CbcGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformAes192CbcGetKlass());
 }
 
+/**
+ * xmlSecTransformAes256CbcGetKlass:
+ * 
+ * AES 256 CBC encryption transform klass.
+ * 
+ * Returns pointer to AES 256 CBC encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */ 
 xmlSecTransformId 
 xmlSecTransformAes256CbcGetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformAes256CbcGetKlass == NULL)) {
@@ -275,6 +367,15 @@ xmlSecTransformAes256CbcGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformAes256CbcGetKlass());
 }
 
+/** 
+ * xmlSecTransformKWAes128GetKlass:
+ *
+ * The AES-128 kew wrapper transform klass.
+ *
+ * Returns AES-128 kew wrapper transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformKWAes128GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWAes128GetKlass == NULL)) {
@@ -289,6 +390,15 @@ xmlSecTransformKWAes128GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformKWAes128GetKlass());
 }
 
+/** 
+ * xmlSecTransformKWAes192GetKlass:
+ *
+ * The AES-192 kew wrapper transform klass.
+ *
+ * Returns AES-192 kew wrapper transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformKWAes192GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWAes192GetKlass == NULL)) {
@@ -303,6 +413,15 @@ xmlSecTransformKWAes192GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformKWAes192GetKlass());
 }
 
+/** 
+ * xmlSecTransformKWAes256GetKlass:
+ *
+ * The AES-256 kew wrapper transform klass.
+ *
+ * Returns AES-256 kew wrapper transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformKWAes256GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWAes256GetKlass == NULL)) {
@@ -317,6 +436,15 @@ xmlSecTransformKWAes256GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformKWAes256GetKlass());
 }
 
+/** 
+ * xmlSecTransformDes3CbcGetKlass:
+ *
+ * Triple DES CBC encryption transform klass.
+ * 
+ * Returns pointer to Triple DES encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformDes3CbcGetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformDes3CbcGetKlass == NULL)) {
@@ -331,6 +459,15 @@ xmlSecTransformDes3CbcGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformDes3CbcGetKlass());
 }
 
+/** 
+ * xmlSecTransformKWDes3GetKlass:
+ * 
+ * The Triple DES key wrapper transform klass.
+ *
+ * Returns Triple DES key wrapper transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformKWDes3GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformKWDes3GetKlass == NULL)) {
@@ -345,6 +482,15 @@ xmlSecTransformKWDes3GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformKWDes3GetKlass());
 }
 
+/**
+ * xmlSecTransformDsaSha1GetKlass:
+ * 
+ * The DSA-SHA1 signature transform klass.
+ *
+ * Returns DSA-SHA1 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformDsaSha1GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass == NULL)) {
@@ -359,6 +505,15 @@ xmlSecTransformDsaSha1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass());
 }
 
+/** 
+ * xmlSecTransformHmacSha1GetKlass:
+ *
+ * The HMAC-SHA1 transform klass.
+ *
+ * Returns the HMAC-SHA1 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformHmacSha1GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha1GetKlass == NULL)) {
@@ -373,6 +528,15 @@ xmlSecTransformHmacSha1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformHmacSha1GetKlass());
 }
 
+/** 
+ * xmlSecTransformHmacRipemd160GetKlass:
+ *
+ * The HMAC-RIPEMD160 transform klass.
+ *
+ * Returns the HMAC-RIPEMD160 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformHmacRipemd160GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass == NULL)) {
@@ -387,6 +551,15 @@ xmlSecTransformHmacRipemd160GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass());
 }
 
+/** 
+ * xmlSecTransformHmacMd5GetKlass:
+ *
+ * The HMAC-MD5 transform klass.
+ *
+ * Returns the HMAC-MD5 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformHmacMd5GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass == NULL)) {
@@ -401,6 +574,15 @@ xmlSecTransformHmacMd5GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass());
 }
 
+/** 
+ * xmlSecTransformRipemd160GetKlass:
+ *
+ * RIPEMD-160 digest transform klass.
+ *
+ * Returns pointer to RIPEMD-160 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformRipemd160GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRipemd160GetKlass == NULL)) {
@@ -415,6 +597,15 @@ xmlSecTransformRipemd160GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformRipemd160GetKlass());
 }
 
+/**
+ * xmlSecTransformRsaSha1GetKlass:
+ * 
+ * The RSA-SHA1 signature transform klass.
+ *
+ * Returns RSA-SHA1 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformRsaSha1GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha1GetKlass == NULL)) {
@@ -429,6 +620,15 @@ xmlSecTransformRsaSha1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformRsaSha1GetKlass());
 }
 
+/** 
+ * xmlSecTransformRsaPkcs1GetKlass:
+ *
+ * The RSA-PKCS1 key transport transform klass.
+ *
+ * Returns RSA-PKCS1 key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformRsaPkcs1GetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaPkcs1GetKlass == NULL)) {
@@ -443,6 +643,15 @@ xmlSecTransformRsaPkcs1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformRsaPkcs1GetKlass());
 }
 
+/** 
+ * xmlSecTransformRsaOaepGetKlass:
+ *
+ * The RSA-OAEP key transport transform klass.
+ *
+ * Returns RSA-OAEP key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformRsaOaepGetKlass(void) {	
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaOaepGetKlass == NULL)) {
@@ -457,6 +666,15 @@ xmlSecTransformRsaOaepGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformRsaOaepGetKlass());
 }
 
+/** 
+ * xmlSecTransformSha1GetKlass:
+ *
+ * SHA-1 digest transform klass.
+ *
+ * Returns pointer to SHA-1 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId 
 xmlSecTransformSha1GetKlass(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha1GetKlass == NULL)) {
@@ -476,6 +694,16 @@ xmlSecTransformSha1GetKlass(void) {
  * High level routines form xmlsec command line utility
  *
  *****************************************************************************/ 
+/**
+ * xmlSecCryptoAppInit:
+ * @config:		the path to crypto library configuration.
+ *
+ * General crypto engine initialization. This function is used
+ * by XMLSec command line utility and called before 
+ * @xmlSecInit function.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecCryptoAppInit(const char* config) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppInit == NULL)) {
@@ -491,6 +719,15 @@ xmlSecCryptoAppInit(const char* config) {
 }
 
 
+/**
+ * xmlSecCryptoAppShutdown:
+ * 
+ * General crypto engine shutdown. This function is used
+ * by XMLSec command line utility and called after 
+ * @xmlSecShutdown function.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecCryptoAppShutdown(void) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppShutdown == NULL)) {
@@ -505,7 +742,15 @@ xmlSecCryptoAppShutdown(void) {
     return(xmlSecCryptoDLGetFunctions()->cryptoAppShutdown());
 }
 
-
+/**
+ * xmlSecCryptoAppDefaultKeysMngrInit:
+ * @mngr: 		the pointer to keys manager.
+ *
+ * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * and a default crypto key data stores.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrInit == NULL)) {
@@ -520,7 +765,16 @@ xmlSecCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrInit(mngr));
 }
 
-
+/**
+ * xmlSecCryptoAppDefaultKeysMngrAdoptKey:
+ * @mngr: 		the pointer to keys manager.
+ * @key:		the pointer to key.
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrAdoptKey == NULL)) {
@@ -535,7 +789,16 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
     return(xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrAdoptKey(mngr, key));
 }
 
-
+/**
+ * xmlSecCryptoAppDefaultKeysMngrLoad:
+ * @mngr: 		the pointer to keys manager.
+ * @uri:		the uri.
+ *
+ * Loads XML keys file from @uri to the keys manager @mngr created 
+ * with #xmlSecCryptoAppDefaultKeysMngrInit function.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrLoad == NULL)) {
@@ -550,7 +813,16 @@ xmlSecCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     return(xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrLoad(mngr, uri));
 }
 
-
+/**
+ * xmlSecCryptoAppDefaultKeysMngrSave:
+ * @mngr: 		the pointer to keys manager.
+ * @filename:		the destination filename.
+ * @type:		the type of keys to save (public/private/symmetric).
+ *
+ * Saves keys from @mngr to  XML keys file.
+ *  
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int 
 xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 				   xmlSecKeyDataType type) {
@@ -566,6 +838,19 @@ xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
     return(xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrSave(mngr, filename, type));
 }
 
+/**
+ * xmlSecCryptoAppKeysMngrCertLoad:
+ * @mngr: 		the keys manager.
+ * @filename: 		the certificate file.
+ * @format:		the certificate file format.
+ * @type: 		the flag that indicates is the certificate in @filename
+ *    			trusted or not.
+ * 
+ * Reads cert from @filename and adds to the list of trusted or known
+ * untrusted certs in @store.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
 				xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
@@ -582,6 +867,18 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 }
 
 				
+/**
+ * xmlSecCryptoAppKeyLoad:
+ * @filename:		the key filename.
+ * @format:		the key file format.
+ * @pwd:		the key file password.
+ * @pwdCallback:	the key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr 
 xmlSecCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 		       const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
@@ -598,6 +895,19 @@ xmlSecCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 }
 
 				
+/**
+ * xmlSecCryptoAppPkcs12Load:
+ * @filename:		the PKCS12 key filename.
+ * @pwd:		the PKCS12 file password.
+ * @pwdCallback:	the password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 file.
+ * For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
 xmlSecKeyPtr 
 xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallback, 
 			  void* pwdCallbackCtx) {
@@ -613,6 +923,16 @@ xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallba
     return(xmlSecCryptoDLGetFunctions()->cryptoAppPkcs12Load(filename, pwd, pwdCallback, pwdCallbackCtx));
 }
 
+/**
+ * xmlSecCryptoAppKeyCertLoad:
+ * @key:		the pointer to key.
+ * @filename:		the certificate filename.
+ * @format:		the certificate file format.
+ *
+ * Reads the certificate from $@filename and adds it to key.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
     if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoad == NULL)) {
@@ -627,6 +947,13 @@ xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyData
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyCertLoad(key, filename, format));
 }
 
+/**
+ * xmlSecCryptoAppGetDefaultPwdCallback:
+ *
+ * Gets default password callback.
+ *
+ * Returns default password callback.
+ */
 void* 
 xmlSecCryptoAppGetDefaultPwdCallback(void) {
     if(xmlSecCryptoDLGetFunctions() == NULL) {

@@ -699,7 +699,7 @@ total number of known error codes.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</title>
-<programlisting>#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
+<programlisting>#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__XMLSEC_FUNCTION__
 </programlisting>
 <para>
 The macro that specifies the location (file, line and function)

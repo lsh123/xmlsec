@@ -65,7 +65,7 @@
 <a name="XMLSEC-EXAMPLE-VERIFY4"></a>verify4.c</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN706"></a><p></p>
+<a name="AEN722"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
@@ -120,8 +120,8 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc &lt; 3) {
-	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
-	fprintf(stderr, &quot;Usage: %s &lt;xml-file&gt; &lt;cert-file1&gt; [&lt;cert-file2&gt; [...]]\n&quot;, argv[0]);
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;cert-file1&gt; [&lt;cert-file2&gt; [...]]\n", argv[0]);
 	return(1);
     }
 
@@ -136,19 +136,33 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
 
+    /* Load default crypto engine if we are supporting dynamic
+     * loading for xmlsec-crypto libraries. Use the crypto library
+     * name ("openssl", "nss", etc.) to load corresponding 
+     * xmlsec-crypto library.
+     */
+#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST "default") &lt; 0) {
+	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+			"that you have it installed and check shared libraries path\n"
+			"(LD_LIBRARY_PATH) envornment variable.\n");
+	return(-1);	
+    }
+#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
+
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: crypto initialization failed.\n");
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
 
@@ -211,11 +225,11 @@ load_trusted_certs(char** files, int files_size) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	fprintf(stderr, "Error: failed to create keys manager.\n");
 	return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }    
@@ -225,7 +239,7 @@ load_trusted_certs(char** files, int files_size) {
 
 	/* load trusted cert */
 	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
-    	    fprintf(stderr,&quot;Error: failed to load pem certificate from \&quot;%s\&quot;\n&quot;, files[i]);
+    	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
@@ -256,21 +270,21 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     /* load file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, xml_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
 	goto done;	
     }
 
     /* create signature context */
     dsigCtx = xmlSecDSigCtxCreate(mngr);
     if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
 
@@ -283,7 +297,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) &lt; 0) ||
        (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) &lt; 0)) {
 
-        fprintf(stderr,&quot;Error: failed to limit allowed siganture transforms\n&quot;);
+        fprintf(stderr,"Error: failed to limit allowed siganture transforms\n");
 	goto done;
     }
     if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) &lt; 0) ||
@@ -291,19 +305,19 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) &lt; 0) ||
        (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) &lt; 0)) {
 
-        fprintf(stderr,&quot;Error: failed to limit allowed reference transforms\n&quot;);
+        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
 	goto done;
     }
 
     /* in addition, limit possible key data to valid X509 certificates only */
     if(xmlSecPtrListAdd(&amp;(dsigCtx-&gt;keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) &lt; 0) {
-        fprintf(stderr,&quot;Error: failed to limit allowed key data\n&quot;);
+        fprintf(stderr,"Error: failed to limit allowed key data\n");
 	goto done;
     }
     
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature verify\n&quot;);
+        fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
 
@@ -311,15 +325,15 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     if((dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) &amp;&amp; 
         (xmlSecPtrListGetSize(&amp;(dsigCtx-&gt;signedInfoReferences)) != 1)) {
 	
-        fprintf(stderr,&quot;Error: only one reference is allowed\n&quot;);
+        fprintf(stderr,"Error: only one reference is allowed\n");
 	goto done;
     }
         
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
-	fprintf(stdout, &quot;Signature is OK\n&quot;);
+	fprintf(stdout, "Signature is OK\n");
     } else {
-	fprintf(stdout, &quot;Signature is INVALID\n&quot;);
+	fprintf(stdout, "Signature is INVALID\n");
     }    
 
     /* success */
@@ -345,8 +359,8 @@ done:
 <a name="XMLSEC-EXAMPLE-VERIFY4-TMPL"></a>verify4-tmpl.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN711"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<a name="AEN727"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -354,16 +368,16 @@ Sign it using the following command (replace __ with double dashes):
 
  ../apps/xmlsec sign __privkey rsakey.pem,rsacert.pem __output verify4-res.xml verify4-tmpl.xml
 --&gt;
-&lt;Response xmlns=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; xmlns:samlp=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot; Recipient=&quot;https://shire.target.com&quot; ResponseID=&quot;7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC&quot;&gt;
-  &lt;dsig:Signature xmlns:dsig=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;Response xmlns="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" IssueInstant="2002-04-18T16:56:54Z" MajorVersion="1" MinorVersion="0" Recipient="https://shire.target.com" ResponseID="7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC"&gt;
+  &lt;dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"&gt;
     &lt;dsig:SignedInfo&gt;
-      &lt;dsig:CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;
-      &lt;dsig:SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&gt;
-      &lt;dsig:Reference URI=&quot;&quot;&gt;
+      &lt;dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;
+      &lt;dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/&gt;
+      &lt;dsig:Reference URI=""&gt;
         &lt;dsig:Transforms&gt;
-          &lt;dsig:Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;
+          &lt;dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
         &lt;/dsig:Transforms&gt;
-        &lt;dsig:DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;
+        &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
         &lt;dsig:DigestValue/&gt;
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
@@ -373,23 +387,23 @@ Sign it using the following command (replace __ with double dashes):
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
-    &lt;StatusCode Value=&quot;samlp:Success&quot;/&gt;
+    &lt;StatusCode Value="samlp:Success"/&gt;
   &lt;/Status&gt;
-  &lt;Assertion xmlns=&quot;urn:oasis:names:tc:SAML:1.0:assertion&quot; AssertionID=&quot;7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; Issuer=&quot;hs.osu.edu&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot;&gt;
-    &lt;Conditions NotBefore=&quot;2002-04-18T16:56:54Z&quot; NotOnOrAfter=&quot;2002-04-18T17:01:54Z&quot;&gt;
+  &lt;Assertion xmlns="urn:oasis:names:tc:SAML:1.0:assertion" AssertionID="7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC" IssueInstant="2002-04-18T16:56:54Z" Issuer="hs.osu.edu" MajorVersion="1" MinorVersion="0"&gt;
+    &lt;Conditions NotBefore="2002-04-18T16:56:54Z" NotOnOrAfter="2002-04-18T17:01:54Z"&gt;
       &lt;AudienceRestrictionCondition&gt;
         &lt;Audience&gt;http://middleware.internet2.edu/shibboleth/clubs/clubshib/1.0/&lt;/Audience&gt;
       &lt;/AudienceRestrictionCondition&gt;
     &lt;/Conditions&gt;
-    &lt;AuthenticationStatement AuthenticationInstant=&quot;2002-04-18T16:56:53Z&quot; AuthenticationMethod=&quot;urn:mace:shibboleth:authmethod&quot;&gt;
+    &lt;AuthenticationStatement AuthenticationInstant="2002-04-18T16:56:53Z" AuthenticationMethod="urn:mace:shibboleth:authmethod"&gt;
       &lt;Subject&gt;
-        &lt;NameIdentifier Format=&quot;urn:mace:shibboleth:1.0:handle&quot; NameQualifier=&quot;osu.edu&quot;&gt;foo&lt;/NameIdentifier&gt;
+        &lt;NameIdentifier Format="urn:mace:shibboleth:1.0:handle" NameQualifier="osu.edu"&gt;foo&lt;/NameIdentifier&gt;
         &lt;SubjectConfirmation&gt;
           &lt;ConfirmationMethod&gt;urn:oasis:names:tc:SAML:1.0:cm:Bearer&lt;/ConfirmationMethod&gt;
         &lt;/SubjectConfirmation&gt;
       &lt;/Subject&gt;
-      &lt;SubjectLocality IPAddress=&quot;127.0.0.1&quot;/&gt;
-      &lt;AuthorityBinding AuthorityKind=&quot;samlp:AttributeQuery&quot; Binding=&quot;urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding&quot; Location=&quot;https://aa.osu.edu/&quot;/&gt;
+      &lt;SubjectLocality IPAddress="127.0.0.1"/&gt;
+      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
     &lt;/AuthenticationStatement&gt;
   &lt;/Assertion&gt;
 &lt;/Response&gt;</pre></td></tr></table>
@@ -401,8 +415,8 @@ Sign it using the following command (replace __ with double dashes):
 <a name="XMLSEC-EXAMPLE-VERIFY4-RES"></a>verify4-res.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN716"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<a name="AEN732"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
 
@@ -410,16 +424,16 @@ This file was signed using the following command (replace __ with double dashes)
 
  ../apps/xmlsec sign __privkey rsakey.pem,rsacert.pem __output verify4-res.xml verify4-tmpl.xml
 --&gt;
-&lt;Response xmlns=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; xmlns:samlp=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot; Recipient=&quot;https://shire.target.com&quot; ResponseID=&quot;7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC&quot;&gt;
-  &lt;dsig:Signature xmlns:dsig=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;Response xmlns="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" IssueInstant="2002-04-18T16:56:54Z" MajorVersion="1" MinorVersion="0" Recipient="https://shire.target.com" ResponseID="7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC"&gt;
+  &lt;dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"&gt;
     &lt;dsig:SignedInfo&gt;
-      &lt;dsig:CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;
-      &lt;dsig:SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&gt;
-      &lt;dsig:Reference URI=&quot;&quot;&gt;
+      &lt;dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;
+      &lt;dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/&gt;
+      &lt;dsig:Reference URI=""&gt;
         &lt;dsig:Transforms&gt;
-          &lt;dsig:Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;
+          &lt;dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
         &lt;/dsig:Transforms&gt;
-        &lt;dsig:DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;
+        &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
         &lt;dsig:DigestValue&gt;t1nvDq1bZXEhBIXc/DHcqIrjRyI=&lt;/dsig:DigestValue&gt;
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
@@ -431,7 +445,7 @@ sl1nyCIu3AONq1w8jIPOgmITF8PpwDm0+XoQUH0P4kHJqNLphnJZY+GlPAC6VlAW
 2bcAFr4Ul5yzHUBpxCDZfg==&lt;/dsig:SignatureValue&gt;
     &lt;dsig:KeyInfo&gt;
       &lt;dsig:X509Data&gt;
-&lt;X509Certificate xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;MIIE3zCCBEigAwIBAgIBBTANBgkqhkiG9w0BAQQFADCByzELMAkGA1UEBhMCVVMx
+&lt;X509Certificate xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;MIIE3zCCBEigAwIBAgIBBTANBgkqhkiG9w0BAQQFADCByzELMAkGA1UEBhMCVVMx
 EzARBgNVBAgTCkNhbGlmb3JuaWExEjAQBgNVBAcTCVN1bm55dmFsZTE9MDsGA1UE
 ChM0WE1MIFNlY3VyaXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20v
 eG1sc2VjKTEZMBcGA1UECxMQUm9vdCBDZXJ0aWZpY2F0ZTEWMBQGA1UEAxMNQWxl
@@ -462,23 +476,23 @@ NJ2D&lt;/X509Certificate&gt;
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
-    &lt;StatusCode Value=&quot;samlp:Success&quot;/&gt;
+    &lt;StatusCode Value="samlp:Success"/&gt;
   &lt;/Status&gt;
-  &lt;Assertion xmlns=&quot;urn:oasis:names:tc:SAML:1.0:assertion&quot; AssertionID=&quot;7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; Issuer=&quot;hs.osu.edu&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot;&gt;
-    &lt;Conditions NotBefore=&quot;2002-04-18T16:56:54Z&quot; NotOnOrAfter=&quot;2002-04-18T17:01:54Z&quot;&gt;
+  &lt;Assertion xmlns="urn:oasis:names:tc:SAML:1.0:assertion" AssertionID="7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC" IssueInstant="2002-04-18T16:56:54Z" Issuer="hs.osu.edu" MajorVersion="1" MinorVersion="0"&gt;
+    &lt;Conditions NotBefore="2002-04-18T16:56:54Z" NotOnOrAfter="2002-04-18T17:01:54Z"&gt;
       &lt;AudienceRestrictionCondition&gt;
         &lt;Audience&gt;http://middleware.internet2.edu/shibboleth/clubs/clubshib/1.0/&lt;/Audience&gt;
       &lt;/AudienceRestrictionCondition&gt;
     &lt;/Conditions&gt;
-    &lt;AuthenticationStatement AuthenticationInstant=&quot;2002-04-18T16:56:53Z&quot; AuthenticationMethod=&quot;urn:mace:shibboleth:authmethod&quot;&gt;
+    &lt;AuthenticationStatement AuthenticationInstant="2002-04-18T16:56:53Z" AuthenticationMethod="urn:mace:shibboleth:authmethod"&gt;
       &lt;Subject&gt;
-        &lt;NameIdentifier Format=&quot;urn:mace:shibboleth:1.0:handle&quot; NameQualifier=&quot;osu.edu&quot;&gt;foo&lt;/NameIdentifier&gt;
+        &lt;NameIdentifier Format="urn:mace:shibboleth:1.0:handle" NameQualifier="osu.edu"&gt;foo&lt;/NameIdentifier&gt;
         &lt;SubjectConfirmation&gt;
           &lt;ConfirmationMethod&gt;urn:oasis:names:tc:SAML:1.0:cm:Bearer&lt;/ConfirmationMethod&gt;
         &lt;/SubjectConfirmation&gt;
       &lt;/Subject&gt;
-      &lt;SubjectLocality IPAddress=&quot;127.0.0.1&quot;/&gt;
-      &lt;AuthorityBinding AuthorityKind=&quot;samlp:AttributeQuery&quot; Binding=&quot;urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding&quot; Location=&quot;https://aa.osu.edu/&quot;/&gt;
+      &lt;SubjectLocality IPAddress="127.0.0.1"/&gt;
+      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
     &lt;/AuthenticationStatement&gt;
   &lt;/Assertion&gt;
 &lt;/Response&gt;</pre></td></tr></table>
@@ -490,8 +504,8 @@ NJ2D&lt;/X509Certificate&gt;
 <a name="XMLSEC-EXAMPLE-VERIFY4-BAD-TMPL"></a>verify4-bad-tmpl.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN721"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<a name="AEN737"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response template (verify4 example). 
 
@@ -499,23 +513,23 @@ Sign it using the following command (replace __ with double dashes):
 
  ../apps/xmlsec sign __privkey rsakey.pem,rsacert.pem __output verify4--bad-res.xml verify4-bad-tmpl.xml
 --&gt;
-&lt;Response xmlns=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; xmlns:samlp=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot; Recipient=&quot;https://shire.target.com&quot; ResponseID=&quot;7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC&quot;&gt;
-  &lt;dsig:Signature xmlns:dsig=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;Response xmlns="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" IssueInstant="2002-04-18T16:56:54Z" MajorVersion="1" MinorVersion="0" Recipient="https://shire.target.com" ResponseID="7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC"&gt;
+  &lt;dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"&gt;
     &lt;dsig:SignedInfo&gt;
-      &lt;dsig:CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;
-      &lt;dsig:SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&gt;
-      &lt;dsig:Reference URI=&quot;&quot;&gt;
+      &lt;dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;
+      &lt;dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/&gt;
+      &lt;dsig:Reference URI=""&gt;
         &lt;dsig:Transforms&gt;
-          &lt;dsig:Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;
-          &lt;dsig:Transform Algorithm=&quot;http://www.w3.org/TR/1999/REC-xpath-19991116&quot;&gt;
-            &lt;dsig:XPath xmlns:samlp_xpath=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; &gt;
+          &lt;dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
+          &lt;dsig:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"&gt;
+            &lt;dsig:XPath xmlns:samlp_xpath="urn:oasis:names:tc:SAML:1.0:protocol" &gt;
               count(ancestor-or-self::samlp_xpath:Response |
               here()/ancestor::samlp_xpath:Response[1]) =
               count(ancestor-or-self::samlp_xpath:Response)
             &lt;/dsig:XPath&gt;
           &lt;/dsig:Transform&gt;
         &lt;/dsig:Transforms&gt;
-        &lt;dsig:DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;
+        &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
         &lt;dsig:DigestValue/&gt;
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
@@ -525,23 +539,23 @@ Sign it using the following command (replace __ with double dashes):
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
-    &lt;StatusCode Value=&quot;samlp:Success&quot;/&gt;
+    &lt;StatusCode Value="samlp:Success"/&gt;
   &lt;/Status&gt;
-  &lt;Assertion xmlns=&quot;urn:oasis:names:tc:SAML:1.0:assertion&quot; AssertionID=&quot;7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; Issuer=&quot;hs.osu.edu&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot;&gt;
-    &lt;Conditions NotBefore=&quot;2002-04-18T16:56:54Z&quot; NotOnOrAfter=&quot;2002-04-18T17:01:54Z&quot;&gt;
+  &lt;Assertion xmlns="urn:oasis:names:tc:SAML:1.0:assertion" AssertionID="7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC" IssueInstant="2002-04-18T16:56:54Z" Issuer="hs.osu.edu" MajorVersion="1" MinorVersion="0"&gt;
+    &lt;Conditions NotBefore="2002-04-18T16:56:54Z" NotOnOrAfter="2002-04-18T17:01:54Z"&gt;
       &lt;AudienceRestrictionCondition&gt;
         &lt;Audience&gt;http://middleware.internet2.edu/shibboleth/clubs/clubshib/1.0/&lt;/Audience&gt;
       &lt;/AudienceRestrictionCondition&gt;
     &lt;/Conditions&gt;
-    &lt;AuthenticationStatement AuthenticationInstant=&quot;2002-04-18T16:56:53Z&quot; AuthenticationMethod=&quot;urn:mace:shibboleth:authmethod&quot;&gt;
+    &lt;AuthenticationStatement AuthenticationInstant="2002-04-18T16:56:53Z" AuthenticationMethod="urn:mace:shibboleth:authmethod"&gt;
       &lt;Subject&gt;
-        &lt;NameIdentifier Format=&quot;urn:mace:shibboleth:1.0:handle&quot; NameQualifier=&quot;osu.edu&quot;&gt;foo&lt;/NameIdentifier&gt;
+        &lt;NameIdentifier Format="urn:mace:shibboleth:1.0:handle" NameQualifier="osu.edu"&gt;foo&lt;/NameIdentifier&gt;
         &lt;SubjectConfirmation&gt;
           &lt;ConfirmationMethod&gt;urn:oasis:names:tc:SAML:1.0:cm:Bearer&lt;/ConfirmationMethod&gt;
         &lt;/SubjectConfirmation&gt;
       &lt;/Subject&gt;
-      &lt;SubjectLocality IPAddress=&quot;127.0.0.1&quot;/&gt;
-      &lt;AuthorityBinding AuthorityKind=&quot;samlp:AttributeQuery&quot; Binding=&quot;urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding&quot; Location=&quot;https://aa.osu.edu/&quot;/&gt;
+      &lt;SubjectLocality IPAddress="127.0.0.1"/&gt;
+      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
     &lt;/AuthenticationStatement&gt;
   &lt;/Assertion&gt;
 &lt;/Response&gt;</pre></td></tr></table>
@@ -553,8 +567,8 @@ Sign it using the following command (replace __ with double dashes):
 <a name="XMLSEC-EXAMPLE-VERIFY4-BAD-RES"></a>verify4-bad-res.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN726"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<a name="AEN742"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response (verify4 example). 
 
@@ -565,23 +579,23 @@ in a simple SAML response.
 This file was created from a template with the following command (replace __ with double dashes):
  ../apps/xmlsec sign __privkey rsakey.pem,rsacert.pem __output verify4-bad-res.xml verify4-bad-tmpl.xml
 --&gt;
-&lt;Response xmlns=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; xmlns:samlp=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot; Recipient=&quot;https://shire.target.com&quot; ResponseID=&quot;7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC&quot;&gt;
-  &lt;dsig:Signature xmlns:dsig=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;Response xmlns="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" IssueInstant="2002-04-18T16:56:54Z" MajorVersion="1" MinorVersion="0" Recipient="https://shire.target.com" ResponseID="7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC"&gt;
+  &lt;dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"&gt;
     &lt;dsig:SignedInfo&gt;
-      &lt;dsig:CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;
-      &lt;dsig:SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&gt;
-      &lt;dsig:Reference URI=&quot;&quot;&gt;
+      &lt;dsig:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;
+      &lt;dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/&gt;
+      &lt;dsig:Reference URI=""&gt;
         &lt;dsig:Transforms&gt;
-          &lt;dsig:Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;
-          &lt;dsig:Transform Algorithm=&quot;http://www.w3.org/TR/1999/REC-xpath-19991116&quot;&gt;
-            &lt;dsig:XPath xmlns:samlp_xpath=&quot;urn:oasis:names:tc:SAML:1.0:protocol&quot;&gt;
+          &lt;dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
+          &lt;dsig:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"&gt;
+            &lt;dsig:XPath xmlns:samlp_xpath="urn:oasis:names:tc:SAML:1.0:protocol"&gt;
               count(ancestor-or-self::samlp_xpath:Response |
               here()/ancestor::samlp_xpath:Response[1]) =
               count(ancestor-or-self::samlp_xpath:Response)
             &lt;/dsig:XPath&gt;
           &lt;/dsig:Transform&gt;
         &lt;/dsig:Transforms&gt;
-        &lt;dsig:DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;
+        &lt;dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
         &lt;dsig:DigestValue&gt;t1nvDq1bZXEhBIXc/DHcqIrjRyI=&lt;/dsig:DigestValue&gt;
       &lt;/dsig:Reference&gt;
     &lt;/dsig:SignedInfo&gt;
@@ -593,7 +607,7 @@ blHx0tnPQDtSBzQdKohJV39UgkGnL3rd5ggBzyXemjMTX8eFxNZ7bh4UgZ+Wo74W
 Zb4ompTc2ImxJfbpszWp8w==&lt;/dsig:SignatureValue&gt;
     &lt;dsig:KeyInfo&gt;
       &lt;dsig:X509Data&gt;
-&lt;X509Certificate xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;MIIE3zCCBEigAwIBAgIBBTANBgkqhkiG9w0BAQQFADCByzELMAkGA1UEBhMCVVMx
+&lt;X509Certificate xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;MIIE3zCCBEigAwIBAgIBBTANBgkqhkiG9w0BAQQFADCByzELMAkGA1UEBhMCVVMx
 EzARBgNVBAgTCkNhbGlmb3JuaWExEjAQBgNVBAcTCVN1bm55dmFsZTE9MDsGA1UE
 ChM0WE1MIFNlY3VyaXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20v
 eG1sc2VjKTEZMBcGA1UECxMQUm9vdCBDZXJ0aWZpY2F0ZTEWMBQGA1UEAxMNQWxl
@@ -624,23 +638,23 @@ NJ2D&lt;/X509Certificate&gt;
     &lt;/dsig:KeyInfo&gt;
   &lt;/dsig:Signature&gt;
   &lt;Status&gt;
-    &lt;StatusCode Value=&quot;samlp:Success&quot;/&gt;
+    &lt;StatusCode Value="samlp:Success"/&gt;
   &lt;/Status&gt;
-  &lt;Assertion xmlns=&quot;urn:oasis:names:tc:SAML:1.0:assertion&quot; AssertionID=&quot;7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC&quot; IssueInstant=&quot;2002-04-18T16:56:54Z&quot; Issuer=&quot;hs.osu.edu&quot; MajorVersion=&quot;1&quot; MinorVersion=&quot;0&quot;&gt;
-    &lt;Conditions NotBefore=&quot;2002-04-18T16:56:54Z&quot; NotOnOrAfter=&quot;2002-04-18T17:01:54Z&quot;&gt;
+  &lt;Assertion xmlns="urn:oasis:names:tc:SAML:1.0:assertion" AssertionID="7ddc31-ed4a03d735-FB24AD27D96135B68C99FB9AACFE2FFC" IssueInstant="2002-04-18T16:56:54Z" Issuer="hs.osu.edu" MajorVersion="1" MinorVersion="0"&gt;
+    &lt;Conditions NotBefore="2002-04-18T16:56:54Z" NotOnOrAfter="2002-04-18T17:01:54Z"&gt;
       &lt;AudienceRestrictionCondition&gt;
         &lt;Audience&gt;http://middleware.internet2.edu/shibboleth/clubs/clubshib/1.0/&lt;/Audience&gt;
       &lt;/AudienceRestrictionCondition&gt;
     &lt;/Conditions&gt;
-    &lt;AuthenticationStatement AuthenticationInstant=&quot;2002-04-18T16:56:53Z&quot; AuthenticationMethod=&quot;urn:mace:shibboleth:authmethod&quot;&gt;
+    &lt;AuthenticationStatement AuthenticationInstant="2002-04-18T16:56:53Z" AuthenticationMethod="urn:mace:shibboleth:authmethod"&gt;
       &lt;Subject&gt;
-        &lt;NameIdentifier Format=&quot;urn:mace:shibboleth:1.0:handle&quot; NameQualifier=&quot;osu.edu&quot;&gt;foo&lt;/NameIdentifier&gt;
+        &lt;NameIdentifier Format="urn:mace:shibboleth:1.0:handle" NameQualifier="osu.edu"&gt;foo&lt;/NameIdentifier&gt;
         &lt;SubjectConfirmation&gt;
           &lt;ConfirmationMethod&gt;urn:oasis:names:tc:SAML:1.0:cm:Bearer&lt;/ConfirmationMethod&gt;
         &lt;/SubjectConfirmation&gt;
       &lt;/Subject&gt;
-      &lt;SubjectLocality IPAddress=&quot;127.0.0.1&quot;/&gt;
-      &lt;AuthorityBinding AuthorityKind=&quot;samlp:AttributeQuery&quot; Binding=&quot;urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding&quot; Location=&quot;https://aa.osu.edu/&quot;/&gt;
+      &lt;SubjectLocality IPAddress="127.0.0.1"/&gt;
+      &lt;AuthorityBinding AuthorityKind="samlp:AttributeQuery" Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://aa.osu.edu/"/&gt;
     &lt;/AuthenticationStatement&gt;
   &lt;/Assertion&gt;
 &lt;/Response&gt;</pre></td></tr></table>

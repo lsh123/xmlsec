@@ -65,7 +65,7 @@
 <a name="XMLSEC-EXAMPLE-ENCRYPT1"></a>encrypt1.c</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN733"></a><p></p>
+<a name="AEN749"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Encrypting data using a template file.
  * 
@@ -106,13 +106,13 @@ int encrypt_file(const char* tmpl_file, const char* key_file,
 		 const unsigned char* data, size_t dataSize);
 int 
 main(int argc, char **argv) {
-    static const char secret_data[] = &quot;Big secret&quot;;
+    static const char secret_data[] = "Big secret";
     
     assert(argv);
 
     if(argc != 3) {
-	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
-	fprintf(stderr, &quot;Usage: %s &lt;tmpl-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
+	fprintf(stderr, "Error: wrong number of arguments.\n");
+	fprintf(stderr, "Usage: %s &lt;tmpl-file&gt; &lt;key-file&gt;\n", argv[0]);
 	return(1);
     }
 
@@ -127,19 +127,33 @@ main(int argc, char **argv) {
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
 
+    /* Load default crypto engine if we are supporting dynamic
+     * loading for xmlsec-crypto libraries. Use the crypto library
+     * name ("openssl", "nss", etc.) to load corresponding 
+     * xmlsec-crypto library.
+     */
+#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST "default") &lt; 0) {
+	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+			"that you have it installed and check shared libraries path\n"
+			"(LD_LIBRARY_PATH) envornment variable.\n");
+	return(-1);	
+    }
+#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
+
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: crypto initialization failed.\n");
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
 
@@ -192,40 +206,40 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     /* load template */
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
 	goto done;	
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+        fprintf(stderr,"Error: failed to create encryption context\n");
 	goto done;
     }
 
     /* load DES key, assuming that there is not password */
     encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) &lt; 0) {
-        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
+        fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
         
@@ -255,14 +269,14 @@ done:
 <a name="XMLSEC-EXAMPLE-ENCRYPT1-TMPL"></a>encrypt1-tmpl.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN738"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot;?&gt;
+<a name="AEN754"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0"?&gt;
 &lt;!-- 
 XML Security Library example: Simple encryption template file for encrypt1 example. 
 --&gt;
-&lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;
-    &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
-    &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
+    &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
+    &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 	&lt;KeyName/&gt;
     &lt;/KeyInfo&gt;   
     &lt;CipherData&gt;
@@ -277,14 +291,14 @@ XML Security Library example: Simple encryption template file for encrypt1 examp
 <a name="XMLSEC-EXAMPLE-ENCRYPT1-RES"></a>encrypt1-res.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN743"></a><p></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot;?&gt;
+<a name="AEN759"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version="1.0"?&gt;
 &lt;!-- 
 XML Security Library example: Encrypted binary data (encrypt1 example).
 --&gt;
-&lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;
-    &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
-    &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+&lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
+    &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
+    &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 	&lt;KeyName&gt;deskey.bin&lt;/KeyName&gt;
     &lt;/KeyInfo&gt;   
     &lt;CipherData&gt;

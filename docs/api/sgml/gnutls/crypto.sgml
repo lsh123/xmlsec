@@ -14,6 +14,8 @@
 
 
 
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoGetFunctions-gnutls">xmlSecCryptoGetFunctions_gnutls</link>
+                                            (void);
 int         <link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link>                (void);
 int         <link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link>            (void);
 int         <link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
@@ -79,6 +81,18 @@ int         <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSe
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecCryptoGetFunctions-gnutls">xmlSecCryptoGetFunctions_gnutls ()</title>
+<programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_gnutls
+                                            (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGnuTLSInit">xmlSecGnuTLSInit ()</title>
 <programlisting>int         xmlSecGnuTLSInit                (void);</programlisting>

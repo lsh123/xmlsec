@@ -406,7 +406,7 @@ Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>stores<
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</title>
-<programlisting>#define xmlSecKeyStoreIdUnknown 			NULL
+<programlisting>#define xmlSecKeyStoreIdUnknown 			((xmlSecKeyDataStoreId)NULL)
 </programlisting>
 <para>
 The "unknown" id.</para>

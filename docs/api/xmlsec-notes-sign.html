@@ -93,7 +93,7 @@
 </ul>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN166"></a><p><b>Example 1. Signing a template.</b></p>
+<a name="AEN182"></a><p><b>Example 1. Signing a template.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * sign_file:
  * @tmpl_file:		the signature template file name.
@@ -116,40 +116,40 @@ sign_file(const char* tmpl_file, const char* key_file) {
     /* load template */
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
 	goto done;	
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
 	goto done;	
     }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+        fprintf(stderr,"Error: failed to create signature context\n");
 	goto done;
     }
 
     /* load private key, assuming that there is not password */
     dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
 	goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature failed\n&quot;);
+        fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
         

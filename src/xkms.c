@@ -1050,6 +1050,16 @@ xmlSecXkmsRespondWithIdsRegisterDefault(void) {
  * XKMS RespondWith Klass
  *
  ************************************************************************/ 
+/**
+ * xmlSecXkmsRespondWithReadNode:
+ * @id:			the RespondWith class.
+ * @xkissServerCtx:	the XKISS request processing context.
+ * @node:		the pointer to <xkiss:RespondWith/> node.
+ *
+ * Reads the content of the <xkiss:RespondWith/> @node.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int  
 xmlSecXkmsRespondWithReadNode(xmlSecXkmsRespondWithId id, xmlSecXkissServerCtxPtr xkissServerCtx,
 			      xmlNodePtr node) {
@@ -1063,6 +1073,16 @@ xmlSecXkmsRespondWithReadNode(xmlSecXkmsRespondWithId id, xmlSecXkissServerCtxPt
     return(0);
 }
 
+/**
+ * xmlSecXkmsRespondWithWriteNode:
+ * @id:			the RespondWith class.
+ * @xkissServerCtx:	the XKISS request processing context.
+ * @node:		the pointer to <xkiss:RespondWith/> node.
+ *
+ * Writes the content of the <xkiss:RespondWith/> @node.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecXkmsRespondWithWriteNode(xmlSecXkmsRespondWithId id, xmlSecXkissServerCtxPtr xkissServerCtx,
 			     xmlNodePtr node) {
@@ -1076,6 +1096,13 @@ xmlSecXkmsRespondWithWriteNode(xmlSecXkmsRespondWithId id, xmlSecXkissServerCtxP
     return(0);
 }
 
+/**
+ * xmlSecXkmsRespondWithDebugDump:
+ * @id:			the RespondWith class.
+ * @output:		the output file.
+ *
+ * Writes debug information about @id into the @output.
+ */
 void 
 xmlSecXkmsRespondWithDebugDump(xmlSecXkmsRespondWithId id, FILE* output) {
     xmlSecAssert(id != xmlSecXkmsRespondWithIdUnknown);
@@ -1084,6 +1111,13 @@ xmlSecXkmsRespondWithDebugDump(xmlSecXkmsRespondWithId id, FILE* output) {
     fprintf(output, "=== RespondWith: %s\n", xmlSecErrorsSafeString(id->name));
 }
 
+/**
+ * xmlSecXkmsRespondWithDebugXmlDump:
+ * @id:			the RespondWith class.
+ * @output:		the output file.
+ *
+ * Writes debug information about @id into the @output in XML format.
+ */
 void 
 xmlSecXkmsRespondWithDebugXmlDump(xmlSecXkmsRespondWithId id, FILE* output) {
     xmlSecAssert(id != xmlSecXkmsRespondWithIdUnknown);

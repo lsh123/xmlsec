@@ -3,7 +3,7 @@ NULL =
 bin_PROGRAMS = xmlsec1
 
 # check if we use dynamic loading for xmlsec-crypto or not
-if XMLSEC_APPS_NO_CRYPTO_DYNAMIC_LOADING
+if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 
 CRYPTO_DEPS = \
 	$(top_builddir)/src/$(XMLSEC_CRYPTO)/lib$(XMLSEC_CRYPTO_LIB).la \

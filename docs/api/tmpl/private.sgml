@@ -1,0 +1,175 @@
+<!-- ##### SECTION Title ##### -->
+private
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### USER_FUNCTION xmlSecCryptoInitMethod ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoShutdownMethod ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoKeysMngrInitMethod ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoKeyDataGetKlassMethod ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoKeyDataStoreGetKlassMethod ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoTransformGetKlassMethod ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppInitMethod ##### -->
+<para>
+
+</para>
+
+@config: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppShutdownMethod ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppKeysMngrCertLoadMethod ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@format: 
+@type: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppKeyLoadMethod ##### -->
+<para>
+
+</para>
+
+@filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppPkcs12LoadMethod ##### -->
+<para>
+
+</para>
+
+@filename: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCryptoAppKeyCertLoadMethod ##### -->
+<para>
+
+</para>
+
+@key: 
+@filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecCryptoDLFunctions ##### -->
+<para>
+
+</para>
+
+@cryptoInit: 
+@cryptoShutdown: 
+@cryptoKeysMngrInit: 
+@keyDataAesGetKlass: 
+@keyDataDesGetKlass: 
+@keyDataDsaGetKlass: 
+@keyDataHmacGetKlass: 
+@keyDataRsaGetKlass: 
+@keyDataX509GetKlass: 
+@keyDataRawX509CertGetKlass: 
+@x509StoreGetKlass: 
+@transformAes128CbcGetKlass: 
+@transformAes192CbcGetKlass: 
+@transformAes256CbcGetKlass: 
+@transformKWAes128GetKlass: 
+@transformKWAes192GetKlass: 
+@transformKWAes256GetKlass: 
+@transformDes3CbcGetKlass: 
+@transformKWDes3GetKlass: 
+@transformDsaSha1GetKlass: 
+@transformHmacSha1GetKlass: 
+@transformHmacRipemd160GetKlass: 
+@transformHmacMd5GetKlass: 
+@transformRipemd160GetKlass: 
+@transformRsaSha1GetKlass: 
+@transformRsaPkcs1GetKlass: 
+@transformRsaOaepGetKlass: 
+@transformSha1GetKlass: 
+@cryptoAppInit: 
+@cryptoAppShutdown: 
+@cryptoAppDefaultKeysMngrInit: 
+@cryptoAppDefaultKeysMngrAdoptKey: 
+@cryptoAppDefaultKeysMngrLoad: 
+@cryptoAppDefaultKeysMngrSave: 
+@cryptoAppKeysMngrCertLoad: 
+@cryptoAppKeyLoad: 
+@cryptoAppPkcs12Load: 
+@cryptoAppKeyCertLoad: 
+@cryptoAppDefaultPwdCallback: 
+

@@ -7,7 +7,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Tutorial" href="xmlsec-notes.html">
 <link rel="PREVIOUS" title="XML Security Library Structure." href="xmlsec-notes-structure.html">
-<link rel="NEXT" title="Include files" href="xmlsec-notes-include-files.html">
+<link rel="NEXT" title="Include files." href="xmlsec-notes-include-files.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -63,7 +63,7 @@
 <div class="TOC"><dl>
 <dt><b>Table of Contents</b></dt>
 <dt><a href="xmlsec-notes-compiling.html#XMLSEC-NOTES-COMPILING-OVERVIEW">Overview.</a></dt>
-<dt><a href="xmlsec-notes-include-files.html">Include files</a></dt>
+<dt><a href="xmlsec-notes-include-files.html">Include files.</a></dt>
 <dt><a href="xmlsec-notes-compiling-unix.html">Compiling and linking on Unix.</a></dt>
 <dt><a href="xmlsec-notes-compiling-windows.html">Compiling and linking on Windows.</a></dt>
 <dt><a href="xmlsec-notes-compiling-others.html">Compiling and linking on other systems.</a></dt>
@@ -71,9 +71,14 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-COMPILING-OVERVIEW"></a>Overview.</h1>
-<p>As usual, compiling and linking application with XML Security
-	Library requires specifing correct compilation flags, library files 
-        and paths to include and library files.
+<p>Compiling and linking application with XML Security
+	Library requires specifying correct compilation flags, library files 
+        and paths to include and library files. As we discussed before, 
+	XML Security Library consist of the core xmlsec library and several 
+	xmlsec-crypto libraries. Application has a choice of selecting crypto 
+	library at link time or dynamicaly loading it at run time. Please note,
+	that loading crypto engines dynamicaly may introduce security problems
+	on some platforms. 
 	</p>
 </div>
 </div>
@@ -87,7 +92,7 @@
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library Structure.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Include files</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Include files.</b></font></td>
 </tr>
 </table>
 </div>

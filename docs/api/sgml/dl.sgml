@@ -1,0 +1,165 @@
+<refentry id="xmlsec-dl">
+<refmeta>
+<refentrytitle>dl</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>dl</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+int         <link linkend="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</link>
+                                            (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);
+int         <link linkend="xmlSecCryptoDLInit">xmlSecCryptoDLInit</link>              (void);
+int         <link linkend="xmlSecCryptoDLShutdown">xmlSecCryptoDLShutdown</link>          (void);
+int         <link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link>       (const <link linkend="xmlChar">xmlChar</link> *crypto);
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</link>
+                                            (const <link linkend="xmlChar">xmlChar</link> *crypto);
+int         <link linkend="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</link>     (const <link linkend="xmlChar">xmlChar</link> *crypto);
+int         <link linkend="xmlSecCryptoDLSetFunctions">xmlSecCryptoDLSetFunctions</link>      (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoDLGetFunctions">xmlSecCryptoDLGetFunctions</link>
+                                            (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ()</title>
+<programlisting>int         xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
+                                            (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);</programlisting>
+<para>
+Registers the key data and transforms klasses from <parameter>functions</parameter> table in xmlsec.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>functions</parameter>&nbsp;:</term>
+<listitem><simpara> 		the functions table.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLInit">xmlSecCryptoDLInit ()</title>
+<programlisting>int         xmlSecCryptoDLInit              (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLShutdown">xmlSecCryptoDLShutdown ()</title>
+<programlisting>int         xmlSecCryptoDLShutdown          (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary ()</title>
+<programlisting>int         xmlSecCryptoDLLoadLibrary       (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
+<para>
+Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe, 
+application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link>, <link linkend="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</link>,
+and <link linkend="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</link> functions from multiple threads.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>crypto</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired crypto library name ("openssl", "nss", ...).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions ()</title>
+<programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoDLGetLibraryFunctions
+                                            (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
+<para>
+Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store 
+table. This function is NOT thread safe, application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link>, 
+<link linkend="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</link>, and <link linkend="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</link> functions from multiple threads.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>crypto</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired crypto library name ("openssl", "nss", ...).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the table or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary ()</title>
+<programlisting>int         xmlSecCryptoDLUnloadLibrary     (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
+<para>
+Unloads the xmlsec-&lt;crypto&gt; library. All pointers to this library
+functions tables became invalid. This function is NOT thread safe, 
+application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link>, <link linkend="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</link>,
+and <link linkend="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</link> functions from multiple threads.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>crypto</parameter>&nbsp;:</term>
+<listitem><simpara>		the desired crypto library name ("openssl", "nss", ...).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLSetFunctions">xmlSecCryptoDLSetFunctions ()</title>
+<programlisting>int         xmlSecCryptoDLSetFunctions      (<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> functions);</programlisting>
+<para>
+Sets global crypto functions/transforms/keys data/keys store table.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>functions</parameter>&nbsp;:</term>
+<listitem><simpara>		the new table
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCryptoDLGetFunctions">xmlSecCryptoDLGetFunctions ()</title>
+<programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoDLGetFunctions
+                                            (void);</programlisting>
+<para>
+Gets global crypto functions/transforms/keys data/keys store table.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the table.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,69 @@
+<!-- ##### SECTION Title ##### -->
+x509
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO XMLSEC_X509DATA_CERTIFICATE_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_X509DATA_SUBJECTNAME_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_X509DATA_ISSUERSERIAL_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_X509DATA_SKI_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_X509DATA_CRL_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_X509DATA_DEFAULT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecX509DataGetNodeContent ##### -->
+<para>
+
+</para>
+
+@node: 
+@deleteChildren: 
+@keyInfoCtx: 
+@Returns: 
+
+

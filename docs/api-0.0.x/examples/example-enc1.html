@@ -114,8 +114,8 @@ sizeof(rnd_seed));<br>
         keysMngr = xmlSecSimpleKeysMngrCreate();   
         <br>
         if(keysMngr == NULL) {<br>
-          fprintf(stderr, &quot;Error: failed to create keys 
- manager\n&quot;);<br>
+          fprintf(stderr, "Error: failed to create keys 
+ manager\n");<br>
           return(-1);    <br>
         }<br><br>
       <br>
@@ -124,14 +124,14 @@ sizeof(rnd_seed));<br>
          */<br>
         ctx = xmlSecEncCtxCreate(keysMngr);<br>
         if(ctx == NULL) {<br>
-          fprintf(stderr, &quot;Error: template failed to create   context\n&quot;);<br>
+          fprintf(stderr, "Error: template failed to create   context\n");<br>
           return(-1)<br>
         }<br>
         /** <br>
          * load key public rsa key<br>
          */<br>
         if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 0) == NULL) {<br>
-          fprintf(stderr, &quot;Error: failed to load key from   \&quot;%s\&quot;\n&quot;, argv[1]);<br>
+          fprintf(stderr, "Error: failed to load key from   \"%s\"\n", argv[1]);<br>
           return(-1);<br>
         }<br>
       <br></code>
@@ -151,8 +151,8 @@ sizeof(rnd_seed));<br>
         */<br>
        encData = xmlSecEncDataCreate(NULL, NULL, NULL, NULL);<br>
        if(encData == NULL) {<br>
-         </code><code>fprintf(stderr, &quot;Error: template
- creation failed\n&quot;);<br></code><code>    </code><code>  goto done;   
+         </code><code>fprintf(stderr, "Error: template
+ creation failed\n");<br></code><code>    </code><code>  goto done;   
   <br>
        }<br><br>
        /**<br>
@@ -160,20 +160,20 @@ sizeof(rnd_seed));<br>
         */<br>
        cur = xmlSecEncDataAddEncMethod(encData, xmlSecEncDes3Cbc);<br>
        if(cur == NULL) {<br>
-   fprintf(stderr, &quot;Error: failed to add Enc Method\n&quot;);<br>
+   fprintf(stderr, "Error: failed to add Enc Method\n");<br>
          goto done;    <br>
        }<br><br>
        /**<br>
         * Add EncryptionProperties node just for fun<br>
         */<br>
-       cur = xmlSecEncDataAddEncProperty(encData, BAD_CAST &quot;Classified&quot;, 
+       cur = xmlSecEncDataAddEncProperty(encData, BAD_CAST "Classified", 
  NULL);<br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add KeyInfo\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add KeyInfo\n");<br>
          goto done;    <br>
        }<br>
-       xmlSetProp(cur, BAD_CAST &quot;Level&quot;, BAD_CAST &quot;Top secret: 
- destroy before reading&quot;);<br><br>
+       xmlSetProp(cur, BAD_CAST "Level", BAD_CAST "Top secret: 
+ destroy before reading");<br><br>
        /** <br>
         * The encrypted data should be saved in CipherValue 
  node <br>
@@ -181,7 +181,7 @@ sizeof(rnd_seed));<br>
        cur = xmlSecEncDataAddCipherValue(encData);    
        <br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add CipherValue\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add CipherValue\n");<br>
          goto done;    <br>
        }<br><br>
        /**<br>
@@ -189,7 +189,7 @@ sizeof(rnd_seed));<br>
         */<br>
        cur = xmlSecEncDataAddKeyInfo(encData);<br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add KeyInfo\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add KeyInfo\n");<br>
          goto done;    <br>
        }<br><br>
        /**<br>
@@ -200,7 +200,7 @@ sizeof(rnd_seed));<br>
        encKey = xmlSecKeyInfoAddEncryptedKey(cur, NULL, NULL,
  NULL);<br>
        if(encKey == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add EncryptedKey\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add EncryptedKey\n");<br>
          goto done;    <br>
        }<br>
        <br>
@@ -210,8 +210,8 @@ sizeof(rnd_seed));<br>
         */<br>
        cur = xmlSecEncDataAddEncMethod(encKey, xmlSecEncRsaOaep);<br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
- Enc Method\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add EncryptedKey 
+ Enc Method\n");<br>
          goto done;    <br>
        }<br>
        <br>
@@ -221,8 +221,8 @@ sizeof(rnd_seed));<br>
        cur = xmlSecEncDataAddCipherValue(encKey);    
        <br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
- CipherValue\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add EncryptedKey 
+ CipherValue\n");<br>
          goto done;    <br>
        }<br><br>
        /**<br>
@@ -231,14 +231,14 @@ key<br>
         */<br>
        cur = xmlSecEncDataAddKeyInfo(encKey);<br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
- KeyInfo\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add EncryptedKey 
+ KeyInfo\n");<br>
          goto done;    <br>
        }<br><br>
        cur = xmlSecKeyInfoAddKeyName(cur);<br>
        if(cur == NULL) {<br>
-         fprintf(stderr, &quot;Error: failed to add EncryptedKey 
- KeyName\n&quot;);<br>
+         fprintf(stderr, "Error: failed to add EncryptedKey 
+ KeyName\n");<br>
          goto done;    <br>
        }           <br></code><br>
 </p>
@@ -246,7 +246,7 @@ key<br>
 <p>
    We are ready to encrypt the document!<br>
     <code>   <br>
-       static const char buf[] = &quot;big secret&quot;;<br></code><code> <br>
+       static const char buf[] = "big secret";<br></code><code> <br>
       /**<br>
         * Finally encrypt everything<br>
         */<br>
@@ -255,8 +255,8 @@ key<br>
                     
  strlen(buf), &amp;result);<br>
        if(ret &lt; 0) {<br>
-          fprintf(stderr, &quot;Error: memory encryption 
- failed\n&quot;);<br>
+          fprintf(stderr, "Error: memory encryption 
+ failed\n");<br>
           goto done;    <br>
        }<br>
        <br>
@@ -301,13 +301,13 @@ and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br><br>
       </p>
 <h4>Appendix A. The encrypted document.</h4>
 <blockquote>
-<code>&lt;?xml version=&quot;1.0&quot;?&gt;<br>
-  &lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
-  &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;<br>
-  &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
-  &lt;EncryptedKey xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;<br>
-  &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&quot;/&gt;<br>
-  &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+<code>&lt;?xml version="1.0"?&gt;<br>
+  &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;<br>
+  &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;<br>
+  &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
+  &lt;EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;<br>
+  &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/&gt;<br>
+  &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
   &lt;KeyName&gt;test-rsa-key&lt;/KeyName&gt;<br>
   &lt;/KeyInfo&gt;<br>
   &lt;CipherData&gt;<br>
@@ -328,7 +328,7 @@ and  KeysManager;     shutdown XML Security Library, libxml and OpenSSL:<br><br>
   &lt;/CipherValue&gt;<br>
   &lt;/CipherData&gt;<br>
   &lt;EncryptionProperties&gt;<br>
-  &lt;EncryptionProperty Id=&quot;Classified&quot; Level=&quot;Top secret&quot;/&gt;<br>
+  &lt;EncryptionProperty Id="Classified" Level="Top secret"/&gt;<br>
   &lt;/EncryptionProperties&gt;<br>
   &lt;/EncryptedData&gt;</code><br>
 </blockquote>

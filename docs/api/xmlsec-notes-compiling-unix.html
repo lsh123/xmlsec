@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Building the application with XML Security Library." href="xmlsec-notes-compiling.html">
-<link rel="PREVIOUS" title="Include files" href="xmlsec-notes-include-files.html">
+<link rel="PREVIOUS" title="Include files." href="xmlsec-notes-include-files.html">
 <link rel="NEXT" title="Compiling and linking on Windows." href="xmlsec-notes-compiling-windows.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
@@ -61,7 +61,10 @@
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-COMPILING-UNIX"></a>Compiling and linking on Unix.</h1>
 <p>There are several ways to get necessary compilation
-	and linking information on Unix:
+	and linking information on Unix and application can use
+	any of these methods to do crypto engine selection either
+	at linking or run time.
+	
 	</p>
 <p></p>
 <ul>
@@ -69,22 +72,59 @@
 <p>PKG_CHECK_MODULES() macro
 		</p>
 <div class="EXAMPLE">
-<a name="AEN70"></a><p><b>Example 2. Using PKG_CHECK_MODULES() macro in a configure.in file.</b></p>
+<a name="AEN70"></a><p><b>Example 2. Using PKG_CHECK_MODULES() macro in a configure.in file
+		    to select crypto engine (openssl) at linking time.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">dnl 
+dnl Check for xmlsec and friends
+dnl
+PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl &gt;= 1.0.0 xml2 libxslt,,exit)
+CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
+CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
+LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
+		    </pre></td></tr></table>
+</div>
+
+		<div class="EXAMPLE">
+<a name="AEN73"></a><p><b>Example 3. Using PKG_CHECK_MODULES() macro in a configure.in file
+		    to enable dynamical loading of xmlsec-crypto library.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">dnl 
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1 &gt;= 1.0.0 xml2 libxslt,,exit)
-CFLAGS=&quot;$CFLAGS $XMLSEC_CFLAGS&quot;
-CPPFLAGS=&quot;$CPPFLAGS $XMLSEC_CFLAGS&quot;
-LDFLAGS=&quot;$LDFLAGS $XMLSEC_LIBS&quot;
+CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
+CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
+LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 		    </pre></td></tr></table>
 </div>
+
 	    </li>
 <li>
 <p>pkg-config script
 		</p>
 <div class="EXAMPLE">
-<a name="AEN75"></a><p><b>Example 3. Using pkg-config script in a Makefile.</b></p>
+<a name="AEN78"></a><p><b>Example 4. Using pkg-config script in a Makefile
+		    to select crypto engine (nss) at linking time.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">PROGRAM = test
+PROGRAM_FILES = test.c
+
+CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1-nss)
+LDFLAGS	+= -g
+LIBS 	+= $(shell pkg-config --libs xmlsec1-nss) 
+
+all: $(PROGRAM)
+
+%: %.c 
+	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
+
+clean:
+	@rm -rf $(PROGRAM)
+		    </pre></td></tr></table>
+</div>
+
+
+		<div class="EXAMPLE">
+<a name="AEN81"></a><p><b>Example 5. Using pkg-config script in a Makefile
+		    to enable dynamical loading of xmlsec-crypto library.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">PROGRAM = test
 PROGRAM_FILES = test.c
 
@@ -101,12 +141,34 @@ clean:
 	@rm -rf $(PROGRAM)
 		    </pre></td></tr></table>
 </div>
+
 	    </li>
 <li>
 <p>xmlsec1-config script
 		</p>
 <div class="EXAMPLE">
-<a name="AEN80"></a><p><b>Example 4. Using xmlsec1-config script in a Makefile.</b></p>
+<a name="AEN86"></a><p><b>Example 6. Using xmlsec1-config script in a Makefile
+		    to select crypto engine (gnutls) at linking time.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">PROGRAM = test
+PROGRAM_FILES = test.c
+
+CFLAGS	+= -g $(shell xmlsec1-config --crypto gnutls --cflags)
+LDFLAGS	+= -g
+LIBS 	+= $(shell xmlsec1-config --crypto gnutls --libs) 
+
+all: $(PROGRAM)
+
+%: %.c 
+	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
+
+clean:
+	@rm -rf $(PROGRAM)
+		    </pre></td></tr></table>
+</div>
+
+		<div class="EXAMPLE">
+<a name="AEN89"></a><p><b>Example 7. Using xmlsec1-config script in a Makefile
+		    to enable dynamical loading of xmlsec-crypto library.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">PROGRAM = test
 PROGRAM_FILES = test.c
 
@@ -135,7 +197,7 @@ clean:
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-compiling-windows.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Include files</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Include files.</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Compiling and linking on Windows.</b></font></td>
 </tr>
 </table>

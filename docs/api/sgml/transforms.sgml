@@ -2516,7 +2516,7 @@ Prints binary transform debug information to <parameter>output</parameter> in XM
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</title>
-<programlisting>#define xmlSecTransformIdUnknown			NULL
+<programlisting>#define xmlSecTransformIdUnknown			((xmlSecTransformId)NULL)
 </programlisting>
 <para>
 The "unknown" transform id (NULL).</para>

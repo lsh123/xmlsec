@@ -14,6 +14,14 @@ crypto
 
 </para>
 
+<!-- ##### FUNCTION xmlSecCryptoGetFunctions_openssl ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLInit ##### -->
 <para>
 

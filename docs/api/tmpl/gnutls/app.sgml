@@ -83,16 +83,6 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrAddCertsPath ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@path: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecGnuTLSAppKeyLoad ##### -->
 <para>
 
@@ -127,5 +117,12 @@ app
 @filename: 
 @format: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppGetDefaultPwdCallback ##### -->
+<para>
+
+</para>
+
 
 

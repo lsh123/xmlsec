@@ -32,9 +32,6 @@ int         <link linkend="xmlSecGnuTLSAppKeysMngrCertLoad">xmlSecGnuTLSAppKeysM
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecGnuTLSAppKeysMngrAddCertsPath">xmlSecGnuTLSAppKeysMngrAddCertsPath</link>
-                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *path);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecGnuTLSAppKeyLoad">xmlSecGnuTLSAppKeyLoad</link>         (const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const char *pwd,
@@ -47,6 +44,8 @@ int         <link linkend="xmlSecGnuTLSAppKeysMngrAddCertsPath">xmlSecGnuTLSAppK
 int         <link linkend="xmlSecGnuTLSAppKeyCertLoad">xmlSecGnuTLSAppKeyCertLoad</link>      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+void*       <link linkend="xmlSecGnuTLSAppGetDefaultPwdCallback">xmlSecGnuTLSAppGetDefaultPwdCallback</link>
+                                            (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -202,26 +201,6 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSAppKeysMngrAddCertsPath">xmlSecGnuTLSAppKeysMngrAddCertsPath ()</title>
-<programlisting>int         xmlSecGnuTLSAppKeysMngrAddCertsPath
-                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *path);</programlisting>
-<para>
-Reads cert from <parameter>path</parameter> and adds to the list of trusted certificates
-(not implemented yet).</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara> 		the keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
-<listitem><simpara>		the path to trusted certificates.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
 <title><anchor id="xmlSecGnuTLSAppKeyLoad">xmlSecGnuTLSAppKeyLoad ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecGnuTLSAppKeyLoad         (const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
@@ -303,6 +282,15 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSAppGetDefaultPwdCallback">xmlSecGnuTLSAppGetDefaultPwdCallback ()</title>
+<programlisting>void*       xmlSecGnuTLSAppGetDefaultPwdCallback
+                                            (void);</programlisting>
+<para>
+Gets default password callback.</para>
+<para>
+
+</para></refsect2>
 
 </refsect1>
 

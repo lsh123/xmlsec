@@ -37,7 +37,6 @@ var verMinorXmlSec;
 var verMicroXmlSec;
 
 /* Libxmlsec features. */
-var withXmlSecDebug = true;
 var withOpenSSL096 = 0;
 var withLibXSLT = 1;
 
@@ -88,7 +87,6 @@ function usage()
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
- 	txt += "  xmlsec_debug: Enable XMLSec debbugging (" + (withXmlSecDebug? "yes" : "no")  + ")\n";
  	txt += "  openssl_096: OpenSSL 0.9.6 is used: disable some features (" + (withOpenSSL096? "yes" : "no")  + ")\n";	
  	txt += "  xslt:       LibXSLT is not used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
@@ -142,7 +140,6 @@ function discoverVersion()
 	vf.WriteLine("XMLSEC_SRCDIR=" + srcDir);
 	vf.WriteLine("APPS_SRCDIR=" + srcDirApps);
 	vf.WriteLine("BINDIR=" + binDir);
-	vf.WriteLine("WITH_DEBUG=" + (withXmlSecDebug? "1" : "0"));
 	vf.WriteLine("WITH_OPENSSL096=" + (withOpenSSL096? "1" : "0"));
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
@@ -174,8 +171,6 @@ function configureXmlSec()
 		} else if (s.search(/\@XMLSECVERSION_NUMBER\@/) != -1) {
 			of.WriteLine(s.replace(/\@XMLSECVERSION_NUMBER\@/, 
 				verMajorXmlSec*10000 + verMinorXmlSec*100 + verMicroXmlSec*1));
-		} else if (s.search(/\@XMLSEC_DEBUG\@/) != -1) {
-			of.WriteLine(s.replace(/\@XMLSEC_DEBUG\@/, withXmlSecDebug? "1" : "0"));
 		} else
 			of.WriteLine(ln);
 	}
@@ -227,9 +222,7 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 	if (opt.length == 0)
 		opt = arg.substring(0, arg.indexOf(":"));
 	if (opt.length > 0) {
-		if (opt == "xmlsec_debug")
-			withXmlSecDebug = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "openssl_096")
+		if (opt == "openssl_096")
 			withOpenSSL096 = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "xslt")
 			withLibXSLT = strToBool(arg.substring(opt.length + 1, arg.length));
@@ -298,7 +291,6 @@ WScript.Echo("Created Makefile.");
 // Display the final configuration.
 var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
-txtOut += "  Debugging module: " + boolToStr(withXmlSecDebug) + "\n";
 txtOut += "   Use OpenSSL 096: " + boolToStr(withOpenSSL096) + "\n";
 txtOut += "       Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "\n";

@@ -228,8 +228,8 @@ typedef struct _xmlSecDSigStatus {
 /**
  * Init/Shutdown
  */
-int  init(xmlsecCommand command);
-void shutdown(void);
+int  initXmlsec(xmlsecCommand command);
+void shutdownXmlsec(void);
 
 /**
  * Read command line options
@@ -345,7 +345,7 @@ int main(int argc, char **argv) {
 	return(0);
     }
     
-    ret = init(command);
+    ret = initXmlsec(command);
     if(ret < 0) {
 	fprintf(stdout, "Error: init failed\n");
 	goto done;
@@ -743,7 +743,7 @@ done:
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
-    shutdown();
+    shutdownXmlsec();
     return(res);
 }
 
@@ -815,7 +815,7 @@ void printVersion(void) {
 /**
  * Init/Shutdown
  */
-int init(xmlsecCommand command) {
+int initXmlsec(xmlsecCommand command) {
     time_t t = 0;
 
     /* 
@@ -897,7 +897,7 @@ int init(xmlsecCommand command) {
     return(0);    
 }
 
-void shutdown(void) {
+void shutdownXmlsec(void) {
 
     if(sessionKey != NULL) {
 	xmlSecKeyDestroy(sessionKey);

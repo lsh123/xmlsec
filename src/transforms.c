@@ -37,8 +37,8 @@ static int  xmlSecTransformCreateXml(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBin(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state);
-static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, const xmlSecNodeSetPtr nodeSet, 
-					xmlOutputBufferPtr output);
+static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet, 
+					  xmlOutputBufferPtr output);
 
 /** 
  * Hi-level functions

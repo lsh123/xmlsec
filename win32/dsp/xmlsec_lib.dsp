@@ -129,6 +129,10 @@ SOURCE=..\..\src\enveloped.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\errors.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\hmac.c
 # End Source File
 # Begin Source File
@@ -150,6 +154,10 @@ SOURCE=..\..\src\keysmngr.c
 # Begin Source File
 
 SOURCE=..\..\src\membuf.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodeset.c
 # End Source File
 # Begin Source File
 
@@ -233,6 +241,10 @@ SOURCE=..\..\globals.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\xmlsec\errors.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\xmlsec\io.h
 # End Source File
 # Begin Source File
@@ -254,6 +266,10 @@ SOURCE=..\..\include\xmlsec\keysmngr.h
 # Begin Source File
 
 SOURCE=..\..\include\xmlsec\membuf.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\xmlsec\nodeset.h
 # End Source File
 # Begin Source File
 

@@ -101,7 +101,7 @@ LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 CFLAGS = $(CFLAGS) /DXMLSEC_NO_AES=1 /DXMLSEC_OPENSSL096=1
 !endif
 
-!if "$(WITH_LIBSXSLT)" == "1"
+!if "$(WITH_LIBXSLT)" == "1"
 !if "$(STATIC)" == "1"
 LIBS = libxslt_a.lib $(LIBS)
 !else

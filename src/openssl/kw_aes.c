@@ -215,6 +215,7 @@ xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
+    keyReq->keyBitsSize = 8 * xmlSecOpenSSLKWAesGetKeySize(transform);
     
     return(0);
 }

@@ -529,6 +529,7 @@ xmlSecOpenSSLEvpBlockCipherFinalize(xmlSecTransformPtr transform) {
 static int  
 xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
+    int cipherKeyLen;
 
     xmlSecAssert2(xmlSecOpenSSLEvpBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
@@ -536,6 +537,7 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
 
     ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
     keyReq->keyId 	= ctx->keyId;
@@ -545,7 +547,11 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
-    
+
+    cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
+    xmlSecAssert2(cipherKeyLen > 0, -1);
+
+    keyReq->keyBitsSize = (size_t)(8 * cipherKeyLen);
     return(0);
 }
 

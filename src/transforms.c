@@ -1287,10 +1287,11 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(keyReq != NULL, -1);
         
-    keyReq->keyId   = xmlSecKeyDataIdUnknown;
-    keyReq->keyType = xmlSecKeyDataTypeUnknown;
-    keyReq->keyUsage= xmlSecKeyUsageAny;
-    
+    keyReq->keyId   	= xmlSecKeyDataIdUnknown;
+    keyReq->keyType 	= xmlSecKeyDataTypeUnknown;
+    keyReq->keyUsage	= xmlSecKeyUsageAny;
+    keyReq->keyBitsSize	= 0;
+        
     if(transform->id->setKeyReq != NULL) {
 	return((transform->id->setKeyReq)(transform, keyReq));
     }

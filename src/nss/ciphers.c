@@ -421,15 +421,15 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
     ((xmlSecNssEvpBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
 
 static int	xmlSecNssEvpBlockCipherInitialize	(xmlSecTransformPtr transform);
-static void	xmlSecNssEvpBlockCipherFinalize	(xmlSecTransformPtr transform);
+static void	xmlSecNssEvpBlockCipherFinalize		(xmlSecTransformPtr transform);
 static int  	xmlSecNssEvpBlockCipherSetKeyReq	(xmlSecTransformPtr transform, 
 							 xmlSecKeyReqPtr keyReq);
-static int	xmlSecNssEvpBlockCipherSetKey	(xmlSecTransformPtr transform,
+static int	xmlSecNssEvpBlockCipherSetKey		(xmlSecTransformPtr transform,
 							 xmlSecKeyPtr key);
-static int	xmlSecNssEvpBlockCipherExecute	(xmlSecTransformPtr transform,
+static int	xmlSecNssEvpBlockCipherExecute		(xmlSecTransformPtr transform,
 							 int last,
 							 xmlSecTransformCtxPtr transformCtx);
-static int	xmlSecNssEvpBlockCipherCheckId	(xmlSecTransformPtr transform);
+static int	xmlSecNssEvpBlockCipherCheckId		(xmlSecTransformPtr transform);
 							 
 
 
@@ -537,7 +537,7 @@ xmlSecNssEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
-    
+    keyReq->keyBitsSize = 8 * ctx->keySize;
     return(0);
 }
 

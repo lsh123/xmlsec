@@ -144,14 +144,14 @@ xmlSecOpenSSLKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyR
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId 	 = xmlSecOpenSSLKeyDataDesId;
-    keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId 	= xmlSecOpenSSLKeyDataDesId;
+    keyReq->keyType 	= xmlSecKeyDataTypeSymmetric;
     if(transform->encode) {
-	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
+	keyReq->keyUsage= xmlSecKeyUsageEncrypt;
     } else {
-	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
+	keyReq->keyUsage= xmlSecKeyUsageDecrypt;
     }
-    
+    keyReq->keyBitsSize = 8 * XMLSEC_OPENSSL_DES3_KEY_LENGTH;
     return(0);
 }
 

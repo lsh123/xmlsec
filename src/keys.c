@@ -60,7 +60,7 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     if((xmlSecKeyGetType(key) & keyReq->keyType) == 0) {
 	 return(0);
     }
-    /* todo: key usage! */
+    /* todo: key usage? */
     
     return(xmlSecKeyReqMatchKeyValue(keyReq, xmlSecKeyGetValue(key)));
 }
@@ -73,6 +73,12 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
     if((keyReq->keyId != xmlSecKeyDataIdUnknown) && 
        (!xmlSecKeyDataCheckId(value, keyReq->keyId))) {
 
+	return(0);
+    }
+    if((keyReq->keyBitsSize > 0) && 
+       (xmlSecKeyDataGetSize(value) > 0) && 
+       (xmlSecKeyDataGetSize(value) < keyReq->keyBitsSize)) {
+	
 	return(0);
     }
     return(1);

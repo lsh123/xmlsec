@@ -238,7 +238,7 @@ static int			xmlSecSimpleKeysStoreFind	(xmlSecKeyDataStorePtr store,
 
 static xmlSecKeyDataStoreKlass xmlSecSimpleKeysStoreKlass = {
     sizeof(xmlSecKeyDataKlass),
-    sizeof(xmlSecKeyData),
+    xmlSecSimpleKeysStoreSize,
 
     /* data */
     BAD_CAST "simple-keys-store",	/* const xmlChar* name; */ 
@@ -293,7 +293,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyDataStorePtr store, const xmlChar* name,
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     list = xmlSecSimpleKeysStoreGetList(store);
-    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), NULL);
 
     size = xmlSecPtrListGetSize(list);
     for(pos = 0; pos < size; ++pos) {

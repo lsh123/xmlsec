@@ -526,6 +526,7 @@ xmlSecGnuTLSBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
 
     ctx = xmlSecGnuTLSBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
     keyReq->keyId 	= ctx->keyId;
@@ -535,7 +536,8 @@ xmlSecGnuTLSBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
     } else {
 	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
-    
+
+    keyReq->keyBitsSize = 8 * gcry_cipher_get_algo_keylen(ctx->cipher);
     return(0);
 }
 

@@ -66,6 +66,7 @@ struct _xmlSecEncCtx {
     xmlChar*			carriedKeyName;
     int				encrypt;
     xmlSecBufferPtr		encResult;
+    int				resultBase64Encoded;
     int				replaced;
 
     /* these are internal data, nobody should change that except us */

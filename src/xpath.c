@@ -158,7 +158,6 @@ xmlSecXPathDataSetExpr(xmlSecXPathDataPtr data, const xmlChar* expr) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
     return(0);
 }
 
@@ -780,14 +779,19 @@ xmlSecTransformXPointerGetKlass(void) {
 }
 
 int 
-xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr, xmlSecNodeSetType  nodeSetType) {
+xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr, 
+			    xmlSecNodeSetType  nodeSetType, xmlNodePtr hereNode) {
     xmlSecPtrListPtr dataList;
     xmlSecXPathDataPtr data;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXPointerId), -1);
+    xmlSecAssert2(transform->hereNode == NULL, -1);
     xmlSecAssert2(expr != NULL, -1);
+    xmlSecAssert2(hereNode != NULL, -1);    
 
+    transform->hereNode = hereNode;
+    
     dataList = xmlSecXPathTransformGetDataList(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) == 0, -1);

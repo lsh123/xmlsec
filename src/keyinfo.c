@@ -270,8 +270,8 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(keyInfoCtx->allowedKeyDataIds != NULL) {
 	xmlSecPtrListDestroy(keyInfoCtx->allowedKeyDataIds);
     }
-    if(keyInfoCtx->transformCtx != NULL) {
-	xmlSecTransformCtxDestroy(keyInfoCtx->transformCtx);
+    if(keyInfoCtx->retrievalMethodTransformCtx != NULL) {
+	xmlSecTransformCtxDestroy(keyInfoCtx->retrievalMethodTransformCtx);
     }
 #ifndef XMLSEC_NO_XMLENC
     if(keyInfoCtx->encCtx != NULL) {
@@ -467,9 +467,18 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     fprintf(output, "== RetrievalMethod level (cur/max): %d/%d\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
 	    keyInfoCtx->maxRetrievalMethodLevel);
+    if(keyInfoCtx->retrievalMethodTransformCtx != NULL) {
+	xmlSecTransformCtxDebugDump(keyInfoCtx->retrievalMethodTransformCtx, output);
+    }
+    
     fprintf(output, "== EncryptedKey level (cur/max): %d/%d\n",
 	    keyInfoCtx->curEncryptedKeyLevel, 
 	    keyInfoCtx->maxEncryptedKeyLevel);
+#ifndef XMLSEC_NO_XMLENC
+    if(keyInfoCtx->encCtx != NULL) {
+	xmlSecEncCtxDebugDump(keyInfoCtx->encCtx, output);
+    }
+#endif /* XMLSEC_NO_XMLENC */
 }
 
 void 
@@ -506,9 +515,18 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
 	    keyInfoCtx->maxRetrievalMethodLevel);
+    if(keyInfoCtx->retrievalMethodTransformCtx != NULL) {
+	xmlSecTransformCtxDebugDump(keyInfoCtx->retrievalMethodTransformCtx, output);
+    }
+
     fprintf(output, "<EncryptedKeyLevel cur=\"%d\" max=\"%d\" />\n",
 	    keyInfoCtx->curEncryptedKeyLevel, 
 	    keyInfoCtx->maxEncryptedKeyLevel);
+#ifndef XMLSEC_NO_XMLENC
+    if(keyInfoCtx->encCtx != NULL) {
+	xmlSecEncCtxDebugXmlDump(keyInfoCtx->encCtx, output);
+    }
+#endif /* XMLSEC_NO_XMLENC */
 
     switch(keyInfoCtx->mode) {
 	case xmlSecKeyInfoModeRead:
@@ -916,18 +934,18 @@ xmlSecKeyDataRetrievalMethodGetKlass(void) {
 
 static int 
 xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur;
-    xmlSecTransformStatePtr state = NULL;
     xmlSecKeyDataId dataId = xmlSecKeyDataIdUnknown;
+    xmlSecUriType uriType = 0;
     xmlChar *retrType = NULL;
     xmlChar *uri = NULL;
-    xmlSecUriType uriType = 0;
+    xmlNodePtr cur;
     int res = -1;
     int ret;
     
     xmlSecAssert2(id == xmlSecKeyDataRetrievalMethodId, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
@@ -945,7 +963,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     ++keyInfoCtx->curRetrievalMethodLevel;
 
     /* check the allowed uri */
-    uri = xmlGetProp(node, BAD_CAST "URI");
+    uri = xmlGetProp(node, xmlSecAttrURI);
     if((uri == NULL) || (xmlStrlen(uri) == 0)) {
 	uriType = xmlSecUriTypeLocalEmpty;
     } else if(uri[0] == '#') {
@@ -962,51 +980,77 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 	goto done;
     }
     
-    state = xmlSecTransformStateCreate(node->doc, NULL, (char*)uri);
-    if(state == NULL){
+    /* destroy prev retrieval method context and create a new one */
+    if(keyInfoCtx->retrievalMethodTransformCtx != NULL) {
+	xmlSecTransformCtxDestroy(keyInfoCtx->retrievalMethodTransformCtx);
+	keyInfoCtx->retrievalMethodTransformCtx = NULL;
+    }
+    keyInfoCtx->retrievalMethodTransformCtx = xmlSecTransformCtxCreate();
+    if(keyInfoCtx->retrievalMethodTransformCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecTransformStateCreate",
+		    "xmlSecTransformCtxCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
-    }	
+    }
 
-    /* read possible trasnforms */
-    cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecDSigNs)) {
-	ret = xmlSecTransformsNodeRead(state, cur);
-	if(ret < 0){
+    /* set start URI */
+    if(uri != NULL) {    
+        ret = xmlSecTransformCtxSetUri(keyInfoCtx->retrievalMethodTransformCtx, 
+					uri, node);
+	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			"xmlSecTransformsNodeRead",
+			"xmlSecTransformCtxSetUri",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"uri=%s",
+			xmlSecErrorsSafeString(uri));
+	    goto done;
+	}		
+    }
+
+    /* the only one node is optional Transforms node */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecEncNs))) {
+	ret = xmlSecTransformCtxNodesListRead(keyInfoCtx->retrievalMethodTransformCtx, 
+					    cur, xmlSecTransformUsageDSigTransform);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+			"xmlSecTransformCtxNodesListRead",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	    goto done;
 	}	
-	cur = xmlSecGetNextElementNode(cur->next);
+        cur = xmlSecGetNextElementNode(cur->next);
     }
+
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
     /* finally get transforms results */
-    ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
-    if(ret < 0) {
+    ret = xmlSecTransformCtxExecute(keyInfoCtx->retrievalMethodTransformCtx, node->doc);
+    if((ret < 0) || 
+       (keyInfoCtx->retrievalMethodTransformCtx->result == NULL) ||
+       (xmlSecBufferGetData(keyInfoCtx->retrievalMethodTransformCtx->result) == NULL)) {
+
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecTransformStateFinal",
+		    "xmlSecTransformCtxExecute",
 	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
-    retrType = xmlGetProp(node, BAD_CAST "Type");
+    retrType = xmlGetProp(node, xmlSecAttrType);
     if(retrType != NULL) {
 	/* use global list only if we don't have a local one */
 	if(keyInfoCtx->allowedKeyDataIds != NULL) {
@@ -1034,9 +1078,9 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
        ((dataId->usage & xmlSecKeyDataUsageRetrievalMethodNodeXml) != 0)) {
 
 	ret = xmlSecKeyDataRetrievalMethodReadXmlResult(dataId, key,
-				    xmlSecBufferGetData(state->curBuf),
-                            	    xmlSecBufferGetSize(state->curBuf),
-				    keyInfoCtx);
+			xmlSecBufferGetData(keyInfoCtx->retrievalMethodTransformCtx->result),
+                        xmlSecBufferGetSize(keyInfoCtx->retrievalMethodTransformCtx->result),
+			keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
@@ -1047,9 +1091,9 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 	}    
     } else {
 	ret = xmlSecKeyDataBinRead(dataId, key, 
-				    xmlSecBufferGetData(state->curBuf),
-                            	    xmlSecBufferGetSize(state->curBuf),
-				    keyInfoCtx);
+			xmlSecBufferGetData(keyInfoCtx->retrievalMethodTransformCtx->result),
+                        xmlSecBufferGetSize(keyInfoCtx->retrievalMethodTransformCtx->result),
+			keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
@@ -1062,9 +1106,6 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     
     res = 0;    
 done:
-    if(state != NULL) {
-	xmlSecTransformStateDestroy(state);
-    }
     if(uri != NULL) {
 	xmlFree(uri);
     }

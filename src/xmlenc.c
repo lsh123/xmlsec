@@ -351,7 +351,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, const xmlChar *uri)
     xmlSecAddIDs(tmpl->doc, tmpl, xmlSecEncIds);
 
     /* we need to add input uri transform first */
-    ret = xmlSecTransformCtxSetUri(&(ctx->encTransformCtx), uri);
+    ret = xmlSecTransformCtxSetUri(&(ctx->encTransformCtx), uri, tmpl);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -716,6 +716,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
 	    return(-1);
 	}
 	base64Encode->encode = 1;
+	ctx->resultBase64Encoded = 1;
     }
     
     return(0);
@@ -825,7 +826,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     /* first read the optional uri attr */
     uri = xmlGetProp(node, xmlSecAttrURI);
     if(uri != NULL) {
-	ret = xmlSecTransformCtxSetUri(&(ctx->encTransformCtx), uri);
+	ret = xmlSecTransformCtxSetUri(&(ctx->encTransformCtx), uri, node);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		    	NULL,
@@ -916,12 +917,18 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr ctx, FILE* output) {
 
     xmlSecTransformCtxDebugDump(&(ctx->encTransformCtx), output);
     
-    if(ctx->encResult != NULL) {
+    if((ctx->encResult != NULL) && 
+       (xmlSecBufferGetData(ctx->encResult) != NULL) && 
+       (ctx->resultBase64Encoded != 0)) {
+
 	fprintf(output, "== Result - start buffer:\n");
 	fwrite(xmlSecBufferGetData(ctx->encResult), 
 	       xmlSecBufferGetSize(ctx->encResult), 1,
 	       output);
 	fprintf(output, "\n== Result - end buffer\n");
+    } else {
+	fprintf(output, "== Result: %d bytes\n",
+		xmlSecBufferGetSize(ctx->encResult));
     }
 }
 
@@ -982,13 +989,19 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
     fprintf(output, "</KeyInfoWriteCtx>\n");
     xmlSecTransformCtxDebugXmlDump(&(ctx->encTransformCtx), output);
 
-    if(ctx->encResult != NULL) {
+    if((ctx->encResult != NULL) && 
+       (xmlSecBufferGetData(ctx->encResult) != NULL) && 
+       (ctx->resultBase64Encoded != 0)) {
+
 	fprintf(output, "<Result>");
 	fwrite(xmlSecBufferGetData(ctx->encResult), 
 	       xmlSecBufferGetSize(ctx->encResult), 1,
 	       output);
 	fprintf(output, "</Result>\n");
-    }	    
+    } else {
+	fprintf(output, "<Result size=\"%d\" />\n",
+	       xmlSecBufferGetSize(ctx->encResult));
+    }
 
     switch(ctx->mode) {
 	case xmlEncCtxModeEncryptedData:

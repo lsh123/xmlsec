@@ -133,11 +133,12 @@ typedef unsigned char			xmlSecTransformDataType;
 /**
  * xmlSecTransformCtx:
  *
-	 * The transform context.
+ * The transform context.
  */
 struct _xmlSecTransformCtx {
     xmlSecTransformStatus	status;
     xmlChar*			uri;
+    xmlChar*			xpointerExpr;
     
     xmlSecTransformPtr		first;
     xmlSecTransformPtr		last;
@@ -149,7 +150,8 @@ XMLSEC_EXPORT void			xmlSecTransformCtxFinalize  	(xmlSecTransformCtxPtr ctx);
 XMLSEC_EXPORT xmlSecTransformCtxPtr	xmlSecTransformCtxCreate    	(void);
 XMLSEC_EXPORT void			xmlSecTransformCtxDestroy   	(xmlSecTransformCtxPtr ctx);
 XMLSEC_EXPORT int			xmlSecTransformCtxSetUri	(xmlSecTransformCtxPtr ctx,
-									 const xmlChar* uri);
+									 const xmlChar* uri,
+									 xmlNodePtr hereNode);
 XMLSEC_EXPORT int 			xmlSecTransformCtxAppend    	(xmlSecTransformCtxPtr ctx,
 									 xmlSecTransformPtr transform);
 XMLSEC_EXPORT int 			xmlSecTransformCtxPrepend	(xmlSecTransformCtxPtr ctx,
@@ -616,7 +618,8 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPath2GetKlass		(void);
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPointerGetKlass		(void);
 XMLSEC_EXPORT int		xmlSecTransformXPointerSetExpr		(xmlSecTransformPtr transform,
 									 const xmlChar* expr,
-									 xmlSecNodeSetType nodeSetType);
+									 xmlSecNodeSetType nodeSetType,
+									 xmlNodePtr hereNode);
 
 /********************************************************************
  *

@@ -273,6 +273,9 @@ xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
     if(ctx->uri != NULL) {
 	xmlFree(ctx->uri);
     }
+    if(ctx->xpointerExpr != NULL) {
+	xmlFree(ctx->xpointerExpr);
+    }
     
     /* destroy transforms chain */
     for(transform = ctx->first; transform != NULL; transform = tmp) {
@@ -564,7 +567,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  *
  */
 int
-xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
+xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodePtr hereNode) {
     xmlSecTransformPtr transform;
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
@@ -573,8 +576,10 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->uri == NULL, -1);
+    xmlSecAssert2(ctx->xpointerExpr == NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
     xmlSecAssert2(uri != NULL, -1);
+    xmlSecAssert2(hereNode != NULL, -1);
 
     /* do we have barename or full xpointer? */
     xptr = (const xmlChar *)strchr((const char*)uri, '#');
@@ -595,9 +600,18 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
 	if(ctx->uri == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlStrdup",
+			"xmlStrndup",
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
 			"size=%d", xptr - uri); 
+	    return(-1);
+	}
+	ctx->xpointerExpr = xmlStrdup(xptr);
+	if(ctx->xpointerExpr == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlStrdup",
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"size=%d", xmlStrlen(xptr)); 
 	    return(-1);
 	}
     }
@@ -641,7 +655,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     }
     
     /* finally initialize our xpointer transform */
-    ret = xmlSecTransformXPointerSetExpr(transform, xptr, nodeSetType);
+    ret = xmlSecTransformXPointerSetExpr(transform, xptr, nodeSetType, hereNode);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -863,7 +877,6 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "transform=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(ctx->first)));
-        xmlSecNodeSetDestroy(nodes);
 	return(-1);
     }
 
@@ -930,7 +943,10 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "== TRANSFORMS CTX (status=%d)\n", ctx->status);    
-    fprintf(output, "=== uri: %s\n", (ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL");    
+    fprintf(output, "=== uri: %s\n", 
+	    (ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL");    
+    fprintf(output, "=== uri xpointer expr: %s\n", 
+	    (ctx->xpointerExpr != NULL) ? ctx->xpointerExpr : BAD_CAST "NULL");    
     for(transform = ctx->first; transform != NULL; transform = transform->next) {
 	xmlSecTransformDebugDump(transform, output);
     }
@@ -943,9 +959,10 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
  
-    fprintf(output, "<TransformCtx status=\"%d\" uri=\"%s\" >\n", 
-				    ctx->status, 
-				    (ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL");    
+    fprintf(output, "<TransformCtx status=\"%d\" uri=\"%s\" uriXPointer=\"%s\" >\n", 
+			ctx->status, 
+			(ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL",    
+			(ctx->xpointerExpr != NULL) ? ctx->xpointerExpr : BAD_CAST "NULL");    
     for(transform = ctx->first; transform != NULL; transform = transform->next) {
 	xmlSecTransformDebugXmlDump(transform, output);
     }

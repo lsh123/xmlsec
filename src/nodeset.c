@@ -81,7 +81,7 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
     xmlSecAssert(nset != NULL);
     	
     while((tmp = nset) != NULL) {
-	if(nset->next != nset) {
+	if((nset->next != NULL) && (nset->next != nset)) {
 	    nset->next->prev = nset->prev;
 	    nset->prev->next = nset->next;	    
 	    nset = nset->next;

@@ -16,8 +16,8 @@ logfile=/tmp/testKeys.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 
-printRes() {
-    if [ $? = 0 ]; then
+printRes() {	
+    if [ $1 = 0 ]; then
 	echo "   OK"
     else 
         echo " Fail"
@@ -40,7 +40,7 @@ $xmlsec_app keys --crypto-config $crypto_config \
     --gen-key:test-aes192 aes-192 \
     --gen-key:test-aes256 aes-256 \
     $keysfile >> $logfile 2>> $logfile
-printRes 
+printRes $?
 
 rm -rf $tmpfile
 

@@ -29,7 +29,7 @@ if [ -n "$PERF_TEST" ] ; then
 fi
 
 printRes() {
-    if [ $? = 0 ]; then
+    if [ $1 = 0 ]; then
 	echo "   OK"
     else 
         echo " Fail"
@@ -51,7 +51,7 @@ execEncTest() {
     $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config $EXTRA_PARAMS $2 $file.xml > $tmpfile 2>> $logfile
     if [ $? = 0 ]; then
 	diff $file.data $tmpfile >> $logfile 2>> $logfile
-	printRes 
+	printRes $?
     else 
 	echo " Error"
     fi
@@ -61,7 +61,7 @@ execEncTest() {
 	rm -f $tmpfile
 	echo "$xmlsec_app encrypt --crypto-config $crypto_config $3 $file.tmpl" >>  $logfile 
 	$VALGRIND $xmlsec_app encrypt --crypto-config $crypto_config --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
-	printRes
+	printRes $?
 	
 	if [ -n "$4" ] ; then 
 	    if [ -z "$VALGRIND" ] ; then
@@ -70,7 +70,7 @@ execEncTest() {
 	        $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config --output $tmpfile.2 $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
 		if [ $? = 0 ]; then
 		    diff $file.data $tmpfile.2 >> $logfile 2>> $logfile
-		    printRes
+		    printRes $?
     		else 
 		    echo " Error"
 		fi
@@ -298,11 +298,12 @@ echo "Dynamic encryption template"
 printf "    Encrypt template                                     "
 echo "$xmlsec_app encrypt-tmpl --crypto-config $crypto_config --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app encrypt-tmpl --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
-printRes
+printRes $?
 printf "    Decrypt document                                     "
 echo "$xmlsec_app decrypt --crypto-config $crypto_config --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
-printRes
+printRes $?
+
 
 
 echo "--------- Negative Testing: Following tests MUST FAIL ----------"

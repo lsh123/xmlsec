@@ -358,7 +358,9 @@ xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(BINDIR)\$(XMLSEC_CRYP
 apps : $(BINDIR)\$(APP_NAME)
 
 check : $(BINDIR)\$(APP_NAME)
+	sh ../tests/testKeys.sh ../tests $(BINDIR)/$(APP_NAME) der
 	sh ../tests/testDSig.sh ../tests $(BINDIR)/$(APP_NAME) der
+	sh ../tests/testEnc.sh ../tests $(BINDIR)/$(APP_NAME) der
 
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)

@@ -8,15 +8,7 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
-REM SET ICONV=d:\sdk\bin\iconv
-REM SET LIBXML2=d:\sdk\bin\libxml2
-REM SET LIBXSLT=d:\sdk\bin\libxslt
-REM SET OPENSSL=d:\sdk\bin\openssl
-REM SET XMLSEC_PREFIX=d:\sdk\bin\xmlsec
-REM SET XMLSEC_INCLUDE=%ICONV%\include;%LIBXML2%\include;%LIBXSLT%\include;%OPENSSL%\include
-REM SET XMLSEC_LIB=%ICONV%\lib;%LIBXML2%\lib;%LIBXSLT%\lib;%OPENSSL%\lib
-
-SET XMLSEC_PREFIX=d:\sdk
+SET XMLSEC_PREFIX=e:\sdk
 SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include
 SET XMLSEC_LIB=%XMLSEC_PREFIX%\lib
 

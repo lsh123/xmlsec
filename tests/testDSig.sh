@@ -29,10 +29,10 @@ if [ -n "$PERF_TEST" ] ; then
 fi
 
 printRes() {
-    if [ $? = 0 ]; then
+    if [ $1 = 0 ]; then
 	echo "   OK"
     else 
-        echo " Fail ($?)"
+        echo " Fail"
     fi
     if [ -f .memdump ] ; then 
 	cat .memdump >> $logfile 
@@ -48,20 +48,20 @@ execDSigTest() {
     printf "    Verify existing signature                            "
     echo "$xmlsec_app verify --crypto-config $crypto_config $2 $file.xml" >> $logfile
     $VALGRIND $xmlsec_app verify --crypto-config $crypto_config $EXTRA_PARAMS $2 $file.xml >> $logfile 2>> $logfile
-    printRes 
+    printRes $?
 
     if [ -n "$3"  -a -z "$PERF_TEST" ] ; then
 	printf "    Create new signature                                 "
 	echo "$xmlsec_app sign --crypto-config $crypto_config $3 --output $tmpfile $file.tmpl" >> $logfile
 	$VALGRIND $xmlsec_app sign --crypto-config $crypto_config --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
-	printRes
+	printRes $?
 	
 	if [ -n "$4" ] ; then 
 	    if [ -z "$VALGRIND" ] ; then 
 		printf "    Verify new signature                                 "
 		echo "$xmlsec_app verify --crypto-config $crypto_config $4 $tmpfile" >> $logfile
 		$VALGRIND $xmlsec_app verify --crypto-config $crypto_config $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
-		printRes
+		printRes $?
 	    fi
 	fi
     fi
@@ -221,11 +221,12 @@ echo "Dynamic signature template"
 printf "    Create new signature                                 "
 echo "$xmlsec_app sign-tmpl --crypto-config $crypto_config --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app sign-tmpl --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
-printRes
+printRes $?
 printf "    Verify new signature                                 "
 echo "$xmlsec_app verify --crypto-config $crypto_config --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app verify --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
-printRes
+printRes $?
+
 
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"

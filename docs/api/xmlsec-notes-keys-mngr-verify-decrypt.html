@@ -1,0 +1,149 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Using keys manager for verification/decryption.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Keys manager." href="xmlsec-notes-keysmngr.html">
+<link rel="PREVIOUS" title="Using keys manager for signatures/encryption." href="xmlsec-notes-keys-manager-sign-enc.html">
+<link rel="NEXT" title="Implementing a custom keys store." href="xmlsec-notes-custom-keys-store.html">
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keys-manager-sign-enc.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-custom-keys-store.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-KEYS-MNGR-VERIFY-DECRYPT"></a>Using keys manager for verification/decryption.</h1>
+<p>If more than one key could be used for signature or encryption,
+	then using <tt class="STRUCTFIELD"><i>signKey</i></tt> member of 
+	<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure or 
+	<tt class="STRUCTFIELD"><i>encKey</i></tt> member of 
+	<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure 
+	is not possible. Instead, the application should load known keys in 
+	the keys manager and use &lt;dsig:KeyName/&gt; element to specify 
+	the key name.
+	</p>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN375"></a><p><b>Example 3. Initializing keys manager and loading DES keys from binary files.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
+ * load_des_keys:
+ * @files:		the list of filenames.
+ * @files_size:		the number of filenames in #files.
+ *
+ * Creates simple keys manager and load DES keys from #files in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_des_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+    
+    assert(files);
+    assert(files_size &gt; 0);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    for(i = 0; i &lt; files_size; ++i) {
+	assert(files[i]);
+
+	/* load DES key */
+	key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+	if(key == NULL) {
+    	    fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+
+	/* set key name to the file name, this is just an example! */
+	if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
+	 */
+	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+    	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
+	    xmlSecKeyDestroy(key);
+	    xmlSecKeysMngrDestroy(mngr);
+	    return(NULL);
+	}
+    }
+
+    return(mngr);
+}
+		</pre></td></tr></table>
+<p><a href="xmlsec-decrypt-with-keys-mngr.html#XMLSEC-EXAMPLE-DECRYPT2">Full program listing</a></p>
+</div>
+	</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keys-manager-sign-enc.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-custom-keys-store.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Using keys manager for signatures/encryption.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Implementing a custom keys store.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

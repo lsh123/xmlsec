@@ -1,0 +1,300 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Encrypting data with a template file.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Examples." href="xmlsec-examples.html">
+<link rel="PREVIOUS" title="Verifying a signature with additional restrictions." href="xmlsec-verify-with-restrictions.html">
+<link rel="NEXT" title="Encrypting data with a dynamicaly created template." href="xmlsec-encrypt-dynamic-template.html">
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-verify-with-restrictions.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-encrypt-dynamic-template.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-ENCRYPT-TEMPLATE-FILE"></a>Encrypting data with a template file.</h1>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="XMLSEC-EXAMPLE-ENCRYPT1"></a>encrypt1.c</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN589"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
+ * XML Security Library example: Encrypting data using a template file.
+ * 
+ * Encrypts binary data using a template file and a DES key from a binary file
+ * 
+ * Usage: 
+ *	./encrypt1 &lt;xml-tmpl&gt; &lt;des-key-file&gt; 
+ *
+ * Example:
+ *	./encrypt1 encrypt1-tmpl.xml deskey.bin &gt; encrypt1-res.xml
+ *
+ * The result could be decrypted with decrypt1 example:
+ *	./decrypt1 encrypt1-res.xml deskey.bin
+ *
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ * 
+ * Copyrigth (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ */
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+
+#include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
+#include &lt;libxml/parser.h&gt;
+
+#ifndef XMLSEC_NO_XSLT
+#include &lt;libxslt/xslt.h&gt;
+#endif /* XMLSEC_NO_XSLT */
+
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/xmlenc.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
+
+int encrypt_file(const char* tmpl_file, const char* key_file, 
+		 const unsigned char* data, size_t dataSize);
+int 
+main(int argc, char **argv) {
+    static const char secret_data[] = &quot;Big secret&quot;;
+    
+    assert(argv);
+
+    if(argc != 3) {
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;tmpl-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
+	return(1);
+    }
+
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) &lt; 0) {
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    if(encrypt_file(argv[1], argv[2], secret_data, strlen(secret_data)) &lt; 0) {
+	return(-1);
+    }    
+    
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+/**
+ * encrypt_file:
+ * @tmpl_file:		the encryption template file name.
+ * @key_file:		the Triple DES key file.
+ * @data:		the binary data to encrypt.
+ * @dataSize:		the binary data size.
+ *
+ * Encrypts binary #data using template from #tmpl_file and DES key from
+ * #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+encrypt_file(const char* tmpl_file, const char* key_file, 
+	     const unsigned char* data, size_t dataSize) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+    assert(data);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
+	goto done;
+    }
+
+    /* load DES key, assuming that there is not password */
+    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx-&gt;encKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* encrypt the data */
+    if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) &lt; 0) {
+        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
+	goto done;
+    }
+        
+    /* print encrypted data with document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="XMLSEC-EXAMPLE-ENCRYPT1-TMPL"></a>encrypt1-tmpl.xml</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN594"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!-- 
+XML Security Library example: Simple encryption template file for encrypt1 example. 
+--&gt;
+&lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;
+    &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
+    &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+	&lt;KeyName/&gt;
+    &lt;/KeyInfo&gt;   
+    &lt;CipherData&gt;
+	&lt;CipherValue&gt;&lt;/CipherValue&gt;
+    &lt;/CipherData&gt;
+&lt;/EncryptedData&gt;</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="XMLSEC-EXAMPLE-ENCRYPT1-RES"></a>encrypt1-res.xml</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN599"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!-- 
+XML Security Library example: Encrypted binary data (encrypt1 example).
+--&gt;
+&lt;EncryptedData xmlns=&quot;http://www.w3.org/2001/04/xmlenc#&quot;&gt;
+    &lt;EncryptionMethod Algorithm=&quot;http://www.w3.org/2001/04/xmlenc#tripledes-cbc&quot;/&gt;
+    &lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+	&lt;KeyName&gt;deskey.bin&lt;/KeyName&gt;
+    &lt;/KeyInfo&gt;   
+    &lt;CipherData&gt;
+	&lt;CipherValue&gt;t6JVBMihIgRyiK8AS8AX5NcXTfkdXPTK&lt;/CipherValue&gt;
+    &lt;/CipherData&gt;
+&lt;/EncryptedData&gt;</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-verify-with-restrictions.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-encrypt-dynamic-template.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Verifying a signature with additional restrictions.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Encrypting data with a dynamicaly created template.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

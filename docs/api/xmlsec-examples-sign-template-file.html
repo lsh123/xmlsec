@@ -1,0 +1,323 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Signing a template file.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Examples." href="xmlsec-examples.html">
+<link rel="PREVIOUS" title="Examples." href="xmlsec-examples.html">
+<link rel="NEXT" title="Signing a dynamicaly created template." href="xmlsec-examples-sign-dynamimc-template.html">
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-examples-sign-dynamimc-template.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-EXAMPLES-SIGN-TEMPLATE-FILE"></a>Signing a template file.</h1>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="XMLSEC-EXAMPLE-SIGN1"></a>sign1.c</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN490"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
+ * XML Security Library example: Signing a template file.
+ * 
+ * Signs a template file using a key from PEM file
+ * 
+ * Usage: 
+ *	./sign1 &lt;xml-tmpl&gt; &lt;pem-key&gt; 
+ *
+ * Example:
+ *	./sign1 sign1-tmpl.xml rsakey.pem &gt; sign1-res.xml
+ *
+ * The result signature could be validated using verify1 example:
+ *	./verify1 sign1-res.xml rsapub.pem
+ *
+ * This is free software; see Copyright file in the source
+ * distribution for preciese wording.
+ * 
+ * Copyrigth (C) 2002-2003 Aleksey Sanin &lt;aleksey@aleksey.com&gt;
+ */
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+
+#include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
+#include &lt;libxml/parser.h&gt;
+
+#ifndef XMLSEC_NO_XSLT
+#include &lt;libxslt/xslt.h&gt;
+#endif /* XMLSEC_NO_XSLT */
+
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/xmldsig.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
+
+int sign_file(const char* tmpl_file, const char* key_file);
+
+int 
+main(int argc, char **argv) {
+    assert(argv);
+
+    if(argc != 3) {
+	fprintf(stderr, &quot;Error: wrong number of arguments.\n&quot;);
+	fprintf(stderr, &quot;Usage: %s &lt;tmpl-file&gt; &lt;key-file&gt;\n&quot;, argv[0]);
+	return(1);
+    }
+
+    /* Init libxml and libxslt libraries */
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
+    xmlSubstituteEntitiesDefault(1);
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+        	
+    /* Init xmlsec library */
+    if(xmlSecInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init crypto library */
+    if(xmlSecCryptoAppInit(NULL) &lt; 0) {
+	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    /* Init xmlsec-crypto library */
+    if(xmlSecCryptoInit() &lt; 0) {
+	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	return(-1);
+    }
+
+    if(sign_file(argv[1], argv[2]) &lt; 0) {
+	return(-1);
+    }    
+    
+    /* Shutdown xmlsec-crypto library */
+    xmlSecCryptoShutdown();
+    
+    /* Shutdown crypto library */
+    xmlSecCryptoAppShutdown();
+    
+    /* Shutdown xmlsec library */
+    xmlSecShutdown();
+
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+/** 
+ * sign_file:
+ * @tmpl_file:		the signature template file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #tmpl_file using private key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+sign_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(dsigCtx-&gt;signKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,&quot;Error: signature failed\n&quot;);
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="XMLSEC-EXAMPLE-SIGN1-TMPL"></a>sign1-tmpl.xml</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN495"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- 
+XML Security Library example: Simple signature template file for sign1 example. 
+--&gt;
+&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;
+  &lt;Data&gt;
+	Hello, World!
+  &lt;/Data&gt;
+  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+    &lt;SignedInfo&gt;
+      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot; /&gt;
+      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot; /&gt;
+      &lt;Reference URI=&quot;&quot;&gt;
+        &lt;Transforms&gt;
+          &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot; /&gt;
+        &lt;/Transforms&gt;
+        &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot; /&gt;
+        &lt;DigestValue&gt;&lt;/DigestValue&gt;
+      &lt;/Reference&gt;
+    &lt;/SignedInfo&gt;
+    &lt;SignatureValue/&gt;
+    &lt;KeyInfo&gt;
+	&lt;KeyName/&gt;
+    &lt;/KeyInfo&gt;
+  &lt;/Signature&gt;
+&lt;/Envelope&gt;</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+<br clear="all"><div class="SECT2">
+<h2 class="SECT2">
+<a name="XMLSEC-EXAMPLE-SIGN1-RES"></a>sign1-res.xml</h2>
+<p></p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN500"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- 
+XML Security Library example: Signed file (sign1 example). 
+--&gt;
+&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;
+  &lt;Data&gt;
+	Hello, World!
+  &lt;/Data&gt;
+  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;
+    &lt;SignedInfo&gt;
+      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;
+      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&gt;
+      &lt;Reference URI=&quot;&quot;&gt;
+        &lt;Transforms&gt;
+          &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;
+        &lt;/Transforms&gt;
+        &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;
+        &lt;DigestValue&gt;9H/rQr2Axe9hYTV2n/tCp+3UIQQ=&lt;/DigestValue&gt;
+      &lt;/Reference&gt;
+    &lt;/SignedInfo&gt;
+    &lt;SignatureValue&gt;Mx4psIy9/UY+u8QBJRDrwQWKRaCGz0WOVftyDzAe6WHAFSjMNr7qb2ojq9kdipT8
+Oub5q2OQ7mzdSLiiejkrO1VeqM/90yEIGI4En6KEB6ArEzw+iq4N1wm6EptcyxXx
+M9StAOOa9ilWYqR9Tfx3SW1urUIuKYgUitxsONiUHBVaW6HeX51bsXoTF++4ZI+D
+jiPBjN4HHmr0cbJ6BXk91S27ffZIfp1Qj5nL9onFLUGbR6EFgu2luiRzQbPuM2tP
+XxyI7GZ8AfHnRJK28ARvBC9oi+O1ej20S79CIV7gdBxbLbFprozBHAwOEC57YgJc
+x+YEjSjcO7SBIR1FiUA7pw==&lt;/SignatureValue&gt;
+    &lt;KeyInfo&gt;
+	&lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
+    &lt;/KeyInfo&gt;
+  &lt;/Signature&gt;
+&lt;/Envelope&gt;</pre></td></tr></table>
+<p></p>
+</div>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-examples-sign-dynamimc-template.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Examples.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Signing a dynamicaly created template.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

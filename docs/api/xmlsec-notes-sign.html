@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Signing a document.</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
+<link rel="PREVIOUS" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
+<link rel="NEXT" title="Encrypting data." href="xmlsec-notes-encrypt.html">
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul><li><a href="../xmldsig-verifier.html">Online Verifier</a></li></ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td valign="top"><table width="100%" valign="top">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-encrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-NOTES-SIGN"></a>Signing a document.</h1>
+<p>The typical siganture process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Prepare data for signature.
+	    </p></li>
+<li><p>		Create or load signature template and select start
+    		<a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a>
+		node.
+	    </p></li>
+<li><p>		Create signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>
+		functions.
+	    </p></li>
+<li><p>		Load signature key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
+		or generate a sesison key and set it in the signature context 
+		(<tt class="STRUCTFIELD"><i>signKey</i></tt> member of 
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure).
+	    </p></li>
+<li><p>		Sign data by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a> 
+		function.
+	    </p></li>
+<li><p>		Check returned value and consume signed data.
+	    </p></li>
+<li><p>		Destroy signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>
+		functions.
+	    </p></li>
+</ul>
+<p>	     </p>
+<div class="EXAMPLE">
+<a name="AEN166"></a><p><b>Example 1. Signing a template.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
+ * sign_file:
+ * @tmpl_file:		the signature template file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #tmpl_file using private key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+sign_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+    
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+    
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
+	goto done;	
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(dsigCtx-&gt;signKey == NULL) {
+        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,&quot;Error: signature failed\n&quot;);
+	goto done;
+    }
+        
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+    /* cleanup */
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+    
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
+		</pre></td></tr></table>
+<p><a href="xmlsec-examples-sign-template-file.html#XMLSEC-EXAMPLE-SIGN1">Full program listing</a></p>
+<p><a href="xmlsec-examples-sign-template-file.html#XMLSEC-EXAMPLE-SIGN1-TMPL">Simple signature template file</a></p>
+</div>
+	</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-encrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Signing and encrypting documents.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Encrypting data.</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="../bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

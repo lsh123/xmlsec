@@ -1,3 +1,7 @@
+2005-01-26  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/bn.c: fixed xmlSecBnFromString function (patch from Michael Mi)
+
 2004-11-08  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/keysmngr.h src/keysmngr.c: added 

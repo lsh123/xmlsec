@@ -172,6 +172,7 @@ int
 xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecSize i, len;
     xmlSecByte ch;
+    xmlSecByte* data;
     int nn;
     int ret;
 
@@ -191,8 +192,9 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
      * In truth, it would be likely less than 1/2 input string length
      * because each byte is represented by 2 chars. If needed, 
      * buffer size would be increased by Mul/Add functions.
+     * Finally, we add one byte for 00 prefix if first byte is > 127.
      */
-    ret = xmlSecBufferSetMaxSize(bn, xmlSecBufferGetSize(bn) + len / 2 + 1);
+    ret = xmlSecBufferSetMaxSize(bn, xmlSecBufferGetSize(bn) + len / 2 + 1 + 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -241,6 +243,20 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 	}	
     }
 
+    /* check whether need to add 00 prefix */
+    data = xmlSecBufferGetData(bn);
+    if(data[0] > 127) {
+        ch = 0;
+        ret = xmlSecBufferPrepend(bn, &ch, 1);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                NULL,
+                "xmlSecBufferPrepend",
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                "base=%d", base);
+            return (-1);
+        }
+    }
     return(0);
 }
 

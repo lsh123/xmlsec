@@ -1,4 +1,4 @@
-	/** 
+/** 
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Key Management Specification v 2.0" implementation
@@ -30,24 +30,138 @@ extern "C" {
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
+/************************************************************************
+ *
+ * Forward declarations. These internal xmlsec library structures are
+ * declared in "xmlsec/private/xkms.h" file.
+ *
+ ************************************************************************/ 
 typedef struct _xmlSecXkmsRespondWithKlass	xmlSecXkmsRespondWithKlass, 
 						*xmlSecXkmsRespondWithId;
 
 typedef struct _xmlSecXkmsServerRequestKlass	xmlSecXkmsServerRequestKlass, 
 						*xmlSecXkmsServerRequestId;
 
+
+/**
+ * xmlSecXkmsResultMajor:
+ * @xmlSecXkmsResultMajorSuccess:               The operation succeeded.
+ * @xmlSecXkmsResultMajorVersionMismatch:       The service does not support 
+ *                                              the protocol version specified 
+ *                                              in the request.
+ * @xmlSecXkmsResultMajorSender:                An error occurred that was due
+ *                                              to the message sent by the sender.
+ * @xmlSecXkmsResultMajorReceiver:              An error occurred at the receiver.
+ * @xmlSecXkmsResultMajorRepresent:             The service has not acted on the 
+ *                                              request. In order for the request
+ *                                              to be acted upon the request MUST 
+ *                                              be represented with the specified
+ *                                              nonce in accordance with the two
+ *                                              phase protocol.
+ * @xmlSecXkmsResultMajorPending:               The request has been accepted 
+ *                                              for processing and the service 
+ *                                              will return the result asynchronously.
+ * 
+ * The values for ResultMajor attribute.
+ */
+typedef enum {
+    xmlSecXkmsResultMajorSuccess = 0,
+    xmlSecXkmsResultMajorVersionMismatch,
+    xmlSecXkmsResultMajorSender,
+    xmlSecXkmsResultMajorReceiver,
+    xmlSecXkmsResultMajorRepresent,
+    xmlSecXkmsResultMajorPending
+} xmlSecXkmsResultMajor;
+
+/**
+ * xmlSecXkmsResultMinor:
+ * @xmlSecXkmsResultMinorNone:                  No minor result code available.
+ * @xmlSecXkmsResultMinorNoMatch:               No match was found for the search 
+ *                                              prototype provided.
+ * @xmlSecXkmsResultMinorTooManyResponses:      The request resulted in the 
+ *                                              number of responses that 
+ *                                              exceeded either the ResponseLimit 
+ *                                              value specified in the request or 
+ *                                              some other limit determined by 
+ *                                              the service. The service MAY 
+ *                                              either return a subset of the 
+ *                                              possible responses or none at all.
+ * @xmlSecXkmsResultMinorIncomplete:            Only part of the information 
+ *                                              requested could be provided.
+ * @xmlSecXkmsResultMinorFailure:               The service attempted to perform 
+ *                                              the request but the operation 
+ *                                              failed for unspecified reasons.
+ * @xmlSecXkmsResultMinorRefused:               The operation was refused. The 
+ *                                              service did not attempt to 
+ *                                              perform the request.
+ * @xmlSecXkmsResultMinorNoAuthentication:      The operation was refused 
+ *                                              because the necessary authentication 
+ *                                              information was incorrect or missing.
+ * @xmlSecXkmsResultMinorMessageNotSupported:   The receiver does not implement 
+ *                                              the specified operation.
+ * @xmlSecXkmsResultMinorUnknownResponseId:     The ResponseId for which pending 
+ *                                              status was requested is unknown to 
+ *                                              the service.
+ * @xmlSecXkmsResultMinorSynchronous:           The receiver does not support 
+ *                                              synchronous processing of this 
+ *                                              type of request.
+ *
+ * The values for ResultMinor attribute.
+ */
+typedef enum {
+    xmlSecXkmsResultMinorNone = 0,
+    xmlSecXkmsResultMinorNoMatch,
+    xmlSecXkmsResultMinorTooManyResponses,
+    xmlSecXkmsResultMinorIncomplete,
+    xmlSecXkmsResultMinorFailure,
+    xmlSecXkmsResultMinorRefused,
+    xmlSecXkmsResultMinorNoAuthentication,
+    xmlSecXkmsResultMinorMessageNotSupported,
+    xmlSecXkmsResultMinorUnknownResponseId,
+    xmlSecXkmsResultMinorSynchronous
+} xmlSecXkmsResultMinor;
+
+/** 
+ * xmlSecXkmsKeyBindingStatus:
+ * @xmlSecXkmsKeyBindingStatusNone:             The key status is not available.
+ * @xmlSecXkmsKeyBindingStatusValid:            The key is valid.
+ * @xmlSecXkmsKeyBindingStatusInvalid:          The key is not valid.
+ * @xmlSecXkmsKeyBindingStatusIndeterminate:    Could not determine key status.
+ *
+ * The values for key binding StatusValue attribute.
+ */ 
+typedef enum {
+    xmlSecXkmsKeyBindingStatusNone,
+    xmlSecXkmsKeyBindingStatusValid,
+    xmlSecXkmsKeyBindingStatusInvalid,
+    xmlSecXkmsKeyBindingStatusIndeterminate
+} xmlSecXkmsKeyBindingStatus;
+
+/**
+ * xmlSecXkmsServerFormat:
+ * @xmlSecXkmsServerFormatUnknown:              The format is unknown.
+ * @xmlSecXkmsServerFormatPlain:                The request/response are not enveloped.
+ * @xmlSecXkmsServerFormatSoap1_1:              The request/response are SOAP 1.1 encapsulated
+ * @xmlSecXkmsServerFormatSoap1_2:              The request/response are SOAP 1.2 encapsulated.
+ *
+ * The xkms server request/response format.
+ */
+typedef enum {
+    xmlSecXkmsServerFormatUnknown = 0,
+    xmlSecXkmsServerFormatPlain,
+    xmlSecXkmsServerFormatSoap1_1,
+    xmlSecXkmsServerFormatSoap1_2
+} xmlSecXkmsServerFormat;
+
+XMLSEC_EXPORT xmlSecXkmsServerFormat xmlSecXkmsServerFormatFromString
+                                                                (const xmlChar* str);
+XMLSEC_EXPORT const xmlChar*     xmlSecXkmsServerFormatToString (xmlSecXkmsServerFormat format);
+
 /************************************************************************
  *
  * XKMS requests server side processing klass
  *
  ************************************************************************/ 
-/**
- * XMLSEC_XKMS_NO_RESPONSE_LIMIT:
- *
- * The responseLimit value.
- */
-#define XMLSEC_XKMS_NO_RESPONSE_LIMIT				-1
-
 /** 
  * xmlSecXkmsServerCtx:
  * @userData:			the pointer to user data (xmlsec and xmlsec-crypto libraries
@@ -64,8 +178,8 @@ typedef struct _xmlSecXkmsServerRequestKlass	xmlSecXkmsServerRequestKlass,
 struct _xmlSecXkmsServerCtx {
     /* these data user can set before performing the operation */
     void*			userData;
-    unsigned int		flags;
-    unsigned int		flags2;    
+    xmlSecBitMask		flags;
+    xmlSecBitMask		flags2;    
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecPtrList		enabledRespondWithIds;
@@ -74,8 +188,8 @@ struct _xmlSecXkmsServerCtx {
         
     /* these data are returned */
     xmlSecPtrList		keys;
-    int				majorError;
-    int				minorError;
+    xmlSecXkmsResultMajor	resultMajor;
+    xmlSecXkmsResultMinor	resultMinor;
     xmlSecXkmsServerRequestId	requestId;
     xmlChar*			id;    
     xmlChar*			service;
@@ -98,27 +212,28 @@ struct _xmlSecXkmsServerCtx {
     void*			reserved1;
 };
 
-XMLSEC_EXPORT xmlSecXkmsServerCtxPtr	xmlSecXkmsServerCtxCreate(xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT xmlSecXkmsServerCtxPtr xmlSecXkmsServerCtxCreate  (xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void 		xmlSecXkmsServerCtxDestroy	(xmlSecXkmsServerCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecXkmsServerCtxInitialize	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxFinalize	(xmlSecXkmsServerCtxPtr ctx);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst,
+XMLSEC_EXPORT int		xmlSecXkmsServerCtxCopyUserPref (xmlSecXkmsServerCtxPtr dst,
 								 xmlSecXkmsServerCtxPtr src);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxReset	(xmlSecXkmsServerCtxPtr ctx);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxSetError	(xmlSecXkmsServerCtxPtr ctx,
-								 int majorError,
-								 int minorError);
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxSetResult	(xmlSecXkmsServerCtxPtr ctx,
+								 xmlSecXkmsResultMajor resultMajor,
+                                                                 xmlSecXkmsResultMinor resultMinor);
 XMLSEC_EXPORT int		xmlSecXkmsServerCtxRequestRead	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int		xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr* node);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxProcess	(xmlSecXkmsServerCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecXkmsServerCtxProcessDoc	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr inNode,
-								 xmlNodePtr* outNode);
+								 xmlNodePtr* outNode,
+                                                                 xmlSecXkmsServerFormat format);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugDump	(xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx,
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump (xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
 
 /************************************************************************
@@ -132,148 +247,8 @@ XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx,
  * zmlSecXkmsServerCtx klasses list klass.
  */
 #define xmlSecXkmsServerCtxPtrListId	xmlSecXkmsServerCtxPtrListGetKlass()
-XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsServerCtxPtrListGetKlass(void);
-
-/************************************************************************
- *
- * XKMS ResultMajor attribute values.
- *
- ************************************************************************/ 
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_SUCCESS:
- *
- * XKMS ResultMajor attribute value. The operation succeeded.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_SUCCESS			0		
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH:
- *
- * XKMS ResultMajor attribute value. The service does not support 
- * the protocol version specified in the request.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH	1	
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_SENDER:
- *
- * XKMS ResultMajor attribute value. An error occurred that was due to 
- * the message sent by the sender.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_SENDER			2			
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_RECEIVER:
- *
- * XKMS ResultMajor attribute value. An error occurred at the receiver.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_RECEIVER		3			
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_REPRESENT:
- *
- * XKMS ResultMajor attribute value. The service has not acted on 
- * the request. In order for the request to be acted upon the request MUST 
- * be represented with the specified nonce in accordance with the two phase 
- * protocol.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_REPRESENT		4			
-
-/**
- * XMLSEC_XKMS_ERROR_MAJOR_PENDING:
- *
- * XKMS ResultMajor attribute value. The request has been accepted 
- * for processing and the service will return the result asynchronously.
- */
-#define XMLSEC_XKMS_ERROR_MAJOR_PENDING			5			
-
-/************************************************************************
- *
- * XKMS ResultMinor attribute values.
- *
- ************************************************************************/ 
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NONE:
- *
- * XKMS ResultMinor attribute value. Not specified.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NONE			0		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NO_MATCH:
- *
- * XKMS ResultMinor attribute value. No match was found for the search 
- * prototype provided.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NO_MATCH		1		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES:
- *
- * XKMS ResultMinor attribute value. The request resulted in the number of 
- * responses that exceeded either  the ResponseLimit value specified in 
- * the request or some other limit determined by the service. 
- * The service MAY either return a subset of the possible 
- * responses or none at all.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES	2		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE:
- *
- * XKMS ResultMinor attribute value. Only part of the information requested 
- * could be provided.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE		3
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_FAILURE:
- *
- * XKMS ResultMinor attribute value. The service attempted to perform 
- * the request but the operation failed for unspecified reasons.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_FAILURE			4		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_REFUSED:
- *
- * XKMS ResultMinor attribute value. The operation was refused. The service 
- * did not attempt to perform the request.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_REFUSED			5		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION:
- *
- * XKMS ResultMinor attribute value. The operation was refused because 
- * the necessary authentication information was incorrect or missing.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION	6		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED:
- *	
- * XKMS ResultMinor attribute value. The receiver does not implement 
- * the specified operation.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED	7		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID:
- *
- * XKMS ResultMinor attribute value. The ResponseId for which pending 
- * status was requested is unknown to the service.
- */
-#define XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID	8		
-
-/**
- * XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS:
- *
- * XKMS ResultMinor attribute value. The receiver does not support 
- * synchronous processing of this type of request
- */
-#define XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS		9		
-
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsServerCtxPtrListGetKlass
+                                                                (void);
 
 /************************************************************************
  *
@@ -316,40 +291,8 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsServerCtxPtrListGetKlass(void);
  *
  * The ResponseLimit is not specified.
  */
-#define XMLSEC_XKMS_NO_RESPONSE_LIMIT			-1
+#define XMLSEC_XKMS_NO_RESPONSE_LIMIT			        -1
 
-/************************************************************************
- *
- * XKMS KeyBinding Status attribute values
- *
- ************************************************************************/ 
-/**
- * XMLSEC_XKMS_KEY_BINDING_STATUS_UNKNOWN:
- *
- * The status is not known.
- */
-#define XMLSEC_XKMS_KEY_BINDING_STATUS_UNKNOWN		 0
-
-/**
- * XMLSEC_XKMS_KEY_BINDING_STATUS_VALID:
- *
- * Key is valid.
- */
-#define XMLSEC_XKMS_KEY_BINDING_STATUS_VALID		 1
-
-/**
- * XMLSEC_XKMS_KEY_BINDING_STATUS_INVALID:
- *
- * Key is not valid.
- */
-#define XMLSEC_XKMS_KEY_BINDING_STATUS_INVALID		 2
-
-/**
- * XMLSEC_XKMS_KEY_BINDING_STATUS_INDETERMINATE:
- *
- * Status can't be determinated.
- */
-#define XMLSEC_XKMS_KEY_BINDING_STATUS_INDETERMINATE	 3
 
 /************************************************************************
  *
@@ -414,8 +357,12 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsServerCtxPtrListGetKlass(void);
 XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecXkmsRespondWithIdsGet	(void);
 XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsInit	(void);
 XMLSEC_EXPORT void 		xmlSecXkmsRespondWithIdsShutdown(void);
-XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsRegisterDefault(void);
+XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsRegisterDefault
+                                                                (void);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
+
+#define xmlSecXkmsRespondWithKlassGetName(id) \
+	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
 
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithNodeRead	(xmlSecXkmsRespondWithId id,
 								 xmlSecXkmsServerCtxPtr ctx,
@@ -425,33 +372,17 @@ XMLSEC_EXPORT int  		xmlSecXkmsRespondWithNodeWrite	(xmlSecXkmsRespondWithId id,
 								 xmlNodePtr node);
 XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugDump	(xmlSecXkmsRespondWithId id,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugXmlDump(xmlSecXkmsRespondWithId id,
+XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugXmlDump
+                                                                (xmlSecXkmsRespondWithId id,
 								 FILE* output);
-XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultNodeRead(xmlSecXkmsRespondWithId id,
+XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultNodeRead
+                                                                (xmlSecXkmsRespondWithId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
-XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultNodeWrite(xmlSecXkmsRespondWithId id,
+XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultNodeWrite
+                                                                (xmlSecXkmsRespondWithId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
-
-typedef int  		(*xmlSecXkmsRespondWithNodeReadMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-typedef int  		(*xmlSecXkmsRespondWithNodeWriteMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-struct _xmlSecXkmsRespondWithKlass {
-    const xmlChar*				name;
-    const xmlChar*				nodeName;
-    const xmlChar*				nodeNs;
-    
-    xmlSecXkmsRespondWithNodeReadMethod		readNode;
-    xmlSecXkmsRespondWithNodeWriteMethod	writeNode;
-};
-
-#define xmlSecXkmsRespondWithKlassGetName(id) \
-	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
-
 /************************************************************************
  *
  * XKMS RespondWith Klass List
@@ -463,10 +394,11 @@ struct _xmlSecXkmsRespondWithKlass {
  * XKMS RespondWith  klasses list klass.
  */
 #define xmlSecXkmsRespondWithIdListId	xmlSecXkmsRespondWithIdListGetKlass()
-XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsRespondWithIdListGetKlass(void);
-XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListFind	(xmlSecPtrListPtr list,
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsRespondWithIdListGetKlass
+                                                                (void);
+XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListFind (xmlSecPtrListPtr list,
 								 xmlSecXkmsRespondWithId id);
-XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithIdListFindByName
+XMLSEC_EXPORT xmlSecXkmsRespondWithId xmlSecXkmsRespondWithIdListFindByName
 								(xmlSecPtrListPtr list,
 								 const xmlChar* name);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPtr list,
@@ -582,6 +514,9 @@ XMLSEC_EXPORT int 		xmlSecXkmsServerRequestIdsRegisterDefault
 XMLSEC_EXPORT int		xmlSecXkmsServerRequestIdsRegister	
 								(xmlSecXkmsServerRequestId id);
 
+#define xmlSecXkmsServerRequestKlassGetName(id) \
+	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
+
 XMLSEC_EXPORT int  		xmlSecXkmsServerRequestNodeRead	(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
@@ -595,43 +530,6 @@ XMLSEC_EXPORT void		xmlSecXkmsServerRequestDebugDump(xmlSecXkmsServerRequestId i
 XMLSEC_EXPORT void		xmlSecXkmsServerRequestDebugXmlDump
 								(xmlSecXkmsServerRequestId id,
 								 FILE* output);
-
-typedef int  			(*xmlSecXkmsServerRequestNodeReadMethod)
-								(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-typedef int  			(*xmlSecXkmsServerRequestExecuteMethod)
-								(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx);
-typedef int  			(*xmlSecXkmsServerRequestNodeWriteMethod)
-								(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-/** 
- * XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND:
- *
- * This request/response can be a part of CompundRequest/CompoundResponse.
- */
-#define XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND	0x00000001
-
-struct _xmlSecXkmsServerRequestKlass {
-    const xmlChar*				name;
-    const xmlChar*				requestNodeName;
-    const xmlChar*				requestNodeNs;
-    const xmlChar*				resultNodeName;
-    const xmlChar*				resultNodeNs;
-    xmlSecBitMask				flags;
-    
-    xmlSecXkmsServerRequestNodeReadMethod	readNode;
-    xmlSecXkmsServerRequestNodeWriteMethod	writeNode;
-    xmlSecXkmsServerRequestExecuteMethod	execute;
-    
-    void*					reserved1;
-    void*					reserved2;
-};
-
-#define xmlSecXkmsServerRequestKlassGetName(id) \
-	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
 
 /************************************************************************
  *

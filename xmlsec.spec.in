@@ -143,6 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{prefix}/bin/xmlsec1-config
 %{prefix}/include/xmlsec1/xmlsec/*.h
+%{prefix}/include/xmlsec1/xmlsec/private/*.h
 %{prefix}/lib/libxmlsec1.*a
 %{prefix}/lib/pkgconfig/xmlsec1.pc
 %{prefix}/lib/xmlsec1Conf.sh

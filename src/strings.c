@@ -167,6 +167,11 @@ const xmlChar xmlSecResultMinorCodeNoAuthentication[]	= "NoAuthentication";
 const xmlChar xmlSecResultMinorCodeMessageNotSupported[]= "MessageNotSupported";
 const xmlChar xmlSecResultMinorCodeUnknownResponseId[]	= "UnknownResponseId";
 const xmlChar xmlSecResultMinorCodeNotSynchronous[]	= "NotSynchronous";
+
+const xmlChar xmlSecXkmsFormatStrPlain[]                = "plain";
+const xmlChar xmlSecXkmsFormatStrSoap1_1[]              = "soap-1.1";
+const xmlChar xmlSecXkmsFormatStrSoap1_2[]              = "soap-1.2";
+
 #endif /* XMLSEC_NO_XKMS */
 
 /*************************************************************************

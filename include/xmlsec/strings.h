@@ -173,6 +173,10 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNoAuthentication[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeMessageNotSupported[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeUnknownResponseId[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNotSynchronous[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrPlain[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrSoap1_1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrSoap1_2[];
 #endif /* XMLSEC_NO_XKMS */
 
 /*************************************************************************

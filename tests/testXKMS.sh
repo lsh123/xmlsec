@@ -52,7 +52,7 @@ printRes() {
     fi
 }
 
-execXkmsServerTest() {    
+execXkmsServerRequestTest() {    
     src_file=$topfolder/$1.xml
     res_file=$topfolder/$1-$2.xml
     echo "$1 ($2)"
@@ -60,8 +60,8 @@ execXkmsServerTest() {
     rm -f $tmpfile
         
     printf "    Processing xkms request                              "
-    echo "$xmlsec_app --xkms-server --output $tmpfile $xmlsec_params $3 $src_file" >> $logfile
-    $VALGRIND $xmlsec_app --xkms-server  --output $tmpfile $xmlsec_params $3 $src_file >> $logfile 2>> $logfile
+    echo "$xmlsec_app --xkms-server-request --output $tmpfile $xmlsec_params $3 $src_file" >> $logfile
+    $VALGRIND $xmlsec_app --xkms-server-request  --output $tmpfile $xmlsec_params $3 $src_file >> $logfile 2>> $logfile
     if [ $? = 0 ]; then
 	diff $res_file $tmpfile >> $logfile 2>> $logfile
 	printRes $?
@@ -76,33 +76,33 @@ echo "--- log file is $logfile"
 echo "--- testXKMS started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/locate-example-1" "no-match" \
-    "--xkms-server-service http://www.example.com/xkms"
+    "--xkms-service http://www.example.com/xkms"
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/locate-example-1" "bad-service" \
-    "--xkms-server-service http://www.example.com/xkms-bad-service"
+    "--xkms-service http://www.example.com/xkms-bad-service"
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/locate-example-2" "no-match" \
-    "--xkms-server-service http://www.example.com/xkms"
+    "--xkms-service http://www.example.com/xkms"
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/validate-example-1" "no-match" \
-    "--xkms-server-service http://www.example.com/xkms"
+    "--xkms-service http://www.example.com/xkms"
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/compound-example-1" "no-match" \
-    "--xkms-server-service http://www.example.com/xkms"
+    "--xkms-service http://www.example.com/xkms"
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/status-request" "success" \
-    "--xkms-server-service http://www.example.com/xkms"
+    "--xkms-service http://www.example.com/xkms"
 
-execXkmsServerTest \
+execXkmsServerRequestTest \
     "aleksey-xkms-01/bad-request-name" "not-supported" \
-    "--xkms-server-service http://www.example.com/xkms"
+    "--xkms-service http://www.example.com/xkms"
 
 rm -rf $tmpfile
 

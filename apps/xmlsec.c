@@ -75,7 +75,7 @@ static const char helpCommands2[] =
     "  --decrypt   "	"\tdecrypt data from XML document\n"
 #endif /* XMLSEC_NO_XMLENC */
 #ifndef XMLSEC_NO_XKMS
-    "  --xkms-server "  "\tprocess data as XKMS server request\n"
+    "  --xkms-server-request ""\tprocess data as XKMS server request\n"
 #endif /* XMLSEC_NO_XKMS */
     ;
 
@@ -112,8 +112,8 @@ static const char helpDecrypt[] =
     "Usage: xmlsec decrypt [<options>] <file>\n"
     "Decrypts XML Encryption data in the <file>\n";
 
-static const char helpXkmsServer[] =  
-    "Usage: xmlsec xkms-server [<options>] <file>\n"
+static const char helpXkmsServerRequest[] =  
+    "Usage: xmlsec xkms-server-request [<options>] <file>\n"
     "Processes the <file> as XKMS server request and outputs the response\n";
 
 static const char helpListKeyData[] =     
@@ -639,12 +639,23 @@ static xmlSecAppCmdLineParam xmlDataParam = {
  *
  ***************************************************************/
 #ifndef XMLSEC_NO_XKMS
-static xmlSecAppCmdLineParam serviceParam = { 
+static xmlSecAppCmdLineParam xkmsServiceParam = { 
     xmlSecAppCmdLineTopicXkmsCommon,
-    "--xkms-server-service",
-    "--service",
-    "--xkms-server-service <uri>"
-    "\n\tmakes <uri> expected XKMS request service",
+    "--xkms-service",
+    NULL,
+    "--xkms-service <uri>"
+    "\n\tsets XKMS \"Service\" <uri>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+static xmlSecAppCmdLineParam xkmsFormatParam = { 
+    xmlSecAppCmdLineTopicXkmsCommon,
+    "--xkms-format",
+    NULL,
+    "--xkms-format <format>"
+    "\n\tsets the XKMS request/response format to one of the following values:"
+    "\n\t  \"plain\" (default), \"soap-1.1\" or \"soap-1.2\"",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -788,7 +799,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 
     /* xkms params */
 #ifndef XMLSEC_NO_XKMS
-    &serviceParam,
+    &xkmsServiceParam,
+    &xkmsFormatParam,
 #endif /* XMLSEC_NO_XKMS */
              
     /* common dsig and enc parameters */
@@ -863,7 +875,7 @@ typedef enum {
     xmlSecAppCommandEncrypt,
     xmlSecAppCommandDecrypt,
     xmlSecAppCommandEncryptTmpl,
-    xmlSecAppCommandXkmsServer
+    xmlSecAppCommandXkmsServerRequest
 } xmlSecAppCommand;
 
 typedef struct _xmlSecAppXmlData				xmlSecAppXmlData,
@@ -985,7 +997,7 @@ int main(int argc, const char **argv) {
 	case xmlSecAppCommandVerify:
 	case xmlSecAppCommandEncrypt:
 	case xmlSecAppCommandDecrypt:
-	case xmlSecAppCommandXkmsServer:
+	case xmlSecAppCommandXkmsServerRequest:
 	    if(pos >= argc) {
 		fprintf(stderr, "Error: <file> parameter is requried for this command\n");
 		xmlSecAppPrintUsage();
@@ -1096,7 +1108,7 @@ int main(int argc, const char **argv) {
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_XKMS
-	case xmlSecAppCommandXkmsServer:
+	case xmlSecAppCommandXkmsServerRequest:
 	    for(i = pos; i < argc; ++i) {
     	        if(xmlSecAppXkmsServerProcess(argv[i]) < 0) {
 		    fprintf(stderr, "Error: failed to process XKMS server request from file \"%s\"\n", argv[i]);
@@ -1799,6 +1811,7 @@ xmlSecAppXkmsServerProcess(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlNodePtr result = NULL;
     xmlSecXkmsServerCtx xkmsServerCtx;
+    xmlSecXkmsServerFormat format = xmlSecXkmsServerFormatPlain;
     clock_t start_time;
     int res = -1;
 
@@ -1815,6 +1828,16 @@ xmlSecAppXkmsServerProcess(const char* filename) {
 	goto done;
     }
 
+    /* get the input format */
+    if(xmlSecAppCmdLineParamGetString(&xkmsFormatParam) != NULL) {
+	format = xmlSecXkmsServerFormatFromString(BAD_CAST xmlSecAppCmdLineParamGetString(&xkmsFormatParam));
+	if(format == xmlSecXkmsServerFormatUnknown) {
+	    fprintf(stderr, "Error: unknown format \"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&xkmsFormatParam));
+	    return(-1);    
+	}
+    }
+
     /* parse template and select start node, there are multiple options
      * for start node thus we don't provide the default start node name */
     data = xmlSecAppXmlDataCreate(filename, NULL, NULL);
@@ -1824,7 +1847,7 @@ xmlSecAppXkmsServerProcess(const char* filename) {
     }
 
     start_time = clock();          
-    if(xmlSecXkmsServerCtxProcess(&xkmsServerCtx, data->startNode, &result) < 0) {
+    if(xmlSecXkmsServerCtxProcessDoc(&xkmsServerCtx, data->startNode, &result, format) < 0) {
 	fprintf(stderr, "Error: failed to process xkms server request\n");
 	goto done;
     }
@@ -1871,11 +1894,11 @@ xmlSecAppPrepareXkmsServerCtx(xmlSecXkmsServerCtxPtr xkmsServerCtx) {
 	return(-1);
     }
 
-    if(xmlSecAppCmdLineParamGetString(&serviceParam) != NULL) {
-	xkmsServerCtx->expectedService = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&serviceParam));
+    if(xmlSecAppCmdLineParamGetString(&xkmsServiceParam) != NULL) {
+	xkmsServerCtx->expectedService = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&xkmsServiceParam));
 	if(xkmsServerCtx->expectedService == NULL) {
 	    fprintf(stderr, "Error: failed to duplicate string \"%s\"\n", 
-		    xmlSecAppCmdLineParamGetString(&serviceParam));
+		    xmlSecAppCmdLineParamGetString(&xkmsServiceParam));
 	    return(-1);    
 	}
     }
@@ -2679,12 +2702,12 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_XKMS
-    if((strcmp(cmd, "xkms-server-locate") == 0) || (strcmp(cmd, "--xkms-server") == 0)) {
+    if(strcmp(cmd, "--xkms-server-request") == 0) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
 			xmlSecAppCmdLineTopicXkmsCommon |
 			xmlSecAppCmdLineTopicKeysMngr |
 			xmlSecAppCmdLineTopicX509Certs;
-	return(xmlSecAppCommandXkmsServer);
+	return(xmlSecAppCommandXkmsServerRequest);
     } else
 #endif /* XMLSEC_NO_XKMS */
 
@@ -2731,8 +2754,8 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     case xmlSecAppCommandEncryptTmpl:
 	fprintf(stdout, "%s\n", helpEncryptTmpl);
         break;
-    case xmlSecAppCommandXkmsServer:
-	fprintf(stdout, "%s\n", helpXkmsServer);
+    case xmlSecAppCommandXkmsServerRequest:
+	fprintf(stdout, "%s\n", helpXkmsServerRequest);
         break;
     }
     if(topics != 0) {

@@ -28,15 +28,9 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/xkms.h>
+#include <xmlsec/private/xkms.h>
 #include <xmlsec/errors.h>
 
-
-
-/**************************************************************************
- *
- * 
- *
- *************************************************************************/
 /* The ID attribute in XKMS is 'Id' */
 static const xmlChar* xmlSecXkmsServerIds[] = { BAD_CAST "Id", NULL };
 
@@ -89,44 +83,65 @@ static int	xmlSecXkmsServerCtxKeyBindingStatusNodeWrite	(xmlSecXkmsServerCtxPtr 
 								 xmlSecKeyPtr key);
 
 
-static const xmlSecString2IntegerInfo gXmlSecXkmsMajorErrorInfo[] = 
+static const xmlSecString2IntegerInfo gXmlSecXkmsResultMajorInfo[] = 
 {
-    { xmlSecResultMajorCodeSuccess,
-      XMLSEC_XKMS_ERROR_MAJOR_SUCCESS },
-    { xmlSecResultMajorCodeVersionMismatch,
-      XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH },
-    { xmlSecResultMajorCodeSender,
-      XMLSEC_XKMS_ERROR_MAJOR_SENDER },
-    { xmlSecResultMajorCodeReceiver,
-      XMLSEC_XKMS_ERROR_MAJOR_RECEIVER },
-    { xmlSecResultMajorCodeRepresent,
-      XMLSEC_XKMS_ERROR_MAJOR_REPRESENT },
-    { xmlSecResultMajorCodePending,
-      XMLSEC_XKMS_ERROR_MAJOR_PENDING },
-    { NULL, 
-      0 }	/* MUST be last in the list */
+  { xmlSecResultMajorCodeSuccess,               xmlSecXkmsResultMajorSuccess },
+  { xmlSecResultMajorCodeVersionMismatch,       xmlSecXkmsResultMajorVersionMismatch },
+  { xmlSecResultMajorCodeSender,                xmlSecXkmsResultMajorSender },
+  { xmlSecResultMajorCodeReceiver,              xmlSecXkmsResultMajorReceiver },
+  { xmlSecResultMajorCodeRepresent,             xmlSecXkmsResultMajorRepresent },
+  { xmlSecResultMajorCodePending,               xmlSecXkmsResultMajorPending, },
+  { NULL, 0 }	/* MUST be last in the list */
 };
 
 static const xmlSecString2IntegerInfo gXmlSecXkmsMinorErrorInfo[] = 
 {
-    { xmlSecResultMinorCodeNoMatch,
-      XMLSEC_XKMS_ERROR_MINOR_NO_MATCH },
-    { xmlSecResultMinorCodeTooManyResponses,
-      XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES },
-    { xmlSecResultMinorCodeIncomplete,
-      XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE },
-    { xmlSecResultMinorCodeFailure,
-      XMLSEC_XKMS_ERROR_MINOR_FAILURE },
-    { xmlSecResultMinorCodeRefused,
-      XMLSEC_XKMS_ERROR_MINOR_REFUSED },
-    { xmlSecResultMinorCodeNoAuthentication,
-      XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION },
-    { xmlSecResultMinorCodeMessageNotSupported,
-      XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED },
-    { xmlSecResultMinorCodeUnknownResponseId,
-      XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID },
-    { xmlSecResultMinorCodeNotSynchronous,
-      XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS },
+  { xmlSecResultMinorCodeNoMatch,               xmlSecXkmsResultMinorNoMatch },
+  { xmlSecResultMinorCodeTooManyResponses,      xmlSecXkmsResultMinorTooManyResponses },
+  { xmlSecResultMinorCodeIncomplete,            xmlSecXkmsResultMinorIncomplete },
+  { xmlSecResultMinorCodeFailure,               xmlSecXkmsResultMinorFailure },
+  { xmlSecResultMinorCodeRefused,               xmlSecXkmsResultMinorRefused },
+  { xmlSecResultMinorCodeNoAuthentication,      xmlSecXkmsResultMinorNoAuthentication },
+  { xmlSecResultMinorCodeMessageNotSupported,   xmlSecXkmsResultMinorMessageNotSupported },
+  { xmlSecResultMinorCodeUnknownResponseId,     xmlSecXkmsResultMinorUnknownResponseId },
+  { xmlSecResultMinorCodeNotSynchronous,        xmlSecXkmsResultMinorSynchronous },
+  { NULL, 0 }	/* MUST be last in the list */
+};
+
+static const xmlSecString2IntegerInfo gXmlSecXkmsKeyBindingStatusInfo[] = 
+{
+  { xmlSecKeyBindingStatusValid,                xmlSecXkmsKeyBindingStatusValid },
+  { xmlSecKeyBindingStatusInvalid,              xmlSecXkmsKeyBindingStatusInvalid },
+  { xmlSecKeyBindingStatusIndeterminate,        xmlSecXkmsKeyBindingStatusIndeterminate },
+  { NULL, 0 }	/* MUST be last in the list */
+};
+
+static const xmlSecString2IntegerInfo gXmlSecXkmsFormatInfo[] = 
+{
+  { xmlSecXkmsFormatStrPlain,                   xmlSecXkmsServerFormatPlain },
+  { xmlSecXkmsFormatStrSoap1_1,                 xmlSecXkmsServerFormatSoap1_1 },
+  { xmlSecXkmsFormatStrSoap1_2,                 xmlSecXkmsServerFormatSoap1_2 },
+  { NULL, 0 }	/* MUST be last in the list */
+};
+
+static const xmlSecString2BitMaskInfo gXmlSecXkmsKeyUsageInfo[] = 
+{
+  { xmlSecKeyUsageEncryption,                   xmlSecKeyUsageEncrypt | xmlSecKeyUsageDecrypt },
+  { xmlSecKeyUsageSignature,                    xmlSecKeyUsageSign | xmlSecKeyUsageVerify },
+  { xmlSecKeyUsageExchange,                     xmlSecKeyUsageKeyExchange},
+  { NULL, 0 }	/* MUST be last in the list */
+};
+
+static const xmlSecString2BitMaskInfo gXmlSecXkmsKeyBindingReasonInfo[] = 
+{
+    { xmlSecKeyBindingReasonIssuerTrust,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST },
+    { xmlSecKeyBindingReasonRevocationStatus,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS },
+    { xmlSecKeyBindingReasonValidityInterval,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL },
+    { xmlSecKeyBindingReasonSignature,
+      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE },
     { NULL, 
       0 }	/* MUST be last in the list */
 };
@@ -143,43 +158,49 @@ static const xmlSecString2BitMaskInfo gXmlSecXkmsResponseMechanismInfo[] =
       0 }	/* MUST be last in the list */
 };
 
-static const xmlSecString2BitMaskInfo gXmlSecXkmsKeyUsageInfo[] = 
-{
-    { xmlSecKeyUsageEncryption,
-      xmlSecKeyUsageEncrypt | xmlSecKeyUsageDecrypt },
-    { xmlSecKeyUsageSignature,
-      xmlSecKeyUsageSign | xmlSecKeyUsageVerify },
-    { xmlSecKeyUsageExchange,
-      xmlSecKeyUsageKeyExchange},
-    { NULL, 
-      0 }	/* MUST be last in the list */
-};
+/**
+ * xmlSecXkmsServerFormatFromString:
+ * @str                 the string.
+ *  
+ * Gets xmlSecXkmsServerFormat from string @str.
+ * 
+ * Returns corresponding format or xmlSecXkmsServerFormatUnknown
+ * if format could not be recognized.
+ */ 
+xmlSecXkmsServerFormat 
+xmlSecXkmsServerFormatFromString(const xmlChar* str) {
+    int res;
+    int ret;
 
-static const xmlSecString2IntegerInfo gXmlSecXkmsKeyBindingStatusInfo[] = 
-{
-    { xmlSecKeyBindingStatusValid,
-      XMLSEC_XKMS_KEY_BINDING_STATUS_VALID },
-    { xmlSecKeyBindingStatusInvalid,
-      XMLSEC_XKMS_KEY_BINDING_STATUS_INVALID },
-    { xmlSecKeyBindingStatusIndeterminate,
-      XMLSEC_XKMS_KEY_BINDING_STATUS_INDETERMINATE },
-    { NULL, 
-      0 }	/* MUST be last in the list */
-};
+    xmlSecAssert2(str != NULL, xmlSecXkmsServerFormatUnknown);
+    
+    ret = xmlSecString2IntegerGetInteger(gXmlSecXkmsFormatInfo, str, &res);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecString2IntegerGetInteger",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(xmlSecXkmsServerFormatUnknown);   
+    }
 
-static const xmlSecString2BitMaskInfo gXmlSecXkmsKeyBindingReasonInfo[] = 
-{
-    { xmlSecKeyBindingReasonIssuerTrust,
-      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST },
-    { xmlSecKeyBindingReasonRevocationStatus,
-      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS },
-    { xmlSecKeyBindingReasonValidityInterval,
-      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL },
-    { xmlSecKeyBindingReasonSignature,
-      XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE },
-    { NULL, 
-      0 }	/* MUST be last in the list */
-};
+    return((xmlSecXkmsServerFormat)res);
+}
+
+/**
+ * xmlSecXkmsServerFormatToString:
+ * @format:             the format.
+ *
+ * Gets string from @format.
+ *
+ * Returns string corresponding to @format or NULL if an error occurs.
+ */
+const xmlChar* 
+xmlSecXkmsServerFormatToString (xmlSecXkmsServerFormat format) {
+    xmlSecAssert2(format != xmlSecXkmsServerFormatUnknown, NULL);
+
+    return(xmlSecString2IntegerGetString(gXmlSecXkmsFormatInfo, format));
+}
 
 /**
  * xmlSecXkmsServerCtxCreate:
@@ -254,8 +275,8 @@ xmlSecXkmsServerCtxInitialize(xmlSecXkmsServerCtxPtr ctx, xmlSecKeysMngrPtr keys
     
     memset(ctx, 0, sizeof(xmlSecXkmsServerCtx));
 
-    ctx->majorError 	= XMLSEC_XKMS_ERROR_MAJOR_SUCCESS;
-    ctx->minorError 	= XMLSEC_XKMS_ERROR_MINOR_NONE;
+    ctx->resultMajor 	= xmlSecXkmsResultMajorSuccess;
+    ctx->resultMinor 	= xmlSecXkmsResultMinorNone;
     ctx->responseLimit  = XMLSEC_XKMS_NO_RESPONSE_LIMIT;
 
     /* initialize key info */
@@ -365,8 +386,8 @@ void
 xmlSecXkmsServerCtxReset(xmlSecXkmsServerCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
     
-    ctx->majorError = XMLSEC_XKMS_ERROR_MAJOR_SUCCESS;
-    ctx->minorError = XMLSEC_XKMS_ERROR_MINOR_NONE;
+    ctx->resultMajor = xmlSecXkmsResultMajorSuccess;
+    ctx->resultMinor = xmlSecXkmsResultMinorNone;
     xmlSecKeyInfoCtxReset(&(ctx->keyInfoReadCtx));
     xmlSecKeyInfoCtxReset(&(ctx->keyInfoWriteCtx));
     xmlSecPtrListEmpty(&(ctx->keys));
@@ -482,25 +503,28 @@ xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst, xmlSecXkmsServerCtxP
 } 
 
 /** 
- * xmlSecXkmsServerCtxSetError: 
- * @ctx:	the pointer to XKMS processing context.
- * @majorError:	the major error code.
- * @minorError: the minor error code.
+ * xmlSecXkmsServerCtxSetResult: 
+ * @ctx:	 the pointer to XKMS processing context.
+ * @resultMajor: the major result code.
+ * @resultMinor: the minor result code.
  * 
- * Sets the major/minor error code in the context if no other error is already
+ * Sets the major/minor result code in the context if no other result is already
  * reported.
  */
 void 
-xmlSecXkmsServerCtxSetError(xmlSecXkmsServerCtxPtr ctx, int majorError, int minorError) {
+xmlSecXkmsServerCtxSetResult(xmlSecXkmsServerCtxPtr ctx, xmlSecXkmsResultMajor resultMajor, 
+                             xmlSecXkmsResultMinor resultMinor) {
     xmlSecAssert(ctx != NULL);
     
-    if((ctx->majorError == XMLSEC_XKMS_ERROR_MAJOR_SUCCESS) && (minorError != XMLSEC_XKMS_ERROR_MAJOR_SUCCESS)) {
-	ctx->majorError = majorError;
-	ctx->minorError = minorError;
-    } else if((ctx->majorError == XMLSEC_XKMS_ERROR_MAJOR_SUCCESS) && (ctx->minorError == XMLSEC_XKMS_ERROR_MINOR_NONE)) {
-	xmlSecAssert(majorError == XMLSEC_XKMS_ERROR_MAJOR_SUCCESS);
+    if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && 
+       (resultMinor != xmlSecXkmsResultMajorSuccess)) {
+	ctx->resultMajor = resultMajor;
+	ctx->resultMinor = resultMinor;
+    } else if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && 
+       (ctx->resultMinor == xmlSecXkmsResultMinorNone)) {
+	xmlSecAssert(resultMajor == xmlSecXkmsResultMajorSuccess);
 	
-	ctx->minorError = minorError;
+	ctx->resultMinor = resultMinor;
     }
 }
 
@@ -536,7 +560,7 @@ xmlSecXkmsServerCtxRequestRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s",
 		    xmlSecErrorsSafeString(node->name));
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorMessageNotSupported);
 	return(-1);
     }
 
@@ -549,7 +573,7 @@ xmlSecXkmsServerCtxRequestRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "request=%s",
 		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctx->requestId)));
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
 	return(-1);
     }
         
@@ -579,7 +603,7 @@ xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
     /* if the request is not specified then write generic xkms:Result response
      * with ane error */
     if((ctx->requestId == NULL) || (ctx->requestId->resultNodeName == NULL)) {
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
 	ctx->requestId = xmlSecXkmsServerRequestResultId;
     }
 
@@ -594,7 +618,7 @@ xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
 			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	    goto error;
 	}
     } else {
@@ -611,7 +635,7 @@ xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
 	    if(doc != NULL) {
 		xmlFreeDoc(doc);
 	    }
-	    xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	    goto error;
 	}
 	cur = xmlDocGetRootElement(doc);
@@ -627,7 +651,7 @@ xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "request=%s",
 		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctx->requestId)));
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	goto error;
     }
     
@@ -661,7 +685,7 @@ error:
 		    "xmlSecXkmsServerCtxResponseWrite",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	return(-1);
     }
 	
@@ -669,10 +693,11 @@ error:
 }
 
 /** 
- * xmlSecXkmsServerCtxProcess: 
+ * xmlSecXkmsServerCtxProcessDoc: 
  * @ctx:	the pointer to XKMS processing context.
  * @inNode:	the pointer to request node.
  * @outNode:	the pointer to response node.
+ * @format:     the request/response format.
  *
  * Reads XKMS request from @inNode and writes response back in @outNode.
  * If @outNode value is not NULL then a new child is added to it. Otherwise, 
@@ -682,7 +707,8 @@ error:
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecXkmsServerCtxProcess(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr inNode, xmlNodePtr* outNode) {
+xmlSecXkmsServerCtxProcessDoc(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr inNode, 
+                              xmlNodePtr* outNode, xmlSecXkmsServerFormat format) {
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -697,7 +723,7 @@ xmlSecXkmsServerCtxProcess(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr inNode, xmlNod
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s",
 		    xmlSecErrorsSafeString(inNode->name));
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	goto done;
     }    
 
@@ -709,7 +735,7 @@ xmlSecXkmsServerCtxProcess(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr inNode, xmlNod
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s",
 		    xmlSecErrorsSafeString(inNode->name));
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	goto done;
     }
     
@@ -723,7 +749,7 @@ done:
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s",
 		    xmlSecErrorsSafeString(inNode->name));
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	return(-1);
     }
     
@@ -749,10 +775,10 @@ xmlSecXkmsServerCtxDebugDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
 		xmlSecXkmsServerRequestKlassGetName(ctx->requestId) :
 		BAD_CAST "NULL");
 
-    xmlSecString2IntegerDebugDump(gXmlSecXkmsMajorErrorInfo, 
-		ctx->majorError, BAD_CAST "majorError", output);    
+    xmlSecString2IntegerDebugDump(gXmlSecXkmsResultMajorInfo, 
+		ctx->resultMajor, BAD_CAST "resultMajor", output);    
     xmlSecString2IntegerDebugDump(gXmlSecXkmsMinorErrorInfo, 
-		ctx->minorError, BAD_CAST "minorError", output);    
+		ctx->resultMinor, BAD_CAST "resultMinor", output);    
 
     fprintf(output, "== id: %s\n", 
 		(ctx->id) ? ctx->id : BAD_CAST "");
@@ -832,10 +858,10 @@ xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
 		xmlSecXkmsServerRequestKlassGetName(ctx->requestId) :
 		BAD_CAST "NULL");
 
-    xmlSecString2IntegerDebugXmlDump(gXmlSecXkmsMajorErrorInfo, 
-		ctx->majorError, BAD_CAST "MajorError", output);    
+    xmlSecString2IntegerDebugXmlDump(gXmlSecXkmsResultMajorInfo, 
+		ctx->resultMajor, BAD_CAST "MajorError", output);    
     xmlSecString2IntegerDebugXmlDump(gXmlSecXkmsMinorErrorInfo, 
-		ctx->minorError, BAD_CAST "MinorError", output);    
+		ctx->resultMinor, BAD_CAST "MinorError", output);    
 
     fprintf(output, "<Id>%s</Id>\n", 
 		(ctx->id) ? ctx->id : BAD_CAST "");
@@ -1711,8 +1737,8 @@ xmlSecXkmsServerCtxResultTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr no
     
     
     /* set major code (required) */ 
-    ret = xmlSecString2IntegerAttributeWrite(gXmlSecXkmsMajorErrorInfo, node,
-					     xmlSecAttrResultMajor, ctx->majorError);
+    ret = xmlSecString2IntegerAttributeWrite(gXmlSecXkmsResultMajorInfo, node,
+					     xmlSecAttrResultMajor, ctx->resultMajor);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1720,14 +1746,14 @@ xmlSecXkmsServerCtxResultTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr no
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s,value=%d",
 		    xmlSecErrorsSafeString(xmlSecAttrResultMajor),
-		    ctx->majorError);
+		    ctx->resultMajor);
 	return(-1);	
     }
 
     /* set minor code (optional) */ 
-    if(ctx->minorError != XMLSEC_XKMS_ERROR_MINOR_NONE) {
+    if(ctx->resultMinor != xmlSecXkmsResultMinorNone) {
         ret = xmlSecString2IntegerAttributeWrite(gXmlSecXkmsMinorErrorInfo, node,
-					     xmlSecAttrResultMinor, ctx->minorError);
+					     xmlSecAttrResultMinor, ctx->resultMinor);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		        NULL,
@@ -1735,7 +1761,7 @@ xmlSecXkmsServerCtxResultTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr no
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		        "name=%s,value=%d",
 			xmlSecErrorsSafeString(xmlSecAttrResultMinor),
-			ctx->minorError);
+			ctx->resultMinor);
 	    return(-1);	
 	}
     }
@@ -1747,7 +1773,7 @@ xmlSecXkmsServerCtxResultTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr no
     /* <xkms:OpaqueClientData/>: An XKMS service SHOULD return the value of 
      * the <OpaqueClientData> element unmodified in a request in a response 
      * with status code Succes */
-    if((ctx->majorError == XMLSEC_XKMS_ERROR_MAJOR_SUCCESS) && (ctx->opaqueClientDataNode != NULL)) {
+    if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && (ctx->opaqueClientDataNode != NULL)) {
         xmlNodePtr copyNode;
 
 	copyNode = xmlDocCopyNode(ctx->opaqueClientDataNode, node->doc, 1);
@@ -1997,7 +2023,7 @@ xmlSecXkmsServerCtxKeyBindingStatusNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNode
 
     /* if we are here then the key was validated */
     ret = xmlSecString2IntegerAttributeWrite(gXmlSecXkmsKeyBindingStatusInfo, cur, 
-		    xmlSecAttrStatusValue, XMLSEC_XKMS_KEY_BINDING_STATUS_VALID);
+		    xmlSecAttrStatusValue, xmlSecXkmsKeyBindingStatusValid);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -2462,7 +2488,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithKeyNameKlass = {
     xmlSecNodeKeyName,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithDefaultNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2487,7 +2515,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithKeyValueKlass = {
     xmlSecNodeKeyValue,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithKeyValueNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2539,7 +2569,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithPrivateKeyKlass = {
     xmlSecNodeKeyValue,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithPrivateKeyNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2588,7 +2620,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithRetrievalMethodKlass = {
     xmlSecNodeRetrievalMethod,			/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithDefaultNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2613,7 +2647,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithX509CertKlass = {
     xmlSecNodeX509Data,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithX509CertNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2659,7 +2695,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithX509ChainKlass = {
     xmlSecNodeX509Data,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithX509ChainNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2705,7 +2743,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithX509CRLKlass = {
     xmlSecNodeX509Data,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithX509CRLNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2748,7 +2788,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithPGPKlass = {
     xmlSecNodePGPData,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithDefaultNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -2768,7 +2810,9 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithSPKIKlass = {
     xmlSecNodeSPKIData,				/* const xmlChar* nodeName; */
     xmlSecDSigNs,				/* const xmlChar* nodeNs; */
     xmlSecXkmsRespondWithDefaultNodeRead,	/* xmlSecXkmsRespondWithNodeReadMethod readNode; */
-    xmlSecXkmsRespondWithDefaultNodeWrite	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    xmlSecXkmsRespondWithDefaultNodeWrite,	/* xmlSecXkmsRespondWithNodeWriteMethod writeNode; */
+    NULL,                                       /* void* reserved1; */
+    NULL                                        /* void* reserved2; */
 };
 
 /**
@@ -3506,7 +3550,7 @@ xmlSecXkmsServerRequestCompoundNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkms
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		        "node=%s",
 		        xmlSecErrorsSafeString(node->name));
-	    xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorMessageNotSupported);
 	    return(-1);
         }
 
@@ -3518,7 +3562,7 @@ xmlSecXkmsServerRequestCompoundNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkms
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		        "request=%s",
 		        xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctxChild->requestId)));
-	    xmlSecXkmsServerCtxSetError(ctxChild, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	    xmlSecXkmsServerCtxSetResult(ctxChild, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
 	    return(-1);
         }
         cur = xmlSecGetNextElementNode(cur->next);
@@ -3589,7 +3633,6 @@ xmlSecXkmsServerRequestCompoundNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkm
 
         for(pos = 0; pos < xmlSecPtrListGetSize(ctx->compoundRequestContexts); pos++) {
             xmlSecXkmsServerCtxPtr ctxChild;
-            xmlNodePtr cur;
 
             ctxChild = (xmlSecXkmsServerCtxPtr)xmlSecPtrListGetItem(ctx->compoundRequestContexts, pos);
             if(ctxChild == NULL) {
@@ -3601,8 +3644,8 @@ xmlSecXkmsServerRequestCompoundNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkm
 	        return(-1);  	
             }
 	    
-	    if(ctxChild->majorError != XMLSEC_XKMS_ERROR_MAJOR_SUCCESS) {
-	        xmlSecXkmsServerCtxSetError(ctx, ctxChild->majorError, ctxChild->minorError);
+	    if(ctxChild->resultMajor != xmlSecXkmsResultMajorSuccess) {
+	        xmlSecXkmsServerCtxSetResult(ctx, ctxChild->resultMajor, ctxChild->resultMinor);
 		break;
 	    }
 	}
@@ -3685,7 +3728,7 @@ xmlSecXkmsServerRequestCompoundExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsS
 		            "xmlSecPtrListGetItem",
 		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		            XMLSEC_ERRORS_NO_MESSAGE);
-	        xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_RECEIVER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	        xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
 	        continue;  	
             }
             
@@ -3697,7 +3740,7 @@ xmlSecXkmsServerRequestCompoundExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsS
 		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		            "request=%s",
 		            xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctxChild->requestId)));
-	        xmlSecXkmsServerCtxSetError(ctxChild, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_FAILURE);
+	        xmlSecXkmsServerCtxSetResult(ctxChild, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
 	        continue;  	
             }
         }
@@ -3944,7 +3987,7 @@ xmlSecXkmsServerRequestLocateExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsSer
 	if(key != NULL) {
     	    xmlSecKeyDestroy(key);
 	}
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_NO_MATCH);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorNoMatch);
 	return(-1);
     } 
         
@@ -4206,7 +4249,7 @@ xmlSecXkmsServerRequestValidateExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsS
 	if(key != NULL) {
     	    xmlSecKeyDestroy(key);
 	}
-	xmlSecXkmsServerCtxSetError(ctx, XMLSEC_XKMS_ERROR_MAJOR_SENDER, XMLSEC_XKMS_ERROR_MINOR_NO_MATCH);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorNoMatch);
 	return(-1);
     } 
         

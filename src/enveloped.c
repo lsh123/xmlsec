@@ -183,7 +183,8 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     xmlSecXmlTransformPtr xmlTransform;
     xmlXPathObjectPtr xpath; 
     xmlXPathContextPtr ctx; 
-
+    xmlsecNodeSetPtr res;
+    
     if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
        (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
 #ifdef XMLSEC_DEBUG
@@ -241,17 +242,37 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     if(xpath == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext, 
-	    "xmlSecXPathTransformRead: xpath eval failed\n");
+	    "%s: xpath eval failed\n",
+	    func);
 #endif
 	xmlXPathFreeContext(ctx); 
         return(-1);
     }
 
-    if((*nodes) != NULL) {
-	(*nodes) = xmlSecNodeSetIntersect((*nodes), xpath->nodesetval);
-    } else {
-	(*nodes) = xmlSecNodeSetCreate((*doc), xpath->nodesetval, xmlSecNodeSetNormal);
-	xpath->nodesetval = NULL;
+    res = xmlSecNodeSetCreate((*doc), xpath->nodesetval, xmlSecNodeSetNormal);
+    if(res == NULL) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext, 
+	    "%s node set creation failed\n",
+	    func);
+#endif
+	xmlXPathFreeObject(xpath);     
+	xmlXPathFreeContext(ctx); 
+        return(-1);
+    }
+    xpath->nodesetval = NULL;
+
+    (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
+    if((*nodes) == NULL) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext,
+		"%s: failed to add subset\n",
+	        func);	
+#endif
+	xmlSecNodeSetDestroy(res);
+	xmlXPathFreeObject(xpath);     
+	xmlXPathFreeContext(ctx); 
+	return(-1);
     }
     
     /* free everything we do not need */
@@ -267,7 +288,7 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlNodePtr signature;
-    xmlSecNodeSetPtr tmp;
+    xmlSecNodeSetPtr res;
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
        (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
@@ -300,8 +321,8 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 	return(-1);
     }
     
-    tmp = xmlSecNodeSetGetChilds((*doc), signature, 1, 1);
-    if(tmp == NULL) {
+    res = xmlSecNodeSetGetChilds((*doc), signature, 1, 1);
+    if(res == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: failed to create nodes set\n",
@@ -309,12 +330,16 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 #endif
 	return(-1);
     }
-	
+
+    (*nodes) = xmlSecNodeSetAddSubSet((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
-	(*nodes) = tmp;
-    } else {
-	(*nodes) = xmlSecNodeSetIntersect2((*nodes), tmp);	
-	xmlSecNodeSetDestroy(tmp);
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext,
+		"%s: failed to add subset\n",
+	        func);	
+#endif
+	xmlSecNodeSetDestroy(res);
+	return(-1);
     }
     return(0);
 }

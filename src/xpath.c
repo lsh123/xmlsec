@@ -32,7 +32,6 @@ struct _xmlSecXPathData {
     xmlChar			*expr;
     xmlChar			**nsList;
     size_t			nsListSize;
-    xmlNodeSetPtr		nodes;
     xmlSecXPath2TransformType	type;
     xmlSecXPathDataPtr		next;
 };
@@ -47,22 +46,10 @@ static int		  xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data,
 							 int xpath2);
 static int		  xmlSecXPathDataReadNsList	(xmlSecXPathDataPtr data,
 							 const xmlNodePtr node);
-static int		  xmlSecXPathDataExecute	(xmlSecXPathDataPtr data,
+static xmlSecNodeSetPtr	  xmlSecXPathDataExecute	(xmlSecXPathDataPtr data,
 							 xmlDocPtr doc,
-							 xmlNodePtr hereNode);
-static int		  xmlSecXPathDataCheckNode	(xmlSecXPathDataPtr data,
-							 xmlNodePtr node,
-							 int status,
-							 xmlNodePtr parent);
-static int		  xmlSecXPathDataFinal		(xmlSecXPathDataPtr data,
-							 xmlSecNodeSetPtr nset,
-							 xmlNodeSetPtr res,
-							 xmlNodePtr node,
-							 xmlNodePtr parent);
-
-static int		  xmlSecXPathIsNodeInSubtree	(xmlNodeSetPtr nodes,
-							 xmlNodePtr node,
-							 xmlNodePtr parent);
+							 xmlNodePtr hereNode,
+							 int xpath2);
 
 static xmlSecTransformPtr xmlSecTransformXPathCreate	(xmlSecTransformId id);
 static void		xmlSecTransformXPathDestroy	(xmlSecTransformPtr transform);
@@ -510,6 +497,7 @@ xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathDataPtr data;
     xmlNodePtr hereNode;
+    xmlSecNodeSetPtr res;
 
     if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath) || 
        (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
@@ -534,7 +522,8 @@ xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 
     /* function here() works only in he same document */  
     hereNode = ((*doc) == ctxDoc) ? xmlTransform->here : NULL;
-    if(xmlSecXPathDataExecute(data, (*doc), hereNode) < 0) {
+    res = xmlSecXPathDataExecute(data, (*doc), hereNode, 0);
+    if(res == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: xpath expression failed\n",
@@ -542,13 +531,18 @@ xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 #endif
 	return(-1);
     }
-    
-    if((*nodes) != NULL) {
-	(*nodes) = xmlSecNodeSetIntersect((*nodes), data->nodes);
-    } else {
-	(*nodes) = xmlSecNodeSetCreate((*doc), data->nodes, xmlSecNodeSetNormal);
-	data->nodes = NULL;
+
+    (*nodes) = xmlSecNodeSetAddSubSet((*nodes), res, xmlSecNodeSetIntersection);
+    if((*nodes) == NULL) {
+#ifdef XMLSEC_DEBUG
+	xmlGenericError(xmlGenericErrorContext,
+		"%s: failed to add subset\n",
+	        func);	
+#endif
+	xmlSecNodeSetDestroy(res);
+	return(-1);
     }
+
     return(0);
 }
 
@@ -568,9 +562,7 @@ xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathDataPtr data;
     xmlNodePtr hereNode;
-    xmlNodeSetPtr res = NULL;
-    xmlNodePtr cur;	
-    int ret;
+    xmlSecNodeSetPtr res = NULL;
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath2) || 
        (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
@@ -594,7 +586,8 @@ xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 	return(-1);
     }
 
-    if(xmlSecXPathDataExecute(data, (*doc), hereNode) < 0) {
+    res = xmlSecXPathDataExecute(data, (*doc), hereNode, 1);
+    if(res == NULL) {
 #ifdef XMLSEC_DEBUG
 	xmlGenericError(xmlGenericErrorContext,
 		"%s: xpath expression failed\n",
@@ -603,29 +596,17 @@ xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 	return(-1);
     }
 
-    res = xmlXPathNodeSetCreate(NULL);
-    if(res == NULL) {
+    (*nodes) = xmlSecNodeSetAddSubSet((*nodes), res, xmlSecNodeSetIntersection);
+    if((*nodes) == NULL) {
 #ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create nodes set\n",
-	    func);	
-#endif 	    
+	xmlGenericError(xmlGenericErrorContext,
+		"%s: failed to add subset\n",
+	        func);	
+#endif
+	xmlSecNodeSetDestroy(res);
 	return(-1);
     }
-
-    for(cur = (*doc)->children; cur != NULL; cur = cur->next) {
-        ret = xmlSecXPathDataFinal(data, (*nodes), res, cur, NULL);
-        if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: node subtree check failed\n",
-		func);	
-#endif 	    
-	    xmlXPathFreeNodeSet(res);
-	    return(-1);
-	}
-    }
-    (*nodes) = xmlSecNodeSetCreate((*doc), res, xmlSecNodeSetNormal);
+    
     return(0);
 }
 
@@ -680,38 +661,27 @@ xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, int xpath2
 void				
 xmlSecXPathDataDestroy(xmlSecXPathDataPtr data) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataDestroy";
+    xmlSecXPathDataPtr 	tmp;
     
-    if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: data is null\n",
-	    func);	
-#endif 	    
-	return;    	
-    }
-    if(data->expr != NULL) {
-	xmlFree(data->expr);
-    }
-    if(data->nsList != NULL) {
-	size_t i;
+    while((tmp = data) != NULL) {
+	data = data->next;
+        if(tmp->expr != NULL) {
+	    xmlFree(tmp->expr);
+        }
+	if(tmp->nsList != NULL) {
+	    size_t i;
 		
-	for(i = 0; i < data->nsListSize; ++i) {
-	    if((data->nsList)[i] != NULL) {
-	        xmlFree((data->nsList)[i]);
+	    for(i = 0; i < tmp->nsListSize; ++i) {
+		if((tmp->nsList)[i] != NULL) {
+	    	    xmlFree((tmp->nsList)[i]);
+		}
 	    }
+	    memset(tmp->nsList, 0, sizeof(xmlChar*) * (tmp->nsListSize));
+	    xmlFree(tmp->nsList);
 	}
-	memset(data->nsList, 0, sizeof(xmlChar*) * (data->nsListSize));
-	xmlFree(data->nsList);
+	memset(tmp, 0, sizeof(xmlSecXPathData));  
+        xmlFree(tmp);
     }
-    if(data->nodes != NULL) {
-	xmlXPathFreeNodeSet(data->nodes);
-    }
-    
-    if(data->next != NULL) {
-	xmlSecXPathDataDestroy(data->next);
-    }
-    memset(data, 0, sizeof(xmlSecXPathData));  
-    xmlFree(data);
 }
 
 static int		  
@@ -860,252 +830,145 @@ xmlSecXPathDataReadNsList(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     return(0);
 }
 
-static int		  
-xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNode) {
+static xmlSecNodeSetPtr		  
+xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNode, int xpath2) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataExecute";
-    xmlXPathObjectPtr xpath; 
-    xmlXPathContextPtr ctx; 
-
-    if((data == NULL) || (data->expr == NULL) || (doc == NULL)) {
+    xmlSecNodeSetPtr res = NULL;
+    xmlSecNodeSetPtr tmp1, tmp2;
+    xmlSecNodeSetOp op;
+    
+    if((data->expr == NULL) || (doc == NULL)) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
 	    "%s: doc, nodes or data is null\n",
 	    func);	
 #endif 	    
-	return(-1);
+	return(NULL);
     }
     
-    /**
-     * Create XPath context
-     */
-    ctx = xmlXPathNewContext(doc);
-    if(ctx == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xpath context is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
-    
-    if(hereNode != NULL) {
-	xmlXPathRegisterFunc(ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
-	ctx->here = hereNode;
-	ctx->xptr = 1;
-    }
-    
-    /*
-     * Register namespaces
-     */
-    if(data->nsList != NULL) {
-	xmlChar *prefix;
-	xmlChar *href;
-	int i;
-		
-	for(i = data->nsListSize - 1; i > 0; ) {
-	    href = (data->nsList)[i--];
-	    prefix = (data->nsList)[i--];
-	    if((prefix != NULL) && (xmlXPathRegisterNs(ctx, prefix, href) != 0)) {
-#ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext, 
-		    "%s: unable to register NS with prefix=\"%s\" and href=\"%s\"\n", 
-		    func, 
-		    ((prefix != NULL) ? (char*)prefix : "null"),
-		    ((href != NULL) ? (char*)href : "null"));
-#endif
-		xmlXPathFreeContext(ctx); 	     
-		return(-1);
-	    }
-	}
-    }
+    while(data != NULL) {
+	xmlXPathObjectPtr xpath; 
+	xmlXPathContextPtr ctx; 
 
-    /*  
-     * Evaluate xpath
-     */
-    xpath = xmlXPathEvalExpression(data->expr, ctx);
-    if(xpath == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext, 
-	    "xmlSecXPathTransformRead: xpath eval failed\n",
-	    func);
-#endif
-	xmlXPathFreeContext(ctx); 
-        return(-1);
-    }
 
-    /* store nodes set */
-    if(data->nodes != NULL) {
-	xmlXPathFreeNodeSet(data->nodes);
-    }
-    data->nodes = xpath->nodesetval;
-    xpath->nodesetval = NULL;
-
-    /* free everything we do not need */
-    xmlXPathFreeContext(ctx);      
-    xmlXPathFreeObject(xpath);     
-    
-    return((data->next != NULL) ? 
-	    xmlSecXPathDataExecute (data->next, doc, hereNode) : 0);		    
-}
-
-static int
-xmlSecXPathDataCheckNode(xmlSecXPathDataPtr data, xmlNodePtr node, int status, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataCheckNode";
-    xmlSecXPathDataPtr p;
-    
-    if((data == NULL) || (node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: data or node is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-
-    for(p = data; p != NULL; p = p->next) {
-	
-	switch(p->type) {
+	switch(data->type) {
 	case xmlSecXPathTransformIntersect:
-	    if(status && !xmlSecXPathIsNodeInSubtree(p->nodes, node, parent)) {
-		status = 0;
-	    }
+	    op = xmlSecNodeSetIntersection;
     	    break;
 	case xmlSecXPathTransformSubtract:
-	    if(status && xmlSecXPathIsNodeInSubtree(p->nodes, node, parent)) {
-		status = 0;
-	    }
+	    op = xmlSecNodeSetSubtraction;
 	    break;
 	case xmlSecXPathTransformUnion:
-	    if(!status && xmlSecXPathIsNodeInSubtree(p->nodes, node, parent)) {
-		status = 1;
-	    }	
+	    op = xmlSecNodeSetUnion;
 	    break;
 	default:
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
 		"%s: unknown node type %d\n",
-		func, p->type);	
+		func, data->type);	
 #endif 	    
-	    return(-1);
+	    if(res != NULL) xmlSecNodeSetDestroy(res);
+	    return(NULL);
 	}
-    }
-    return(status);
-}
 
-static int		  
-xmlSecXPathDataFinal(xmlSecXPathDataPtr data, xmlSecNodeSetPtr nset, xmlNodeSetPtr res, xmlNodePtr node, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataFinal";
-    int ret;
+        /**
+	 * Create XPath context
+	 */
+	ctx = xmlXPathNewContext(doc);
+        if(ctx == NULL) {
+#ifdef XMLSEC_DEBUG
+    	    xmlGenericError(xmlGenericErrorContext,
+		"%s: xpath context is null\n",
+		func);	
+#endif
+	    if(res != NULL) xmlSecNodeSetDestroy(res);
+	    return(NULL);
+	}
     
-    if((node == NULL) || (res == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: node is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-
-    /* check node itself */
-    if((nset == NULL) || xmlSecNodeSetContain(nset, node, parent)) {	
-        ret = xmlSecXPathDataCheckNode(data, node, 1, parent);
-	if(ret > 0) {
-    	    if(node->type != XML_NAMESPACE_DECL) {
-    		xmlXPathNodeSetAdd(res, node); 
-	    } else {
-		xmlXPathNodeSetAddNs(res, parent, (xmlNsPtr)node);
-	    }
-	} else if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: node check failed\n",
-    		func);	
-#endif 	    
-	    return(-1);
+	if(hereNode != NULL) {
+	    xmlXPathRegisterFunc(ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
+	    ctx->here = hereNode;
+	    ctx->xptr = 1;
 	}
-    }
     
-    /* check children */
-    if(node->type == XML_ELEMENT_NODE) {
-	xmlNodePtr cur;
-	
-	for(cur = node->children; cur != NULL; cur = cur->next) {
-	    if(xmlSecXPathDataFinal(data, nset, res, cur, node) < 0) {
+	/*
+	 * Register namespaces
+         */
+	if(data->nsList != NULL) {
+	    xmlChar *prefix;
+	    xmlChar *href;
+	    int i;
+		
+	    for(i = data->nsListSize - 1; i > 0; ) {
+		href = (data->nsList)[i--];
+		prefix = (data->nsList)[i--];
+	        if((prefix != NULL) && (xmlXPathRegisterNs(ctx, prefix, href) != 0)) {
 #ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: children check failed\n",
-    		    func);	
-#endif 	    
-		return(-1);
-	    }
-	}
-    }    
-
-
-    /* check attribute nodes */
-    if(node->type == XML_ELEMENT_NODE) {
-	xmlAttrPtr cur;
-	
-	for(cur = node->properties; cur != NULL; cur = cur->next) {
-	    if(xmlSecXPathDataFinal(data, nset, res, (xmlNodePtr)cur, node) < 0) {
-#ifdef XMLSEC_DEBUG
-		xmlGenericError(xmlGenericErrorContext,
-		    "%s: attribute check failed\n",
-    		    func);	
-#endif 	    
-		return(-1);
-	    }
-	}
-    }    
-
-    /* check namespace */
-    if(node->type == XML_ELEMENT_NODE) {
-	xmlNodePtr cur;
-	xmlNsPtr ns, tmp;
-	
-	for(cur = node; cur != NULL; cur = cur->parent) {
-	    for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
-		/* include only the last namespace */
-		tmp = xmlSearchNs(node->doc, node, ns->prefix);
-		if((tmp == ns) && (xmlSecXPathDataFinal(data, nset, res, (xmlNodePtr)ns, node) < 0)) {
-#ifdef XMLSEC_DEBUG
-		    xmlGenericError(xmlGenericErrorContext,
-			"%s: children check failed\n",
-    			func);	
-#endif 	    
-		    return(-1);
+		    xmlGenericError(xmlGenericErrorContext, 
+			"%s: unable to register NS with prefix=\"%s\" and href=\"%s\"\n", 
+			func, 
+			((prefix != NULL) ? (char*)prefix : "null"),
+		        ((href != NULL) ? (char*)href : "null"));
+#endif
+		    xmlXPathFreeContext(ctx); 	     
+		    if(res != NULL) xmlSecNodeSetDestroy(res);
+		    return(NULL);
 		}
 	    }
 	}
-    }    
-    
-    return(0);
-}
 
-static int		 
-xmlSecXPathIsNodeInSubtree(xmlNodeSetPtr nodes, xmlNodePtr node, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathIsNodeInSubtree";
-    
-    if(node == NULL) {
+	/*  
+         * Evaluate xpath
+	 */
+        xpath = xmlXPathEvalExpression(data->expr, ctx);
+	if(xpath == NULL) {
 #ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: node is null or bad parent\n",
-	    func);	
-#endif 	    
-	return(-1);
+	    xmlGenericError(xmlGenericErrorContext, 
+		"xmlSecXPathTransformRead: xpath eval failed\n",
+		func);
+#endif
+	    xmlXPathFreeContext(ctx); 
+	    if(res != NULL) xmlSecNodeSetDestroy(res);
+    	    return(NULL);
+	}
+
+	/* store nodes set */
+	tmp1 = xmlSecNodeSetCreate(doc, xpath->nodesetval, 
+		    (xpath2) ? xmlSecNodeSetTree : xmlSecNodeSetNormal);
+	if(tmp1 == NULL) {
+#ifdef XMLSEC_DEBUG
+	    xmlGenericError(xmlGenericErrorContext, 
+		"xmlSecXPathTransformRead: failed to create nodes set\n",
+		func);
+#endif
+	    xmlXPathFreeObject(xpath);     
+	    xmlXPathFreeContext(ctx); 
+	    if(res != NULL) xmlSecNodeSetDestroy(res);
+    	    return(NULL);
+	}
+        xpath->nodesetval = NULL;
+
+	tmp2 = xmlSecNodeSetAdd(res, tmp1, op);
+	if(tmp2 == NULL) {
+#ifdef XMLSEC_DEBUG
+	    xmlGenericError(xmlGenericErrorContext, 
+		"xmlSecXPathTransformRead: failed to add nodes set\n",
+		func);
+#endif
+	    xmlSecNodeSetDestroy(tmp1);
+	    xmlXPathFreeObject(xpath);     
+	    xmlXPathFreeContext(ctx); 
+	    if(res != NULL) xmlSecNodeSetDestroy(res);
+    	    return(NULL);
+	}
+	res = tmp2;
+	
+	/* free everything we do not need */
+	xmlXPathFreeObject(xpath);     
+	xmlXPathFreeContext(ctx);      
+
+	data = data->next;
     }
-    
-    if((nodes == NULL) || xmlXPathNodeSetContains(nodes, node)) {
-	return(1);
-    }
-    
-    if((parent != NULL) && (parent->type == XML_ELEMENT_NODE) && 
-       (parent->parent != NULL) && (parent->parent->type == XML_ELEMENT_NODE)) {
-	return(xmlSecXPathIsNodeInSubtree(nodes, parent, parent->parent));
-    }
-    return(0);
+    return(res);    
 }
-
-
-
 

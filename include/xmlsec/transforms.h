@@ -158,8 +158,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 	xmlSecDigestSha1;
  * XPath transform 
  */
 typedef enum {
-    xmlSecXPathTransformUnknown = 0,
-    xmlSecXPathTransformIntersect,
+    xmlSecXPathTransformIntersect = 0,
     xmlSecXPathTransformSubtract,
     xmlSecXPathTransformUnion
 } xmlSecXPath2TransformType;

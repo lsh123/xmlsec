@@ -1,5 +1,10 @@
-Mon Aug  5 17:58:31 2002  Aleksey Sanin  <aleksey@aleksey.com>
+Mon Aug  5 21:11:41 2002  Aleksey Sanin <aleksey@aleksey.com>
 
+	* include/xmlsec/nodeset.h include/xmlsec/transforms.h
+	src/enveloped.c src/nodeset.c src/xpath.c: new node set
+	code improved performaance (8-10 times!!!) 
+
+Mon Aug  5 17:58:31 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* Makefile.am configure.in  src/xpathalt.c:
 	Removed alt xpath trasnform implementation as outdated
 	* include/xmlsec/nodeset.h  src/nodeset.c

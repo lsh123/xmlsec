@@ -25,14 +25,26 @@ typedef enum {
     xmlSecNodeSetTree,
     xmlSecNodeSetTreeWithoutComments,
     xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert
+    xmlSecNodeSetTreeWithoutCommentsInvert,
+    xmlSecNodeSetSubSet
 } xmlSecNodeSetType;
+
+typedef enum {
+    xmlSecNodeSetIntersection = 0,
+    xmlSecNodeSetSubtraction,
+    xmlSecNodeSetUnion
+} xmlSecNodeSetOp;
 
 typedef struct _xmlSecNodeSet 	xmlSecNodeSet, *xmlSecNodeSetPtr;
 struct _xmlSecNodeSet {
     xmlNodeSetPtr	nodes;
     xmlDocPtr		doc;
     xmlSecNodeSetType	type;
+    xmlSecNodeSetOp	op;
+    
+    xmlSecNodeSetPtr	next;
+    xmlSecNodeSetPtr	prev;
+    xmlSecNodeSetPtr	children;
 };
 
 typedef int (*xmlSecNodeSetWalkCallback)		(xmlSecNodeSetPtr nset,
@@ -47,21 +59,21 @@ XMLSEC_EXPORT void		xmlSecNodeSetDestroy	(xmlSecNodeSetPtr nset);
 XMLSEC_EXPORT int		xmlSecNodeSetContain	(xmlSecNodeSetPtr nset,
 							 xmlNodePtr node,
 							 xmlNodePtr parent);
+XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetAdd	(xmlSecNodeSetPtr nset,
+							 xmlSecNodeSetPtr newNSet,
+							 xmlSecNodeSetOp op);
+XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetAddSubSet	(xmlSecNodeSetPtr nset,
+							 xmlSecNodeSetPtr newNSet,
+							 xmlSecNodeSetOp op);
+XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetGetChilds	(xmlDocPtr doc,
+							 const xmlNodePtr parent,
+							 int withComments,
+							 int invert);
 XMLSEC_EXPORT int		xmlSecNodeSetWalk	(xmlSecNodeSetPtr nset,
 							 xmlSecNodeSetWalkCallback func,
 							 void* data);
 XMLSEC_EXPORT void		xmlSecNodeSetDebugDump	(xmlSecNodeSetPtr nset,
 							 FILE *output);
-
-
-XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetIntersect	(xmlSecNodeSetPtr nset,
-							 xmlNodeSetPtr nodes);
-XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetIntersect2	(xmlSecNodeSetPtr nset1,
-							 xmlSecNodeSetPtr nset2);
-XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetGetChilds	(xmlDocPtr doc,
-							 const xmlNodePtr parent,
-							 int withComments,
-							 int invert);
 							 
 #ifdef __cplusplus
 }

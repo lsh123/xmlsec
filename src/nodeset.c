@@ -19,11 +19,10 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/nodeset.h>
 
-#define xmlSecGetParent(node) 		\
+#define xmlSecGetParent(node)           \
     (((node)->type != XML_NAMESPACE_DECL) ? \
-	(node)->parent : \
+        (node)->parent : \
         (xmlNodePtr)((xmlNsPtr)(node))->next)
-
 
 static int	xmlSecNodeSetWalkRecursive		(xmlSecNodeSetPtr nset, 
 							 xmlSecNodeSetWalkCallback walkFunc, 
@@ -50,46 +49,61 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
     nset->doc 	= doc;
     nset->nodes = nodes;
     nset->type	= type;
-
+    nset->next 	= nset->prev = nset;
     return(nset);
 }
 
 void
 xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetDestroy";
-    
-    if(nset != NULL){
-	if(nset->nodes != NULL) {
-    	    xmlXPathFreeNodeSet(nset->nodes);
+    xmlSecNodeSetPtr tmp;
+	
+    while((tmp = nset) != NULL) {
+	if(nset->next != nset) {
+	    nset->next->prev = nset->prev;
+	    nset->prev->next = nset->next;	    
+	    nset = nset->next;
+	} else {
+	    nset = NULL;
 	}
-	memset(nset, 0,  sizeof(xmlSecNodeSet));
-        xmlFree(nset);
+	
+	if(tmp->nodes != NULL) {
+    	    xmlXPathFreeNodeSet(tmp->nodes);
+	}
+	if(tmp->children != NULL) {
+	    xmlSecNodeSetDestroy(tmp->children);
+	}
+	memset(tmp, 0,  sizeof(xmlSecNodeSet));
+        xmlFree(tmp);
     }
 }
 
-int
-xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetContain";
+static int
+xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetOneContain";
     int in_nodes_set = 1;
     
-    if(node == NULL) {
+    if((node == NULL) || (nset == NULL)) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
-	    "%s: nset is null\n",
+	    "%s: nset or node is null\n",
 	    func);	
 #endif 	    
 	return(0);
     }
     
     /* special cases: */
-    if(nset == NULL) {
-	return(1);
-    }    
-    if((node->type == XML_COMMENT_NODE) && 
-	((nset->type == xmlSecNodeSetTreeWithoutComments) ||  
-	 (nset->type == xmlSecNodeSetTreeWithoutCommentsInvert))) {
-
-	return(0);
+    switch(nset->type) {
+	case xmlSecNodeSetTreeWithoutComments:
+        case xmlSecNodeSetTreeWithoutCommentsInvert:
+	    if(node->type == XML_COMMENT_NODE) {
+		return(0);
+	    }
+	    break;
+	case xmlSecNodeSetSubSet:
+	    return(xmlSecNodeSetContain(nset->children, node, parent));
+	default:
+	    break;
     }
         
     if(nset->nodes != NULL) {
@@ -120,7 +134,7 @@ xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) 
 	    return(1);
 	}
 	if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
-	    return(xmlSecNodeSetContain(nset, parent, parent->parent));
+	    return(xmlSecNodeSetOneContain(nset, parent, parent->parent));
 	}
 	return(0);
     case xmlSecNodeSetTreeInvert:
@@ -129,7 +143,7 @@ xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) 
 	    return(0);
 	}
 	if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
-	    return(xmlSecNodeSetContain(nset, parent, parent->parent));
+	    return(xmlSecNodeSetOneContain(nset, parent, parent->parent));
 	}
 	return(1);
     default:
@@ -143,117 +157,121 @@ xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) 
     return(0);
 }
 
-xmlSecNodeSetPtr	
-xmlSecNodeSetIntersect(xmlSecNodeSetPtr nset, xmlNodeSetPtr nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetIntersect";
-    xmlNodeSetPtr res;
-    int i;
+int
+xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetContain";
+    int status = 1;
+    xmlSecNodeSetPtr cur;
     
-    if((nset == NULL) || (nodes == NULL)) {
+    if(node == NULL) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
-	    "%s: nset or func is null\n",
+	    "%s: nset is null\n",
 	    func);	
 #endif 	    
-	return(NULL);
+	return(0);
     }
-
-    res = xmlXPathNodeSetCreate(NULL);
-    if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create nodes set\n",
-	    func);	
-#endif 	    
-	return(NULL);
+    
+    /* special cases: */
+    if(nset == NULL) {
+	return(1);
     }
-
-    for(i = 0; i < nodes->nodeNr; ++i) {
-	if(xmlSecNodeSetContain(nset, nodes->nodeTab[i], xmlSecGetParent(nodes->nodeTab[i]))) {
-	    if(nodes->nodeTab[i]->type == XML_NAMESPACE_DECL) {
-		xmlNsPtr ns = (xmlNsPtr)nodes->nodeTab[i];
-	    
-		xmlXPathNodeSetAddNs(res, (xmlNodePtr)ns->next, ns);
-	    } else {
-		xmlXPathNodeSetAddUnique(res, nodes->nodeTab[i]);
+    
+    status = 1;
+    cur = nset;
+    do {
+	switch(cur->op) {
+	case xmlSecNodeSetIntersection:
+	    if(status && !xmlSecNodeSetOneContain(cur, node, parent)) {
+		status = 0;
 	    }
-	}
-    }    
-    return(xmlSecNodeSetCreate(nset->doc, res, xmlSecNodeSetNormal));
-}
-
-static int
-xmlSecNodeSetIntersectRecursive(xmlSecNodeSetPtr nset, xmlNodePtr cur, xmlNodePtr parent, void** data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetIntersectRecursive";
-    
-    if((nset == NULL) || (cur == NULL) || (data == NULL) || (data[0] == NULL) || (data[1] == NULL)) {
+    	    break;
+	case xmlSecNodeSetSubtraction:
+	    if(status && xmlSecNodeSetOneContain(cur, node, parent)) {
+		status = 0;
+	    }
+	    break;
+	case xmlSecNodeSetUnion:
+	    if(!status && xmlSecNodeSetOneContain(cur, node, parent)) {
+		status = 1;
+	    }	
+	    break;
+	default:
 #ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: something is wrong\n",
-	    func);	
+    	    xmlGenericError(xmlGenericErrorContext,
+		"%s: unknown op type %d\n",
+		func, cur->op);	
 #endif 	    
-	return(-1);
-    }
-    
-    if(xmlSecNodeSetContain((xmlSecNodeSetPtr)data[0], cur, parent)) {
-	if(cur->type == XML_NAMESPACE_DECL) {
-	    xmlNsPtr ns = (xmlNsPtr)cur;
-	    
-	    xmlXPathNodeSetAddNs((xmlNodeSetPtr)data[1], parent, ns);
-	} else {
-	    xmlXPathNodeSetAddUnique((xmlNodeSetPtr)data[1], cur);
+	    return(-1);
 	}
-    }
-    return(0);
+	cur = cur->next;
+    } while(cur != nset);
+    
+    return(status);
 }
-
 
 xmlSecNodeSetPtr	
-xmlSecNodeSetIntersect2(xmlSecNodeSetPtr nset1, xmlSecNodeSetPtr nset2) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetIntersect2";
-    xmlNodeSetPtr res;
-    void* data[2];
-    
-    if((nset1 == NULL) || (nset2 == NULL)) {
+xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetAdd";
+    if((newNSet == NULL) || (newNSet->next != newNSet)) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
-	    "%s: nset1 or nset2 is null\n",
+	    "%s: new nset is null or has more than one element\n",
 	    func);	
 #endif 	    
 	return(NULL);
-    }
-
-    /* special cases */
-    if(nset1->type == xmlSecNodeSetNormal) {
-	return(xmlSecNodeSetIntersect(nset2, nset1->nodes));
-    } else if(nset2->type == xmlSecNodeSetNormal) {
-	return(xmlSecNodeSetIntersect(nset1, nset2->nodes));
-    } 
-	    
-    res = xmlXPathNodeSetCreate(NULL);
-    if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create nodes set\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
-
-    data[0] = nset2;
-    data[1] = res;
+    }   
     
-    if(xmlSecNodeSetWalk(nset1, (xmlSecNodeSetWalkCallback)xmlSecNodeSetIntersectRecursive, data) < 0) {
+    newNSet->op	= op;
+    if(nset == NULL) {
+	return(newNSet);
+    }
+        
+    newNSet->next = nset;
+    newNSet->prev = nset->prev;
+    nset->prev->next = newNSet;
+    nset->prev 	     = newNSet;
+    return(nset);
+}
+
+xmlSecNodeSetPtr	
+xmlSecNodeSetAddSubSet(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNodeSetOp op) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetAddSubSet";
+    xmlSecNodeSetPtr tmp1, tmp2;
+    
+    if(newNSet == NULL) {
 #ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to get nodes\n",
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: new nset is null\n",
 	    func);	
 #endif 	    
-    	xmlXPathFreeNodeSet(res);
+	return(NULL);
+    }   
+    
+    tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetSubSet);
+    if(tmp1 == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to create nodes set\n",
+	    func);	
+#endif 	    
 	return(NULL);
     }
-    return(xmlSecNodeSetCreate(nset1->doc, res, xmlSecNodeSetNormal));
+    tmp1->children = newNSet;
+    
+    tmp2 = xmlSecNodeSetAdd(nset, tmp1, op);
+    if(tmp2 == NULL) {
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: failed to add nodes set\n",
+	    func);	
+#endif 	    
+	xmlSecNodeSetDestroy(tmp1);
+	return(NULL);
+    }
+    return(tmp2);
 }
+
  
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
@@ -454,6 +472,12 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     case xmlSecNodeSetTreeWithoutCommentsInvert:
 	fprintf(output, "(xmlSecNodeSetTreeWithoutCommentsInvert)\n");
 	break;
+    case xmlSecNodeSetSubSet:
+	fprintf(output, "(xmlSecNodeSetSubSet)\n");
+	fprintf(output, ">>>\n");
+	xmlSecNodeSetDebugDump(nset->children, output);
+	fprintf(output, "<<<\n");
+	return;
     default:
 	fprintf(output, "(unknown=%d)\n", nset->type);
 #ifdef XMLSEC_DEBUG
@@ -466,7 +490,18 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     l = xmlXPathNodeSetGetLength(nset->nodes);
     for(i = 0; i < l; ++i) {
 	cur = xmlXPathNodeSetItem(nset->nodes, i);
-	fprintf(output, "%d: %s\n", cur->type, 
-	    (cur->name) ? cur->name : BAD_CAST "null");
+	if(cur->type != XML_NAMESPACE_DECL) {
+	    fprintf(output, "%d: %s\n", cur->type, 
+		(cur->name) ? cur->name : BAD_CAST "null");
+	} else {
+	    xmlNsPtr ns = (xmlNsPtr)cur;
+	    fprintf(output, "%d: %s=%s (%s:%s)\n", cur->type, 
+		(ns->prefix) ? ns->prefix : BAD_CAST "null",
+		(ns->href) ? ns->href : BAD_CAST "null",
+		(((xmlNodePtr)ns->next)->ns && 
+		 ((xmlNodePtr)ns->next)->ns->prefix) ? 
+		  ((xmlNodePtr)ns->next)->ns->prefix : BAD_CAST "null",		
+		((xmlNodePtr)ns->next)->name);
+	}
     }
 }

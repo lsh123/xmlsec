@@ -1,7 +1,7 @@
 #!/bin/sh 
 
 cur_pwd=`pwd`
-today=`date`
+today=`date +%F-%T`
 module=xmlsec
 branch=
 cvs_root=:pserver:aleksey@cvs.gnome.org:/cvs/gnome

@@ -1,6 +1,6 @@
 NULL =
 
-xmlsecopensslincdir = $(includedir)/xmlsec/openssl
+xmlsecopensslincdir = $(pkgincludedir)/xmlsec/openssl
 
 xmlsecopensslinc_HEADERS = \
 app.h \

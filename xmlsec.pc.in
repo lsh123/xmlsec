@@ -1,11 +1,11 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-libdir=@libdir@
-includedir=@includedir@
+libdir=@pkglibdir@
+includedir=@pkgincludedir@
 
 Name: xmlsec
 Version: @VERSION@-@XMLSEC_CRYPTO@
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ 
 Libs: @XMLSEC_LIBS@ @LIBS@
-Cflags: -I${includedir}/xmlsec @XMLSEC_CFLAGS@ -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\"
+Cflags: @XMLSEC_CFLAGS@ @CFLAGS@

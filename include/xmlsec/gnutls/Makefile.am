@@ -1,6 +1,6 @@
 NULL =
 
-xmlsecgnutlsincdir = $(includedir)/xmlsec/gnutls
+xmlsecgnutlsincdir = $(pkgincludedir)/xmlsec/gnutls
 
 xmlsecgnutlsinc_HEADERS = \
 app.h \

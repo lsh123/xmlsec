@@ -92,8 +92,8 @@ fi
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/bin
-mkdir -p $RPM_BUILD_ROOT/usr/include
-mkdir -p $RPM_BUILD_ROOT/usr/lib
+mkdir -p $RPM_BUILD_ROOT/usr/include/xmlsec-$(XMLSEC_RELEASE)
+mkdir -p $RPM_BUILD_ROOT/usr/lib/xmlsec-$(XMLSEC_RELEASE)
 mkdir -p $RPM_BUILD_ROOT/usr/man/man1
 make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
 
@@ -110,10 +110,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec.1*  
 
-%{prefix}/lib/libxmlsec-*.so.*
-%{prefix}/lib/libxmlsec.so
-%{prefix}/lib/libxmlsec-openssl-*.so.*
-%{prefix}/lib/libxmlsec-openssl.so
+%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-*.so.*
+%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec.so
+%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-openssl-*.so.*
+%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-openssl.so
 %{prefix}/bin/xmlsec
 
 %files devel
@@ -123,22 +123,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man1/xmlsec-config.1*  
 %doc docs/* 
 %{prefix}/bin/xmlsec-config
-%{prefix}/include/xmlsec/*.h
-%{prefix}/include/xmlsec/openssl/*.h
-%{prefix}/lib/libxmlsec.*a
-%{prefix}/lib/libxmlsec-openssl.*a
+%{prefix}/include/xmlsec-$(XMLSEC_RELEASE)/xmlsec/*.h
+%{prefix}/include/xmlsec-$(XMLSEC_RELEASE)/xmlsec/openssl/*.h
+%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec.*a
+%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-openssl.*a
 %{prefix}/lib/pkgconfig/xmlsec.pc
 
 #%files nss
 #%defattr(-, root, root)  
 
-#%{prefix}/lib/libxmlsec-nss-*.so.*
-#%{prefix}/lib/libxmlsec-nss.so
+#%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-nss-*.so.*
+#%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-nss.so
 
 #%files nss-devel
 #%defattr(-, root, root)  
 
-#%{prefix}/include/xmlsec/nss/*.h
-#%{prefix}/lib/libxmlsec-nss.*a
+#%{prefix}/include/xmlsec-$(XMLSEC_RELEASE)/xmlsec/nss/*.h
+#%{prefix}/lib/xmlsec-$(XMLSEC_RELEASE)/libxmlsec-nss.*a
 
 %changelog

@@ -1,3 +1,6 @@
+Thu 08 Aug 2002 10:56:56 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	* src/xpath.c: removed XPointer support from  XPath 2 filter
+
 Wed Aug  7 14:32:44 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/transforms.h include/xmlsec/xmlsec.h

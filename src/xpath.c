@@ -29,8 +29,10 @@
 typedef enum {
     xmlSecXPathTypeXPath,
     xmlSecXPathTypeXPath2,
-    xmlSecXPathTypeXPointer,
-    xmlSecXPathTypeXPointer2
+    xmlSecXPathTypeXPointer
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
+    , xmlSecXPathTypeXPointer2
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */    
 } xmlSecXPathType;
 
 /* XPath transform */
@@ -565,8 +567,10 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
     while(cur != NULL) {
 	if(xmlSecCheckNodeName(cur, BAD_CAST "XPath", xmlSecXPath2Ns)) {
 	    xpathType = xmlSecXPathTypeXPath2;
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
 	} else if(xmlSecCheckNodeName(cur, BAD_CAST "XPointer", xmlSecXPath2Ns)) {
 	    xpathType = xmlSecXPathTypeXPointer2;
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
 	} else {
 	    break;
 	}
@@ -1006,9 +1010,11 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     case xmlSecXPathTypeXPointer:
 	data->expr = expr;
 	break;
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
     case xmlSecXPathTypeXPointer2:
 	data->expr = expr;
 	break;
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
     }
 
     if(xmlSecXPathDataReadNsList(data, node) < 0) {
@@ -1026,7 +1032,9 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 	/* do nothing */
 	break;
     case xmlSecXPathTypeXPath2:
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
     case xmlSecXPathTypeXPointer2: 
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
         xpath2Type = xmlGetProp(node, BAD_CAST "Filter");
         if(xpath2Type == NULL) {
 #ifdef XMLSEC_DEBUG    
@@ -1169,7 +1177,9 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	    ctx = xmlXPathNewContext(doc);
 	    break;
 	case xmlSecXPathTypeXPointer:
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
 	case xmlSecXPathTypeXPointer2:
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
 	    ctx = xmlXPtrNewContext(doc, xmlDocGetRootElement(doc), NULL);
 	    break;
 	}
@@ -1224,7 +1234,9 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	    xpath = xmlXPathEvalExpression(data->expr, ctx);
 	    break;
 	case xmlSecXPathTypeXPointer:
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
 	case xmlSecXPathTypeXPointer2:
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
 	    xpath = xmlXPtrEval(data->expr, ctx);
 	    break;
 	}
@@ -1250,9 +1262,11 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 	case xmlSecXPathTypeXPointer:
 	    nodeSetType = xmlSecNodeSetTree;
 	    break;
+#ifdef XMLSEC_XPATH2_ALLOW_XPOINTER
 	case xmlSecXPathTypeXPointer2:
 	    nodeSetType = xmlSecNodeSetTree;
 	    break;
+#endif /* XMLSEC_XPATH2_ALLOW_XPOINTER */
 	}
 	tmp1 = xmlSecNodeSetCreate(doc, xpath->nodesetval, nodeSetType);
 	if(tmp1 == NULL) {

@@ -342,12 +342,14 @@ ALIBS = $(ALIBS) libxslt_a.lib
 
 # XmlSec and friends executables.
 !if "$(STATIC)" == "1"
-APPS = $(BINDIR)\xmlseca.exe
-APPLIBS = $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
+APP_NAME = xmlseca.exe
+APPLIBS  = $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
 !else
-APPS = $(BINDIR)\xmlsec.exe
-APPLIBS = $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
+APP_NAME = xmlsec.exe
+APPLIBS  = $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !endif
+APPS = $(BINDIR)\$(APP_NAME)
+APPS_UNIX = $(BINDIR)/$(APP_NAME)
 
 all : xmlsec xmlseca apps
 
@@ -356,6 +358,9 @@ xmlsec : $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(BINDIR)\$(XMLSEC_CRYPTO_
 xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(BINDIR)\$(XMLSEC_CRYPTO_A)
 
 apps : $(APPS)
+
+test : $(APPS)
+	sh ../tests/testDSig.sh ../tests $(APPS_UNIX) der
 
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)

@@ -1,3 +1,8 @@
+Mon Jan 12 13:05:18 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* examples/encrypt3.c include/xmlsec/crypto.h include/xmlsec/nss: make
+	exmaples compile with nss (again reported by John)
+
 Mon Jan 12 10:30:24 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* xmlsec-config.in: fixed nss configuration bug (reproted by John)

@@ -47,6 +47,7 @@ extern "C" {
 #ifdef XMLSEC_CRYPTO_NSS
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
+#include <xmlsec/nss/x509.h>
 #include <xmlsec/nss/symbols.h>
 #else /* XMLSEC_CRYPTO_NSS */
 #error No crypto library defined

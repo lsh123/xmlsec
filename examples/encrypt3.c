@@ -249,7 +249,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
 
     /* add <enc:EncryptedKey/> to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
-				    xmlSecTransformRsaOaepId, 
+				    xmlSecTransformRsaPkcs1Id, 
 				    NULL, NULL, NULL);
     if(encKeyNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");

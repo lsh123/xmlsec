@@ -93,9 +93,9 @@ xmlSecError(const char* file, int line, const char* func,
 
 	    va_start(va, msg);
 #if defined(WIN32) && !defined(__CYGWIN__)
-  	    _vsnprintf(error_msg, sizeof(error_msg), msg, va);	
+  	    _vsnprintf(error_msg, sizeof(error_msg), msg, va);
 #else  /* WIN32 */
-  	    vsnprintf(error_msg, sizeof(error_msg), msg, va);	
+  	    vsnprintf(error_msg, sizeof(error_msg), msg, va);
 #endif /* WIN32 */
 	    error_msg[sizeof(error_msg) - 1] = '\0';
 	    va_end(va);	

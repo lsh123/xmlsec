@@ -1,3 +1,9 @@
+Thu Apr 24 08:15:32 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* config.h.in configure.in include/xmlsec/xmlsec.h: use
+	'#define' instead of 'typedef' for the new xmlSecSize and
+	xmlSecByte types in order to keep ABI
+
 Tue Apr 22 13:51:33 2003  Igor Zlatkovic  <igor@zlatkovic.com>
 
 	* win32/configure.js: updated the email address in the generated

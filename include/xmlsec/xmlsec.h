@@ -36,16 +36,22 @@ typedef void*					xmlSecPtr;
 /**
  * xmlSecSize:
  *
- * Size of something.
+ * Size of something. Should be typedef instead of define
+ * but it will break ABI (todo).
  */
-typedef unsigned int				xmlSecSize;
+#ifdef XMLSEC_NO_SIZE_T
+#define xmlSecSize				unsigned int
+#else  /* XMLSEC_NO_SIZE_T */
+#define xmlSecSize				size_t
+#endif /* XMLSEC_NO_SIZE_T */
 
 /**
  * xmlSecByte:
  *
- * One byte.
+ * One byte. Should be typedef instead of define
+ * but it will break ABI (todo).
  */
-typedef unsigned char				xmlSecByte;
+#define xmlSecByte				unsigned char
 
 
 /***********************************************************************

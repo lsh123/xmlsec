@@ -56,7 +56,6 @@ AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscan
 
 
 
-
 XMLSEC_DEFINES=""
 
 
@@ -78,6 +77,17 @@ else
     AC_MSG_RESULT(no)
 fi    
 AC_SUBST(XMLSEC_STATIC_BINARIES)
+
+
+dnl ==========================================================================
+dnl check do we have size_t and its size, 
+dnl TODO: will need to replace this and the xmlSecSize define with 
+dnl typedef on next ABI refresh
+dnl ==========================================================================
+AC_CHECK_SIZEOF(size_t)
+if test "$ac_cv_sizeof_size_t" -ne "4" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SIZE_T"
+fi
 
 dnl ==========================================================================
 dnl find libxml

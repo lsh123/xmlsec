@@ -97,7 +97,7 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
     if(digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		     XMLSEC_ERRORS_R_MALLOC_FAILED,
-		     NULL);
+		     "%d", XMLSEC_SHA1_TRANSFORM_SIZE);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_SHA1_TRANSFORM_SIZE);

@@ -599,7 +599,7 @@ xmlSecKeyNameNodeWrite(xmlNodePtr keyNameNode, xmlSecKeyPtr key,
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);    
     }
     
@@ -705,7 +705,7 @@ xmlSecKeyValueNodeWrite(xmlNodePtr keyValueNode, xmlSecKeyPtr key,  xmlSecKeyTyp
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -853,7 +853,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 	    if((status->keysMngr->verifyX509)(status->keysMngr, status->context, x509Data) != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-			    NULL);
+			    " ");
 		xmlSecX509DataDestroy(x509Data);
 		goto done;
 	    }
@@ -871,7 +871,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
     	if(xmlSecVerifyKey(res, NULL, status->keyId, status->keyType) != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY,
-			NULL);
+			" ");
 	    xmlSecKeyDestroy(res);
 	    res = NULL;
 	}
@@ -985,7 +985,7 @@ xmlSecEncryptedKeyNodeWrite(xmlNodePtr encKeyNode,
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
     /**
@@ -1182,7 +1182,7 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
 	if((status->keysMngr->verifyX509)(status->keysMngr, status->context, x509Data) != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-			NULL);
+			" ");
 	    goto done;
 	}
     }
@@ -1199,7 +1199,7 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
     if(xmlSecVerifyKey(key, NULL, status->keyId, status->keyType) != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	xmlSecKeyDestroy(key);
 	key = NULL;
 	goto done;
@@ -1221,7 +1221,7 @@ xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
 
@@ -1322,7 +1322,7 @@ xmlSecX509IssuerSerialNodeRead(xmlNodePtr serialNode, xmlSecX509DataPtr x509Data
     if((x509Data == NULL) && (keysMngr->failIfCertNotFound)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    NULL);
+		    " ");
 	xmlFree(issuerSerial);
 	xmlFree(issuerName);
 	return(-1);
@@ -1355,7 +1355,7 @@ xmlSecX509SKINodeRead(xmlNodePtr skiNode, xmlSecX509DataPtr x509Data,
     if((x509Data == NULL) && (keysMngr->failIfCertNotFound)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    NULL);
+		    " ");
 	xmlFree(ski);
 	return(-1);
     }
@@ -1387,7 +1387,7 @@ xmlSecX509SubjectNameNodeRead(xmlNodePtr subjectNode, xmlSecX509DataPtr x509Data
     if((x509Data == NULL) && (keysMngr->failIfCertNotFound)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    NULL);
+		    " ");
 	xmlFree(subjectName);
 	return(-1);
     }

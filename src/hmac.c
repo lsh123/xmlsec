@@ -230,7 +230,7 @@ xmlSecMacHmacCreate(xmlSecTransformId id) {
     if(digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", XMLSEC_HMACSHA1_TRANSFORM_SIZE);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_HMACSHA1_TRANSFORM_SIZE);
@@ -524,7 +524,7 @@ xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     if(ptr->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -575,7 +575,8 @@ xmlSecHmacKeyCreate(xmlSecKeyId id) {
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecKey)=%d", 
+		    sizeof(struct _xmlSecKey));
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -728,7 +729,7 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     if(str == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -876,7 +877,7 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if((keyData->key == NULL) || (keyData->keySize <= 0)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -884,7 +885,7 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if((*buf) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", sizeof(unsigned char) * keyData->keySize );
 	return(-1);
     }
     memcpy((*buf), keyData->key, keyData->keySize);
@@ -904,13 +905,14 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 xmlSecHmacKeyDataPtr	
 xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
     xmlSecHmacKeyDataPtr data;
+    size_t size;
     
-    data = (xmlSecHmacKeyDataPtr) xmlMalloc(sizeof(xmlSecHmacKeyData) +
-		sizeof(unsigned char) * keySize);	    
+    size = sizeof(xmlSecHmacKeyData) + sizeof(unsigned char) * keySize;
+    data = (xmlSecHmacKeyDataPtr) xmlMalloc(size);	    
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", size);
 	return(NULL);
     }
     memset(data, 0,  sizeof(xmlSecHmacKeyData) + sizeof(unsigned char) * keySize); 

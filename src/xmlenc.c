@@ -113,7 +113,8 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     if(ctx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecEncCtx) = %d bytes", sizeof(xmlSecEncCtx));
+		    "sizeof(xmlSecEncCtx)=%d", 
+		    sizeof(xmlSecEncCtx));
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecEncCtx));
@@ -1026,7 +1027,8 @@ xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSe
     if(state == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecEncState) = %d bytes", sizeof(xmlSecEncState));
+		    "sizeof(xmlSecEncState)=%d", 
+		    sizeof(xmlSecEncState));
 	return(NULL);
     }
     memset(state, 0, sizeof(xmlSecEncState));
@@ -1196,7 +1198,8 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePt
     if(result == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecEncResult) = %d bytes", sizeof(xmlSecEncResult));
+		    "sizeof(xmlSecEncResult)=%d", 
+		    sizeof(xmlSecEncResult));
 	return(NULL);
     }
     memset(result, 0, sizeof(xmlSecEncResult));
@@ -1373,7 +1376,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     if(result->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-		    NULL);
+		    " ");
 	return(-1);
     }
     ret = xmlSecTransformAddKey(encryptionMethod, result->key);

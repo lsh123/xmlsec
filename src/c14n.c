@@ -125,7 +125,8 @@ xmlSecC14NTransformCreate(xmlSecTransformId id) {
     if (transform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecC14NTransform)=%d",
+		    sizeof(xmlSecC14NTransform));
 	return(NULL);
     }
     memset(transform, 0, sizeof(xmlSecC14NTransform));
@@ -253,7 +254,7 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     if(ptr->c14nData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", sizeof(xmlChar*) * (count + 2));
 	return(-1);
     }
     memset(nsList, 0, sizeof(xmlChar*) * (count + 2));

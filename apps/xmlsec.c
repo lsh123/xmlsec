@@ -37,6 +37,7 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/debug.h>
+#include <xmlsec/errors.h>
 
 
 static const char copyright[] =
@@ -185,6 +186,7 @@ static const char helpKeysMngmt[] =
     "                          \"retrieval-doc\", \"retrieval-remote\",\n"
     "                          \"enc-key\", \"x509\", \"pgp\"\n"
     "                        by default, all key origins are allowed\n"
+    "  --pwd <password>      the password to use for reading keys and certs\n"
     "\n";
     
 static const char helpX509[] =
@@ -192,6 +194,7 @@ static const char helpX509[] =
     "X509 certificates options:\n"
     "  --trusted <file>      load trusted (root) certificate from PEM file\n"
     "  --untrusted <file>    load un-trusted certificate from PEM file\n"
+    "  --pwd <password>      the password to use for reading keys and certs\n"
 #else /* XMLSEC_NO_X509 */
     "x509 certificates support was disabled during compilation\n"
 #endif /* XMLSEC_NO_X509 */        
@@ -200,7 +203,8 @@ static const char helpX509[] =
 static const char helpMisc[] = 
     "Misc. options:\n"
     "  --repeat <number>     repeat the operation <number> times\n"
-    "  --pwd <password>      the password to use for reading keys and certs\n"
+    "  --disable-error-msgs  do not print xmlsec error messages\n"
+    "  --print-openssl-errors print openssl errors stack at the end\n"
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -292,6 +296,7 @@ int repeats = 1;
 int printResult = 0;
 clock_t total_time = 0;
 char *global_pwd = NULL;
+int print_openssl_errors = 0;
 
 int main(int argc, char **argv) {
     int res = 1;
@@ -503,6 +508,12 @@ int main(int argc, char **argv) {
 	} else if((strcmp(argv[pos], "--pwd") == 0) && (pos + 1 < argc)) {
 	    global_pwd = argv[++pos];
 	    ret = 0;
+	} else if((strcmp(argv[pos], "--disable-error-msgs") == 0)) {
+	    xmlSecPrintErrorMessages = 0;
+	    ret = 0;
+	} else if((strcmp(argv[pos], "--print-openssl-errors") == 0)) {
+	    print_openssl_errors = 1;
+	    ret = 0;
 	} else 
 
 	/**
@@ -704,7 +715,6 @@ int main(int argc, char **argv) {
 	    }
 	    if((ret < 0) && (repeats <= 1)) {				
 		fprintf(stderr, "Error: operation failed\n");
-		ERR_print_errors_fp(stderr);
  		goto done;	    	    
 	    }
 	    xmlFreeDoc(doc); doc = NULL;
@@ -727,6 +737,9 @@ int main(int argc, char **argv) {
     res = 0;
     
 done:    
+    if(print_openssl_errors) {
+	ERR_print_errors_fp(stderr);
+    }
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
@@ -809,7 +822,6 @@ int init(xmlsecCommand command) {
      * Init OpenSSL
      */
     OpenSSL_add_all_algorithms();
-    ERR_load_crypto_strings(); 
     
     /**
      * Probably not the best way
@@ -932,8 +944,6 @@ void shutdown(void) {
 #ifdef XMLSEC_OPENSSL097
     CRYPTO_cleanup_all_ex_data();
 #endif /* XMLSEC_OPENSSL097 */     
-    ERR_remove_state(0);
-    ERR_free_strings();
 }
 
 /**

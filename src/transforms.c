@@ -372,7 +372,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
     if(!xmlSecTransformIsValid(transform)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    " ");
 	return;
     }
     
@@ -406,7 +406,7 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     if(!xmlSecTransformIsValid(transform)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    " ");
 	return(-1);
     }
     if(transform->id->read != NULL) {
@@ -767,7 +767,8 @@ xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet,
     if(state == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecTransformState)=%d",
+		    sizeof(xmlSecTransformState));
 	return(NULL);
     }
     memset(state, 0, sizeof(xmlSecTransformState));
@@ -842,7 +843,7 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state,
     if(!xmlSecTransformIsValid(transform)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    " ");
 	return(-1);
     }
     

@@ -98,7 +98,7 @@ xmlSecDigestRipemd160Create(xmlSecTransformId id) {
     if(digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", XMLSEC_RIPEMD160_TRANSFORM_SIZE);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_RIPEMD160_TRANSFORM_SIZE);

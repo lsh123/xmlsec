@@ -103,7 +103,7 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return;
     }
     
@@ -130,7 +130,7 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(NULL);	
     }
     
@@ -212,7 +212,7 @@ xmlSecKeyWriteXml(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr node) {
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -271,7 +271,7 @@ xmlSecKeyWriteBin(xmlSecKeyPtr key, xmlSecKeyType type,
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
 
@@ -316,7 +316,7 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     if(!xmlSecKeyIsValid(key)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return;
     }
     fprintf(output, "== KEY\n");
@@ -413,7 +413,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *conte
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-		    NULL);
+		    " ");
 	return(NULL);    
     }
     

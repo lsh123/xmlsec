@@ -11,6 +11,7 @@
 
 #include <stdlib.h>
 #include <string.h> 
+#include <errno.h>
 
 #include <libxml/uri.h>
 #include <libxml/tree.h>
@@ -117,7 +118,8 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecBinTransform)=%d", 
+		    sizeof(xmlSecBinTransform));
 	return(NULL);
     }
     memset(ptr, 0, sizeof(xmlSecBinTransform));
@@ -216,7 +218,7 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
     if(t->data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "%s", uri);
+		    "uri=%s (errno=%d)", uri, errno);
 	return(-1);
     }
     
@@ -253,7 +255,7 @@ xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform,
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_IO_FAILED,
-			NULL);
+			"errno=%d", errno);
 	    return(-1);
 	}
 	return(ret);

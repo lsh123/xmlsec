@@ -814,7 +814,8 @@ xmlSecDSigResultCreate(xmlSecDSigCtxPtr ctx, void *context,
     if(result == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecDSigResult)=%d",
+		    sizeof(xmlSecDSigResult));
 	return(NULL);
     }
     memset(result, 0, sizeof(xmlSecDSigResult));
@@ -979,7 +980,8 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     if(ctx == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecDSigCtx)=%d",
+		    sizeof(xmlSecDSigCtx));
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
@@ -1390,7 +1392,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
     if(result->key == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_KEY_NOT_FOUND,
-		    NULL);
+		    " ");
 	goto done;
     }
     ret = xmlSecTransformAddKey(signMethod, result->key);
@@ -1446,7 +1448,7 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	if((!sign) && (ref->result != xmlSecTransformStatusOk)) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,
-			NULL);
+			" ");
 	    /* "soft" error */
 	    res = 0;
 	    goto done;
@@ -1704,7 +1706,8 @@ xmlSecReferenceCreate(xmlSecReferenceType type, xmlSecDSigCtxPtr ctx, xmlNodePtr
     if(ref == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecReferenceResult)=%d",
+		    sizeof(xmlSecReferenceResult));
 	return(NULL);
     }
     memset(ref, 0, sizeof(xmlSecReferenceResult));

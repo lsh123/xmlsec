@@ -293,7 +293,8 @@ xmlSecAesCreate(xmlSecTransformId id) {
     xmlSecCipherTransformId cipherId;
     xmlSecCipherTransformPtr cipher;
     const EVP_CIPHER *type;
-
+    size_t size;
+    
     xmlSecAssert2(id != NULL, NULL);
     
     if(id == xmlSecEncAes128Cbc) {
@@ -309,13 +310,16 @@ xmlSecAesCreate(xmlSecTransformId id) {
 	return(NULL);	
     }
     cipherId = (xmlSecCipherTransformId)id;
-    cipher = (xmlSecCipherTransformPtr)xmlMalloc(sizeof(xmlSecCipherTransform) +
-			sizeof(unsigned char) * (cipherId->bufInSize + 
-        		cipherId->bufOutSize + cipherId->ivSize));
+    
+    size = sizeof(xmlSecCipherTransform) +
+	   sizeof(unsigned char) * (cipherId->bufInSize + 
+				    cipherId->bufOutSize + 
+				    cipherId->ivSize);
+    cipher = (xmlSecCipherTransformPtr)xmlMalloc(size);
     if(cipher == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", size);
 	return(NULL);
     }
 
@@ -460,7 +464,8 @@ xmlSecKWAesCreate(xmlSecTransformId id) {
     if(buffered == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);    
+		    "sizeof(xmlSecBufferedTransform)=%d", 
+		    sizeof(xmlSecBufferedTransform));    
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -772,7 +777,7 @@ xmlSecAesKeyCreate(xmlSecKeyId id) {
     if(id != xmlSecAesKey) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);    
+		    " ");    
 	return(NULL);	
     }
     
@@ -780,7 +785,8 @@ xmlSecAesKeyCreate(xmlSecKeyId id) {
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecKey)=%d",
+		    sizeof(struct _xmlSecKey));
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -802,7 +808,7 @@ xmlSecAesKeyDestroy(xmlSecKeyPtr key) {
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return;
     }
     
@@ -832,7 +838,7 @@ xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(NULL);
     }
     
@@ -881,7 +887,7 @@ xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) { 
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
 
@@ -936,7 +942,7 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);    
+		    " ");    
 	return(-1);
     }
 
@@ -944,7 +950,7 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     if(keyStr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    NULL);
+		    " ");
 	return(-1);
     }
 
@@ -1002,7 +1008,7 @@ xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);    
+		    " ");    
 	return(-1);
     }
     ptr = (xmlSecAesKeyDataPtr)key->keyData;
@@ -1046,7 +1052,7 @@ xmlSecAesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
 
@@ -1093,7 +1099,7 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
     (*buf) = NULL;
@@ -1103,7 +1109,7 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if((keyData == NULL) || (keyData->key == NULL) || (keyData->keySize <= 0)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -1111,7 +1117,8 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if((*buf) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(unsigned char) * keyData->keySize = %d",
+		    sizeof(unsigned char) * keyData->keySize);
 	return(-1);
     }
     memcpy((*buf), keyData->key, keyData->keySize);
@@ -1138,14 +1145,14 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 static xmlSecAesKeyDataPtr	
 xmlSecAesKeyDataCreate(const unsigned char *key, size_t keySize) {
     xmlSecAesKeyDataPtr data;
+    size_t size;
     
-    data = (xmlSecAesKeyDataPtr) xmlMalloc(
-		sizeof(xmlSecAesKeyData) +
-		sizeof(unsigned char) * keySize);	    
+    size = sizeof(xmlSecAesKeyData) + sizeof(unsigned char) * keySize;	    
+    data = (xmlSecAesKeyDataPtr) xmlMalloc(size);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", size);
 	return(NULL);
     }
     memset(data, 0,  sizeof(xmlSecAesKeyData) + 

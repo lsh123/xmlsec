@@ -46,7 +46,7 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
 	if(buffer == NULL) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d bytes", size);
+			"%d", size);
 	    return(NULL);	
 	}
     } else {
@@ -111,7 +111,7 @@ xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
 	if(buffer == NULL) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 	    	        XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d bytes", size);
+			"%d", size);
 	    return(NULL);	
 	}
     } else {
@@ -170,7 +170,7 @@ xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
     if(tmp == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    NULL);
+		    " ");
 	return(NULL);
     }    
     

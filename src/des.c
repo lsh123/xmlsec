@@ -185,7 +185,8 @@ xmlSecDesCreate(xmlSecTransformId id) {
     xmlSecCipherTransformId cipherId;
     xmlSecCipherTransformPtr cipher;
     const EVP_CIPHER *type;
-
+    size_t size;
+    
     xmlSecAssert2(id != NULL, NULL);
         
     if(id != xmlSecEncDes3Cbc) {
@@ -198,13 +199,15 @@ xmlSecDesCreate(xmlSecTransformId id) {
     type = EVP_des_ede3_cbc();	
 
     cipherId = (xmlSecCipherTransformId)id;
-    cipher = (xmlSecCipherTransformPtr)xmlMalloc(sizeof(xmlSecCipherTransform) +
-			sizeof(unsigned char) * (cipherId->bufInSize + 
-        		cipherId->bufOutSize + cipherId->ivSize));
+    size = sizeof(xmlSecCipherTransform) +
+	   sizeof(unsigned char) * (cipherId->bufInSize + 
+        			    cipherId->bufOutSize + 
+				    cipherId->ivSize);
+    cipher = (xmlSecCipherTransformPtr)xmlMalloc(size);
     if(cipher == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", size);
 	return(NULL);
     }
 
@@ -328,7 +331,8 @@ xmlSecDes3KWCreate(xmlSecTransformId id) {
     if(buffered == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecBufferedTransform)=%d",
+		    sizeof(xmlSecBufferedTransform));
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -361,7 +365,6 @@ xmlSecDes3KWDestroy(xmlSecTransformPtr transform) {
 
 static int
 xmlSecDes3KWAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWAddKey";
     xmlSecBufferedTransformPtr buffered;
     xmlSecDesKeyDataPtr desKey;
 
@@ -428,7 +431,7 @@ xmlSecDes3KWProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
 	if(ret != 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d bytes", size + 16); 
+			"%d", size + 16 + 8); 
 	    return(-1);
 	}
 	
@@ -729,7 +732,8 @@ xmlSecDesKeyCreate(xmlSecKeyId id) {
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecKey) = %d",
+		    sizeof(struct _xmlSecKey));
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -766,7 +770,6 @@ xmlSecDesKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecDesKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyDuplicate";
     xmlSecKeyPtr newKey;
 
     xmlSecAssert2(key != NULL, NULL);    
@@ -877,7 +880,7 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     if(keyStr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    NULL);
+		    " ");
 	return(-1);
     }
     /* usual trick: decode into the same buffer */
@@ -1032,7 +1035,7 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if((keyData->key == NULL) || (keyData->keySize <= 0)) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -1040,7 +1043,7 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     if((*buf) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", sizeof(unsigned char) * keyData->keySize);
 	return(-1);
     }
     memcpy((*buf), keyData->key, keyData->keySize);
@@ -1066,14 +1069,14 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 static xmlSecDesKeyDataPtr	
 xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
     xmlSecDesKeyDataPtr data;
+    size_t size;
     
-    data = (xmlSecDesKeyDataPtr) xmlMalloc(
-		sizeof(xmlSecDesKeyData) +
-		sizeof(unsigned char) * keySize);	    
+    size = sizeof(xmlSecDesKeyData) + sizeof(unsigned char) * keySize;	    
+    data = (xmlSecDesKeyDataPtr) xmlMalloc(size);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", size);
 	return(NULL);
     }
     memset(data, 0,  sizeof(xmlSecDesKeyData) + 

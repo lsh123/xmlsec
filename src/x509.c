@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
 
 #include <libxml/tree.h>
 #include <openssl/evp.h>
@@ -94,7 +95,8 @@ xmlSecX509DataCreate(void) {
     if(x509Data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecX509Data)=%d", 
+		    sizeof(xmlSecX509Data));
 	return(NULL);
     }
     memset(x509Data, 0, sizeof(xmlSecX509Data));
@@ -747,7 +749,8 @@ xmlSecX509StoreCreate(void) {
     if(store == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecX509Store)=%d",
+		    sizeof(xmlSecX509Store));
 	return(NULL);
     }
     memset(store, 0, sizeof(xmlSecX509Store));
@@ -1282,7 +1285,7 @@ xmlSec509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
         if (ASN1_INTEGER_cmp(revoked->serialNumber, X509_get_serialNumber(cert)) == 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CERT_REVOKED,
-			NULL);
+			" ");
 	    return(0);
         }
     }

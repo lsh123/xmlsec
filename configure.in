@@ -396,28 +396,14 @@ else
     AC_MSG_RESULT(yes)
 fi    
 
-
-
-dnl ==========================================================================
-dnl See do we need debug
-dnl ==========================================================================
-AC_MSG_CHECKING(for debug log messages) 
-AC_ARG_ENABLE(debug,   [  --enable-debug          enable debug log message (yes)])
-if test "$enable_debug" = "no" ; then
-    AC_MSG_RESULT(no)
-else
-    XMLSEC_DEFINES="-DXMLSEC_DEBUG=1 $XMLSEC_DEFINES"
-    AC_MSG_RESULT(yes)
-fi    
-
 dnl ==========================================================================
 dnl Pedantic compile
 dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic compilation) 
 AC_ARG_ENABLE(pedantic,   [  --enable-pedantic       enable pedantic compilation flags (no)])
 if test "$enable_pedantic" = "yes" ; then
-dnl XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
-    XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    dnl XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
     CFLAGS="$CFLAGS $XMLSEC_PEDANTIC"
     AC_MSG_RESULT(yes)
 else

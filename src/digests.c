@@ -98,7 +98,7 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
     if(nodeContent == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -168,7 +168,6 @@ xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
 int
 xmlSecDigestUpdate(xmlSecTransformPtr transform,
 		   const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestUpdate";
     xmlSecDigestTransformPtr digest;    
 
     xmlSecAssert2(transform != NULL, -1);

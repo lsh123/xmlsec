@@ -225,7 +225,7 @@ xmlSecSignRsaSha1Create(xmlSecTransformId id) {
     if(digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", XMLSEC_RSASHA1_TRANSFORM_SIZE);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_RSASHA1_TRANSFORM_SIZE);
@@ -431,7 +431,7 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     if(digestBuf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", sizeof(unsigned char) * RSA_size(rsa));
 	RSA_free(rsa);
 	return(-1);
     }
@@ -508,7 +508,8 @@ xmlSecRsaKeyCreate(xmlSecKeyId id) {
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecKey)=%d", 
+		    sizeof(struct _xmlSecKey));
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -524,8 +525,6 @@ xmlSecRsaKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyDestroy";
-
     xmlSecAssert(key != NULL);
 
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
@@ -869,7 +868,8 @@ xmlSecRsaPkcs1Create(xmlSecTransformId id) {
     if(buffered == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecBufferedTransform)=%d",
+		    sizeof(xmlSecBufferedTransform));
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -1007,7 +1007,8 @@ xmlSecRsaOaepCreate(xmlSecTransformId id) {
     if(buffered == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecBufferedTransform)=%d",
+		    sizeof(xmlSecBufferedTransform));
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -1043,7 +1044,6 @@ xmlSecRsaOaepDestroy(xmlSecTransformPtr transform) {
 
 static int 	
 xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepReadNode";
     xmlSecBufferedTransformPtr buffered;
 
     xmlSecAssert2(transform != NULL, -1);

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include <libxml/tree.h>
 #include <libxml/parser.h>
@@ -55,7 +56,8 @@ xmlSecSimpleKeysMngrCreate(void) {
     if(mngr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecKeysMngr)=%d",
+		    sizeof(xmlSecKeysMngr));
 	return(NULL);
     }
     memset(mngr, 0, sizeof(xmlSecKeysMngr));
@@ -175,7 +177,8 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
 	if(keysData->keys == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d bytes", XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr));
+			"%d", 
+			XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr));
 	    return(-1);
 	}
 	memset(keysData->keys, 0, XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr)); 
@@ -189,7 +192,7 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
 	if(newKeys == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d bytes", newMax * sizeof(xmlSecKeyPtr));
+			"%d", newMax * sizeof(xmlSecKeyPtr));
 	    return(-1);	
 	}
 	keysData->maxSize = newMax;
@@ -208,7 +211,6 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
  */
 int
 xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoad";
     xmlSecKeysMngr keysMngr;
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -415,7 +417,7 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\")", keyfile);
+		    "fopen(\"%s\"), errno=%d", keyfile, errno);
 	return(NULL);    
     }
     
@@ -510,7 +512,8 @@ xmlSecSimpleKeysDataCreate(void) {
     if(keysData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);    
+		    "sizeof(xmlSecSimpleKeysData)=%d",
+		    sizeof(xmlSecSimpleKeysData));    
 	return(NULL);
     }
     memset(keysData, 0, sizeof(xmlSecSimpleKeysData));

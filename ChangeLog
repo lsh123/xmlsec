@@ -1,3 +1,7 @@
+Tue 13 Aug 2002 01:36:16 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	* include/xmlsec/errors.h src/*.c configure.in: changed
+	error reporting system and updated all files accordingly
+
 Thu 08 Aug 2002 10:56:56 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	* src/xpath.c: removed XPointer support from  XPath 2 filter
 

@@ -151,7 +151,7 @@ xmlSecSignDsaSha1Create(xmlSecTransformId id) {
     if(digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", XMLSEC_DSASHA1_TRANSFORM_SIZE);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_DSASHA1_TRANSFORM_SIZE);
@@ -399,7 +399,7 @@ xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     if(xmlSecGetDsaKey(key) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_KEY,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -483,7 +483,8 @@ xmlSecDsaKeyCreate(xmlSecKeyId id) {
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecKey)=%d", 
+		    sizeof(struct _xmlSecKey));
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  

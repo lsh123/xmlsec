@@ -207,7 +207,8 @@ xmlSecBase64Create(xmlSecTransformId id) {
     if(cipher == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_MALLOC_FAILED,	
-		    NULL);
+		    "%d",
+		    XMLSEC_BASE64_OUTPUT_BUFFER_SIZE + XMLSEC_BASE64_INPUT_BUFFER_SIZE);
 	return(NULL);
     }
     memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
@@ -294,7 +295,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
     if(size > cipher->id->bufInSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA,
-		    NULL);
+		    " ");
 	return(-1);
     }
     
@@ -302,7 +303,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    NULL);
+		    " ");
 	return(-1);
     }
     return(ret);
@@ -329,7 +330,7 @@ xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    NULL);
+		    " ");
 	return(-1);
     }
     return(ret);
@@ -450,7 +451,8 @@ xmlSecBase64CtxCreate(int encode, int columns) {
     if (ctx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecBase64Ctx)=%d", 
+		    sizeof(xmlSecBase64Ctx));
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecBase64Ctx));
@@ -674,7 +676,7 @@ xmlSecBase64Encode(const unsigned char *buf, size_t len, int columns) {
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "result buffer %d bytes", size);
+		    "%d", size);
 	xmlSecBase64CtxDestroy(ctx);
 	return(NULL);
     }

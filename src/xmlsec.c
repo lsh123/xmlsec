@@ -20,6 +20,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/io.h>
+#include <xmlsec/errors.h>
 
 const xmlChar xmlSecNs[] 	= "http://www.aleksey.com/xmlsec/2002";
 const xmlChar xmlSecDSigNs[] 	= "http://www.w3.org/2000/09/xmldsig#";
@@ -31,6 +32,7 @@ const xmlChar xmlSecXPointerNs[]= "http://www.w3.org/2001/04/xmldsig-more/xptr";
 
 void
 xmlSecInit(void) {
+    xmlSecErrorsInit();
     xmlSecTransformsInit();
     xmlSecKeysInit();
     xmlSecIOInit();
@@ -39,5 +41,6 @@ xmlSecInit(void) {
 void
 xmlSecShutdown(void) {
     xmlSecIOShutdown();
+    xmlSecErrorsShutdown();
 }
 

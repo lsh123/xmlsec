@@ -108,7 +108,8 @@ xmlSecMemBufTransformCreate(xmlSecTransformId id) {
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecBinTransform)=%d", 
+		    sizeof(xmlSecBinTransform));
 	return(NULL);
     }
     memset(ptr, 0, sizeof(xmlSecBinTransform));

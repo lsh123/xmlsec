@@ -82,7 +82,8 @@ xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
     if(xmlTransform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecXmlTransform)=%d",
+		    sizeof(struct _xmlSecXmlTransform));
 	return(NULL);
     }
     memset(xmlTransform, 0,  sizeof(struct _xmlSecXmlTransform));

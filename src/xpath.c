@@ -183,7 +183,8 @@ xmlSecTransformXPathCreate(xmlSecTransformId id) {
     if(xmlTransform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(struct _xmlSecXmlTransform)=%d",
+		    sizeof(struct _xmlSecXmlTransform));
 	return(NULL);
     }
     memset(xmlTransform, 0,  sizeof(struct _xmlSecXmlTransform));
@@ -367,7 +368,6 @@ xmlSecTransformXPathReadNode(xmlSecTransformPtr transform, xmlNodePtr transformN
 static int
 xmlSecTransformXPathExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPathExecute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathDataPtr data;
     xmlNodePtr hereNode;
@@ -498,7 +498,6 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, xmlSecXPath2TransformType typ
  */
 static int 
 xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPath2ReadNode";
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathDataPtr data = NULL;
     xmlSecXPathType xpathType = xmlSecXPathTypeXPath2;
@@ -567,7 +566,6 @@ xmlSecTransformXPath2ReadNode(xmlSecTransformPtr transform, xmlNodePtr transform
 static int
 xmlSecTransformXPath2Execute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPath2Execute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathDataPtr data;
     xmlNodePtr hereNode;
@@ -755,7 +753,6 @@ xmlSecTransformXPointerReadNode(xmlSecTransformPtr transform, xmlNodePtr transfo
 static int
 xmlSecTransformXPointerExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformXPointerExecute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlSecXPathDataPtr data;
     xmlNodePtr hereNode;
@@ -814,14 +811,14 @@ xmlSecTransformXPointerExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc
  */
 xmlSecXPathDataPtr	
 xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, xmlSecXPathType xpathType) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataCreate";    
     xmlSecXPathDataPtr data;
     
     data = (xmlSecXPathDataPtr) xmlMalloc(sizeof(xmlSecXPathData));
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "sizeof(xmlSecXPathData)=%d",
+		    sizeof(xmlSecXPathData));
 	return(NULL);
     }
     memset(data, 0, sizeof(xmlSecXPathData)); 
@@ -848,7 +845,6 @@ xmlSecXPathDataCreate(const xmlNodePtr node, xmlSecXPathDataPtr prev, xmlSecXPat
  */
 void				
 xmlSecXPathDataDestroy(xmlSecXPathDataPtr data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataDestroy";
     xmlSecXPathDataPtr 	tmp;
     
     while((tmp = data) != NULL) {
@@ -874,7 +870,6 @@ xmlSecXPathDataDestroy(xmlSecXPathDataPtr data) {
 
 static int		  
 xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataReadNode";
     xmlChar *xpath2Type;
     xmlChar* expr;
 
@@ -886,7 +881,7 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     if(expr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    NULL);
+		    " ");
         return(-1);
     }
 	
@@ -901,7 +896,8 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 	if(data->expr == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
-			NULL);
+			"%d",
+			xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1);
     	    return(-1);
         }
         sprintf((char*)data->expr, (char*) xpathPattern, expr);	
@@ -967,7 +963,6 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 
 static int		  
 xmlSecXPathDataReadNsList(xmlSecXPathDataPtr data, const xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecXPathDataReadNsList";
     xmlNodePtr tmp;
     xmlNsPtr ns;
     size_t count;
@@ -990,7 +985,7 @@ xmlSecXPathDataReadNsList(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     if(data->nsList == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    NULL);
+		    "%d", 2 * count);
 	return(-1);
     }    
     data->nsListSize = 2 * count;

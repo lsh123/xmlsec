@@ -28,6 +28,10 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
 
+#if defined(_MSC_VER)
+#define snprintf _snprintf
+#endif
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 
 xmlSecCryptoDLFunctionsPtr

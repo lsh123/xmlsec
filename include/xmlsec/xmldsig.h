@@ -196,6 +196,8 @@ XMLSEC_EXPORT xmlSecDSigResultPtr xmlSecDSigResultCreate	(xmlSecDSigCtxPtr ctx,
 XMLSEC_EXPORT void		xmlSecDSigResultDestroy		(xmlSecDSigResultPtr result);
 XMLSEC_EXPORT void		xmlSecDSigResultDebugDump	(xmlSecDSigResultPtr result,
 								 FILE *output);
+XMLSEC_EXPORT void		xmlSecDSigResultDebugXmlDump	(xmlSecDSigResultPtr result,
+								 FILE *output);
 
 #ifdef __cplusplus
 }

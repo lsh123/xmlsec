@@ -1,3 +1,13 @@
+Sat Aug 31 17:12:56 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keys.h include/xmlsec/x509.h
+	include/xmlsec/xmldsig.h include/xmlsec/xmlenc.h 
+	src/keys.c src/x509.c src/xmldsig.c src/xmlenc.c: 
+	added new function *DebugXmlDump() to print debug info
+	in XML format
+	* apps/xmlsec.c man/xmlsec.1 man/xmlsec.xml: added new 
+	options '--print-xml' and '-print-to-file'	
+
 Sat 31 Aug 2002 03:43:20 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs/examples: added a new dsig example from Devin Heitmueller	

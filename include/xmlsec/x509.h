@@ -49,6 +49,8 @@ XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataDup		(xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecX509DataCreateKey		(xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT void		xmlSecX509DataDebugDump		(xmlSecX509DataPtr x509Data,
 							 	FILE *output);
+XMLSEC_EXPORT void		xmlSecX509DataDebugXmlDump	(xmlSecX509DataPtr x509Data,
+							 	FILE *output);
 
 
 XMLSEC_EXPORT xmlSecX509StorePtr xmlSecX509StoreCreate		(void);

@@ -185,6 +185,8 @@ XMLSEC_EXPORT int		xmlSecVerifyKey		(xmlSecKeyPtr key,
 							 xmlSecKeyType type);
 XMLSEC_EXPORT void		xmlSecKeyDebugDump	(xmlSecKeyPtr key,
 							 FILE *output);
+XMLSEC_EXPORT void		xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
+							 FILE *output);
 #ifndef XMLSEC_NO_X509
 XMLSEC_EXPORT int		xmlSecKeyReadPemCert	(xmlSecKeyPtr key,
 							 const char *filename);

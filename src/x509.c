@@ -52,6 +52,9 @@ static int		xmlSecX509DataAddCert		(xmlSecX509DataPtr x509Data,
 static void		xmlSecX509DebugDump		(X509 *cert, 
 							 FILE *output);
 
+static void		xmlSecX509DebugXmlDump		(X509 *cert, 
+							 FILE *output);
+
 static int		xmlSecX509StoreVerifyCRL	(xmlSecX509StorePtr store, 
 							 X509_CRL *crl);
 
@@ -445,6 +448,37 @@ xmlSecX509DataDebugDump(xmlSecX509DataPtr x509Data, FILE *output) {
     }
 }
 
+/**
+ * xmlSecX509DataDebugXmlDump:
+ * @x509Data: the pointer to #xmlSecX509Data structure.
+ * @output: the pointer to #FILE structure.
+ *
+ * Prints the information about @x509Data to @output in XML format.
+ */ 
+void
+xmlSecX509DataDebugXmlDump(xmlSecX509DataPtr x509Data, FILE *output) {
+    xmlSecAssert(x509Data != NULL);
+    xmlSecAssert(output != NULL);
+
+    
+    if(x509Data->verified != NULL) {
+	fprintf(output, "<X509Data verified=\"yes\">\n");
+	xmlSecX509DebugXmlDump(x509Data->verified, output);
+	fprintf(output, "</X509Data>\n");
+    }
+    if(x509Data->certs != NULL) {
+	int i;
+
+	fprintf(output, "<X509Data verified=\"no\">\n");	
+	for(i = 0; i < x509Data->certs->num; ++i) {
+	    if(((X509**)(x509Data->certs->data))[i] != x509Data->verified) {
+		xmlSecX509DebugXmlDump(((X509**)(x509Data->certs->data))[i], output);
+	    }
+	}
+	fprintf(output, "</X509Data>\n");
+    }
+}
+
 static void
 xmlSecX509DebugDump(X509 *cert, FILE *output) { 
     char buf[1024];
@@ -467,6 +501,29 @@ xmlSecX509DebugDump(X509 *cert, FILE *output) {
     } else {
 	fprintf(output, "unknown\n");
     }
+}
+
+static void
+xmlSecX509DebugXmlDump(X509 *cert, FILE *output) { 
+    char buf[1024];
+    BIGNUM *bn = NULL;
+
+    xmlSecAssert(cert != NULL);
+    xmlSecAssert(output != NULL);
+    
+    fprintf(output, "<X509Cert>\n");
+    fprintf(output, "<SubjectName>%s</SubjectName>\n", 
+	 X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))); 
+    fprintf(output, "<IssuerName>%s</IssuerName>\n", 
+	 X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf))); 
+    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
+    if(bn != NULL) {
+	fprintf(output, "<IssuerSerial>");
+	BN_print_fp(output, bn);
+	BN_free(bn);
+	fprintf(output, "</IssuerSerial>\n");
+    }
+    fprintf(output, "</X509Cert>\n");
 }
 
 /**

@@ -1369,6 +1369,58 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
 
 }
 
+
+/**
+ * xmlSecEncResultDebugXmlDump:
+ * @result: the pointer to #xmlSecEncResult structure.
+ * @output: the pointer to destination FILE.
+ *
+ * Prints the #xmlSecEncResult structure @result to file @output in XML format.
+ */
+void
+xmlSecEncResultDebugXmlDump(xmlSecEncResultPtr result, FILE *output) {
+    xmlSecAssert(result != NULL);
+    xmlSecAssert(output != NULL);
+
+    if(result->encrypt) {    
+        fprintf(output, "<EncryptionResult>\n");
+    } else {
+        fprintf(output, "<DecryptionResult type=\"%s\">\n",
+	    (result->replaced) ? "replaced" : "not-replaced" );
+    }
+    if(result->id != NULL) {
+	fprintf(output, "<Id>%s</Id>\n", result->id);
+    }
+    if(result->type != NULL) {
+	fprintf(output, "<Type>%s</Type>\n", result->type);
+    }
+    if(result->mimeType != NULL) {
+	fprintf(output, "<MimeType%s</MimeType>\n", result->mimeType);
+    }
+    if(result->encoding != NULL) {
+	fprintf(output, "<Encoding>%s</Encoding>\n", result->encoding);
+    }
+    
+    if(result->key != NULL) {
+	xmlSecKeyDebugXmlDump(result->key, output);
+    }
+
+    if(result->buffer != NULL) {
+	fprintf(output, "<Buffer>");
+	fwrite(xmlBufferContent(result->buffer), 
+	       xmlBufferLength(result->buffer), 1,
+	       output);
+	fprintf(output, "</Buffer>\n");
+    }	    
+
+    if(result->encrypt) {    
+        fprintf(output, "</EncryptionResult>\n");
+    } else {
+        fprintf(output, "</DecryptionResult>\n");
+    }
+
+}
+
 /**
  * xmlSecEncryptedDataNodeRead:
  */

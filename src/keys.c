@@ -416,6 +416,72 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 #endif /* XMLSEC_NO_X509 */    
 }
 
+/** 
+ * xmlSecKeyDebugXmlDump:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @output: the destination #FILE pointer.
+ *
+ * Prints the information about the @key to the @output in XML format.
+ */
+void
+xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
+    xmlSecAssert(key != NULL);
+    xmlSecAssert(output != NULL);
+    
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    " ");
+	return;
+    }
+    fprintf(output, "<KeyInfo>\n");
+    if(key->id->keyValueNodeName != NULL) {
+        fprintf(output, "<KeyMethod>%s</KeyMethod>\n", 
+		key->id->keyValueNodeName); 
+    }
+    if(key->name != NULL) {
+	fprintf(output, "<KeyName>%s</KeyName>\n", 
+	        key->name);
+    }
+    fprintf(output, "<KeyType>%s</KeyType>\n", 
+	    (key->type == xmlSecKeyTypePrivate) ? 
+	    "Private" : "Public"); 
+    fprintf(output, "<KeyOrigins>\n");
+    if(key->origin & xmlSecKeyOriginKeyManager) {
+	fprintf(output, "<KeyOrigin>KeyManager</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginKeyName) {
+	fprintf(output, "<KeyOrigin>KeyName</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginKeyValue) {
+	fprintf(output, "<KeyOrigin>KeyValue</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginRetrievalDocument) {
+	fprintf(output, "<KeyOrigin>RetrievalDocument</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginRetrievalRemote) {
+	fprintf(output, "<KeyOrigin>RetrievalRemote</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginX509) {
+	fprintf(output, "<KeyOrigin>x509</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginEncryptedKey) {
+	fprintf(output, "<KeyOrigin>EncKey</KeyOrigin>\n");
+    }
+    if(key->origin & xmlSecKeyOriginPGP) {
+	fprintf(output, "<KeyOrigin>PGP</KeyOrigin>\n");
+    }
+    fprintf(output, "</KeyOrigins>\n");
+#ifndef XMLSEC_NO_X509
+    if(key->x509Data != NULL) {
+	xmlSecX509DataDebugXmlDump(key->x509Data, output);
+    }
+#endif /* XMLSEC_NO_X509 */   
+    fprintf(output, "</KeyInfo>\n"); 
+}
+
+
+
 /**
  * xmlSecKeysMngrGetKey:
  * @keyInfoNode: the pointer to <dsig:KeyInfo> node.

@@ -68,7 +68,11 @@ static void			xmlSecReferenceDestroy		(xmlSecReferenceResultPtr ref);
 static void			xmlSecReferenceDestroyAll	(xmlSecReferenceResultPtr ref);
 static void			xmlSecDSigReferenceDebugDump	(xmlSecReferenceResultPtr ref,
 								 FILE *output);
+static void			xmlSecDSigReferenceDebugXmlDump (xmlSecReferenceResultPtr ref,
+								 FILE *output);
 static void			xmlSecDSigReferenceDebugDumpAll	(xmlSecReferenceResultPtr ref,
+								 FILE *output);
+static void			xmlSecDSigReferenceDebugXmlDumpAll(xmlSecReferenceResultPtr ref,
 								 FILE *output);
 
 static int			xmlSecObjectRead		(xmlNodePtr objectNode,
@@ -920,6 +924,53 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
 	fprintf(output, "== MANIFESTS REFERENCES\n");
 	xmlSecDSigReferenceDebugDumpAll(result->firstManifestRef, output);
     }
+}
+
+/** 
+ * xmlSecDSigResultDebugXmlDump:
+ * @result: the pointer to #xmlSecDSigResult structure.
+ * @output: the pointer to destination FILE.
+ *
+ * Prints the #xmlSecDSigResult structure @result to file @output in XML format.
+ */
+void
+xmlSecDSigResultDebugXmlDump(xmlSecDSigResultPtr result, FILE *output) {
+
+    xmlSecAssert(result != NULL);
+    xmlSecAssert(output != NULL);
+    
+    fprintf(output, "<DSigResult operation=\"%s\">\n", 
+	    (result->sign) ? "generate" : "validate");
+    fprintf(output, "<Status>%s</Status>\n", 
+	    (result->result == xmlSecTransformStatusOk) ? "OK" : "FAIL");    
+    fprintf(output, "<SignatureMethod>%s</SignatureMethod>\n", 
+	    (result->signMethod != NULL) ? 
+	    (char*)((result->signMethod)->href) : "NULL"); 
+    if(result->key != NULL) {
+	xmlSecKeyDebugXmlDump(result->key, output);
+    }
+    if(result->buffer != NULL) {
+	fprintf(output, "<SignatureBuffer>");
+	fwrite(xmlBufferContent(result->buffer), 
+	       xmlBufferLength(result->buffer), 1,
+	       output);
+	fprintf(output, "</SignatureBuffer>\n");
+    }	    
+    
+    /* print firstSignRef */
+    if(result->firstSignRef != NULL) {
+	fprintf(output, "<SignedInfoReferences>\n");
+	xmlSecDSigReferenceDebugXmlDumpAll(result->firstSignRef, output);
+	fprintf(output, "</SignedInfoReferences>\n");
+    }
+
+    /* print firstManifestRef */
+    if(result->firstManifestRef != NULL) {
+	fprintf(output, "<ManifestReferences>\n");
+	xmlSecDSigReferenceDebugXmlDumpAll(result->firstManifestRef, output);
+	fprintf(output, "</ManifestReferences>\n");
+    }
+    fprintf(output, "</DSigResult>\n");
 }
 
 
@@ -1806,6 +1857,63 @@ xmlSecDSigReferenceDebugDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
     ptr = ref->next;
     while(ptr != NULL) {
 	xmlSecDSigReferenceDebugDump(ptr, output);
+	ptr = ptr->next;
+    }
+}
+
+/**
+ * xmlSecDSiggReferenceDebugXmlDump:
+ */
+static void
+xmlSecDSigReferenceDebugXmlDump(xmlSecReferenceResultPtr ref, FILE *output) {
+    xmlSecAssert(ref != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<Reference origin=\"%s\">\n",
+	    (ref->refType == xmlSecSignedInfoReference) ? 
+	    "SignedInfo" : "Manifest"); 
+    fprintf(output, "<Status>%s</Status>\n", 
+	    (ref->result == xmlSecTransformStatusOk) ? "OK" : "FAIL");
+    fprintf(output, "<DigestMethod>%s</DigestMethod>\n", 
+	    (ref->digestMethod != NULL) ? (char*)ref->digestMethod->href : "NULL"); 
+    if(ref->uri != NULL) {
+	fprintf(output, "<URI>%s</URI>\n", ref->uri);
+    }
+    if(ref->type != NULL) {
+        fprintf(output, "<Type>%s</Type>\n", ref->type);
+    }
+    if(ref->id != NULL) {
+	fprintf(output, "<Id>%s</Id>\n", ref->id); 
+    }
+    if(ref->buffer != NULL) {
+	fprintf(output, "<DigestBuffer>");
+	fwrite(xmlBufferContent(ref->buffer), 
+	       xmlBufferLength(ref->buffer), 1,
+	       output);
+	fprintf(output, "</DigestBuffer>\n");
+    }   	    
+    fprintf(output, "</Reference>\n");
+}
+
+/**
+ * xmlSecDSigReferenceDebugXmlDumpAll:
+ */
+static void
+xmlSecDSigReferenceDebugXmlDumpAll(xmlSecReferenceResultPtr ref, FILE *output) {
+    xmlSecReferenceResultPtr ptr;
+
+    xmlSecAssert(ref != NULL);
+    xmlSecAssert(output != NULL);
+    
+    ptr = ref->prev;
+    while(ptr != NULL) {
+	xmlSecDSigReferenceDebugXmlDump(ptr, output);
+	ptr = ptr->prev;
+    }
+    xmlSecDSigReferenceDebugXmlDump(ref, output);
+    ptr = ref->next;
+    while(ptr != NULL) {
+	xmlSecDSigReferenceDebugXmlDump(ptr, output);
 	ptr = ptr->next;
     }
 }

@@ -137,6 +137,8 @@ XMLSEC_EXPORT xmlSecEncResultPtr xmlSecEncResultCreate	(xmlSecEncCtxPtr ctx,
 XMLSEC_EXPORT void 		xmlSecEncResultDestroy	(xmlSecEncResultPtr result);
 XMLSEC_EXPORT void		xmlSecEncResultDebugDump(xmlSecEncResultPtr result,
 							 FILE *output);
+XMLSEC_EXPORT void		xmlSecEncResultDebugXmlDump(xmlSecEncResultPtr result,
+							 FILE *output);
 
 /** 
  * Encryption Template

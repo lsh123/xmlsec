@@ -9,9 +9,11 @@ REM Aleksey Sanin <aleksey@aleksey.com>
 REM 
 
 SET XMLSEC_PREFIX=d:\sdk
-SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include;%XMLSEC_PREFIX%\include\mozilla;%XMLSEC_PREFIX%\include\mozilla\nspr;%XMLSEC_PREFIX%\include\mozilla\public;%XMLSEC_PREFIX%\include\mozilla\public\nss;%MSSDK_INCLUDE%
+SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include;%XMLSEC_PREFIX%\include\mozilla;%XMLSEC_PREFIX%\include\mozilla\nspr;%XMLSEC_PREFIX%\include\mozilla\nss;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%XMLSEC_PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=static=no iconv=no nt4=yes debug=yes xslt=yes crypto=mscrypto,openssl
+SET XMLSEC_OPTIONS=static=no iconv=no nt4=yes debug=yes xslt=yes crypto=nss
+
+REM mscrypto,openssl
 
 del /F Makefile configure.txt
 cscript configure.js prefix=%XMLSEC_PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB% 

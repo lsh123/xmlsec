@@ -199,7 +199,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"SGN_NewContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);
         }
     } else {
@@ -222,7 +222,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"VFY_CreateContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);
         }
     }
@@ -282,7 +282,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "VFY_Update, VFY_End",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 
 	if (PORT_GetError() == SEC_ERROR_PKCS7_BAD_SIGNATURE) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -341,7 +341,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "SGN_Begin",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	} else {
@@ -351,7 +351,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "VFY_Begin",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	}
@@ -368,7 +368,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "SGN_Update",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	} else {
@@ -378,7 +378,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "VFY_Update",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 	}
@@ -404,7 +404,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "SGN_End",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "error code=%d", PORT_GetError());
 		return(-1);
 	    }
 

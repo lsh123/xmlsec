@@ -378,7 +378,7 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 			"CERT_NewCertList",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);	
 	}
     }
@@ -389,7 +389,7 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "CERT_AddCertToListTail",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	return(-1);	
     }
     ctx->numCerts++;
@@ -588,7 +588,7 @@ xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
 			"CERT_DupCertificate",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);
 	}
 	
@@ -627,7 +627,7 @@ xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
                         "SEC_DupCrl",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+                        "error code=%d", PORT_GetError());
             return(-1);
         }
 
@@ -652,7 +652,7 @@ xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
 			"CERT_DupCertificate",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"error code=%d", PORT_GetError());
 	    return(-1);
 	}
 	ret = xmlSecNssKeyDataX509AdoptKeyCert(dst, certDst);
@@ -1746,7 +1746,7 @@ xmlSecNssX509CertGetKey(CERTCertificate* cert) {
 		    NULL,
 		    "CERT_ExtractPublicKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	return(NULL);
     }    
 
@@ -1804,7 +1804,7 @@ xmlSecNssX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 		    NULL,
 		    "__CERT_NewTempCertificate",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	return(NULL);
     }
 
@@ -1827,7 +1827,7 @@ xmlSecNssX509CertBase64DerWrite(CERTCertificate* cert, int base64LineWrap) {
 		    NULL,
 		    "cert->derCert",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	return(NULL);
     }
     
@@ -1890,7 +1890,7 @@ xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
                     NULL,
                     "PK11_GetInternalKeySlot",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    "error code=%d", PORT_GetError());
 	return NULL;
     }
 
@@ -1905,7 +1905,7 @@ xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
 		    NULL,
 		    "PK11_ImportCRL",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	PK11_FreeSlot(slot);
 	return(NULL);
     }
@@ -1929,7 +1929,7 @@ xmlSecNssX509CrlBase64DerWrite(CERTSignedCrl* crl, int base64LineWrap) {
                     NULL,
                     "crl->derCrl",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    "error code=%d", PORT_GetError());
         return(NULL);
     }
 

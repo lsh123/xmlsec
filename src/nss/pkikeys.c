@@ -122,7 +122,7 @@ xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
 			NULL,
 			"SECKEY_CopyPrivateKey",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+				"error code=%d", PORT_GetError());
 	    return(-1);
 	}
     }
@@ -134,7 +134,7 @@ xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
 			NULL,
 			"SECKEY_CopyPublicKey",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+				"error code=%d", PORT_GetError());
 	    return(-1);
 	}
     }
@@ -570,7 +570,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "PORT_NewArena",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	ret = -1;
 	goto done;
     }
@@ -582,7 +582,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "PORT_ArenaZAlloc",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
 	PORT_FreeArena(arena, PR_FALSE);
 	ret = -1;
 	goto done;
@@ -1198,7 +1198,7 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "PORT_NewArena",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    "error code=%d", PORT_GetError());
         ret = -1;
         goto done;
     }
@@ -1210,7 +1210,7 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "PORT_ArenaZAlloc",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    "error code=%d", PORT_GetError());
 	PORT_FreeArena(arena, PR_FALSE);
         ret = -1;
         goto done;
@@ -1430,7 +1430,7 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "PK11_GenerateKeyPair",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "error code=%d", PORT_GetError());
         
 	goto done;
     }

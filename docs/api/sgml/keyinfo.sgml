@@ -32,6 +32,7 @@ enum        <link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link>;
 #define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</link>
 #define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</link>
 #define     <link linkend="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION-CAPS">XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</link>
 struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
 <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
 void        <link linkend="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy</link>         (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
@@ -250,6 +251,15 @@ processing does not return a verified certificate.</para>
 <para>
 If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
 processing fails.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS	0x00002000
+</programlisting>
+<para>
+If the flag is set then we'll skip strict checking of certs and CRLs</para>
 <para>
 
 </para></refsect2>

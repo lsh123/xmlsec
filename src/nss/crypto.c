@@ -296,6 +296,14 @@ xmlSecNssTransformsInit(void) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformRsaPkcs1Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformRsaPkcs1Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -309,6 +317,14 @@ xmlSecNssTransformsInit(void) {
 	return(-1);
     }
 
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformKWDes3Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformKWDes3Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES    
@@ -337,6 +353,30 @@ xmlSecNssTransformsInit(void) {
 	return(-1);
     }
 
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformKWAes128Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformKWAes128Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformKWAes192Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformKWAes192Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecNssTransformKWAes256Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformKWAes256Id)),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
 #endif /* XMLSEC_NO_AES */
 
     return(0);

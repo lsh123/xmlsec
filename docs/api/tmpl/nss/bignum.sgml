@@ -1,0 +1,40 @@
+<!-- ##### SECTION Title ##### -->
+bignum
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION xmlSecNssNodeGetBigNumValue ##### -->
+<para>
+
+</para>
+
+@arena: 
+@cur: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssNodeSetBigNumValue ##### -->
+<para>
+
+</para>
+
+@cur: 
+@a: 
+@addLineBreaks: 
+@Returns: 
+
+

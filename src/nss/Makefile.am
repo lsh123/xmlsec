@@ -31,6 +31,8 @@ libxmlsec1_nss_la_SOURCES =\
 	x509vfy.c \
 	keysstore.c \
 	kt_rsa.c \
+	kw_des.c \
+	kw_aes.c \
 	$(NULL)
 
 libxmlsec1_nss_la_LIBADD = \

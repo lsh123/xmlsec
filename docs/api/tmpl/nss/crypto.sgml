@@ -120,6 +120,51 @@ crypto
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecNssTransformKWAes128Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformKWAes128GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformKWAes192Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformKWAes192GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformKWAes256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformKWAes256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecNssKeyDataDesId ##### -->
 <para>
 
@@ -154,6 +199,51 @@ crypto
 
 
 <!-- ##### FUNCTION xmlSecNssTransformDes3CbcGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformKWDes3Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformKWDes3GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssKeyDataDsaId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssKeyDataDsaGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformDsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformDsaSha1GetKlass ##### -->
 <para>
 
 </para>
@@ -225,6 +315,51 @@ crypto
 
 
 <!-- ##### FUNCTION xmlSecNssTransformHmacMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssKeyDataRsaId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssKeyDataRsaGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformRsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformRsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformRsaPkcs1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformRsaPkcs1GetKlass ##### -->
 <para>
 
 </para>

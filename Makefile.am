@@ -68,9 +68,9 @@ reset-nss-db:
 	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir);\
 	if [ "z$(DEFAULT_CRYPTO)" = "znss" ] ; \
 	then \
-	    echo "Removing old nss db and creating a new one"; \
+	    echo "Removing old nss db and replacing with a new one"; \
 	    rm -rf ./tests/cert*.db ./tests/key*.db ./tests/secmod*.db; \
-	    certutil -N -d ./tests; \
+	    cp ./tests/nssdb/*.db ./tests; \
 	fi)
 
 check-km: $(TEST_APP) reset-nss-db
@@ -88,6 +88,7 @@ check-enc: $(TEST_APP) reset-nss-db
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u
 	@grep -i leak /tmp/*.log | sed 's/==.*== *//' | sort -u
+	@grep -i 'in use' /tmp/*.log | sed 's/==.*== *//' | sort -u
 
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1;$(MAKE) check;$(MAKE) memcheck-res)

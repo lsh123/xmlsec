@@ -317,7 +317,6 @@ execEncTest "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-retrieval-method-uris empty"
     
 rm -rf $tmpfile
-rm -rf $crypto_config/cert*.db $crypto_config/key*.db $crypto_config/secmod*.db
 
 echo "--- testEnc finished" >> $logfile
 echo "--- testEnc finished"

@@ -33,6 +33,14 @@
 #include <xmlsec/nss/pkikeys.h>
 #include <xmlsec/nss/keysstore.h>
 
+/* workaround - NSS exports this but doesn't declare it */
+extern CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
+								 SECItem *derCert,
+								 char *nickname,
+								 PRBool isperm,
+								 PRBool copyDER);
+
+
 static int xmlSecNssAppReadSECItem(const char *fn, SECItem *contents);
 static PRBool xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
 					 unsigned char *inBuf,
@@ -89,6 +97,17 @@ xmlSecNssAppInit(const char* config) {
                          "slotDescription", "privateSlotDescription",
                          "fipsSlotDescription", "fipsPrivateSlotDescription", 
 			 0, 0); 
+
+    /* setup for PKCS12 */
+    PORT_SetUCS2_ASCIIConversionFunction(xmlSecNssAppAscii2UCS2Conv);
+    SEC_PKCS12EnableCipher(PKCS12_RC4_40, 1);
+    SEC_PKCS12EnableCipher(PKCS12_RC4_128, 1);
+    SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40, 1);
+    SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128, 1);
+    SEC_PKCS12EnableCipher(PKCS12_DES_56, 1);
+    SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168, 1);
+    SEC_PKCS12SetPreferredCipher(PKCS12_DES_EDE3_168, 1);
+
     return(0);
 }
 
@@ -496,15 +515,6 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
 		    "error code=%d", PORT_GetError());
 	goto done;
     }
-
-    PORT_SetUCS2_ASCIIConversionFunction(xmlSecNssAppAscii2UCS2Conv);
-    SEC_PKCS12EnableCipher(PKCS12_RC4_40, 1);
-    SEC_PKCS12EnableCipher(PKCS12_RC4_128, 1);
-    SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_40, 1);
-    SEC_PKCS12EnableCipher(PKCS12_RC2_CBC_128, 1);
-    SEC_PKCS12EnableCipher(PKCS12_DES_56, 1);
-    SEC_PKCS12EnableCipher(PKCS12_DES_EDE3_168, 1);
-    SEC_PKCS12SetPreferredCipher(PKCS12_DES_EDE3_168, 1);
 
     pwditem.data = (unsigned char *)pwd;
     pwditem.len = strlen(pwd)+1;

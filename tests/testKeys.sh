@@ -43,7 +43,6 @@ $xmlsec_app keys --crypto-config $crypto_config \
 printRes 
 
 rm -rf $tmpfile
-rm -rf $crypto_config/cert*.db $crypto_config/key*.db $crypto_config/secmod*.db
 
 echo "--- testKeys finished ---" >> $logfile
 echo "--- testKeys finished ---"

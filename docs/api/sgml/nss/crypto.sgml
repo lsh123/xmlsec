@@ -33,6 +33,15 @@ int         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>
 #define     <link linkend="xmlSecNssTransformAes256CbcId">xmlSecNssTransformAes256CbcId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformAes256CbcGetKlass">xmlSecNssTransformAes256CbcGetKlass</link>
                                             (void);
+#define     <link linkend="xmlSecNssTransformKWAes128Id">xmlSecNssTransformKWAes128Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWAes128GetKlass">xmlSecNssTransformKWAes128GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformKWAes192Id">xmlSecNssTransformKWAes192Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWAes192GetKlass">xmlSecNssTransformKWAes192GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformKWAes256Id">xmlSecNssTransformKWAes256Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWAes256GetKlass">xmlSecNssTransformKWAes256GetKlass</link>
+                                            (void);
 #define     <link linkend="xmlSecNssKeyDataDesId">xmlSecNssKeyDataDesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataDesGetKlass">xmlSecNssKeyDataDesGetKlass</link> (void);
 int         <link linkend="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
@@ -40,6 +49,14 @@ int         <link linkend="xmlSecNssKeyDataDesSet">xmlSecNssKeyDataDesSet</link>
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecNssTransformDes3CbcId">xmlSecNssTransformDes3CbcId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformDes3CbcGetKlass">xmlSecNssTransformDes3CbcGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformKWDes3Id">xmlSecNssTransformKWDes3Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWDes3GetKlass">xmlSecNssTransformKWDes3GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssKeyDataDsaId">xmlSecNssKeyDataDsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataDsaGetKlass">xmlSecNssKeyDataDsaGetKlass</link> (void);
+#define     <link linkend="xmlSecNssTransformDsaSha1Id">xmlSecNssTransformDsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformDsaSha1GetKlass">xmlSecNssTransformDsaSha1GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataHmacGetKlass">xmlSecNssKeyDataHmacGetKlass</link>
@@ -55,6 +72,14 @@ int         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</lin
                                             (void);
 #define     <link linkend="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssKeyDataRsaId">xmlSecNssKeyDataRsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataRsaGetKlass">xmlSecNssKeyDataRsaGetKlass</link> (void);
+#define     <link linkend="xmlSecNssTransformRsaSha1Id">xmlSecNssTransformRsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaSha1GetKlass">xmlSecNssTransformRsaSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass</link>
@@ -233,6 +258,66 @@ AES 256 CBC encryption transform klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecNssTransformKWAes128Id">xmlSecNssTransformKWAes128Id</title>
+<programlisting>#define     xmlSecNssTransformKWAes128Id</programlisting>
+<para>
+The AES 128 key wrap transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes128GetKlass">xmlSecNssTransformKWAes128GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes128GetKlass
+                                            (void);</programlisting>
+<para>
+The AES-128 key wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES-128 key wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes192Id">xmlSecNssTransformKWAes192Id</title>
+<programlisting>#define     xmlSecNssTransformKWAes192Id</programlisting>
+<para>
+The AES 192 key wrap transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes192GetKlass">xmlSecNssTransformKWAes192GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes192GetKlass
+                                            (void);</programlisting>
+<para>
+The AES-192 key wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES-192 key wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes256Id">xmlSecNssTransformKWAes256Id</title>
+<programlisting>#define     xmlSecNssTransformKWAes256Id</programlisting>
+<para>
+The AES 256 key wrap transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes256GetKlass">xmlSecNssTransformKWAes256GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes256GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecNssKeyDataDesId">xmlSecNssKeyDataDesId</title>
 <programlisting>#define     xmlSecNssKeyDataDesId</programlisting>
 <para>
@@ -291,6 +376,65 @@ Triple DES CBC encryption transform klass.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to Triple DES encryption transform.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWDes3Id">xmlSecNssTransformKWDes3Id</title>
+<programlisting>#define     xmlSecNssTransformKWDes3Id</programlisting>
+<para>
+The DES3 CBC cipher transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWDes3GetKlass">xmlSecNssTransformKWDes3GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWDes3GetKlass
+                                            (void);</programlisting>
+<para>
+The Triple DES key wrapper transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>Triple DES key wrapper transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaId">xmlSecNssKeyDataDsaId</title>
+<programlisting>#define     xmlSecNssKeyDataDsaId</programlisting>
+<para>
+The DSA key klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaGetKlass">xmlSecNssKeyDataDsaGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDsaGetKlass (void);</programlisting>
+<para>
+The DSA key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to DSA key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformDsaSha1Id">xmlSecNssTransformDsaSha1Id</title>
+<programlisting>#define     xmlSecNssTransformDsaSha1Id</programlisting>
+<para>
+The DSA SHA1 signature transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformDsaSha1GetKlass">xmlSecNssTransformDsaSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDsaSha1GetKlass
+                                            (void);</programlisting>
+<para>
+The DSA-SHA1 signature transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DSA-SHA1 signature transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -393,6 +537,65 @@ The HMAC-MD5 transform klass.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaId">xmlSecNssKeyDataRsaId</title>
+<programlisting>#define     xmlSecNssKeyDataRsaId</programlisting>
+<para>
+The RSA key klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaGetKlass">xmlSecNssKeyDataRsaGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataRsaGetKlass (void);</programlisting>
+<para>
+The RSA key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to RSA key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaSha1Id">xmlSecNssTransformRsaSha1Id</title>
+<programlisting>#define     xmlSecNssTransformRsaSha1Id</programlisting>
+<para>
+The RSA-SHA1 signature transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaSha1GetKlass">xmlSecNssTransformRsaSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaSha1GetKlass
+                                            (void);</programlisting>
+<para>
+The RSA-SHA1 signature transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-SHA1 signature transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</title>
+<programlisting>#define     xmlSecNssTransformRsaPkcs1Id</programlisting>
+<para>
+The RSA PKCS1 key transport transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaPkcs1GetKlass
+                                            (void);</programlisting>
+<para>
+The RSA-PKCS1 key transport transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-PKCS1 key transport transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

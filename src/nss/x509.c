@@ -41,6 +41,14 @@
 #include <xmlsec/nss/x509.h>
 #include <xmlsec/nss/pkikeys.h>
 
+
+/* workaround - NSS exports this but doesn't declare it */
+XMLSEC_CRYPTO_EXPORT CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
+								 SECItem *derCert,
+								 char *nickname,
+								 PRBool isperm,
+								 PRBool copyDER);
+
 /*************************************************************************
  *
  * X509 utility functions

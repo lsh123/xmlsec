@@ -29,9 +29,6 @@ int         <link linkend="xmlSecNssAppKeysMngrCertLoad">xmlSecNssAppKeysMngrCer
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecNssAppKeysMngrAddCertsPath">xmlSecNssAppKeysMngrAddCertsPath</link>
-                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *path);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppKeyLoad">xmlSecNssAppKeyLoad</link>            (const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const char *pwd,
@@ -95,7 +92,7 @@ by XMLSec command line utility and called after
 <title><anchor id="xmlSecNssAppDefaultKeysMngrInit">xmlSecNssAppDefaultKeysMngrInit ()</title>
 <programlisting>int         xmlSecNssAppDefaultKeysMngrInit (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+Initializes <parameter>mngr</parameter> with NSS keys store <link linkend="xmlSecNssKeysStoreId">xmlSecNssKeysStoreId</link>
 and a default NSS crypto key data stores.</para>
 <para>
 
@@ -174,8 +171,8 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
-Reads cert from PEM <parameter>filename</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
+Reads cert from <parameter>filename</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter></para>
 <para>
 
 </para><variablelist role="params">
@@ -195,26 +192,6 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecNssAppKeysMngrAddCertsPath">xmlSecNssAppKeysMngrAddCertsPath ()</title>
-<programlisting>int         xmlSecNssAppKeysMngrAddCertsPath
-                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *path);</programlisting>
-<para>
-Reads cert from <parameter>path</parameter> and adds to the list of trusted certificates
-(not implemented yet).</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara> 		the keys manager.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
-<listitem><simpara>		the path to trusted certificates.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
 <title><anchor id="xmlSecNssAppKeyLoad">xmlSecNssAppKeyLoad ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppKeyLoad            (const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
@@ -222,7 +199,7 @@ Reads cert from <parameter>path</parameter> and adds to the list of trusted cert
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
 <para>
-Reads key from the a file (not implemented yet).</para>
+Reads key from a file</para>
 <para>
 
 </para><variablelist role="params">
@@ -233,10 +210,10 @@ Reads key from the a file (not implemented yet).</para>
 <listitem><simpara>		the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
-<listitem><simpara>		the PEM key file password.
+<listitem><simpara>		the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
-<listitem><simpara>	the PEM key password callback.
+<listitem><simpara>	the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
 <listitem><simpara>	the user context for password callback.
@@ -251,8 +228,7 @@ Reads key from the a file (not implemented yet).</para>
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
 <para>
-Reads key and all associated certificates from the PKCS12 file
-(not implemented yet).</para>
+Reads key and all associated certificates from the PKCS12 file</para>
 <para>
 
 </para><variablelist role="params">
@@ -277,8 +253,7 @@ Reads key and all associated certificates from the PKCS12 file
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
 <para>
-Reads the certificate from $<parameter>filename</parameter> and adds it to key 
-(not implemented yet).</para>
+Reads the certificate from $<parameter>filename</parameter> and adds it to key</para>
 <para>
 
 </para><variablelist role="params">

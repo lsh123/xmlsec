@@ -1,2 +1,6 @@
     &xmlsec-nss-app;
+    &xmlsec-nss-bignum;
     &xmlsec-nss-crypto;
+    &xmlsec-nss-pkikeys;
+    &xmlsec-nss-x509;
+    &xmlsec-nss-keysstore;

@@ -102,7 +102,7 @@
 <li><p><a href="xmlsec-buffer.html#XMLSECBUFFERSETSIZE">xmlSecBufferSetSize</a></p></li>
 <li><p><a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeName</a></p></li>
-<li><p><font>xmlSecCreateTree</font></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECCREATETREE">xmlSecCreateTree</a></p></li>
 <li><p><a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a></p></li>
 <li><p><a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDEBUGDUMP">xmlSecDSigCtxDebugDump</a></p></li>
 <li><p><a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDEBUGXMLDUMP">xmlSecDSigCtxDebugXmlDump</a></p></li>
@@ -401,6 +401,7 @@
 <li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF-CAPS">XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS-CAPS">XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS</a></p></li>
+<li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS-CAPS">XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT-CAPS">XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT-CAPS">XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD</a></p></li>
@@ -473,7 +474,6 @@
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPINIT">xmlSecNssAppInit</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYCERTLOAD">xmlSecNssAppKeyCertLoad</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYLOAD">xmlSecNssAppKeyLoad</a></p></li>
-<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYSMNGRADDCERTSPATH">xmlSecNssAppKeysMngrAddCertsPath</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYSMNGRCERTLOAD">xmlSecNssAppKeysMngrCertLoad</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPPKCS12LOAD">xmlSecNssAppPkcs12Load</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPSHUTDOWN">xmlSecNssAppShutdown</a></p></li>
@@ -485,10 +485,38 @@
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADESGETKLASS">xmlSecNssKeyDataDesGetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADESID">xmlSecNssKeyDataDesId</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADESSET">xmlSecNssKeyDataDesSet</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADSAGETKLASS">xmlSecNssKeyDataDsaGetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATADSAID">xmlSecNssKeyDataDsaId</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACGETKLASS">xmlSecNssKeyDataHmacGetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACID">xmlSecNssKeyDataHmacId</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATAHMACSET">xmlSecNssKeyDataHmacSet</a></p></li>
+<li><p><font>xmlSecNssKeyDataRawX509CertGetKlass</font></p></li>
+<li><p><font>xmlSecNssKeyDataRawX509CertId</font></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATARSAGETKLASS">xmlSecNssKeyDataRsaGetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYDATARSAID">xmlSecNssKeyDataRsaId</a></p></li>
+<li><p><font>xmlSecNssKeyDataX509AdoptCert</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509AdoptCrl</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509AdoptKeyCert</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509GetCert</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509GetCertsSize</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509GetCrl</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509GetCrlsSize</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509GetKeyCert</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509GetKlass</font></p></li>
+<li><p><font>xmlSecNssKeyDataX509Id</font></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSKEYSMNGRINIT">xmlSecNssKeysMngrInit</a></p></li>
+<li><p><font>xmlSecNssKeysStoreAdoptKey</font></p></li>
+<li><p><font>xmlSecNssKeysStoreGetKlass</font></p></li>
+<li><p><font>xmlSecNssKeysStoreId</font></p></li>
+<li><p><font>xmlSecNssKeysStoreLoad</font></p></li>
+<li><p><font>xmlSecNssKeysStoreSave</font></p></li>
+<li><p><font>xmlSecNssNodeGetBigNumValue</font></p></li>
+<li><p><font>xmlSecNssNodeSetBigNumValue</font></p></li>
+<li><p><font>xmlSecNssPKIAdoptKey</font></p></li>
+<li><p><font>xmlSecNssPKIKeyDataDuplicate</font></p></li>
+<li><p><font>xmlSecNssPKIKeyDataGetKeyType</font></p></li>
+<li><p><font>xmlSecNssPKIKeyDataGetPrivKey</font></p></li>
+<li><p><font>xmlSecNssPKIKeyDataGetPubKey</font></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSSHUTDOWN">xmlSecNssShutdown</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES128CBCGETKLASS">xmlSecNssTransformAes128CbcGetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES128CBCID">xmlSecNssTransformAes128CbcId</a></p></li>
@@ -498,14 +526,33 @@
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMAES256CBCID">xmlSecNssTransformAes256CbcId</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMDES3CBCGETKLASS">xmlSecNssTransformDes3CbcGetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMDES3CBCID">xmlSecNssTransformDes3CbcId</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMDSASHA1GETKLASS">xmlSecNssTransformDsaSha1GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMDSASHA1ID">xmlSecNssTransformDsaSha1Id</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACMD5GETKLASS">xmlSecNssTransformHmacMd5GetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACMD5ID">xmlSecNssTransformHmacMd5Id</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACRIPEMD160GETKLASS">xmlSecNssTransformHmacRipemd160GetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACRIPEMD160ID">xmlSecNssTransformHmacRipemd160Id</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACSHA1GETKLASS">xmlSecNssTransformHmacSha1GetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMHMACSHA1ID">xmlSecNssTransformHmacSha1Id</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWAES128GETKLASS">xmlSecNssTransformKWAes128GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWAES128ID">xmlSecNssTransformKWAes128Id</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWAES192GETKLASS">xmlSecNssTransformKWAes192GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWAES192ID">xmlSecNssTransformKWAes192Id</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWAES256GETKLASS">xmlSecNssTransformKWAes256GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWAES256ID">xmlSecNssTransformKWAes256Id</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWDES3GETKLASS">xmlSecNssTransformKWDes3GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMKWDES3ID">xmlSecNssTransformKWDes3Id</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMRSAPKCS1GETKLASS">xmlSecNssTransformRsaPkcs1GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMRSAPKCS1ID">xmlSecNssTransformRsaPkcs1Id</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMRSASHA1GETKLASS">xmlSecNssTransformRsaSha1GetKlass</a></p></li>
+<li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMRSASHA1ID">xmlSecNssTransformRsaSha1Id</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1GETKLASS">xmlSecNssTransformSha1GetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1ID">xmlSecNssTransformSha1Id</a></p></li>
+<li><p><font>xmlSecNssX509StoreAdoptCert</font></p></li>
+<li><p><font>xmlSecNssX509StoreFindCert</font></p></li>
+<li><p><font>xmlSecNssX509StoreGetKlass</font></p></li>
+<li><p><font>xmlSecNssX509StoreId</font></p></li>
+<li><p><font>xmlSecNssX509StoreVerify</font></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRINIT">xmlSecOpenSSLAppDefaultKeysMngrInit</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRLOAD">xmlSecOpenSSLAppDefaultKeysMngrLoad</a></p></li>

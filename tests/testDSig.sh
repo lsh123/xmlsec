@@ -234,7 +234,6 @@ execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
     "--enabled-reference-uris empty --hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" 
 
 rm -rf $tmpfile
-rm -rf $crypto_config/cert*.db $crypto_config/key*.db $crypto_config/secmod*.db
 
 echo "--- testDSig finished" >> $logfile
 echo "--- testDSig finished"

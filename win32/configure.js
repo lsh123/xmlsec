@@ -229,7 +229,7 @@ function genReadme(bname, ver, file)
 	f.WriteLine("a cheer of joy, a comment or a suggestion, feel free to contact me using");
 	f.WriteLine("the address below.");
 	f.WriteBlankLines(1);
-	f.WriteLine("                              Igor Zlatkovic (igor@stud.fh-frankfurt.de)");
+	f.WriteLine("Igor Zlatkovic (igor@zlatkovic.com)");
 	f.Close();
 }
 

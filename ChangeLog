@@ -1,3 +1,8 @@
+Wed Sep 10 12:36:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/dl.c win32/Makefile.msvc win32/mycfg.bat: implemented
+	dynamic xmlsec-crypto libraries loading for Windows
+
 Wed Sep 10 00:02:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am configure.in xmlsec-config.in xmlsec.pc.in: added

@@ -43,7 +43,7 @@ Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
-Requires: mozilla-nss >= @NSS_MIN_VERSION@
+Requires: mozilla-nss >= @MOZILLA_MIN_VERSION@
 
 %description nss
 NSS plugin for XML Security Library provides NSS based crypto services

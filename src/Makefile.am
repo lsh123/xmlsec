@@ -28,6 +28,7 @@ libxmlsec1_la_SOURCES = \
 	$(LTDL_SOURCE_FILES) \
 	app.c \
 	base64.c \
+	bn.c \
 	buffer.c \
 	c14n.c \
 	dl.c \

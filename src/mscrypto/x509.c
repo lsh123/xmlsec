@@ -33,6 +33,7 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/base64.h>
+#include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
@@ -389,7 +390,7 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
-    xmlSecAssert2(ctx->hMemStore != 0, -1);
+    xmlSecAssert2(ctx->hMemStore != 0, NULL);
     xmlSecAssert2(ctx->numCerts > pos, NULL);
 
     while ((pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert)) && (pos > 0)) {
@@ -1953,48 +1954,60 @@ IsHexDigit(char c) {
 
 static xmlChar*
 xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
-    xmlChar *res, *hexres;
+    xmlSecBn bn;
+    xmlChar* res;
     int ret;
     
     xmlSecAssert2(num != NULL, NULL);
 
-    hexres = xmlSecBinaryToHexString(num->pbData, num->cbData, 0);
-    if(hexres == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBinaryToHexString",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(NULL);
-    }
-
-    /* I have no clue why at a sudden a wordbased swap is needed to 
-     * convert from lsb, instead of a byte based swap... 
-     * This code is purely based upon trial and error :( WK
-     */
-    ret = xmlSecMSCryptoWordbaseSwap(hexres);
+    ret = xmlSecBnInitialize(&bn, num->cbData + 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecMSCryptoWordbaseSwap",
+		    "xmlSecBnInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlFree(hexres);
+		    "size=%d", num->cbData + 1);
 	return(NULL);
     }
 
-    res = xmlSecMSCryptoHexToDec(hexres);
+    ret = xmlSecBnSetData(&bn, num->pbData, num->cbData);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecBnSetData",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBnFinalize(&bn);
+	return(NULL);
+    }
+
+    /* I have no clue why at a sudden a swap is needed to 
+     * convert from lsb... This code is purely based upon 
+     * trial and error :( WK
+     */
+    ret = xmlSecBnReverse(&bn);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecBnReverse",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecBnFinalize(&bn);
+	return(NULL);
+    }
+
+    res = xmlSecBnToDecString(&bn);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecMSCryptoHexToDec",
+		    "xmlSecBnToDecString",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-        xmlFree(hexres);
+	xmlSecBnFinalize(&bn);
 	return(NULL);
     }
-
-    xmlFree(hexres);
+    
+    xmlSecBnFinalize(&bn);
     return(res);
 }
 

@@ -27,6 +27,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
+#include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/bignum.h>
@@ -588,18 +589,29 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
     }
 
     if((pCert == NULL) && (NULL != issuerName) && (NULL != issuerSerial)) {
-	xmlChar *hexIssuerSerial;
+	xmlSecBn issuerSerialBn;	
 	CERT_NAME_BLOB cnb;
         BYTE *cName = NULL; 
 	DWORD cNameLen = 0;	
 
-	hexIssuerSerial = xmlSecMSCryptoDecToHex(issuerSerial);
-	if(hexIssuerSerial == NULL) {
+	ret = xmlSecBnInitialize(&issuerSerialBn, 0);
+	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecMSCryptoDecToHec",
+			"xmlSecBnInitialize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);
+	}
+
+	ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecBnInitialize",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecBnFinalize(&issuerSerialBn);
 	    return(NULL);
 	}
 
@@ -615,7 +627,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 			"CertStrToName",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFree(hexIssuerSerial);
+	    xmlSecBnFinalize(&issuerSerialBn);
 	    return (NULL);
 	}
 
@@ -626,8 +638,20 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 			NULL,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
 			"len=%d", cNameLen);
-	    xmlFree(hexIssuerSerial);
+	    xmlSecBnFinalize(&issuerSerialBn);
 	    return (NULL);
+	}
+
+	if (!CertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+			   issuerName,
+			   CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+			   NULL,
+			   cName,
+			   &cNameLen,
+			   NULL)) {
+	    xmlSecBnFinalize(&issuerSerialBn);
+	    xmlFree(cName);
+	    return(NULL);
 	}
 
 	cnb.pbData = cName;
@@ -639,54 +663,21 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 						  &cnb,
 						  pCert)) != NULL) {
 	    
+	    /* I have no clue why at a sudden a swap is needed to 
+	     * convert from lsb... This code is purely based upon 
+	     * trial and error :( WK
+	     */
 	    if((pCert->pCertInfo != NULL) && 
 	       (pCert->pCertInfo->SerialNumber.pbData != NULL) && 
-	       (pCert->pCertInfo->SerialNumber.cbData > 0)) {
-
-		xmlChar *hexCertSerial;
-
-	        hexCertSerial = xmlSecBinaryToHexString(pCert->pCertInfo->SerialNumber.pbData,
-						    pCert->pCertInfo->SerialNumber.cbData, 
-						    0);
-		if(hexCertSerial == NULL) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				NULL,
-				"xmlSecBinaryToHexString",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				XMLSEC_ERRORS_NO_MESSAGE);
-		    CertFreeCertificateContext(pCert);
-		    xmlFree(hexIssuerSerial);
-		    xmlFree(cName);
-		    return(NULL);
-		}
-
-		/* I have no clue why at a sudden a wordbased swap is needed to 
-		 * convert from lsb, instead of a byte based swap... 
-		 * This code is purely based upon trial and error :( WK
-		 */
-		ret = xmlSecMSCryptoWordbaseSwap(hexCertSerial);
-		if (ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				NULL,
-				"xmlSecMSCryptoWordbaseSwap",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				XMLSEC_ERRORS_NO_MESSAGE);
-		    xmlFree(hexCertSerial);
-		    CertFreeCertificateContext(pCert);
-		    xmlFree(hexIssuerSerial);
-		    xmlFree(cName);
-		    return(NULL);
-		}
-		if (0 == xmlStrcmp(hexIssuerSerial, hexCertSerial)) {
-		    xmlFree(hexCertSerial);
-		    break;
-		}
-
-		xmlFree(hexCertSerial);
+	       (pCert->pCertInfo->SerialNumber.cbData > 0) && 
+	       (0 == xmlSecBnCompareReverse(&issuerSerialBn, pCert->pCertInfo->SerialNumber.pbData, 
+				     pCert->pCertInfo->SerialNumber.cbData))) {
+		
+		break;
 	    }
 	}
-	xmlFree(hexIssuerSerial);
 	xmlFree(cName);
+	xmlSecBnFinalize(&issuerSerialBn);
     }
 
     if((pCert == NULL) && (ski != NULL)) {

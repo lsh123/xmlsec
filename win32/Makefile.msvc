@@ -126,6 +126,7 @@ XMLSEC_APPS_OBJS_A = \
 XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\app.obj\
 	$(XMLSEC_INTDIR)\base64.obj\
+	$(XMLSEC_INTDIR)\bn.obj\
 	$(XMLSEC_INTDIR)\buffer.obj \
 	$(XMLSEC_INTDIR)\c14n.obj \
 	$(XMLSEC_INTDIR)\dl.obj \
@@ -154,6 +155,7 @@ XMLSEC_OBJS = \
 XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\app.obj\
 	$(XMLSEC_INTDIR_A)\base64.obj\
+	$(XMLSEC_INTDIR_A)\bn.obj\
 	$(XMLSEC_INTDIR_A)\buffer.obj \
 	$(XMLSEC_INTDIR_A)\c14n.obj \
 	$(XMLSEC_INTDIR_A)\dl.obj \

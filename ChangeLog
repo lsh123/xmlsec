@@ -1,3 +1,9 @@
+Wed Aug 14 19:38:56 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* NEWS README: minor updates
+	* docs/documentation.html docs/xmlsec-man.html man/Makefile.am:
+	published xmlsec utility man page
+
 Wed Aug 14 19:27:09 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs/api/* include/xmlsec/base64.h include/xmlsec/bn.h 

@@ -1,0 +1,369 @@
+<HTML><HEAD><TITLE>Manpage of xmlsec utility</TITLE>
+</HEAD><BODY>
+<H1>xmlsec</H1>
+<A HREF="#index">Index</A>
+<HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+xmlsec - command line tool to sign and encrypt XML documents
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>xmlsec</B> [<B>COMMAND</B>] [<B>OPTIONS</B>] [<I>FILE1</I>] [<I>FILE2</I>] [<I>....</I>]
+      
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>INTRODUCTION</H2>
+
+<P>
+<P>
+
+The xmlsec program signs or encrypts XML files, specified on the command line as <I>FILE1</I>, <I>FILE2</I>, ... according to &quot;XML Digital Signature&quot; and &quot;XML Encryption&quot; specifications.
+<P>
+<P>
+
+The xmlsec program is included in XML Security Library.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMMANDS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>version</B><DD>
+Prints version information for the xmlsec program.
+<P>
+<DT><B>help</B><DD>
+Prints general help information.
+<P>
+<DT><B>help-command</B><DD>
+Prints help information for <I>command</I>.
+<P>
+<DT><B>keys</B><DD>
+Manages keys in XML keys file. The result keys file is written to the <I>FILE1</I>, <I>FILE2</I>, <I>...</I> files.
+<P>
+<DT><B>sign</B><DD>
+Signs XML documents <I>FILE1</I>, <I>FILE2</I>, <I>...</I>
+<P>
+<DT><B>verify</B><DD>
+Verifies XML signature in the XML documents <I>FILE1</I>, <I>FILE2</I>, <I>...</I>
+<P>
+<DT><B>encrypt</B><DD>
+Encrypts data using templates from <I>FILE1</I>, <I>FILE2</I>, <I>...</I> files.
+<P>
+<DT><B>decrypt</B><DD>
+Decrypts encrypted XML documents <I>FILE1</I>, <I>FILE2</I>, <I>...</I>
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>KEYS COMMAND OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>--gen-hmac</B> <I>name</I><DD>
+Generates 24 bytes HMAC key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--gen-rsa</B> <I>name</I><DD>
+Generates RSA key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--gen-dsa</B> <I>name</I><DD>
+Generates DSA key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--gen-des3</B> <I>name</I><DD>
+Generates Tripple DES key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--gen-aes128</B> <I>name</I><DD>
+Generates AES 128 key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--gen-aes192</B> <I>name</I><DD>
+Generates AES 192 key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--gen-aes256</B> <I>name</I><DD>
+Generates AES 256 key and sets the key name to <I>name</I>.
+<P>
+<DT><B>--keys</B> <I>file</I><DD>
+Loads keys from XML keys <I>file</I>.
+<P>
+<DT><B>--pubkey</B>[:<I>name</I>] <I>file</I><DD>
+Loads public key from PEM <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--privkey</B>[:<I>name</I>] <I>file</I>[,<I>cafile1</I>[,<I>cafile2</I>[,<I>...</I>]]]<DD>
+Loads private key from PEM <I>file</I> along with certificates chain in PEM files <I>cafile1</I>, <I>cafile2</I>,<I>...</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pkcs12</B>[:<I>name</I>] <I>file</I><DD>
+Loads private key and certificates chain from pkcs12 <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pwd</B> <I>password</I><DD>
+Sets the <I>password</I> to use for reading keys and certificates from PEM files.
+<P>
+<DT><B>--hmackey</B>[:<I>name</I>] <I>file</I><DD>
+Loads HMAC key from binary file and sets the key name to <I>name</I>.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>SIGN COMMAND OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>--ignore-manifests</B><DD>
+Instructs the xmlsec program to ignore &lt;dsig:Manifest&gt; elements.
+<P>
+<DT><B>--node-id</B> <I>id</I><DD>
+Instructs the xmlsec program to sign only &lt;dsig:Signature&gt; element with given <I>id</I>.
+<P>
+<DT><B>--keys</B> <I>file</I><DD>
+Loads keys from XML keys <I>file</I>.
+<P>
+<DT><B>--pubkey</B>[:<I>name</I>] <I>file</I><DD>
+Loads public key from PEM <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--privkey</B>[:<I>name</I>] <I>file</I>[,<I>cafile1</I>[,<I>cafile2</I>[,<I>...</I>]]]<DD>
+Loads private key from PEM <I>file</I> along with certificates chain in PEM files <I>cafile1</I>, <I>cafile2</I>,<I>...</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pkcs12</B>[:<I>name</I>] <I>file</I><DD>
+Loads private key and certificates chain from pkcs12 <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--hmackey</B>[:<I>name</I>] <I>file</I><DD>
+Loads HMAC key from binary file and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pwd</B> <I>password</I><DD>
+Sets the <I>password</I> to use for reading keys and certificates from PEM files.
+<P>
+<DT><B>--allowed</B> <I>list</I><DD>
+Specifies the set of the allowed key origins as a comma separated <I>list</I> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
+<P>
+<DT><B>--session-key-hmac</B><DD>
+Generates and uses for signature 24 bytes HMAC key.
+<P>
+<DT><B>--session-key-rsa</B><DD>
+Generates and uses for signature RSA key.
+<P>
+<DT><B>--session-key-dsa</B><DD>
+Generates and uses for signature DSA key.
+<P>
+<DT><B>--repeat</B> <I>number</I><DD>
+Repeats the operation <I>number</I> times.
+<P>
+<DT><B>--fake-signatures</B><DD>
+Disables actual signature calculation for performance testing.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VERIFY COMMAND OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>--ignore-manifests</B><DD>
+Instructs the xmlsec program to ignore &lt;dsig:Manifest&gt; elements.
+<P>
+<DT><B>--node-id</B> <I>id</I><DD>
+Instructs the xmlsec program to sign only &lt;dsig:Signature&gt; element with given <I>id</I>.
+<P>
+<DT><B>--print-result</B><DD>
+Prints additional result information.
+<P>
+<DT><B>--print-references</B><DD>
+Prints the pre-digested signature references.
+<P>
+<DT><B>--print-manifests</B><DD>
+Prints the pre-digested manifests references.
+<P>
+<DT><B>--print-siganture</B><DD>
+Prints the pre-signated data (&lt;dsig:SignedInfo&gt; element).
+<P>
+<DT><B>--print-all</B><DD>
+Prints all available data.
+<P>
+<DT><B>--keys</B> <I>file</I><DD>
+Loads keys from XML keys <I>file</I>.
+<P>
+<DT><B>--pubkey</B>[:<I>name</I>] <I>file</I><DD>
+Loads public key from PEM <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--privkey</B>[:<I>name</I>] <I>file</I>[,<I>cafile1</I>[,<I>cafile2</I>[,<I>...</I>]]]<DD>
+Loads private key from PEM <I>file</I> along with certificates chain in PEM files <I>cafile1</I>, <I>cafile2</I>,<I>...</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pkcs12</B>[:<I>name</I>] <I>file</I><DD>
+Loads private key and certificates chain from pkcs12 <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--hmackey</B>[:<I>name</I>] <I>file</I><DD>
+Loads HMAC key from binary file and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pwd</B> <I>password</I><DD>
+Sets the <I>password</I> to use for reading keys and certificates from PEM files.
+<P>
+<DT><B>--allowed</B> <I>list</I><DD>
+Specifies the set of the allowed key origins as a comma separated <I>list</I> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
+<P>
+<DT><B>--trusted</B> <I>file</I><DD>
+Loads trusted certificate from PEM <I>file</I>.
+<P>
+<DT><B>--untrusted</B> <I>file</I><DD>
+Loads un-trusted certificate from PEM <I>file</I>.
+<P>
+<DT><B>--repeat</B> <I>number</I><DD>
+Repeats the operation <I>number</I> times.
+<P>
+<DT><B>--fake-signatures</B><DD>
+Disables actual signature calculation for performance testing.
+<P>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>ENCRYPT COMMAND OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>--binary</B> <I>file</I><DD>
+Encrypts binary <I>file</I>.
+<P>
+<DT><B>--xml</B> <I>file</I><DD>
+Encrypts XML <I>file</I>.
+<P>
+<DT><B>--node-id</B> <I>id</I><DD>
+Instructs the xmlsec program to encrypt only element with given <I>id</I>.
+<P>
+<DT><B>--node-name</B> [<I>namespace-uri</I>:]<I>name</I><DD>
+Instructs the xmlsec program to encrypt only element with given <I>namespace-uri</I> and <I>name</I>.
+<P>
+<DT><B>--keys</B> <I>file</I><DD>
+Loads keys from XML keys <I>file</I>.
+<P>
+<DT><B>--pubkey</B>[:<I>name</I>] <I>file</I><DD>
+Loads public key from PEM <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--privkey</B>[:<I>name</I>] <I>file</I>[,<I>cafile1</I>[,<I>cafile2</I>[,<I>...</I>]]]<DD>
+Loads private key from PEM <I>file</I> along with certificates chain in PEM files <I>cafile1</I>, <I>cafile2</I>,<I>...</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pkcs12</B>[:<I>name</I>] <I>file</I><DD>
+Loads private key and certificates chain from pkcs12 <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--hmackey</B>[:<I>name</I>] <I>file</I><DD>
+Loads HMAC key from binary file and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pwd</B> <I>password</I><DD>
+Sets the <I>password</I> to use for reading keys and certificates from PEM files.
+<P>
+<DT><B>--allowed</B> <I>list</I><DD>
+Specifies the set of the allowed key origins as a comma separated <I>list</I> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
+<P>
+<DT><B>--session-key-rsa</B><DD>
+Generates and uses for encryption RSA key.
+<P>
+<DT><B>--session-key-des3</B><DD>
+Generates and uses for encryption Tripple DES key.
+<P>
+<DT><B>--session-key-aes128</B><DD>
+Generates and uses for encryption AES 128 key.
+<P>
+<DT><B>--session-key-aes192</B><DD>
+Generates and uses for encryption AES 192 key.
+<P>
+<DT><B>--session-key-256</B><DD>
+Generates and uses for encryption AES 256 key.
+<P>
+<DT><B>--repeat</B> <I>number</I><DD>
+Repeats the operation <I>number</I> times.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>DECRYPT COMMAND OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>--node-id</B> <I>id</I><DD>
+Instructs the xmlsec program to decrypt only element with given <I>id</I>.
+<P>
+<DT><B>--keys</B> <I>file</I><DD>
+Loads keys from XML keys <I>file</I>.
+<P>
+<DT><B>--pubkey</B>[:<I>name</I>] <I>file</I><DD>
+Loads public key from PEM <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--privkey</B>[:<I>name</I>] <I>file</I>[,<I>cafile1</I>[,<I>cafile2</I>[,<I>...</I>]]]<DD>
+Loads private key from PEM <I>file</I> along with certificates chain in PEM files <I>cafile1</I>, <I>cafile2</I>,<I>...</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pkcs12</B>[:<I>name</I>] <I>file</I><DD>
+Loads private key and certificates chain from pkcs12 <I>file</I> and sets the key name to <I>name</I>.
+<P>
+<DT><B>--hmackey</B>[:<I>name</I>] <I>file</I><DD>
+Loads HMAC key from binary file and sets the key name to <I>name</I>.
+<P>
+<DT><B>--pwd</B> <I>password</I><DD>
+Sets the <I>password</I> to use for reading keys and certificates from PEM files.
+<P>
+<DT><B>--allowed</B> <I>list</I><DD>
+Specifies the set of the allowed key origins as a comma separated <I>list</I> of the following values: &quot;keymanager&quot;, &quot;keyname&quot;, &quot;keyvalue&quot;, &quot;retrieval-doc&quot;, &quot;retrieval-remote&quot;, &quot;enc-key&quot;, &quot;x509&quot;. By default, all key origins are allowed.
+<P>
+<DT><B>--trusted</B> <I>file</I><DD>
+Loads trusted certificate from PEM <I>file</I>.
+<P>
+<DT><B>--untrusted</B> <I>file</I><DD>
+Loads un-trusted certificate from PEM <I>file</I>.
+<P>
+<DT><B>--repeat</B> <I>number</I><DD>
+Repeats the operation <I>number</I> times.
+<P>
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>REPORTING BUGS</H2>
+
+<P>
+<P>
+
+Report bugs to &lt;<A HREF="mailto:xmlsec@aleksey.com">xmlsec@aleksey.com</A>&gt;
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>MORE INFORMATION</H2>
+
+<P>
+<P>
+XML Security Library: <A HREF="http://www.aleksey.com/xmlsec/">http://www.aleksey.com/xmlsec/</A>
+<P>
+<P>
+XML Digital Signature: <A HREF="http://www.w3.org/Signature/">http://www.w3.org/Signature/</A>
+<P>
+<P>
+XML Encrytpion: <A HREF="http://www.w3.org/Encryption/">http://www.w3.org/Encryption/</A>
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Aleksey Sanin  &lt;<A HREF="mailto:aleksey@aleksey.com">aleksey@aleksey.com</A>&gt;.
+<A NAME="lbAN">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 2002 Aleksey Sanin  &lt;<A HREF="mailto:aleksey@aleksey.com">aleksey@aleksey.com</A>&gt;
+
+
+<P>
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">INTRODUCTION</A><DD>
+<DT><A HREF="#lbAE">COMMANDS</A><DD>
+<DT><A HREF="#lbAF">KEYS COMMAND OPTIONS</A><DD>
+<DT><A HREF="#lbAG">SIGN COMMAND OPTIONS</A><DD>
+<DT><A HREF="#lbAH">VERIFY COMMAND OPTIONS</A><DD>
+<DT><A HREF="#lbAI">ENCRYPT COMMAND OPTIONS</A><DD>
+<DT><A HREF="#lbAJ">DECRYPT COMMAND OPTIONS</A><DD>
+<DT><A HREF="#lbAK">REPORTING BUGS</A><DD>
+<DT><A HREF="#lbAL">MORE INFORMATION</A><DD>
+<DT><A HREF="#lbAM">AUTHOR</A><DD>
+<DT><A HREF="#lbAN">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by man2html, using the manual pages.<BR>
+Time: 02:31:41 GMT, August 15, 2002
+</BODY>
+</HTML>

@@ -479,10 +479,9 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecOpenSSLHmacGetDigest(transform) != NULL, -1);
     xmlSecAssert2(xmlSecOpenSSLHmacGetCtx(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataHmacId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataHmacId), -1);
     
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
 
     if(xmlSecBufferGetSize(buffer) == 0) {

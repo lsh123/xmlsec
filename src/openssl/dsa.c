@@ -457,19 +457,18 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int 
 xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+				xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
     DSA* dsa;
     int ret;
     
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(key->value->id == id, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    dsa = xmlSecOpenSSLKeyDataDsaGetDsa(key->value);
+    dsa = xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyGetValue(key));
     xmlSecAssert2(dsa != NULL, -1);
     
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyType) == 0) {
@@ -748,10 +747,9 @@ xmlSecOpenSSLDsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataDsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataDsaId), -1);
     
-    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(key->value);
+    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -830,7 +828,8 @@ xmlSecOpenSSLDsaEvpFinal(EVP_MD_CTX *ctx,unsigned char *md)
 }
 
 static int 	
-xmlSecOpenSSLDsaEvpSign(int type, const unsigned char *dgst, int dlen,
+xmlSecOpenSSLDsaEvpSign(int type ATTRIBUTE_UNUSED, 
+			const unsigned char *dgst, int dlen,
 			unsigned char *sig, unsigned int *siglen, DSA *dsa) {
     DSA_SIG *s;
     int rSize, sSize;
@@ -864,7 +863,8 @@ xmlSecOpenSSLDsaEvpSign(int type, const unsigned char *dgst, int dlen,
 }
 
 static int 
-xmlSecOpenSSLDsaEvpVerify(int type, const unsigned char *dgst, int dgst_len,
+xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED, 
+			const unsigned char *dgst, int dgst_len,
 			const unsigned char *sigbuf, int siglen, DSA *dsa) {
     DSA_SIG *s;    
     int ret = -1;

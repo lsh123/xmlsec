@@ -384,19 +384,18 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int 
 xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+			    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
     RSA* rsa;
     int ret;
     
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataRsaId, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(key->value->id == id, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    rsa = xmlSecOpenSSLKeyDataRsaGetRsa(key->value);
+    rsa = xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyGetValue(key));
     xmlSecAssert2(rsa != NULL, -1);
     
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyType) == 0) {
@@ -625,10 +624,9 @@ xmlSecOpenSSLRsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id), -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataRsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
     
-    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(key->value);
+    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -759,9 +757,9 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
     xmlSecAssert2(xmlSecOpenSSLRsaPkcs1GetKey(transform) == NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataRsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
 
-    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(key->value);
+    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1092,9 +1090,9 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(xmlSecOpenSSLRsaOaepGetKey(transform) == NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataRsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
 
-    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(key->value);
+    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyGetValue(key));
     if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,

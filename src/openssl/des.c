@@ -313,9 +313,9 @@ xmlSecOpenSSLDes3CbcSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDes3CbcId), -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataDesId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataDesId), -1);
     
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
     
     ret = xmlSecOpenSSLEvpBlockCipherSetKey(transform, 
@@ -472,9 +472,9 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(xmlSecOpenSSLKWDes3GetKey(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecOpenSSLKeyDataDesId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataDesId), -1);
     
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
 
     keySize = xmlSecBufferGetSize(buffer);

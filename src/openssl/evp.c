@@ -367,7 +367,6 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform,
 	 * This needs to be fixed in the next XMLSEC API refresh.
 	 */
 	if (blockLen > 1 && !ctx->buf_len) {
-	    xmlSecAssert2(blockLen < outLen, -1);
 	    outLen -= blockLen;
 	    ctx->final_used = 1;
 	    memcpy(ctx->final, &out[outLen], blockLen);

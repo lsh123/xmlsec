@@ -1,6 +1,9 @@
-/**
- * DES transform methods
- */
+
+/*********************************************************************
+ *
+ * Triple DES CBC
+ *
+ ********************************************************************/
 static xmlSecTransformPtr xmlSecDesCreate	(xmlSecTransformId id);
 static void 	xmlSecDesDestroy		(xmlSecTransformPtr transform);
 static int  	xmlSecDesSetKeyReq		(xmlSecTransformPtr transform, 
@@ -10,7 +13,7 @@ static int  	xmlSecDesSetKey			(xmlSecTransformPtr transform,
 /**
  * DES transforms
  */
-static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
+static xmlSecTransformKlass xmlSecEncDes3CbcId = {
     /* same as xmlSecTransformId */    
     BAD_CAST "enc-des3",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
@@ -24,27 +27,134 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     xmlSecDesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
-    NULL,
-    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecOpenSSLEvpBlockCipherExecuteBin,
+    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
-    
-    /* xmlSecCipherTransform data/methods */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
-    XMLSEC_DES3_KEY_SIZE,		/* size_t keySize */
-    XMLSEC_DES_IV_SIZE,			/* size_t ivSize */
-    XMLSEC_DES_BLOCK_SIZE,		/* size_t bufInSize */
-    2 * XMLSEC_DES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncDes3Cbc = (xmlSecTransformId)&xmlSecEncDes3CbcId;
 
 /**
+ * xmlSecDesCreate:
+ */ 
+static xmlSecTransformPtr 
+xmlSecDesCreate(xmlSecTransformId id) {
+    xmlSecTransformPtr transform;
+    int ret;
+        
+    xmlSecAssert2(id == xmlSecEncDes3Cbc, NULL);        
+    
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", sizeof(xmlSecTransform));
+	return(NULL);
+    }
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    transform->id = id;
+
+    ret = xmlSecOpenSSLEvpBlockCipherInitialize(transform, EVP_des_ede3_cbc());	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpBlockCipherInitialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    return(transform);
+}
+
+/**
+ * xmlSecDesDestroy:
+ */ 
+static void 	
+xmlSecDesDestroy(xmlSecTransformPtr transform) {
+
+    xmlSecAssert(transform != NULL);    
+    if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncDes3Cbc");
+	return;
+    }
+    xmlSecOpenSSLEvpBlockCipherFinalize(transform);
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
+}
+
+static int  
+xmlSecDesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc), -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    keyInfoCtx->keyId 	 = xmlSecKeyDataDesValueId;
+    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
+    if(transform->encode) {
+	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
+    } else {
+	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
+    }
+    
+    return(0);
+}
+
+/** 
+ * xmlSecDesSetKey:
+ */ 
+static int  	
+xmlSecDesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecBufferPtr buffer;
+    int ret;
+    
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataDesValueId), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc), -1);
+    
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    xmlSecAssert2(buffer != NULL, -1);
+    
+    ret = xmlSecOpenSSLEvpBlockCipherSetKey(transform, xmlSecBufferGetData(buffer), 
+					    xmlSecBufferGetSize(buffer)); 
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpBlockCipherSetKey"); 
+	return(-1);    
+    }
+
+    return(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*********************************************************************
+ *
  * Triple DES Key Wrap
- */
+ *
+ ********************************************************************/
 static xmlSecTransformPtr xmlSecDes3KWCreate	(xmlSecTransformId id);
 static void 	xmlSecDes3KWDestroy		(xmlSecTransformPtr transform);
 static int  	xmlSecDes3KWSetKeyReq		(xmlSecTransformPtr transform, 
@@ -99,151 +209,6 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWDes3CbcId = {
 };
 xmlSecTransformId xmlSecKWDes3Cbc = (xmlSecTransformId)&xmlSecKWDes3CbcId;
 
-/**
- * DES transform methods
- */
-/**
- * xmlSecDesCreate:
- */ 
-static xmlSecTransformPtr 
-xmlSecDesCreate(xmlSecTransformId id) {
-    xmlSecCipherTransformId cipherId;
-    xmlSecCipherTransformPtr cipher;
-    const EVP_CIPHER *type;
-    size_t size;
-    
-    xmlSecAssert2(id != NULL, NULL);
-        
-    if(id != xmlSecEncDes3Cbc) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncDes3Cbc");
-	return(NULL);	
-    }
-    
-    type = EVP_des_ede3_cbc();	
-
-    cipherId = (xmlSecCipherTransformId)id;
-    size = sizeof(xmlSecCipherTransform) +
-	   sizeof(unsigned char) * (cipherId->bufInSize + 
-        			    cipherId->bufOutSize + 
-				    cipherId->ivSize);
-    cipher = (xmlSecCipherTransformPtr)xmlMalloc(size);
-    if(cipher == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", size);
-	return(NULL);
-    }
-
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
-			sizeof(unsigned char) * (cipherId->bufInSize + 
-        		cipherId->bufOutSize + cipherId->ivSize));
-    EVP_CIPHER_CTX_init(&(cipher->cipherCtx));
-    
-    cipher->id = id;
-    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecCipherTransform);
-    cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
-    cipher->iv = cipher->bufOut + cipherId->bufOutSize; 
-    cipher->cipherData = (void*)type; /* cache cipher type */
-    return((xmlSecTransformPtr)cipher);
-}
-
-/**
- * xmlSecDesDestroy:
- */ 
-static void 	
-xmlSecDesDestroy(xmlSecTransformPtr transform) {
-    xmlSecCipherTransformPtr cipher;
-    xmlSecCipherTransformId cipherId;
-
-    xmlSecAssert(transform != NULL);    
-    if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncDes3Cbc");
-	return;
-    }
-    
-    cipher = (xmlSecCipherTransformPtr) transform;
-    cipherId = (xmlSecCipherTransformId) transform->id;
-    EVP_CIPHER_CTX_cleanup(&(cipher->cipherCtx));
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) +
-			sizeof(unsigned char) * (cipherId->bufInSize + 
-        		cipherId->bufOutSize + cipherId->ivSize));
-    xmlFree(cipher);
-}
-
-static int  
-xmlSecDesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    keyInfoCtx->keyId 	 = xmlSecKeyDataDesValueId;
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
-    } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
-    }
-    
-    return(0);
-}
-
-/** 
- * xmlSecDesSetKey:
- */ 
-static int  	
-xmlSecDesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecCipherTransformPtr cipher;
-    xmlSecCipherTransformId cipherId;
-    xmlSecBufferPtr buffer;
-    int ret;
-    
-    xmlSecAssert2(transform != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataDesValueId), -1);
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc), -1);
-    
-    cipher = (xmlSecCipherTransformPtr) transform;
-    cipherId = (xmlSecCipherTransformId) transform->id;
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
-    xmlSecAssert2(buffer != NULL, -1);
-    
-    if((size_t)xmlSecBufferGetSize(buffer) < cipherId->keySize) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
-		    "%d bytes < %d bytes", 
-		    xmlSecBufferGetSize(buffer),
-		    cipherId->keySize);
-	return(-1);    
-    }
-    
-    if(cipher->encode) {
-	ret = EVP_EncryptInit(&(cipher->cipherCtx), 
-			      (EVP_CIPHER *)cipher->cipherData,
-			      xmlSecBufferGetData(buffer), NULL); 
-    } else {
-	ret = EVP_DecryptInit(&(cipher->cipherCtx), 
-			      (EVP_CIPHER *)cipher->cipherData,
-			      xmlSecBufferGetData(buffer), NULL); 
-    }
-    
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    (cipher->encode) ? "EVP_EncryptInit" : "EVP_DecryptInit");
-	return(-1);    
-    }
-    return(0);
-}
-
-/*********************************************************************
- *
- * Triple DES Key Wrap
- *
- ********************************************************************/
 #define xmlSecKWDes3KeyData(t) \
     ((xmlSecBufferPtr)(((xmlSecBufferedTransformPtr)( t ))->reserved1))
     

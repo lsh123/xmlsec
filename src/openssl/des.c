@@ -25,12 +25,12 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/ciphers.h>
 #include <xmlsec/buffered.h> 
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
 
 #define XMLSEC_DES_BLOCK_SIZE			8
 #define XMLSEC_DES3_KEY_SIZE			24

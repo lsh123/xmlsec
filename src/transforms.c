@@ -191,7 +191,9 @@ xmlSecTransformExecuteBin(xmlSecTransformPtr transform,
 		const unsigned char* in, size_t inSize, size_t* inRes,
 		unsigned char* out, size_t outSize, size_t* outRes) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+/* TODO????
     xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
+*/    
     xmlSecAssert2(inRes != NULL, -1);
     xmlSecAssert2(outRes != NULL, -1);
 

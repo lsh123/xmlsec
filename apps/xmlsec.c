@@ -1459,7 +1459,7 @@ xmlSecKeyPtr genRsa(const char *name) {
     key->name = xmlStrdup(BAD_CAST name);
     return(key);
 #else    
-    fprintf(stderr, "Error: DES support was disabled during compilation\n");
+    fprintf(stderr, "Error: RSA support was disabled during compilation\n");
     return(NULL);
 #endif /* XMLSEC_NO_RSA */    
 }

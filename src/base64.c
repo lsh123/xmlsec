@@ -129,7 +129,11 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
     }
     ++(ctx->linePos);
     if(ctx->inPos > 1) {
-        ctx->out[ctx->outPos++] = xmlSecBase64Encode3(ctx->in[1], ctx->in[2]);
+	if(ctx->inPos > 2) {
+    	    ctx->out[ctx->outPos++] = xmlSecBase64Encode3(ctx->in[1], ctx->in[2]);
+	} else {
+    	    ctx->out[ctx->outPos++] = xmlSecBase64Encode3(ctx->in[1], 0);
+	}
     } else {
         ctx->out[ctx->outPos++] = '=';
     }

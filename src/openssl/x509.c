@@ -151,8 +151,9 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
     EVP_PKEY_free(pKey); 
     /* todo: check tha key->value != NULL */
     
-    key->value->x509Data = xmlSecX509DataCreate();
-    if(key->value->x509Data == NULL) {
+    key->origin |= xmlSecKeyOriginX509;
+    key->x509Data = xmlSecX509DataCreate();
+    if(key->x509Data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecX509DataCreate");
@@ -160,7 +161,7 @@ xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
 	xmlSecKeyDestroy(key);
 	return(NULL);
     }
-    key->value->x509Data->certs = chain;
+    key->x509Data->certs = chain;
     return(key);
 }
 
@@ -411,7 +412,7 @@ xmlSecX509DataCreateKey(xmlSecX509DataPtr x509Data) {
     }    
     EVP_PKEY_free(pKey);
     
-    key->value->x509Data = x509Data;
+    key->x509Data = x509Data;
     return(key);
 }
 
@@ -1289,6 +1290,45 @@ xmlSecX509StoreVerifyCRL(xmlSecX509StorePtr store, X509_CRL *crl ) {
     }
     X509_STORE_CTX_cleanup (&xsc);  
     return((ret == 1) ? 1 : 0);
+}
+
+/**
+ * xmlSecKeyReadPemCert:
+ * @key: the pointer to the #xmlSecKeyValue structure.
+ * @filename: the PEM cert file name.
+ *
+ * Reads the cert from a PEM file and assigns the cert
+ * to the key.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
+int		
+xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
+    int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
+    if(key->x509Data == NULL) {
+	key->x509Data = xmlSecX509DataCreate();
+	if(key->x509Data == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataCreate");
+	    return(-1);
+	}
+    }    
+    
+    ret = xmlSecX509DataReadPemCert(key->x509Data, filename);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509DataReadPemCert(%s) - %d", filename, ret);
+	return(-1);
+    }
+    
+    return(0);
 }
 
 /*****************************************************************************

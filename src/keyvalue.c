@@ -93,7 +93,6 @@ xmlSecKeyValueIdsFindByNode(xmlSecKeyValueId desiredKeyId, xmlNodePtr cur) {
 /**
  * xmlSecKeyValueCreate:
  * @id: the key id.
- * @origin: the key origins.
  *
  * Creates new key of the specified type @id.
  *
@@ -101,7 +100,7 @@ xmlSecKeyValueIdsFindByNode(xmlSecKeyValueId desiredKeyId, xmlNodePtr cur) {
  * or NULL if an error occurs.
  */
 xmlSecKeyValuePtr	
-xmlSecKeyValueCreate(xmlSecKeyValueId id, xmlSecKeyOrigin origin)  {
+xmlSecKeyValueCreate(xmlSecKeyValueId id)  {
     xmlSecKeyValuePtr key;
     
     xmlSecAssert2(id != NULL, NULL);
@@ -114,7 +113,6 @@ xmlSecKeyValueCreate(xmlSecKeyValueId id, xmlSecKeyOrigin origin)  {
 		    "id->create");
 	return(NULL);	
     }
-    key->origin = origin;
     return(key);
 }
 
@@ -137,18 +135,12 @@ xmlSecKeyValueDestroy(xmlSecKeyValuePtr key) {
 	return;
     }
     
-#ifndef XMLSEC_NO_X509
-    if(key->x509Data != NULL) {	
-	xmlSecX509DataDestroy(key->x509Data);
-    }
-#endif /* XMLSEC_NO_X509 */    
     key->id->destroy(key);
 }
 
 /**
  * xmlSecKeyValueDuplicate:
  * @key: the pointer to the #xmlSecKeyValue structure.
- * @origin: the key origins.
  *
  * Creates a duplicate of the given @key.
  *
@@ -156,7 +148,7 @@ xmlSecKeyValueDestroy(xmlSecKeyValuePtr key) {
  * or NULL if an error occurs.
  */
 xmlSecKeyValuePtr	
-xmlSecKeyValueDuplicate(xmlSecKeyValuePtr key,  xmlSecKeyOrigin origin) {
+xmlSecKeyValueDuplicate(xmlSecKeyValuePtr key) {
     xmlSecKeyValuePtr newKey;
 
     xmlSecAssert2(key != NULL, NULL);
@@ -178,25 +170,18 @@ xmlSecKeyValueDuplicate(xmlSecKeyValuePtr key,  xmlSecKeyOrigin origin) {
 	return(NULL);	
     }
     
-    newKey->origin = origin;
-#ifndef XMLSEC_NO_X509
-    /* dup x509 certs */
-    if(key->x509Data != NULL) {
-	newKey->x509Data = xmlSecX509DataDup(key->x509Data);
-    }
-#endif /* XMLSEC_NO_X509 */    
     return(newKey);
 }
 
 xmlSecKeyValuePtr
-xmlSecKeyValueGenerate(xmlSecKeyValueId id, int keySize, xmlSecKeyOrigin origin) {
+xmlSecKeyValueGenerate(xmlSecKeyValueId id, int keySize) {
     xmlSecKeyValuePtr key;
     int ret;
     
     xmlSecAssert2(id != NULL, NULL);
     xmlSecAssert2(id->generate != NULL, NULL);
     
-    key = xmlSecKeyValueCreate(id, origin);
+    key = xmlSecKeyValueCreate(id);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -276,7 +261,7 @@ xmlSecKeyValueReadXml(xmlSecKeyValueId id, xmlNodePtr node) {
     xmlSecAssert2(id->read != NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
 
-    key = xmlSecKeyValueCreate(id, xmlSecKeyOriginDefault);
+    key = xmlSecKeyValueCreate(id);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -354,7 +339,7 @@ xmlSecKeyValueReadBin(xmlSecKeyValueId id, const unsigned char *buf, size_t size
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
     
-    key = xmlSecKeyValueCreate(id, xmlSecKeyOriginDefault);
+    key = xmlSecKeyValueCreate(id);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -440,38 +425,7 @@ xmlSecKeyValueDebugDump(xmlSecKeyValuePtr key, FILE *output) {
     fprintf(output, "=== key type: %s\n", 
 	    (key->type == xmlSecKeyValueTypePrivate) ? 
 	    "Private" : "Public"); 
-    fprintf(output, "=== key origin:");
-    if(key->origin & xmlSecKeyOriginKeyManager) {
-	fprintf(output, " KeyManager");
-    }
-    if(key->origin & xmlSecKeyOriginKeyName) {
-	fprintf(output, " KeyName");
-    }
-    if(key->origin & xmlSecKeyOriginKeyValue) {
-	fprintf(output, " KeyValue");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalDocument) {
-	fprintf(output, " RetrievalDocument");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalRemote) {
-	fprintf(output, " RetrievalRemote");
-    }
-    if(key->origin & xmlSecKeyOriginX509) {
-	fprintf(output, " x509");
-    }
-    if(key->origin & xmlSecKeyOriginEncryptedKey) {
-	fprintf(output, " EncKey");
-    }
-    if(key->origin & xmlSecKeyOriginPGP) {
-	fprintf(output, " PGP");
-    }
-    fprintf(output, "\n");
-#ifndef XMLSEC_NO_X509
-    if(key->x509Data != NULL) {
-	xmlSecX509DataDebugDump(key->x509Data, output);
-    }
-#endif /* XMLSEC_NO_X509 */    
-    }
+}
 
 /** 
  * xmlSecKeyValueDebugXmlDump:
@@ -499,78 +453,6 @@ xmlSecKeyValueDebugXmlDump(xmlSecKeyValuePtr key, FILE *output) {
     fprintf(output, "<KeyType>%s</KeyType>\n", 
 	    (key->type == xmlSecKeyValueTypePrivate) ? 
 	    "Private" : "Public"); 
-    fprintf(output, "<KeyOrigins>\n");
-    if(key->origin & xmlSecKeyOriginKeyManager) {
-	fprintf(output, "<KeyOrigin>KeyManager</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginKeyName) {
-	fprintf(output, "<KeyOrigin>KeyName</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginKeyValue) {
-	fprintf(output, "<KeyOrigin>KeyValue</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalDocument) {
-	fprintf(output, "<KeyOrigin>RetrievalDocument</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalRemote) {
-	fprintf(output, "<KeyOrigin>RetrievalRemote</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginX509) {
-	fprintf(output, "<KeyOrigin>x509</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginEncryptedKey) {
-	fprintf(output, "<KeyOrigin>EncKey</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginPGP) {
-	fprintf(output, "<KeyOrigin>PGP</KeyOrigin>\n");
-    }
-    fprintf(output, "</KeyOrigins>\n");
-#ifndef XMLSEC_NO_X509
-    if(key->x509Data != NULL) {
-	xmlSecX509DataDebugXmlDump(key->x509Data, output);
-    }
-#endif /* XMLSEC_NO_X509 */   
     fprintf(output, "</KeyInfo>\n"); 
 }
-
-#ifndef XMLSEC_NO_X509
-/**
- * xmlSecKeyReadPemCert:
- * @key: the pointer to the #xmlSecKeyValue structure.
- * @filename: the PEM cert file name.
- *
- * Reads the cert from a PEM file and assigns the cert
- * to the key.
- *
- * Returns 0 on success or a negative value otherwise.
- */ 
-int		
-xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
-    int ret;
-
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-
-    if(key->value->x509Data == NULL) {
-	key->value->x509Data = xmlSecX509DataCreate();
-	if(key->value->x509Data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecX509DataCreate");
-	    return(-1);
-	}
-    }    
-    
-    ret = xmlSecX509DataReadPemCert(key->value->x509Data, filename);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecX509DataReadPemCert(%s) - %d", filename, ret);
-	return(-1);
-    }
-    
-    return(0);
-}
-#endif /* XMLSEC_NO_X509 */
 

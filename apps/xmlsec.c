@@ -1073,7 +1073,7 @@ int readHmacKey(char *filename, char *name) {
     fclose(f);    
     
     /* HMAC */    
-    keyValue = xmlSecKeyValueCreate(xmlSecHmacKeyValue, xmlSecKeyOriginDefault);
+    keyValue = xmlSecKeyValueCreate(xmlSecHmacKeyValue);
     if(keyValue == NULL) {
 	fprintf(stderr, "Error: failed to create hmac key\n"); 
 	return(-1);
@@ -1472,33 +1472,33 @@ xmlSecKeyPtr genKey(const char* type, const char *name) {
     } else
 #ifndef XMLSEC_NO_HMAC    
     if(strcmp(type, "hmac") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecHmacKeyValue, 24, xmlSecKeyOriginDefault);
+	keyValue = xmlSecKeyValueGenerate(xmlSecHmacKeyValue, 24);
     } else 
 #endif /* XMLSEC_NO_HMAC */ 
 #ifndef XMLSEC_NO_RSA
     if(strcmp(type, "rsa") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecRsaKeyValue, 1024, xmlSecKeyOriginDefault);	
+	keyValue = xmlSecKeyValueGenerate(xmlSecRsaKeyValue, 1024);	
     } else 
 #endif /* XMLSEC_NO_RSA */    
 #ifndef XMLSEC_NO_DSA
     if(strcmp(type, "dsa") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecDsaKeyValue, 1024, xmlSecKeyOriginDefault);	
+	keyValue = xmlSecKeyValueGenerate(xmlSecDsaKeyValue, 1024);	
     } else 
 #endif /* XMLSEC_NO_DSA */    
 #ifndef XMLSEC_NO_DES
     if(strcmp(type, "des3") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecDesKeyValue, 24, xmlSecKeyOriginDefault);	
+	keyValue = xmlSecKeyValueGenerate(xmlSecDesKeyValue, 24);	
     } else 
 #endif /* XMLSEC_NO_DES */
 #ifndef XMLSEC_NO_AES
     if(strcmp(type, "aes128") == 0) {
-    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 16, xmlSecKeyOriginDefault);	
+    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 16);	
     } else 
     if(strcmp(type, "aes192") == 0) {
-    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 24, xmlSecKeyOriginDefault);	
+    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 24);	
     } else 
     if(strcmp(type, "aes256") == 0) {
-    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 32, xmlSecKeyOriginDefault);	
+    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 32);	
     } else 
 #endif /* XMLSEC_NO_AES */
     {

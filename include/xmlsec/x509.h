@@ -15,12 +15,16 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #ifndef XMLSEC_NO_X509
-#if 0
+
+
 /***************************************************************************
  *
  * xmlSecKeyDataX509
  *
  **************************************************************************/
+
+
+#if 0
 typedef struct _xmlSecKeyDataX509IdStruct*	xmlSecKeyDataX509Id;
 struct _xmlSecKeyDataX509IdStruct {
     /* same as xmlSecDataId */
@@ -39,6 +43,8 @@ struct _xmlSecKeyDataX509IdStruct {
 
     /* new in xmlSecDataX509Id */
 };
+
+
 
 /***************************************************************************
  *
@@ -140,6 +146,9 @@ XMLSEC_EXPORT int		xmlSecX509StoreAddCertsDir	(xmlSecX509StorePtr store,
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename, 
 								 const char *pwd);
 
+
+XMLSEC_EXPORT int		xmlSecKeyReadPemCert		(xmlSecKeyPtr key,
+								 const char *filename);
 
 #else /*  XMLSEC_NO_X509 */
 typedef void* 	xmlSecX509Data, *xmlSecX509DataPtr;

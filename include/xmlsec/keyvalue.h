@@ -40,71 +40,6 @@ typedef enum  {
 } xmlSecKeyValueType;
 
 /**
- * xmlSecKeyUsages:
- * @xmlSecKeyUsageUnknown: unknown.
- * @xmlSecKeyUsageSign: the key for signing.
- * @xmlSecKeyUsageVerify: the key for signature verification.
- * @xmlSecKeyUsageEncrypt: the encryption key.
- * @xmlSecKeyUsageDecrypt: the decryption key.
- * @xmlSecKeyUsageAny: the key can be used in any way.
- *
- * The key usages list.
- */ 
-typedef enum  {
-    xmlSecKeyUsageUnknown		= 0x0000,
-    xmlSecKeyUsageSign			= 0x0001,
-    xmlSecKeyUsageVerify		= 0x0002,
-    xmlSecKeyUsageEncrypt		= 0x0004,
-    xmlSecKeyUsageDecrypt		= 0x0008,
-    xmlSecKeyUsageAny			= 0xFFFF
-} xmlSecKeyUsages;
-/**
- * xmlSecKeyUsage:
- *
- * The key usage is a bits mask from the @xmlSecKeyUsages list.
- */
-typedef unsigned long			xmlSecKeyUsage;
-
-
-/** 
- * xmlSecKeyOrigins:
- * @xmlSecKeyOriginUnknown: unknown.
- * @xmlSecKeyOriginContext: key from the context (i.e. w/o information 
- *       from dsig:KeyInfo).
- * @xmlSecKeyOriginKeyName: key from the name in dsig:KeyName element.
- * @xmlSecKeyOriginKeyValue: key from the name in dsig:KeyValue element.
- * @xmlSecKeyOriginRetrievalLocal: key from dsig:RetrievalMethod 
- *	pointing to the current document.
- * @xmlSecKeyOriginRetrievalRemote: key from dsig:RetrievalMethod 
- *	pointing outsied of the current document.
- * @xmlSecKeyOriginX509Data: key from dsig:X509Data element.
- * @xmlSecKeyOriginPGPData: key from dsig:PGPData element.
- * @xmlSecKeyOriginEncryptedKey: key from enc:EncryptedKey element.
- * @xmlSecKeyOriginAll: all of the above.
- *
- * The key origin(s) are used to set rules for key retrieval.
- */
-typedef enum {
-    xmlSecKeyOriginDefault		= 0x0000,
-    xmlSecKeyOriginKeyManager		= 0x0001,
-    xmlSecKeyOriginKeyName		= 0x0002,
-    xmlSecKeyOriginKeyValue		= 0x0004,
-    xmlSecKeyOriginRetrievalDocument	= 0x0008,
-    xmlSecKeyOriginRetrievalRemote	= 0x0010,
-    xmlSecKeyOriginX509			= 0x0020,
-    xmlSecKeyOriginPGP			= 0x0040,
-    xmlSecKeyOriginEncryptedKey		= 0x0080,
-    xmlSecKeyOriginAll			= 0xFFFF
-} xmlSecKeyOrigins;
-/** 
- * xmlSecKeyOrigin:
- * 
- * The key origin is a bits mask from the @xmlSecKeyOrigins list.
- */ 
-typedef long				xmlSecKeyOrigin;
-
-
-/**
  * xmlSecKeyValueIdUnknown:
  *
  * The "unknown" id.
@@ -112,7 +47,6 @@ typedef long				xmlSecKeyOrigin;
 #define xmlSecKeyValueIdUnknown		NULL
 
 #include <xmlsec/keys.h>
-#include <xmlsec/x509.h>
 
 
 /**
@@ -128,20 +62,15 @@ typedef long				xmlSecKeyOrigin;
 struct _xmlSecKeyValue {
     xmlSecKeyValueId			id;
     xmlSecKeyValueType			type;
-    xmlSecKeyOrigin			origin;
-    xmlSecX509DataPtr			x509Data;
     void				*keyData;
 };
 
 
-XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueCreate	(xmlSecKeyValueId id,
-							 xmlSecKeyOrigin origin);
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueCreate	(xmlSecKeyValueId id);
 XMLSEC_EXPORT void		xmlSecKeyValueDestroy	(xmlSecKeyValuePtr key);
 XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueGenerate	(xmlSecKeyValueId id,
-							 int keySize,
-							 xmlSecKeyOrigin origin);
-XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueDuplicate	(xmlSecKeyValuePtr key,
-							 xmlSecKeyOrigin origin);
+							 int keySize);
+XMLSEC_EXPORT xmlSecKeyValuePtr	xmlSecKeyValueDuplicate	(xmlSecKeyValuePtr key);
 XMLSEC_EXPORT int		xmlSecKeyValueSet	(xmlSecKeyValuePtr key, 
 							 void* data,
 							 int dataSize);
@@ -165,12 +94,6 @@ XMLSEC_EXPORT int		xmlSecKeyValueWriteBin	(xmlSecKeyValuePtr key,
 							 unsigned char **buf,
 							 size_t *size);
 
-
-
-#ifndef XMLSEC_NO_X509
-XMLSEC_EXPORT int		xmlSecKeyReadPemCert	(xmlSecKeyPtr key,
-							 const char *filename);
-#endif /* XMLSEC_NO_X509 */
 
 
 

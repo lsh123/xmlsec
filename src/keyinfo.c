@@ -1810,13 +1810,13 @@ xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
     /* remove all existing content */
     xmlNodeSetContent(x509DataNode, NULL);
 
-    if(key->value->x509Data != NULL) {
+    if(key->x509Data != NULL) {
 	xmlNodePtr cur;
 	xmlChar *buf;
 	size_t count;
 	size_t i;
 	
-	count = xmlSecX509DataGetCertsNumber(key->value->x509Data);
+	count = xmlSecX509DataGetCertsNumber(key->x509Data);
 	for(i = 0; i < count; ++i) {
 	    cur = xmlSecAddChild(x509DataNode, BAD_CAST "X509Certificate", xmlSecDSigNs);
 	    if(cur == NULL) {
@@ -1826,7 +1826,7 @@ xmlSecX509DataNodeWrite(xmlNodePtr x509DataNode, xmlSecKeyPtr key) {
 		return(-1);	
 	    }
 
-	    buf = xmlSecX509DataWriteDerCert(key->value->x509Data, i);
+	    buf = xmlSecX509DataWriteDerCert(key->x509Data, i);
 	    if(buf == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,

@@ -50,7 +50,7 @@ xmlSecKeyCreate(xmlSecKeyValuePtr value, const xmlChar* name)  {
 
     /* dup value */    
     if(value != NULL) {
-	key->value = xmlSecKeyValueDuplicate(value, 0);
+	key->value = xmlSecKeyValueDuplicate(value);
 	if(key->value == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -84,13 +84,22 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
     if(key->name != NULL) {
 	xmlFree(key->name);
     }
+
+#ifndef XMLSEC_NO_X509
+    if(key->x509Data != NULL) {	
+	xmlSecX509DataDestroy(key->x509Data);
+    }
+#endif /* XMLSEC_NO_X509 */    
+
+/*
+todo
     if(key->x509Data != NULL) {
 	xmlSecKeyDataDestroy(key->x509Data);
     }
     if(key->pgpData != NULL) {
 	xmlSecKeyDataDestroy(key->pgpData);
     }
-    
+*/    
     memset(key, 0, sizeof(xmlSecKey));
     xmlFree(key);    
 }
@@ -108,6 +117,16 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
 		    "xmlSecKeyCreate");
 	return(NULL);	
     }
+
+#ifndef XMLSEC_NO_X509
+    /* dup x509 certs */
+    if(key->x509Data != NULL) {
+	newKey->x509Data = xmlSecX509DataDup(key->x509Data);
+    }
+#endif /* XMLSEC_NO_X509 */    
+
+/* todo */
+#if 0    
     /* dup x509 */    
     if(key->x509Data != NULL) {
 	newKey->x509Data = xmlSecKeyDataDuplicate(key->x509Data);
@@ -131,7 +150,7 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
 	    return(NULL);	
 	}
     }
-    
+#endif /* 0 */    
     return(newKey);
 }
 
@@ -201,6 +220,12 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     }
     fprintf(output, "\n");
 
+#ifndef XMLSEC_NO_X509
+    if(key->x509Data != NULL) {
+	xmlSecX509DataDebugDump(key->x509Data, output);
+    }
+#endif /* XMLSEC_NO_X509 */    
+
     /* todo:
     if(key->x509Data != NULL) {
 	xmlSecKeyDataDebugDump(key->x509Data, output);
@@ -251,6 +276,13 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     }
     fprintf(output, "</KeyOrigins>\n");
     
+
+#ifndef XMLSEC_NO_X509
+    if(key->x509Data != NULL) {
+	xmlSecX509DataDebugXmlDump(key->x509Data, output);
+    }
+#endif /* XMLSEC_NO_X509 */   
+
     /* todo:
     if(key->x509Data != NULL) {
 	xmlSecKeyDataDebugXmlDump(key->x509Data, output);

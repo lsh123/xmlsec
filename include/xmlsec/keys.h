@@ -31,6 +31,7 @@ typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keyvalue.h>
 #include <xmlsec/x509.h>
+#include <xmlsec/x509.h>
 
 
 /***************************************************************************
@@ -38,7 +39,6 @@ typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
  * xmlSecKey
  *
  **************************************************************************/
-#if 0
 /**
  * xmlSecKeyUsages:
  * @xmlSecKeyUsageUnknown: unknown.
@@ -101,7 +101,6 @@ typedef enum {
  * The key origin is a bits mask from the @xmlSecKeyOrigins list.
  */ 
 typedef long				xmlSecKeyOrigin;
-#endif /* 0 */
 
 
 /**
@@ -118,9 +117,13 @@ struct _xmlSecKey {
     xmlChar*			name;
     xmlSecKeyUsage		usage;
     xmlSecKeyOrigin		origin;
-    
+
+    xmlSecX509DataPtr		x509Data;
+/* 
+todo    
     xmlSecKeyDataPtr		x509Data;
     xmlSecKeyDataPtr		pgpData;
+*/
 };
 
 XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyCreate		(xmlSecKeyValuePtr value,

@@ -149,8 +149,8 @@ typedef enum {
 typedef enum {
     xmlSecXkmsServerFormatUnknown = 0,
     xmlSecXkmsServerFormatPlain,
-    xmlSecXkmsServerFormatSoap1_1,
-    xmlSecXkmsServerFormatSoap1_2
+    xmlSecXkmsServerFormatSoap11,
+    xmlSecXkmsServerFormatSoap12
 } xmlSecXkmsServerFormat;
 
 XMLSEC_EXPORT xmlSecXkmsServerFormat xmlSecXkmsServerFormatFromString
@@ -202,6 +202,7 @@ struct _xmlSecXkmsServerCtx {
     xmlSecPtrListPtr		compoundRequestContexts;
 
     /* these are internal data, nobody should change that except us */
+    xmlNodePtr			requestNode;
     xmlNodePtr			opaqueClientDataNode;
     xmlNodePtr 			firtsMsgExtNode;
     xmlNodePtr 			keyInfoNode;
@@ -217,20 +218,31 @@ XMLSEC_EXPORT void 		xmlSecXkmsServerCtxDestroy	(xmlSecXkmsServerCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecXkmsServerCtxInitialize	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxFinalize	(xmlSecXkmsServerCtxPtr ctx);
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxReset	(xmlSecXkmsServerCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecXkmsServerCtxCopyUserPref (xmlSecXkmsServerCtxPtr dst,
 								 xmlSecXkmsServerCtxPtr src);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxReset	(xmlSecXkmsServerCtxPtr ctx);
+XMLSEC_EXPORT xmlNodePtr	xmlSecXkmsServerCtxProcess	(xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node,
+                                                                 xmlSecXkmsServerFormat format,
+			    					 xmlDocPtr doc);
+XMLSEC_EXPORT int		xmlSecXkmsServerCtxRequestRead	(xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT xmlNodePtr	xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx,
+			    					 xmlDocPtr doc);
+XMLSEC_EXPORT xmlNodePtr	xmlSecXkmsServerCtxRequestUnwrap(xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node,
+                                                                 xmlSecXkmsServerFormat format);
+XMLSEC_EXPORT xmlNodePtr	xmlSecXkmsServerCtxResponseWrap (xmlSecXkmsServerCtxPtr ctx,
+								 xmlNodePtr node,
+                                                                 xmlSecXkmsServerFormat format,
+                                                                 xmlDocPtr doc);
+XMLSEC_EXPORT xmlNodePtr	xmlSecXkmsServerCtxFatalErrorResponseCreate 
+								(xmlSecXkmsServerCtxPtr ctx,
+                                                                 xmlSecXkmsServerFormat format,
+                                                                 xmlDocPtr doc);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxSetResult	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlSecXkmsResultMajor resultMajor,
                                                                  xmlSecXkmsResultMinor resultMinor);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxRequestRead	(xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr* node);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxProcessDoc	(xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr inNode,
-								 xmlNodePtr* outNode,
-                                                                 xmlSecXkmsServerFormat format);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugDump	(xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump (xmlSecXkmsServerCtxPtr ctx,
@@ -543,8 +555,9 @@ XMLSEC_EXPORT int  		xmlSecXkmsServerRequestNodeRead	(xmlSecXkmsServerRequestId 
 								 xmlNodePtr node);
 XMLSEC_EXPORT int  		xmlSecXkmsServerRequestExecute	(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx);
-XMLSEC_EXPORT int  		xmlSecXkmsServerRequestNodeWrite(xmlSecXkmsServerRequestId id,
+XMLSEC_EXPORT xmlNodePtr	xmlSecXkmsServerRequestNodeWrite(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx,
+								 xmlDocPtr doc,
 								 xmlNodePtr node);
 XMLSEC_EXPORT void		xmlSecXkmsServerRequestDebugDump(xmlSecXkmsServerRequestId id,
 								 FILE* output);

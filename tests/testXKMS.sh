@@ -42,7 +42,7 @@ if [ -n "$PERF_TEST" ] ; then
 fi
 
 # debug 
-xmlsec_params="$xmlsec_params --xkms-stop-on-unknown-response-mechanism --xkms-stop-on-unknown-respond-with --xkms-stop-on-unknown-key-usage"
+# xmlsec_params="$xmlsec_params --xkms-stop-on-unknown-response-mechanism --xkms-stop-on-unknown-respond-with --xkms-stop-on-unknown-key-usage"
         
 
 printRes() {
@@ -107,6 +107,14 @@ execXkmsServerRequestTest \
 execXkmsServerRequestTest \
     "aleksey-xkms-01/status-request" "success" \
     "--xkms-service http://www.example.com/xkms"
+
+execXkmsServerRequestTest \
+    "aleksey-xkms-01/soap11-locate-example-1" "no-match" \
+    "--xkms-service http://www.example.com/xkms --xkms-format soap-1.1"
+
+execXkmsServerRequestTest \
+    "aleksey-xkms-01/soap12-locate-example-1" "unsupported" \
+    "--xkms-service http://www.example.com/xkms --xkms-format soap-1.1"
 
 execXkmsServerRequestTest \
     "aleksey-xkms-01/bad-request-name" "not-supported" \

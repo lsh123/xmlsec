@@ -171,8 +171,8 @@ const xmlChar xmlSecResultMinorCodeUnknownResponseId[]	= "UnknownResponseId";
 const xmlChar xmlSecResultMinorCodeNotSynchronous[]	= "NotSynchronous";
 
 const xmlChar xmlSecXkmsFormatStrPlain[]                = "plain";
-const xmlChar xmlSecXkmsFormatStrSoap1_1[]              = "soap-1.1";
-const xmlChar xmlSecXkmsFormatStrSoap1_2[]              = "soap-1.2";
+const xmlChar xmlSecXkmsFormatStrSoap11[]               = "soap-1.1";
+const xmlChar xmlSecXkmsFormatStrSoap12[]               = "soap-1.2";
 
 #endif /* XMLSEC_NO_XKMS */
 
@@ -469,19 +469,25 @@ const xmlChar xmlSecHrefXslt[]			= "http://www.w3.org/TR/1999/REC-xslt-19991116"
  * SOAP 1.1/1.2 strings
  *
  ************************************************************************/
-const xmlChar xmlSecNodeSoapEnvelope[]		= "Envelope";
-const xmlChar xmlSecNodeSoapHeader[]		= "Header";
-const xmlChar xmlSecNodeSoapBody[]		= "Body";
-const xmlChar xmlSecNodeSoapFault[]		= "Fault";
-const xmlChar xmlSecNodeSoapFaultCode[]		= "faultcode";
-const xmlChar xmlSecNodeSoapFaultString[]	= "faultstring";
-const xmlChar xmlSecNodeSoapFaultActor[]	= "faultactor";
-const xmlChar xmlSecNodeSoapFaultDetail[]	= "detail";
+const xmlChar xmlSecNodeEnvelope[]		= "Envelope";
+const xmlChar xmlSecNodeHeader[]		= "Header";
+const xmlChar xmlSecNodeBody[]		        = "Body";
+const xmlChar xmlSecNodeFault[]		        = "Fault";
+const xmlChar xmlSecNodeFaultCode[]		= "faultcode";
+const xmlChar xmlSecNodeFaultString[]	        = "faultstring";
+const xmlChar xmlSecNodeFaultActor[]	        = "faultactor";
+const xmlChar xmlSecNodeFaultDetail[]	        = "detail";
 
 const xmlChar xmlSecSoapFaultCodeVersionMismatch[] 	= "VersionMismatch";
 const xmlChar xmlSecSoapFaultCodeMustUnderstand[]	= "MustUnderstand";
 const xmlChar xmlSecSoapFaultCodeClient[]		= "Client";
 const xmlChar xmlSecSoapFaultCodeServer[]		= "Server";
+
+const xmlChar xmlSecSoapFaultStringUnsupportedVersion[] = "Unsupported SOAP version";
+const xmlChar xmlSecSoapFaultStringUnableToProcess[]    = "Unable to process %s";
+const xmlChar xmlSecSoapFaultStringServiceUnavailable[] = "Service temporarily unable";
+const xmlChar xmlSecSoapFaultStringMessageNotSupported[]= "%s message not supported";
+const xmlChar xmlSecSoapFaultStringMessageInvalid[]     = "%s message invalid";
 
 #endif /* XMLSEC_NO_SOAP */
 

@@ -34,8 +34,7 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecSoap11AddFaultEntry	(xmlNodePtr envNode,
 								 const xmlChar* faultCodeHref,
 								 const xmlChar* faultCodeLocalPart,
 								 const xmlChar* faultString,
-								 const xmlChar* faultActor,
-								 const xmlChar* faultDetail);
+								 const xmlChar* faultActor);
 
 /***********************************************************************
  *
@@ -44,6 +43,7 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecSoap11AddFaultEntry	(xmlNodePtr envNode,
  **********************************************************************/
 XMLSEC_EXPORT int		xmlSecSoap11CheckEnvelope	(xmlNodePtr envNode);
 XMLSEC_EXPORT xmlNodePtr	xmlSecSoap11GetHeader		(xmlNodePtr envNode);
+XMLSEC_EXPORT xmlNodePtr	xmlSecSoap11GetBody		(xmlNodePtr envNode);
 XMLSEC_EXPORT xmlSecSize	xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode);
 XMLSEC_EXPORT xmlNodePtr	xmlSecSoap11GetBodyEntry	(xmlNodePtr envNode,
 								 xmlSecSize pos);

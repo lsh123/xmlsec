@@ -1850,7 +1850,8 @@ xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
 static int 
 xmlSecAppXkmsServerProcess(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlNodePtr result = NULL;
+    xmlDocPtr doc = NULL;
+    xmlNodePtr result;
     xmlSecXkmsServerCtx xkmsServerCtx;
     xmlSecXkmsServerFormat format = xmlSecXkmsServerFormatPlain;
     clock_t start_time;
@@ -1887,16 +1888,26 @@ xmlSecAppXkmsServerProcess(const char* filename) {
 	goto done;
     }
 
+    /* prepare result document */
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+	fprintf(stderr, "Error: failed to create doc\n");
+	goto done;
+    }
+
     start_time = clock();          
-    if(xmlSecXkmsServerCtxProcessDoc(&xkmsServerCtx, data->startNode, &result, format) < 0) {
+    result = xmlSecXkmsServerCtxProcess(&xkmsServerCtx, data->startNode, format, doc);
+    if(result == NULL) {
 	fprintf(stderr, "Error: failed to process xkms server request\n");
 	goto done;
     }
     total_time += clock() - start_time;    
-    
+
+        
     /* print out result only once per execution */
-    if((repeats <= 1) && (result != NULL) && (result->doc != NULL)) {
-	if(xmlSecAppWriteResult(result->doc, NULL) < 0) {
+    xmlDocSetRootElement(doc, result);
+    if(repeats <= 1) {
+	if(xmlSecAppWriteResult(doc, NULL) < 0) {
 	    goto done;
 	}
     }
@@ -1910,12 +1921,9 @@ done:
     }
     xmlSecXkmsServerCtxFinalize(&xkmsServerCtx);
 
-    if((result != NULL) && (result->doc != NULL)) {
-	xmlFreeDoc(result->doc);
-    } else if(result != NULL) {
-	xmlFreeNode(result);
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
     }
-    
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
     }

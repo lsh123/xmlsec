@@ -27,12 +27,19 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/soap.h>
 #include <xmlsec/xkms.h>
+#include <xmlsec/private.h>
 #include <xmlsec/private/xkms.h>
 #include <xmlsec/errors.h>
 
 /* The ID attribute in XKMS is 'Id' */
 static const xmlChar* xmlSecXkmsServerIds[] = { BAD_CAST "Id", NULL };
+
+#ifndef XMLSEC_NO_SOAP
+static int      xmlSecXkmsServerCtxWriteSoap11FatalError	(xmlSecXkmsServerCtxPtr ctx,
+							         xmlNodePtr envNode);
+#endif /* XMLSEC_NO_SOAP */
 
 static int	xmlSecXkmsServerCtxRequestAbstractTypeNodeRead	(xmlSecXkmsServerCtxPtr ctx,
 							         xmlNodePtr* node);
@@ -173,16 +180,18 @@ static const xmlSecQName2IntegerInfo gXmlSecXkmsFormatInfo[] =
 {
   { NULL, xmlSecXkmsFormatStrPlain, 
     xmlSecXkmsServerFormatPlain },
-  { NULL, xmlSecXkmsFormatStrSoap1_1,
-    xmlSecXkmsServerFormatSoap1_1 },
-  { NULL, xmlSecXkmsFormatStrSoap1_2, 
-    xmlSecXkmsServerFormatSoap1_2 },
+#ifndef XMLSEC_NO_SOAP
+  { NULL, xmlSecXkmsFormatStrSoap11,
+    xmlSecXkmsServerFormatSoap11 },
+  { NULL, xmlSecXkmsFormatStrSoap12, 
+    xmlSecXkmsServerFormatSoap12 },
+#endif /* XMLSEC_NO_SOAP */
   { NULL, NULL, 0 }	/* MUST be last in the list */
 };
 
 /**
  * xmlSecXkmsServerFormatFromString:
- * @str                 the string.
+ * @str         the string.
  *  
  * Gets xmlSecXkmsServerFormat from string @str.
  * 
@@ -211,7 +220,7 @@ xmlSecXkmsServerFormatFromString(const xmlChar* str) {
 
 /**
  * xmlSecXkmsServerFormatToString:
- * @format:             the format.
+ * @format:     the format.
  *
  * Gets string from @format.
  *
@@ -237,7 +246,7 @@ xmlSecXkmsServerFormatToString (xmlSecXkmsServerFormat format) {
 
 /**
  * xmlSecXkmsServerCtxCreate:
- * @keysMngr: 		the pointer to keys manager.
+ * @keysMngr: 	the pointer to keys manager.
  *
  * Creates XKMS request server side processing context.
  * The caller is responsible for destroying returend object by calling 
@@ -277,7 +286,7 @@ xmlSecXkmsServerCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecXkmsServerCtxDestroy:
- * @ctx:		the pointer to XKMS processing context.
+ * @ctx:	the pointer to XKMS processing context.
  *
  * Destroy context object created with #xmlSecXkmsServerCtxCreate function.
  */
@@ -291,8 +300,8 @@ xmlSecXkmsServerCtxDestroy(xmlSecXkmsServerCtxPtr ctx) {
 
 /**
  * xmlSecXkmsServerCtxInitialize:
- * @ctx:		the pointer to XKMS processing context.
- * @keysMngr: 		the pointer to keys manager.
+ * @ctx:	the pointer to XKMS processing context.
+ * @keysMngr: 	the pointer to keys manager.
  *
  * Initializes XKMS element processing context.
  * The caller is responsible for cleaing up returend object by calling 
@@ -386,7 +395,7 @@ xmlSecXkmsServerCtxInitialize(xmlSecXkmsServerCtxPtr ctx, xmlSecKeysMngrPtr keys
 
 /**
  * xmlSecXkmsServerCtxFinalize:
- * @ctx:		the pointer to XKMS processing context.
+ * @ctx:	the pointer to XKMS processing context.
  *
  * Cleans up @ctx object.
  */
@@ -411,7 +420,7 @@ xmlSecXkmsServerCtxFinalize(xmlSecXkmsServerCtxPtr ctx) {
 
 /**
  * xmlSecXkmsServerCtxReset:
- * @ctx:		the pointer to XKMS processing context.
+ * @ctx:	the pointer to XKMS processing context.
  *
  * Resets @ctx object, user settings are not touched.
  */
@@ -426,6 +435,7 @@ xmlSecXkmsServerCtxReset(xmlSecXkmsServerCtxPtr ctx) {
     xmlSecPtrListEmpty(&(ctx->keys));
     xmlSecPtrListEmpty(&(ctx->respWithList));
 
+    ctx->requestNode            = NULL;    
     ctx->opaqueClientDataNode   = NULL;    
     ctx->firtsMsgExtNode 	= NULL;
     ctx->keyInfoNode		= NULL;
@@ -462,8 +472,8 @@ xmlSecXkmsServerCtxReset(xmlSecXkmsServerCtxPtr ctx) {
 
 /**
  * xmlSecXkmsServerCtxCopyUserPref:
- * @dst:		the pointer to destination context.
- * @src:		the pointer to source context.
+ * @dst:	the pointer to destination context.
+ * @src:	the pointer to source context.
  * 
  * Copies user preference from @src context to @dst.
  *
@@ -536,29 +546,102 @@ xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst, xmlSecXkmsServerCtxP
 } 
 
 /** 
- * xmlSecXkmsServerCtxSetResult: 
- * @ctx:	 the pointer to XKMS processing context.
- * @resultMajor: the major result code.
- * @resultMinor: the minor result code.
+ * xmlSecXkmsServerCtxProcess: 
+ * @ctx:	the pointer to XKMS processing context.
+ * @node:	the pointer to request node.
+ * @format:     the request/response format.
+ * @doc:	the pointer to response parent XML document (might be NULL).
  * 
- * Sets the major/minor result code in the context if no other result is already
- * reported.
+ * Reads XKMS request from @node and creates response to a newly created node. 
+ * Caller is responsible for adding the returned node to the XML document.
+ *
+ * Returns pointer to newly created XKMS response node or NULL
+ * if an error occurs.
  */
-void 
-xmlSecXkmsServerCtxSetResult(xmlSecXkmsServerCtxPtr ctx, xmlSecXkmsResultMajor resultMajor, 
-                             xmlSecXkmsResultMinor resultMinor) {
-    xmlSecAssert(ctx != NULL);
-    
-    if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && 
-       (resultMinor != xmlSecXkmsResultMajorSuccess)) {
-	ctx->resultMajor = resultMajor;
-	ctx->resultMinor = resultMinor;
-    } else if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && 
-       (ctx->resultMinor == xmlSecXkmsResultMinorNone)) {
-	xmlSecAssert(resultMajor == xmlSecXkmsResultMajorSuccess);
-	
-	ctx->resultMinor = resultMinor;
+xmlNodePtr 
+xmlSecXkmsServerCtxProcess(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node, 
+                              xmlSecXkmsServerFormat format, xmlDocPtr doc) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->requestId == NULL, NULL);
+    xmlSecAssert2(ctx->requestNode == NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+
+    ctx->requestNode = xmlSecXkmsServerCtxRequestUnwrap(ctx, node, format);
+    if(ctx->requestNode == NULL) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerCtxRequestUnwrap",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(node->name));
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	goto done;
+    }    
+        
+    ret = xmlSecXkmsServerCtxRequestRead(ctx, ctx->requestNode);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerRequestIdListFindByNode",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "ctx->requestNode=%s",
+		    xmlSecErrorsSafeString(ctx->requestNode->name));
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	goto done;
+    }    
+
+    ret = xmlSecXkmsServerRequestExecute(ctx->requestId, ctx);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsServerRequestExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "ctx->requestNode=%s",
+		    xmlSecErrorsSafeString(ctx->requestNode->name));
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	goto done;
     }
+
+done:
+    /* always try to write response back */    
+    if(ctx->requestId != NULL) {
+        xmlNodePtr respNode;
+        xmlNodePtr wrappedRespNode;
+        
+        respNode = xmlSecXkmsServerCtxResponseWrite(ctx, doc);
+        if(respNode == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerCtxResponseWrite",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "ctx->requestNode=%s",
+		        xmlSecErrorsSafeString(ctx->requestNode->name));
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            goto error;    
+        }
+    
+
+        wrappedRespNode = xmlSecXkmsServerCtxResponseWrap(ctx, respNode, format, doc);
+        if(wrappedRespNode == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerCtxResponseWrite",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "ctx->requestNode=%s",
+		        xmlSecErrorsSafeString(ctx->requestNode->name));
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            xmlFreeNode(respNode);
+            goto error;    
+        }
+
+        return(wrappedRespNode);
+    }
+    
+error:
+    /* last attempt: create fatatl error response */
+    return(xmlSecXkmsServerCtxFatalErrorResponseCreate(ctx, format, doc));
 }
 
 /** 
@@ -575,12 +658,10 @@ xmlSecXkmsServerCtxRequestRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->requestId == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    
     /* find out what the request is */
-    xmlSecAssert2(ctx->requestId == NULL, -1);
-    xmlSecAssert2(xmlSecXkmsServerRequestIdsGet() != NULL, -1);
     if(xmlSecPtrListGetSize(&(ctx->enabledServerRequestIds)) > 0) {
 	ctx->requestId = xmlSecXkmsServerRequestIdListFindByNode(&(ctx->enabledServerRequestIds), node);
     } else {
@@ -614,70 +695,26 @@ xmlSecXkmsServerCtxRequestRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
 }
 
 /** 
- * xmlSecXkmsServerCtxRequestWrite: 
+ * xmlSecXkmsServerCtxResponseWrite: 
  * @ctx:	the pointer to XKMS processing context.
- * @node:	the pointer to response node.
+ * @doc:	the pointer to response parent XML document (might be NULL).
  *
- * Writes XKMS response from context. If @node value is not NULL
- * then a new child is added to it. Otherwise, a new xml document
- * is created. In all cases, function returns the pointer to newly
- * created response in @node.
+ * Writes XKMS response from context to a newly created node. Caller is 
+ * responsible for adding the returned node to the XML document.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns pointer to newly created XKMS response node or NULL
+ * if an error occurs.
  */
-int 
-xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
-    xmlNodePtr cur = NULL;
-    int ret;
+xmlNodePtr
+xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlDocPtr doc) {
+    xmlNodePtr respNode;
     
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->requestId != NULL, NULL);
 
-    /* if the request is not specified then write generic xkms:Result response
-     * with ane error */
-    if((ctx->requestId == NULL) || (ctx->requestId->resultNodeName == NULL)) {
-	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
-	ctx->requestId = xmlSecXkmsServerRequestResultId;
-    }
-
-    /* create the response root node */
-    xmlSecAssert2(ctx->requestId != NULL, -1);
-    xmlSecAssert2(ctx->requestId->resultNodeName != NULL, -1);
-    if((*node) != NULL) {
-	cur = xmlSecAddChild((*node), ctx->requestId->resultNodeName, ctx->requestId->resultNodeNs);
-	if(cur == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecAddChild",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	    goto error;
-	}
-    } else {
-	xmlDocPtr doc;
-	
-	/* we need to create the response document */
-	doc = xmlSecCreateTree(ctx->requestId->resultNodeName, ctx->requestId->resultNodeNs);
-	if((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecCreateTree",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    if(doc != NULL) {
-		xmlFreeDoc(doc);
-	    }
-	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	    goto error;
-	}
-	cur = xmlDocGetRootElement(doc);
-    }
-    
     /* now write results */
-    xmlSecAssert2(cur != NULL, -1);
-    ret = xmlSecXkmsServerRequestNodeWrite(ctx->requestId, ctx, cur);
-    if(ret < 0) {
+    respNode = xmlSecXkmsServerRequestNodeWrite(ctx->requestId, ctx, doc, NULL);
+    if(respNode == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecXkmsServerRequestNodeWrite",
@@ -685,115 +722,374 @@ xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* node) {
 		    "request=%s",
 		    xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctx->requestId)));
 	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	goto error;
+        return(NULL);
     }
     
-    (*node) = cur;
-    return(0);
-    
-error:
-    /* destroy node we've added */
-    if(cur != NULL) {
-	if((*node) != NULL) {
-	    xmlUnlinkNode(cur);
-	    xmlFreeNode(cur);
-	} else if(cur->doc != NULL) {
-	    xmlFreeDoc(cur->doc);
-	} else {
-	    xmlFreeNode(cur);
-	}
-    }
-
-    /* we've tried to write back xkms:Result and failed... no more options left */
-    if(ctx->requestId == xmlSecXkmsServerRequestResultId) {
-	return(-1);
-    }
-
-    /* try to write back the simplest "xkms:Result" response as the last resort */
-    ctx->requestId = xmlSecXkmsServerRequestResultId;
-    ret = xmlSecXkmsServerCtxResponseWrite(ctx, node);
-    if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecXkmsServerCtxResponseWrite",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	return(-1);
-    }
-	
-    return(0);
-}
-
-/** 
- * xmlSecXkmsServerCtxProcessDoc: 
- * @ctx:	the pointer to XKMS processing context.
- * @inNode:	the pointer to request node.
- * @outNode:	the pointer to response node.
- * @format:     the request/response format.
- *
- * Reads XKMS request from @inNode and writes response back in @outNode.
- * If @outNode value is not NULL then a new child is added to it. Otherwise, 
- * a new xml document is created. In all cases, function returns the pointer to newly
- * created response in @outNode.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int 
-xmlSecXkmsServerCtxProcessDoc(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr inNode, 
-                              xmlNodePtr* outNode, xmlSecXkmsServerFormat format) {
-    int ret;
-
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(inNode != NULL, -1);
-    xmlSecAssert2(outNode != NULL, -1);
-
-    ret = xmlSecXkmsServerCtxRequestRead(ctx, inNode);
-    if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecXkmsServerRequestIdListFindByNode",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(inNode->name));
-	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	goto done;
-    }    
-
-    ret = xmlSecXkmsServerRequestExecute(ctx->requestId, ctx);
-    if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecXkmsServerRequestExecute",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(inNode->name));
-	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	goto done;
-    }
-    
-done:
-    /* always try to write back response */
-    ret = xmlSecXkmsServerCtxResponseWrite(ctx, outNode);
-    if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecXkmsServerCtxResponseWrite",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(inNode->name));
-	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
-	return(-1);
-    }
-    
-    xmlSecAssert2((*outNode) != NULL, -1);
-    return(0);
+    return(respNode);
 }
 
 /**
+ * xmlSecXkmsServerCtxRequestUnwrap:
+ * @ctx:	the pointer to XKMS processing context.
+ * @node:	the pointer to request node.
+ * @format:     the request/response format.
+ * 
+ * Removes SOAP or other envelope from XKMS request.
+ *
+ * Returns pointer to "real" XKMS request node or NULL if an error occurs. 
+ */
+xmlNodePtr 
+xmlSecXkmsServerCtxRequestUnwrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node,  xmlSecXkmsServerFormat format) {
+    xmlNodePtr result = NULL;
+        
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    
+    switch(format) {
+    case xmlSecXkmsServerFormatPlain:
+        result = node;
+        break;
+#ifndef XMLSEC_NO_SOAP
+    case xmlSecXkmsServerFormatSoap11:
+        /* verify that it is actually soap Envelope node */
+        if(xmlSecSoap11CheckEnvelope(node) != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap11CheckEnvelope",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }   
+        
+        /* check that Body has exactly one entry */
+        if(xmlSecSoap11GetBodyEntriesNumber(node) != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap11GetBodyEntriesNumber",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        /* this one enntry is our xkms request */
+        result = xmlSecSoap11GetBodyEntry(node, 0);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap11GetBodyEntry",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        break;
+    case xmlSecXkmsServerFormatSoap12:
+        break;
+#endif /* XMLSEC_NO_SOAP */
+    default:
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    "format=%d",
+                    format);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	return(NULL);
+    }
+    
+    return(result);
+}
+
+/** 
+ * xmlSecXkmsServerCtxResponseWrap: 
+ * @ctx:	the pointer to XKMS processing context.
+ * @node:	the pointer to response node.
+ * @format:     the request/response format.
+ * @doc:	the pointer to response parent XML document (might be NULL).
+ *
+ * Creates SOAP or other envelope around XKMS response.
+ * Caller is responsible for adding the returned node to the XML document.
+ *
+ * Returns pointer to newly created response envelope node or NULL
+ * if an error occurs.
+ */
+xmlNodePtr 
+xmlSecXkmsServerCtxResponseWrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node, xmlSecXkmsServerFormat format, xmlDocPtr doc) {
+    xmlNodePtr result = NULL;
+    
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    
+    switch(format) {
+    case xmlSecXkmsServerFormatPlain:
+        result = node; /* do nothing */
+        break;
+#ifndef XMLSEC_NO_SOAP
+    case xmlSecXkmsServerFormatSoap11:
+        result = xmlSecSoap11CreateEnvelope(doc);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap11CreateEnvelope",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        if(xmlSecSoap11AddBodyEntry(result, node) == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap11AddBodyEntry",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        break;
+    case xmlSecXkmsServerFormatSoap12:
+        break;
+#endif /* XMLSEC_NO_SOAP */
+    default:
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    "format=%d",
+                    format);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	return(NULL);
+    }
+    
+    return(result);
+}
+
+/** 
+ * xmlSecXkmsServerCtxFatalErrorResponseCreate: 
+ * @ctx:	the pointer to XKMS processing context.
+ * @format:     the request/response format.
+ * @doc:	the pointer to response parent XML document (might be NULL).
+ *
+ * Creates a "fatal error" SOAP or other envelope respons. Caller is 
+ * responsible for adding the returned node to the XML document.
+ *
+ * Returns pointer to newly created fatal error response (it might be NULL).
+ */
+xmlNodePtr 
+xmlSecXkmsServerCtxFatalErrorResponseCreate(xmlSecXkmsServerCtxPtr ctx, xmlSecXkmsServerFormat format, xmlDocPtr doc) {
+    xmlNodePtr result = NULL;
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    /* make sure that we have an error */
+    if(ctx->resultMajor == xmlSecXkmsResultMajorSuccess) {
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+    }
+    
+    switch(format) {
+    case xmlSecXkmsServerFormatPlain:
+        /* try to create fatal error response with XKMS Status request */
+        result = xmlSecXkmsServerRequestNodeWrite(xmlSecXkmsServerRequestResultId, ctx, doc, NULL);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerRequestNodeWrite",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);
+        }
+        break;
+#ifndef XMLSEC_NO_SOAP
+    case xmlSecXkmsServerFormatSoap11:
+        result = xmlSecSoap11CreateEnvelope(doc);
+        if(result == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecSoap11CreateEnvelope",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+	    return(NULL);
+        }
+        
+        ret = xmlSecXkmsServerCtxWriteSoap11FatalError(ctx, result);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecXkmsServerCtxWriteSoap11FatalError",
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            xmlFreeNode(result);
+	    return(NULL);
+        }
+                
+        break;
+    case xmlSecXkmsServerFormatSoap12:
+        break;
+#endif /* XMLSEC_NO_SOAP */
+    default:
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    "format=%d",
+                    format);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorSender, xmlSecXkmsResultMinorFailure);
+	return(NULL);
+    }
+    
+    return(result);
+}
+
+#ifndef XMLSEC_NO_SOAP
+static int 
+xmlSecXkmsServerCtxWriteSoap11FatalError(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr envNode) {
+    const xmlChar* faultCodeHref = NULL;
+    const xmlChar* faultCodeLocalPart = NULL;
+    xmlChar* faultString = NULL;
+    int len;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(envNode != NULL, -1);
+
+    if((ctx->resultMajor == xmlSecXkmsResultMajorVersionMismatch) ||
+       (ctx->requestNode == NULL)) {
+        /* we were not able to parse the envelope or its general version mismatch error */
+        faultCodeHref = xmlSecSoap11Ns;
+        faultCodeLocalPart = xmlSecSoapFaultCodeVersionMismatch;
+        faultString = xmlStrdup(xmlSecSoapFaultStringUnsupportedVersion);
+        if(faultString == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+    } else if((ctx->resultMajor == xmlSecXkmsResultMajorSender) && 
+              (ctx->requestId == NULL)) {
+        /* we understood the request but were not able to parse input message */
+        faultCodeHref = xmlSecSoap11Ns;
+        faultCodeLocalPart = xmlSecSoapFaultCodeClient;
+
+        len = xmlStrlen(BAD_CAST xmlSecErrorsSafeString(ctx->requestNode->name)) +
+              xmlStrlen(xmlSecSoapFaultStringMessageInvalid) + 1;
+        faultString = xmlMalloc(len + 1);
+        if(faultString == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlMalloc",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+        xmlSecStrPrintf(faultString, len , xmlSecSoapFaultStringMessageInvalid,
+                        xmlSecErrorsSafeString(ctx->requestNode->name));        
+    } else if((ctx->resultMajor == xmlSecXkmsResultMajorReceiver) &&
+              (ctx->requestId == NULL)) {
+        /* we understood the request but were not able to process it */
+        faultCodeHref = xmlSecSoap11Ns;
+        faultCodeLocalPart = xmlSecSoapFaultCodeServer;
+        faultString = xmlStrdup(xmlSecSoapFaultStringServiceUnavailable);
+        if(faultString == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+    } else if((ctx->requestId == NULL) && (ctx->requestNode != NULL)) {
+        /* we parsed the envelope but were not able to understand this request */
+        faultCodeHref = xmlSecSoap11Ns;
+        faultCodeLocalPart = xmlSecSoapFaultCodeClient;
+
+        len = xmlStrlen(BAD_CAST xmlSecErrorsSafeString(ctx->requestNode->name)) + 
+              xmlStrlen(xmlSecSoapFaultStringMessageNotSupported) + 1;
+        faultString = xmlMalloc(len + 1);
+        if(faultString == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlMalloc",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+        xmlSecStrPrintf(faultString, len , xmlSecSoapFaultStringMessageNotSupported,
+                        xmlSecErrorsSafeString(ctx->requestNode->name));
+    } else {
+        /* just some error */
+        faultCodeHref = xmlSecSoap11Ns;
+        faultCodeLocalPart = xmlSecSoapFaultCodeServer;
+        faultString = xmlStrdup(xmlSecSoapFaultStringServiceUnavailable);
+        if(faultString == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlStrdup",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+            return(-1);
+        }
+    }
+    
+    if(xmlSecSoap11AddFaultEntry(envNode, faultCodeHref, faultCodeLocalPart, faultString, NULL) == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecSoap11AddFaultEntry",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecXkmsServerCtxSetResult(ctx, xmlSecXkmsResultMajorReceiver, xmlSecXkmsResultMinorFailure);
+        xmlFree(faultString);    
+        return(-1);
+    }
+
+    xmlFree(faultString);    
+    return(0);
+}
+#endif /* XMLSEC_NO_SOAP */
+
+
+/** 
+ * xmlSecXkmsServerCtxSetResult: 
+ * @ctx:	 the pointer to XKMS processing context.
+ * @resultMajor: the major result code.
+ * @resultMinor: the minor result code.
+ * 
+ * Sets the major/minor result code in the context if no other result is already
+ * reported.
+ */
+void 
+xmlSecXkmsServerCtxSetResult(xmlSecXkmsServerCtxPtr ctx, xmlSecXkmsResultMajor resultMajor, 
+                             xmlSecXkmsResultMinor resultMinor) {
+    xmlSecAssert(ctx != NULL);
+    
+    if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && 
+       (resultMinor != xmlSecXkmsResultMajorSuccess)) {
+	ctx->resultMajor = resultMajor;
+	ctx->resultMinor = resultMinor;
+    } else if((ctx->resultMajor == xmlSecXkmsResultMajorSuccess) && 
+       (ctx->resultMinor == xmlSecXkmsResultMinorNone)) {
+	xmlSecAssert(resultMajor == xmlSecXkmsResultMajorSuccess);
+	
+	ctx->resultMinor = resultMinor;
+    }
+}
+
+
+/**
  * xmlSecXkmsServerCtxDebugDump:
- * @ctx:		the pointer to XKMS processing context.
- * @output:		the pointer to output FILE.
+ * @ctx:	the pointer to XKMS processing context.
+ * @output:	the pointer to output FILE.
  *
  * Prints the debug information about @ctx to @output.
  */
@@ -875,8 +1171,8 @@ xmlSecXkmsServerCtxDebugDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
 
 /**
  * xmlSecXkmsServerCtxDebugXmlDump:
- * @ctx:		the pointer to XKMS processing context.
- * @output:		the pointer to output FILE.
+ * @ctx:	the pointer to XKMS processing context.
+ * @output:	the pointer to output FILE.
  *
  * Prints the debug information about @ctx to @output in XML format.
  */
@@ -966,8 +1262,6 @@ xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
 
     fprintf(output, "</XkmsServerRequestContext>\n");
 }
-
-
 
 /**
  *  <xkms:MessageAbstractType Id Service Nonce?>
@@ -1095,7 +1389,7 @@ xmlSecXkmsServerCtxRequestAbstractTypeNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNo
     cur = xmlSecGetNextElementNode(cur->children);
     
     /* first node is optional <dsig:Signature/> node */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeSignature, xmlSecDSigNs))) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeSignature, xmlSecDSigNs)) {
 	ret = xmlSecXkmsServerCtxSignatureNodeRead(ctx, cur);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1120,7 +1414,7 @@ xmlSecXkmsServerCtxRequestAbstractTypeNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNo
     }
     
     /* next is optional <xkms:OpaqueClientData/> node */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeOpaqueClientData, xmlSecXkmsNs))) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeOpaqueClientData, xmlSecXkmsNs)) {
 	ret = xmlSecXkmsServerCtxOpaqueClientDataNodeRead(ctx, cur);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1160,7 +1454,7 @@ xmlSecXkmsServerCtxRequestAbstractTypeNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNo
     }
 
     /* next is optional <xkms:PendingNotification/> node */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodePendingNotification, xmlSecXkmsNs))) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodePendingNotification, xmlSecXkmsNs)) {
 	ret = xmlSecXkmsServerCtxPendingNotificationNodeRead(ctx, cur);    
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1202,7 +1496,7 @@ xmlSecXkmsServerCtxMessageExtensionNodesRead(xmlSecXkmsServerCtxPtr ctx, xmlNode
     xmlSecAssert2(node != NULL, -1);
 
     cur = (*node);
-    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMessageExtension, xmlSecXkmsNs))) {
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeMessageExtension, xmlSecXkmsNs)) {
 	if(ctx->firtsMsgExtNode == NULL) {
 	    ctx->firtsMsgExtNode = cur;
 	}
@@ -1233,7 +1527,7 @@ xmlSecXkmsServerCtxRespondWithNodesRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* 
     xmlSecAssert2(node != NULL, -1);
 
     cur = (*node);
-    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRespondWith, xmlSecXkmsNs))) {
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeRespondWith, xmlSecXkmsNs)) {
 	xmlSecXkmsRespondWithId id = xmlSecXkmsRespondWithIdUnknown;
 
 	if(xmlSecPtrListGetSize(&(ctx->enabledRespondWithIds)) > 0) {
@@ -1409,7 +1703,7 @@ xmlSecXkmsServerCtxQueryKeyBindingNodeRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePt
     }
 
     /* next is optional <xkms:TimeInstant/> node */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTimeInstant, xmlSecXkmsNs))) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeTimeInstant, xmlSecXkmsNs)) {
 	ret = xmlSecXkmsServerCtxTimeInstantNodeRead(ctx, cur);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1473,7 +1767,7 @@ xmlSecXkmsServerCtxKeyBindingAbstractTypeNodeRead(xmlSecXkmsServerCtxPtr ctx, xm
     
     /* first node is optional <dsig:KeyInfo/> node. for now we only remember pointer */
     xmlSecAssert2(ctx->keyInfoNode == NULL, -1);
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
 	ctx->keyInfoNode = cur;
 	cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -1628,7 +1922,7 @@ xmlSecXkmsServerCtxUseKeyWithNodesRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr* n
     xmlSecAssert2(xmlSecPtrListGetSize(list) == 0, -1);
 
     cur = (*node);
-    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeUseKeyWith, xmlSecXkmsNs))) {
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeUseKeyWith, xmlSecXkmsNs)) {
 	application = xmlGetProp(cur, xmlSecAttrApplication);
 	if(application == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -2158,7 +2452,7 @@ xmlSecXkmsRespondWithIdsShutdown(void) {
 
 /** 
  * xmlSecXkmsRespondWithIdsRegister:
- * @id:			the RespondWith klass.
+ * @id:		the RespondWith klass.
  *
  * Registers @id in the global list of RespondWith klasses.
  *
@@ -2297,9 +2591,9 @@ xmlSecXkmsRespondWithIdsRegisterDefault(void) {
  ************************************************************************/ 
 /**
  * xmlSecXkmsRespondWithNodeRead:
- * @id:			the RespondWith class.
+ * @id:		the RespondWith class.
  * @ctx:	the XKMS request processing context.
- * @node:		the pointer to <xkms:RespondWith/> node.
+ * @node:	the pointer to <xkms:RespondWith/> node.
  *
  * Reads the content of the <xkms:RespondWith/> @node.
  *
@@ -2320,9 +2614,9 @@ xmlSecXkmsRespondWithNodeRead(xmlSecXkmsRespondWithId id, xmlSecXkmsServerCtxPtr
 
 /**
  * xmlSecXkmsRespondWithNodeWrite:
- * @id:			the RespondWith class.
+ * @id:		the RespondWith class.
  * @ctx:	the XKMS request processing context.
- * @node:		the pointer to <xkms:RespondWith/> node.
+ * @node:	the pointer to <xkms:RespondWith/> node.
  *
  * Writes the content of the <xkms:RespondWith/> @node.
  *
@@ -2343,8 +2637,8 @@ xmlSecXkmsRespondWithNodeWrite(xmlSecXkmsRespondWithId id, xmlSecXkmsServerCtxPt
 
 /**
  * xmlSecXkmsRespondWithDebugDump:
- * @id:			the RespondWith class.
- * @output:		the output file.
+ * @id:		the RespondWith class.
+ * @output:	the output file.
  *
  * Writes debug information about @id into the @output.
  */
@@ -2360,8 +2654,8 @@ xmlSecXkmsRespondWithDebugDump(xmlSecXkmsRespondWithId id, FILE* output) {
 
 /**
  * xmlSecXkmsRespondWithDebugXmlDump:
- * @id:			the RespondWith class.
- * @output:		the output file.
+ * @id:		the RespondWith class.
+ * @output:	the output file.
  *
  * Writes debug information about @id into the @output in XML format.
  */
@@ -2474,7 +2768,7 @@ xmlSecXkmsRespondWithIdListFindByNodeValue(xmlSecPtrListPtr list, xmlNodePtr nod
     xmlSecXkmsRespondWithId id;
     xmlChar* content;
     xmlChar* qnameLocalPart = NULL;
-    const xmlChar* qnamePrefix = NULL;
+    xmlChar* qnamePrefix = NULL;
     const xmlChar* qnameHref;
     xmlNsPtr ns;
     xmlSecSize i, size;
@@ -2493,7 +2787,7 @@ xmlSecXkmsRespondWithIdListFindByNodeValue(xmlSecPtrListPtr list, xmlNodePtr nod
 	return(xmlSecXkmsRespondWithIdUnknown);  	
     }
 
-    qnameLocalPart = xmlStrchr(content, ':');
+    qnameLocalPart = (xmlChar*)xmlStrchr(content, ':');
     if(qnameLocalPart != NULL) {
         qnamePrefix = content;
         *(qnameLocalPart++) = '\0';
@@ -2987,7 +3281,7 @@ xmlSecXkmsServerRequestIdsShutdown(void) {
 
 /** 
  * xmlSecXkmsServerRequestIdsRegister:
- * @id:			the ServerRequest klass.
+ * @id:		the ServerRequest klass.
  *
  * Registers @id in the global list of ServerRequest klasses.
  *
@@ -3084,9 +3378,9 @@ xmlSecXkmsServerRequestIdsRegisterDefault(void) {
  ************************************************************************/ 
 /**
  * xmlSecXkmsServerRequestNodeRead:
- * @id:			the ServerRequest class.
- * @ctx:		the XKMS request processing context.
- * @node:		the pointer to <xkms:ServerRequest/> node.
+ * @id:		the ServerRequest class.
+ * @ctx:	the XKMS request processing context.
+ * @node:	the pointer to <xkms:ServerRequest/> node.
  *
  * Reads the content of the <xkms:ServerRequest/> @node.
  *
@@ -3107,8 +3401,8 @@ xmlSecXkmsServerRequestNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCt
 
 /**
  * xmlSecXkmsServerExecute:
- * @id:			the ServerRequest class.
- * @ctx:		the XKMS request processing context.
+ * @id:		the ServerRequest class.
+ * @ctx:	the XKMS request processing context.
  *
  * Executes XKMS server request.
  *
@@ -3128,25 +3422,80 @@ xmlSecXkmsServerRequestExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtx
 
 /**
  * xmlSecXkmsServerResponseNodeWrite:
- * @id:			the ServerRequest class.
- * @ctx:		the XKMS request processing context.
- * @node:		the pointer to <xkms:ServerRequest/> node.
+ * @id:		the ServerRequest class.
+ * @ctx:	the XKMS request processing context.
+ * @doc:	the pointer to response parent XML document (might be NULL).
+ * @node:       the pointer to response parent XML node (might be NULL).
  *
- * Writes the content of the <xkms:ServerRequest/> @node.
+ * Writes XKMS response from context to a newly created node. Caller is 
+ * responsible for adding the returned node to the XML document.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns pointer to newly created XKMS response node or NULL
+ * if an error occurs.
  */
-int 
+xmlNodePtr 
 xmlSecXkmsServerRequestNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx,
-			     xmlNodePtr node) {
-    xmlSecAssert2(id != xmlSecXkmsServerRequestIdUnknown, -1);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
+			         xmlDocPtr doc, xmlNodePtr node) {
+    xmlNodePtr respNode;
+    int ret;
+    
+    xmlSecAssert2(id != xmlSecXkmsServerRequestIdUnknown, NULL);
+    xmlSecAssert2(ctx != NULL, NULL);
 
-    if(id->writeNode != NULL) {
-	return((id->writeNode)(id, ctx, node));
+    /* create the response root node */
+    if(node == NULL) {
+        xmlNsPtr ns;
+        
+        respNode = xmlNewDocNode(doc, NULL, id->resultNodeName, NULL);
+        if(respNode == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlNewDocNode",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(id->resultNodeName));
+            return(NULL);
+        }
+        ns = xmlNewNs(respNode, id->resultNodeNs, NULL);
+        if(ns == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlNewNs",
+		        XMLSEC_ERRORS_R_XML_FAILED,
+		        "ns=%s",
+		        xmlSecErrorsSafeString(id->resultNodeNs));
+            xmlFreeNode(respNode);
+            return(NULL);
+        }
+        xmlSetNs(respNode, ns);
+    } else {
+        respNode = xmlSecAddChild(node, id->resultNodeName, id->resultNodeNs);
+        if(respNode == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecAddChild",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(id->resultNodeName));
+            return(NULL);
+        }
     }
-    return(0);
+    
+    if(id->writeNode != NULL) {
+	ret = (id->writeNode)(id, ctx, respNode);
+	if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "writeNode",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "node=%s",
+		        xmlSecErrorsSafeString(id->resultNodeName));
+            xmlFreeNode(respNode);
+            return(NULL);
+        }
+    }
+    
+    return(respNode);
 }
 
 /**
@@ -3243,9 +3592,8 @@ xmlSecXkmsServerRequestIdListFindByNode(xmlSecPtrListPtr list, xmlNodePtr node) 
     for(i = 0; i < size; ++i) {
 	id = (xmlSecXkmsServerRequestId)xmlSecPtrListGetItem(list, i);
 	if((id !=  xmlSecXkmsServerRequestIdUnknown) &&
-	    xmlStrEqual(id->requestNodeName, node->name) &&
-	    xmlStrEqual(id->requestNodeNs, (node->ns) ? node->ns->href : BAD_CAST "NULL")) {
-	    
+            xmlSecCheckNodeName(node, id->requestNodeName, id->requestNodeNs)) {
+
 	    return(id);
 	}
     }
@@ -3772,28 +4120,26 @@ xmlSecXkmsServerRequestCompoundNodeWrite(xmlSecXkmsServerRequestId id, xmlSecXkm
 	        return(-1);  	
             }
             
-            cur = xmlSecAddChild(node, ctxChild->requestId->resultNodeName, ctxChild->requestId->resultNodeNs);
-	    if(cur == NULL) {
-	        xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
-			    "xmlSecAddChild",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);
-	    }
-
-            xmlSecAssert2(cur != NULL, -1);
-            ret = xmlSecXkmsServerRequestNodeWrite(ctxChild->requestId, ctxChild, cur);
-            if(ret < 0) {
+            cur = xmlSecXkmsServerRequestNodeWrite(ctxChild->requestId, ctxChild, node->doc, node);
+            if(cur == NULL) {
     	        xmlSecError(XMLSEC_ERRORS_HERE,
 		            NULL,
 		            "xmlSecXkmsServerRequestNodeWrite",
 		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		            "request=%s",
 		            xmlSecErrorsSafeString(xmlSecXkmsServerRequestKlassGetName(ctxChild->requestId)));
-                /* remove node */
                 return(-1);
             }
+            
+            if(xmlSecAddChildNode(node, cur) == NULL) {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecAddChildNode",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+                xmlFreeNode(cur);
+                return(-1);
+	    }
         }
     }
 

@@ -312,6 +312,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
 	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
+	    xmlSetNs(cur, nsPtr);
 	}
     }
 
@@ -366,6 +367,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
 	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
+	    xmlSetNs(cur, nsPtr);
 	}
     }
 
@@ -622,7 +624,8 @@ xmlDocPtr
 xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     xmlDocPtr doc;
     xmlNodePtr root;
-
+    xmlNsPtr ns;
+    
     xmlSecAssert2(rootNodeName != NULL, NULL);
 
     /* create doc */
@@ -650,7 +653,8 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     xmlDocSetRootElement(doc, root);
 
     /* and set root node namespace */
-    if(xmlNewNs(root, rootNodeNs, NULL) == NULL) {
+    ns = xmlNewNs(root, rootNodeNs, NULL);
+    if(ns == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlNewNs",
@@ -660,6 +664,7 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
 	xmlFreeDoc(doc); 
 	return(NULL);
     }
+    xmlSetNs(root, ns);
 
     return(doc);
 }

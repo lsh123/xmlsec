@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+<Body>
+<Fault>
+<faultcode>VersionMismatch</faultcode>
+<faultstring>Unsupported SOAP version</faultstring>
+</Fault>
+</Body>
+</Envelope>

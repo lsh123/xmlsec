@@ -63,6 +63,7 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     xmlNodePtr signNode;
     xmlNodePtr signedInfoNode;
     xmlNodePtr cur;
+    xmlNsPtr ns;
     
     xmlSecAssert2(c14nMethodId != NULL, NULL);
     xmlSecAssert2(c14nMethodId->href != NULL, NULL);
@@ -80,7 +81,9 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
 		    xmlSecErrorsSafeString(xmlSecNodeSignature));
 	return(NULL);	            
     }
-    if(xmlNewNs(signNode, xmlSecDSigNs, NULL) == NULL) {
+    
+    ns = xmlNewNs(signNode, xmlSecDSigNs, NULL);
+    if(ns == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlNewNs",
@@ -90,6 +93,8 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
 	xmlFreeNode(signNode);
 	return(NULL);	        	
     }
+    xmlSetNs(signNode, ns);
+    
     if(id != NULL) {
 	xmlSetProp(signNode, BAD_CAST "Id", id);
     }
@@ -608,6 +613,7 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
 			    const xmlChar *id, const xmlChar *type,
 			    const xmlChar *mimeType, const xmlChar *encoding) {
     xmlNodePtr encNode;
+    xmlNsPtr ns;
     
     encNode = xmlNewDocNode(doc, NULL, xmlSecNodeEncryptedData, NULL);
     if(encNode == NULL) {
@@ -620,7 +626,8 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
 	return(NULL);	        
     }
     
-    if(xmlNewNs(encNode, xmlSecEncNs, NULL) == NULL) {
+    ns = xmlNewNs(encNode, xmlSecEncNs, NULL);
+    if(ns == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlNewNs",
@@ -629,6 +636,7 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
 		    xmlSecErrorsSafeString(xmlSecEncNs));
 	return(NULL);	        	
     }
+    xmlSetNs(encNode, ns);
     
     if(id != NULL) {
 	xmlSetProp(encNode, xmlSecAttrId, id);
@@ -1756,6 +1764,7 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
 			xmlSecErrorsSafeString(prefix));
 	    return(-1);
 	}
+        xmlSetNs(parentNode, ns);
     }
     return(0);
 }

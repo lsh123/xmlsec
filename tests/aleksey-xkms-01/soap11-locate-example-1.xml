@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+  <env:Body>
+    <LocateRequest xmlns:ds="http://www.w3.org/2000/09/xmldsig#" 
+		   xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
+		   xmlns="http://www.w3.org/2002/03/xkms#" 
+		   Id="I94d1048aa24259465d7271cb4433dbb4" 
+		   Service="http://www.example.com/xkms">
+      <RespondWith>KeyName</RespondWith>
+      <RespondWith>KeyValue</RespondWith>
+      <RespondWith>X509Cert</RespondWith>
+      <RespondWith>X509Chain</RespondWith>
+      <RespondWith>PGPWeb</RespondWith>
+      <RespondWith>PGP</RespondWith>
+      <RespondWith>Multiple</RespondWith>
+      <QueryKeyBinding>
+        <KeyUsage>Encryption</KeyUsage>
+        <UseKeyWith Application="urn:ietf:rfc:2440" Identifier="bob@bobcorp.test"/>
+        <UseKeyWith Application="urn:ietf:rfc:2633" Identifier="bob@bobcorp.test"/>
+      </QueryKeyBinding>
+    </LocateRequest>
+  </env:Body>
+</env:Envelope>

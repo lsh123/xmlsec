@@ -177,8 +177,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeUnknownResponseId[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecResultMinorCodeNotSynchronous[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrPlain[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrSoap1_1[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrSoap1_2[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrSoap11[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsFormatStrSoap12[];
 #endif /* XMLSEC_NO_XKMS */
 
 /*************************************************************************
@@ -490,6 +490,12 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeVersionMismatch[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeMustUnderstand[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeClient[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeServer[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultStringUnsupportedVersion[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultStringUnableToProcess[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultStringServiceUnavailable[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultStringMessageNotSupported[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultStringMessageInvalid[];
 
 #endif /* XMLSEC_NO_SOAP */
 

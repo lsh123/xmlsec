@@ -347,7 +347,6 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
 static xmlNodeSetPtr
 xmlSecEnvelopedRemoveTree(xmlNodeSetPtr nodes, xmlNodePtr cur) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecEnvelopedRemoveTree";
-    
     if((nodes == NULL) || (cur == NULL)) {
 #ifdef XMLSEC_DEBUG
         xmlGenericError(xmlGenericErrorContext,
@@ -357,8 +356,37 @@ xmlSecEnvelopedRemoveTree(xmlNodeSetPtr nodes, xmlNodePtr cur) {
 	return(NULL);
     }
     
-    xmlXPathNodeSetDel(nodes, cur);
     if(cur->type == XML_ELEMENT_NODE) {	
+	int delNode, i, j;
+	
+	for (i = 0; i < nodes->nodeNr;) {
+	    delNode = 0;	    
+	    if(nodes->nodeTab[i] == cur) {
+		/* delete node by itself */
+		delNode = 1;	
+	    } else if((nodes->nodeTab[i]->type == XML_NAMESPACE_DECL) &&
+		    (((xmlNsPtr)nodes->nodeTab[i])->next == (xmlNsPtr)cur)) {
+		/* delete all node's namespaces */
+		delNode = 1;
+		/* special namespaces processing in XPath */
+		xmlXPathNodeSetFreeNs((xmlNsPtr) nodes->nodeTab[i]);    
+	    } else if((nodes->nodeTab[i]->type == XML_ATTRIBUTE_NODE) &&
+		    (((xmlAttrPtr)nodes->nodeTab[i])->parent == cur)) {
+		/* delete all node's attributes */
+		delNode = 1;
+	    }
+	    
+	    if(delNode) {
+		nodes->nodeNr--;
+		for (j = i; j < nodes->nodeNr; j++)
+    		    nodes->nodeTab[j] = nodes->nodeTab[j + 1];
+		nodes->nodeTab[nodes->nodeNr] = NULL;		
+	    } else {
+		++i;
+	    }
+	}
+	
+	/* delete all node's childrens */
 	for(cur = cur->children; cur != NULL; cur = cur->next) {
 	    if(xmlSecEnvelopedRemoveTree(nodes, cur) == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -369,6 +397,8 @@ xmlSecEnvelopedRemoveTree(xmlNodeSetPtr nodes, xmlNodePtr cur) {
 		return(NULL);
 	    }
 	}
+    } else {
+	xmlXPathNodeSetDel(nodes, cur);
     }
     return(nodes);
 }

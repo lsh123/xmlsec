@@ -1,3 +1,7 @@
+Mon Jun  3 21:18:54 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/enveloped.c: improved performance
+
 Thu May 30 21:29:21 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/xmltree.c: propagating XPath fix from LibXML2
 

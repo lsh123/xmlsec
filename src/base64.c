@@ -718,7 +718,7 @@ xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, size_t len) {
 		    "xmlSecBase64CtxInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(NULL);
+	return(-1);
     }
     
     ret = xmlSecBase64CtxUpdate(&ctx, (const unsigned char*)str, xmlStrlen(str), buf, len);

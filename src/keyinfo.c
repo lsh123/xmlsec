@@ -741,7 +741,12 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
 	if(tmpKey != NULL) {
 	    /* erase any current information in the key */
 	    xmlSecKeyEmpty(key);
-	    
+
+	    /* TODO: since we will destroy tmpKey anyway, we can easily
+	     * just re-assign key data values. It'll save use some memory
+	     * malloc/free 
+	     */
+	     
 	    /* and copy what we've found */
 	    ret = xmlSecKeyCopy(key, tmpKey);
 	    if(ret < 0) {

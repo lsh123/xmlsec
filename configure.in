@@ -142,12 +142,11 @@ fi
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
-LIBXML_MIN_VERSION="2.4.2"
+LIBXML_MIN_VERSION="2.6.12"
 LIBXML_CONFIG="xml2-config"
 LIBXML_CFLAGS=""
 LIBXML_LIBS=""
 LIBXML_FOUND="no"
-LIBXML262_FOUND="no"
 AC_ARG_WITH(libxml, [  --with-libxml=[PFX]       libxml2 location])
 if test "z$with_libxml" = "zno" ; then 
     AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
@@ -156,9 +155,6 @@ elif test "z$with_libxml" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
     PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= $LIBXML_MIN_VERSION,
 	[LIBXML_FOUND=yes],
 	[LIBXML_FOUND=no])
-    PKG_CHECK_MODULES(LIBXML262, libxml-2.0 >= 2.6.2,
-	[LIBXML262_FOUND=yes],
-	[LIBXML262_FOUND=no])
 fi
 AC_MSG_CHECKING(libxml2 $with_libxml  $LIBXML_FOUND  )
 if test "z$LIBXML_FOUND" = "zno" ; then
@@ -176,22 +172,12 @@ if test "z$LIBXML_FOUND" = "zno" ; then
         LIBXML_LIBS="`$LIBXML_CONFIG --libs`"
         LIBXML_CFLAGS="`$LIBXML_CONFIG --cflags`"
 	LIBXML_FOUND="yes"
-	if test "$vers" -ge "2006002" ;  then 
-	    LIBXML262_FOUND="yes"
-	fi
         AC_MSG_RESULT(yes ('$LIBXML_VERSION'))
     else
         AC_MSG_ERROR(You need at least libxml2 $LIBXML_MIN_VERSION for this version of $PACKAGE)
     fi
 fi
 
-if test "z$LIBXML_FOUND" = "zyes" ; then
-    if test "z$LIBXML262_FOUND" = "zyes" ; then
-	XMLSEC_DEFINES="-DXMLSEC_LIBXML_260=1 $XMLSEC_DEFINES"
-    elif test "z$ac_cv_func_snprintf" != "zyes" -o "z$ac_cv_func_vsnprintf" != "zyes" ; then
-	AC_MSG_ERROR(Functions snprintf and/or vsnprintf are not available on your platform. You need at least libxml2 2.6.2 for this version of $PACKAGE)
-    fi
-fi
 AC_SUBST(LIBXML_CFLAGS)
 AC_SUBST(LIBXML_LIBS)
 AC_SUBST(LIBXML_CONFIG)

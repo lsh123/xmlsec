@@ -486,47 +486,33 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, 
 			const xmlSecByte *buffer, xmlSecSize size) {
-    static const char dummyPrefix[] = "<dummy>";
-    static const char dummyPostfix[] = "</dummy>";
-    xmlDocPtr doc;
-    xmlNodePtr ptr1, ptr2;
+    xmlNodePtr results = NULL;
+    xmlNodePtr next = NULL;
 
     xmlSecAssert2(node != NULL, -1);
-    
-    doc = xmlSecParseMemoryExt((xmlSecByte*)dummyPrefix, strlen(dummyPrefix),
-			       buffer, size,
-			       (xmlSecByte*)dummyPostfix, strlen(dummyPostfix));
-    if(doc == NULL){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecParseMemoryExt",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    	
+    xmlSecAssert2(node->parent != NULL, -1);
+
+    /* parse buffer in the context of node's parent */
+    if(xmlParseInNodeContext(node->parent, buffer, size, XML_PARSE_NODICT, &results) != XML_ERR_OK) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlParseInNodeContext",
+                    XMLSEC_ERRORS_R_XML_FAILED,
+                    "Failed to parse content");
+        return(-1);         
     }
-	    
-    ptr1 = xmlDocGetRootElement(doc);
-    if(ptr1 == NULL){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlDocGetRootElement",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "root is null");
-	xmlFreeDoc(doc);
-	return(-1);	    	
+
+    /* add new nodes */
+    while (results != NULL) {
+        next = results->next;
+        xmlAddPrevSibling(node, results);
+        results = next;
     }
-    
-    ptr1 = ptr1->children;
-    while(ptr1 != NULL) {
-	ptr2 = ptr1->next;
-	xmlUnlinkNode(ptr1);
-	xmlAddPrevSibling(node, ptr1);
-	ptr1 = ptr2;
-    }
-	    
+
+    /* remove old node */
     xmlUnlinkNode(node);
     xmlFreeNode(node);  
-    xmlFreeDoc(doc);
+
     return(0);
 }
 

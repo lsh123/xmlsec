@@ -439,36 +439,9 @@ struct _xmlSecCryptoDLFunctions {
     void*					 cryptoAppDefaultPwdCallback;
 };
 
-#ifdef XMLSEC_LIBXML_260
 #include <libxml/xmlstring.h>
 #define xmlSecStrPrintf 	xmlStrPrintf
-#else  /* XMLSEC_LIBXML_260 */
-#ifdef HAVE_SNPRINTF
-#define xmlSecStrPrintf 	snprintf
-#else  /* HAVE_SNPRINTF */
-#ifdef _MSC_VER
-#define xmlSecStrPrintf 	_snprintf
-#else  /* _MSC_VER */
-#error No snprintf function found
-#endif /* _MSC_VER */
-#endif /* HAVE_SNPRINTF */
-#endif /* XMLSEC_LIBXML_260 */
-
-#ifdef XMLSEC_LIBXML_260
-#include <libxml/xmlstring.h>
 #define xmlSecStrVPrintf 	xmlStrVPrintf
-#else  /* XMLSEC_LIBXML_260 */
-#ifdef HAVE_VSNPRINTF
-#define xmlSecStrVPrintf 	vsnprintf
-#else  /* HAVE_VSNPRINTF */
-#ifdef _MSC_VER
-#define xmlSecStrVPrintf 	_vsnprintf
-#else  /* _MSC_VER */
-#error No vsnprintf function found
-#endif /* _MSC_VER */
-#endif /* HAVE_VSNPRINTF */
-#endif /* XMLSEC_LIBXML_260 */
-
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,9 @@
+2004-09-18  Aleksey Sanin  <aleksey@aleksey.com>
+	* config.h.in configure.in inlude/xmlsec/private.h src/xmltree.c:
+	use xmlParseInNodeContext function to parse encrypted text in 
+	xmlSecReplaceNodeBuffer, this bumps libxml2 requirements to 2.6.12 
+	(bug #142358)
+
 2004-08-25  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html 

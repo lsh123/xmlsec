@@ -3,25 +3,20 @@
 topfolder=$1
 xmlsec_app=$2
 file_format=$3
-priv_format=$4
 
-if [ "z$priv_format" = "zpkcs8" ]
-then 
-    priv_key_format="p8-$file_format"
-else
-    priv_key_format=$file_format
-fi    
 pub_key_format=$file_format
 cert_format=$file_format
-
+crypto_config=$topfolder
+priv_key_option="--pkcs12"
+priv_key_format="p12"
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testEnc.$timestamp-$$.tmp
 logfile=/tmp/testEnc.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
-valgrind_suppression="$topfolder/openssl.supp"
-valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppression"
+valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
+valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
 
 if [ -n "$DEBUG_MEMORY" ] ; then 
     export VALGRIND="valgrind $valgrind_options"
@@ -52,8 +47,8 @@ execEncTest() {
     printf "    Decrypt existing document                            "
     rm -f $tmpfile
 
-    echo "$xmlsec_app decrypt $2 $file.xml" >>  $logfile 
-    $VALGRIND $xmlsec_app decrypt $EXTRA_PARAMS $2 $file.xml > $tmpfile 2>> $logfile
+    echo "$xmlsec_app decrypt --crypto-config $crypto_config $2 $file.xml" >>  $logfile 
+    $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config $EXTRA_PARAMS $2 $file.xml > $tmpfile 2>> $logfile
     if [ $? = 0 ]; then
 	diff $file.data $tmpfile >> $logfile 2>> $logfile
 	printRes 
@@ -64,15 +59,15 @@ execEncTest() {
     if [ -n "$3"  -a -z "$PERF_TEST" ] ; then
 	printf "    Encrypt document                                     "
 	rm -f $tmpfile
-	echo "$xmlsec_app encrypt $3 $file.tmpl" >>  $logfile 
-	$VALGRIND $xmlsec_app encrypt --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
+	echo "$xmlsec_app encrypt --crypto-config $crypto_config $3 $file.tmpl" >>  $logfile 
+	$VALGRIND $xmlsec_app encrypt --crypto-config $crypto_config --output $tmpfile $EXTRA_PARAMS $3 $file.tmpl >> $logfile 2>> $logfile
 	printRes
 	
 	if [ -n "$4" ] ; then 
 	    if [ -z "$VALGRIND" ] ; then
 	        printf "    Decrypt new document                                 "
-		echo "$xmlsec_app decrypt $4 $tmpfile" >>  $logfile 
-	        $VALGRIND $xmlsec_app decrypt --output $tmpfile.2 $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
+		echo "$xmlsec_app decrypt --crypto-config $crypto_config $4 $tmpfile" >>  $logfile 
+	        $VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config --output $tmpfile.2 $EXTRA_PARAMS $4 $tmpfile >> $logfile 2>> $logfile
 		if [ $? = 0 ]; then
 		    diff $file.data $tmpfile.2 >> $logfile 2>> $logfile
 		    printRes
@@ -154,13 +149,13 @@ execEncTest "merlin-xmlenc-five/encrypt-content-aes256-cbc-prop" \
 execEncTest "merlin-xmlenc-five/encrypt-element-aes192-cbc-ref" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5" \
-    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 --privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase --pwd secret"  \
-    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase --pwd secret"  \
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 execEncTest "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p" \
-    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 --privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data --pwd secret"  \
-    "--privkey-$priv_key_format $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data --pwd secret"  \
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 execEncTest "merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-256 --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.data" \
@@ -301,12 +296,12 @@ execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
 # test dynamic encryption
 echo "Dynamic encryption template"
 printf "    Encrypt template                                     "
-echo "$xmlsec_app encrypt-tmpl --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app encrypt-tmpl $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app encrypt-tmpl --crypto-config $crypto_config --keys-file $topfolder/keys.xml --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app encrypt-tmpl --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml --output $tmpfile >> $logfile 2>> $logfile
 printRes
 printf "    Decrypt document                                     "
-echo "$xmlsec_app decrypt --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app decrypt $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
+echo "$xmlsec_app decrypt --crypto-config $crypto_config --keys-file $topfolder/keys.xml $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app decrypt --crypto-config $crypto_config $EXTRA_PARAMS --keys-file $topfolder/keys.xml $tmpfile >> $logfile 2>> $logfile
 printRes
 
 
@@ -322,6 +317,7 @@ execEncTest "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-retrieval-method-uris empty"
     
 rm -rf $tmpfile
+
 echo "--- testEnc finished" >> $logfile
 echo "--- testEnc finished"
 echo "--- detailed log is written to  $logfile" 

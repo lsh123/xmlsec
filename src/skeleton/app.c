@@ -56,8 +56,8 @@ xmlSecSkeletonAppShutdown(void) {
  * xmlSecSkeletonAppKeyLoad:
  * @filename:		the key filename.
  * @format:		the key file format.
- * @pwd:		the PEM key file password.
- * @pwdCallback:	the PEM key password callback.
+ * @pwd:		the key file password.
+ * @pwdCallback:	the key password callback.
  * @pwdCallbackCtx:	the user context for password callback.
  *
  * Reads key from the a file (not implemented yet).
@@ -66,12 +66,17 @@ xmlSecSkeletonAppShutdown(void) {
  */
 xmlSecKeyPtr
 xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-			const char *pwd ATTRIBUTE_UNUSED, 
-			void* pwdCallback ATTRIBUTE_UNUSED, 
-			void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+			const char *pwd,
+			void* pwdCallback,
+			void* pwdCallbackCtx) {
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
     
+    if (format == xmlSecKeyDataFormatPkcs12) {
+	return (xmlSecSkeletonAppPkcs12Load(filename, pwd, pwdCallback,
+					    pwdCallbackCtx));
+    }
+
     /* TODO: load key */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
@@ -118,6 +123,9 @@ xmlSecSkeletonAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  *
  * Reads key and all associated certificates from the PKCS12 file
  * (not implemented yet).
+ * For uniformity, call xmlSecSkeletonAppKeyLoad instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12.
+ *
  *
  * Returns pointer to the key or NULL if an error occurs.
  */

@@ -92,6 +92,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherData[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCipherReference[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncContent[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecTypeEncElement[];
+
 /*************************************************************************
  *
  * KeyInfo and Transform Nodes

@@ -51,6 +51,9 @@ const xmlChar xmlSecNodeCipherData[]		= "CipherData";
 const xmlChar xmlSecNodeCipherValue[]		= "CipherValue";
 const xmlChar xmlSecNodeCipherReference[]	= "CipherReference";
 
+const xmlChar xmlSecTypeEncContent[]		= "http://www.w3.org/2001/04/xmlenc#Content";
+const xmlChar xmlSecTypeEncElement[]		= "http://www.w3.org/2001/04/xmlenc#Element";
+
 /*************************************************************************
  *
  * KeyInfo Nodes

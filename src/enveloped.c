@@ -35,29 +35,29 @@ static int 	xmlSecTransformEnvelopedExecute		(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
     xmlSecNameEnveloped,
-    xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDSigTransform,	/* xmlSecTransformUsage	usage; */
-    xmlSecHrefEnveloped,		/* const xmlChar *href; */
+    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    xmlSecHrefEnveloped,			/* const xmlChar *href; */
     
-    NULL,				/* xmlSecTransformInitializeMethod initialize; */
-    NULL,				/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,				/* xmlSecTransformNodeReadMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformEnvelopedExecute,	/* xmlSecTransformExecuteMethod execute; */
+    NULL,					/* xmlSecTransformInitializeMethod initialize; */
+    NULL,					/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,					/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformEnvelopedExecute,		/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformOldExecuteXml,	/* xmlSecTransformExecuteMethod executeXml; */
-    NULL,				/* xmlSecTransformExecuteC14NMethod executeC14N; */
+    xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
+    NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 /**

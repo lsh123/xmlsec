@@ -57,7 +57,7 @@ check-dsig: $(TEST_APP)
 	@cd tests;make check-dsig
 
 check-enc: $(TEST_APP)
-	@cd tests;make check-en
+	@cd tests;make check-enc
 
 memcheck-res:
 	@cd tests;make memcheck-res

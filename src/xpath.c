@@ -476,8 +476,8 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,					/* xmlSecTransformPushBinMethod pushBin; */
     NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
     
     xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
@@ -622,8 +622,8 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,					/* xmlSecTransformPushBinMethod pushBin; */
     NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
 
     xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */
@@ -763,8 +763,8 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,					/* xmlSecTransformPushBinMethod pushBin; */
     NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
     xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
 
     xmlSecTransformOldExecuteXml,		/* xmlSecTransformExecuteMethod executeXml; */

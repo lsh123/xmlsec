@@ -21,50 +21,6 @@ XMLSEC_EXPORT void			xmlSecTransformDestroyAll(xmlSecTransformPtr transform);
 
 
 
-/**************************************************************************
- *
- * xmlSecTransformUsage
- *
- *************************************************************************/
-typedef unsigned int					xmlSecTransformUsage;
-#define xmlSecTransformUsageUnknown			0x0000
-/**
- * xmlSecTransformUsageDSigTransform:
- *
- * Transform could be used in <dsig:Transform>.
- */
-#define xmlSecTransformUsageDSigTransform		0x0001
-/**
- * xmlSecTransformUsageC14NMethod:
- *
- * Transform could be used in <dsig:CanonicalizationMethod>.
- */
-#define xmlSecTransformUsageC14NMethod			0x0002
-/**
- * xmlSecTransformUsageDigestMethod:
- *
- * Transform could be used in <dsig:DigestMethod>.
- */
-#define xmlSecTransformUsageDigestMethod		0x0004
-/**
- * xmlSecTransformUsageSignatureMethod:
- *
- * Transform could be used in <dsig:SignatureMethod>.
- */
-#define xmlSecTransformUsageSignatureMethod		0x0008
-/**
- * xmlSecTransformUsageEncryptionMethod:
- *
- * Transform could be used in <enc:EncryptionMethod>.
- */
-#define xmlSecTransformUsageEncryptionMethod		0x0010
-/**
- * xmlSecTransformUsageAny:
- *
- * Transform could be used for operation.
- */
-#define xmlSecTransformUsageAny				0xFFFF
-
 
 
 /**

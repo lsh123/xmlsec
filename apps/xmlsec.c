@@ -244,7 +244,8 @@ struct _xmlSecAppCtx {
     xmlSecDSigCtxPtr 	dsigCtx;
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
-    xmlSecEncOldCtxPtr 	encCtx;
+    xmlSecEncCtx 	encCtx;
+    xmlSecEncOldCtxPtr 	encOldCtx;
 #endif /* XMLSEC_NO_XMLENC */
     
 };
@@ -850,7 +851,7 @@ int encrypt(xmlDocPtr tmpl) {
 
     if(binary && (dataFile != NULL)) {
         start_time = clock();        
-	ret = xmlSecEncryptUri(gXmlSecAppCtx.encCtx, NULL, gXmlSecAppCtx.sessionKey,
+	ret = xmlSecEncryptUri(gXmlSecAppCtx.encOldCtx, NULL, gXmlSecAppCtx.sessionKey,
 				xmlDocGetRootElement(tmpl), dataFile, 
 				&encResult);
         total_time += clock() - start_time;    
@@ -881,7 +882,7 @@ int encrypt(xmlDocPtr tmpl) {
 	}
 
         start_time = clock();        	
-	ret = xmlSecEncryptXmlNode(gXmlSecAppCtx.encCtx, NULL, gXmlSecAppCtx.sessionKey,
+	ret = xmlSecEncryptXmlNode(gXmlSecAppCtx.encOldCtx, NULL, gXmlSecAppCtx.sessionKey,
 				xmlDocGetRootElement(tmpl), 
 				cur, &encResult);	
         total_time += clock() - start_time;    
@@ -939,24 +940,23 @@ done:
 }
 
 int decrypt(xmlDocPtr doc) {    
-    xmlSecEncResultPtr encResult = NULL;
     xmlNodePtr cur;
     clock_t start_time;
-    int ret;
     int res = -1;
+    int ret;
 
     cur = findStartNode(doc, BAD_CAST "EncryptedData", xmlSecEncNs);
     if(cur == NULL) {
         fprintf(stderr,"Error: unable to find EncryptedData node\n");
-	goto done;    
+	goto done;
     }
 
     start_time = clock();            
-    ret = xmlSecDecrypt(gXmlSecAppCtx.encCtx, NULL, gXmlSecAppCtx.sessionKey, cur, &encResult);
+    ret = xmlSecEncCtxDecrypt(&(gXmlSecAppCtx.encCtx), cur);
     total_time += clock() - start_time;    
-    if(ret < 0) {
+    if((ret < 0) || (gXmlSecAppCtx.encCtx.encResult == NULL)) {
         fprintf(stderr,"Error: xmlSecDecrypt() failed \n");
-	goto done;    
+	goto done;
     } 
 
     if(repeats <= 1) {
@@ -969,37 +969,28 @@ int decrypt(xmlDocPtr doc) {
 	    }
 	}
 
-	if((encResult != NULL) && encResult->replaced && (encResult->buffer != NULL)) {
+	if(gXmlSecAppCtx.encCtx.replaced) {
 	    ret = xmlDocDump(f, doc);    
-        } else if((encResult != NULL) && !encResult->replaced) {
-    	    ret = fwrite(xmlSecBufferGetData(encResult->buffer), 
-	    		 xmlSecBufferGetSize(encResult->buffer),
-	        	 1, f);		       
-	} else {
-	    if(f != stdout) {
-		fclose(f);
-	    }
-    	    fprintf(stderr,"Error: bad results \n");
-	    goto done;    
+        } else {
+	    xmlSecAssert2(xmlSecBufferGetData(gXmlSecAppCtx.encCtx.encResult) != NULL, -1);
+    	    ret = fwrite(xmlSecBufferGetData(gXmlSecAppCtx.encCtx.encResult), 
+	    		 xmlSecBufferGetSize(gXmlSecAppCtx.encCtx.encResult),
+	        	 1, f); 
 	}
 	if(f != stdout) {
 	    fclose(f);
 	}
         if(ret < 0) {
 	    fprintf(stderr,"Error: failed to print out the result \n");
-	    goto done;    
+	    goto done;
 	}
     
-	if(printResult) {
-    	    xmlSecEncResultDebugDump(encResult, stderr);
-	}
     }	
-        
     res = 0;
     
-done:    
-    if(encResult != NULL) {
-	xmlSecEncResultDestroy(encResult);
+done:        
+    if(printResult) {
+    	xmlSecEncCtxDebugDump(&(gXmlSecAppCtx.encCtx), stderr);
     }
     return(res);
 }
@@ -1021,6 +1012,8 @@ int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc) {
  *************************************************************************/
 static int
 xmlSecAppInit(xmlSecAppCtxPtr ctx) {
+    int ret;
+    
     xmlSecAssert2(ctx != NULL, -1);
     
     /* init ctx */
@@ -1097,8 +1090,19 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
 
     /* init XML Enc context */
 #ifndef XMLSEC_NO_XMLENC
-    ctx->encCtx = xmlSecEncOldCtxCreate(gXmlSecAppCtx.keysMngr);
-    if(ctx->encCtx == NULL) {
+    ret = xmlSecEncCtxInitialize(&(gXmlSecAppCtx.encCtx), 
+				 gXmlSecAppCtx.keysMngr);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecEncCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    ctx->encOldCtx = xmlSecEncOldCtxCreate(gXmlSecAppCtx.keysMngr);
+    if(ctx->encOldCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecEncOldCtxCreate",
@@ -1120,8 +1124,9 @@ xmlSecAppShutdown(xmlSecAppCtxPtr ctx) {
 	xmlSecKeyDestroy(ctx->sessionKey);
     }
 #ifndef XMLSEC_NO_XMLENC
-    if(ctx->encCtx != NULL) {
-	xmlSecEncOldCtxDestroy(ctx->encCtx);
+    xmlSecEncCtxFinalize(&(gXmlSecAppCtx.encCtx));
+    if(ctx->encOldCtx != NULL) {
+	xmlSecEncOldCtxDestroy(ctx->encOldCtx);
     }
 #endif /* XMLSEC_NO_XMLENC */
 #ifndef XMLSEC_NO_XMLDSIG
@@ -1516,8 +1521,10 @@ xmlSecAppX509OptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	ctx->dsigCtx->keyInfoCtx.certsVerificationTime = t;		        
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
-	xmlSecAssert2(ctx->encCtx != NULL, -1);
-	ctx->encCtx->keyInfoCtx.certsVerificationTime = t;		        
+	gXmlSecAppCtx.encCtx.keyInfoCtx.certsVerificationTime = t;
+	
+	xmlSecAssert2(ctx->encOldCtx != NULL, -1);
+	ctx->encOldCtx->keyInfoCtx.certsVerificationTime = t;		        
 #endif /* XMLSEC_NO_XMLENC */
     } else if((strncmp(argv[pos], "--depth", 7) == 0) && (pos + 1 < argc)) {
 	int depth;
@@ -1529,9 +1536,10 @@ xmlSecAppX509OptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
 	ctx->dsigCtx->keyInfoCtx.certsVerificationDepth = depth;  
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
-	xmlSecAssert2(ctx->encCtx != NULL, -1);
-	    
-	ctx->encCtx->keyInfoCtx.certsVerificationDepth = depth;
+	ctx->encCtx.keyInfoCtx.certsVerificationDepth = depth;  
+
+	xmlSecAssert2(ctx->encOldCtx != NULL, -1);
+	ctx->encOldCtx->keyInfoCtx.certsVerificationDepth = depth;
 #endif /* XMLSEC_NO_XMLENC */
     } else {
 	/* the option is unknown */
@@ -1630,7 +1638,7 @@ xmlSecAppEncOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
     xmlSecAssert2(pos < argc, -1);
 	
 #ifndef XMLSEC_NO_XMLEMC
-    xmlSecAssert2(ctx->encCtx != NULL, -1);
+    xmlSecAssert2(ctx->encOldCtx != NULL, -1);
 
     if((strcmp(argv[pos], "--binary") == 0) && (pos + 1 < argc)) {
 	if(dataFile != NULL){

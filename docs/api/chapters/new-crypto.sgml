@@ -207,8 +207,9 @@ make
 	However, in some applications (for example, the xmlsec command line
 	utility) that can use any crypto library, would prefer to 
 	use a generic function names where possible.
-	And the "include/xmlsec/mycrypto/symbols.h" include files does 
-	the magic by mapping "xmlSecMyCrypto*" to "xmlSecCrypto*".
+	The "include/xmlsec/crypto.h" and "include/xmlsec/mycrypto/symbols.h" 
+	include files do the magic by mapping "xmlSecMyCrypto*" to 
+	"xmlSecCrypto*" names using "XMLSEC_CRYPTO_*" defines.
 	</para>
 	<para>
 	In order to build xmlsec command line utility, the 

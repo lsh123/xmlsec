@@ -21,18 +21,18 @@ extern "C" {
 /**
  * Init/shutdown
  */
-XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppInit			(const char* config);
-XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppShutdown		(void);
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppInit				(const char* config);
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppShutdown			(void);
 
 /** 
  * Keys Manager
  */
-XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppDefaultKeysMngrInit	(xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrAdoptKey	(xmlSecKeysMngrPtr mngr,
-									 xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrLoad	(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
+																xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr,
 									 const char* uri);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrSave	(xmlSecKeysMngrPtr mngr,
+XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr,
 									 const char* filename,
 									 xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509

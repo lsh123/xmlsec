@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
  
 #include <libxml/tree.h>
 
@@ -445,6 +446,69 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
 	xmlSecAssert2(buf->data != NULL, -1);
 	memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
     }
+    return(0);
+}
+
+/**
+ * xmlSecBufferReadFile:
+ * @buf:		the pointer to buffer object.
+ * @filename:		the filename.
+ *
+ * Reads the content of the file @filename in the buffer.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
+    xmlSecByte buffer[1024];
+    FILE* f;
+    int ret, len;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
+    f = fopen(filename, "rb");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "fopen",
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "filename=%s;errno=%d", 
+		    xmlSecErrorsSafeString(filename),
+		    errno);
+	return(-1);
+    }
+
+    while(1) {
+        len = fread(buffer, 1, sizeof(buffer), f);
+	if(len == 0) {
+            break;
+        }else if(len < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "fread",
+                        XMLSEC_ERRORS_R_IO_FAILED,
+                        "filename=%s;errno=%d", 
+                        xmlSecErrorsSafeString(filename),
+			errno);
+            fclose(f);
+            return(-1);
+        }
+
+	ret = xmlSecBufferAppend(buf, buffer, len);
+	if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBufferAppend",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", 
+                        len);
+            fclose(f);
+            return(-1);
+        }     
+    }
+
+    fclose(f);
     return(0);
 }
 

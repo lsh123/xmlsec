@@ -19,8 +19,8 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoNodeGetBigNumValue(const xmlNodePtr cur, xmlSecBufferPtr retval);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoNodeSetBigNumValue(xmlNodePtr cur, const xmlSecBufferPtr a, int addLineBreaks);
+XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoNodeGetBigNumValue(xmlNodePtr cur, xmlSecBufferPtr retval);
+XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoNodeSetBigNumValue(xmlNodePtr cur, xmlSecByte* buf, xmlSecSize bufLen, int addLineBreaks);
 
 #ifdef __cplusplus
 }

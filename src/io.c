@@ -279,8 +279,8 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     if (transform->reserved1 == NULL) {
 	for (i = xmlSecIOCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlSecIOCallbackTable[i].matchcallback != NULL) &&
-		(xmlSecIOCallbackTable[i].matchcallback(uri) != 0)) {
-		transform->reserved1 = xmlSecIOCallbackTable[i].opencallback(uri);
+		(xmlSecIOCallbackTable[i].matchcallback((char*)uri) != 0)) {
+		transform->reserved1 = xmlSecIOCallbackTable[i].opencallback((char*)uri);
 		if (transform->reserved1 != NULL) {
 		    transform->reserved0 = &(xmlSecIOCallbackTable[i]);
 		    break;

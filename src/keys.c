@@ -81,7 +81,6 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
 
 /**
  * xmlSecKeyCreate:
- * @origin: the key origins.
  *
  * Creates new key of the specified type @id.
  *
@@ -189,7 +188,6 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
 /**
  * xmlSecKeyDuplicate:
  * @key: the pointer to the #xmlSecKey structure.
- * @origin: the key origins.
  *
  * Creates a duplicate of the given @key.
  *
@@ -448,33 +446,6 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     if(key->name != NULL) {
 	fprintf(output, "=== keys name: %s\n", key->name);
     }
-    fprintf(output, "=== key origin:");
-    if(key->origin & xmlSecKeyOriginKeyManager) {
-	fprintf(output, " KeyManager");
-    }
-    if(key->origin & xmlSecKeyOriginKeyName) {
-	fprintf(output, " KeyName");
-    }
-    if(key->origin & xmlSecKeyOriginKeyValue) {
-	fprintf(output, " KeyValue");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalDocument) {
-	fprintf(output, " RetrievalDocument");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalRemote) {
-	fprintf(output, " RetrievalRemote");
-    }
-    if(key->origin & xmlSecKeyOriginX509) {
-	fprintf(output, " x509");
-    }
-    if(key->origin & xmlSecKeyOriginEncryptedKey) {
-	fprintf(output, " EncKey");
-    }
-    if(key->origin & xmlSecKeyOriginPGP) {
-	fprintf(output, " PGP");
-    }
-    fprintf(output, "\n");
-    
     if(key->value != NULL) {
 	xmlSecKeyDataDebugDump(key->value, output);
     }
@@ -516,32 +487,6 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     if(key->name != NULL) {
 	fprintf(output, "<KeyName>%s</KeyName>\n", key->name);
     }
-    fprintf(output, "<KeyOrigins>\n");
-    if(key->origin & xmlSecKeyOriginKeyManager) {
-	fprintf(output, "<KeyOrigin>KeyManager</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginKeyName) {
-	fprintf(output, "<KeyOrigin>KeyName</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginKeyValue) {
-	fprintf(output, "<KeyOrigin>KeyValue</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalDocument) {
-	fprintf(output, "<KeyOrigin>RetrievalDocument</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginRetrievalRemote) {
-	fprintf(output, "<KeyOrigin>RetrievalRemote</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginX509) {
-	fprintf(output, "<KeyOrigin>x509</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginEncryptedKey) {
-	fprintf(output, "<KeyOrigin>EncKey</KeyOrigin>\n");
-    }
-    if(key->origin & xmlSecKeyOriginPGP) {
-	fprintf(output, "<KeyOrigin>PGP</KeyOrigin>\n");
-    }
-    fprintf(output, "</KeyOrigins>\n");
 
     if(key->value != NULL) {
 	xmlSecKeyDataDebugXmlDump(key->value, output);
@@ -673,7 +618,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	}
     }	
     
-    if((keyInfoCtx->keysMngr != NULL) && (keyInfoCtx->keysMngr->allowedOrigins & xmlSecKeyOriginKeyManager)) {
+    if(keyInfoCtx->keysMngr != NULL) {
 	ret = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, key, NULL, keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,

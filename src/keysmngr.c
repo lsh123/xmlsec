@@ -371,12 +371,11 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	    xmlFreeDoc(doc);
 	    return(-1);
 	}
-
-        keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
+	
+	keyInfoCtx.stopWhenKeyFound	= 0;
+        keyInfoCtx.keyReq.keyId		= xmlSecKeyDataIdUnknown;
 	keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;
 	keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
-	keyInfoCtx.retrievalsLevel 	= 0;
-	keyInfoCtx.encKeysLevel 	= 1;
 
 	ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
 	if(ret < 0) {
@@ -550,11 +549,10 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 		return(-1);
 	    }
 
+	    keyInfoCtx.stopWhenKeyFound	= 0;
     	    keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
 	    keyInfoCtx.keyReq.keyType	= type;
 	    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
-	    keyInfoCtx.retrievalsLevel 	= 0;
-	    keyInfoCtx.encKeysLevel 	= 1;
 
 	    /* finally write key in the node */
 	    ret = xmlSecKeyInfoNodeWrite(cur, key, &keyInfoCtx);

@@ -476,21 +476,31 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     
+    /* initialize key info */
+    ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoCtx), keysMngr);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyInfoCtxInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecDSigCtxDestroy(ctx);
+	return(NULL);
+    }
+
+    /* initializes transforms ctx */
     ret = xmlSecTransformCtxInitialize(&(ctx->signatureTransformCtx));
     if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
+	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformCtxInitialize",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlSecDSigCtxDestroy(ctx);
 	return(NULL);
     }
     
-    /* todo: call key info ctx initialize */
-    
     /* by default we process Manifests and store nothing */
-    ctx->keyInfoCtx.keysMngr = keysMngr;
     ctx->processManifests = 1;
     ctx->storeSignatures  = 0;
     ctx->storeReferences  = 0;
@@ -509,6 +519,7 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
     
     xmlSecTransformCtxFinalize(&(ctx->signatureTransformCtx));
+    xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoCtx));
 
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     xmlFree(ctx);

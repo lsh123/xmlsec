@@ -219,12 +219,6 @@ xmlSecNssAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     
     /* TODO */
     mngr->getKey = xmlSecKeysMngrGetKey;
-
-    /* set "smart" defaults */
-    mngr->allowedOrigins = xmlSecKeyOriginAll;
-    mngr->maxRetrievalsLevel = 1;
-    mngr->maxEncKeysLevel = 1;
-
     return(0);
 }
 

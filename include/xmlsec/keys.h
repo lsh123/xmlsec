@@ -62,112 +62,6 @@ XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
 								 xmlSecKeyDataPtr value);
 
 /**
- * xmlSecKeyInifiteRetrivals:
- *
- * Macro. Inifinite number of retrievals (really big number :) )
- */
-#define xmlSecKeyInifiteRetrivals		99999
-
-/**
- * xmlSecKeyIsValid:
- * @key: the pointer to key.
- *
- * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
- * or 0 otherwise.
- */ 
-#define xmlSecKeyIsValid(key) \
-	((( key ) != NULL) && \
-	 (( key )->value != NULL) && \
-	 ((( key )->value->id) != NULL))
-/**
- * xmlSecKeyCheckId:
- * @key: the pointer to key.
- * @keyId: the key Id.
- *
- * Macro. Returns 1 if @key is valid and @key's id is equal to @keyId.
- */
-#define xmlSecKeyCheckId(key, keyId) \
- 	(xmlSecKeyIsValid(( key )) && \
-	((( key )->value->id) == ( keyId )))
-
-/** 
- * xmlSecKeyOrigin:
- * 
- * The key origin (keys manager, remote document, cert, etc.).
- */
-typedef long				xmlSecKeyOrigin;
-/**
- * xmlSecKeyOriginDefault:
- *
- * Default origin (unknown).
- */
-#define xmlSecKeyOriginDefault			0
-/**
- * xmlSecKeyOriginKeyManager:
- *
- * The key was found in the keys manager.
- */
-#define xmlSecKeyOriginKeyManager		1
-/**
- * xmlSecKeyOriginKeyName:
- *
- * The key was found in the keys manager via key name
- * specified in the <dsig:KeyName> node. (useless w/o 
- * #xmlSecKeyOriginKeyManager).
- */
-#define xmlSecKeyOriginKeyName			2 
-/**
- * xmlSecKeyOriginKeyValue:
- *
- * The key was extracted from <dsig:KeyValue> node.
- */
-#define xmlSecKeyOriginKeyValue			4
-/**
- * xmlSecKeyOriginRetrievalDocument:
- *
- * The key was extracted thru <dsig:RetrievalMethod> 
- * pointing in the same document.
- */
-#define xmlSecKeyOriginRetrievalDocument	8
-/**
- * xmlSecKeyOriginRetrievalRemote:
- *
- * The key was extracted thru <dsig:RetrievalMethod> 
- * pointing to another document.
- */
-#define xmlSecKeyOriginRetrievalRemote		16
-/**
- * xmlSecKeyOriginX509:
- *
- * The key was extracted from X509 certificate
- * in the <dsig:X509Data> node.
- */
-#define xmlSecKeyOriginX509			32
-/**
- * xmlSecKeyOriginPGP:
- *
- * The PGP key from <dsig:PGPData> node. Not used.
- */
-#define xmlSecKeyOriginPGP			64
-/**
- * xmlSecKeyOriginEncryptedKey:
- *
- * The key was extracted from <enc:EncryptedKey> node.
- */
-#define xmlSecKeyOriginEncryptedKey		128
-/**
- * xmlSecKeyOriginAll:
- *
- * All of the above.
- */
-#define xmlSecKeyOriginAll			\
-	    (xmlSecKeyOriginKeyManager | xmlSecKeyOriginKeyName | \
-	     xmlSecKeyOriginKeyValue | xmlSecKeyOriginKeyValue | \
-	     xmlSecKeyOriginRetrievalDocument | xmlSecKeyOriginRetrievalRemote | \
-	     xmlSecKeyOriginX509 | xmlSecKeyOriginPGP | xmlSecKeyOriginEncryptedKey)		
-
-
-/**
  * xmlSecKey:
  * @type: the key type (private/public).
  * @origin: the key origin.
@@ -182,7 +76,6 @@ struct _xmlSecKey {
 
     /* obsolete */
     xmlSecKeyDataType			type;
-    xmlSecKeyOrigin			origin;
 };
 
 
@@ -226,6 +119,28 @@ XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key,
 							 const xmlChar *name,
 							 xmlSecKeyReqPtr keyReq);
 							 
+/**
+ * xmlSecKeyIsValid:
+ * @key: the pointer to key.
+ *
+ * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
+ * or 0 otherwise.
+ */ 
+#define xmlSecKeyIsValid(key) \
+	((( key ) != NULL) && \
+	 (( key )->value != NULL) && \
+	 ((( key )->value->id) != NULL))
+/**
+ * xmlSecKeyCheckId:
+ * @key: the pointer to key.
+ * @keyId: the key Id.
+ *
+ * Macro. Returns 1 if @key is valid and @key's id is equal to @keyId.
+ */
+#define xmlSecKeyCheckId(key, keyId) \
+ 	(xmlSecKeyIsValid(( key )) && \
+	((( key )->value->id) == ( keyId )))
+
 
 /***********************************************************************
  *

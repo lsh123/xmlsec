@@ -235,6 +235,18 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54
 /**
+ * XMLSEC_ERRORS_R_INVALID_URI_TYPE:
+ * 
+ * Invalid URI type.
+ */
+#define XMLSEC_ERRORS_R_INVALID_URI_TYPE 	 55
+/**
+ * XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL:
+ *
+ * Max EncryptedKey level reached.
+ */
+#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 56
+/**
  * XMLSEC_ERRORS_R_ASSERTION:
  *
  * Invalid assertion.

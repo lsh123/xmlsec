@@ -964,6 +964,7 @@ xmlSecAppEncryptFile(const char* filename) {
     xmlSecEncCtxPtr encCtx = NULL;
     xmlDocPtr doc = NULL;
     xmlNodePtr startTmplNode;
+    clock_t start_time;
     int res = -1;
 
     if(filename == NULL) {
@@ -992,11 +993,13 @@ xmlSecAppEncryptFile(const char* filename) {
 
     if(xmlSecAppCmdLineParamGetString(&binaryParam) != NULL) {
 	/* encrypt */
+	start_time = clock();            
 	if(xmlSecEncCtxUriEncrypt(encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryParam)) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt file \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&binaryParam));
 	    goto done;
 	}
+	total_time += clock() - start_time;    
     } else if(xmlSecAppCmdLineParamGetString(&xmlParam) != NULL) {
 	/* parse file and select node for encryption */
         data = xmlSecAppXmlDataCreate(xmlSecAppCmdLineParamGetString(&xmlParam), NULL, NULL);
@@ -1007,11 +1010,13 @@ xmlSecAppEncryptFile(const char* filename) {
 	}
 
 	/* encrypt */
+	start_time = clock();            
 	if(xmlSecEncCtxXmlEncrypt(encCtx, startTmplNode, data->startNode) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt xml file \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&xmlParam));
 	    goto done;
 	}
+	total_time += clock() - start_time;    
     } else {
 	fprintf(stderr, "Error: encryption data not specified (use \"--xml\" or \"--binary\" options)\n");
 	goto done;

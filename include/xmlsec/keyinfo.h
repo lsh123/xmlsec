@@ -33,31 +33,44 @@ XMLSEC_EXPORT int 		xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 								 xmlSecKeyPtr key,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-/**
+typedef unsigned int		xmlSecUriType;
+#define xmlSecUriTypeNone		0x0000
+#define xmlSecUriTypeLocalEmpty		0x0001
+#define xmlSecUriTypeLocalXPointer	0x0002		
+#define xmlSecUriTypeRemote		0x0004
+#define xmlSecUriTypeAny		0xFFFF
+
+/**		
  * xmlSecKeyInfoCtx:
  *
- * TODO
  */
 struct _xmlSecKeyInfoCtx {
     void*				userData;
     xmlSecKeysMngrPtr			keysMngr;
     int					base64LineSize;
     xmlSecPtrListPtr			allowedKeyDataIds;
-    
+    int					stopWhenKeyFound;
+    int					stopWhenUnknownNodeFound;
+        
     /* RetrievalMethod */
     xmlSecTransformCtxPtr		transformCtx;
-    int 				retrievalsLevel;
+    xmlSecUriType			allowedRetrievalMethodUris;
+    int 				maxRetrievalMethodLevel;
+    int					stopWhenUnknownRetrievalMethodHrefFound;
 
     /* EncryptedKey */
     xmlSecEncCtxPtr			encCtx;
-    int					encKeysLevel;                
-
+    int					maxEncryptedKeyLevel; 
+    int					failIfDecryptionFails;
+	    
     /* x509 certificates */
     int					failIfCertNotFound;
     time_t				certsVerificationTime;
     int					certsVerificationDepth;
     
     /* internal data */
+    int 				curRetrievalMethodLevel;
+    int					curEncryptedKeyLevel;                
     xmlSecKeyReq			keyReq;
 };
 
@@ -74,24 +87,6 @@ XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyData	(xmlSecKeyInfoCtxPtr keyInfoCt
 XMLSEC_EXPORT int			xmlSecKeyInfoCtxEnableKeyDataByName(xmlSecKeyInfoCtxPtr keyInfoCtx,
 									 const xmlChar* name);
 
-
-#define xmlSecKeyInfoNodeCheckOrigin(status, origin) \
-	( ( ((status) != NULL) && \
-	    ((status)->keysMngr != NULL) && \
-	    ((status)->keysMngr->allowedOrigins & origin) ) ? \
-	    1 : 0 )
-#define xmlSecKeyInfoNodeCheckRetrievalsLevel(status) \
-	( ( ((status) != NULL) && \
-	    ((status)->keysMngr != NULL) && \
-	    ((status)->keysMngr->maxRetrievalsLevel >= 0) ) ? \
-	    ((status)->keysMngr->maxRetrievalsLevel >= (status)->retrievalsLevel) : \
-	    1 )
-#define xmlSecKeyInfoNodeCheckEncKeysLevel(status) \
-	( ( ((status) != NULL) && \
-	    ((status)->keysMngr != NULL) && \
-	    ((status)->keysMngr->maxEncKeysLevel >= 0) ) ? \
-	    ((status)->keysMngr->maxEncKeysLevel >= (status)->encKeysLevel) : \
-	    1 )
 
 /**
  * xmlSecKeyDataNameId

@@ -107,7 +107,7 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);   
     }
-    
+	    
     return(0);
 }
 

@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Manpage of XMLSEC</title>
+<title>Manpage of XMLSEC1</title>
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -24,12 +24,12 @@
 </td>
 <td valign="top"><table width="100%" valign="top">
 <tr><td valign="top" align="left" id="xmlsecContent">
-<h1>XMLSEC</h1>
+<h1>XMLSEC1</h1>
 <p> Section: User Commands (1)<br>Updated: April 2003<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a>
 </p>
 <hr>
 <a name="lbAB"> </a><h2>NAME</h2>
-<p>  xmlsec - manual page for xmlsec 1.0.0-pre1-openssl <a name="lbAC"> </a> </p>
+<p>  xmlsec1 - manual page for xmlsec1 1.0.0rc1 (openssl) <a name="lbAC"> </a> </p>
 <h2>SYNOPSIS</h2>
 <b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;file&gt;</i>] <a name="lbAD"> </a> </p>
 <h2>DESCRIPTION</h2>
@@ -171,6 +171,14 @@
 </dt>
 <dd> <dd>load untrusted certificate from PEM file &lt;file&gt; </dd>
 </dd>
+<dt> <b>--trusted-der</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load trusted (root) certificate from DER file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--untrusted-der</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load untrusted certificate from DER file &lt;file&gt; </dd>
+</dd>
 <dt> <b>--verification-time</b> &lt;time&gt; <dt></dt>
 </dt>
 <dd> <dd>the local time in &quot;YYYY-MM-DD HH:MM:SS&quot; format used certificates verification </dd>
@@ -207,10 +215,10 @@
 <h2>COPYRIGHT</h2>
 <p>  Copyright © 2002-2003 Aleksey Sanin. <br>  This is free software: see the source for copying information. <a name="lbAI"> </a> </p>
 <h2>SEE ALSO</h2>
-<p>  The full documentation for <b>xmlsec</b>  is maintained as a Texinfo manual.  If the <b>info</b>  and <b>xmlsec</b>  programs are properly installed at your site, the command </p>
+<p>  The full documentation for <b>xmlsec1</b>  is maintained as a Texinfo manual.  If the <b>info</b>  and <b>xmlsec1</b>  programs are properly installed at your site, the command </p>
 <dl compact>
 <dt></dt>
-<dd> <b>info xmlsec</b>  </dd>
+<dd> <b>info xmlsec1</b>  </dd>
 </dl>
 <p>  should give you access to the complete manual. </p>
 <p>  </p>
@@ -235,7 +243,7 @@
 <dd> </dd>
 </dl>
 <hr>
-<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 23:31:59 GMT, April 02, 2003 </p>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 05:01:49 GMT, April 09, 2003 </p>
 </td></tr>
 <tr><td>
 <br><br><p><a href="bugs.html">Aleksey Sanin</a></p>

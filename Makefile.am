@@ -46,7 +46,7 @@ docs-clean:
 	@(cd docs; $(MAKE) clean)
 
 docs-man: 
-	@(cd man;$(MAKE) man)
+	@(cd man;$(MAKE) docs)
 
 check: check-info check-km check-dsig check-enc
 

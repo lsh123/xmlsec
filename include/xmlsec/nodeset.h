@@ -56,7 +56,7 @@ XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetCreate	(xmlDocPtr doc,
 							 xmlNodeSetPtr nodes,
 							 xmlSecNodeSetType type);
 XMLSEC_EXPORT void		xmlSecNodeSetDestroy	(xmlSecNodeSetPtr nset);
-XMLSEC_EXPORT int		xmlSecNodeSetContain	(xmlSecNodeSetPtr nset,
+XMLSEC_EXPORT int		xmlSecNodeSetContains	(xmlSecNodeSetPtr nset,
 							 xmlNodePtr node,
 							 xmlNodePtr parent);
 XMLSEC_EXPORT xmlSecNodeSetPtr	xmlSecNodeSetAdd	(xmlSecNodeSetPtr nset,

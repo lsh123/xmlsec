@@ -23,7 +23,10 @@
     (((node)->type != XML_NAMESPACE_DECL) ? \
         (node)->parent : \
         (xmlNodePtr)((xmlNsPtr)(node))->next)
-
+	
+static int	xmlSecNodeSetOneContains		(xmlSecNodeSetPtr nset, 
+							 xmlNodePtr node, 
+							 xmlNodePtr parent);
 static int	xmlSecNodeSetWalkRecursive		(xmlSecNodeSetPtr nset, 
 							 xmlSecNodeSetWalkCallback walkFunc, 
 							 void* data, 
@@ -79,8 +82,8 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 }
 
 static int
-xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetOneContain";
+xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetOneContains";
     int in_nodes_set = 1;
     
     if((node == NULL) || (nset == NULL)) {
@@ -101,7 +104,7 @@ xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr paren
 	    }
 	    break;
 	case xmlSecNodeSetList:
-	    return(xmlSecNodeSetContain(nset->children, node, parent));
+	    return(xmlSecNodeSetContains(nset->children, node, parent));
 	default:
 	    break;
     }
@@ -134,7 +137,7 @@ xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr paren
 	    return(1);
 	}
 	if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
-	    return(xmlSecNodeSetOneContain(nset, parent, parent->parent));
+	    return(xmlSecNodeSetOneContains(nset, parent, parent->parent));
 	}
 	return(0);
     case xmlSecNodeSetTreeInvert:
@@ -143,7 +146,7 @@ xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr paren
 	    return(0);
 	}
 	if((parent != NULL) && (parent->type == XML_ELEMENT_NODE)) {
-	    return(xmlSecNodeSetOneContain(nset, parent, parent->parent));
+	    return(xmlSecNodeSetOneContains(nset, parent, parent->parent));
 	}
 	return(1);
     default:
@@ -158,8 +161,8 @@ xmlSecNodeSetOneContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr paren
 }
 
 int
-xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetContain";
+xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecNodeSetContains";
     int status = 1;
     xmlSecNodeSetPtr cur;
     
@@ -182,17 +185,17 @@ xmlSecNodeSetContain(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent) 
     do {
 	switch(cur->op) {
 	case xmlSecNodeSetIntersection:
-	    if(status && !xmlSecNodeSetOneContain(cur, node, parent)) {
+	    if(status && !xmlSecNodeSetOneContains(cur, node, parent)) {
 		status = 0;
 	    }
     	    break;
 	case xmlSecNodeSetSubtraction:
-	    if(status && xmlSecNodeSetOneContain(cur, node, parent)) {
+	    if(status && xmlSecNodeSetOneContains(cur, node, parent)) {
 		status = 0;
 	    }
 	    break;
 	case xmlSecNodeSetUnion:
-	    if(!status && xmlSecNodeSetOneContain(cur, node, parent)) {
+	    if(!status && xmlSecNodeSetOneContains(cur, node, parent)) {
 		status = 1;
 	    }	
 	    break;
@@ -341,7 +344,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
     }
 
     /* the node itself */
-    if(xmlSecNodeSetContain(nset, cur, parent)) {
+    if(xmlSecNodeSetContains(nset, cur, parent)) {
 	ret = walkFunc(nset, cur, parent, data);
 	
 	if(ret < 0) {
@@ -357,7 +360,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
 	
         attr = (xmlAttrPtr)cur->properties;
         while(attr != NULL) {
-	    if(xmlSecNodeSetContain(nset, (xmlNodePtr)attr, cur)) {
+	    if(xmlSecNodeSetContains(nset, (xmlNodePtr)attr, cur)) {
 		ret = walkFunc(nset, (xmlNodePtr)attr, cur, data);
 		if(ret < 0) {
 		    return(ret);
@@ -371,7 +374,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
     	    ns = node->nsDef;
     	    while(ns != NULL) {
 		tmp = xmlSearchNs(nset->doc, cur, ns->prefix);
-		if((tmp == ns) && xmlSecNodeSetContain(nset, (xmlNodePtr)ns, cur)) {
+		if((tmp == ns) && xmlSecNodeSetContains(nset, (xmlNodePtr)ns, cur)) {
 		    ret = walkFunc(nset, (xmlNodePtr)ns, cur, data);
 		    if(ret < 0) {
 			return(ret);

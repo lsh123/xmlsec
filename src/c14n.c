@@ -343,28 +343,28 @@ xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
         
     if(xmlSecTransformCheckId(transform, xmlSecC14NInclusive)) {    
     	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
 			0, NULL, 0, buffer);
     } else if(xmlSecTransformCheckId(transform, xmlSecC14NInclusiveWithComments)) {
 	 ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
 			0, NULL, 1, buffer); 
     } else if(xmlSecTransformCheckId(transform, xmlSecC14NExclusive)) {
 	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
 			1, (xmlChar**)(transform->c14nData), 0, buffer);
     } else if(xmlSecTransformCheckId(transform, xmlSecC14NExclusiveWithComments)) {
 	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
 			1, (xmlChar**)(transform->c14nData), 1, buffer);
     } else if(transform == NULL) {
 	/* the default c14n trasnform */
 	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContain, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
 			0, NULL, 0, buffer);
     } else {

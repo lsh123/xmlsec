@@ -2,7 +2,7 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/parser.h>
 
-/* internal functions */
+ /* internal functions */
 static int  xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri);
 static void xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state);
 static int  xmlSecTransformCreateXml(xmlSecTransformStatePtr state);

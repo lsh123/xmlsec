@@ -50,7 +50,7 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
     xmlSecNodeSetPtr nset;
 
     nset = (xmlSecNodeSetPtr)xmlMalloc(sizeof(xmlSecNodeSet));
-    if(nset == NULL) {
+    if(nset == NULL) { 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    "xmlSecNodeSet",
 		    "xmlMalloc",

@@ -2,7 +2,7 @@
  *
  * XMLSec library
  * 
- * RSA Algorithm support
+ * RSA Algorithms support
  * 
  * See Copyright for the status of this software.
  * 

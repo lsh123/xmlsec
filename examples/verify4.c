@@ -1,16 +1,19 @@
 /** 
- * XML Security Library example: Verifying a file signed with X509 certificate
+ * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
- * Verifies a file signed with X509 certificate. 
+ * Verifies a simple SAML response. In addition to refular verification
+ * we ensure that the signature has only one <dsig:Reference/> element
+ * with an empty or NULL URI attribute and one enveloped signature transform
+ * as it is required by SAML specification.
  * 
  * This example was developed and tested with OpenSSL crypto library. The 
  * certificates management policies for another crypto library may break it.
  *
  * Usage: 
- *	verify3 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ *	verify4 <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
  *
  * Example:
- *	./verify3 sign3-res.xml rootcert.pem
+ *	./verify4 verify4-res.xml rootcert.pem
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -198,9 +201,38 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 	goto done;
     }
 
+    /* limit the Reference URI attributes to empty or NULL */
+    dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeEmpty;
+    
+    /* limit allowed transforms for siganture and reference processing */
+    if((xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) < 0)) {
+
+        fprintf(stderr,"Error: failed to limit allowed siganture transforms\n");
+	goto done;
+    }
+    if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) < 0)) {
+
+        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
+	goto done;
+    }
+    
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
         fprintf(stderr,"Error: signature verify\n");
+	goto done;
+    }
+
+    /* check that we have only one Reference */
+    if((dsigCtx->status == xmlSecDSigStatusSucceeded) && 
+        (xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1)) {
+	
+        fprintf(stderr,"Error: only one reference is allowed\n");
 	goto done;
     }
         

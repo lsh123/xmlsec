@@ -3,7 +3,7 @@
 #
 PROGRAMS	 = \
 	sign1 sign2 sign3 \
-	verify1 verify2 verify3 \
+	verify1 verify2 verify3 verify4 \
 	encrypt1 encrypt2 encrypt3 \
 	decrypt1 decrypt2 decrypt3
 
@@ -32,6 +32,7 @@ check: $(PROGRAMS)
 	./verify2  sign1-res.xml     rsapub.pem
 	./verify2  sign2-res.xml     rsapub.pem
 	./verify3  sign3-res.xml     rootcert.pem
+	./verify4  verify4-res.xml   rootcert.pem
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin 
 	./encrypt3 encrypt3-doc.xml  rsakey.pem

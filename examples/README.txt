@@ -22,6 +22,9 @@ This folder contains XML Security Library examples.
     verify1.c			Verifying a signed document with a single key
     verify2.c			Verifying a signed document using keys manager
     verify3.c			Verifying a signed document using X509 certificate
+    verify4.c			Verifying a simple SAML response using X509 certificate
+    verify4-tmpl.xml		An example template file with a simple SAML response for verify4 example
+    verify4-res.xml		Signed simple SAML response for verification by verify4.c 
     encrypt1.c			Encrypting binary data with a template file
     encrypt1-res.xml		An example template file for encrypt1.c
     encrypt1-tmpl.xml		The result of processing encrypt1_tmpl.xml by encrypt1.c
@@ -68,6 +71,7 @@ folder with any other input files:
 	./verify2  sign1-res.xml     rsapub.pem
 	./verify2  sign2-res.xml     rsapub.pem
 	./verify3  sign3-res.xml     rootcert.pem
+	./verify4  verify4-res.xml   rootcert.pem
 
 	./encrypt1 encrypt1-tmpl.xml deskey.bin
 	./encrypt2 encrypt2-doc.xml  deskey.bin 
